@@ -11,7 +11,7 @@ import { useVBIStore } from './model';
 import { useShallow } from 'zustand/shallow';
 import { setLocalData } from './utils/localConnector';
 
-function App() {
+export function APP() {
   const [leftWidth, setLeftWidth] = useState(220);
   const [dragging, setDragging] = useState(false);
   const [builderCollapsed, setBuilderCollapsed] = useState(false);
@@ -42,7 +42,7 @@ function App() {
   useEffect(() => {
     initialize();
     builderRef.current = builder;
-    setCurrentBuilder(builder);
+    // setCurrentBuilder(builder);
 
     // 获取可用的图表类型
     if (builder?.chartType?.getAvailableChartTypes) {
@@ -410,4 +410,4 @@ function App() {
   );
 }
 
-export default App;
+export default APP;

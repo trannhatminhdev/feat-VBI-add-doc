@@ -1,1 +1,9 @@
-["index", "demo", "streamlined", "professional", "playground"]
+[
+  "index",
+  "playground",
+  {
+    "type": "dir",
+    "name": "practices",
+    "label": "Practices"
+  }
+]

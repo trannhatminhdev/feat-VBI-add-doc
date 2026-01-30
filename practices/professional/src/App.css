@@ -1,95 +1,95 @@
 .app-root {
-    height: 100vh;
-    background: #0b0c1d;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
+  height: 100vh;
+  background: #0b0c1d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 .builder-layout {
-    width: 1000px;
-    height: 90vh;
-    display: flex;
-    background: #15162b;
-    border-radius: 8px;
-    overflow: hidden;
-    gap: 0;
+  width: 1000px;
+  height: 90vh;
+  display: flex;
+  background: #15162b;
+  border-radius: 8px;
+  overflow: hidden;
+  gap: 0;
 }
 
 .builder-panel {
-    display: flex;
-    flex: 1;
-    background: #1a1b33;
+  display: flex;
+  flex: 1;
+  background: #1a1b33;
 }
 
 .left-panel {
-    display: flex;
-    flex-direction: column;
-    background: #1a1b33;
+  display: flex;
+  flex-direction: column;
+  background: #1a1b33;
 }
 
 .middle-panel {
-    width: 200px;
-    background: #202244;
-    position: relative;
+  width: 200px;
+  background: #202244;
+  position: relative;
 }
 
 .canvas-panel {
-    flex: 1;
-    background: #26285a;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  flex: 1;
+  background: #26285a;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .splitter {
-    width: 4px;
-    cursor: col-resize;
+  width: 4px;
+  cursor: col-resize;
 }
 
 .collapse-btn {
-    position: absolute;
-    right: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: transparent;
-    border: none;
-    color: #e0e0e0;
-    cursor: pointer;
-    font-size: 16px;
-    z-index: 10;
+  position: absolute;
+  right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  color: #e0e0e0;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 10;
 }
 
 .collapse-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
 }
 
 .expand-btn {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: transparent;
-    border: none;
-    color: #e0e0e0;
-    cursor: pointer;
-    font-size: 16px;
-    z-index: 10;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  color: #e0e0e0;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 10;
 }
 
 .title {
-    padding: 12px;
-    font-size: 18px;
-    font-weight: 600;
-    color: #e0e0e0;
+  padding: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e0e0;
 }
