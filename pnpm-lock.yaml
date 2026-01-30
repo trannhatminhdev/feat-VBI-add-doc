@@ -295,6 +295,9 @@ importers:
       minimalist:
         specifier: workspace:*
         version: link:../../practices/minimalist
+      professional:
+        specifier: workspace:*
+        version: link:../../practices/professional
       streamlined:
         specifier: workspace:*
         version: link:../../practices/streamlined
@@ -563,7 +566,6 @@ importers:
         version: 8.48.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
 
   practices/minimalist:
-  practices/professional:
     dependencies:
       '@ant-design/icons':
         specifier: 6.1.0
@@ -582,7 +584,7 @@ importers:
         version: link:../../packages/vseed
       '@visactor/vtable':
         specifier: latest
-        version: 1.22.12
+        version: 1.23.0
       antd:
         specifier: 6.1.3
         version: 6.1.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -592,19 +594,6 @@ importers:
       zustand:
         specifier: 5.0.6
         version: 5.0.6(@types/react@19.2.10)(react@19.2.3)
-        version: 1.23.0
-      antd:
-        specifier: 6.1.3
-        version: 6.1.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      react:
-        specifier: ^19.2.0
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.0
-        version: 19.2.3(react@19.2.3)
-      zustand:
-        specifier: 5.0.6
-        version: 5.0.6(@types/react@19.2.7)(react@19.2.3)
     devDependencies:
       '@eslint/js':
         specifier: ^9.39.1
@@ -650,6 +639,44 @@ importers:
         version: 5.9.3
       typescript-eslint:
         specifier: ^8.48.0
+        version: 8.48.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+
+  practices/professional:
+    dependencies:
+      '@ant-design/icons':
+        specifier: 6.1.0
+        version: 6.1.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@visactor/vbi':
+        specifier: workspace:*
+        version: link:../../packages/vbi
+      '@visactor/vchart':
+        specifier: latest
+        version: 2.0.14
+      '@visactor/vquery':
+        specifier: workspace:*
+        version: link:../../packages/vquery
+      '@visactor/vseed':
+        specifier: workspace:*
+        version: link:../../packages/vseed
+      '@visactor/vtable':
+        specifier: latest
+        version: 1.23.0
+      antd:
+        specifier: 6.1.3
+        version: 6.1.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react:
+        specifier: ^19.2.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.3(react@19.2.3)
+      zustand:
+        specifier: 5.0.6
+        version: 5.0.6(@types/react@19.2.7)(react@19.2.3)
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.39.1
+        version: 9.39.1
       '@types/node':
         specifier: ^24.10.1
         version: 24.10.1
@@ -725,7 +752,7 @@ importers:
         version: 0.18.6(typescript@5.9.3)
       '@rstest/core':
         specifier: 0.7.5
-        version: 0.7.5(jsdom@26.1.0)
+        version: 0.7.5(happy-dom@20.4.0)(jsdom@26.1.0)
       '@testing-library/jest-dom':
         specifier: 6.9.1
         version: 6.9.1
@@ -3642,6 +3669,9 @@ packages:
   '@swc/counter@0.1.3':
     resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
 
+  '@swc/helpers@0.5.17':
+    resolution: {integrity: sha512-5IKx/Y13RsYd+sauPb2x+U/xZikHjolzfuDgTAl/Tdf3Q8rslRvC19NKDLgAJQ6wsqADk10ntlv08nPFw/gO/A==}
+
   '@swc/helpers@0.5.18':
     resolution: {integrity: sha512-TXTnIcNJQEKwThMMqBXsZ4VGAza6bvN4pa41Rkqoio6QBKMvo+5lexeTMScGCIxtzgQJzElcvIltani+adC5PQ==}
 
@@ -4141,8 +4171,6 @@ packages:
   '@visactor/vrender-animate@1.0.38':
     resolution: {integrity: sha512-G3hvKBOxJKw3hE0Ka1j9DE/Um7/LfYN201zDmRc00hwCuEMxMFRXU0ZLJc82iw2UZVG+rMHZihiwXMa+/aAdNQ==}
 
-  '@visactor/vrender-animate@1.0.39':
-    resolution: {integrity: sha512-u8iNccWTlszdVoGFqHjLRXiVjHefZKcnQIGod0xrNx4/vaV/OCJZD/+7EvUUyoFYLZPCqafOcBtZh9jRr8cAYQ==}
   '@visactor/vrender-animate@1.0.40':
     resolution: {integrity: sha512-/OT+xKwTdRa+bhTF28mQxl+9HsaIncNFGv00G3m2EHQT7Ls8SCDAyD46J36+bU3eYKz/+V+CzL2ApwI/zXP8/A==}
 
@@ -4155,8 +4183,6 @@ packages:
   '@visactor/vrender-components@1.0.38':
     resolution: {integrity: sha512-P+h1ynpKxaYorraejn3xfollBIRPlaaueQVBHbKjMVjMGJyOAWRwEL4LoVR63x5aOQUt1hddm1/qyFCWeA8M9g==}
 
-  '@visactor/vrender-components@1.0.39':
-    resolution: {integrity: sha512-i/j16Rf6/mPiA4LZvvXJi0PvDFBCbcI/gSEV2JX6QTZmMWhXOgRZ2mA4kyqQVD4rNIyyXJEmIeVKsgPM0+3Qlw==}
   '@visactor/vrender-components@1.0.40':
     resolution: {integrity: sha512-+mooyFfpAaAjhBDN5XHKz1SH0vHe3IjabLJQWYwDZGvpPHieVIlZstkTIRMH63pJek0ViIZLHcxpf/i/qli+sw==}
 
@@ -4169,8 +4195,6 @@ packages:
   '@visactor/vrender-core@1.0.38':
     resolution: {integrity: sha512-UAv5hQYfOe8XaT5jQ+exZDXsOJc1KHeBM0NN6gM92eCpo09OV54gUb/nkc+yHXSZlZAlr53VGR/m8IG2Hvomxw==}
 
-  '@visactor/vrender-core@1.0.39':
-    resolution: {integrity: sha512-+TrkiSt14qPzW2k8GlKt5gcNItFwfha+MnJa5TO7i6pu+rnzmjsStku5ZXyLEbEXzRLoUGGg13UoEznFqitawA==}
   '@visactor/vrender-core@1.0.40':
     resolution: {integrity: sha512-VNfxYGvNS2k1v2/+H0y9jIxjsFjgy3ieFGTDYz+o1rES2RY4wQIr6xJtdEkzXg6Foavp1gJj4fSf/wl2idEuTA==}
 
@@ -4183,8 +4207,6 @@ packages:
   '@visactor/vrender-kits@1.0.38':
     resolution: {integrity: sha512-ZjsXBq4MvKDmtBprTIF1p97HNkl8csZAVsvaHe6HbUhsbK1VNqkmhR+6ZJK/V1TimgoM645+fiVricA6O2WGKA==}
 
-  '@visactor/vrender-kits@1.0.39':
-    resolution: {integrity: sha512-cF/4sC0xHYQhQklstp5EwH6Td0pd9cy2kpFzPXrTwDJTr2Eqk9sU5sq6gCpqPnL0fWDZfSyJmJ7tM9ffDmcxHQ==}
   '@visactor/vrender-kits@1.0.40':
     resolution: {integrity: sha512-tMD2C4vQd5kN2WyDIkel4tId1NYGclKM1exIsJY51rgOjfJsjpRzC5WPe6KYqoIcDO5xDarX8TY4dkTR9S0l6w==}
 
@@ -4200,8 +4222,6 @@ packages:
   '@visactor/vtable-editors@1.22.11-alpha.8':
     resolution: {integrity: sha512-dHPXBoy4mPKxtIDeegAn1jyXee1YRDK6CZvTk+yeCz9Flja226MMgCPzEOeqSifMwnfYq6hcSPmbxqYqGo7JMQ==}
 
-  '@visactor/vtable-editors@1.22.12':
-    resolution: {integrity: sha512-77o/bn+Bq7fn72xtZZhQ3yEhvZhk1AHMOUvT5Jsk7q7xkrj368bhfoViZ8dDeVnJc/s6/ZVxDgupJScyJlB/rw==}
   '@visactor/vtable-editors@1.23.0':
     resolution: {integrity: sha512-gVPc2e+5GAq9fWvqmYi9qpFkcCt4WR09sNqvmqJZYwR4R6bXFmL3kde917UuIslHrR+O+8qxtqDZvOuopHuYcA==}
 
@@ -4211,8 +4231,6 @@ packages:
   '@visactor/vtable@1.22.11-alpha.8':
     resolution: {integrity: sha512-ImEilZJAzP8D9Hpy/3kk4gSu8NSLAcTr8kZ0uabRk8D27WBKF3K/1J8vByyY7GaZ1tk2GtfL/s6+v6vG7RPAGQ==}
 
-  '@visactor/vtable@1.22.12':
-    resolution: {integrity: sha512-KhIjNkSm2eIpo1g97qij5F2BWQZt80UPjGj+EiOmFOasiJlUcXuzOe+V8MvEbslbKInQafmFjJGN1tt/pzi5cA==}
   '@visactor/vtable@1.23.0':
     resolution: {integrity: sha512-hsHh4ofxUbVFAD/5I2nm3w97Qb6yfGQVOl2hYzPyg/6xr84/0jRSbPjcTyt0cF3Tl+csp4ySH3AWICjdLF0ibA==}
 
@@ -11399,17 +11417,17 @@ snapshots:
 
   '@rsbuild/core@1.6.0-beta.1':
     dependencies:
-      '@rspack/core': 1.6.0-beta.1(@swc/helpers@0.5.18)
+      '@rspack/core': 1.6.0-beta.1(@swc/helpers@0.5.17)
       '@rspack/lite-tapable': 1.0.1
-      '@swc/helpers': 0.5.18
+      '@swc/helpers': 0.5.17
       core-js: 3.46.0
       jiti: 2.6.1
 
   '@rsbuild/core@1.6.12-canary-20251204065915':
     dependencies:
-      '@rspack/core': '@rspack-canary/core@1.6.7-canary-63b4dae2-20251204065915(@swc/helpers@0.5.18)'
+      '@rspack/core': '@rspack-canary/core@1.6.7-canary-63b4dae2-20251204065915(@swc/helpers@0.5.17)'
       '@rspack/lite-tapable': 1.1.0
-      '@swc/helpers': 0.5.18
+      '@swc/helpers': 0.5.17
       core-js: 3.47.0
       jiti: 2.6.1
 
@@ -11668,13 +11686,13 @@ snapshots:
       '@rspack/binding-win32-ia32-msvc': '@rspack-canary/binding-win32-ia32-msvc@1.6.7-canary-63b4dae2-20251204065915'
       '@rspack/binding-win32-x64-msvc': '@rspack-canary/binding-win32-x64-msvc@1.6.7-canary-63b4dae2-20251204065915'
 
-  '@rspack-canary/core@1.6.7-canary-63b4dae2-20251204065915(@swc/helpers@0.5.18)':
+  '@rspack-canary/core@1.6.7-canary-63b4dae2-20251204065915(@swc/helpers@0.5.17)':
     dependencies:
       '@module-federation/runtime-tools': 0.21.6
       '@rspack/binding': '@rspack-canary/binding@1.6.7-canary-63b4dae2-20251204065915'
       '@rspack/lite-tapable': 1.1.0
     optionalDependencies:
-      '@swc/helpers': 0.5.18
+      '@swc/helpers': 0.5.17
 
   '@rspack/binding-darwin-arm64@1.6.0-beta.1':
     optional: true
@@ -11901,13 +11919,13 @@ snapshots:
       '@rspack/binding-win32-ia32-msvc': 2.0.0-alpha.0
       '@rspack/binding-win32-x64-msvc': 2.0.0-alpha.0
 
-  '@rspack/core@1.6.0-beta.1(@swc/helpers@0.5.18)':
+  '@rspack/core@1.6.0-beta.1(@swc/helpers@0.5.17)':
     dependencies:
       '@module-federation/runtime-tools': 0.21.1
       '@rspack/binding': 1.6.0-beta.1
       '@rspack/lite-tapable': 1.0.1
     optionalDependencies:
-      '@swc/helpers': 0.5.18
+      '@swc/helpers': 0.5.17
 
   '@rspack/core@1.7.0(@swc/helpers@0.5.18)':
     dependencies:
@@ -12247,7 +12265,7 @@ snapshots:
 
   '@testing-library/react@16.3.1(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.10))(@types/react@19.2.10)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
-      '@babel/runtime': 7.28.2
+      '@babel/runtime': 7.28.6
       '@testing-library/dom': 10.4.1
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
@@ -12874,10 +12892,6 @@ snapshots:
     dependencies:
       '@visactor/vdataset': 1.0.21
       '@visactor/vlayouts': 1.0.12
-      '@visactor/vrender-animate': 1.0.39
-      '@visactor/vrender-components': 1.0.39
-      '@visactor/vrender-core': 1.0.39
-      '@visactor/vrender-kits': 1.0.39
       '@visactor/vrender-animate': 1.0.40
       '@visactor/vrender-components': 1.0.40
       '@visactor/vrender-core': 1.0.40
@@ -12929,9 +12943,6 @@ snapshots:
       '@visactor/vrender-core': 1.0.38
       '@visactor/vutils': 1.0.21
 
-  '@visactor/vrender-animate@1.0.39':
-    dependencies:
-      '@visactor/vrender-core': 1.0.39
   '@visactor/vrender-animate@1.0.40':
     dependencies:
       '@visactor/vrender-core': 1.0.40
@@ -12961,11 +12972,6 @@ snapshots:
       '@visactor/vscale': 1.0.21
       '@visactor/vutils': 1.0.21
 
-  '@visactor/vrender-components@1.0.39':
-    dependencies:
-      '@visactor/vrender-animate': 1.0.39
-      '@visactor/vrender-core': 1.0.39
-      '@visactor/vrender-kits': 1.0.39
   '@visactor/vrender-components@1.0.40':
     dependencies:
       '@visactor/vrender-animate': 1.0.40
@@ -12989,7 +12995,6 @@ snapshots:
       '@visactor/vutils': 1.0.21
       color-convert: 2.0.1
 
-  '@visactor/vrender-core@1.0.39':
   '@visactor/vrender-core@1.0.40':
     dependencies:
       '@visactor/vutils': 1.0.21
@@ -13022,10 +13027,6 @@ snapshots:
       lottie-web: 5.13.0
       roughjs: 4.6.6
 
-  '@visactor/vrender-kits@1.0.39':
-    dependencies:
-      '@resvg/resvg-js': 2.4.1
-      '@visactor/vrender-core': 1.0.39
   '@visactor/vrender-kits@1.0.40':
     dependencies:
       '@resvg/resvg-js': 2.4.1
@@ -13047,7 +13048,6 @@ snapshots:
 
   '@visactor/vtable-editors@1.22.11-alpha.8': {}
 
-  '@visactor/vtable-editors@1.22.12': {}
   '@visactor/vtable-editors@1.23.0': {}
 
   '@visactor/vtable@1.22.11':
@@ -13080,15 +13080,6 @@ snapshots:
       gifuct-js: 2.1.2
       lodash: 4.17.21
 
-  '@visactor/vtable@1.22.12':
-    dependencies:
-      '@visactor/vdataset': 1.0.21
-      '@visactor/vrender-animate': 1.0.39
-      '@visactor/vrender-components': 1.0.39
-      '@visactor/vrender-core': 1.0.39
-      '@visactor/vrender-kits': 1.0.39
-      '@visactor/vscale': 1.0.21
-      '@visactor/vtable-editors': 1.22.12
   '@visactor/vtable@1.23.0':
     dependencies:
       '@visactor/vdataset': 1.0.21
@@ -13136,7 +13127,6 @@ snapshots:
       '@turf/invariant': 6.5.0
       eventemitter3: 4.0.7
 
-  '@vitest/coverage-istanbul@3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.10.1)(happy-dom@20.4.0)(jiti@2.6.1)(jsdom@26.1.0)(sass-embedded@1.91.0)(sass@1.91.0)(terser@5.43.1)(yaml@2.8.1))':
   '@vitejs/plugin-react-swc@4.2.2(@swc/helpers@0.5.18)(vite@7.3.1(@types/node@24.10.1)(jiti@2.6.1)(sass-embedded@1.91.0)(sass@1.91.0)(terser@5.43.1)(yaml@2.8.1))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.47
@@ -13145,7 +13135,7 @@ snapshots:
     transitivePeerDependencies:
       - '@swc/helpers'
 
-  '@vitest/coverage-istanbul@3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.10.1)(jiti@2.6.1)(jsdom@26.1.0)(sass-embedded@1.91.0)(sass@1.91.0)(terser@5.43.1)(yaml@2.8.1))':
+  '@vitest/coverage-istanbul@3.2.4(vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.10.1)(happy-dom@20.4.0)(jiti@2.6.1)(jsdom@26.1.0)(sass-embedded@1.91.0)(sass@1.91.0)(terser@5.43.1)(yaml@2.8.1))':
     dependencies:
       '@istanbuljs/schema': 0.1.3
       debug: 4.4.1
@@ -13453,7 +13443,7 @@ snapshots:
 
   apache-arrow@17.0.0:
     dependencies:
-      '@swc/helpers': 0.5.18
+      '@swc/helpers': 0.5.17
       '@types/command-line-args': 5.2.3
       '@types/command-line-usage': 5.0.4
       '@types/node': 20.19.21
@@ -18639,7 +18629,6 @@ snapshots:
       terser: 5.43.1
       yaml: 2.8.1
 
-  vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.10.1)(happy-dom@20.4.0)(jiti@2.6.1)(jsdom@26.1.0)(sass-embedded@1.91.0)(sass@1.91.0)(terser@5.43.1)(yaml@2.8.1):
   vite@7.3.1(@types/node@24.10.1)(jiti@2.6.1)(sass-embedded@1.91.0)(sass@1.91.0)(terser@5.43.1)(yaml@2.8.1):
     dependencies:
       esbuild: 0.27.2
@@ -18657,7 +18646,7 @@ snapshots:
       terser: 5.43.1
       yaml: 2.8.1
 
-  vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.10.1)(jiti@2.6.1)(jsdom@26.1.0)(sass-embedded@1.91.0)(sass@1.91.0)(terser@5.43.1)(yaml@2.8.1):
+  vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.10.1)(happy-dom@20.4.0)(jiti@2.6.1)(jsdom@26.1.0)(sass-embedded@1.91.0)(sass@1.91.0)(terser@5.43.1)(yaml@2.8.1):
     dependencies:
       '@types/chai': 5.2.2
       '@vitest/expect': 3.2.4
