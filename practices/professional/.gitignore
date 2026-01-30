@@ -1,0 +1,20 @@
+# Local
+.DS_Store
+*.local
+*.log*
+
+# Dist
+node_modules
+dist/
+storybook-static
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# RM
+README.md
+tasks.md
+DESIGN_TASK1.md
+DESIGN_TASK2-6_INTEGRATED.md
