@@ -31,7 +31,7 @@ export type BaseMeasure = {
   numFormat?: NumFormat
 
   /**
-   * @description same as numFormat, 指标的数值格式化, 会自动应用于label、tooltip
+   * @deprecated use numFormat instead
    */
   format?: NumFormat
 
