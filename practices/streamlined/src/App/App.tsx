@@ -41,7 +41,7 @@ export const APP = (props: APPProps) => {
         console.groupEnd();
       }}
       style={{
-        height: '100vh',
+        height: '100%',
         overflow: 'hidden',
         backgroundColor: '#f5f7fa',
       }}
