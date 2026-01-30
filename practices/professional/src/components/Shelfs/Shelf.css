@@ -1,0 +1,78 @@
+/* DimensionShelf.css */
+
+.shelf {
+    display: flex;
+    flex-direction: column;
+    padding: 2px 8px;
+    background: #1a1b33;
+    color: #e0e0e0;
+    font-size: 10px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.shelf-title {
+    padding: 4px;
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.6px;
+    margin-bottom: 4px;
+    color: #b0b0b0;
+}
+
+.shelf-items {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    /* 紧凑行间距 */
+}
+
+.shelf-empty {
+    font-style: italic;
+    color: #999;
+    padding: 4px 0;
+    font-size: 10px;
+}
+
+.shelf-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 4px;
+    /* 紧凑内边距 */
+    border-radius: 4px;
+    transition: background 0.2s;
+    cursor: grab;
+}
+
+.shelf-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    /* hover 高亮 */
+}
+
+.shelf-item-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 10px;
+}
+
+.shelf-item-remove {
+    opacity: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #f66;
+    padding: 0;
+    font-size: 10px;
+}
+
+.shelf-item:hover .shelf-item-remove {
+    opacity: 1;
+}
+
+.shelf-item-remove:disabled {
+    cursor: not-allowed;
+}
