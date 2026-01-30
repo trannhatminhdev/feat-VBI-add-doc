@@ -17,7 +17,23 @@ export function APP() {
   const [builderCollapsed, setBuilderCollapsed] = useState(false);
 
   // VBI builder 相关
-  const builderRef = useRef<unknown>(null);
+  const builderRef = useRef<{
+    dimensions?: {
+      addDimension: (field: string, callback?: (node: unknown) => void) => void;
+      removeDimension: (field: string) => void;
+    };
+    measures?: {
+      addMeasure: (field: string, callback?: (node: unknown) => void) => void;
+      removeMeasure: (field: string) => void;
+    };
+    chartType?: {
+      changeChartType: (type: string) => void;
+      getAvailableChartTypes: () => string[];
+    };
+    doc?: {
+      transact: (callback: () => void) => void;
+    };
+  }>(null);
 
   // 可用的字段和选中的字段
   const [dimensions, setDimensions] = useState<string[]>([]);
@@ -167,17 +183,15 @@ export function APP() {
     if (!dimensionFields.includes(field)) {
       const newDims = [...dimensionFields, field];
       setDimensionFields(newDims);
-      if (builderRef.current?.dimensions) {
-        builderRef.current.doc.transact(() => {
-          builderRef.current?.dimensions.addDimension(
-            field,
-            (node: unknown) => {
-              const nodeObj = node as Record<string, (field: string) => void>;
-              if (nodeObj?.setAlias) {
-                nodeObj.setAlias(field);
-              }
-            },
-          );
+      if (builderRef.current?.dimensions && builderRef.current.doc) {
+        const { dimensions, doc } = builderRef.current;
+        doc.transact(() => {
+          dimensions.addDimension(field, (node: unknown) => {
+            const nodeObj = node as Record<string, (field: string) => void>;
+            if (nodeObj?.setAlias) {
+              nodeObj.setAlias(field);
+            }
+          });
         });
       }
       setRenderKey((prev) => prev + 1);
@@ -187,9 +201,10 @@ export function APP() {
   const handleRemoveDimension = (field: string) => {
     const newDims = dimensionFields.filter((d) => d !== field);
     setDimensionFields(newDims);
-    if (builderRef.current?.dimensions) {
-      builderRef.current.doc.transact(() => {
-        builderRef.current?.dimensions.removeDimension(field);
+    if (builderRef.current?.dimensions && builderRef.current.doc) {
+      const { dimensions, doc } = builderRef.current;
+      doc.transact(() => {
+        dimensions.removeDimension(field);
       });
     }
     setRenderKey((prev) => prev + 1);
@@ -200,9 +215,10 @@ export function APP() {
     if (!measureFields.includes(field)) {
       const newMeas = [...measureFields, field];
       setMeasureFields(newMeas);
-      if (builderRef.current?.measures) {
-        builderRef.current.doc.transact(() => {
-          builderRef.current?.measures.addMeasure(field, (node: unknown) => {
+      if (builderRef.current?.measures && builderRef.current.doc) {
+        const { measures, doc } = builderRef.current;
+        doc.transact(() => {
+          measures.addMeasure(field, (node: unknown) => {
             const nodeObj = node as Record<string, (field: string) => void>;
             if (nodeObj?.setAlias) {
               nodeObj.setAlias(field);
@@ -217,9 +233,10 @@ export function APP() {
   const handleRemoveMeasure = (field: string) => {
     const newMeas = measureFields.filter((m) => m !== field);
     setMeasureFields(newMeas);
-    if (builderRef.current?.measures) {
-      builderRef.current.doc.transact(() => {
-        builderRef.current?.measures.removeMeasure(field);
+    if (builderRef.current?.measures && builderRef.current.doc) {
+      const { measures, doc } = builderRef.current;
+      doc.transact(() => {
+        measures.removeMeasure(field);
       });
     }
     setRenderKey((prev) => prev + 1);

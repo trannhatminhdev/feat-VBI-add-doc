@@ -38,7 +38,7 @@ pnpm --filter=website run preview  # 构建后本地预览
 
 ```bash
 pnpm run lint                      # 全仓库并行 lint
-pnpm run type-check                # 并行类型检查（含 LLM 测试生成）
+pnpm run typecheck                # 并行类型检查（含 LLM 测试生成）
 pnpm run format                    # 使用 Prettier 格式化
 ```
 

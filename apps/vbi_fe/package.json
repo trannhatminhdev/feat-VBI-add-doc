@@ -11,7 +11,7 @@
     "preview": "rsbuild preview",
     "test": "rstest",
     "test:watch": "rstest --watch",
-    "type-check": "tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@ant-design/icons": "6.1.0",
