@@ -352,11 +352,6 @@
 
 **Type:** `NumFormat | undefined`
 
-:::note{title=描述}
-same as numFormat, 指标的数值格式化, 会自动应用于label、tooltip
-
-:::
-
 
 #### type
 

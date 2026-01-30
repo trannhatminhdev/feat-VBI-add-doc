@@ -37,7 +37,6 @@ function main() {
   })
 
   // 4. Generate root files
-  fs.writeFileSync(path.join(outputDir, 'index.md'), '---\noverview: true\n---', 'utf-8')
   generateMetaJsonRecursive(outputDir)
 
   console.log('所有文档生成完成，目录：', outputDir)
@@ -262,12 +261,7 @@ function generateMetaJsonRecursive(directory) {
 
   let meta = [...filesForMeta, ...dirsForMeta]
 
-  // 4. Add the root index file.
-  if (isRoot) {
-    meta.unshift({ type: 'file', name: 'index', label: 'Overview' }, { type: 'divider' })
-  }
-
-  // 5. Write the _meta.json file.
+  // 4. Write the _meta.json file.
   if (meta.length > 0) {
     fs.writeFileSync(path.join(directory, '_meta.json'), JSON.stringify(meta, null, 2))
   }
