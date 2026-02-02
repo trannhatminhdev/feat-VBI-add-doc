@@ -4,6 +4,7 @@
 *.log*
 tsconfig.tsbuildinfo
 .eslintcache
+.env
 
 # Turbo
 .turbo
