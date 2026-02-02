@@ -25,6 +25,9 @@ jobs:
         with:
           node-version: 24
 
+      - name: Setup environment file
+        run: cp .env.example .env
+
       - name: Setup pnpm
         run: corepack enable pnpm
 
