@@ -26,6 +26,9 @@ jobs:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Setup environment file
+        run: cp .env.example .env
+
       - name: Show npm version
         run: npm -v
 
