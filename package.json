@@ -33,7 +33,8 @@
     "prepare": "husky",
     "sync-bugserver-cases": "node ./scripts/sync-bugserver-cases.js",
     "vbi:down": "docker-compose -f ./docker/docker-compose.dev.yml down",
-    "vbi:up": "docker-compose -f ./docker/docker-compose.dev.yml up"
+    "vbi:up": "docker-compose -f ./docker/docker-compose.dev.yml up",
+    "postinstall": "test -e .env || cp .env.example .env"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,md,mdx}": [
