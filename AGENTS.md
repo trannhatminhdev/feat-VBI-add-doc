@@ -38,7 +38,7 @@ pnpm run lint
 确保 TypeScript 类型定义正确，无编译错误。
 
 ```bash
-pnpm run type-check
+pnpm run typecheck
 ```
 
 - 此命令会并行检查所有包的类型。

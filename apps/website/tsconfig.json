@@ -31,6 +31,15 @@
     },
     {
       "path": "../../practices/demo"
+    },
+    {
+      "path": "../../practices/minimalist"
+    },
+    {
+      "path": "../../practices/streamlined"
+    },
+    {
+      "path": "../../practices/professional"
     }
   ],
   "include": ["docs", "components", "theme", "rspress.config.ts"],

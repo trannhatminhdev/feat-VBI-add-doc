@@ -13,7 +13,7 @@
     "build": "pnpm run build:all",
     "format": "pnpm prettier --write .",
     "lint": "pnpm -r --color --parallel lint",
-    "type-check": "pnpm -r --color --parallel type-check && pnpm --filter=vseed-llm-test run generate",
+    "typecheck": "pnpm turbo typecheck",
     "dev:rsdoctor": "pnpm --filter=@visactor/vseed run dev:rsdoctor",
     "build:all": "turbo build --filter=!/tools/*",
     "build:vseed": "pnpm --filter=@visactor/vseed run build",

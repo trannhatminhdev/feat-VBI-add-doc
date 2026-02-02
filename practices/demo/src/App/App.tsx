@@ -41,7 +41,7 @@ export const APP = (props: APPProps) => {
         console.groupEnd();
       }}
       style={{
-        padding: '20px',
+        height: '100%',
         gap: '20px',
       }}
     >

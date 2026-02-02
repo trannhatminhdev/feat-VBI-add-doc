@@ -23,7 +23,7 @@
     "build:rsdoctor": "RSDOCTOR=true rslib build",
     "format": "prettier --write .",
     "lint": "eslint . --cache",
-    "type-check": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "rstest": "rstest",
     "rstest:update": "rstest --update",
     "rstest:coverage": "rstest --update --coverage && open coverage/index.html",
