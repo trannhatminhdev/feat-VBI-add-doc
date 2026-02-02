@@ -18,7 +18,6 @@ export const playerAdapter = (pipe: VChartSpecPipe): VChartSpecPipe => {
     const dataGroups = groupBy(advancedVSeed.dataset, (item) => item[field])
 
     const specs = Object.values(dataGroups).map((items) => ({
-      ...nextSpec,
       data: {
         id: id,
         values: items,
