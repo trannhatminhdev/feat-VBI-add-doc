@@ -27,6 +27,7 @@ import {
   zXBandAxis,
   zYLinearAxis,
   zPage,
+  zPlayer,
 } from '../../properties'
 
 export const zColumn = z.object({
@@ -36,6 +37,7 @@ export const zColumn = z.object({
   dimensions: zDimensions.nullish(),
   measures: zMeasures.nullish(),
   page: zPage.nullish(),
+  player: zPlayer.nullish(),
 
   backgroundColor: zBackgroundColor.nullish(),
   color: zColor.nullish(),

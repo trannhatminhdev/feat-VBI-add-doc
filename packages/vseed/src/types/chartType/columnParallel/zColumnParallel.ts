@@ -25,6 +25,7 @@ import {
   zXBandAxis,
   zYLinearAxis,
   zPage,
+  zPlayer,
 } from '../../properties'
 
 export const zColumnParallel = z.object({
@@ -34,6 +35,7 @@ export const zColumnParallel = z.object({
   dimensions: zDimensions.nullish(),
   measures: zMeasures.nullish(),
   page: zPage.nullish(),
+  player: zPlayer.nullish(),
 
   backgroundColor: zBackgroundColor.nullish(),
   color: zColor.nullish(),
