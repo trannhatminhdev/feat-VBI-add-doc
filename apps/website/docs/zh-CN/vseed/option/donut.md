@@ -91,7 +91,7 @@
 
 ## dimensions
 
-**Type:** `import("/Users/bytedance/Projects/VSeed/packages/vseed/src/index").PieDimension[] | undefined`
+**Type:** `import("/Users/bytedance/Projects/VBI/packages/vseed/src/index").PieDimension[] | undefined`
 
 :::note{title=描述}
 维度
@@ -150,7 +150,7 @@
 
 ## measures
 
-**Type:** `import("/Users/bytedance/Projects/VSeed/packages/vseed/src/index").PieMeasure[] | undefined`
+**Type:** `import("/Users/bytedance/Projects/VBI/packages/vseed/src/index").PieMeasure[] | undefined`
 
 :::note{title=描述}
 指标
@@ -543,6 +543,63 @@
 '2023\-01\-01'
 
 
+
+
+## player
+
+**Type:** `Player | undefined`
+
+:::note{title=描述}
+播放器配置, 用于指定播放的字段名, 必须是维度
+
+:::
+
+
+### field
+
+**Type:** `string`
+
+:::note{title=描述}
+播放器绑定的字段, 必须是维度
+
+:::
+
+:::tip{title=Tip}
+播放器功能仅支持在VChart内使用, 无法在透视图表(PivotChart)、
+
+:::
+
+:::warning{title=Warning}
+该功能不支持 table, pivotTable, dualAxis, histogram, boxPlot 图表类型
+
+:::
+
+### interval
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+播放间隔, 单位ms
+
+:::
+
+### autoPlay
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否自动播放
+
+:::
+
+### loop
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否循环播放
+
+:::
 
 
 ## backgroundColor
