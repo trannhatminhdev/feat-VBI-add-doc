@@ -32,14 +32,10 @@ services:
       - ../apps/vbi_be/src:/app/apps/vbi_be/src
       - ../apps/vbi_be/test:/app/apps/vbi_be/test
       - ../packages:/app/packages
+    env_file:
+      - ../.env
     environment:
       - NODE_ENV=development
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USERNAME=admin
-      - DB_PASSWORD=123456
-      - DB_DATABASE=vbi
-      - DATABASE_URL=postgresql://admin:123456@db:5432/vbi
     depends_on:
       - db
     restart: unless-stopped
@@ -49,14 +45,14 @@ services:
   db:
     image: postgres:15-alpine
     restart: unless-stopped
+    env_file:
+      - ../.env
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: 123456
-      POSTGRES_DB: vbi
+    - PGPORT=5454
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - '5433:5432'
+      - '5454:5454'
     networks:
       - vbi_net
 

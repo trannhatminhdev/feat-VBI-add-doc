@@ -10,7 +10,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
 # Copy workspace config first
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY .env package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Copy packages source code (needed for dependencies)
 COPY packages/ packages/
