@@ -38,6 +38,7 @@ import {
   pivotTitle,
   dimensionLinkage,
   brush,
+  playerAdapter,
 } from '../pipes'
 
 const column: VChartSpecPipeline = [
@@ -47,7 +48,7 @@ const column: VChartSpecPipeline = [
   stackInverse,
   colorAdapter(color, linearColor),
   backgroundColor,
-  datasetXY,
+  playerAdapter(datasetXY),
   progressive,
   xBand,
   yLinear,

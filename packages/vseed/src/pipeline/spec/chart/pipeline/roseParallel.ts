@@ -34,6 +34,7 @@ import {
   pivotTitle,
   addRegionPadding,
   dimensionLinkage,
+  playerAdapter,
 } from '../pipes'
 
 const roseParallel: VChartSpecPipeline = [
@@ -41,7 +42,7 @@ const roseParallel: VChartSpecPipeline = [
   stackCornerRadius,
   colorAdapter(color, linearColor),
   backgroundColor,
-  datasetXY,
+  playerAdapter(datasetXY),
   progressive,
   radiusAxis,
   colorRoseStyleFill(roseStyle),

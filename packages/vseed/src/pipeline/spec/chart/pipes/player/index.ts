@@ -1,0 +1,1 @@
+export { playerAdapter } from './playerAdapter'

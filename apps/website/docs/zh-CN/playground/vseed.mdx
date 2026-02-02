@@ -9,36 +9,31 @@ const Demo = () => {
   const MeasureNames = '__MeaName__'
 
   const vseed: VSeed = {
-    chartType: 'column',
-    measures: [
-      {
-        id: 'sales',
-        alias: 'sales',
-        parentId: 'sales-and-profit',
-      },
-      {
-        id: 'rateOfReturn',
-        alias: '回报率',
-        parentId: 'ratio',
-      },
-    ],
+    chartType: 'columnParallel',
     dataset: [
-      { date: '2019', profit: 10, sales: 20, rateOfReturn: 0.1 },
-      { date: '2020', profit: 20, sales: 40, rateOfReturn: 0.2 },
-      { date: '2021', profit: 30, sales: 60, rateOfReturn: 0.3 },
-      { date: '2022', profit: 40, sales: 80, rateOfReturn: 0.4 },
-      { date: '2023', profit: 50, sales: 100, rateOfReturn: 0.5 },
+      { date: '2019', region: 'east', profit: 1, sales: 1 },
+      { date: '2020', region: 'east', profit: 2, sales: 2 },
+      { date: '2021', region: 'east', profit: 3, sales: 3 },
+      { date: '2022', region: 'east', profit: 4, sales: 4 },
+      { date: '2023', region: 'east', profit: 5, sales: 5 },
+
+      { date: '2019', region: 'north of east', profit: 9, sales: 6 },
+      { date: '2020', region: 'north of east', profit: 8, sales: 5 },
+      { date: '2021', region: 'north of east', profit: 7, sales: 4 },
+      { date: '2022', region: 'north of east', profit: 4, sales: 3 },
+      { date: '2023', region: 'north of east', profit: 1, sales: 2 },
     ],
-    dimensions: [
-      {
-        id: 'date',
-        alias: '日期',
-      },
-    ],
-    brush: {
-      enable: true,
-      brushType: 'x',
+    player: {
+      field: 'date',
+      interval: 1000,
+      autoPlay: true,
+      position: 'bottom',
     },
+    measures: [
+      { id: 'profit', alias: '利润' },
+      { id: 'sales', alias: '销售量' },
+    ],
+    dimensions: [{ id: 'region', alias: '区域' }],
   }
 
   const parseRes = zVSeed.safeParse(vseed)

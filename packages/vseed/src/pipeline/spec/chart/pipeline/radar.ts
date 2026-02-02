@@ -34,13 +34,14 @@ import {
   pivotHideIndicatorName,
   pivotTitle,
   addRegionPadding,
+  playerAdapter,
 } from '../pipes'
 
 const radar: VChartSpecPipeline = [
   initRadar,
   colorAdapter(color, linearColor),
   backgroundColor,
-  datasetXY,
+  playerAdapter(datasetXY),
   progressive,
   radarAngleAxis,
   radarRadiusAxis,

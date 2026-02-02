@@ -32,13 +32,14 @@ import {
   addRegionPadding,
   brush,
   dimensionLinkage,
+  playerAdapter,
 } from '../pipes'
 
 const donut: VChartSpecPipeline = [
   initDonut,
   colorAdapter(color, linearColor),
   backgroundColor,
-  datasetXY,
+  playerAdapter(datasetXY),
   progressive,
   brush,
   labelPie,

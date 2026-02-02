@@ -37,6 +37,7 @@ import {
   pivotTitle,
   dimensionLinkage,
   brush,
+  playerAdapter,
 } from '../pipes'
 
 const barPercent: VChartSpecPipeline = [
@@ -46,7 +47,7 @@ const barPercent: VChartSpecPipeline = [
   colorAdapter(color, linearColor),
   backgroundColor,
   percent,
-  datasetYX,
+  playerAdapter(datasetYX),
   progressive,
   xLinear,
   yBand,

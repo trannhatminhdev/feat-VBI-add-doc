@@ -1,7 +1,6 @@
 import { type Locale } from '../../i18n'
-import type { RoseDimension, RoseMeasure, PieLabel, Page } from '../../properties'
+import type { Brush, Player, RoseDimension, RoseMeasure, PieLabel, Page } from '../../properties'
 import { type BackgroundColor, type Color, type Dataset, type Legend, type Theme, type Tooltip } from '../../properties'
-import type { Brush } from '../../properties'
 
 /**
  * @description 堆叠玫瑰图，适用于多维度数据对比场景，通过极坐标系下的扇形弧度和半径展示数据大小
@@ -62,6 +61,10 @@ export interface Rose {
    * @description 分页配置, 用于指定分页的字段名, 必须是维度
    */
   page?: Page
+  /**
+   * @description 播放器配置, 用于指定播放的字段名, 必须是维度
+   */
+  player?: Player
 
   /**
    * 图表的背景颜色

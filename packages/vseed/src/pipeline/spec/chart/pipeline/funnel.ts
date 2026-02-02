@@ -30,12 +30,13 @@ import {
   funnelTransformStyle,
   pivotTitle,
   addRegionPadding,
+  playerAdapter,
 } from '../pipes'
 
 const funnel: VChartSpecPipeline = [
   initFunnel,
   backgroundColor,
-  datasetXY,
+  playerAdapter(datasetXY),
   colorAdapter(color, linearColor),
   label,
   colorAdapter(discreteLegend, colorLegend),
