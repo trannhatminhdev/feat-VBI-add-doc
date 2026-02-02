@@ -36,6 +36,7 @@ import {
   pivotTitle,
   dimensionLinkage,
   brush,
+  playerAdapter,
 } from '../pipes'
 
 const bar: VChartSpecPipeline = [
@@ -44,7 +45,7 @@ const bar: VChartSpecPipeline = [
   barMaxWidth,
   colorAdapter(color, linearColor),
   backgroundColor,
-  datasetYX,
+  playerAdapter(datasetYX),
   progressive,
   xLinear,
   yBand,

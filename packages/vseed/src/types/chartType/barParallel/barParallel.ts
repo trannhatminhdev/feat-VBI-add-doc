@@ -26,6 +26,7 @@ import type {
   BarDimension,
   BarMeasure,
   Page,
+  Player,
 } from '../../properties'
 
 /**
@@ -84,6 +85,10 @@ export interface BarParallel {
    * @description 分页配置，用于配置图表的分页功能
    */
   page?: Page
+  /**
+   * @description 播放器配置, 用于指定播放的字段名, 必须是维度
+   */
+  player?: Player
 
   /**
    * @description 图表的背景颜色, 默认为透明背景, 背景颜色可以是颜色字符串, 例如'red', 'blue', 也可以是hex, rgb或rgba'#ff0000', 'rgba(255,0,0,0.5)'

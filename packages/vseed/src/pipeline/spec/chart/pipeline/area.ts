@@ -41,6 +41,7 @@ import {
   splitLine,
   dimensionLinkage,
   brush,
+  playerAdapter,
 } from '../pipes'
 
 const area: VChartSpecPipeline = [
@@ -48,7 +49,7 @@ const area: VChartSpecPipeline = [
   stackInverse,
   colorAdapter(color, linearColor),
   backgroundColor,
-  datasetXY,
+  playerAdapter(datasetXY),
   progressive,
   xBand,
   yLinear,

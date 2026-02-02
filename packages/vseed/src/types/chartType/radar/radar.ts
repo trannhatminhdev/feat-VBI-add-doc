@@ -1,14 +1,19 @@
 import { type Locale } from '../../i18n'
-import type { AreaStyle, LineStyle, PointStyle, RadarDimension, RadarMeasure } from '../../properties'
-import {
-  type BackgroundColor,
-  type Color,
-  type Dataset,
-  type Label,
-  type Legend,
-  type Theme,
-  type Tooltip,
-  type Page,
+import type {
+  BackgroundColor,
+  Color,
+  Dataset,
+  Label,
+  Legend,
+  Theme,
+  Tooltip,
+  Page,
+  AreaStyle,
+  LineStyle,
+  PointStyle,
+  RadarDimension,
+  RadarMeasure,
+  Player,
 } from '../../properties'
 import type { Brush } from '../../properties'
 
@@ -70,6 +75,10 @@ export interface Radar {
    * @description 分页配置, 用于指定分页的字段名, 必须是维度
    */
   page?: Page
+  /**
+   * @description 播放器配置, 用于指定播放的字段名, 必须是维度
+   */
+  player?: Player
 
   /**
    * 图表的背景颜色
