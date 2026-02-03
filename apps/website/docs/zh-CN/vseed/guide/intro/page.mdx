@@ -4,6 +4,63 @@ pageType: doc
 
 # 数据分页
 
+## 基础示例
+
+通过配置 `page` 属性，可以指定图表展示特定维度值的数据。
+
+```tsx direction=vertical
+import { VSeed, Builder, registerAll } from '@visactor/vseed'
+import VChart from '@visactor/vchart'
+import { useEffect, useRef } from 'react'
+
+registerAll()
+
+const SimplePageDemo = () => {
+  const containerRef = useRef(null)
+
+  useEffect(() => {
+    if (!containerRef.current) return
+
+    const vseed: VSeed = {
+      chartType: 'bar',
+      dataset: [
+        { month: 'Jan', sales: 100, year: '2022' },
+        { month: 'Feb', sales: 120, year: '2022' },
+        { month: 'Mar', sales: 130, year: '2022' },
+        { month: 'Jan', sales: 150, year: '2023' },
+        { month: 'Feb', sales: 180, year: '2023' },
+        { month: 'Mar', sales: 190, year: '2023' },
+      ],
+      dimensions: [{ id: 'month' }],
+      measures: [{ id: 'sales' }],
+      page: {
+        field: 'year',
+        currentValue: '2022',
+      },
+    }
+
+    const builder = Builder.from(vseed)
+    const spec = builder.build()
+
+    const vchart = new VChart(spec, { dom: containerRef.current })
+    vchart.renderSync()
+
+    return () => {
+      vchart.release()
+    }
+  }, [])
+
+  return (
+    <div>
+      <div style={{ marginBottom: 10 }}>当前展示 2022 年数据</div>
+      <div ref={containerRef} style={{ width: '100%', height: 300 }} />
+    </div>
+  )
+}
+
+export default SimplePageDemo
+```
+
 ## 自定义播放器
 
 ```tsx direction=vertical
