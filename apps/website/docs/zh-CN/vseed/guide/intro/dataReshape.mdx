@@ -8,7 +8,9 @@ pageType: doc
 数据和图表类型是完全解耦的, 无论有多少维度或指标, VSeed 都可以始终重塑它们. 代价可能是图表的语义不佳, 但这是值得的.
 :::
 
-```tsx direction=vertical
+下面的示例演示了不同结构的 `dataset` 和不同 `chartType` 之间的自由组合。你可以点击下方的按钮切换数据集和图表类型，观察 VSeed 如何自动适配。
+
+```tsx direction=vertical playground
 import { useRef, useEffect, useState } from 'react'
 import VChart from '@visactor/vchart'
 import { ListTable, PivotTable } from '@visactor/vtable'

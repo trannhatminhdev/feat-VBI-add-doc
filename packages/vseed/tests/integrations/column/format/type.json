@@ -1,0 +1,34 @@
+{
+  "name": "type",
+  "description": "A column chart, containing 1 data points, 3 measures.",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [
+      {
+        "profit": 1234.4567,
+        "sales": 1234.4567,
+        "count": 1234.4567
+      }
+    ],
+    "measures": [
+      {
+        "id": "profit",
+        "format": {
+          "type": "percent"
+        }
+      },
+      {
+        "id": "sales",
+        "format": {
+          "type": "permille"
+        }
+      },
+      {
+        "id": "count",
+        "format": {
+          "type": "scientific"
+        }
+      }
+    ]
+  }
+}

@@ -8,7 +8,7 @@ pageType: doc
 通常情况下, 图表的数据处理比较耗时, VSeed支持拆分数据处理与数据渲染, `build`提供`buildAdvanced`和`buildSpec`进行分离式构建
 :::
 
-```tsx pure title=分离式构建 {4,7}
+```tsx pure title=分离式构建
 const builder = Builder.from(vseed)
 
 // Node.js
@@ -20,7 +20,9 @@ const spec = builder.buildSpec(advancedVSeed)
 // spec用于渲染
 ```
 
-```tsx direction=vertical
+下面的示例展示了如何在 React 组件中使用分离式构建流程。
+
+```tsx direction=vertical playground
 import { useRef, useEffect } from 'react'
 import VChart from '@visactor/vchart'
 import { registerAll, VSeed, Builder } from '@visactor/vseed'

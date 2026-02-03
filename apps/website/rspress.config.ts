@@ -1,6 +1,8 @@
 import * as path from 'node:path'
 import { pluginPlayground } from '@rspress/plugin-playground'
+import { pluginPreview } from '@rspress/plugin-preview'
 import { defineConfig } from '@rspress/core'
+
 import i18nJson from './i18n.json'
 
 export default defineConfig({
@@ -8,6 +10,7 @@ export default defineConfig({
   base: '/VBI/',
   globalStyles: path.join(__dirname, 'components/styles/index.css'),
   plugins: [
+    pluginPreview(),
     pluginPlayground({
       include: [
         '@visactor/vchart',

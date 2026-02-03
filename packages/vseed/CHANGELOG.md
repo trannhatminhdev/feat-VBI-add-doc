@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.3.10
+
+### Patch Changes
+
+- b2f80d6: feat: add player
+
 ## 0.3.9
 
 ### Patch Changes

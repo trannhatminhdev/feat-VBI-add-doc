@@ -960,15 +960,15 @@ enable: true
 
 :::
 
-**示例**
-border: true
-
-
-
 :::warning{title=Warning}
 仅离散图例生效
 
 :::
+
+**示例**
+border: true
+
+
 
 ### labelColor
 
@@ -1043,15 +1043,15 @@ labelFontWeight: 400
 
 :::
 
-**示例**
-shapeType: 'circle'
-
-
-
 :::warning{title=Warning}
 仅离散图例生效
 
 :::
+
+**示例**
+shapeType: 'circle'
+
+
 
 ### position
 
@@ -1080,15 +1080,15 @@ position: 'rightTop'
 
 :::
 
-**示例**
-maxSize: 2
-
-
-
 :::warning{title=Warning}
 仅离散图例生效
 
 :::
+
+**示例**
+maxSize: 2
+
+
 
 
 ## tooltip
@@ -1121,6 +1121,10 @@ maxSize: 2
 
 
 框选配置，用于开启/关闭 brush 框选能力
+
+
+
+图表框选配置
 
 :::
 
@@ -2211,6 +2215,10 @@ X轴网格线
 :::note{title=描述}
 垂直提示框配置, 用于定义图表的垂直提示框, 包括垂直提示框的颜色、标签样式等.
 
+
+
+十字准星线矩形区域配置，是一种用于在图表中显示十字准星线矩形区域的配置类型
+
 :::
 
 
@@ -2306,6 +2314,14 @@ X轴网格线
 
 :::note{title=描述}
 图表的主题, 主题是优先级较低的功能配置, 包含所有图表类型共用的通用配置, 与单类图表类型共用的图表配置, 内置light与dark两种主题, 用户可以通过Builder自定义主题
+
+
+
+主题
+
+
+
+内置 light、dark 两种主题, 新的主题可以通过registerTheme自定义主题.
 
 :::
 
@@ -3999,6 +4015,10 @@ true
 当图表开启透视功能或者指标组合的是否，是否开启维度联动功能
 
 当hover 到某个维度值时，联动高亮其他图表中相同维度值的数据
+
+
+
+透视图表维度联动配置
 
 :::
 

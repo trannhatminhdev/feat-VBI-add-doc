@@ -1,0 +1,40 @@
+{
+  "name": "histogramEcdf",
+  "description": "A histogram chart, with ecdfRegressionLine (label: 'ECDF 回归线'), containing 9 data points.",
+  "vseed": {
+    "chartType": "histogram",
+    "dataset": [
+      {
+        "v": 1
+      },
+      {
+        "v": 1
+      },
+      {
+        "v": 1
+      },
+      {
+        "v": 2
+      },
+      {
+        "v": 5
+      },
+      {
+        "v": 7
+      },
+      {
+        "v": 8
+      },
+      {
+        "v": 9
+      },
+      {
+        "v": 10
+      }
+    ],
+    "ecdfRegressionLine": {
+      "color": "red",
+      "text": "ECDF 回归线"
+    }
+  }
+}

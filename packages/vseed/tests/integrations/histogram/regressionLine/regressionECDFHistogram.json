@@ -1,0 +1,34 @@
+{
+  "name": "regressionECDFHistogram",
+  "description": "A histogram chart, with ecdfRegressionLine (label: 'ECDF Regression'), containing 5 data points, 1 measures (mapped to value).",
+  "vseed": {
+    "chartType": "histogram",
+    "dataset": [
+      {
+        "v": 1
+      },
+      {
+        "v": 2
+      },
+      {
+        "v": 2
+      },
+      {
+        "v": 3
+      },
+      {
+        "v": 5
+      }
+    ],
+    "measures": [
+      {
+        "id": "v",
+        "encoding": "value"
+      }
+    ],
+    "ecdfRegressionLine": {
+      "text": "ECDF Regression",
+      "lineDash": [4, 2]
+    }
+  }
+}

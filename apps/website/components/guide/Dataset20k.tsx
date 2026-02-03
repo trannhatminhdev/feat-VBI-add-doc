@@ -7,12 +7,12 @@ export const Dataset20K = memo(() => {
     chartType: 'scatter',
     measures: [{ id: '250820161421052' }, { id: '250820161421061' }],
     dimensions: [
-      { id: '250820161421039' },
-      { id: '250820161421213' },
-      { id: '250820161421236' },
-      { id: '250820161421093' },
-      { id: '250820161421190' },
-      { id: '250820161421423' },
+      { id: '250820161421039', encoding: 'color' },
+      { id: '250820161421213', encoding: 'color' },
+      { id: '250820161421236', encoding: 'color' },
+      { id: '250820161421093', encoding: 'color' },
+      { id: '250820161421190', encoding: 'color' },
+      { id: '250820161421423', encoding: 'color' },
     ],
     dataset: [
       {

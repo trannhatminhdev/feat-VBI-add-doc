@@ -1,0 +1,227 @@
+{
+  "name": "pivotBasicV2",
+  "description": "A boxPlot chart, containing 33 data points, 1 measures (mapped to value), 3 dimensions.",
+  "vseed": {
+    "chartType": "boxPlot",
+    "dataset": [
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 2
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 5
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 7
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 8
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 9
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 10
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 2
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 5
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 7
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 8
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 9
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 2
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 5
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 7
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 8
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 9
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 2
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 5
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 7
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 8
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 9
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "color",
+        "encoding": "row"
+      },
+      {
+        "id": "shape",
+        "encoding": "column"
+      },
+      {
+        "id": "Sex",
+        "encoding": "xAxis"
+      }
+    ],
+    "measures": [
+      {
+        "id": "v",
+        "encoding": "value"
+      }
+    ]
+  }
+}

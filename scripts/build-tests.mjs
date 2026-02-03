@@ -6,7 +6,7 @@ const rootDir = path.resolve(__dirname, '../packages/vseed')
 
 async function generateTests() {
   try {
-    const testsDir = path.join(rootDir, './tests/integration')
+    const testsDir = path.join(rootDir, './tests/integrations')
 
     // 递归查找所有JSON文件的函数
     async function findAllJsonFiles(dir) {
@@ -53,10 +53,11 @@ async function generateTests() {
 
       const testContent = `import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseed from './${relativeJsonPath}'
+import vseedConfig from './${relativeJsonPath}'
 
 test('${testName}', () => {
-   registerAll()
+  registerAll()
+  const { vseed } = vseedConfig
   const builder = Builder.from(vseed as VSeed)
   const advanced = builder.buildAdvanced()
   

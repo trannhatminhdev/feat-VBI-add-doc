@@ -1,0 +1,43 @@
+{
+  "name": "logistic",
+  "description": "A scatter chart, with logisticRegressionLine, containing 5 data points, 2 measures (mapped to xAxis, yAxis).",
+  "vseed": {
+    "chartType": "scatter",
+    "dataset": [
+      {
+        "x": 1,
+        "y": 0
+      },
+      {
+        "x": 2,
+        "y": 0
+      },
+      {
+        "x": 3,
+        "y": 1
+      },
+      {
+        "x": 4,
+        "y": 1
+      },
+      {
+        "x": 5,
+        "y": 1
+      }
+    ],
+    "measures": [
+      {
+        "id": "x",
+        "encoding": "xAxis"
+      },
+      {
+        "id": "y",
+        "encoding": "yAxis"
+      }
+    ],
+    "logisticRegressionLine": {
+      "color": "#722ed1",
+      "confidenceIntervalVisible": true
+    }
+  }
+}

@@ -1,8 +1,10 @@
+/**
+ * @description 播放器配置, 用于指定播放的字段名, 必须是维度
+ * @warning 该功能不支持 table, pivotTable, dualAxis, histogram, boxPlot 等图表类型, 不支持在开启指标组合、行列透视下使用
+ */
 export type Player = {
   /**
    * @description 播放器绑定的字段, 必须是维度
-   * @tip 播放器功能仅支持在VChart内使用, 无法在透视图表(PivotChart)、
-   * @warning 该功能不支持 table, pivotTable, dualAxis, histogram, boxPlot 图表类型
    */
   field: string
   /**

@@ -1,0 +1,69 @@
+---
+pageType: doc
+---
+
+# 播放器
+
+VSeed 支持配置 `player` 属性来实现数据的自动播放展示。
+
+## 基础示例
+
+配置 `player` 属性，指定播放字段 `field`，并开启 `autoPlay`。
+
+```tsx direction=vertical playground
+import { VSeed, Builder, registerAll } from '@visactor/vseed'
+import VChart from '@visactor/vchart'
+import { useEffect, useRef } from 'react'
+
+registerAll()
+
+const PlayerDemo = () => {
+  const containerRef = useRef(null)
+
+  useEffect(() => {
+    if (!containerRef.current) return
+
+    const vseed: VSeed = {
+      chartType: 'bar',
+      dataset: [
+        { month: 'Jan', sales: 100, year: '2022' },
+        { month: 'Feb', sales: 120, year: '2022' },
+        { month: 'Mar', sales: 130, year: '2022' },
+        { month: 'Jan', sales: 150, year: '2023' },
+        { month: 'Feb', sales: 180, year: '2023' },
+        { month: 'Mar', sales: 190, year: '2023' },
+        { month: 'Jan', sales: 120, year: '2024' },
+        { month: 'Feb', sales: 140, year: '2024' },
+        { month: 'Mar', sales: 160, year: '2024' },
+      ],
+      dimensions: [{ id: 'month' }],
+      measures: [{ id: 'sales' }],
+      player: {
+        field: 'year',
+        autoPlay: true,
+        interval: 1000,
+        loop: true,
+      },
+    }
+
+    const builder = Builder.from(vseed)
+    const spec = builder.build()
+
+    const vchart = new VChart(spec, { dom: containerRef.current })
+    vchart.renderSync()
+
+    return () => {
+      vchart.release()
+    }
+  }, [])
+
+  return (
+    <div>
+      <div style={{ marginBottom: 10 }}>自动播放年份数据</div>
+      <div ref={containerRef} style={{ width: '100%', height: 300 }} />
+    </div>
+  )
+}
+
+export default PlayerDemo
+```

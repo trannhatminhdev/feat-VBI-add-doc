@@ -1,0 +1,60 @@
+{
+  "name": "columnPolynomial",
+  "description": "A column chart, with polynomialRegressionLine, containing 5 data points, 1 measures (mapped to yAxis), 1 dimensions.",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [
+      {
+        "date": "2019",
+        "profit": 10,
+        "sales": 20
+      },
+      {
+        "date": "2020",
+        "profit": 30,
+        "sales": 60
+      },
+      {
+        "date": "2021",
+        "profit": 30,
+        "sales": 60
+      },
+      {
+        "date": "2022",
+        "profit": 50,
+        "sales": 100
+      },
+      {
+        "date": "2023",
+        "profit": 40,
+        "sales": 80
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "date",
+        "encoding": "xAxis"
+      }
+    ],
+    "measures": [
+      {
+        "id": "profit",
+        "encoding": "yAxis"
+      }
+    ],
+    "polynomialRegressionLine": [
+      {
+        "color": "red",
+        "text": "Degree-2",
+        "degree": 2,
+        "confidenceIntervalVisible": true
+      },
+      {
+        "color": "green",
+        "text": "Degree-3",
+        "degree": 3,
+        "confidenceIntervalVisible": true
+      }
+    ]
+  }
+}

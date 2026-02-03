@@ -1,0 +1,59 @@
+{
+  "name": "measures",
+  "description": "A columnParallel chart, containing 5 data points, 3 measures, 1 dimensions.",
+  "vseed": {
+    "chartType": "columnParallel",
+    "measures": [
+      {
+        "id": "profit",
+        "alias": "利润"
+      },
+      {
+        "id": "sales",
+        "alias": "销售额"
+      },
+      {
+        "id": "discount",
+        "alias": "折扣"
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "date",
+        "alias": "日期"
+      }
+    ],
+    "dataset": [
+      {
+        "date": "2019",
+        "profit": 10,
+        "sales": 20,
+        "discount": 0.1
+      },
+      {
+        "date": "2020",
+        "profit": 30,
+        "sales": 60,
+        "discount": 0.2
+      },
+      {
+        "date": "2021",
+        "profit": 30,
+        "sales": 60,
+        "discount": 0.1
+      },
+      {
+        "date": "2022",
+        "profit": 50,
+        "sales": 100,
+        "discount": 0.2
+      },
+      {
+        "date": "2023",
+        "profit": 40,
+        "sales": 80,
+        "discount": 0.3
+      }
+    ]
+  }
+}

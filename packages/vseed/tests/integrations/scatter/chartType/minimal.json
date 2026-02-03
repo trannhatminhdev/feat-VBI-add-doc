@@ -1,0 +1,55 @@
+{
+  "name": "minimal",
+  "description": "A scatter chart, with label enabled, containing 5 data points, 2 measures (mapped to xAxis, yAxis), 1 dimensions.",
+  "vseed": {
+    "chartType": "scatter",
+    "dataset": [
+      {
+        "date": "2019",
+        "profit": 10,
+        "sales": 20
+      },
+      {
+        "date": "2020",
+        "profit": 30,
+        "sales": 60
+      },
+      {
+        "date": "2021",
+        "profit": 30,
+        "sales": 60
+      },
+      {
+        "date": "2022",
+        "profit": 50,
+        "sales": 100
+      },
+      {
+        "date": "2023",
+        "profit": 200,
+        "sales": 80
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "alias": "销售额",
+        "encoding": "xAxis"
+      },
+      {
+        "id": "profit",
+        "alias": "利润",
+        "encoding": "yAxis"
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "date",
+        "alias": "日期"
+      }
+    ],
+    "label": {
+      "enable": false
+    }
+  }
+}

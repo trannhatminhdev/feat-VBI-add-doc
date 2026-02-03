@@ -1,0 +1,23 @@
+{
+  "name": "autoFormat",
+  "description": "A column chart, containing 1 data points, 2 measures.",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [
+      {
+        "profit": 12342.34567,
+        "sales": 23453.4567
+      }
+    ],
+    "measures": [
+      {
+        "id": "profit",
+        "autoFormat": true
+      },
+      {
+        "id": "sales",
+        "autoFormat": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "binValueTypeHistogram",
+  "description": "A histogram chart, with custom config for histogram.[binValueType], containing 6 data points.",
+  "vseed": {
+    "chartType": "histogram",
+    "dataset": [
+      {
+        "v": 1
+      },
+      {
+        "v": 1
+      },
+      {
+        "v": 2
+      },
+      {
+        "v": 3
+      },
+      {
+        "v": 5
+      },
+      {
+        "v": 8
+      }
+    ],
+    "config": {
+      "histogram": {
+        "binValueType": "percentage"
+      }
+    }
+  }
+}

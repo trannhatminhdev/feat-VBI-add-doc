@@ -1,0 +1,38 @@
+{
+  "name": "regressionKDEHistogram",
+  "description": "A histogram chart, with kdeRegressionLine (kde, label: 'KDE Regression'), containing 6 data points, 1 measures (mapped to value).",
+  "vseed": {
+    "chartType": "histogram",
+    "dataset": [
+      {
+        "v": 1
+      },
+      {
+        "v": 1
+      },
+      {
+        "v": 2
+      },
+      {
+        "v": 3
+      },
+      {
+        "v": 5
+      },
+      {
+        "v": 8
+      }
+    ],
+    "measures": [
+      {
+        "id": "v",
+        "encoding": "value"
+      }
+    ],
+    "kdeRegressionLine": {
+      "type": "kde",
+      "text": "KDE Regression",
+      "lineWidth": 2
+    }
+  }
+}

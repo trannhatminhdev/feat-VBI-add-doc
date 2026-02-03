@@ -1,0 +1,14 @@
+{
+  "name": "dataset3M0D",
+  "description": "A columnParallel chart, containing 1 data points.",
+  "vseed": {
+    "chartType": "columnParallel",
+    "dataset": [
+      {
+        "profit": 1,
+        "sales": 2,
+        "discount": 0.1
+      }
+    ]
+  }
+}

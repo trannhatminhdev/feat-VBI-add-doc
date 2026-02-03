@@ -562,6 +562,11 @@
 
 :::
 
+:::warning{title=Warning}
+该功能不支持 table, pivotTable, dualAxis, histogram, boxPlot 等图表类型, 不支持在开启指标组合、行列透视下使用
+
+:::
+
 
 ### field
 
@@ -569,16 +574,6 @@
 
 :::note{title=描述}
 播放器绑定的字段, 必须是维度
-
-:::
-
-:::tip{title=Tip}
-播放器功能仅支持在VChart内使用, 无法在透视图表(PivotChart)、
-
-:::
-
-:::warning{title=Warning}
-该功能不支持 table, pivotTable, dualAxis, histogram, boxPlot 图表类型
 
 :::
 
@@ -1088,15 +1083,15 @@ enable: true
 
 :::
 
-**示例**
-border: true
-
-
-
 :::warning{title=Warning}
 仅离散图例生效
 
 :::
+
+**示例**
+border: true
+
+
 
 ### labelColor
 
@@ -1171,15 +1166,15 @@ labelFontWeight: 400
 
 :::
 
-**示例**
-shapeType: 'circle'
-
-
-
 :::warning{title=Warning}
 仅离散图例生效
 
 :::
+
+**示例**
+shapeType: 'circle'
+
+
 
 ### position
 
@@ -1208,15 +1203,15 @@ position: 'rightTop'
 
 :::
 
-**示例**
-maxSize: 2
-
-
-
 :::warning{title=Warning}
 仅离散图例生效
 
 :::
+
+**示例**
+maxSize: 2
+
+
 
 
 ## tooltip
@@ -1253,6 +1248,10 @@ maxSize: 2
 
 
 框选配置，用于开启/关闭 brush 框选能力
+
+
+
+图表框选配置
 
 :::
 
@@ -2219,6 +2218,10 @@ X轴网格线
 
 鼠标移动到图表上时, 显示的垂直提示线
 
+
+
+十字准星线配置，是一种用于在图表中显示十字准星线（提示线）的配置类型
+
 :::
 
 
@@ -2275,6 +2278,10 @@ X轴网格线
 :::note{title=描述}
 X轴排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
 
+
+
+类目轴排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
+
 :::
 
 **示例**
@@ -2285,6 +2292,11 @@ sort: {
 sort: {
   customOrder:['2019', '2020', '2021']
 }
+
+\- order:'asc'
+\- orderBy:'date'
+或
+\- customOrder:['2019', '2020', '2021']
 
 
 
@@ -2335,6 +2347,10 @@ order:'asc'
 :::note{title=描述}
 图例排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
 
+
+
+图例排序配置, 支持根据维度或指标排序, 以及自定义排序顺序; 排序数组遵循从左到右或从上到下的顺序
+
 :::
 
 **示例**
@@ -2345,6 +2361,11 @@ sortLegend: {
 sortLegend: {
   customOrder:['2019', '2020', '2021']
 }
+
+\- order:'asc'
+\- orderBy:'date'
+或
+\- customOrder:['2019', '2020', '2021']
 
 
 
@@ -2398,6 +2419,14 @@ order:'asc'
 
 
 内置light与dark两种主题, 用户可以通过Builder自定义主题
+
+
+
+主题
+
+
+
+内置 light、dark 两种主题, 新的主题可以通过registerTheme自定义主题.
 
 :::
 
@@ -4228,6 +4257,10 @@ true
 当图表开启透视功能或者指标组合的是否，是否开启维度联动功能
 
 当hover 到某个维度值时，联动高亮其他图表中相同维度值的数据
+
+
+
+透视图表维度联动配置
 
 :::
 

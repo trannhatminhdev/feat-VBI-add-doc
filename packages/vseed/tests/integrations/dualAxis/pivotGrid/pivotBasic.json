@@ -1,0 +1,231 @@
+{
+  "name": "pivotBasic",
+  "description": "A dualAxis chart, containing 20 data points, 4 measures (mapped to primaryYAxis, secondaryYAxis), 3 dimensions.",
+  "vseed": {
+    "chartType": "dualAxis",
+    "dataset": [
+      {
+        "date": "2019",
+        "type": "A",
+        "test": "TEST-A",
+        "profit": 10,
+        "sales": 100,
+        "ratio": 1,
+        "returnRatio": 301
+      },
+      {
+        "date": "2020",
+        "type": "A",
+        "test": "TEST-A",
+        "profit": 30,
+        "sales": 3200,
+        "ratio": 2,
+        "returnRatio": 30
+      },
+      {
+        "date": "2021",
+        "type": "A",
+        "test": "TEST-A",
+        "profit": 30,
+        "sales": 300,
+        "ratio": 3,
+        "returnRatio": 303
+      },
+      {
+        "date": "2022",
+        "type": "A",
+        "test": "TEST-A",
+        "profit": 50,
+        "sales": 2400,
+        "ratio": 4,
+        "returnRatio": 34
+      },
+      {
+        "date": "2023",
+        "type": "A",
+        "test": "TEST-A",
+        "profit": 40,
+        "sales": 500,
+        "ratio": 5,
+        "returnRatio": 305
+      },
+      {
+        "date": "2019",
+        "type": "A",
+        "test": "TEST-D",
+        "profit": 10,
+        "sales": 100,
+        "ratio": 5,
+        "returnRatio": 30
+      },
+      {
+        "date": "2020",
+        "type": "A",
+        "test": "TEST-D",
+        "profit": 30,
+        "sales": 3200,
+        "ratio": 4,
+        "returnRatio": 302
+      },
+      {
+        "date": "2021",
+        "type": "A",
+        "test": "TEST-D",
+        "profit": 30,
+        "sales": 300,
+        "ratio": 3,
+        "returnRatio": 30
+      },
+      {
+        "date": "2022",
+        "type": "A",
+        "test": "TEST-D",
+        "profit": 50,
+        "sales": 2400,
+        "ratio": 2,
+        "returnRatio": 304
+      },
+      {
+        "date": "2023",
+        "type": "A",
+        "test": "TEST-D",
+        "profit": 40,
+        "sales": 500,
+        "ratio": 1,
+        "returnRatio": 35
+      },
+      {
+        "date": "2019",
+        "type": "B",
+        "test": "TEST-A",
+        "profit": 10,
+        "sales": 100,
+        "ratio": 11,
+        "returnRatio": 301
+      },
+      {
+        "date": "2020",
+        "type": "B",
+        "test": "TEST-A",
+        "profit": 30,
+        "sales": 3200,
+        "ratio": 12,
+        "returnRatio": 30
+      },
+      {
+        "date": "2021",
+        "type": "B",
+        "test": "TEST-A",
+        "profit": 30,
+        "sales": 300,
+        "ratio": 13,
+        "returnRatio": 303
+      },
+      {
+        "date": "2022",
+        "type": "B",
+        "test": "TEST-A",
+        "profit": 50,
+        "sales": 2400,
+        "ratio": 14,
+        "returnRatio": 34
+      },
+      {
+        "date": "2023",
+        "type": "B",
+        "test": "TEST-A",
+        "profit": 40,
+        "sales": 500,
+        "ratio": 15,
+        "returnRatio": 305
+      },
+      {
+        "date": "2019",
+        "type": "B",
+        "test": "TEST-D",
+        "profit": 10,
+        "sales": 100,
+        "ratio": 51,
+        "returnRatio": 30
+      },
+      {
+        "date": "2020",
+        "type": "B",
+        "test": "TEST-D",
+        "profit": 30,
+        "sales": 3200,
+        "ratio": 51,
+        "returnRatio": 32
+      },
+      {
+        "date": "2021",
+        "type": "B",
+        "test": "TEST-D",
+        "profit": 30,
+        "sales": 300,
+        "ratio": 52,
+        "returnRatio": 303
+      },
+      {
+        "date": "2022",
+        "type": "B",
+        "test": "TEST-D",
+        "profit": 50,
+        "sales": 2400,
+        "ratio": 5,
+        "returnRatio": 34
+      },
+      {
+        "date": "2023",
+        "type": "B",
+        "test": "TEST-D",
+        "profit": 40,
+        "sales": 500,
+        "ratio": 1,
+        "returnRatio": 35
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "date",
+        "alias": "日期"
+      },
+      {
+        "id": "type",
+        "alias": "类型",
+        "encoding": "row"
+      },
+      {
+        "id": "test",
+        "alias": "测试",
+        "encoding": "column"
+      }
+    ],
+    "measures": [
+      {
+        "id": "profit",
+        "alias": "利润",
+        "encoding": "primaryYAxis",
+        "parentId": "first"
+      },
+      {
+        "id": "sales",
+        "alias": "销售额",
+        "encoding": "secondaryYAxis",
+        "parentId": "first"
+      },
+      {
+        "id": "ratio",
+        "alias": "比率",
+        "encoding": "primaryYAxis",
+        "parentId": "second"
+      },
+      {
+        "id": "returnRatio",
+        "alias": "回报率",
+        "encoding": "secondaryYAxis",
+        "parentId": "second"
+      }
+    ]
+  }
+}
