@@ -125,6 +125,34 @@ function generateMarkdownContent(node, project, level = 1, visited = new Set()) 
   const jsDocs = node.getJsDocs()
   const tags = parseJsDocTags(jsDocs)
 
+  if (isProperty) {
+    const propType = node.getType().getNonNullableType()
+    const symbolsToCheck = []
+    const symbol = propType.getSymbol()
+    if (symbol) symbolsToCheck.push(symbol)
+    const aliasSymbol = propType.getAliasSymbol()
+    if (aliasSymbol) symbolsToCheck.push(aliasSymbol)
+
+    symbolsToCheck.forEach((sym) => {
+      sym.getDeclarations().forEach((decl) => {
+        if (decl.getJsDocs) {
+          const typeJsDocs = decl.getJsDocs()
+          const typeTags = parseJsDocTags(typeJsDocs)
+          Object.keys(typeTags).forEach((tagName) => {
+            if (!tags[tagName]) {
+              tags[tagName] = []
+            }
+            typeTags[tagName].forEach((val) => {
+              if (!tags[tagName].includes(val)) {
+                tags[tagName].push(val)
+              }
+            })
+          })
+        }
+      })
+    })
+  }
+
   let markdown = `${'#'.repeat(level)} ${name}\n\n`
 
   if (isProperty) {

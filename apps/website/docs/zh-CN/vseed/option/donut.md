@@ -554,6 +554,11 @@
 
 :::
 
+:::warning{title=Warning}
+该功能不支持 table, pivotTable, dualAxis, histogram, boxPlot 等图表类型, 不支持在开启指标组合、行列透视下使用
+
+:::
+
 
 ### field
 
@@ -561,16 +566,6 @@
 
 :::note{title=描述}
 播放器绑定的字段, 必须是维度
-
-:::
-
-:::tip{title=Tip}
-播放器功能仅支持在VChart内使用, 无法在透视图表(PivotChart)、
-
-:::
-
-:::warning{title=Warning}
-该功能不支持 table, pivotTable, dualAxis, histogram, boxPlot 图表类型
 
 :::
 
@@ -1261,6 +1256,10 @@ maxSize: 2
 
 框选配置，用于开启/关闭 brush 框选能力
 
+
+
+图表框选配置
+
 :::
 
 
@@ -1421,6 +1420,14 @@ brush的类型
 
 
 内置light与dark两种主题, 用户可以通过Builder自定义主题
+
+
+
+主题
+
+
+
+内置 light、dark 两种主题, 新的主题可以通过registerTheme自定义主题.
 
 :::
 

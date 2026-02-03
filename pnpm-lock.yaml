@@ -278,8 +278,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/vbi
       '@visactor/vchart':
-        specifier: 2.0.13-alpha.9
-        version: 2.0.13-alpha.9
+        specifier: 2.0.15
+        version: 2.0.15
       '@visactor/vquery':
         specifier: workspace:*
         version: link:../../packages/vquery
@@ -287,8 +287,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/vseed
       '@visactor/vtable':
-        specifier: 1.22.11-alpha.8
-        version: 1.22.11-alpha.8
+        specifier: 1.23.0
+        version: 1.23.0
       demo:
         specifier: workspace:*
         version: link:../../practices/demo
@@ -7808,9 +7808,6 @@ packages:
   rxjs@7.8.1:
     resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
 
-  rxjs@7.8.2:
-    resolution: {integrity: sha512-dhKf903U/PQZY6boNNtAGdWbG85WAbjT/1xYoZIC7FAY0yWapOBQVsVrDl58W86//e1VpMNBtRV4MaXfdMySFA==}
-
   safe-buffer@5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
 
@@ -13237,7 +13234,7 @@ snapshots:
       '@visactor/vscale': 1.0.21
       '@visactor/vtable-editors': 1.23.0
       '@visactor/vutils': 1.0.21
-      '@visactor/vutils-extension': 2.0.12
+      '@visactor/vutils-extension': 2.0.15
       cssfontparser: 1.2.1
       gifuct-js: 2.1.2
       lodash: 4.17.21
@@ -17715,11 +17712,6 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  rxjs@7.8.2:
-    dependencies:
-      tslib: 2.8.1
-    optional: true
-
   safe-buffer@5.1.2: {}
 
   safe-buffer@5.2.1: {}
@@ -17790,7 +17782,7 @@ snapshots:
       buffer-builder: 0.2.0
       colorjs.io: 0.5.2
       immutable: 5.1.4
-      rxjs: 7.8.2
+      rxjs: 7.8.1
       supports-color: 8.1.1
       sync-child-process: 1.0.2
       varint: 6.0.0

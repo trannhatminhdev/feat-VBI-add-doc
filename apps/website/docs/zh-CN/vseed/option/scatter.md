@@ -557,6 +557,11 @@
 
 :::
 
+:::warning{title=Warning}
+该功能不支持 table, pivotTable, dualAxis, histogram, boxPlot 等图表类型, 不支持在开启指标组合、行列透视下使用
+
+:::
+
 
 ### field
 
@@ -564,16 +569,6 @@
 
 :::note{title=描述}
 播放器绑定的字段, 必须是维度
-
-:::
-
-:::tip{title=Tip}
-播放器功能仅支持在VChart内使用, 无法在透视图表(PivotChart)、
-
-:::
-
-:::warning{title=Warning}
-该功能不支持 table, pivotTable, dualAxis, histogram, boxPlot 图表类型
 
 :::
 
@@ -1280,6 +1275,10 @@ maxSize: 2
 
 
 框选配置，用于开启/关闭 brush 框选能力
+
+
+
+图表框选配置
 
 :::
 
@@ -2382,6 +2381,10 @@ X轴网格线
 
 鼠标移动到图表上时, 显示的垂直提示线
 
+
+
+十字准星线配置，是一种用于在图表中显示十字准星线（提示线）的配置类型
+
 :::
 
 
@@ -2441,6 +2444,14 @@ X轴网格线
 
 
 内置light与dark两种主题, 用户可以通过Builder自定义主题
+
+
+
+主题
+
+
+
+内置 light、dark 两种主题, 新的主题可以通过registerTheme自定义主题.
 
 :::
 
@@ -4620,6 +4631,10 @@ true
 当图表开启透视功能或者指标组合的是否，是否开启维度联动功能
 
 当hover 到某个维度值时，联动高亮其他图表中相同维度值的数据
+
+
+
+透视图表维度联动配置
 
 :::
 
