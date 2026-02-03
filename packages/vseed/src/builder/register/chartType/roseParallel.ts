@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Rose Parallel Chart 的 Spec 和 Advanced Config。
  */
 export const registerRoseParallel = () => {
-  Builder._advancedPipelineMap['roseParallel'] = roseParallelAdvancedPipeline
-  Builder._specPipelineMap['roseParallel'] = roseParallelSpecPipeline
+  Builder.registerAdvancedPipeline('roseParallel', roseParallelAdvancedPipeline)
+  Builder.registerSpecPipeline('roseParallel', roseParallelSpecPipeline)
 }

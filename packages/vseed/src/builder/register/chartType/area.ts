@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Area Chart 的 Spec 和 Advanced Config。
  */
 export const registerArea = () => {
-  Builder._advancedPipelineMap['area'] = areaAdvancedPipeline
-  Builder._specPipelineMap['area'] = areaSpecPipeline
+  Builder.registerAdvancedPipeline('area', areaAdvancedPipeline)
+  Builder.registerSpecPipeline('area', areaSpecPipeline)
 }

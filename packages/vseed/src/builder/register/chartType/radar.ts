@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Radar Chart 的 Spec 和 Advanced Config。
  */
 export const registerRadar = () => {
-  Builder._advancedPipelineMap['radar'] = radarAdvancedPipeline
-  Builder._specPipelineMap['radar'] = radarSpecPipeline
+  Builder.registerAdvancedPipeline('radar', radarAdvancedPipeline)
+  Builder.registerSpecPipeline('radar', radarSpecPipeline)
 }

@@ -20,5 +20,5 @@ export const registerCustomTheme = (
 ) => {
   const customTheme =
     typeof themeConfig === 'function' ? themeConfig({ lightTheme: lightTheme(), darkTheme: darkTheme() }) : themeConfig
-  Builder._themeMap[key] = customTheme
+  Builder.registerTheme(key, customTheme)
 }

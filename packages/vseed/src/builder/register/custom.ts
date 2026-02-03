@@ -8,7 +8,7 @@ import { Builder } from '../builder'
  * @param advancedPipe 新的 Advanced Pipe
  */
 export const updateAdvanced = (chartType: ChartType, advancedPipe: AdvancedPipe) => {
-  Builder._customAdvancedPipe[chartType] = advancedPipe
+  Builder.updateAdvanced(chartType, advancedPipe)
 }
 /**
  * @description 更新指定图表类型的 Spec Pipeline。
@@ -17,5 +17,5 @@ export const updateAdvanced = (chartType: ChartType, advancedPipe: AdvancedPipe)
  * @param specPipe 新的 Spec Pipe
  */
 export const updateSpec = (chartType: ChartType, specPipe: SpecPipe) => {
-  Builder._customSpecPipe[chartType] = specPipe
+  Builder.updateSpec(chartType, specPipe)
 }

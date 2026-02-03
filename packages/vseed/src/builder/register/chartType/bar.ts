@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Bar Chart 的 Spec 和 Advanced Config。
  */
 export const registerBar = () => {
-  Builder._advancedPipelineMap['bar'] = barAdvancedPipeline
-  Builder._specPipelineMap['bar'] = barSpecPipeline
+  Builder.registerAdvancedPipeline('bar', barAdvancedPipeline)
+  Builder.registerSpecPipeline('bar', barSpecPipeline)
 }

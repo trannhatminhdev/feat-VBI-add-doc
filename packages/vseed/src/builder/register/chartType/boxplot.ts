@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Box Plot Chart 的 Spec 和 Advanced Config。
  */
 export const registerBoxPlot = () => {
-  Builder._advancedPipelineMap['boxPlot'] = boxplotAdvancedPipeline
-  Builder._specPipelineMap['boxPlot'] = boxplotSpecPipeline
+  Builder.registerAdvancedPipeline('boxPlot', boxplotAdvancedPipeline)
+  Builder.registerSpecPipeline('boxPlot', boxplotSpecPipeline)
 }

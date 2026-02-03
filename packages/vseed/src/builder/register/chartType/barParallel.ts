@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Bar Parallel Chart 的 Spec 和 Advanced Config。
  */
 export const registerBarParallel = () => {
-  Builder._advancedPipelineMap['barParallel'] = barParallelAdvancedPipeline
-  Builder._specPipelineMap['barParallel'] = barParallelSpecPipeline
+  Builder.registerAdvancedPipeline('barParallel', barParallelAdvancedPipeline)
+  Builder.registerSpecPipeline('barParallel', barParallelSpecPipeline)
 }

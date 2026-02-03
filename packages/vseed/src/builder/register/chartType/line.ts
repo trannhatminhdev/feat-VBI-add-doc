@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Line Chart 的 Spec 和 Advanced Config。
  */
 export const registerLine = () => {
-  Builder._advancedPipelineMap['line'] = lineAdvancedPipeline
-  Builder._specPipelineMap['line'] = lineSpecPipeline
+  Builder.registerAdvancedPipeline('line', lineAdvancedPipeline)
+  Builder.registerSpecPipeline('line', lineSpecPipeline)
 }

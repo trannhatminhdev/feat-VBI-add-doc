@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Scatter Chart 的 Spec 和 Advanced Config。
  */
 export const registerScatter = () => {
-  Builder._advancedPipelineMap['scatter'] = scatterAdvancedPipeline
-  Builder._specPipelineMap['scatter'] = scatterSpecPipeline
+  Builder.registerAdvancedPipeline('scatter', scatterAdvancedPipeline)
+  Builder.registerSpecPipeline('scatter', scatterSpecPipeline)
 }

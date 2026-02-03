@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Pivot Table Chart 的 Spec 和 Advanced Config。
  */
 export const registerPivotTable = () => {
-  Builder._advancedPipelineMap['pivotTable'] = pivotTableAdvancedPipeline
-  Builder._specPipelineMap['pivotTable'] = pivotTableSpecPipeline
+  Builder.registerAdvancedPipeline('pivotTable', pivotTableAdvancedPipeline)
+  Builder.registerSpecPipeline('pivotTable', pivotTableSpecPipeline)
 }

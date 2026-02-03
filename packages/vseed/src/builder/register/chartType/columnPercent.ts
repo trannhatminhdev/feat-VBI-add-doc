@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Column Percent Chart 的 Spec 和 Advanced Config。
  */
 export const registerColumnPercent = () => {
-  Builder._advancedPipelineMap['columnPercent'] = columnPercentAdvancedPipeline
-  Builder._specPipelineMap['columnPercent'] = columnPercentSpecPipeline
+  Builder.registerAdvancedPipeline('columnPercent', columnPercentAdvancedPipeline)
+  Builder.registerSpecPipeline('columnPercent', columnPercentSpecPipeline)
 }

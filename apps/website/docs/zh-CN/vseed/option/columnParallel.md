@@ -1049,15 +1049,15 @@ enable: true
 
 :::
 
-**示例**
-border: true
-
-
-
 :::warning{title=Warning}
 仅离散图例生效
 
 :::
+
+**示例**
+border: true
+
+
 
 ### labelColor
 
@@ -1132,15 +1132,15 @@ labelFontWeight: 400
 
 :::
 
-**示例**
-shapeType: 'circle'
-
-
-
 :::warning{title=Warning}
 仅离散图例生效
 
 :::
+
+**示例**
+shapeType: 'circle'
+
+
 
 ### position
 
@@ -1169,15 +1169,15 @@ position: 'rightTop'
 
 :::
 
-**示例**
-maxSize: 2
-
-
-
 :::warning{title=Warning}
 仅离散图例生效
 
 :::
+
+**示例**
+maxSize: 2
+
+
 
 
 ## tooltip

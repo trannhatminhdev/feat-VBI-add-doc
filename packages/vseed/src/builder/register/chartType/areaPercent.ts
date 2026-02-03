@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Area Percent Chart 的 Spec 和 Advanced Config。
  */
 export const registerAreaPercent = () => {
-  Builder._advancedPipelineMap['areaPercent'] = areaPercentAdvancedPipeline
-  Builder._specPipelineMap['areaPercent'] = areaPercentSpecPipeline
+  Builder.registerAdvancedPipeline('areaPercent', areaPercentAdvancedPipeline)
+  Builder.registerSpecPipeline('areaPercent', areaPercentSpecPipeline)
 }

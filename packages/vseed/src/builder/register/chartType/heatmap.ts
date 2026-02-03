@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Heatmap Chart 的 Spec 和 Advanced Config。
  */
 export const registerHeatmap = () => {
-  Builder._advancedPipelineMap['heatmap'] = heatmapAdvancedPipeline
-  Builder._specPipelineMap['heatmap'] = heatmapSpecPipeline
+  Builder.registerAdvancedPipeline('heatmap', heatmapAdvancedPipeline)
+  Builder.registerSpecPipeline('heatmap', heatmapSpecPipeline)
 }

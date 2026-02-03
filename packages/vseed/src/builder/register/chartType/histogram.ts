@@ -6,6 +6,6 @@ import { Builder } from '../../builder'
  * 注册后，Builder 将支持构建 Histogram Chart 的 Spec 和 Advanced Config。
  */
 export const registerHistogram = () => {
-  Builder._advancedPipelineMap['histogram'] = histogramAdvancedPipeline
-  Builder._specPipelineMap['histogram'] = histogramSpecPipeline
+  Builder.registerAdvancedPipeline('histogram', histogramAdvancedPipeline)
+  Builder.registerSpecPipeline('histogram', histogramSpecPipeline)
 }
