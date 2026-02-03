@@ -19,12 +19,13 @@ export const heatmapConfig: AdvancedPipe = (advancedVSeed, context) => {
     'yAxis',
     'brush',
     'dimensionLinkage',
+    'player',
   ]) as Config['heatmap']
 
   const config = replaceNullToUndefined(pickedConfig)
 
   result.config = {
-    ...(result.config || {}),
+    ...result.config,
     [chartType]: {
       ...config,
     },

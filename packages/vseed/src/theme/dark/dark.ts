@@ -1,4 +1,4 @@
-import type { CustomThemeConfig, YBandAxis } from 'src/types'
+import type { CustomThemeConfig, Player, YBandAxis } from 'src/types'
 import {
   getDarkColor,
   getDarkCrosshairLine,
@@ -10,6 +10,7 @@ import {
   getDarkLegend,
   getDarkColorLegend,
   getFunnelDarkLabel,
+  getDarkPlayer,
 } from '../common'
 import { getDarkTooltip } from '../common/tooltip'
 import { getDarkBandAxis, getDarkLinearAxis } from '../common/axes'
@@ -42,6 +43,7 @@ export const darkTheme = (): CustomThemeConfig => {
     tooltip: getDarkTooltip(),
     brush: getDarkBrushConfig(),
   }
+  const player = getDarkPlayer() as Player
 
   const tableConfig = getDarkTableConfig()
 
@@ -56,6 +58,8 @@ export const darkTheme = (): CustomThemeConfig => {
         xAxis: bandAxis,
         yAxis: linearAxis,
         crosshairLine: crosshairLine,
+        player,
+
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
       },
@@ -68,6 +72,7 @@ export const darkTheme = (): CustomThemeConfig => {
         stackCornerRadius: [4, 4, 0, 0],
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
+        player,
 
         regressionLine: getDarkRegressionLine(),
       },
@@ -80,6 +85,7 @@ export const darkTheme = (): CustomThemeConfig => {
         stackCornerRadius: [4, 4, 0, 0],
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
+        player,
       },
       columnPercent: {
         ...baseConfig,
@@ -90,6 +96,7 @@ export const darkTheme = (): CustomThemeConfig => {
         stackCornerRadius: [4, 4, 0, 0],
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
+        player,
       },
       bar: {
         ...baseConfig,
@@ -100,6 +107,7 @@ export const darkTheme = (): CustomThemeConfig => {
         stackCornerRadius: [0, 4, 4, 0],
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
+        player,
       },
       barParallel: {
         ...baseConfig,
@@ -110,6 +118,7 @@ export const darkTheme = (): CustomThemeConfig => {
         stackCornerRadius: [0, 4, 4, 0],
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
+        player,
       },
       barPercent: {
         ...baseConfig,
@@ -120,6 +129,7 @@ export const darkTheme = (): CustomThemeConfig => {
         stackCornerRadius: [0, 4, 4, 0],
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
+        player,
       },
       area: {
         ...baseConfig,
@@ -129,6 +139,7 @@ export const darkTheme = (): CustomThemeConfig => {
         crosshairLine: crosshairLine,
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
+        player,
       },
       areaPercent: {
         ...baseConfig,
@@ -138,6 +149,7 @@ export const darkTheme = (): CustomThemeConfig => {
         crosshairLine: crosshairLine,
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
+        player,
       },
       scatter: {
         ...baseConfig,
@@ -165,6 +177,7 @@ export const darkTheme = (): CustomThemeConfig => {
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
         regressionLine: getDarkRegressionLine(),
+        player,
       },
       dualAxis: {
         ...baseConfig,
@@ -185,6 +198,7 @@ export const darkTheme = (): CustomThemeConfig => {
           showDimension: true,
         },
         pivotGrid: getDarkPivotChartGridConfig(),
+        player,
       },
       donut: {
         ...baseConfig,
@@ -195,10 +209,12 @@ export const darkTheme = (): CustomThemeConfig => {
           showDimension: true,
         },
         pivotGrid: getDarkPivotChartGridConfig(),
+        player,
       },
       radar: {
         ...baseConfig,
         pivotGrid: getDarkPivotChartGridConfig(),
+        player,
       },
       rose: {
         ...baseConfig,
@@ -208,6 +224,7 @@ export const darkTheme = (): CustomThemeConfig => {
           showDimension: true,
         },
         pivotGrid: getDarkPivotChartGridConfig(),
+        player,
       },
       roseParallel: {
         ...baseConfig,
@@ -218,6 +235,7 @@ export const darkTheme = (): CustomThemeConfig => {
         },
 
         pivotGrid: getDarkPivotChartGridConfig(),
+        player,
       },
       // other
       funnel: {
@@ -226,6 +244,7 @@ export const darkTheme = (): CustomThemeConfig => {
         transform: getDarkFunnelTransformTheme(),
 
         pivotGrid: getDarkPivotChartGridConfig(),
+        player,
       },
       heatmap: {
         ...baseConfig,
@@ -236,6 +255,7 @@ export const darkTheme = (): CustomThemeConfig => {
           ...baseConfig.label,
           labelColorSmartInvert: true,
         },
+        player,
 
         cell: getDarkHeatmapCellTheme(),
         pivotGrid: getDarkPivotChartGridConfig(),

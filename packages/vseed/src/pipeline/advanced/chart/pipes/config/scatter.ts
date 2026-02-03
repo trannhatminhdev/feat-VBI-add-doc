@@ -20,6 +20,7 @@ export const scatterConfig: AdvancedPipe = (advancedVSeed, context) => {
     'sizeRange',
     'size',
     'crosshairLine',
+    'player',
     'brush',
     'dimensionLinkage',
   ]) as Config['line']
@@ -27,7 +28,7 @@ export const scatterConfig: AdvancedPipe = (advancedVSeed, context) => {
   const config = replaceNullToUndefined(pickedConfig)
 
   result.config = {
-    ...(result.config || {}),
+    ...result.config,
     [chartType]: {
       ...config,
     },

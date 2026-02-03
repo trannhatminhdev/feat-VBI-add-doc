@@ -14,6 +14,7 @@ import { zRegressionLine } from '../regressionLine'
 import { zDimensionLinkage } from './dimensionLinkage/dimensionLinkage'
 
 import { zBrushConfig } from '../brush/zBrush'
+import { zPlayer } from './player'
 
 export const zColumnParallelConfig = z.object({
   backgroundColor: zBackgroundColor.nullish(),
@@ -21,6 +22,7 @@ export const zColumnParallelConfig = z.object({
   color: zColor.nullish(),
   tooltip: zTooltip.nullish(),
   legend: zLegend.nullish(),
+  player: zPlayer.nullish(),
 
   xAxis: zXBandAxis.nullish(),
   yAxis: zYLinearAxis.nullish(),

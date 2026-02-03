@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.3.11
+
+### Patch Changes
+
+- 2955de4: feat: more features in player
+
 ## 0.3.10
 
 ### Patch Changes

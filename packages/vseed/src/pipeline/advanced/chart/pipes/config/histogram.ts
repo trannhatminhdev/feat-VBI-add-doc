@@ -62,7 +62,7 @@ export const histogramConfig: AdvancedPipe = (advancedVSeed, context) => {
     }
   }
   result.config = {
-    ...(result.config || {}),
+    ...result.config,
     [chartType]: {
       ...config,
     },

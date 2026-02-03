@@ -1,10 +1,6 @@
-.rspress-playground {
+.rp-playground {
   margin: 0 !important;
 }
-.rspress-playground-horizontal {
-  height: calc(100vh - 72px - 40px) !important;
-}
-
-* {
-  box-sizing: border-box !important;
+.rp-playground-horizontal {
+  height: calc(100vh - 72px) !important;
 }

@@ -20,12 +20,13 @@ export const lineConfig: AdvancedPipe = (advancedVSeed, context) => {
     'crosshairLine',
     'brush',
     'dimensionLinkage',
+    'player',
   ]) as Config['line']
 
   const config = replaceNullToUndefined(pickedConfig)
 
   result.config = {
-    ...(result.config || {}),
+    ...result.config,
     [chartType]: {
       ...config,
     },
