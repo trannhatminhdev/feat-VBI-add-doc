@@ -11,6 +11,7 @@ import { zPivotChartGridConfig } from './pivotGrid'
 import { zDimensionLinkage } from './dimensionLinkage'
 
 import { zBrushConfig } from '../brush/zBrush'
+import { zPlayer } from './player'
 
 export const zLineConfig = z.object({
   backgroundColor: zBackgroundColor.nullish(),
@@ -28,6 +29,8 @@ export const zLineConfig = z.object({
   dimensionLinkage: zDimensionLinkage.nullish(),
 
   brush: zBrushConfig.nullish(),
+
+  player: zPlayer.nullish(),
 })
 
 export type LineConfig = z.infer<typeof zLineConfig>

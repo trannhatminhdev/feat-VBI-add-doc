@@ -28,7 +28,7 @@ export const boxplotConfig: AdvancedPipe = (advancedVSeed, context) => {
   const config = replaceNullToUndefined(pickedConfig)
 
   result.config = {
-    ...(result.config || {}),
+    ...result.config,
     [chartType]: {
       ...config,
     },

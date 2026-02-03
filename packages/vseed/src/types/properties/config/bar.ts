@@ -12,6 +12,7 @@ import { zPivotChartGridConfig } from './pivotGrid'
 import { zDimensionLinkage } from './dimensionLinkage/dimensionLinkage'
 
 import { zBrushConfig } from '../brush/zBrush'
+import { zPlayer } from './player'
 
 export const zBarConfig = z.object({
   backgroundColor: zBackgroundColor.nullish(),
@@ -19,6 +20,7 @@ export const zBarConfig = z.object({
   color: zColor.nullish(),
   tooltip: zTooltip.nullish(),
   legend: zLegend.nullish(),
+  player: zPlayer.nullish(),
 
   xAxis: zXLinearAxis.nullish(),
   yAxis: zYBandAxis.nullish(),

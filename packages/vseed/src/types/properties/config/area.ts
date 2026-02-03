@@ -9,6 +9,7 @@ import { zTooltip } from './tooltip/tooltip'
 import { zAnnotationConfig } from './annotation/zAnnotaion'
 import { zPivotChartGridConfig } from './pivotGrid'
 import { zDimensionLinkage } from './dimensionLinkage/dimensionLinkage'
+import { zPlayer } from './player'
 
 import { zBrushConfig } from '../brush/zBrush'
 
@@ -18,6 +19,7 @@ export const zAreaConfig = z.object({
   color: zColor.nullish(),
   tooltip: zTooltip.nullish(),
   legend: zLegend.nullish(),
+  player: zPlayer.nullish(),
 
   xAxis: zXBandAxis.nullish(),
   yAxis: zYLinearAxis.nullish(),

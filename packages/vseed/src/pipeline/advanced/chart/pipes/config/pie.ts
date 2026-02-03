@@ -9,12 +9,20 @@ export const pieConfig: AdvancedPipe = (advancedVSeed, context) => {
     ...advancedVSeed,
   }
 
-  const pickedConfig = pick(vseed, ['backgroundColor', 'color', 'label', 'legend', 'tooltip', 'brush']) as Config['pie']
+  const pickedConfig = pick(vseed, [
+    'backgroundColor',
+    'color',
+    'label',
+    'legend',
+    'tooltip',
+    'player',
+    'brush',
+  ]) as Config['pie']
 
   const config = replaceNullToUndefined(pickedConfig)
 
   result.config = {
-    ...(result.config || {}),
+    ...result.config,
     [chartType]: {
       ...config,
     },

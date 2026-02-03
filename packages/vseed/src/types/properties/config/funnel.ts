@@ -6,6 +6,7 @@ import { zLegend } from './legend/legend'
 import { zTooltip } from './tooltip/tooltip'
 import { zFunnelTransform } from './funnelTransform/zFunnelTransform'
 import { zPivotChartGridConfig } from './pivotGrid'
+import { zPlayer } from './player'
 
 export const zFunnelConfig = z.object({
   backgroundColor: zBackgroundColor.nullish(),
@@ -13,6 +14,7 @@ export const zFunnelConfig = z.object({
   color: zColor.nullish(),
   tooltip: zTooltip.nullish(),
   legend: zLegend.nullish(),
+  player: zPlayer.nullish(),
 
   pivotGrid: zPivotChartGridConfig.nullish(),
   transform: zFunnelTransform.nullish(),

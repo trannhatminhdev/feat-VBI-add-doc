@@ -23,12 +23,13 @@ export const columnConfig: AdvancedPipe = (advancedVSeed, context) => {
     'barGapInGroup',
     'brush',
     'dimensionLinkage',
+    'player',
   ]) as Config['column']
 
   const config = replaceNullToUndefined(pickedConfig)
 
   result.config = {
-    ...(result.config || {}),
+    ...result.config,
     [chartType]: {
       ...config,
     },
