@@ -47,7 +47,7 @@ describe('VQuery load parquet', () => {
   it('load local parquet', async () => {
     const vquery = new VQuery()
     const datasetId = 'localParquetDataset'
-    const filePath = path.resolve(__dirname, '../dataset/supermarket.parquet')
+    const filePath = path.resolve(__dirname, '../assets/supermarket.parquet')
     const buffer = fs.readFileSync(filePath)
     const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength)
 

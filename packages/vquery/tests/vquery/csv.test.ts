@@ -47,7 +47,7 @@ describe('VQuery load csv', () => {
   it('load local csv', async () => {
     const vquery = new VQuery()
     const datasetId = 'localCsvDataset'
-    const filePath = path.resolve(__dirname, '../dataset/supermarket.csv')
+    const filePath = path.resolve(__dirname, '../assets/supermarket.csv')
     const buffer = fs.readFileSync(filePath)
     const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength)
 

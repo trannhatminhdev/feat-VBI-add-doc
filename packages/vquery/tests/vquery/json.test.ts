@@ -47,7 +47,7 @@ describe('VQuery load json', () => {
   it('load local json', async () => {
     const vquery = new VQuery()
     const datasetId = 'localJsonDataset'
-    const filePath = path.resolve(__dirname, '../dataset/supermarket.json')
+    const filePath = path.resolve(__dirname, '../assets/supermarket.json')
     const buffer = fs.readFileSync(filePath)
     const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength)
 
