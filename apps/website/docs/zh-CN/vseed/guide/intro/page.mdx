@@ -8,7 +8,10 @@ pageType: doc
 
 通过配置 `page` 属性，可以指定图表展示特定维度值的数据。
 
-```tsx direction=vertical
+- `field`: 分页字段。
+- `currentValue`: 当前展示的值。
+
+```tsx direction=vertical {36-39}
 import { VSeed, Builder, registerAll } from '@visactor/vseed'
 import VChart from '@visactor/vchart'
 import { useEffect, useRef } from 'react'
@@ -63,7 +66,9 @@ export default SimplePageDemo
 
 ## 自定义播放器
 
-```tsx direction=vertical
+通过 `page` 属性结合 React 状态管理，可以实现自定义的播放器控制。
+
+```tsx direction=vertical {78-81,686-689}
 import { useRef, useEffect, useState, memo } from 'react'
 import VChart from '@visactor/vchart'
 import { ListTable, PivotTable } from '@visactor/vtable'

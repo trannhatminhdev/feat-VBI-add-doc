@@ -4,7 +4,9 @@ pageType: doc
 
 # 图表类型
 
-```tsx direction=vertical
+VSeed 支持多种图表类型，通过 `chartType` 属性可以轻松切换不同的可视化形式，包括常规图表、透视表等。
+
+```tsx direction=vertical {53}
 import { useRef, useEffect, useState } from 'react'
 import VChart from '@visactor/vchart'
 import { ListTable, PivotTable } from '@visactor/vtable'

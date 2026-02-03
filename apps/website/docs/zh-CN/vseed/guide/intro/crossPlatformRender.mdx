@@ -8,7 +8,9 @@ pageType: doc
 `vseed`支持无损序列化, 因此可以`跨平台传输`, `复制粘贴`, 在Node环境、浏览器环境, 都可以直接通过`builder`获取到完整的spec
 :::
 
-```tsx direction=vertical
+下面的示例展示了如何将 VSeed 配置序列化为 JSON 字符串（模拟复制），以及如何将 JSON 字符串反序列化并渲染（模拟粘贴）。
+
+```tsx direction=vertical {43-48,50-69}
 import { useRef, useEffect, useState } from 'react'
 import VChart from '@visactor/vchart'
 import { registerAll, VSeed, Builder } from '@visactor/vseed'

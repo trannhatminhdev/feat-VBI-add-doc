@@ -6,7 +6,9 @@ pageType: doc
 
 ## 指标分组
 
-```tsx direction=vertical
+通过 `measures` 中的 `parentId` 属性，可以将指标进行分组展示。
+
+```tsx direction=vertical {37-38}
 import { useRef, useEffect, memo } from 'react'
 import VChart from '@visactor/vchart'
 import { register, PivotChart, PivotChartConstructorOptions } from '@visactor/vtable'
@@ -65,7 +67,9 @@ export default Demo
 
 ## 行列透视
 
-```tsx direction=vertical
+通过配置维度的 `encoding` 属性，可以控制维度在透视表中的行列位置。默认维度在行上，设置 `encoding: 'column'` 可将其放置在列上。
+
+```tsx direction=vertical {100-103}
 import { useRef, useEffect, memo } from 'react'
 import VChart from '@visactor/vchart'
 import { register, PivotChart, PivotChartConstructorOptions } from '@visactor/vtable'
