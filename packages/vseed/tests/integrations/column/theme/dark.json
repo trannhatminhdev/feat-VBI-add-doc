@@ -1,6 +1,6 @@
 {
   "name": "dark",
-  "description": "some functional description for vseed",
+  "description": "A column chart, with theme 'dark', containing 5 data points.",
   "vseed": {
     "chartType": "column",
     "theme": "dark",

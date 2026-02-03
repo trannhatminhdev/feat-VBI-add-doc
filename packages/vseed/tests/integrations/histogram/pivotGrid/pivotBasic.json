@@ -1,6 +1,6 @@
 {
   "name": "pivotBasic",
-  "description": "some functional description for vseed",
+  "description": "A histogram chart, with ecdfRegressionLine, containing 33 data points, 1 measures (mapped to value), 2 dimensions.",
   "vseed": {
     "chartType": "histogram",
     "dataset": [

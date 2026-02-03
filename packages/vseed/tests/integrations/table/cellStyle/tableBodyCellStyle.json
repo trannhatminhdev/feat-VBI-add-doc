@@ -1,6 +1,6 @@
 {
   "name": "tableBodyCellStyle",
-  "description": "some functional description for vseed",
+  "description": "A table chart, with customized bodyCellStyle (backgroundColor, textColor), containing 5 data points.",
   "vseed": {
     "chartType": "table",
     "dataset": [

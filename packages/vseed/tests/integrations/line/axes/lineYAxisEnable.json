@@ -1,6 +1,6 @@
 {
   "name": "lineYAxisEnable",
-  "description": "some functional description for vseed",
+  "description": "A line chart, with label enabled, containing 59 data points.",
   "vseed": {
     "chartType": "line",
     "yAxis": {

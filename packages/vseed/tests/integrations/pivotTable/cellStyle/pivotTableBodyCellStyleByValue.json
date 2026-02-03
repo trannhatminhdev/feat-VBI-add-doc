@@ -1,6 +1,6 @@
 {
   "name": "pivotTableBodyCellStyleByValue",
-  "description": "some functional description for vseed",
+  "description": "A pivotTable chart, with customized bodyCellStyle (backgroundColor, textColor), containing 5 data points, 2 measures, 2 dimensions.",
   "vseed": {
     "chartType": "pivotTable",
     "dataset": [

@@ -1,6 +1,6 @@
 {
   "name": "types",
-  "description": "some functional description for vseed",
+  "description": "A dualAxis chart, containing 5 data points, 2 measures (mapped to primaryYAxis, secondaryYAxis).",
   "vseed": {
     "chartType": "dualAxis",
     "dataset": [

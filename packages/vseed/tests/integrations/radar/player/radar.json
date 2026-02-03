@@ -1,6 +1,6 @@
 {
   "name": "radar",
-  "description": "some functional description for vseed",
+  "description": "A radar chart, with player enabled, containing 5 data points, 2 measures, 1 dimensions.",
   "vseed": {
     "chartType": "radar",
     "measures": [

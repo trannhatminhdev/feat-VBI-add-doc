@@ -1,6 +1,6 @@
 {
   "name": "1m1d",
-  "description": "some functional description for vseed",
+  "description": "A barParallel chart, containing 5 data points.",
   "vseed": {
     "chartType": "barParallel",
     "dataset": [

@@ -1,6 +1,6 @@
 {
   "name": "scatterSizeRange",
-  "description": "some functional description for vseed",
+  "description": "A scatter chart, with size range [10, 50], containing 5 data points, 3 measures (mapped to size, xAxis, yAxis).",
   "vseed": {
     "chartType": "scatter",
     "sizeRange": [10, 50],

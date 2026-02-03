@@ -1,6 +1,6 @@
 {
   "name": "same",
-  "description": "some functional description for vseed",
+  "description": "A column chart, with color enabled; label enabled, containing 3 data points, 4 measures (mapped to yAxis), 3 dimensions.",
   "vseed": {
     "color": {
       "colorScheme": [

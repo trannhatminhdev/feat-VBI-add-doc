@@ -1,6 +1,6 @@
 {
   "name": "scatterPolynomial",
-  "description": "some functional description for vseed",
+  "description": "A scatter chart, with polynomialRegressionLine, containing 60 data points, 2 measures (mapped to xAxis, yAxis).",
   "vseed": {
     "chartType": "scatter",
     "dataset": [

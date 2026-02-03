@@ -1,6 +1,6 @@
 {
   "name": "basic",
-  "description": "some functional description for vseed",
+  "description": "A histogram chart, with tooltip enabled, containing 6 data points.",
   "vseed": {
     "chartType": "histogram",
     "dataset": [

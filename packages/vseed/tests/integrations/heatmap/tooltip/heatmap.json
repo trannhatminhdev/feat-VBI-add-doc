@@ -1,6 +1,6 @@
 {
   "name": "heatmap",
-  "description": "some functional description for vseed",
+  "description": "A heatmap chart, containing 5 data points, 3 measures (mapped to color, detail, tooltip), 1 dimensions.",
   "vseed": {
     "chartType": "heatmap",
     "dataset": [

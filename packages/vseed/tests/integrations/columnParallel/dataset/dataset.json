@@ -1,6 +1,6 @@
 {
   "name": "dataset",
-  "description": "some functional description for vseed",
+  "description": "A columnParallel chart, containing 10 data points, 2 measures, 2 dimensions.",
   "vseed": {
     "chartType": "columnParallel",
     "measures": [

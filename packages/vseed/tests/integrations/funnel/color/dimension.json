@@ -1,6 +1,6 @@
 {
   "name": "dimension",
-  "description": "some functional description for vseed",
+  "description": "A funnel chart, containing 10 data points, 2 measures (mapped to size), 2 dimensions.",
   "vseed": {
     "chartType": "funnel",
     "dataset": [

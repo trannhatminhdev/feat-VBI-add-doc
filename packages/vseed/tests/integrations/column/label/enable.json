@@ -1,6 +1,6 @@
 {
   "name": "enable",
-  "description": "some functional description for vseed",
+  "description": "A column chart, with label enabled, containing 5 data points, 2 measures, 1 dimensions.",
   "vseed": {
     "chartType": "column",
     "label": {

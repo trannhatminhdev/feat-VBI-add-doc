@@ -1,6 +1,6 @@
 {
   "name": "areaStyleParialDatum",
-  "description": "some functional description for vseed",
+  "description": "A area chart, with customized lineStyle (lineColor, lineStyle, lineWidth), containing 5 data points, 3 measures, 1 dimensions.",
   "vseed": {
     "chartType": "area",
     "dataset": [

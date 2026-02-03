@@ -1,6 +1,6 @@
 {
   "name": "basic",
-  "description": "some functional description for vseed",
+  "description": "A column chart, containing 5 data points, 3 measures, 1 dimensions.",
   "vseed": {
     "chartType": "column",
     "dataset": [

@@ -1,6 +1,6 @@
 {
   "name": "minimal",
-  "description": "some functional description for vseed",
+  "description": "A roseParallel chart, containing 5 data points.",
   "vseed": {
     "chartType": "roseParallel",
     "dataset": [

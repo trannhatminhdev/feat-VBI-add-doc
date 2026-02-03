@@ -1,6 +1,6 @@
 {
   "name": "yAxisHorizontal",
-  "description": "some functional description for vseed",
+  "description": "A bar chart, with label enabled, containing 31 data points.",
   "vseed": {
     "chartType": "bar",
     "yAxis": {

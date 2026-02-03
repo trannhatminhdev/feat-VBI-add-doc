@@ -1,6 +1,6 @@
 {
   "name": "measure",
-  "description": "some functional description for vseed",
+  "description": "A scatter chart, containing 10 data points, 3 measures (mapped to color, xAxis, yAxis), 2 dimensions.",
   "vseed": {
     "chartType": "scatter",
     "dataset": [

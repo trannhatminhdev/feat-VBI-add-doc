@@ -1,6 +1,6 @@
 {
   "name": "pivotBasicV4",
-  "description": "some functional description for vseed",
+  "description": "A pivotTable chart, containing 5 data points, 5 measures, 2 dimensions.",
   "vseed": {
     "chartType": "pivotTable",
     "dataset": [

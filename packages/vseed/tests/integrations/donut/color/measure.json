@@ -1,6 +1,6 @@
 {
   "name": "measure",
-  "description": "some functional description for vseed",
+  "description": "A donut chart, containing 10 data points, 2 measures (mapped to angle, color), 2 dimensions.",
   "vseed": {
     "chartType": "donut",
     "dataset": [

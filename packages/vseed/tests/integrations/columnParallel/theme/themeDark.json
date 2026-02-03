@@ -1,6 +1,6 @@
 {
   "name": "themeDark",
-  "description": "some functional description for vseed",
+  "description": "A columnParallel chart, with theme 'dark', containing 5 data points.",
   "vseed": {
     "chartType": "columnParallel",
     "theme": "dark",

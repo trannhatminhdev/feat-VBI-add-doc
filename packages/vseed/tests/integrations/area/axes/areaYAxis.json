@@ -1,6 +1,6 @@
 {
   "name": "areaYAxis",
-  "description": "some functional description for vseed",
+  "description": "A area chart, with label enabled, containing 59 data points.",
   "vseed": {
     "chartType": "area",
     "yAxis": {

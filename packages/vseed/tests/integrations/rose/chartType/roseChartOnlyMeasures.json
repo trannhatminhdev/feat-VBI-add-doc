@@ -1,6 +1,6 @@
 {
   "name": "roseChartOnlyMeasures",
-  "description": "some functional description for vseed",
+  "description": "A rose chart, containing 1 data points.",
   "vseed": {
     "chartType": "rose",
     "dataset": [

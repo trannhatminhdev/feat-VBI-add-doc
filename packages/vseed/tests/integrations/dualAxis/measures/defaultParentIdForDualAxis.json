@@ -1,6 +1,6 @@
 {
   "name": "defaultParentIdForDualAxis",
-  "description": "some functional description for vseed",
+  "description": "A dualAxis chart, containing 3 data points, 2 measures, 1 dimensions.",
   "vseed": {
     "chartType": "dualAxis",
     "dataset": [

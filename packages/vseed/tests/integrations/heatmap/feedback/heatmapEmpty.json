@@ -1,6 +1,6 @@
 {
   "name": "heatmapEmpty",
-  "description": "some functional description for vseed",
+  "description": "A heatmap chart, with label enabled, containing 17 data points, 1 measures (mapped to color), 2 dimensions.",
   "vseed": {
     "legend": {
       "enable": true,

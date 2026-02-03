@@ -1,6 +1,6 @@
 {
   "name": "selectorAreaPartialDatum",
-  "description": "some functional description for vseed",
+  "description": "A areaPercent chart, with customized areaStyle (areaColor), containing 5 data points, 3 measures, 1 dimensions.",
   "vseed": {
     "chartType": "areaPercent",
     "dataset": [

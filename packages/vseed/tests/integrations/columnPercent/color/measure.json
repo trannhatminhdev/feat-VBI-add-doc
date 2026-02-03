@@ -1,6 +1,6 @@
 {
   "name": "measure",
-  "description": "some functional description for vseed",
+  "description": "A columnPercent chart, containing 10 data points, 2 measures (mapped to color, yAxis), 3 dimensions.",
   "vseed": {
     "chartType": "columnPercent",
     "dataset": [

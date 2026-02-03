@@ -1,6 +1,6 @@
 {
   "name": "histogramKde",
-  "description": "some functional description for vseed",
+  "description": "A histogram chart, with kdeRegressionLine (label: 'KDE 回归线'), containing 9 data points.",
   "vseed": {
     "chartType": "histogram",
     "dataset": [

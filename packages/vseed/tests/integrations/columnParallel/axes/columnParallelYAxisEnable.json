@@ -1,6 +1,6 @@
 {
   "name": "columnParallelYAxisEnable",
-  "description": "some functional description for vseed",
+  "description": "A columnParallel chart, with label enabled, containing 59 data points.",
   "vseed": {
     "chartType": "columnParallel",
     "yAxis": {

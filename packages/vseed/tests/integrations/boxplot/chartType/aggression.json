@@ -1,6 +1,6 @@
 {
   "name": "aggression",
-  "description": "some functional description for vseed",
+  "description": "A boxPlot chart, containing 12 data points, 6 measures (mapped to max, median, min, outliers, q1, q3), 2 dimensions.",
   "vseed": {
     "chartType": "boxPlot",
     "dataset": [

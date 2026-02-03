@@ -1,6 +1,6 @@
 {
   "name": "basicV2",
-  "description": "some functional description for vseed",
+  "description": "A pie chart, containing 5 data points, 2 measures, 1 dimensions.",
   "vseed": {
     "chartType": "pie",
     "measures": [

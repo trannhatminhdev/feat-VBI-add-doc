@@ -1,6 +1,6 @@
 {
   "name": "annotationPointPartialDatum",
-  "description": "some functional description for vseed",
+  "description": "A line chart, containing 5 data points, 3 measures, 1 dimensions.",
   "vseed": {
     "chartType": "line",
     "dataset": [

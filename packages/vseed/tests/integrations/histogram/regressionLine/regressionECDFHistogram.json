@@ -1,6 +1,6 @@
 {
   "name": "regressionECDFHistogram",
-  "description": "some functional description for vseed",
+  "description": "A histogram chart, with ecdfRegressionLine (label: 'ECDF Regression'), containing 5 data points, 1 measures (mapped to value).",
   "vseed": {
     "chartType": "histogram",
     "dataset": [

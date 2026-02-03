@@ -1,6 +1,6 @@
 {
   "name": "measure",
-  "description": "some functional description for vseed",
+  "description": "A line chart, containing 10 data points, 3 measures (mapped to color, yAxis), 2 dimensions.",
   "vseed": {
     "chartType": "line",
     "dataset": [

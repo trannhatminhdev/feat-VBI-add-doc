@@ -1,6 +1,6 @@
 {
   "name": "multiMeasuresFunnelChart",
-  "description": "some functional description for vseed",
+  "description": "A funnel chart, containing 1 data points, 3 measures.",
   "vseed": {
     "chartType": "funnel",
     "dataset": [

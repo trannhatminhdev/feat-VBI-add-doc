@@ -1,6 +1,6 @@
 {
   "name": "baseConfigBackgroundColor",
-  "description": "some functional description for vseed",
+  "description": "A bar chart, containing 5 data points, 2 measures, 1 dimensions.",
   "vseed": {
     "chartType": "bar",
     "backgroundColor": "lightyellow",

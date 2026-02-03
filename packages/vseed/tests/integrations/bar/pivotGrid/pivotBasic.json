@@ -1,6 +1,6 @@
 {
   "name": "pivotBasic",
-  "description": "some functional description for vseed",
+  "description": "A bar chart, containing 20 data points, 2 measures, 3 dimensions.",
   "vseed": {
     "chartType": "bar",
     "dimensions": [

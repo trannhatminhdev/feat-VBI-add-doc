@@ -1,6 +1,6 @@
 {
   "name": "measure",
-  "description": "some functional description for vseed",
+  "description": "A barParallel chart, containing 10 data points, 2 measures (mapped to color, xAxis), 4 dimensions.",
   "vseed": {
     "chartType": "barParallel",
     "dataset": [

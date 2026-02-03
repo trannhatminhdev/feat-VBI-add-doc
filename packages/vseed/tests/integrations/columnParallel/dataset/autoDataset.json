@@ -1,6 +1,6 @@
 {
   "name": "autoDataset",
-  "description": "some functional description for vseed",
+  "description": "A columnParallel chart, containing 10 data points.",
   "vseed": {
     "chartType": "columnParallel",
     "dataset": [

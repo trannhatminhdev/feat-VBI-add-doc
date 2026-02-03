@@ -1,6 +1,6 @@
 {
   "name": "pivotBasicV2",
-  "description": "some functional description for vseed",
+  "description": "A columnParallel chart, containing 24 data points, 2 measures, 3 dimensions.",
   "vseed": {
     "chartType": "columnParallel",
     "measures": [

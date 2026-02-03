@@ -1,6 +1,6 @@
 {
   "name": "regressionKDEHistogram",
-  "description": "some functional description for vseed",
+  "description": "A histogram chart, with kdeRegressionLine (kde, label: 'KDE Regression'), containing 6 data points, 1 measures (mapped to value).",
   "vseed": {
     "chartType": "histogram",
     "dataset": [

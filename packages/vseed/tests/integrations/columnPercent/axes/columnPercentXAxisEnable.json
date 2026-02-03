@@ -1,6 +1,6 @@
 {
   "name": "columnPercentXAxisEnable",
-  "description": "some functional description for vseed",
+  "description": "A columnPercent chart, with label enabled, containing 59 data points.",
   "vseed": {
     "chartType": "columnPercent",
     "xAxis": {

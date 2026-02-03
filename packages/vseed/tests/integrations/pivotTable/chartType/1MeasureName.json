@@ -1,6 +1,6 @@
 {
   "name": "1MeasureName",
-  "description": "some functional description for vseed",
+  "description": "A pivotTable chart, containing 12 data points, 2 measures (mapped to detail), 4 dimensions.",
   "vseed": {
     "chartType": "pivotTable",
     "dataset": [

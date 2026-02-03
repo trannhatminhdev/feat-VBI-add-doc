@@ -1,6 +1,6 @@
 {
   "name": "dimension",
-  "description": "some functional description for vseed",
+  "description": "A roseParallel chart, containing 10 data points, 2 measures (mapped to radius), 2 dimensions.",
   "vseed": {
     "chartType": "roseParallel",
     "dataset": [

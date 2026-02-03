@@ -1,6 +1,6 @@
 {
   "name": "dualYAxisArray",
-  "description": "some functional description for vseed",
+  "description": "A dualAxis chart, containing 5 data points, 4 measures (mapped to primaryYAxis, secondaryYAxis), 1 dimensions.",
   "vseed": {
     "chartType": "dualAxis",
     "primaryYAxis": [

@@ -1,6 +1,6 @@
 {
   "name": "pivotBasic",
-  "description": "some functional description for vseed",
+  "description": "A heatmap chart, containing 24 data points, 3 dimensions.",
   "vseed": {
     "chartType": "heatmap",
     "dimensions": [

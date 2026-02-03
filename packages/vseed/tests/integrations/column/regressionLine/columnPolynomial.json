@@ -1,6 +1,6 @@
 {
   "name": "columnPolynomial",
-  "description": "some functional description for vseed",
+  "description": "A column chart, with polynomialRegressionLine, containing 5 data points, 1 measures (mapped to yAxis), 1 dimensions.",
   "vseed": {
     "chartType": "column",
     "dataset": [

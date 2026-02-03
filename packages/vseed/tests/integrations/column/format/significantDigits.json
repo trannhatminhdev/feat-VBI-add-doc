@@ -1,6 +1,6 @@
 {
   "name": "significantDigits",
-  "description": "some functional description for vseed",
+  "description": "A column chart, containing 1 data points, 10 measures.",
   "vseed": {
     "chartType": "column",
     "dataset": [

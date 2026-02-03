@@ -1,6 +1,6 @@
 {
   "name": "legend",
-  "description": "some functional description for vseed",
+  "description": "A boxPlot chart, containing 8 data points.",
   "vseed": {
     "chartType": "boxPlot",
     "dataset": [

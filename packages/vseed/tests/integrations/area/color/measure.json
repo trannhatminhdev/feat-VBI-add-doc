@@ -1,6 +1,6 @@
 {
   "name": "measure",
-  "description": "some functional description for vseed",
+  "description": "A area chart, containing 5 data points, 2 measures (mapped to color, yAxis), 1 dimensions.",
   "vseed": {
     "chartType": "area",
     "measures": [

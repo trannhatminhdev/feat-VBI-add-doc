@@ -1,6 +1,6 @@
 {
   "name": "minimal",
-  "description": "some functional description for vseed",
+  "description": "A pie chart, containing 5 data points.",
   "vseed": {
     "chartType": "pie",
     "dataset": [

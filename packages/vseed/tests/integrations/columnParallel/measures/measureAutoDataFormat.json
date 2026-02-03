@@ -1,6 +1,6 @@
 {
   "name": "measureAutoDataFormat",
-  "description": "some functional description for vseed",
+  "description": "A columnParallel chart, containing 5 data points, 4 measures, 1 dimensions.",
   "vseed": {
     "chartType": "columnParallel",
     "measures": [
@@ -68,7 +68,7 @@
         "profit": 50000,
         "sales": 1000000,
         "discount": 0.05,
-        "rateOfReturn": 0.00005
+        "rateOfReturn": 5e-5
       }
     ]
   }

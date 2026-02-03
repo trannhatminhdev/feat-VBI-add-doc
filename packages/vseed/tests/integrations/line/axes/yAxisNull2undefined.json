@@ -1,6 +1,6 @@
 {
   "name": "yAxisNull2undefined",
-  "description": "some functional description for vseed",
+  "description": "A line chart, with customized pointStyle (pointVisible); color enabled, containing 16 data points, 1 measures, 1 dimensions.",
   "vseed": {
     "chartType": "line",
     "dataset": [

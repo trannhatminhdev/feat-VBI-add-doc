@@ -1,6 +1,6 @@
 {
   "name": "point",
-  "description": "some functional description for vseed",
+  "description": "A histogram chart, containing 4 data points.",
   "vseed": {
     "chartType": "histogram",
     "dataset": [

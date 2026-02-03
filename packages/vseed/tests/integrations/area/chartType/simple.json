@@ -1,6 +1,6 @@
 {
   "name": "simple",
-  "description": "some functional description for vseed",
+  "description": "A area chart, containing 5 data points.",
   "vseed": {
     "chartType": "area",
     "dataset": [

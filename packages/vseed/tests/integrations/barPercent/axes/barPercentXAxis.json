@@ -1,6 +1,6 @@
 {
   "name": "barPercentXAxis",
-  "description": "some functional description for vseed",
+  "description": "A barPercent chart, with label enabled, containing 59 data points.",
   "vseed": {
     "chartType": "barPercent",
     "xAxis": {

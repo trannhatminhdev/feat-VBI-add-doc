@@ -1,6 +1,6 @@
 {
   "name": "linear",
-  "description": "some functional description for vseed",
+  "description": "A scatter chart, with linearRegressionLine, containing 5 data points, 2 measures (mapped to xAxis, yAxis).",
   "vseed": {
     "chartType": "scatter",
     "dataset": [

@@ -1,6 +1,6 @@
 {
   "name": "dimension",
-  "description": "some functional description for vseed",
+  "description": "A bar chart, containing 10 data points, 2 measures (mapped to xAxis), 4 dimensions.",
   "vseed": {
     "chartType": "bar",
     "dataset": [

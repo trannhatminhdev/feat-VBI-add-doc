@@ -1,6 +1,6 @@
 {
   "name": "tree",
-  "description": "some functional description for vseed",
+  "description": "A table chart, containing 5 data points, 3 measures, 1 dimensions.",
   "vseed": {
     "chartType": "table",
     "dataset": [

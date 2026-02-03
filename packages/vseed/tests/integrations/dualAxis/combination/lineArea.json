@@ -1,6 +1,6 @@
 {
   "name": "lineArea",
-  "description": "some functional description for vseed",
+  "description": "A dualAxis chart, with color enabled; label enabled, containing 18 data points, 2 measures (mapped to radius), 3 dimensions.",
   "vseed": {
     "color": {
       "colorScheme": [

@@ -1,6 +1,6 @@
 {
   "name": "basic",
-  "description": "some functional description for vseed",
+  "description": "A boxPlot chart, with tooltip enabled, containing 4 data points, 1 measures (mapped to value), 1 dimensions.",
   "vseed": {
     "chartType": "boxPlot",
     "dataset": [

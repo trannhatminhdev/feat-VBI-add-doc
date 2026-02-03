@@ -1,6 +1,6 @@
 {
   "name": "wrap",
-  "description": "some functional description for vseed",
+  "description": "A column chart, with label enabled, containing 5 data points, 1 measures, 2 dimensions.",
   "vseed": {
     "chartType": "column",
     "dataset": [

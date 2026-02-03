@@ -1,6 +1,6 @@
 {
   "name": "dualAxisPivot",
-  "description": "some functional description for vseed",
+  "description": "A dualAxis chart, containing 5 data points, 3 measures (mapped to primaryYAxis, secondaryYAxis, tooltip), 2 dimensions.",
   "vseed": {
     "chartType": "dualAxis",
     "dataset": [

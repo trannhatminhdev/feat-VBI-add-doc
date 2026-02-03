@@ -1,6 +1,6 @@
 {
   "name": "scatterLinear",
-  "description": "some functional description for vseed",
+  "description": "A scatter chart, with linearRegressionLine (label: '线性回归'), containing 60 data points, 2 measures (mapped to xAxis, yAxis).",
   "vseed": {
     "chartType": "scatter",
     "dataset": [

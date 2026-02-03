@@ -1,6 +1,6 @@
 {
   "name": "selectorBarPartialDatum",
-  "description": "some functional description for vseed",
+  "description": "A bar chart, with customized barStyle (barBorderColor, barBorderStyle, barBorderWidth, barColor, barColorOpacity, barRadius), containing 5 data points, 3 measures, 1 dimensions.",
   "vseed": {
     "chartType": "bar",
     "dataset": [

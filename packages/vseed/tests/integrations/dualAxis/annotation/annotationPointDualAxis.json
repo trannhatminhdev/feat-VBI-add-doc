@@ -1,6 +1,6 @@
 {
   "name": "annotationPointDualAxis",
-  "description": "some functional description for vseed",
+  "description": "A dualAxis chart, containing 6 data points, 2 measures (mapped to primaryYAxis, secondaryYAxis), 1 dimensions.",
   "vseed": {
     "annotationPoint": [
       {

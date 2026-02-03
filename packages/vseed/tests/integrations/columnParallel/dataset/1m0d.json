@@ -1,6 +1,6 @@
 {
   "name": "1m0d",
-  "description": "some functional description for vseed",
+  "description": "A columnParallel chart, containing 1 data points.",
   "vseed": {
     "chartType": "columnParallel",
     "dataset": [

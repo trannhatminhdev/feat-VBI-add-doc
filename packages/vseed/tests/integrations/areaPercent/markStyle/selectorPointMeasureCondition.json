@@ -1,6 +1,6 @@
 {
   "name": "selectorPointMeasureCondition",
-  "description": "some functional description for vseed",
+  "description": "A areaPercent chart, with customized pointStyle (pointBorderColor, pointBorderStyle, pointBorderWidth, pointColor, pointColorOpacity, pointSize), containing 5 data points, 3 measures, 1 dimensions.",
   "vseed": {
     "chartType": "areaPercent",
     "dataset": [
