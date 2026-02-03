@@ -1,9 +1,10 @@
 import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseed from './dualAxisPivot.json'
+import vseedConfig from './dualAxisPivot.json'
 
 test('dualAxisPivot', () => {
-   registerAll()
+  registerAll()
+  const { vseed } = vseedConfig
   const builder = Builder.from(vseed as VSeed)
   const advanced = builder.buildAdvanced()
   

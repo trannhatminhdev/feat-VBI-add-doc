@@ -1,9 +1,10 @@
 import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseed from './dataset1M1D.json'
+import vseedConfig from './dataset1M1D.json'
 
 test('dataset1M1D', () => {
-   registerAll()
+  registerAll()
+  const { vseed } = vseedConfig
   const builder = Builder.from(vseed as VSeed)
   const advanced = builder.buildAdvanced()
   

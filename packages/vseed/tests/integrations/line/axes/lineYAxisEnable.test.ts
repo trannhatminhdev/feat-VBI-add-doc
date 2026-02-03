@@ -1,9 +1,10 @@
 import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseed from './lineYAxisEnable.json'
+import vseedConfig from './lineYAxisEnable.json'
 
 test('lineYAxisEnable', () => {
-   registerAll()
+  registerAll()
+  const { vseed } = vseedConfig
   const builder = Builder.from(vseed as VSeed)
   const advanced = builder.buildAdvanced()
   

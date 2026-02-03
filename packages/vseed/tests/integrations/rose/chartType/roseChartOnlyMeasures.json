@@ -1,11 +1,15 @@
 {
-  "chartType": "rose",
-  "dataset": [
-    {
-      "profit": 40,
-      "sales": 100,
-      "goalSales": 200,
-      "count": 20
-    }
-  ]
+  "name": "roseChartOnlyMeasures",
+  "description": "some functional description for vseed",
+  "vseed": {
+    "chartType": "rose",
+    "dataset": [
+      {
+        "profit": 40,
+        "sales": 100,
+        "goalSales": 200,
+        "count": 20
+      }
+    ]
+  }
 }

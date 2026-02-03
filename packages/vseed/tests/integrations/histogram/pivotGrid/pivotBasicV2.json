@@ -1,12 +1,40 @@
 {
-  "chartType": "histogram",
-  "dataset": [
-    { "group": "A", "v": 1 },
-    { "group": "A", "v": 2 },
-    { "group": "B", "v": 3 },
-    { "group": "B", "v": 4 }
-  ],
-  "dimensions": [{ "id": "group", "encoding": "xAxis" }],
-  "measures": [{ "id": "v", "encoding": "value" }],
-  "tooltip": { "enable": false }
+  "name": "pivotBasicV2",
+  "description": "some functional description for vseed",
+  "vseed": {
+    "chartType": "histogram",
+    "dataset": [
+      {
+        "group": "A",
+        "v": 1
+      },
+      {
+        "group": "A",
+        "v": 2
+      },
+      {
+        "group": "B",
+        "v": 3
+      },
+      {
+        "group": "B",
+        "v": 4
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "group",
+        "encoding": "xAxis"
+      }
+    ],
+    "measures": [
+      {
+        "id": "v",
+        "encoding": "value"
+      }
+    ],
+    "tooltip": {
+      "enable": false
+    }
+  }
 }

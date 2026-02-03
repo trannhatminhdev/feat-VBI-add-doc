@@ -1,9 +1,10 @@
 import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseed from './pivotTableBodyCellStyleBasic.json'
+import vseedConfig from './pivotTableBodyCellStyleBasic.json'
 
 test('pivotTableBodyCellStyleBasic', () => {
-   registerAll()
+  registerAll()
+  const { vseed } = vseedConfig
   const builder = Builder.from(vseed as VSeed)
   const advanced = builder.buildAdvanced()
   

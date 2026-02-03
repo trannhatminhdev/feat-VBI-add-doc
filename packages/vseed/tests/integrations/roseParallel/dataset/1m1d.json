@@ -1,10 +1,29 @@
 {
-  "chartType": "roseParallel",
-  "dataset": [
-    { "date": "2019", "profit": 10 },
-    { "date": "2020", "profit": 30 },
-    { "date": "2021", "profit": 30 },
-    { "date": "2022", "profit": 50 },
-    { "date": "2023", "profit": 40 }
-  ]
+  "name": "1m1d",
+  "description": "some functional description for vseed",
+  "vseed": {
+    "chartType": "roseParallel",
+    "dataset": [
+      {
+        "date": "2019",
+        "profit": 10
+      },
+      {
+        "date": "2020",
+        "profit": 30
+      },
+      {
+        "date": "2021",
+        "profit": 30
+      },
+      {
+        "date": "2022",
+        "profit": 50
+      },
+      {
+        "date": "2023",
+        "profit": 40
+      }
+    ]
+  }
 }

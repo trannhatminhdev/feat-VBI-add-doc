@@ -1,15 +1,37 @@
 {
-  "chartType": "column",
-  "dataset": [
-    {
-      "profit": 12344567,
-      "sales": 12344567,
-      "count": 12344567
-    }
-  ],
-  "measures": [
-    { "id": "profit", "format": { "type": "percent", "thousandSeparator": true } },
-    { "id": "sales", "format": { "type": "permille", "thousandSeparator": false } },
-    { "id": "count", "format": { "type": "number", "thousandSeparator": true } }
-  ]
+  "name": "thousandSeparator",
+  "description": "some functional description for vseed",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [
+      {
+        "profit": 12344567,
+        "sales": 12344567,
+        "count": 12344567
+      }
+    ],
+    "measures": [
+      {
+        "id": "profit",
+        "format": {
+          "type": "percent",
+          "thousandSeparator": true
+        }
+      },
+      {
+        "id": "sales",
+        "format": {
+          "type": "permille",
+          "thousandSeparator": false
+        }
+      },
+      {
+        "id": "count",
+        "format": {
+          "type": "number",
+          "thousandSeparator": true
+        }
+      }
+    ]
+  }
 }

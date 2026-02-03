@@ -1,22 +1,46 @@
 {
-  "chartType": "dualAxis",
-  "measures": [
-    {
-      "id": "sales",
-      "alias": "销售额",
-      "encoding": "primaryYAxis"
-    },
-    {
-      "id": "profit",
-      "alias": "利润",
-      "encoding": "secondaryYAxis"
-    }
-  ],
-  "dataset": [
-    { "date": "2019", "profit": 10, "sales": 200 },
-    { "date": "2020", "profit": 30, "sales": 600 },
-    { "date": "2021", "profit": 30, "sales": 600 },
-    { "date": "2022", "profit": 50, "sales": 1000 },
-    { "date": "2023", "profit": 40, "sales": 800 }
-  ]
+  "name": "second",
+  "description": "some functional description for vseed",
+  "vseed": {
+    "chartType": "dualAxis",
+    "measures": [
+      {
+        "id": "sales",
+        "alias": "销售额",
+        "encoding": "primaryYAxis"
+      },
+      {
+        "id": "profit",
+        "alias": "利润",
+        "encoding": "secondaryYAxis"
+      }
+    ],
+    "dataset": [
+      {
+        "date": "2019",
+        "profit": 10,
+        "sales": 200
+      },
+      {
+        "date": "2020",
+        "profit": 30,
+        "sales": 600
+      },
+      {
+        "date": "2021",
+        "profit": 30,
+        "sales": 600
+      },
+      {
+        "date": "2022",
+        "profit": 50,
+        "sales": 1000
+      },
+      {
+        "date": "2023",
+        "profit": 40,
+        "sales": 800
+      }
+    ]
+  }
 }

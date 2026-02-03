@@ -1,10 +1,29 @@
 {
-  "chartType": "pivotTable",
-  "dataset": [
-    { "date": "2019", "yest": "a" },
-    { "date": "2020", "yest": "a" },
-    { "date": "2021", "yest": "a" },
-    { "date": "2022", "yest": "a" },
-    { "date": "2023", "yest": "a" }
-  ]
+  "name": "onlyDimensions",
+  "description": "some functional description for vseed",
+  "vseed": {
+    "chartType": "pivotTable",
+    "dataset": [
+      {
+        "date": "2019",
+        "yest": "a"
+      },
+      {
+        "date": "2020",
+        "yest": "a"
+      },
+      {
+        "date": "2021",
+        "yest": "a"
+      },
+      {
+        "date": "2022",
+        "yest": "a"
+      },
+      {
+        "date": "2023",
+        "yest": "a"
+      }
+    ]
+  }
 }

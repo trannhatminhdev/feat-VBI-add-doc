@@ -1,11 +1,15 @@
 {
-  "chartType": "radar",
-  "dataset": [
-    {
-      "profit": 10,
-      "sales": 20,
-      "count": 50,
-      "rateOfReturn": 1
-    }
-  ]
+  "name": "minimal",
+  "description": "some functional description for vseed",
+  "vseed": {
+    "chartType": "radar",
+    "dataset": [
+      {
+        "profit": 10,
+        "sales": 20,
+        "count": 50,
+        "rateOfReturn": 1
+      }
+    ]
+  }
 }

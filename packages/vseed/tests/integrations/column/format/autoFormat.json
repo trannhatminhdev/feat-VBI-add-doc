@@ -1,13 +1,23 @@
 {
-  "chartType": "column",
-  "dataset": [
-    {
-      "profit": 12342.34567,
-      "sales": 23453.4567
-    }
-  ],
-  "measures": [
-    { "id": "profit", "autoFormat": true },
-    { "id": "sales", "autoFormat": true }
-  ]
+  "name": "autoFormat",
+  "description": "some functional description for vseed",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [
+      {
+        "profit": 12342.34567,
+        "sales": 23453.4567
+      }
+    ],
+    "measures": [
+      {
+        "id": "profit",
+        "autoFormat": true
+      },
+      {
+        "id": "sales",
+        "autoFormat": true
+      }
+    ]
+  }
 }

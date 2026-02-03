@@ -1,9 +1,10 @@
 import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseed from './annotationHorizontalLineSplitLine.json'
+import vseedConfig from './annotationHorizontalLineSplitLine.json'
 
 test('annotationHorizontalLineSplitLine', () => {
-   registerAll()
+  registerAll()
+  const { vseed } = vseedConfig
   const builder = Builder.from(vseed as VSeed)
   const advanced = builder.buildAdvanced()
   

@@ -1,8 +1,12 @@
 {
-  "chartType": "columnParallel",
-  "dataset": [
-    {
-      "profit": 10
-    }
-  ]
+  "name": "dataset1M0D",
+  "description": "some functional description for vseed",
+  "vseed": {
+    "chartType": "columnParallel",
+    "dataset": [
+      {
+        "profit": 10
+      }
+    ]
+  }
 }
