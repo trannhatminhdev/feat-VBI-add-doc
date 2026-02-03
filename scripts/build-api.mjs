@@ -169,8 +169,7 @@ function generateClassMarkdown(classDecl) {
       const initializer = member.getInitializer()
       if (
         initializer &&
-        (initializer.getKind() === SyntaxKind.ArrowFunction ||
-          initializer.getKind() === SyntaxKind.FunctionExpression)
+        (initializer.getKind() === SyntaxKind.ArrowFunction || initializer.getKind() === SyntaxKind.FunctionExpression)
       ) {
         isMethod = true
       }
@@ -267,8 +266,7 @@ function getMemberSignature(member, memberName) {
 
     if (
       initializer &&
-      (initializer.getKind() === SyntaxKind.ArrowFunction ||
-        initializer.getKind() === SyntaxKind.FunctionExpression)
+      (initializer.getKind() === SyntaxKind.ArrowFunction || initializer.getKind() === SyntaxKind.FunctionExpression)
     ) {
       const arrowFunc = initializer
       const params = arrowFunc
@@ -466,10 +464,7 @@ function getExportedFunctionItems(sourceFile) {
 }
 
 function isFunctionLikeDeclaration(decl) {
-  return (
-    decl.getKind() === SyntaxKind.FunctionDeclaration ||
-    decl.getKind() === SyntaxKind.VariableDeclaration
-  )
+  return decl.getKind() === SyntaxKind.FunctionDeclaration || decl.getKind() === SyntaxKind.VariableDeclaration
 }
 
 function ensureDir(dir) {
