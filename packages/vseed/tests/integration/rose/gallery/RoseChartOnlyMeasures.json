@@ -1,0 +1,11 @@
+{
+  "chartType": "rose",
+  "dataset": [
+    {
+      "profit": 40,
+      "sales": 100,
+      "goalSales": 200,
+      "count": 20
+    }
+  ]
+}

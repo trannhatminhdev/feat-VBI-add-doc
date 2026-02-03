@@ -1,0 +1,24 @@
+{
+  "chartType": "funnel",
+  "dataset": [
+    {
+      "profit": 10,
+      "sales": 20,
+      "profit1": 0.1
+    }
+  ],
+  "measures": [
+    {
+      "id": "sales",
+      "alias": "销售"
+    },
+    {
+      "id": "profit",
+      "alias": "利润"
+    },
+    {
+      "id": "profit1",
+      "alias": "回报率"
+    }
+  ]
+}
