@@ -640,6 +640,15 @@
 
 :::
 
+### sliderHandleBorderColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器进度条滑块边框颜色
+
+:::
+
 ### startButtonColor
 
 **Type:** `string | undefined`

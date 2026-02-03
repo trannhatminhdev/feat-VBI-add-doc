@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.3.13
+
+### Patch Changes
+
+- feat: optimize player default style
+
 ## 0.3.12
 
 ### Patch Changes

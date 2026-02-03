@@ -36,6 +36,11 @@ export type Player = {
    */
   sliderHandleColor?: string
   /**
+   * @description 播放器进度条滑块边框颜色
+   */
+  sliderHandleBorderColor?: string
+
+  /**
    * @description 播放器开始按钮颜色
    */
   startButtonColor?: string

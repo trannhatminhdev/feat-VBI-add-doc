@@ -1,19 +1,19 @@
 import type { Player } from 'src/types'
 import { getDarkColorScheme, getLightColorScheme } from './color'
-import { getDarkColorLegend, getLightColorLegend } from './legend'
 
 export const getDarkPlayer = (): Omit<Player, 'field'> => {
   const primaryColor = getDarkColorScheme()[0]
-  const railColor = getDarkColorLegend().railBackgroundColor
 
   return {
     interval: 1000,
     loop: false,
     autoPlay: true,
     position: 'bottom',
-    railColor,
+    railColor: '#404349',
+
     trackColor: primaryColor,
-    sliderHandleColor: primaryColor,
+    sliderHandleColor: '#232324',
+    sliderHandleBorderColor: primaryColor,
 
     startButtonColor: primaryColor,
     pauseButtonColor: primaryColor,
@@ -24,16 +24,17 @@ export const getDarkPlayer = (): Omit<Player, 'field'> => {
 
 export const getLightPlayer = (): Omit<Player, 'field'> => {
   const primaryColor = getLightColorScheme()[0]
-  const railColor = getLightColorLegend().railBackgroundColor
 
   return {
     interval: 1000,
     loop: false,
     autoPlay: true,
     position: 'bottom',
-    railColor,
+    railColor: '#f1f3f4',
+
     trackColor: primaryColor,
-    sliderHandleColor: primaryColor,
+    sliderHandleColor: '#ffffff',
+    sliderHandleBorderColor: primaryColor,
 
     startButtonColor: primaryColor,
     pauseButtonColor: primaryColor,
