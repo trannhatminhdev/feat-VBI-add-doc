@@ -8,10 +8,10 @@ export const playerAdapter = (pipe: VChartSpecPipe): VChartSpecPipe => {
     const { vseed, advancedVSeed } = context
     const { datasetReshapeInfo, chartType } = advancedVSeed
     const baseConfig = advancedVSeed.config[chartType] as { player: Player }
-    const { player } = baseConfig
-    if (!player || !baseConfig || isVTable(vseed) || isPivotChart(vseed)) {
+    if (!('player' in vseed) || !baseConfig || !baseConfig.player || isVTable(vseed) || isPivotChart(vseed)) {
       return pipe(spec, context)
     }
+    const { player } = baseConfig
 
     const id = datasetReshapeInfo[0].id
     const nextSpec = pipe(spec, context)
@@ -42,6 +42,7 @@ export const playerAdapter = (pipe: VChartSpecPipe): VChartSpecPipe => {
     return {
       ...nextSpec,
       player: {
+        visible: true,
         auto: autoPlay,
         interval: interval,
         loop: loop,
