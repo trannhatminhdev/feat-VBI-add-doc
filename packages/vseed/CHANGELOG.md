@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.3.12
+
+### Patch Changes
+
+- fix: player always enable
+
 ## 0.3.11
 
 ### Patch Changes
