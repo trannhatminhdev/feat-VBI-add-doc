@@ -98,7 +98,7 @@ set vseed(value)
 get advancedVSeed()
 ```
 
-获取缓存的 AdvancedVSeed
+获取中间层的 AdvancedVSeed, 用于分离式构建
 
 **Returns:** AdvancedVSeed 对象
 
@@ -110,7 +110,7 @@ set advancedVSeed(value)
 
 
 
-设置缓存的 AdvancedVSeed
+设置获取中间层的 AdvancedVSeed, 用于分离式构建
 
 **Parameters:**
 
@@ -122,7 +122,7 @@ set advancedVSeed(value)
 get spec()
 ```
 
-获取缓存的 Spec
+获取当前 Builder持有的 Spec
 
 **Returns:** Spec 对象
 
@@ -132,7 +132,7 @@ get spec()
 set spec(value)
 ```
 
-设置缓存的 Spec
+设置当前 Builder持有的 Spec
 
 **Parameters:**
 
