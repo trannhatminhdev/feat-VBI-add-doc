@@ -1,0 +1,37 @@
+[
+  {
+    "type": "file",
+    "name": "Builder",
+    "label": "Builder "
+  },
+  {
+    "type": "file",
+    "name": "registerAll",
+    "label": "registerAll "
+  },
+  {
+    "type": "file",
+    "name": "registerCustomTheme",
+    "label": "registerCustomTheme "
+  },
+  {
+    "type": "file",
+    "name": "registerDarkTheme",
+    "label": "registerDarkTheme "
+  },
+  {
+    "type": "file",
+    "name": "registerLightTheme",
+    "label": "registerLightTheme "
+  },
+  {
+    "type": "file",
+    "name": "updateAdvanced",
+    "label": "updateAdvanced "
+  },
+  {
+    "type": "file",
+    "name": "updateSpec",
+    "label": "updateSpec "
+  }
+]

@@ -21,6 +21,7 @@
     "build:vbi": "pnpm --filter=@visactor/vbi run build",
     "build:rsdoctor": "pnpm --filter=@visactor/vseed run build:rsdoctor",
     "build:docs": "node ./scripts/build-docs.js",
+    "build:api": "node ./scripts/build-api.js",
     "build:test": "node ./scripts/build-tests.mjs",
     "build:canvasTest": "node ./scripts/build-tests-with-canvas.mjs",
     "rstest": "pnpm --filter=@visactor/vseed rstest",

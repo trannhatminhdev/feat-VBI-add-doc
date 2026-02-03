@@ -3,96 +3,96 @@
     "zh-CN": "大纲",
     "en-US": "On This Page"
   },
-  "Quick Start": {
-    "en-US": "Quick Start",
-    "zh-CN": "快速开始"
+  "languagesText": {
+    "zh-CN": "语言",
+    "en-US": "Languages"
   },
-  "examples": {
-    "en-US": "examples",
-    "zh-CN": "示例"
+  "themeText": {
+    "zh-CN": "主题",
+    "en-US": "Theme"
   },
-  "guide": {
-    "en-US": "Guide",
-    "zh-CN": "指南"
+  "versionsText": {
+    "zh-CN": "版本",
+    "en-US": "Versions"
   },
-  "playground": {
-    "en-US": "Playground",
-    "zh-CN": "Playground"
+  "menuTitle": {
+    "zh-CN": "菜单",
+    "en-US": "Menu"
   },
-  "deployment": {
-    "en-US": "Deployment",
-    "zh-CN": "部署"
+  "scrollToTopText": {
+    "zh-CN": "回到顶部",
+    "en-US": "Scroll to top"
   },
-  "dataConfig": {
-    "en-US": "Data Config",
-    "zh-CN": "数据配置"
+  "lastUpdatedText": {
+    "zh-CN": "最后更新于",
+    "en-US": "Last updated"
   },
-  "baseConfig": {
-    "en-US": "Base Config",
-    "zh-CN": "通用配置"
+  "prevPageText": {
+    "zh-CN": "上一页",
+    "en-US": "Previous page"
   },
-  "chartConfig": {
-    "en-US": "Chart Config",
-    "zh-CN": "图表配置"
+  "nextPageText": {
+    "zh-CN": "下一页",
+    "en-US": "Next page"
   },
-  "chartType": {
-    "en-US": "Chart Type",
-    "zh-CN": "图表类型"
+  "sourceCodeText": {
+    "zh-CN": "源代码",
+    "en-US": "Source code"
   },
-  "dataset": {
-    "en-US": "dataset",
-    "zh-CN": "数据集"
+  "searchPlaceholderText": {
+    "zh-CN": "搜索",
+    "en-US": "Search"
   },
-  "measures": {
-    "en-US": "measures",
-    "zh-CN": "指标"
+  "searchPanelCancelText": {
+    "zh-CN": "取消",
+    "en-US": "Cancel"
   },
-  "dimensions": {
-    "en-US": "dimensions",
-    "zh-CN": "维度"
+  "searchNoResultsText": {
+    "zh-CN": "无搜索结果",
+    "en-US": "No results"
   },
-  "markStyle": {
-    "en-US": "Mark Style",
-    "zh-CN": "图元样式"
+  "searchSuggestedQueryText": {
+    "zh-CN": "建议查询",
+    "en-US": "Suggested query"
   },
-  "cellStyle": {
-    "en-US": "Table Cell Style",
-    "zh-CN": "表格单元格样式"
+  "overview.filterNameText": {
+    "zh-CN": "按名称筛选",
+    "en-US": "Filter by name"
   },
-  "annotation": {
-    "en-US": "Annotation",
-    "zh-CN": "标注"
+  "overview.filterPlaceholderText": {
+    "zh-CN": "筛选...",
+    "en-US": "Filter..."
   },
-  "interaction": {
-    "en-US": "interaction",
-    "zh-CN": "交互"
+  "overview.filterNoResultText": {
+    "zh-CN": "未找到结果",
+    "en-US": "No results found"
   },
-  "brush": {
-    "en-US": "brush",
-    "zh-CN": "框选"
+  "openInText": {
+    "zh-CN": "打开方式",
+    "en-US": "Open in"
   },
-  "regressionLine": {
-    "en-US": "Regression Line",
-    "zh-CN": "回归线"
+  "copyMarkdownText": {
+    "zh-CN": "复制 Markdown",
+    "en-US": "Copy Markdown"
   },
-  "theme": {
-    "en-US": "Theme",
-    "zh-CN": "主题"
+  "copyMarkdownLinkText": {
+    "zh-CN": "复制链接",
+    "en-US": "Copy Link"
   },
-  "i18n": {
-    "en-US": "i18n",
-    "zh-CN": "国际化"
+  "editLinkText": {
+    "zh-CN": "编辑此页",
+    "en-US": "Edit this page"
   },
-  "numFormat": {
-    "en-US": "numFormat",
-    "zh-CN": "数值格式"
+  "codeButtonGroupCopyButtonText": {
+    "zh-CN": "复制",
+    "en-US": "Copy"
   },
-  "analysis": {
-    "en-US": "analysis",
-    "zh-CN": "分析"
+  "notFoundText": {
+    "zh-CN": "页面未找到",
+    "en-US": "Page not found"
   },
-  "designPhilosophy": {
-    "en-US": "designPhilosophy",
-    "zh-CN": "设计哲学"
+  "takeMeHomeText": {
+    "zh-CN": "返回首页",
+    "en-US": "Take me home"
   }
 }
