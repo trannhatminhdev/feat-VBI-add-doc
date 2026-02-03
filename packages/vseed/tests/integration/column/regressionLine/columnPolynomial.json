@@ -1,23 +1,56 @@
 {
   "chartType": "column",
   "dataset": [
-    { "category": "A", "value": 10 },
-    { "category": "B", "value": 15 },
-    { "category": "C", "value": 8 },
-    { "category": "D", "value": 20 },
-    { "category": "E", "value": 12 }
+    {
+      "date": "2019",
+      "profit": 10,
+      "sales": 20
+    },
+    {
+      "date": "2020",
+      "profit": 30,
+      "sales": 60
+    },
+    {
+      "date": "2021",
+      "profit": 30,
+      "sales": 60
+    },
+    {
+      "date": "2022",
+      "profit": 50,
+      "sales": 100
+    },
+    {
+      "date": "2023",
+      "profit": 40,
+      "sales": 80
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "date",
+      "encoding": "xAxis"
+    }
   ],
   "measures": [
-    { "id": "category", "encoding": "xAxis" },
-    { "id": "value", "encoding": "yAxis" }
+    {
+      "id": "profit",
+      "encoding": "yAxis"
+    }
   ],
   "polynomialRegressionLine": [
     {
-      "color": "#ff4d4f",
+      "color": "red",
       "text": "Degree-2",
       "degree": 2,
-      "confidenceIntervalVisible": true,
-      "confidenceIntervalOpacity": 0.5
+      "confidenceIntervalVisible": true
+    },
+    {
+      "color": "green",
+      "text": "Degree-3",
+      "degree": 3,
+      "confidenceIntervalVisible": true
     }
   ]
 }
