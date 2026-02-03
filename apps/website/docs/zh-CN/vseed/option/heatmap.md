@@ -596,6 +596,78 @@
 
 :::
 
+### position
+
+**Type:** `"top" | "bottom" | "left" | "right" | undefined`
+
+:::note{title=描述}
+播放器位置
+
+:::
+
+### railColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器进度条轨道颜色
+
+:::
+
+### trackColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器进度条进度颜色
+
+:::
+
+### sliderHandleColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器进度条滑块颜色
+
+:::
+
+### startButtonColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器开始按钮颜色
+
+:::
+
+### pauseButtonColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器暂停按钮颜色
+
+:::
+
+### backwardButtonColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器后退按钮颜色
+
+:::
+
+### forwardButtonColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器前进按钮颜色
+
+:::
+
 
 ## backgroundColor
 
@@ -1050,7 +1122,7 @@ same as operator
 
 ### position
 
-**Type:** `"left" | "leftTop" | "leftBottom" | "lt" | "lb" | "top" | "topLeft" | "topRight" | "tl" | "tr" | "right" | "rightTop" | "rightBottom" | "rt" | "rb" | "bottom" | "bottomLeft" | "bottomRight" | "bl" | "br" | undefined`
+**Type:** `"top" | "bottom" | "left" | "right" | "leftTop" | "leftBottom" | "lt" | "lb" | "topLeft" | "topRight" | "tl" | "tr" | "rightTop" | "rightBottom" | "rt" | "rb" | "bottomLeft" | "bottomRight" | "bl" | "br" | undefined`
 
 :::note{title=描述}
 图例位置

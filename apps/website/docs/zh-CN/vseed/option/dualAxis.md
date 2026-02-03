@@ -2404,7 +2404,7 @@ shapeType: 'circle'
 
 ### position
 
-**Type:** `"left" | "leftTop" | "leftBottom" | "lt" | "lb" | "top" | "topLeft" | "topRight" | "tl" | "tr" | "right" | "rightTop" | "rightBottom" | "rt" | "rb" | "bottom" | "bottomLeft" | "bottomRight" | "bl" | "br" | undefined`
+**Type:** `"top" | "bottom" | "left" | "right" | "leftTop" | "leftBottom" | "lt" | "lb" | "topLeft" | "topRight" | "tl" | "tr" | "rightTop" | "rightBottom" | "rt" | "rb" | "bottomLeft" | "bottomRight" | "bl" | "br" | undefined`
 
 :::note{title=描述}
 图例位置
@@ -4595,7 +4595,7 @@ same as operator
 
 ### textPosition
 
-**Type:** `"left" | "top" | "topLeft" | "topRight" | "right" | "bottom" | "bottomLeft" | "bottomRight" | undefined`
+**Type:** `"top" | "bottom" | "left" | "right" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight" | undefined`
 
 :::note{title=描述}
 文本位置
