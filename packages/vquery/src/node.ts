@@ -1,5 +1,7 @@
-export { convertDSLToSQL } from './dataset'
+export { convertDSLToSQL, Dataset } from './dataset'
 export { DatasetSourceBuilder } from './data-source-builder/dataSourceBuilder'
 export * from './utils'
 export * from './types'
 export { VQuery } from './vquery-node'
+export { DuckDBNodeQueryAdapter } from './adapters/query-adapter/duckdbNodeAdapter'
+export { InMemoryAdapter } from './adapters/storage-adapter/inmemoryAdapter'

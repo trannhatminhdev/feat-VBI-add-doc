@@ -1,0 +1,43 @@
+{
+  "datasetId": "vquery-demo",
+  "description": "toHour",
+  "dataset": [
+    { "area": "BEI JING", "date": "2025-01-01 10:00:00", "sales": 100 },
+    { "area": "BEI JING", "date": "2025-01-01 11:30:30", "sales": 200 },
+    { "area": "BEI JING", "date": "2025-01-01 12:15:45", "sales": 300 },
+    { "area": "HANG ZHOU", "date": "2025-01-01 10:00:00", "sales": 100 },
+    { "area": "HANG ZHOU", "date": "2025-01-01 11:30:30", "sales": 200 },
+    { "area": "HANG ZHOU", "date": "2025-01-01 12:15:45", "sales": 500 },
+    { "area": "SHANG HAI", "date": "2025-11-01 10:00:00", "sales": 600 },
+    { "area": "SHANG HAI", "date": "2025-11-01 11:30:30", "sales": 400 },
+    { "area": "SHANG HAI", "date": "2025-11-01 12:15:45", "sales": 300 }
+  ],
+  "schema": [
+    { "name": "area", "type": "string" },
+    { "name": "date", "type": "datetime" },
+    { "name": "sales", "type": "number" }
+  ],
+  "vquery": {
+    "select": [
+      "area",
+      {
+        "field": "sales",
+        "alias": "Sum(sales)",
+        "aggr": { "func": "sum" }
+      },
+      {
+        "field": "date",
+        "alias": "hour",
+        "aggr": { "func": "to_hour" }
+      }
+    ],
+    "groupBy": ["hour", "area"],
+    "orderBy": [
+      {
+        "field": "Sum(sales)",
+        "order": "desc"
+      }
+    ],
+    "limit": 100
+  }
+}

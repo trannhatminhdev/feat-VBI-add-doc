@@ -27,11 +27,11 @@ export const applyWhere = <T>(where: Where<T> | WhereClause<T>): RawBuilder<bool
       }
       case 'between': {
         const [a, b] = value as [unknown, unknown]
-        return sql<boolean>`${sql.ref(field)} between (${sql.val(a)}, ${sql.val(b)})`
+        return sql<boolean>`${sql.ref(field)} between ${sql.val(a)} and ${sql.val(b)}`
       }
       case 'not between': {
         const [a, b] = value as [unknown, unknown]
-        return sql<boolean>`not ${sql.ref(field)} between (${sql.val(a)}, ${sql.val(b)})`
+        return sql<boolean>`${sql.ref(field)} not between ${sql.val(a)} and ${sql.val(b)}`
       }
       default:
         return sql<boolean>`${sql.ref(field)} ${sql.raw(leaf.op)} ${sql.val(value)}`

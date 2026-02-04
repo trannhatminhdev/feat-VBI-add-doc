@@ -29,11 +29,14 @@
   ],
   "scripts": {
     "build": "rslib build",
+    "build:test": "node scripts/build-tests.js",
+    "build:docs": "node scripts/build-docs.js",
+    "g": "pnpm run build:test && pnpm run build:docs",
     "dev": "rslib build --watch --no-clean",
     "lint": "eslint .",
     "test": "rstest",
     "test:update": "rstest --update",
-    "test:coverage": "rstest --coverage; open ./coverage/index.html",
+    "test:coverage": "rstest --coverage && node scripts/build-coverage-badge.mjs && open ./coverage/index.html",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

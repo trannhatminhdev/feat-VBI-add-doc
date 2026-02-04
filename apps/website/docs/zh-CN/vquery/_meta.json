@@ -1,1 +1,1 @@
-["index", "playground"]
+["index", "playground", { "type": "dir", "name": "examples", "label": "Examples" }]

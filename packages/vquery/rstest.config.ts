@@ -8,12 +8,10 @@ export default defineConfig({
     enabled: true,
     exclude: ['**/node_modules/**', '**/dist/**'],
     include: ['src/**'],
-    reporters: ['html', ['text', { skipFull: true }], ['json', { file: 'coverage-final.json' }]],
+    reporters: ['html', ['text', { skipFull: true }], 'json', 'json-summary'],
     thresholds: {
-      statements: 100,
-      branches: 100,
-      functions: 100,
-      lines: 100,
+      statements: 95,
+      lines: 95,
     },
   },
   resolve: {

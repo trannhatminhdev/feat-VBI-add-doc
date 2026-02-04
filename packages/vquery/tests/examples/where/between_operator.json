@@ -1,0 +1,42 @@
+{
+  "datasetId": "where-between-operator",
+  "description": "Where with BETWEEN / NOT BETWEEN Operator",
+  "vquery": {
+    "select": ["id", "name", "age", "gender"],
+    "where": {
+      "op": "or",
+      "conditions": [
+        {
+          "op": "and",
+          "conditions": [
+            { "field": "age", "op": "between", "value": [18, 30] },
+            { "field": "gender", "op": "in", "value": ["male", "female"] }
+          ]
+        },
+        {
+          "op": "and",
+          "conditions": [
+            { "field": "age", "op": "not between", "value": [18, 30] },
+            { "field": "gender", "op": "not in", "value": ["male", "female"] }
+          ]
+        }
+      ]
+    }
+  },
+  "dataset": [
+    { "id": 1, "name": "Alice", "age": 25, "department": "HR", "gender": "female", "active": 1 },
+    { "id": 2, "name": "Bob", "age": 30, "department": "Engineering", "gender": "male", "active": 1 },
+    { "id": 3, "name": "Charlie", "age": 17, "department": "Engineering", "gender": "male", "active": 0 },
+    { "id": 4, "name": "David", "age": 15, "department": "HR", "gender": "male", "active": 1 },
+    { "id": 5, "name": "Eve", "age": 22, "department": "Marketing", "gender": "female", "active": 1 },
+    { "id": 6, "name": "Frank", "age": null, "department": "Sales", "gender": null, "active": 0 }
+  ],
+  "schema": [
+    { "name": "id", "type": "number" },
+    { "name": "name", "type": "string" },
+    { "name": "age", "type": "number" },
+    { "name": "department", "type": "string" },
+    { "name": "gender", "type": "string" },
+    { "name": "active", "type": "number" }
+  ]
+}

@@ -21,12 +21,13 @@
     "build": "rslib build",
     "dev:rsdoctor": "RSDOCTOR=true rslib dev",
     "build:rsdoctor": "RSDOCTOR=true rslib build",
+    "build:docs": "node ./scripts/build-docs.mjs",
+    "build:api": "node ./scripts/build-api.mjs",
+    "build:test": "node ./scripts/build-tests.mjs",
+    "g": "pnpm run build:test && pnpm run build:docs && pnpm run build:api",
     "format": "prettier --write .",
     "lint": "eslint . --cache",
     "typecheck": "tsc --noEmit",
-    "rstest": "rstest",
-    "rstest:update": "rstest --update",
-    "rstest:coverage": "rstest --update --coverage && open coverage/index.html",
     "test": "vitest run",
     "test:unit": "vitest run tests/unit",
     "test:unit:coverage": "vitest run tests/unit --coverage && open coverage/index.html",
@@ -34,7 +35,7 @@
     "test:integration:update": "vitest run tests/integration --update",
     "test:integration:coverage": "vitest run tests/integration --coverage && open coverage/index.html",
     "test:update": "vitest run --update",
-    "test:coverage": "vitest run  --update --coverage && open coverage/index.html"
+    "test:coverage": "vitest run  --update --coverage && node scripts/build-coverage-badge.mjs && open coverage/index.html"
   },
   "dependencies": {
     "@visactor/vdataset": "~1.0.21",

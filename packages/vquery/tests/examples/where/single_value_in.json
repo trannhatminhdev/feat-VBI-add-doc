@@ -1,0 +1,30 @@
+{
+  "datasetId": "where-single-value-in",
+  "description": "Where with Single Value IN / NOT IN",
+  "vquery": {
+    "select": ["id", "name", "age", "gender"],
+    "where": {
+      "op": "or",
+      "conditions": [
+        { "field": "gender", "op": "in", "value": "male" },
+        { "field": "gender", "op": "not in", "value": "female" }
+      ]
+    }
+  },
+  "dataset": [
+    { "id": 1, "name": "Alice", "age": 25, "department": "HR", "gender": "female", "active": 1 },
+    { "id": 2, "name": "Bob", "age": 30, "department": "Engineering", "gender": "male", "active": 1 },
+    { "id": 3, "name": "Charlie", "age": 17, "department": "Engineering", "gender": "male", "active": 0 },
+    { "id": 4, "name": "David", "age": 15, "department": "HR", "gender": "male", "active": 1 },
+    { "id": 5, "name": "Eve", "age": 22, "department": "Marketing", "gender": "female", "active": 1 },
+    { "id": 6, "name": "Frank", "age": null, "department": "Sales", "gender": null, "active": 0 }
+  ],
+  "schema": [
+    { "name": "id", "type": "number" },
+    { "name": "name", "type": "string" },
+    { "name": "age", "type": "number" },
+    { "name": "department", "type": "string" },
+    { "name": "gender", "type": "string" },
+    { "name": "active", "type": "number" }
+  ]
+}

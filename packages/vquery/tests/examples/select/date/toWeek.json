@@ -1,0 +1,43 @@
+{
+  "datasetId": "vquery-demo",
+  "description": "toWeek",
+  "dataset": [
+    { "area": "BEI JING", "date": "2025-01-01", "sales": 100 },
+    { "area": "BEI JING", "date": "2025-01-08", "sales": 200 },
+    { "area": "BEI JING", "date": "2025-01-15", "sales": 300 },
+    { "area": "HANG ZHOU", "date": "2025-01-01", "sales": 100 },
+    { "area": "HANG ZHOU", "date": "2025-01-08", "sales": 200 },
+    { "area": "HANG ZHOU", "date": "2025-01-15", "sales": 500 },
+    { "area": "SHANG HAI", "date": "2025-11-01", "sales": 600 },
+    { "area": "SHANG HAI", "date": "2025-11-08", "sales": 400 },
+    { "area": "SHANG HAI", "date": "2025-11-15", "sales": 300 }
+  ],
+  "schema": [
+    { "name": "area", "type": "string" },
+    { "name": "date", "type": "date" },
+    { "name": "sales", "type": "number" }
+  ],
+  "vquery": {
+    "select": [
+      "area",
+      {
+        "field": "sales",
+        "alias": "Sum(sales)",
+        "aggr": { "func": "sum" }
+      },
+      {
+        "field": "date",
+        "alias": "week",
+        "aggr": { "func": "to_week" }
+      }
+    ],
+    "groupBy": ["week", "area"],
+    "orderBy": [
+      {
+        "field": "Sum(sales)",
+        "order": "desc"
+      }
+    ],
+    "limit": 100
+  }
+}

@@ -24,7 +24,7 @@ const buildSelect: buildPipe = (queryDSL, context) => {
     return {
       field: measure.field,
       alias: measure.alias,
-      func: measure.aggregate.func,
+      aggr: measure.aggregate,
     }
   })
 

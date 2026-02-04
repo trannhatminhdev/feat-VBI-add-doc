@@ -15,6 +15,7 @@ export default [
       'dist/',
       'coverage/',
       'node_modules/',
+      'scripts/',
       'tsconfig.*',
       'eslint.config.mjs',
       'rslib.config.ts',

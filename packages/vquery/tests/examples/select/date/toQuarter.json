@@ -1,0 +1,43 @@
+{
+  "datasetId": "vquery-demo",
+  "description": "toQuarter",
+  "dataset": [
+    { "area": "BEI JING", "date": "2025-01-01", "sales": 100 },
+    { "area": "BEI JING", "date": "2025-04-02", "sales": 200 },
+    { "area": "BEI JING", "date": "2025-07-03", "sales": 300 },
+    { "area": "HANG ZHOU", "date": "2025-01-01", "sales": 100 },
+    { "area": "HANG ZHOU", "date": "2025-04-02", "sales": 200 },
+    { "area": "HANG ZHOU", "date": "2025-07-03", "sales": 500 },
+    { "area": "SHANG HAI", "date": "2025-10-01", "sales": 600 },
+    { "area": "SHANG HAI", "date": "2025-10-02", "sales": 400 },
+    { "area": "SHANG HAI", "date": "2025-10-03", "sales": 300 }
+  ],
+  "schema": [
+    { "name": "area", "type": "string" },
+    { "name": "date", "type": "date" },
+    { "name": "sales", "type": "number" }
+  ],
+  "vquery": {
+    "select": [
+      "area",
+      {
+        "field": "sales",
+        "alias": "Sum(sales)",
+        "aggr": { "func": "sum" }
+      },
+      {
+        "field": "date",
+        "alias": "quarter",
+        "aggr": { "func": "to_quarter" }
+      }
+    ],
+    "groupBy": ["quarter", "area"],
+    "orderBy": [
+      {
+        "field": "Sum(sales)",
+        "order": "desc"
+      }
+    ],
+    "limit": 100
+  }
+}

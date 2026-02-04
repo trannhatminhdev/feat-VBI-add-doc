@@ -1,47 +1,23 @@
-import { QueryDSL } from 'src/types'
+import { QueryDSL, VQueryDSL } from 'src/types'
 import { Kysely } from 'kysely'
 import { PostgresDialect } from './dialect'
 import { inlineParameters } from './compile'
-import { applyWhere, applyGroupBy, applyLimit } from './builders'
-import { isSelectItem } from './utils'
+import { applyWhere, applyGroupBy, applyLimit, applySelect } from './builders'
 
 type TableDB<TableName extends string, Row> = {
   [K in TableName]: Row
 }
 
-export const convertDSLToSQL = <T, TableName extends string>(dsl: QueryDSL<T>, tableName: TableName): string => {
+export const convertDSLToSQL = <T, TableName extends string>(
+  dsl: QueryDSL<T> | VQueryDSL<T>,
+  tableName: TableName,
+): string => {
   const db = new Kysely<TableDB<TableName, T>>({ dialect: new PostgresDialect() })
 
-  let qb = db.selectFrom(tableName)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let qb: any = db.selectFrom(tableName)
 
-  if (dsl.select && dsl.select.length > 0) {
-    qb = qb.select((eb) =>
-      dsl.select.map((item) => {
-        if (isSelectItem(item)) {
-          const field = item.field as Extract<keyof T, string>
-          if (item.func) {
-            const alias = item.alias ?? (field as string)
-            switch (item.func) {
-              case 'avg':
-                return eb.fn.avg(field).as(alias)
-              case 'sum':
-                return eb.fn.sum(field).as(alias)
-              case 'min':
-                return eb.fn.min(field).as(alias)
-              case 'max':
-                return eb.fn.max(field).as(alias)
-              case 'count':
-                return eb.fn.count(field).as(alias)
-            }
-          }
-          return item.alias ? eb.ref(field).as(item.alias) : field
-        }
-        return item as Extract<keyof T, string>
-      }),
-    )
-  } else {
-    qb = qb.selectAll()
-  }
+  qb = applySelect(qb, dsl.select)
 
   if (dsl.where) {
     qb = qb.where(applyWhere<T>(dsl.where))
