@@ -1,5 +1,11 @@
 # @visactor/vquery
 
+## 0.3.14
+
+### Patch Changes
+
+- 65cbc08: feat: optimize the vquery core code
+
 ## 0.3.13
 
 ## 0.3.12
