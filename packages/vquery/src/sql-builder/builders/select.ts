@@ -52,7 +52,6 @@ export const applySelect = <DB, TB extends keyof DB & string, O, T>(
               if (dateTrunc === 'quarter') {
                 return sql`strftime(${expression}, '%Y') || '-Q' || date_part('quarter', ${expression})`.as(alias)
               }
-              return sql`date_trunc(${dateTrunc}, ${expression})`.as(alias)
             }
           }
           const alias = item.alias ?? (field as string)
