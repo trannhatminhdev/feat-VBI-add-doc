@@ -27,22 +27,14 @@ const run = async (setVSeed) => {
     await vquery.dropDataset(datasetId)
   }
 
-  if (!(await vquery.hasDataset(datasetId))) {
-    const schema = [
-      { name: 'area', type: 'string' },
-      { name: 'date', type: 'string' },
-      { name: 'sales', type: 'number' },
-    ]
-    const datasetSource = { type: 'json', rawDataset }
-    await vquery.createDataset(datasetId, schema, datasetSource)
-  }
-
-  // support temporary schema for each temporary connect
-  const dataset = await vquery.connectDataset(datasetId, [
+  const schema = [
     { name: 'area', type: 'string' },
     { name: 'date', type: 'string' },
     { name: 'sales', type: 'number' },
-  ])
+  ]
+  await vquery.createDataset(datasetId, schema, { type: 'json', rawDataset })
+
+  const dataset = await vquery.connectDataset(datasetId)
 
   const queryDSL: QueryDSL<{
     area: string
