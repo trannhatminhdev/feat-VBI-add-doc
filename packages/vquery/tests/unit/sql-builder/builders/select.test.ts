@@ -182,7 +182,7 @@ describe('select', () => {
       'orders',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select sum("age") as "SUM", min("age") as "MIN", max("age") as "MAX", count("id") as "CNT" from "orders""`,
+      `"select sum("age") as "SUM", min("age") as "MIN", max("age") as "MAX", CAST(count("id") AS INTEGER) as "CNT" from "orders""`,
     )
   })
 

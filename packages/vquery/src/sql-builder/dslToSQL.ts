@@ -36,8 +36,14 @@ export const convertDSLToSQL = <T, TableName extends string>(
 
           if (item.func) {
             const alias = item.alias ?? (field as string)
-            if (['avg', 'sum', 'min', 'max', 'count', 'quantile'].includes(item.func)) {
+            if (['avg', 'sum', 'min', 'max', 'variance', 'stddev', 'median'].includes(item.func)) {
               return sql`${sql.raw(item.func)}(${expression})`.as(alias)
+            } else if (item.func === 'count') {
+              return sql`CAST(count(${expression}) AS INTEGER)`.as(alias)
+            } else if (item.func === 'quantile') {
+              return sql`quantile(${expression}, 0.5)`.as(alias)
+            } else if (item.func === 'count_distinct') {
+              return sql`CAST(count(distinct ${expression}) AS INTEGER)`.as(alias)
             } else if (item.func.startsWith('to_')) {
               const dateTrunc = item.func.replace('to_', '')
               const format = DATE_FORMAT_MAP[dateTrunc]
