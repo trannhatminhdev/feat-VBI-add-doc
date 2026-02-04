@@ -20,6 +20,7 @@ export default defineConfig({
         '@visactor/vbi',
         '@rspress/core/runtime',
         'yjs',
+        '@components',
       ],
     }),
   ],

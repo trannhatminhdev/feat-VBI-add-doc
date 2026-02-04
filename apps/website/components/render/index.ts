@@ -1,4 +1,5 @@
-export { VChartRender as VSeedRender } from './Chart'
+export { VChartRender } from './Chart'
 export { PivotChart } from './PivotChart'
 export { Table } from './Table'
 export { PivotTable } from './PivotTable'
+export { SimpleVSeedRender, SimpleVSeedRender as VSeedRender } from './VSeedRender'
