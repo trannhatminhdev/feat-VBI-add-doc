@@ -37,12 +37,12 @@ function processJson(jsonPath) {
     const content = fs.readFileSync(jsonPath, 'utf-8')
     const json = JSON.parse(content)
 
-    // Determine category from parent directory name
+    // Determine category from relative path
     const parentDir = path.dirname(jsonPath)
-    const category = path.basename(parentDir)
+    const category = path.relative(examplesDir, parentDir)
 
-    // Skip if directly in examples root (optional, depending on structure)
-    if (path.resolve(parentDir) === examplesDir) {
+    // Skip if directly in examples root
+    if (!category) {
       return
     }
 
@@ -67,28 +67,33 @@ function generateDocs() {
   const sortedCategories = Array.from(examplesMap.keys()).sort()
 
   for (const category of sortedCategories) {
-    const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1)
+    const categoryName = path.basename(category)
+    const categoryTitle = categoryName.charAt(0).toUpperCase() + categoryName.slice(1)
     const outputFile = path.join(outputDir, `${category}.mdx`)
+
+    const outputParentDir = path.dirname(outputFile)
+    if (!fs.existsSync(outputParentDir)) {
+      fs.mkdirSync(outputParentDir, { recursive: true })
+    }
 
     let md = `# ${categoryTitle}\n\n`
 
     const examples = examplesMap.get(category)
     for (const example of examples) {
       const { json, fileName } = example
-      const title = json.description || fileName.replace('.json', '')
+      const title = fileName.replace('.json', '')
 
       md += `## ${title}\n\n`
 
-      md += '```tsx preview\n'
+      if (json.description) {
+        md += `${json.description}\n\n`
+      }
+
+      md += '```tsx preview \n'
       md += "import { VQueryResultRender } from '@components'\n\n"
       md += `export default () => {\n`
       const jsonString = JSON.stringify(json, null, 2)
       const indentedJson = jsonString
-        .split('\n')
-        .map((line, index) => {
-          return index === 0 ? line : '  ' + line
-        })
-        .join('\n')
       md += `  const vqueryConfig = ${indentedJson}\n\n`
       md += `  return <VQueryResultRender vqueryConfig={vqueryConfig} />\n`
       md += `}\n`
@@ -100,7 +105,21 @@ function generateDocs() {
   }
 }
 
+function generateMeta() {
+  const meta = [
+    { type: 'dir', name: 'select', label: 'Select' },
+    { type: 'file', name: 'where', label: 'Where' },
+    { type: 'file', name: 'groupBy', label: 'GroupBy' },
+    { type: 'file', name: 'orderBy', label: 'OrderBy' },
+    { type: 'file', name: 'limit', label: 'Limit' },
+  ]
+  const metaPath = path.join(outputDir, '_meta.json')
+  fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
+  console.log(`Generated _meta.json at ${metaPath}`)
+}
+
 console.log('Building documentation...')
 scanDir(examplesDir)
 generateDocs()
+generateMeta()
 console.log('Done.')

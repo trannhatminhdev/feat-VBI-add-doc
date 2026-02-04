@@ -238,7 +238,7 @@ describe('where', () => {
       'orders',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select "id" from "orders" where (("age" between (18, 30) and "gender" in ('male', 'female')) or (not "age" between (18, 30) and not "gender" in ('male', 'female')))"`,
+      `"select "id" from "orders" where (("age" between 18 and 30 and "gender" in ('male', 'female')) or ("age" not between 18 and 30 and not "gender" in ('male', 'female')))"`,
     )
   })
 
