@@ -5,7 +5,7 @@
     "select": [
       {
         "field": "salary",
-        "func": "variance",
+        "aggr": { "func": "variance" },
         "alias": "salary_variance"
       }
     ]

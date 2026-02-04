@@ -1,9 +1,9 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
-import vqueryConfig from './quantile.json'
+import vqueryConfig from './variancePop.json'
 
-describe('Select Aggregation Quantile Example', () => {
-  it('Select Aggregation Quantile Example', async () => {
+describe('Select Aggregation VariancePop Example', () => {
+  it('Select Aggregation VariancePop Example', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 
@@ -22,13 +22,10 @@ describe('Select Aggregation Quantile Example', () => {
     await dataset.disconnect()
     await vquery.close()
 
-    // quantile usually defaults to median or requires argument.
-    // If it fails, we will adjust expectation or implementation.
-    // Assuming default behavior or simple existence for now.
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "salary_quantile": 9000,
+          "salary_variance_pop": 2916666.6666666665,
         },
       ]
     `)

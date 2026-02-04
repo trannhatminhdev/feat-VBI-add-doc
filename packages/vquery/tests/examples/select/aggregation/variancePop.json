@@ -1,12 +1,12 @@
 {
-  "datasetId": "select-aggregation-min",
-  "description": "Select Min Example",
+  "datasetId": "select-aggregation-variance-pop",
+  "description": "Select VariancePop Example",
   "vquery": {
     "select": [
       {
         "field": "salary",
-        "aggr": { "func": "min" },
-        "alias": "min_salary"
+        "aggr": { "func": "variancePop" },
+        "alias": "salary_variance_pop"
       }
     ]
   },
@@ -15,7 +15,8 @@
     { "id": 2, "name": "Bob", "age": 30, "department": "Engineering", "salary": 8000 },
     { "id": 3, "name": "Charlie", "age": 35, "department": "Engineering", "salary": 9000 },
     { "id": 4, "name": "David", "age": 40, "department": "HR", "salary": 6000 },
-    { "id": 5, "name": "Eve", "age": 22, "department": "Marketing", "salary": 4000 }
+    { "id": 5, "name": "Eve", "age": 22, "department": "Marketing", "salary": 4000 },
+    { "id": 6, "name": "Frank", "age": 28, "department": "Engineering", "salary": 7000 }
   ],
   "schema": [
     { "name": "id", "type": "number" },

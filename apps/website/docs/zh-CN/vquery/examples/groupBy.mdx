@@ -17,7 +17,9 @@ export default () => {
         {
           field: 'salary',
           alias: 'Average Salary',
-          func: 'avg',
+          aggr: {
+            func: 'avg',
+          },
         },
       ],
       groupBy: ['department'],

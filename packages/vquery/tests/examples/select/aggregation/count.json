@@ -5,7 +5,7 @@
     "select": [
       {
         "field": "id",
-        "func": "count",
+        "aggr": { "func": "count" },
         "alias": "total_count"
       }
     ]

@@ -5,7 +5,7 @@
     "select": [
       {
         "field": "salary",
-        "func": "max",
+        "aggr": { "func": "max" },
         "alias": "max_salary"
       }
     ]

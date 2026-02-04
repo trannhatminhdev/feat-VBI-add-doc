@@ -68,6 +68,9 @@ const run = async (setVSeed) => {
       .addMeasure('profit', (node) => {
         node.setAlias('Sum(profit)').setAggregate({ func: 'sum' })
       })
+      .addMeasure('sales', (node) => {
+        node.setAlias('Quantile(sales, 0.5)').setAggregate({ func: 'quantile', quantile: 0.5 })
+      })
 
     builder.dimensions.addDimension('area', (node) => {
       node.setAlias('区域')

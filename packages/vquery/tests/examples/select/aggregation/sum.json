@@ -5,7 +5,7 @@
     "select": [
       {
         "field": "salary",
-        "func": "sum",
+        "aggr": { "func": "sum" },
         "alias": "total_salary"
       }
     ]

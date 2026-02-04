@@ -46,7 +46,7 @@ describe('VQuery with tidy datum array', () => {
         {
           field: 'sales',
           alias: 'Sum(sales)',
-          func: 'sum',
+          aggr: { func: 'sum' },
         },
       ],
       groupBy: ['area'],

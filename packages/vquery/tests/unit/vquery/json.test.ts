@@ -35,7 +35,7 @@ describe('VQuery load json', () => {
       'city',
       {
         field: 'sales',
-        func: 'sum',
+        aggr: { func: 'sum' },
         alias: 'sales',
       },
     ],

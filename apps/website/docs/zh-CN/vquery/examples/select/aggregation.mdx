@@ -15,7 +15,9 @@ export default () => {
       select: [
         {
           field: 'salary',
-          func: 'avg',
+          aggr: {
+            func: 'avg',
+          },
           alias: 'avg_salary',
         },
       ],
@@ -100,7 +102,9 @@ export default () => {
       select: [
         {
           field: 'department',
-          func: 'count_distinct',
+          aggr: {
+            func: 'count_distinct',
+          },
           alias: 'distinct_departments',
         },
       ],
@@ -192,7 +196,9 @@ export default () => {
       select: [
         {
           field: 'id',
-          func: 'count',
+          aggr: {
+            func: 'count',
+          },
           alias: 'total_count',
         },
       ],
@@ -277,7 +283,9 @@ export default () => {
       select: [
         {
           field: 'salary',
-          func: 'max',
+          aggr: {
+            func: 'max',
+          },
           alias: 'max_salary',
         },
       ],
@@ -362,7 +370,9 @@ export default () => {
       select: [
         {
           field: 'salary',
-          func: 'median',
+          aggr: {
+            func: 'median',
+          },
           alias: 'salary_median',
         },
       ],
@@ -454,7 +464,9 @@ export default () => {
       select: [
         {
           field: 'salary',
-          func: 'min',
+          aggr: {
+            func: 'min',
+          },
           alias: 'min_salary',
         },
       ],
@@ -539,7 +551,10 @@ export default () => {
       select: [
         {
           field: 'salary',
-          func: 'quantile',
+          aggr: {
+            func: 'quantile',
+            quantile: 0.9,
+          },
           alias: 'salary_quantile',
         },
       ],
@@ -631,7 +646,9 @@ export default () => {
       select: [
         {
           field: 'salary',
-          func: 'stddev',
+          aggr: {
+            func: 'stddev',
+          },
           alias: 'salary_stddev',
         },
       ],
@@ -723,7 +740,9 @@ export default () => {
       select: [
         {
           field: 'salary',
-          func: 'sum',
+          aggr: {
+            func: 'sum',
+          },
           alias: 'total_salary',
         },
       ],
@@ -808,8 +827,104 @@ export default () => {
       select: [
         {
           field: 'salary',
-          func: 'variance',
+          aggr: {
+            func: 'variance',
+          },
           alias: 'salary_variance',
+        },
+      ],
+    },
+    dataset: [
+      {
+        id: 1,
+        name: 'Alice',
+        age: 25,
+        department: 'HR',
+        salary: 5000,
+      },
+      {
+        id: 2,
+        name: 'Bob',
+        age: 30,
+        department: 'Engineering',
+        salary: 8000,
+      },
+      {
+        id: 3,
+        name: 'Charlie',
+        age: 35,
+        department: 'Engineering',
+        salary: 9000,
+      },
+      {
+        id: 4,
+        name: 'David',
+        age: 40,
+        department: 'HR',
+        salary: 6000,
+      },
+      {
+        id: 5,
+        name: 'Eve',
+        age: 22,
+        department: 'Marketing',
+        salary: 4000,
+      },
+      {
+        id: 6,
+        name: 'Frank',
+        age: 28,
+        department: 'Engineering',
+        salary: 7000,
+      },
+    ],
+    schema: [
+      {
+        name: 'id',
+        type: 'number',
+      },
+      {
+        name: 'name',
+        type: 'string',
+      },
+      {
+        name: 'age',
+        type: 'number',
+      },
+      {
+        name: 'department',
+        type: 'string',
+      },
+      {
+        name: 'salary',
+        type: 'number',
+      },
+    ],
+  }
+
+  return <VQueryResultRender vqueryConfig={vqueryConfig} />
+}
+```
+
+## variancePop
+
+Select VariancePop Example
+
+```tsx preview
+import { VQueryResultRender } from '@components'
+
+export default () => {
+  const vqueryConfig = {
+    datasetId: 'select-aggregation-variance-pop',
+    description: 'Select VariancePop Example',
+    vquery: {
+      select: [
+        {
+          field: 'salary',
+          aggr: {
+            func: 'variancePop',
+          },
+          alias: 'salary_variance_pop',
         },
       ],
     },

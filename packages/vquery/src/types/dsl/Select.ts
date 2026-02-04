@@ -6,6 +6,7 @@ export type BaseAggregateFunction =
   | 'min'
   | 'max'
   | 'variance'
+  | 'variancePop'
   | 'stddev'
   | 'median'
   | 'quantile'
@@ -25,7 +26,10 @@ export type AggregateFunction = BaseAggregateFunction | DateAggregateFunction
 export type SelectItem<T> = {
   field: keyof T
   alias?: string
-  func?: AggregateFunction
+  aggr?: {
+    func: AggregateFunction
+    quantile?: number
+  }
 }
 
 export type Select<T> = Array<keyof T | SelectItem<T>>

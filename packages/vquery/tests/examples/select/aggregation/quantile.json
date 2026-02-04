@@ -5,7 +5,7 @@
     "select": [
       {
         "field": "salary",
-        "func": "quantile",
+        "aggr": { "func": "quantile", "quantile": 0.9 },
         "alias": "salary_quantile"
       }
     ]

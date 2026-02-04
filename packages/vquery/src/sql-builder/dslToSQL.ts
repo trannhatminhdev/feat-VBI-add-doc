@@ -34,18 +34,26 @@ export const convertDSLToSQL = <T, TableName extends string>(
           const field = item.field as Extract<keyof T, string>
           const expression = eb.ref(field)
 
-          if (item.func) {
+          if (item.aggr) {
+            const { func } = item.aggr
             const alias = item.alias ?? (field as string)
-            if (['avg', 'sum', 'min', 'max', 'variance', 'stddev', 'median'].includes(item.func)) {
-              return sql`${sql.raw(item.func)}(${expression})`.as(alias)
-            } else if (item.func === 'count') {
+            if (['avg', 'sum', 'min', 'max', 'variance', 'variancePop', 'stddev', 'median'].includes(func)) {
+              if (func === 'variance') {
+                return sql`var_samp(${expression})`.as(alias)
+              }
+              if (func === 'variancePop') {
+                return sql`var_pop(${expression})`.as(alias)
+              }
+              return sql`${sql.raw(func)}(${expression})`.as(alias)
+            } else if (func === 'count') {
               return sql`CAST(count(${expression}) AS INTEGER)`.as(alias)
-            } else if (item.func === 'quantile') {
-              return sql`quantile(${expression}, 0.5)`.as(alias)
-            } else if (item.func === 'count_distinct') {
+            } else if (func === 'quantile') {
+              const q = item.aggr.quantile ?? 0.5
+              return sql`quantile(${expression}, ${q})`.as(alias)
+            } else if (func === 'count_distinct') {
               return sql`CAST(count(distinct ${expression}) AS INTEGER)`.as(alias)
-            } else if (item.func.startsWith('to_')) {
-              const dateTrunc = item.func.replace('to_', '')
+            } else if (func.startsWith('to_')) {
+              const dateTrunc = func.replace('to_', '')
               const format = DATE_FORMAT_MAP[dateTrunc]
               if (format) {
                 return sql`strftime(${expression}, ${format})`.as(alias)

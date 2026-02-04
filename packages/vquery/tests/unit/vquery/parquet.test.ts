@@ -35,7 +35,7 @@ describe('VQuery load parquet', () => {
       'city',
       {
         field: 'sales',
-        func: 'sum',
+        aggr: { func: 'sum' },
         alias: 'sales',
       },
     ],

@@ -31,12 +31,12 @@ describe('select', () => {
           {
             field: 'sales',
             alias: 'Sum(sales)',
-            func: 'sum',
+            aggr: { func: 'sum' },
           },
           {
             field: 'profit',
             alias: 'Sum(profit)',
-            func: 'sum',
+            aggr: { func: 'sum' },
           },
         ],
         limit: 1000,
@@ -65,7 +65,7 @@ describe('select', () => {
           {
             field: 'age',
             alias: 'AGE',
-            func: 'avg',
+            aggr: { func: 'avg' },
           },
         ],
         groupBy: ['department', 'name'],
@@ -103,7 +103,7 @@ describe('select', () => {
           {
             field: 'age',
             alias: 'AGE',
-            func: 'avg',
+            aggr: { func: 'avg' },
           },
         ],
         groupBy: ['department', 'name'],
@@ -143,7 +143,7 @@ describe('select', () => {
           {
             field: 'age',
             alias: 'AGE',
-            func: 'avg',
+            aggr: { func: 'avg' },
           },
         ],
         groupBy: ['department', 'name'],
@@ -173,10 +173,10 @@ describe('select', () => {
     const sql = convertDSLToSQL<USER, 'orders'>(
       {
         select: [
-          { field: 'age', func: 'sum', alias: 'SUM' },
-          { field: 'age', func: 'min', alias: 'MIN' },
-          { field: 'age', func: 'max', alias: 'MAX' },
-          { field: 'id', func: 'count', alias: 'CNT' },
+          { field: 'age', aggr: { func: 'sum' }, alias: 'SUM' },
+          { field: 'age', aggr: { func: 'min' }, alias: 'MIN' },
+          { field: 'age', aggr: { func: 'max' }, alias: 'MAX' },
+          { field: 'id', aggr: { func: 'count' }, alias: 'CNT' },
         ],
       },
       'orders',
@@ -216,7 +216,7 @@ describe('select', () => {
       id: number
       age: number
     }
-    const sql = convertDSLToSQL<USER, 'orders'>({ select: [{ field: 'age', func: 'avg' }] }, 'orders')
+    const sql = convertDSLToSQL<USER, 'orders'>({ select: [{ field: 'age', aggr: { func: 'avg' } }] }, 'orders')
     expect(sql).toMatchInlineSnapshot(`"select avg("age") as "age" from "orders""`)
   })
 })

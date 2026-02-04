@@ -25,12 +25,12 @@
       {
         "field": "sales",
         "alias": "Sum(sales)",
-        "func": "sum"
+        "aggr": { "func": "sum" }
       },
       {
         "field": "date",
         "alias": "month",
-        "func": "to_month"
+        "aggr": { "func": "to_month" }
       }
     ],
     "groupBy": ["month", "area"],

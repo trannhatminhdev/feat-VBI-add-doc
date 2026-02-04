@@ -5,7 +5,7 @@
     "select": [
       {
         "field": "department",
-        "func": "count_distinct",
+        "aggr": { "func": "count_distinct" },
         "alias": "distinct_departments"
       }
     ]

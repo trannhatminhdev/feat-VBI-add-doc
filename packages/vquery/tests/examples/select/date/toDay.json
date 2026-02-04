@@ -23,12 +23,12 @@
       {
         "field": "sales",
         "alias": "Sum(sales)",
-        "func": "sum"
+        "aggr": { "func": "sum" }
       },
       {
         "field": "date",
         "alias": "day",
-        "func": "to_day"
+        "aggr": { "func": "to_day" }
       }
     ],
     "groupBy": ["day", "area"],
