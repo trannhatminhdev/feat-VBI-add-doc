@@ -10,9 +10,9 @@ const __dirname = path.dirname(__filename)
 // Configuration
 // ==================================================================================
 const CONFIG = {
-  outputDir: path.resolve(__dirname, '../apps/website/docs/zh-CN/vseed/option'),
-  chartTypesDir: path.resolve(__dirname, '../packages/vseed/src/types/chartType'),
-  tsConfigPath: path.resolve(__dirname, '../packages/vseed/tsconfig.json'),
+  outputDir: path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vseed/option'),
+  chartTypesDir: path.resolve(__dirname, '../src/types/chartType'),
+  tsConfigPath: path.resolve(__dirname, '../tsconfig.json'),
 }
 
 /**

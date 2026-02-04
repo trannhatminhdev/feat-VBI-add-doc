@@ -15,7 +15,7 @@ const __dirname = dirname(__filename)
 
 function getCoverageData() {
   try {
-    const coveragePath = join(__dirname, '../packages/vseed/coverage/coverage-summary.json')
+    const coveragePath = join(__dirname, '../coverage/coverage-summary.json')
 
     if (!existsSync(coveragePath)) {
       console.log('coverage-summary.json not found, using fallback data')

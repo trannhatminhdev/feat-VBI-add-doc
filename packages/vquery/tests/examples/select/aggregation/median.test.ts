@@ -2,8 +2,8 @@ import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
 import vqueryConfig from './median.json'
 
-describe('Select Aggregation Median Example', () => {
-  it('Select Aggregation Median Example', async () => {
+describe('Select Median Example', () => {
+  it('Select Median Example', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 

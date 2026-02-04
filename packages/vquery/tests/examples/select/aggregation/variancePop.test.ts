@@ -2,8 +2,8 @@ import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
 import vqueryConfig from './variancePop.json'
 
-describe('Select Aggregation VariancePop Example', () => {
-  it('Select Aggregation VariancePop Example', async () => {
+describe('Select VariancePop Example', () => {
+  it('Select VariancePop Example', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 

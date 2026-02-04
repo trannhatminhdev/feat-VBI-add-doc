@@ -29,7 +29,7 @@ async function main() {
     }
 
     // 读取json文件内容
-    const content = fs.readFileSync(path.resolve(__dirname, `../packages/vseed/tests/${file}`), 'utf8')
+    const content = fs.readFileSync(path.resolve(__dirname, `../tests/${file}`), 'utf8')
 
     const code = `const {
   registerAll,

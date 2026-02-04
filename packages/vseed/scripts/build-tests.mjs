@@ -2,7 +2,7 @@ import fs from 'fs/promises'
 import path from 'path'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
-const rootDir = path.resolve(__dirname, '../packages/vseed')
+const rootDir = path.resolve(__dirname, '../')
 
 async function generateTests() {
   try {

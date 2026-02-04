@@ -2,8 +2,8 @@ import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
 import vqueryConfig from './count.json'
 
-describe('Select Aggregation Count Example', () => {
-  it('Select Aggregation Count Example', async () => {
+describe('Select Count Example', () => {
+  it('Select Count Example', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 

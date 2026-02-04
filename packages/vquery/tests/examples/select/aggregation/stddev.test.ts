@@ -2,8 +2,8 @@ import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
 import vqueryConfig from './stddev.json'
 
-describe('Select Aggregation Stddev Example', () => {
-  it('Select Aggregation Stddev Example', async () => {
+describe('Select Stddev Example', () => {
+  it('Select Stddev Example', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 
@@ -22,8 +22,12 @@ describe('Select Aggregation Stddev Example', () => {
     await dataset.disconnect()
     await vquery.close()
 
-    // 1870.8286933869709
-    const stddev = queryResult.dataset[0].salary_stddev as number
-    expect(stddev).toBeCloseTo(1870.8287)
+    expect(queryResult.dataset).toMatchInlineSnapshot(`
+      [
+        {
+          "salary_stddev": 1870.8286933869706,
+        },
+      ]
+    `)
   })
 })

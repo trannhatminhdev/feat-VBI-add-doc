@@ -2,8 +2,8 @@ import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
 import vqueryConfig from './quantile.json'
 
-describe('Select Aggregation Quantile Example', () => {
-  it('Select Aggregation Quantile Example', async () => {
+describe('Select Quantile Example', () => {
+  it('Select Quantile Example', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 
@@ -22,9 +22,6 @@ describe('Select Aggregation Quantile Example', () => {
     await dataset.disconnect()
     await vquery.close()
 
-    // quantile usually defaults to median or requires argument.
-    // If it fails, we will adjust expectation or implementation.
-    // Assuming default behavior or simple existence for now.
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {

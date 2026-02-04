@@ -2,8 +2,8 @@ import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
 import vqueryConfig from './sum.json'
 
-describe('Select Aggregation Sum Example', () => {
-  it('Select Aggregation Sum Example', async () => {
+describe('Select Sum Example', () => {
+  it('Select Sum Example', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 

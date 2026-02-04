@@ -6,9 +6,9 @@ import { Project, SyntaxKind } from 'ts-morph'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const outputDir = path.resolve(__dirname, '../apps/website/docs/zh-CN/vseed/api')
-const srcDir = path.resolve(__dirname, '../packages/vseed/src')
-const tsConfigPath = path.resolve(__dirname, '../packages/vseed/tsconfig.json')
+const outputDir = path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vseed/api')
+const srcDir = path.resolve(__dirname, '../src')
+const tsConfigPath = path.resolve(__dirname, '../tsconfig.json')
 
 const builderTarget = { name: 'Builder', file: 'builder/builder/builder.ts', kind: 'class' }
 const registerNameFilter = (name) => name.startsWith('register') || name.startsWith('update')

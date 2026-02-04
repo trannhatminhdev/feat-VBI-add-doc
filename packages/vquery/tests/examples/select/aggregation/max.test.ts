@@ -2,8 +2,8 @@ import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
 import vqueryConfig from './max.json'
 
-describe('Select Aggregation Max Example', () => {
-  it('Select Aggregation Max Example', async () => {
+describe('Select Max Example', () => {
+  it('Select Max Example', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 

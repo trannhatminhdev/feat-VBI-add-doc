@@ -2,8 +2,8 @@ import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
 import vqueryConfig from './min.json'
 
-describe('Select Aggregation Min Example', () => {
-  it('Select Aggregation Min Example', async () => {
+describe('Select Min Example', () => {
+  it('Select Min Example', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 
