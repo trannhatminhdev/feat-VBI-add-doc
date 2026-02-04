@@ -27,37 +27,37 @@ describe('toQuarter', () => {
         {
           "Sum(sales)": 1300,
           "area": "SHANG HAI",
-          "quarter": 1759276800000,
+          "quarter": "2025-Q4",
         },
         {
           "Sum(sales)": 500,
           "area": "HANG ZHOU",
-          "quarter": 1751328000000,
+          "quarter": "2025-Q3",
         },
         {
           "Sum(sales)": 300,
           "area": "BEI JING",
-          "quarter": 1751328000000,
+          "quarter": "2025-Q3",
         },
         {
           "Sum(sales)": 200,
           "area": "HANG ZHOU",
-          "quarter": 1743465600000,
+          "quarter": "2025-Q2",
         },
         {
           "Sum(sales)": 200,
           "area": "BEI JING",
-          "quarter": 1743465600000,
+          "quarter": "2025-Q2",
         },
         {
           "Sum(sales)": 100,
           "area": "BEI JING",
-          "quarter": 1735689600000,
+          "quarter": "2025-Q1",
         },
         {
           "Sum(sales)": 100,
           "area": "HANG ZHOU",
-          "quarter": 1735689600000,
+          "quarter": "2025-Q1",
         },
       ]
     `)

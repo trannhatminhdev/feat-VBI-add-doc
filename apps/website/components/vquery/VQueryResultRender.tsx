@@ -2,6 +2,7 @@ import { VQuery, VQueryDSL, DatasetColumn } from '@visactor/vquery'
 import { useEffect, useState, useRef } from 'react'
 import { VSeedRender } from '@components'
 import { VSeed } from '@visactor/vseed'
+import { useDark } from '@rspress/core/runtime'
 
 interface VQueryConfig {
   datasetId: string
@@ -43,7 +44,7 @@ const withVisible = <P extends object>(WrappedComponent: React.ComponentType<P>)
 
 const VQueryResultRenderBase = ({ vqueryConfig }: { vqueryConfig: VQueryConfig }) => {
   const [vseed, setVSeed] = useState<VSeed | null>(null)
-
+  const dark = useDark()
   useEffect(() => {
     const run = async () => {
       const vquery = new VQuery()
@@ -59,12 +60,13 @@ const VQueryResultRenderBase = ({ vqueryConfig }: { vqueryConfig: VQueryConfig }
       const nextVSeed = {
         chartType: 'table',
         dataset: queryResult.dataset,
+        theme: dark ? 'dark' : 'light',
       } as VSeed
       console.log('debug', nextVSeed)
       setVSeed(nextVSeed)
     }
     run()
-  }, [])
+  }, [dark])
 
   if (vseed) {
     return <VSeedRender vseed={vseed} />

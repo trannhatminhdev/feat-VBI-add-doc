@@ -44,6 +44,9 @@ export const convertDSLToSQL = <T, TableName extends string>(
               if (format) {
                 return sql`strftime(${expression}, ${format})`.as(alias)
               }
+              if (dateTrunc === 'quarter') {
+                return sql`strftime(${expression}, '%Y') || '-Q' || date_part('quarter', ${expression})`.as(alias)
+              }
               return sql`date_trunc(${dateTrunc}, ${expression})`.as(alias)
             }
           }
