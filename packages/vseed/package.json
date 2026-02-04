@@ -29,13 +29,13 @@
     "lint": "eslint . --cache",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:update": "vitest run --update",
+    "test:coverage": "vitest run  --update --coverage && node scripts/build-coverage-badge.mjs && open coverage/index.html",
     "test:unit": "vitest run tests/unit",
     "test:unit:coverage": "vitest run tests/unit --coverage && open coverage/index.html",
     "test:integration": "vitest run tests/integration",
     "test:integration:update": "vitest run tests/integration --update",
-    "test:integration:coverage": "vitest run tests/integration --coverage && open coverage/index.html",
-    "test:update": "vitest run --update",
-    "test:coverage": "vitest run  --update --coverage && node scripts/build-coverage-badge.mjs && open coverage/index.html"
+    "test:integration:coverage": "vitest run tests/integration --coverage && open coverage/index.html"
   },
   "dependencies": {
     "@visactor/vdataset": "~1.0.21",
