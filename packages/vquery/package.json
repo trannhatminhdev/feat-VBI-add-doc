@@ -29,6 +29,7 @@
   ],
   "scripts": {
     "build": "rslib build",
+    "build:test": "node scripts/build-tests.js",
     "dev": "rslib build --watch --no-clean",
     "lint": "eslint .",
     "test": "rstest",

@@ -157,7 +157,7 @@ describe('select', () => {
       'orders',
     )
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", "name" as "NAME", avg("age") as "AGE" from "orders" group by "department", "name" order by "age" desc"`,
+      `"select "department" as "department", "name" as "NAME", avg("age") as "AGE" from "orders" group by "department", "name" order by "age" desc"`,
     )
   })
 

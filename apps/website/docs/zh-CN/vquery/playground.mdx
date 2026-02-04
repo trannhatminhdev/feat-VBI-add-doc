@@ -29,7 +29,7 @@ const run = async (setVSeed) => {
 
   const schema = [
     { name: 'area', type: 'string' },
-    { name: 'date', type: 'string' },
+    { name: 'date', type: 'date' },
     { name: 'sales', type: 'number' },
   ]
   await vquery.createDataset(datasetId, schema, { type: 'json', rawDataset })
@@ -48,8 +48,13 @@ const run = async (setVSeed) => {
         alias: 'Sum(sales)',
         func: 'sum',
       },
+      {
+        field: 'date',
+        alias: 'year',
+        func: 'to_year',
+      },
     ],
-    groupBy: ['area'],
+    groupBy: ['year', 'area'],
     orderBy: [
       {
         field: 'Sum(sales)',

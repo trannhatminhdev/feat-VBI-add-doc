@@ -1,4 +1,4 @@
-import { DatasetColumn, DatasetSource, DatasetSourceType, DataType, QueryDSL } from 'src/types'
+import { DatasetColumn, DatasetSource, DatasetSourceType, DataType, QueryDSL, VQueryDSL } from 'src/types'
 import { QueryAdapter, StorageAdapter } from 'src/types'
 import { convertDSLToSQL } from 'src/sql-builder'
 
@@ -79,7 +79,7 @@ export class Dataset {
   /**
    * Execute query using VQuery DSL
    */
-  public async query<T extends Record<string, number | string>>(queryDSL: QueryDSL<T>) {
+  public async query<T extends Record<string, number | string>>(queryDSL: QueryDSL<T> | VQueryDSL<T>) {
     const sql = convertDSLToSQL(queryDSL, this.datasetId)
     return this.queryBySQL(sql)
   }

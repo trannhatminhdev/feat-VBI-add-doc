@@ -1,1 +1,1 @@
-export type GroupBy<T> = Array<keyof T>
+export type GroupBy<T> = Array<keyof T | (string & {})>
