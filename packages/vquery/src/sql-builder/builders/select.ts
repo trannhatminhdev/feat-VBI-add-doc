@@ -47,10 +47,12 @@ export const applySelect = <DB, TB extends keyof DB & string, O, T>(
               const dateTrunc = func.replace('to_', '')
               const format = DATE_FORMAT_MAP[dateTrunc]
               if (format) {
-                return sql`strftime(${expression}, ${format})`.as(alias)
+                return sql`strftime(CAST(${expression} AS TIMESTAMP), ${format})`.as(alias)
               }
               if (dateTrunc === 'quarter') {
-                return sql`strftime(${expression}, '%Y') || '-Q' || date_part('quarter', ${expression})`.as(alias)
+                return sql`strftime(CAST(${expression} AS TIMESTAMP), '%Y') || '-Q' || date_part('quarter', CAST(${expression} AS TIMESTAMP))`.as(
+                  alias,
+                )
               }
             }
           }
