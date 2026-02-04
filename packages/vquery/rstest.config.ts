@@ -8,7 +8,7 @@ export default defineConfig({
     enabled: true,
     exclude: ['**/node_modules/**', '**/dist/**'],
     include: ['src/**'],
-    reporters: ['html', ['text', { skipFull: true }], ['json', { file: 'coverage-final.json' }]],
+    reporters: ['html', ['text', { skipFull: true }], 'json', 'json-summary'],
     thresholds: {
       statements: 100,
       branches: 100,

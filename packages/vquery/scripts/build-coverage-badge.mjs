@@ -62,28 +62,6 @@ function getCoverageData() {
   }
 }
 
-function updatePackageReadme(coverageData) {
-  try {
-    const readmePath = join(__dirname, '../README.md')
-    let readme = readFileSync(readmePath, 'utf8')
-
-    const badgeRegex = /\[!\[Coverage\]\([^)]+\)\]\([^)]+\)/
-    const newBadge = `[![Coverage](${coverageData.badgeUrl})](https://github.com/VisActor/VSeed/actions/workflows/coverage.yml)`
-
-    if (badgeRegex.test(readme)) {
-      readme = readme.replace(badgeRegex, newBadge)
-    } else {
-      const npmBadgeRegex = /(\[!\[npm Version\]\([^)]+\)\]\([^)]+\))/
-      readme = readme.replace(npmBadgeRegex, `$1\n${newBadge}`)
-    }
-
-    writeFileSync(readmePath, readme, 'utf8')
-    console.log('Package README.md updated successfully')
-  } catch (error) {
-    console.error('Error updating Package README.md:', error.message)
-  }
-}
-
 function updateRootReadme(coverageData) {
   try {
     const readmePath = join(__dirname, '../../../README.md')
@@ -93,9 +71,9 @@ function updateRootReadme(coverageData) {
     }
     let readme = readFileSync(readmePath, 'utf8')
 
-    // Match the table row for vseed
+    // Match the table row for vquery
     const rowRegex =
-      /(\|\s*\[vseed\]\(\.\/packages\/vseed\)\s*\|[^|]+\|\s*)(\[!\[Coverage\]\([^)]+\)\]\([^)]+\))([^|]+\|)/
+      /(\|\s*\[vquery\]\(\.\/packages\/vquery\)\s*\|[^|]+\|\s*)(\[!\[Coverage\]\([^)]+\)\]\([^)]+\))([^|]+\|)/
     const newBadge = `[![Coverage](${coverageData.badgeUrl})](https://github.com/VisActor/VSeed/actions/workflows/coverage.yml)`
 
     if (rowRegex.test(readme)) {
@@ -103,7 +81,7 @@ function updateRootReadme(coverageData) {
       writeFileSync(readmePath, readme, 'utf8')
       console.log('Root README.md updated successfully')
     } else {
-      console.warn('vseed row not found in Root README table')
+      console.warn('vquery row not found in Root README table')
     }
   } catch (error) {
     console.error('Error updating Root README.md:', error.message)
@@ -112,5 +90,4 @@ function updateRootReadme(coverageData) {
 
 const coverage = getCoverageData()
 console.log('Coverage data:', coverage)
-updatePackageReadme(coverage)
 updateRootReadme(coverage)
