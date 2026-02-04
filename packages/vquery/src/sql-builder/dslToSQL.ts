@@ -9,6 +9,16 @@ type TableDB<TableName extends string, Row> = {
   [K in TableName]: Row
 }
 
+const DATE_FORMAT_MAP: Record<string, string> = {
+  year: '%Y',
+  month: '%Y-%m',
+  day: '%Y-%m-%d',
+  week: '%Y-W%W',
+  hour: '%Y-%m-%d %H',
+  minute: '%Y-%m-%d %H:%M',
+  second: '%Y-%m-%d %H:%M:%S',
+}
+
 export const convertDSLToSQL = <T, TableName extends string>(
   dsl: QueryDSL<T> | VQueryDSL<T>,
   tableName: TableName,
@@ -30,6 +40,10 @@ export const convertDSLToSQL = <T, TableName extends string>(
               return sql`${sql.raw(item.func)}(${expression})`.as(alias)
             } else if (item.func.startsWith('to_')) {
               const dateTrunc = item.func.replace('to_', '')
+              const format = DATE_FORMAT_MAP[dateTrunc]
+              if (format) {
+                return sql`strftime(${expression}, ${format})`.as(alias)
+              }
               return sql`date_trunc(${dateTrunc}, ${expression})`.as(alias)
             }
           }

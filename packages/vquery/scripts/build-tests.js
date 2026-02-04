@@ -5,112 +5,78 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const TESTS_DIR = path.resolve(__dirname, '../tests/examples')
+const examplesDir = path.resolve(__dirname, '../tests/examples')
 
-// Recursive function to find dsl.json files
-function findDslFiles(dir, fileList = []) {
-  const files = fs.readdirSync(dir)
+function scanDir(dir) {
+  if (!fs.existsSync(dir)) {
+    console.error(`Directory not found: ${dir}`)
+    return
+  }
 
-  files.forEach((file) => {
-    const filePath = path.join(dir, file)
-    const stat = fs.statSync(filePath)
-
-    if (stat.isDirectory()) {
-      findDslFiles(filePath, fileList)
-    } else if (file === 'dsl.json') {
-      fileList.push(filePath)
+  const files = fs.readdirSync(dir, { withFileTypes: true })
+  for (const file of files) {
+    const res = path.resolve(dir, file.name)
+    if (file.isDirectory()) {
+      scanDir(res)
+    } else if (file.name.endsWith('.json')) {
+      generateTest(res)
     }
-  })
-
-  return fileList
+  }
 }
 
-function generateTestContent(dsl) {
-  const { dataset, cases } = dsl
+function generateTest(jsonPath) {
+  try {
+    const content = fs.readFileSync(jsonPath, 'utf-8')
+    const json = JSON.parse(content)
+    const description = json.description || path.basename(jsonPath, '.json')
+    const jsonFileName = path.basename(jsonPath)
+    const testFileName = jsonFileName.replace('.json', '.test.ts')
+    const testPath = path.join(path.dirname(jsonPath), testFileName)
 
-  const datasetSetup = `
+    const template = `import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
+import { VQuery } from '@visactor/vquery'
+import vqueryConfig from './${jsonFileName}'
+
+describe('${description}', () => {
+  it('${description}', async () => {
     const vquery = new VQuery()
-    const datasetId = '${dataset.id}'
-
-    const rawDataset = ${JSON.stringify(dataset.data, null, 2)}
+    const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 
     if (await vquery.hasDataset(datasetId)) {
       await vquery.dropDataset(datasetId)
     }
 
-    const schema: DatasetColumn[] = ${JSON.stringify(dataset.schema, null, 2)}
-    const datasetSource: RawDatasetSource = { type: 'json', rawDataset }
-    await vquery.createDataset(datasetId, schema, datasetSource)
-    
+    if (!(await vquery.hasDataset(datasetId))) {
+      await vquery.createDataset(datasetId, schema as DatasetColumn[], { type: 'json', rawDataset })
+    }
+
     const dataset = await vquery.connectDataset(datasetId)
-`
 
-  const testCases = cases
-    .map((testCase, index) => {
-      const { name, query, assertions } = testCase
-
-      let assertionsCode = ''
-      if (assertions) {
-        assertionsCode = assertions
-          .map((assertion) => {
-            if (assertion.type === 'length') {
-              return `    expect(result${index}.dataset).toHaveLength(${assertion.value})`
-            } else if (assertion.type === 'value') {
-              return `    expect(result${index}.dataset[${assertion.row}]['${assertion.field}'] as unknown).toBe(${assertion.value})`
-            } else if (assertion.type === 'datePart') {
-              if (assertion.part === 'year') {
-                return `    expect(new Date(result${index}.dataset[${assertion.row}]['${assertion.field}'] as unknown as string).getFullYear()).toBe(${assertion.value})`
-              } else if (assertion.part === 'month') {
-                return `    expect(new Date(result${index}.dataset[${assertion.row}]['${assertion.field}'] as unknown as string).getMonth()).toBe(${assertion.value})`
-              }
-            }
-            return ''
-          })
-          .join('\n')
-      }
-
-      return `
-    // ${name}
-    const query${index}: VQueryDSL<{ [key: string]: any }> = ${JSON.stringify(query, null, 2)}
-    const result${index} = await dataset.query(query${index})
-${assertionsCode}
-`
-    })
-    .join('\n')
-
-  return `/* eslint-disable @typescript-eslint/no-explicit-any */
-import type { DatasetColumn, RawDatasetSource, VQueryDSL } from '@visactor/vquery'
-import { VQuery } from '@visactor/vquery'
-
-describe('Generated VQuery Tests', () => {
-  it('runs generated tests from dsl.json', async () => {
-${datasetSetup}
-${testCases}
+    const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 
     await dataset.disconnect()
     await vquery.close()
+
+    expect(queryResult.dataset).toMatchInlineSnapshot()
   })
 })
 `
+
+    // Check if file exists to preserve snapshot if needed?
+    // User requested "generate corresponding test", usually implies overwriting or creating.
+    // However, toMatchInlineSnapshot relies on the file content.
+    // If we overwrite, we lose the snapshot.
+    // But since this is a "build" script, it might be intended to regenerate.
+    // If the file exists, we could check if it has a snapshot and try to keep it, but that's complex parsing.
+    // Standard approach for codegen is overwrite. User runs 'test:update' to regenerate snapshots.
+
+    fs.writeFileSync(testPath, template, 'utf-8')
+    console.log(`Generated ${testFileName}`)
+  } catch (error) {
+    console.error(`Error processing ${jsonPath}:`, error)
+  }
 }
 
-function build() {
-  const dslFiles = findDslFiles(TESTS_DIR)
-
-  dslFiles.forEach((dslFile) => {
-    try {
-      const dslContent = fs.readFileSync(dslFile, 'utf-8')
-      const dsl = JSON.parse(dslContent)
-
-      const testContent = generateTestContent(dsl)
-      const testFilePath = dslFile.replace('dsl.json', 'date-trunc.test.ts')
-
-      fs.writeFileSync(testFilePath, testContent)
-      console.log(`Generated ${testFilePath}`)
-    } catch (error) {
-      console.error(`Error processing ${dslFile}:`, error)
-    }
-  })
-}
-
-build()
+console.log('Building tests...')
+scanDir(examplesDir)
+console.log('Done.')
