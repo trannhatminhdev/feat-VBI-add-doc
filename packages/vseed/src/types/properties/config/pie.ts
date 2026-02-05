@@ -6,7 +6,6 @@ import { zLegend } from './legend/legend'
 import { zTooltip } from './tooltip/tooltip'
 import { zPivotChartGridConfig } from './pivotGrid'
 import { zBrushConfig } from '../brush/zBrush'
-import { zPlayer } from './player'
 
 export const zPieConfig = z.object({
   backgroundColor: zBackgroundColor.nullish(),
@@ -14,7 +13,6 @@ export const zPieConfig = z.object({
   color: zColor.nullish(),
   tooltip: zTooltip.nullish(),
   legend: zLegend.nullish(),
-  player: zPlayer.nullish(),
 
   pivotGrid: zPivotChartGridConfig.nullish(),
   cornerRadius: z.number().nullish(),

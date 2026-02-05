@@ -58,7 +58,6 @@ export const lightTheme = (): CustomThemeConfig => {
         xAxis: bandAxis,
         yAxis: linearAxis,
         crosshairLine,
-        player,
         pivotGrid: getLightPivotChartGridConfig(),
         annotation: getLightAnnotation(),
       },
@@ -67,7 +66,6 @@ export const lightTheme = (): CustomThemeConfig => {
         xAxis: bandAxis,
         yAxis: linearAxis,
         crosshairRect,
-        player,
 
         stackCornerRadius: [4, 4, 0, 0],
         pivotGrid: getLightPivotChartGridConfig(),
@@ -80,7 +78,6 @@ export const lightTheme = (): CustomThemeConfig => {
         xAxis: bandAxis,
         yAxis: linearAxis,
         crosshairRect,
-        player,
 
         stackCornerRadius: [4, 4, 0, 0],
         pivotGrid: getLightPivotChartGridConfig(),
@@ -92,7 +89,6 @@ export const lightTheme = (): CustomThemeConfig => {
         yAxis: {
           ...linearAxis,
         },
-        player,
 
         crosshairRect,
         stackCornerRadius: [4, 4, 0, 0],
@@ -104,7 +100,6 @@ export const lightTheme = (): CustomThemeConfig => {
         xAxis: linearAxis,
         yAxis: barBandAxis,
         crosshairRect,
-        player,
 
         stackCornerRadius: [0, 4, 4, 0],
         pivotGrid: getLightPivotChartGridConfig(),
@@ -180,7 +175,6 @@ export const lightTheme = (): CustomThemeConfig => {
         },
         yAxis: barBandAxis,
         crosshairRect,
-        player,
 
         stackCornerRadius: [0, 4, 4, 0],
         pivotGrid: getLightPivotChartGridConfig(),
@@ -191,7 +185,6 @@ export const lightTheme = (): CustomThemeConfig => {
         xAxis: bandAxis,
         yAxis: linearAxis,
         crosshairLine,
-        player,
 
         pivotGrid: getLightPivotChartGridConfig(),
         annotation: getLightAnnotation(),
@@ -202,7 +195,6 @@ export const lightTheme = (): CustomThemeConfig => {
         yAxis: {
           ...linearAxis,
         },
-        player,
 
         crosshairLine,
         pivotGrid: getLightPivotChartGridConfig(),
@@ -231,7 +223,6 @@ export const lightTheme = (): CustomThemeConfig => {
           showValue: false,
           showValuePercent: false,
         },
-        player,
 
         pivotGrid: getLightPivotChartGridConfig(),
         annotation: getLightAnnotation(),
@@ -256,7 +247,6 @@ export const lightTheme = (): CustomThemeConfig => {
           labelLayout: 'arc',
           showDimension: true,
         },
-        player,
 
         pivotGrid: getLightPivotChartGridConfig(),
       },
@@ -268,13 +258,11 @@ export const lightTheme = (): CustomThemeConfig => {
           labelLayout: 'arc',
           showDimension: true,
         },
-        player,
 
         pivotGrid: getLightPivotChartGridConfig(),
       },
       radar: {
         ...baseConfig,
-        player,
 
         pivotGrid: getLightPivotChartGridConfig(),
       },
@@ -285,7 +273,6 @@ export const lightTheme = (): CustomThemeConfig => {
           showValuePercent: true,
           showDimension: true,
         },
-        player,
 
         pivotGrid: getLightPivotChartGridConfig(),
       },
@@ -296,7 +283,6 @@ export const lightTheme = (): CustomThemeConfig => {
           showValuePercent: true,
           showDimension: true,
         },
-        player,
 
         pivotGrid: getLightPivotChartGridConfig(),
       },
@@ -305,7 +291,6 @@ export const lightTheme = (): CustomThemeConfig => {
         ...baseConfig,
         label: getFunnelLightLabel(),
         transform: getLightFunnelTransformTheme(),
-        player,
 
         pivotGrid: getLightPivotChartGridConfig(),
       },
@@ -318,7 +303,6 @@ export const lightTheme = (): CustomThemeConfig => {
           ...baseConfig.label,
           labelColorSmartInvert: true,
         },
-        player,
 
         cell: getLightHeatmapCellTheme(),
         pivotGrid: getLightPivotChartGridConfig(),

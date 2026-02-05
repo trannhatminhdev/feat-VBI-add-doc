@@ -4,10 +4,17 @@ import { zColumnConfig } from './column'
 import { zScatterConfig } from './scatter'
 import { zXBandAxis } from './axes'
 
-export const zRaceBarConfig = zBarConfig
-export const zRaceColumnConfig = zColumnConfig
+import { zPlayer } from './player'
+
+export const zRaceBarConfig = zBarConfig.extend({
+  player: zPlayer.nullish(),
+})
+export const zRaceColumnConfig = zColumnConfig.extend({
+  player: zPlayer.nullish(),
+})
 export const zRaceScatterConfig = zScatterConfig.extend({
   xAxis: zXBandAxis.nullish(),
+  player: zPlayer.nullish(),
 })
 
 export type RaceBarConfig = z.infer<typeof zRaceBarConfig>

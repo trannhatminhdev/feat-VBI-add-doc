@@ -29,14 +29,13 @@ import {
   pivotColorLegend,
   heatmapColorDomain,
   brush,
-  playerAdapter,
 } from '../pipes'
 import { initHeatmap } from '../pipes/init/heatmap'
 
 const heatmap: VChartSpecPipeline = [
   initHeatmap,
   backgroundColor,
-  playerAdapter(datasetXY),
+  datasetXY,
   colorAdapter(color, linearColor),
   label,
   heatmapBandAxis,
