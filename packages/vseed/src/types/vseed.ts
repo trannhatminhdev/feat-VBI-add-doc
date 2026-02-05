@@ -21,6 +21,7 @@ import type {
   RoseParallel,
   Scatter,
   Table,
+  RaceBar,
 } from './chartType'
 
 export type VSeed =
@@ -47,6 +48,9 @@ export type VSeed =
   | Pie
   | Donut
   | Radar
+
+  // race
+  | RaceBar
 
   // other
   | Funnel

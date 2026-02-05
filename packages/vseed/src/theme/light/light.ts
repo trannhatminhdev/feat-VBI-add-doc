@@ -110,6 +110,17 @@ export const lightTheme = (): CustomThemeConfig => {
         pivotGrid: getLightPivotChartGridConfig(),
         annotation: getLightAnnotation(),
       },
+      raceBar: {
+        ...baseConfig,
+        xAxis: linearAxis,
+        yAxis: barBandAxis,
+        crosshairRect,
+        player,
+
+        stackCornerRadius: [0, 4, 4, 0],
+        pivotGrid: getLightPivotChartGridConfig(),
+        annotation: getLightAnnotation(),
+      },
       barParallel: {
         ...baseConfig,
         xAxis: linearAxis,

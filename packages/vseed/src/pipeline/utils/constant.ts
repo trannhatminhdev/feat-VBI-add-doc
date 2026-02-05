@@ -25,6 +25,7 @@ export const ChartTypeEnum = {
   ColumnPercent: 'columnPercent',
   ColumnParallel: 'columnParallel',
   Bar: 'bar',
+  RaceBar: 'raceBar',
   BarPercent: 'barPercent',
   BarParallel: 'barParallel',
   Area: 'area',

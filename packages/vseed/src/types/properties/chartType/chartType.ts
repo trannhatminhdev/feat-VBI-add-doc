@@ -11,6 +11,7 @@ export type ChartType =
   | 'bar'
   | 'barPercent'
   | 'barParallel'
+  | 'raceBar'
   | 'area'
   | 'areaPercent'
   | 'scatter'
@@ -38,6 +39,7 @@ export const zChartType = z.enum([
   'bar',
   'barPercent',
   'barParallel',
+  'raceBar',
   'area',
   'areaPercent',
   'scatter',

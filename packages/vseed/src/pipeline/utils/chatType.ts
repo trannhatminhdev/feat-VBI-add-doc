@@ -27,6 +27,7 @@ export const isBarPercent = (vseed: VSeed) => {
 export const isBarLikeChart = (vseed: VSeed) => {
   return (
     vseed.chartType === ChartTypeEnum.Bar ||
+    vseed.chartType === ChartTypeEnum.RaceBar ||
     vseed.chartType === ChartTypeEnum.BarPercent ||
     vseed.chartType === ChartTypeEnum.BarParallel
   )
@@ -144,6 +145,7 @@ export const isRectungularCoordinate = (chartType: string) => {
   return (
     [
       ChartTypeEnum.Bar,
+      ChartTypeEnum.RaceBar,
       ChartTypeEnum.BarPercent,
       ChartTypeEnum.BarParallel,
       ChartTypeEnum.Column,

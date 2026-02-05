@@ -109,6 +109,17 @@ export const darkTheme = (): CustomThemeConfig => {
         annotation: getDarkAnnotation(),
         player,
       },
+      raceBar: {
+        ...baseConfig,
+
+        xAxis: linearAxis,
+        yAxis: barBandAxis,
+        crosshairRect: crosshairRect,
+        stackCornerRadius: [0, 4, 4, 0],
+        pivotGrid: getDarkPivotChartGridConfig(),
+        annotation: getDarkAnnotation(),
+        player,
+      },
       barParallel: {
         ...baseConfig,
 

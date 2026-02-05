@@ -36,12 +36,7 @@ import {
   pivotTitle,
   dimensionLinkage,
   brush,
-  isPlayer,
-  playerYX,
-  playerYBand,
-  playerXLinear,
 } from '../pipes'
-import { condition } from '../utils'
 
 const bar: VChartSpecPipeline = [
   initBar,
@@ -49,10 +44,10 @@ const bar: VChartSpecPipeline = [
   barMaxWidth,
   colorAdapter(color, linearColor),
   backgroundColor,
-  condition(isPlayer, playerYX, datasetYX),
+  datasetYX,
   progressive,
-  condition(isPlayer, playerXLinear, xLinear),
-  condition(isPlayer, playerYBand, yBand),
+  xLinear,
+  yBand,
 
   label,
   brush,
