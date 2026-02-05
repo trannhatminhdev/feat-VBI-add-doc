@@ -146,6 +146,8 @@ export const isRectungularCoordinate = (chartType: string) => {
     [
       ChartTypeEnum.Bar,
       ChartTypeEnum.RaceBar,
+      ChartTypeEnum.RaceColumn,
+      ChartTypeEnum.RaceScatter,
       ChartTypeEnum.BarPercent,
       ChartTypeEnum.BarParallel,
       ChartTypeEnum.Column,

@@ -22,6 +22,8 @@ import type {
   Scatter,
   Table,
   RaceBar,
+  RaceColumn,
+  RaceScatter,
 } from './chartType'
 
 export type VSeed =
@@ -51,6 +53,8 @@ export type VSeed =
 
   // race
   | RaceBar
+  | RaceColumn
+  | RaceScatter
 
   // other
   | Funnel

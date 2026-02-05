@@ -121,6 +121,49 @@ export const lightTheme = (): CustomThemeConfig => {
         pivotGrid: getLightPivotChartGridConfig(),
         annotation: getLightAnnotation(),
       },
+      raceColumn: {
+        ...baseConfig,
+        xAxis: bandAxis,
+        yAxis: linearAxis,
+        crosshairRect,
+        player,
+
+        stackCornerRadius: [4, 4, 0, 0],
+        pivotGrid: getLightPivotChartGridConfig(),
+        annotation: getLightAnnotation(),
+
+        regressionLine: getLightRegressionLine(),
+      },
+      raceScatter: {
+        ...baseConfig,
+        crosshairLine,
+        sizeRange: [8, 24],
+        xAxis: {
+          ...linearAxis,
+          line: {
+            ...linearAxis.line,
+            visible: true,
+          },
+        },
+        yAxis: {
+          ...linearAxis,
+          line: {
+            ...linearAxis.line,
+            visible: true,
+          },
+        },
+        label: {
+          ...baseConfig.label,
+          showValue: false,
+          showValuePercent: false,
+        },
+        player,
+
+        pivotGrid: getLightPivotChartGridConfig(),
+        annotation: getLightAnnotation(),
+
+        regressionLine: getLightRegressionLine(),
+      },
       barParallel: {
         ...baseConfig,
         xAxis: linearAxis,

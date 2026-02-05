@@ -24,7 +24,7 @@ const PlayerDemo = () => {
     if (!containerRef.current) return
 
     const vseed: VSeed = {
-      chartType: 'raceBar',
+      chartType: 'raceScatter',
       legend: {
         enable: false,
       },
@@ -11880,11 +11880,11 @@ const PlayerDemo = () => {
           year: '2019-01',
         },
       ],
-      dimensions: [
-        { id: 'name', encoding: 'y' },
-        { id: 'category', encoding: 'color' },
+      dimensions: [{ id: 'category', encoding: 'color' }],
+      measures: [
+        { id: 'value', encoding: 'xAxis' },
+        { id: 'value', encoding: 'yAxis' },
       ],
-      measures: [{ id: 'value' }],
       player: {
         field: 'year',
         autoPlay: true,

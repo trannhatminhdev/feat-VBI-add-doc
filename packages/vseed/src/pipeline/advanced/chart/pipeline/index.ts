@@ -1,6 +1,8 @@
 export { lineAdvancedPipeline } from './line'
 export { barAdvancedPipeline } from './bar'
 export { raceBarAdvancedPipeline } from './raceBar'
+export { raceColumnAdvancedPipeline } from './raceColumn'
+export { raceScatterAdvancedPipeline } from './raceScatter'
 export { barParallelAdvancedPipeline } from './barParallel'
 export { barPercentAdvancedPipeline } from './barPercent'
 export { columnAdvancedPipeline } from './column'

@@ -120,6 +120,47 @@ export const darkTheme = (): CustomThemeConfig => {
         annotation: getDarkAnnotation(),
         player,
       },
+      raceColumn: {
+        ...baseConfig,
+
+        xAxis: bandAxis,
+        yAxis: linearAxis,
+        crosshairRect: crosshairRect,
+        stackCornerRadius: [4, 4, 0, 0],
+        pivotGrid: getDarkPivotChartGridConfig(),
+        annotation: getDarkAnnotation(),
+        player,
+
+        regressionLine: getDarkRegressionLine(),
+      },
+      raceScatter: {
+        ...baseConfig,
+        crosshairLine,
+        sizeRange: [8, 24],
+        xAxis: {
+          ...linearAxis,
+          line: {
+            ...linearAxis.line,
+            visible: true,
+          },
+        },
+        yAxis: {
+          ...linearAxis,
+          line: {
+            ...linearAxis.line,
+            visible: true,
+          },
+        },
+        label: {
+          ...baseConfig.label,
+          showValue: false,
+          showValuePercent: false,
+        },
+        pivotGrid: getDarkPivotChartGridConfig(),
+        annotation: getDarkAnnotation(),
+        regressionLine: getDarkRegressionLine(),
+        player,
+      },
       barParallel: {
         ...baseConfig,
 

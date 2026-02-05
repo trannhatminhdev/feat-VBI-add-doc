@@ -41,9 +41,14 @@
 4.  **全局类型更新 (VSeed & zVSeed)**:
     **重要**：不要忘记在全局类型定义中引入新类型。
     - `packages/vseed/src/types/vseed.ts`: 将 `RaceBar` 添加到 `VSeed` 联合类型中。
-    - `packages/vseed/src/types/zVseed.ts`: 将 `zRaceBar` 添加到 `zVSeed` 联合 Schema 中。
-
-### 2.2 实现构建管线 (Pipeline)
+44→    - `packages/vseed/src/types/zVseed.ts`: 将 `zRaceBar` 添加到 `zVSeed` 联合 Schema 中。
+45→
+46→5.  **Config Schema 定义 (`types/properties/config/`)**:
+47→    **重要**：还需要定义图表的配置 Schema，并在全局 Config 中注册。
+48→    - 创建 `packages/vseed/src/types/properties/config/race.ts`，导出 `zRaceBarConfig`。
+49→    - 更新 `packages/vseed/src/types/properties/config/config.ts`，将 `raceBar: zRaceBarConfig.nullish()` 添加到 `zConfig` 中。
+50→
+51→### 2.2 实现构建管线 (Pipeline)
 
 这是实现逻辑的核心。我们需要创建两条管线：Spec Pipeline 和 Advanced Pipeline。
 

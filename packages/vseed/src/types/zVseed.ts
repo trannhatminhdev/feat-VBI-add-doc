@@ -24,6 +24,8 @@ import {
   zScatter,
   zTable,
   zRaceBar,
+  zRaceColumn,
+  zRaceScatter,
 } from './chartType'
 
 export const zVSeed = z.discriminatedUnion('chartType', [
@@ -50,6 +52,8 @@ export const zVSeed = z.discriminatedUnion('chartType', [
 
   // race
   zRaceBar,
+  zRaceColumn,
+  zRaceScatter,
 
   // other
   zFunnel,
