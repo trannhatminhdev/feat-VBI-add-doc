@@ -62,5 +62,13 @@
   "author": {
     "name": "VisActor",
     "url": "https://www.visactor.io/"
+  },
+  "pnpm": {
+    "overrides": {
+      "@visactor/vrender-core": "1.0.39",
+      "@visactor/vrender-kits": "1.0.39",
+      "@visactor/vrender-components": "1.0.39",
+      "@visactor/vrender-animate": "1.0.39"
+    }
   }
 }

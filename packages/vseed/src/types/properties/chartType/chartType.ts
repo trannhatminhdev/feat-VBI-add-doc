@@ -21,6 +21,10 @@ export type ChartType =
   | 'pie'
   | 'donut'
   | 'radar'
+  // race
+  | 'raceBar'
+  | 'raceColumn'
+  | 'raceScatter'
   // other
   | 'heatmap'
   | 'funnel'
@@ -38,6 +42,7 @@ export const zChartType = z.enum([
   'bar',
   'barPercent',
   'barParallel',
+  'raceBar',
   'area',
   'areaPercent',
   'scatter',

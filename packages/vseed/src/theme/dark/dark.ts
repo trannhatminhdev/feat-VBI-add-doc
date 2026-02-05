@@ -58,7 +58,6 @@ export const darkTheme = (): CustomThemeConfig => {
         xAxis: bandAxis,
         yAxis: linearAxis,
         crosshairLine: crosshairLine,
-        player,
 
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
@@ -72,7 +71,6 @@ export const darkTheme = (): CustomThemeConfig => {
         stackCornerRadius: [4, 4, 0, 0],
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
-        player,
 
         regressionLine: getDarkRegressionLine(),
       },
@@ -85,7 +83,6 @@ export const darkTheme = (): CustomThemeConfig => {
         stackCornerRadius: [4, 4, 0, 0],
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
-        player,
       },
       columnPercent: {
         ...baseConfig,
@@ -96,7 +93,6 @@ export const darkTheme = (): CustomThemeConfig => {
         stackCornerRadius: [4, 4, 0, 0],
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
-        player,
       },
       bar: {
         ...baseConfig,
@@ -107,9 +103,8 @@ export const darkTheme = (): CustomThemeConfig => {
         stackCornerRadius: [0, 4, 4, 0],
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
-        player,
       },
-      barParallel: {
+      raceBar: {
         ...baseConfig,
 
         xAxis: linearAxis,
@@ -120,38 +115,20 @@ export const darkTheme = (): CustomThemeConfig => {
         annotation: getDarkAnnotation(),
         player,
       },
-      barPercent: {
+      raceColumn: {
         ...baseConfig,
 
-        xAxis: linearAxis,
-        yAxis: barBandAxis,
+        xAxis: bandAxis,
+        yAxis: linearAxis,
         crosshairRect: crosshairRect,
-        stackCornerRadius: [0, 4, 4, 0],
+        stackCornerRadius: [4, 4, 0, 0],
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
         player,
-      },
-      area: {
-        ...baseConfig,
 
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairLine: crosshairLine,
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-        player,
+        regressionLine: getDarkRegressionLine(),
       },
-      areaPercent: {
-        ...baseConfig,
-
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairLine: crosshairLine,
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-        player,
-      },
-      scatter: {
+      raceScatter: {
         ...baseConfig,
         crosshairLine,
         sizeRange: [8, 24],
@@ -179,6 +156,71 @@ export const darkTheme = (): CustomThemeConfig => {
         regressionLine: getDarkRegressionLine(),
         player,
       },
+      barParallel: {
+        ...baseConfig,
+
+        xAxis: linearAxis,
+        yAxis: barBandAxis,
+        crosshairRect: crosshairRect,
+        stackCornerRadius: [0, 4, 4, 0],
+        pivotGrid: getDarkPivotChartGridConfig(),
+        annotation: getDarkAnnotation(),
+      },
+      barPercent: {
+        ...baseConfig,
+
+        xAxis: linearAxis,
+        yAxis: barBandAxis,
+        crosshairRect: crosshairRect,
+        stackCornerRadius: [0, 4, 4, 0],
+        pivotGrid: getDarkPivotChartGridConfig(),
+        annotation: getDarkAnnotation(),
+      },
+      area: {
+        ...baseConfig,
+
+        xAxis: bandAxis,
+        yAxis: linearAxis,
+        crosshairLine: crosshairLine,
+        pivotGrid: getDarkPivotChartGridConfig(),
+        annotation: getDarkAnnotation(),
+      },
+      areaPercent: {
+        ...baseConfig,
+
+        xAxis: bandAxis,
+        yAxis: linearAxis,
+        crosshairLine: crosshairLine,
+        pivotGrid: getDarkPivotChartGridConfig(),
+        annotation: getDarkAnnotation(),
+      },
+      scatter: {
+        ...baseConfig,
+        crosshairLine,
+        sizeRange: [8, 24],
+        xAxis: {
+          ...linearAxis,
+          line: {
+            ...linearAxis.line,
+            visible: true,
+          },
+        },
+        yAxis: {
+          ...linearAxis,
+          line: {
+            ...linearAxis.line,
+            visible: true,
+          },
+        },
+        label: {
+          ...baseConfig.label,
+          showValue: false,
+          showValuePercent: false,
+        },
+        pivotGrid: getDarkPivotChartGridConfig(),
+        annotation: getDarkAnnotation(),
+        regressionLine: getDarkRegressionLine(),
+      },
       dualAxis: {
         ...baseConfig,
         xAxis: bandAxis,
@@ -198,7 +240,6 @@ export const darkTheme = (): CustomThemeConfig => {
           showDimension: true,
         },
         pivotGrid: getDarkPivotChartGridConfig(),
-        player,
       },
       donut: {
         ...baseConfig,
@@ -209,12 +250,10 @@ export const darkTheme = (): CustomThemeConfig => {
           showDimension: true,
         },
         pivotGrid: getDarkPivotChartGridConfig(),
-        player,
       },
       radar: {
         ...baseConfig,
         pivotGrid: getDarkPivotChartGridConfig(),
-        player,
       },
       rose: {
         ...baseConfig,
@@ -224,7 +263,6 @@ export const darkTheme = (): CustomThemeConfig => {
           showDimension: true,
         },
         pivotGrid: getDarkPivotChartGridConfig(),
-        player,
       },
       roseParallel: {
         ...baseConfig,
@@ -235,7 +273,6 @@ export const darkTheme = (): CustomThemeConfig => {
         },
 
         pivotGrid: getDarkPivotChartGridConfig(),
-        player,
       },
       // other
       funnel: {
@@ -244,7 +281,6 @@ export const darkTheme = (): CustomThemeConfig => {
         transform: getDarkFunnelTransformTheme(),
 
         pivotGrid: getDarkPivotChartGridConfig(),
-        player,
       },
       heatmap: {
         ...baseConfig,
@@ -255,7 +291,6 @@ export const darkTheme = (): CustomThemeConfig => {
           ...baseConfig.label,
           labelColorSmartInvert: true,
         },
-        player,
 
         cell: getDarkHeatmapCellTheme(),
         pivotGrid: getDarkPivotChartGridConfig(),

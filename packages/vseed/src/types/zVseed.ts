@@ -23,6 +23,9 @@ import {
   zRoseParallel,
   zScatter,
   zTable,
+  zRaceBar,
+  zRaceColumn,
+  zRaceScatter,
 } from './chartType'
 
 export const zVSeed = z.discriminatedUnion('chartType', [
@@ -46,6 +49,12 @@ export const zVSeed = z.discriminatedUnion('chartType', [
   zRose,
   zRoseParallel,
   zRadar,
+
+  // race
+  zRaceBar,
+  zRaceColumn,
+  zRaceScatter,
+
   // other
   zFunnel,
   zHeatmap,

@@ -6,12 +6,36 @@ import { zMeasures, zMeasureTree } from './properties/measures'
 import { zEncoding } from './properties/encoding'
 import { zDatasetReshapeInfo } from './properties/datasetReshapeInfo'
 import { zTheme, zCustomThemeConfig } from './properties/theme'
-import { zConfig } from './properties/config'
+import { zConfig, type Config } from './properties/config'
 import { zAnalysis, zAnnotation, zRegressionLine, zMarkStyle, zPage } from './properties'
 import { zLocale } from './i18n'
 import { zCellStyle } from './properties/cellStyle/cellStyle'
 
-export const zAdvancedVSeed = z.object({
+export type AdvancedVSeed = {
+  chartType: z.infer<typeof zChartType>
+  dataset: z.infer<typeof zDataset>
+  datasetReshapeInfo: z.infer<typeof zDatasetReshapeInfo>
+  pivotAllDatasetReshapeInfo: z.infer<typeof zDatasetReshapeInfo>
+  dimensions?: z.infer<typeof zDimensions>
+  measures?: z.infer<typeof zMeasures>
+  reshapeMeasures?: z.infer<typeof zMeasures>[]
+  reshapeDimensions?: z.infer<typeof zDimensions>
+  measureTree?: z.infer<typeof zMeasureTree>
+  dimensionTree?: z.infer<typeof zDimensionTree>
+  encoding: z.infer<typeof zEncoding>
+  page?: z.infer<typeof zPage>
+  config: Config
+  analysis: z.infer<typeof zAnalysis>
+  theme: z.infer<typeof zTheme>
+  markStyle: z.infer<typeof zMarkStyle>
+  cellStyle: z.infer<typeof zCellStyle>
+  customTheme: z.infer<typeof zCustomThemeConfig>
+  annotation: z.infer<typeof zAnnotation>
+  locale: z.infer<typeof zLocale>
+  regressionLine: z.infer<typeof zRegressionLine>
+}
+
+export const zAdvancedVSeed: z.ZodType<AdvancedVSeed> = z.object({
   chartType: zChartType,
   dataset: zDataset,
   datasetReshapeInfo: zDatasetReshapeInfo,
@@ -34,5 +58,3 @@ export const zAdvancedVSeed = z.object({
   locale: zLocale,
   regressionLine: zRegressionLine,
 })
-
-export type AdvancedVSeed = z.infer<typeof zAdvancedVSeed>

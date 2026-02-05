@@ -37,7 +37,6 @@ import {
   pivotTitle,
   dimensionLinkage,
   brush,
-  playerAdapter,
 } from '../pipes'
 
 const columnParallel: VChartSpecPipeline = [
@@ -47,7 +46,7 @@ const columnParallel: VChartSpecPipeline = [
   barGapInGroup,
   colorAdapter(color, linearColor),
   backgroundColor,
-  playerAdapter(datasetXY),
+  datasetXY,
   progressive,
   xBand,
   yLinear,

@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.3.15
+
+### Patch Changes
+
+- refactor: add raceColumn, raceBar, raceScatter, remove useless player for other chart types
+
 ## 0.3.14
 
 ## 0.3.13

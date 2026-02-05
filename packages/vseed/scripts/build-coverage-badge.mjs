@@ -65,6 +65,9 @@ function getCoverageData() {
 function updatePackageReadme(coverageData) {
   try {
     const readmePath = join(__dirname, '../README.md')
+    if (!existsSync(readmePath)) {
+      writeFileSync(readmePath, '# VSeed\n\n', 'utf8')
+    }
     let readme = readFileSync(readmePath, 'utf8')
 
     const badgeRegex = /\[!\[Coverage\]\([^)]+\)\]\([^)]+\)/
@@ -73,8 +76,13 @@ function updatePackageReadme(coverageData) {
     if (badgeRegex.test(readme)) {
       readme = readme.replace(badgeRegex, newBadge)
     } else {
-      const npmBadgeRegex = /(\[!\[npm Version\]\([^)]+\)\]\([^)]+\))/
-      readme = readme.replace(npmBadgeRegex, `$1\n${newBadge}`)
+      // If no badge exists, insert it after the first header or at the top
+      const headerRegex = /(^#\s+.*$)/m
+      if (headerRegex.test(readme)) {
+        readme = readme.replace(headerRegex, `$1\n\n${newBadge}`)
+      } else {
+        readme = `${newBadge}\n\n${readme}`
+      }
     }
 
     writeFileSync(readmePath, readme, 'utf8')
@@ -93,9 +101,13 @@ function updateRootReadme(coverageData) {
     }
     let readme = readFileSync(readmePath, 'utf8')
 
-    // Match the table row for vseed
-    const rowRegex =
-      /(\|\s*\[vseed\]\(\.\/packages\/vseed\)\s*\|[^|]+\|\s*)(\[!\[Coverage\]\([^)]+\)\]\([^)]+\))([^|]+\|)/
+    // Regex explanation:
+    // 1. Match the start of the row including "vseed" link (flexible path)
+    // 2. Match content up to the coverage badge column
+    // 3. Match the existing coverage badge
+    // 4. Match the rest of the row
+    const rowRegex = /(\|\s*\[vseed\]\([^)]+\)\s*\|[^|]+\|\s*)(\[!\[Coverage\]\([^)]+\)\]\([^)]+\))([^|]+\|)/
+
     const newBadge = `[![Coverage](${coverageData.badgeUrl})](https://github.com/VisActor/VSeed/actions/workflows/coverage.yml)`
 
     if (rowRegex.test(readme)) {
@@ -103,7 +115,9 @@ function updateRootReadme(coverageData) {
       writeFileSync(readmePath, readme, 'utf8')
       console.log('Root README.md updated successfully')
     } else {
-      console.warn('vseed row not found in Root README table')
+      console.warn('vseed row with coverage badge not found in Root README table. Check regex or table format.')
+      // Optional: Try to find vseed row without badge and insert it (if column structure matches)
+      // For now, just logging warning is safer than breaking table structure.
     }
   } catch (error) {
     console.error('Error updating Root README.md:', error.message)
@@ -112,5 +126,5 @@ function updateRootReadme(coverageData) {
 
 const coverage = getCoverageData()
 console.log('Coverage data:', coverage)
-updatePackageReadme(coverage)
+// updatePackageReadme(coverage)
 updateRootReadme(coverage)

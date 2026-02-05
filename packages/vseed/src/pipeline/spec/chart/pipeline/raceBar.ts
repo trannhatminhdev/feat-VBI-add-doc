@@ -1,0 +1,51 @@
+import type { VChartSpecPipeline } from 'src/types'
+import {
+  initBar,
+  backgroundColor,
+  label,
+  tooltip,
+  discreteLegend,
+  color,
+  barStyle,
+  annotationPoint,
+  annotationVerticalLine,
+  annotationHorizontalLine,
+  annotationAreaBand,
+  horizontalCrosshairRect,
+  stackCornerRadius,
+  progressive,
+  colorAdapter,
+  linearColor,
+  colorLegend,
+  colorBarStyleFill,
+  barMaxWidth,
+  brush,
+  playerYX,
+  playerYBand,
+  playerXLinear,
+} from '../pipes'
+
+const raceBar: VChartSpecPipeline = [
+  initBar,
+  stackCornerRadius,
+  barMaxWidth,
+  colorAdapter(color, linearColor),
+  backgroundColor,
+  playerYX,
+  progressive,
+  playerXLinear,
+  playerYBand,
+
+  label,
+  brush,
+  tooltip,
+  colorAdapter(discreteLegend, colorLegend),
+  horizontalCrosshairRect,
+  colorBarStyleFill(barStyle),
+  annotationPoint,
+  annotationVerticalLine,
+  annotationHorizontalLine,
+  annotationAreaBand,
+]
+
+export const raceBarSpecPipeline = raceBar

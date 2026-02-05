@@ -10,7 +10,6 @@ import type {
   Theme,
   Tooltip,
   Page,
-  Player,
 } from '../../properties'
 import type { Brush } from '../../properties'
 
@@ -73,10 +72,6 @@ export interface Donut {
    * @description 分页配置, 用于指定分页的字段名, 必须是维度
    */
   page?: Page
-  /**
-   * @description 播放器配置, 用于指定播放的字段名, 必须是维度
-   */
-  player?: Player
 
   /**
    * 图表的背景颜色

@@ -2,6 +2,9 @@ import {
   registerArea,
   registerAreaPercent,
   registerBar,
+  registerRaceBar,
+  registerRaceColumn,
+  registerRaceScatter,
   registerBarParallel,
   registerBarPercent,
   registerColumn,
@@ -38,6 +41,9 @@ export const registerAll = () => {
   registerColumnParallel()
   registerColumnPercent()
   registerBar()
+  registerRaceBar()
+  registerRaceColumn()
+  registerRaceScatter()
   registerBarParallel()
   registerBarPercent()
   registerArea()

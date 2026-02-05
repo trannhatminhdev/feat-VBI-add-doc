@@ -9,7 +9,6 @@ import { zHeatmapCell } from './heatmap/zHeatmap'
 import { zXBandAxis, zYBandAxis } from './axes/zBandAxis'
 
 import { zBrushConfig } from '../brush/zBrush'
-import { zPlayer } from './player'
 
 export const zHeatmapConfig = z.object({
   backgroundColor: zBackgroundColor.nullish(),
@@ -17,7 +16,6 @@ export const zHeatmapConfig = z.object({
   color: zColor.nullish(),
   tooltip: zTooltip.nullish(),
   legend: zColorLegend.nullish(),
-  player: zPlayer.nullish(),
 
   pivotGrid: zPivotChartGridConfig.nullish(),
   cell: zHeatmapCell.nullish(),

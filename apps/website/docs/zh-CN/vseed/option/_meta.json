@@ -86,6 +86,21 @@
   },
   {
     "type": "file",
+    "name": "raceBar",
+    "label": "raceBar "
+  },
+  {
+    "type": "file",
+    "name": "raceColumn",
+    "label": "raceColumn "
+  },
+  {
+    "type": "file",
+    "name": "raceScatter",
+    "label": "raceScatter "
+  },
+  {
+    "type": "file",
     "name": "radar",
     "label": "radar "
   },

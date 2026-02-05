@@ -12,6 +12,9 @@ export const initScatter: VChartSpecPipe = (spec, context) => {
   result.xField = foldInfoList?.[0].measureValue
   if (foldInfoList?.[1]) {
     result.yField = foldInfoList[1].measureValue
+  } else if (unfoldInfo.encodingX) {
+    result.xField = unfoldInfo.encodingX
+    result.yField = foldInfoList?.[0].measureValue
   }
 
   result.seriesField = unfoldInfo.encodingColorId
