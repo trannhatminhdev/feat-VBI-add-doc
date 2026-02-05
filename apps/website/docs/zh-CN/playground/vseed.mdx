@@ -9,31 +9,141 @@ const Demo = () => {
   const MeasureNames = '__MeaName__'
 
   const vseed: VSeed = {
-    chartType: 'columnParallel',
+    chartType: 'column',
     dataset: [
-      { date: '2019', region: 'east', profit: 100, sales: 1000 },
-      { date: '2020', region: 'east', profit: 200, sales: 2000 },
-      { date: '2021', region: 'east', profit: 300, sales: 3000 },
-      { date: '2022', region: 'east', profit: 400, sales: 4000 },
-      { date: '2023', region: 'east', profit: 500, sales: 5000 },
-
-      { date: '2019', region: 'north of east', profit: 900, sales: 6000 },
-      { date: '2020', region: 'north of east', profit: 800, sales: 5000 },
-      { date: '2021', region: 'north of east', profit: 700, sales: 4000 },
-      { date: '2022', region: 'north of east', profit: 400, sales: 3000 },
-      { date: '2023', region: 'north of east', profit: 100, sales: 2000 },
+      {
+        year: '2023',
+        university: '清华大学',
+        graduates: 3609,
+      },
+      {
+        year: '2023',
+        university: '北京大学',
+        graduates: 3835,
+      },
+      {
+        year: '2023',
+        university: '复旦大学',
+        graduates: 3279,
+      },
+      {
+        year: '2023',
+        university: '上海交通大学',
+        graduates: 3971,
+      },
+      {
+        year: '2023',
+        university: '浙江大学',
+        graduates: 6094,
+      },
+      {
+        year: '2024',
+        university: '清华大学',
+        graduates: 3600,
+      },
+      {
+        year: '2024',
+        university: '北京大学',
+        graduates: 3725,
+      },
+      {
+        year: '2024',
+        university: '复旦大学',
+        graduates: 3300,
+      },
+      {
+        year: '2024',
+        university: '上海交通大学',
+        graduates: 3999,
+      },
+      {
+        year: '2024',
+        university: '浙江大学',
+        graduates: 6100,
+      },
+      {
+        year: '2024',
+        university: '南开大学',
+        graduates: 4075,
+      },
+      {
+        year: '2024',
+        university: '吉林大学',
+        graduates: 10102,
+      },
+      {
+        year: '2024',
+        university: '北京邮电大学',
+        graduates: 3623,
+      },
+      {
+        year: '2025',
+        university: '北京航空航天大学',
+        graduates: 4437,
+      },
+      {
+        year: '2025',
+        university: '华中科技大学',
+        graduates: 7000,
+      },
+      {
+        year: '2025',
+        university: '湖南大学',
+        graduates: 5133,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'university',
+        encoding: 'xAxis',
+        alias: '高校',
+      },
+      {
+        id: 'year',
+        encoding: 'color',
+        alias: '年份',
+      },
+    ],
+    measures: [
+      {
+        id: 'graduates',
+        encoding: 'yAxis',
+        alias: '毕业生人数(人)',
+      },
     ],
     player: {
-      field: 'date',
-      interval: 1000,
+      field: 'year',
       autoPlay: true,
-      position: 'bottom',
+      loop: true,
+      speed: 1,
     },
-    measures: [
-      { id: 'profit', alias: '利润' },
-      { id: 'sales', alias: '销售量' },
-    ],
-    dimensions: [{ id: 'region', alias: '区域' }],
+    xAxis: {
+      visible: true,
+      label: {
+        visible: true,
+        rotate: 45,
+      },
+      title: {
+        visible: true,
+        text: '高校',
+      },
+    },
+    yAxis: {
+      visible: true,
+      label: {
+        visible: true,
+      },
+      title: {
+        visible: true,
+        text: '毕业生人数(人)',
+      },
+    },
+    tooltip: {
+      visible: true,
+    },
+    legend: {
+      visible: true,
+    },
   }
 
   const parseRes = zVSeed.safeParse(vseed)

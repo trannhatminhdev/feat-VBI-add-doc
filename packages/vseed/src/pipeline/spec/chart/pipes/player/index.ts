@@ -1,1 +1,5 @@
 export { playerAdapter } from './playerAdapter'
+export { playerYX } from './playerYX'
+export { isPlayer } from './isPlayer'
+export { playerYBand } from './playerYBand'
+export { playerXLinear } from './playerXLinear'

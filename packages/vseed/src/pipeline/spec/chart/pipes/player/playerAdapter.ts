@@ -42,6 +42,7 @@ export const playerAdapter = (pipe: VChartSpecPipe): VChartSpecPipe => {
 
     return {
       ...nextSpec,
+      stackCornerRadius: undefined,
       player: {
         visible: true,
         auto: autoPlay,

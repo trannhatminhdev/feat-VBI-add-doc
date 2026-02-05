@@ -13,7 +13,7 @@
   "dependencies": {
     "@rspress/core": "2.0.2",
     "@visactor/vbi": "workspace:*",
-    "@visactor/vchart": "2.0.15",
+    "@visactor/vchart": "2.0.14",
     "@visactor/vquery": "workspace:*",
     "@visactor/vseed": "workspace:*",
     "@visactor/vtable": "1.23.0",
