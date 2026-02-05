@@ -1,71 +1,21 @@
-# Bar
-
-:::info{title=推荐}
-\- 推荐字段配置: `1`个指标, `2`个维度
-
-\- 支持数据重塑: 至少`1`个指标, `0`个维度
-
-:::
-
-:::info{title=编码映射}
-条形图支持以下视觉通道:
-
-`yAxis`  : y轴通道, 支持`多个维度`, 按维度值映射至y轴
-
-`xAxis`  : x轴通道, 支持`多个指标`, 按指标值映射至x轴
-
-`detail` : 细分通道, 支持`多个维度`, 在同一个颜色系列下展示更细粒度的数据时使用
-
-`color`  : 颜色通道, 支持`多个维度`或 `一个指标`, 维度颜色用于区分不同的数据系列, 指标颜色用于线性映射指标值到图形颜色
-
-`tooltip`: 提示通道, 支持`多个维度`与 `多个指标`, 会在鼠标悬停在数据点上时展示
-
-`label`  : 标签通道, 支持`多个维度`与 `多个指标`, 会在数据点上展示数据标签
-
-:::
+# RaceBar
 
 :::note{title=描述}
-条形图，适用于横向数据对比场景，Y轴为类目轴（分类数据），X轴为数值轴（连续数据），柱子横向排列
+动态条形图 (Race Bar Chart)
 
-适用场景:
-
-\- 数据项名称较长时
-
-\- 需要展示数据排名对比
-
-\- 展示正负双向数据
-
-:::
-
-:::warning{title=Warning}
-数据要求:
-
-\- 至少1个指标（度量）
-
-\- 第一个维度会放至Y轴, 其余维度会与指标名称(存在多个指标时)合并, 作为图例项展示.
-
-\- 所有指标会自动合并为一个指标
-
-默认开启的功能:
-
-\- 默认开启图例、坐标轴、数据标签、提示信息
+适用于展示数据随时间变化的排名情况
 
 :::
 
 
 ## chartType
 
-**Type:** `"bar"`
+**Type:** `"raceBar"`
 
 :::note{title=描述}
-条形图，适用于横向数据对比场景，Y轴为类目轴（分类数据），X轴为数值轴（连续数据），柱子横向排列
+动态条形图，适用于展示数据随时间变化的排名情况
 
 :::
-
-**示例**
-'bar'
-
-
 
 
 ## dataset
@@ -73,14 +23,9 @@
 **Type:** `Record<string | number, any>[]`
 
 :::note{title=描述}
-数据源, 符合TidyData规范的且已经聚合的数据集，用于定义图表的数据来源和结构, 用户输入的数据集并不需要进行任何处理, VSeed带有强大的数据重塑功能, 会自行进行数据重塑, 条形图的数据最终会被转换为2个维度, 1个指标.
+数据源
 
 :::
-
-**示例**
-[{date:'2020\-01\-01', value:100}, {date:'2020\-01\-02', value:200}]
-
-
 
 
 ## dimensions
@@ -88,14 +33,9 @@
 **Type:** `BarDimension[] | undefined`
 
 :::note{title=描述}
-维度, 第一个维度被映射到Y轴, 其余维度会与指标名称(存在多个指标时)合并, 作为图例项展示.
+维度
 
 :::
-
-**示例**
-[{id: "date", alias: "日期"}, {id: "value", alias: "数值"}]
-
-
 
 
 ### id
@@ -147,16 +87,7 @@
 :::note{title=描述}
 指标
 
-
-
-指标, 条形图指标会自动合并为一个指标, 映射到X轴, 存在多个指标时, 指标名称会与其余维度合并, 作为图例项展示.
-
 :::
-
-**示例**
-[{id: "value", alias: "数值"}]
-
-
 
 
 ### id
@@ -509,16 +440,210 @@
 :::
 
 
+## player
+
+**Type:** `Player | undefined`
+
+:::note{title=描述}
+播放器配置, 用于指定时间维度, 动态条形图的核心配置
+
+
+
+播放器配置, 用于指定播放的字段名, 必须是维度
+
+:::
+
+:::warning{title=Warning}
+该功能不支持 table, pivotTable, dualAxis, histogram, boxPlot 等图表类型, 不支持在开启指标组合、行列透视下使用
+
+:::
+
+
+### field
+
+**Type:** `string`
+
+:::note{title=描述}
+播放器绑定的字段, 必须是维度
+
+:::
+
+### interval
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+播放间隔, 单位ms
+
+:::
+
+### autoPlay
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否自动播放
+
+:::
+
+### loop
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否循环播放
+
+:::
+
+### position
+
+**Type:** `"left" | "top" | "right" | "bottom" | undefined`
+
+:::note{title=描述}
+播放器位置
+
+:::
+
+### railColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器进度条轨道颜色
+
+:::
+
+### trackColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器进度条进度颜色
+
+:::
+
+### sliderHandleColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器进度条滑块颜色
+
+:::
+
+### sliderHandleBorderColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器进度条滑块边框颜色
+
+:::
+
+### startButtonColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器开始按钮颜色
+
+:::
+
+### pauseButtonColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器暂停按钮颜色
+
+:::
+
+### backwardButtonColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器后退按钮颜色
+
+:::
+
+### forwardButtonColor
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+播放器前进按钮颜色
+
+:::
+
+
+## sort
+
+**Type:** `Sort | undefined`
+
+:::note{title=描述}
+排序配置, 动态条形图通常需要根据数值动态排序
+
+
+
+类目轴排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
+
+:::
+
+**示例**
+\- order:'asc'
+\- orderBy:'date'
+或
+\- customOrder:['2019', '2020', '2021']
+
+
+
+
+### order
+
+**Type:** `"asc" | "desc" | undefined`
+
+:::note{title=描述}
+排序顺序, 可选值为 'asc' 或 'desc'
+
+:::
+
+**示例**
+order:'asc'
+
+
+
+### orderBy
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+排序依赖的字段, 可以是维度id或指标id
+
+:::
+
+**示例**
+\- orderBy:'date'
+\- orderBy:'profit'
+
+
+
+### customOrder
+
+**Type:** `string[] | undefined`
+
+:::note{title=描述}
+自定义排序顺序, 该顺序将直接应用至类目轴
+
+:::
+
+
 ## page
 
 **Type:** `Page | undefined`
 
 :::note{title=描述}
-分页
-
-
-
-分页配置，用于配置图表的分页功能
+分页配置
 
 :::
 
@@ -552,7 +677,7 @@
 **Type:** `BackgroundColor`
 
 :::note{title=描述}
-图表的背景颜色, 默认为透明背景, 背景颜色可以是颜色字符串, 例如'red', 'blue', 也可以是hex, rgb或rgba'#ff0000', 'rgba(255,0,0,0.5)'
+背景颜色
 
 :::
 
@@ -562,11 +687,7 @@
 **Type:** `Color | undefined`
 
 :::note{title=描述}
-颜色
-
-
-
-颜色配置, 用于定义图表的颜色方案, 包括颜色列表, 颜色映射, 颜色渐变等.
+颜色配置
 
 :::
 
@@ -640,7 +761,7 @@
 **Type:** `Label | undefined`
 
 :::note{title=描述}
-标签配置, 用于定义图表的数据标签, 包括数据标签的位置, 格式, 样式等.
+标签配置
 
 :::
 
@@ -985,7 +1106,7 @@ same as operator
 **Type:** `Legend | undefined`
 
 :::note{title=描述}
-图例配置, 用于定义图表的图例, 包括图例的位置, 格式, 样式等.
+图例配置
 
 :::
 
@@ -1149,7 +1270,7 @@ maxSize: 2
 **Type:** `Tooltip | undefined`
 
 :::note{title=描述}
-提示信息配置, 用于定义图表的提示信息, 包括提示信息的位置, 格式, 样式等.
+提示信息配置
 
 :::
 
@@ -1169,11 +1290,7 @@ maxSize: 2
 **Type:** `Brush | undefined`
 
 :::note{title=描述}
-框选
-
-
-
-框选配置，用于开启/关闭 brush 框选能力
+框选配置
 
 
 
@@ -1334,7 +1451,7 @@ brush的类型
 **Type:** `XLinearAxis | undefined`
 
 :::note{title=描述}
-x轴, 数值轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格式, 样式等.
+x轴配置
 
 :::
 
@@ -1800,7 +1917,7 @@ X轴网格线
 **Type:** `YBandAxis | undefined`
 
 :::note{title=描述}
-y轴, 类目轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格式, 样式等.
+y轴配置
 
 :::
 
@@ -2130,7 +2247,7 @@ X轴网格线
 **Type:** `CrosshairRect | undefined`
 
 :::note{title=描述}
-水平提示框配置, 用于定义图表的水平提示框, 包括水平提示框的颜色、标签样式等.
+水平提示框配置
 
 
 
@@ -2190,7 +2307,7 @@ X轴网格线
 **Type:** `number | number[] | undefined`
 
 :::note{title=描述}
-条形图 堆叠圆角
+堆叠圆角
 
 :::
 
@@ -2200,76 +2317,7 @@ X轴网格线
 **Type:** `string | number | undefined`
 
 :::note{title=描述}
-矩形的最大高度，可以是像素值或者百分比字符串
-
-:::
-
-
-## sort
-
-**Type:** `Sort | undefined`
-
-:::note{title=描述}
-Y轴排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
-
-
-
-类目轴排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
-
-:::
-
-**示例**
-sort: {
-  orderBy: 'profit',
-  order: 'asc',
-}
-sort: {
-  customOrder:['2019', '2020', '2021']
-}
-
-\- order:'asc'
-\- orderBy:'date'
-或
-\- customOrder:['2019', '2020', '2021']
-
-
-
-
-### order
-
-**Type:** `"asc" | "desc" | undefined`
-
-:::note{title=描述}
-排序顺序, 可选值为 'asc' 或 'desc'
-
-:::
-
-**示例**
-order:'asc'
-
-
-
-### orderBy
-
-**Type:** `string | undefined`
-
-:::note{title=描述}
-排序依赖的字段, 可以是维度id或指标id
-
-:::
-
-**示例**
-\- orderBy:'date'
-\- orderBy:'profit'
-
-
-
-### customOrder
-
-**Type:** `string[] | undefined`
-
-:::note{title=描述}
-自定义排序顺序, 该顺序将直接应用至类目轴
+矩形的最大高度
 
 :::
 
@@ -2279,7 +2327,7 @@ order:'asc'
 **Type:** `SortLegend | undefined`
 
 :::note{title=描述}
-图例排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
+图例排序配置
 
 
 
@@ -2288,14 +2336,6 @@ order:'asc'
 :::
 
 **示例**
-sortLegend: {
-  orderBy: 'profit',
-  order: 'asc',
-}
-sortLegend: {
-  customOrder:['2019', '2020', '2021']
-}
-
 \- order:'asc'
 \- orderBy:'date'
 或
@@ -2348,10 +2388,6 @@ order:'asc'
 **Type:** `Theme | undefined`
 
 :::note{title=描述}
-图表的主题, 主题是优先级较低的功能配置, 包含所有图表类型共用的通用配置, 与单类图表类型共用的图表配置, 内置light与dark两种主题, 用户可以通过Builder自定义主题
-
-
-
 主题
 
 
@@ -2359,15 +2395,6 @@ order:'asc'
 内置 light、dark 两种主题, 新的主题可以通过registerTheme自定义主题.
 
 :::
-
-**示例**
-'dark'
-
-'light'
-
-'customThemeName'
-
-
 
 
 ### length
@@ -2384,15 +2411,7 @@ order:'asc'
 **Type:** `BarStyle | BarStyle[] | undefined`
 
 :::note{title=描述}
-矩形图元样式, 条形图样式配置, 用于定义图表的条形图样式, 包括条形图的颜色, 边框, 圆角等.
-
-支持全局样式或条件样式配置
-
-数据筛选器
-
-若配置selector, 提供数值 selector, 局部数据 selector, 条件维度 selector, 条件指标 selector 共四类数据匹配能力
-
-若未配置selector, 则样式全局生效.
+条形图样式配置
 
 :::
 
@@ -2589,7 +2608,7 @@ dotted
 **Type:** `AnnotationPoint | AnnotationPoint[] | undefined`
 
 :::note{title=描述}
-标注点配置, 根据选择的数据, 定义图表的标注点, 包括标注点的位置, 格式, 样式等.
+标注点配置
 
 :::
 
@@ -2876,7 +2895,7 @@ offsetX: 5, 标注点整体向右偏移5像素
 **Type:** `AnnotationVerticalLine | AnnotationVerticalLine[] | undefined`
 
 :::note{title=描述}
-数值标注线(包括均值线、最大值线、最小值线等)，竖直方向展示，能够设置标注线的位置, 样式等，如需绘制均值线等数值对应的标注线请使用该配置
+数值标注线
 
 :::
 
@@ -3150,7 +3169,7 @@ true
 **Type:** `AnnotationHorizontalLine | AnnotationHorizontalLine[] | undefined`
 
 :::note{title=描述}
-维度值标注线，水平展示，能够设置标注线的位置, 样式等
+维度值标注线
 
 :::
 
@@ -3464,7 +3483,7 @@ true
 **Type:** `AnnotationArea | AnnotationArea[] | undefined`
 
 :::note{title=描述}
-标注区域配置, 根据选择的数据, 定义图表的标注区域, 包括标注区域的位置, 样式等.
+标注区域配置
 
 :::
 
@@ -3835,9 +3854,7 @@ true
 **Type:** `DimensionLinkage | undefined`
 
 :::note{title=描述}
-当图表开启透视功能或者指标组合的是否，是否开启维度联动功能
-
-当hover 到某个维度值时，联动高亮其他图表中相同维度值的数据
+维度联动配置
 
 
 
@@ -3879,7 +3896,7 @@ true
 **Type:** `Locale | undefined`
 
 :::note{title=描述}
-图表语言配置, 支持'zh\-CN'与'en\-US'两种语言, 另外可以调用 intl.setLocale('zh\-CN') 方法设置语言
+语言配置
 
 :::
 

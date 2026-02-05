@@ -178,17 +178,19 @@
 **Type:** `boolean | undefined`
 
 :::note{title=描述}
-自动数值格式化 当配置了 format 时, 该配置项失效
+自动数值格式化，默认开启，优先级最高
 
-开启后, 图表的数据标签、提示信息, 会根据指标的数值, 自动根据语言环境, 选择合适的格式化方式
+当 autoFormat=true 时，会覆盖 numFormat 的所有配置
 
-格式化规则为设置为十进制数值, 开启compact notation, 最小0位小数, 最大2位小数, 自动四舍五入, 使用浏览器提供的 Intl.NumberFormatOptions 实现该逻辑.
+开启后，图表的数据标签、提示信息会根据指标数值和语言环境自动选择合适的格式化方式
+
+格式化规则：十进制数值，开启 compact notation，最小0位小数，最大2位小数，自动四舍五入，使用浏览器提供的 Intl.NumberFormat 实现
 
 例如:
 
-当locale为zh\-CN: 749740.264会被自动格式化为74.45万
+\- locale为zh\-CN: 749740.264 → 74.45万
 
-当locale为en\-US: 749740.264会被自动格式化为744.5K
+\- locale为en\-US: 749740.264 → 744.5K
 
 :::
 
@@ -197,7 +199,9 @@
 **Type:** `NumFormat | undefined`
 
 :::note{title=描述}
-指标的数值格式化, 会自动应用于label、tooltip
+自定义指标的数值格式化，会自动应用于 label、tooltip
+
+注意：若要使用自定义格式化，必须显式设置 autoFormat=false，否则 autoFormat 会覆盖此配置
 
 :::
 
@@ -537,139 +541,6 @@
 '2023\-01\-01'
 
 
-
-
-## player
-
-**Type:** `Player | undefined`
-
-:::note{title=描述}
-播放器配置, 用于指定播放的字段名, 必须是维度
-
-:::
-
-:::warning{title=Warning}
-该功能不支持 table, pivotTable, dualAxis, histogram, boxPlot 等图表类型, 不支持在开启指标组合、行列透视下使用
-
-:::
-
-
-### field
-
-**Type:** `string`
-
-:::note{title=描述}
-播放器绑定的字段, 必须是维度
-
-:::
-
-### interval
-
-**Type:** `number | undefined`
-
-:::note{title=描述}
-播放间隔, 单位ms
-
-:::
-
-### autoPlay
-
-**Type:** `boolean | undefined`
-
-:::note{title=描述}
-是否自动播放
-
-:::
-
-### loop
-
-**Type:** `boolean | undefined`
-
-:::note{title=描述}
-是否循环播放
-
-:::
-
-### position
-
-**Type:** `"top" | "bottom" | "left" | "right" | undefined`
-
-:::note{title=描述}
-播放器位置
-
-:::
-
-### railColor
-
-**Type:** `string | undefined`
-
-:::note{title=描述}
-播放器进度条轨道颜色
-
-:::
-
-### trackColor
-
-**Type:** `string | undefined`
-
-:::note{title=描述}
-播放器进度条进度颜色
-
-:::
-
-### sliderHandleColor
-
-**Type:** `string | undefined`
-
-:::note{title=描述}
-播放器进度条滑块颜色
-
-:::
-
-### sliderHandleBorderColor
-
-**Type:** `string | undefined`
-
-:::note{title=描述}
-播放器进度条滑块边框颜色
-
-:::
-
-### startButtonColor
-
-**Type:** `string | undefined`
-
-:::note{title=描述}
-播放器开始按钮颜色
-
-:::
-
-### pauseButtonColor
-
-**Type:** `string | undefined`
-
-:::note{title=描述}
-播放器暂停按钮颜色
-
-:::
-
-### backwardButtonColor
-
-**Type:** `string | undefined`
-
-:::note{title=描述}
-播放器后退按钮颜色
-
-:::
-
-### forwardButtonColor
-
-**Type:** `string | undefined`
-
-:::note{title=描述}
-播放器前进按钮颜色
-
-:::
 
 
 ## backgroundColor
@@ -1229,7 +1100,7 @@ shapeType: 'circle'
 
 ### position
 
-**Type:** `"top" | "bottom" | "left" | "right" | "leftTop" | "leftBottom" | "lt" | "lb" | "topLeft" | "topRight" | "tl" | "tr" | "rightTop" | "rightBottom" | "rt" | "rb" | "bottomLeft" | "bottomRight" | "bl" | "br" | undefined`
+**Type:** `"left" | "leftTop" | "leftBottom" | "lt" | "lb" | "top" | "topLeft" | "topRight" | "tl" | "tr" | "right" | "rightTop" | "rightBottom" | "rt" | "rb" | "bottom" | "bottomLeft" | "bottomRight" | "bl" | "br" | undefined`
 
 :::note{title=描述}
 图例位置
@@ -3686,7 +3557,7 @@ same as operator
 
 ### textPosition
 
-**Type:** `"top" | "bottom" | "left" | "right" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight" | undefined`
+**Type:** `"left" | "top" | "topLeft" | "topRight" | "right" | "bottom" | "bottomLeft" | "bottomRight" | undefined`
 
 :::note{title=描述}
 文本位置

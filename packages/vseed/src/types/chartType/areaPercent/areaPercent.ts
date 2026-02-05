@@ -25,7 +25,6 @@ import type {
   ColumnDimension,
   ColumnMeasure,
   Page,
-  Player,
 } from '../../properties'
 
 /**
@@ -87,10 +86,6 @@ export interface AreaPercent {
    * @description 分页配置，用于配置图表的分页功能
    */
   page?: Page
-  /**
-   * @description 播放器配置, 用于指定播放的字段名, 必须是维度
-   */
-  player?: Player
 
   /**
    * 图表的背景颜色

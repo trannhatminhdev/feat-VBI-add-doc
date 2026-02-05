@@ -237,6 +237,39 @@ function registerPie(): void
 function registerPivotTable(): void
 ```
 
+### registerRaceBar
+
+:::note{title=描述}
+注册 RaceBar Chart 的构建管线。
+注册后，Builder 将支持构建 RaceBar Chart 的 Spec。
+:::
+
+```ts
+function registerRaceBar(): void
+```
+
+### registerRaceColumn
+
+:::note{title=描述}
+注册 RaceColumn Chart 的构建管线。
+注册后，Builder 将支持构建 RaceColumn Chart 的 Spec。
+:::
+
+```ts
+function registerRaceColumn(): void
+```
+
+### registerRaceScatter
+
+:::note{title=描述}
+注册 RaceScatter Chart 的构建管线。
+注册后，Builder 将支持构建 RaceScatter Chart 的 Spec。
+:::
+
+```ts
+function registerRaceScatter(): void
+```
+
 ### registerRadar
 
 :::note{title=描述}

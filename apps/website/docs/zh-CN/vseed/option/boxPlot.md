@@ -174,17 +174,19 @@
 **Type:** `boolean | undefined`
 
 :::note{title=描述}
-自动数值格式化 当配置了 format 时, 该配置项失效
+自动数值格式化，默认开启，优先级最高
 
-开启后, 图表的数据标签、提示信息, 会根据指标的数值, 自动根据语言环境, 选择合适的格式化方式
+当 autoFormat=true 时，会覆盖 numFormat 的所有配置
 
-格式化规则为设置为十进制数值, 开启compact notation, 最小0位小数, 最大2位小数, 自动四舍五入, 使用浏览器提供的 Intl.NumberFormatOptions 实现该逻辑.
+开启后，图表的数据标签、提示信息会根据指标数值和语言环境自动选择合适的格式化方式
+
+格式化规则：十进制数值，开启 compact notation，最小0位小数，最大2位小数，自动四舍五入，使用浏览器提供的 Intl.NumberFormat 实现
 
 例如:
 
-当locale为zh\-CN: 749740.264会被自动格式化为74.45万
+\- locale为zh\-CN: 749740.264 → 74.45万
 
-当locale为en\-US: 749740.264会被自动格式化为744.5K
+\- locale为en\-US: 749740.264 → 744.5K
 
 :::
 
@@ -193,7 +195,9 @@
 **Type:** `NumFormat | undefined`
 
 :::note{title=描述}
-指标的数值格式化, 会自动应用于label、tooltip
+自定义指标的数值格式化，会自动应用于 label、tooltip
+
+注意：若要使用自定义格式化，必须显式设置 autoFormat=false，否则 autoFormat 会覆盖此配置
 
 :::
 
@@ -1100,7 +1104,7 @@ shapeType: 'circle'
 
 ### position
 
-**Type:** `"top" | "bottom" | "left" | "right" | "leftTop" | "leftBottom" | "lt" | "lb" | "topLeft" | "topRight" | "tl" | "tr" | "rightTop" | "rightBottom" | "rt" | "rb" | "bottomLeft" | "bottomRight" | "bl" | "br" | undefined`
+**Type:** `"left" | "leftTop" | "leftBottom" | "lt" | "lb" | "top" | "topLeft" | "topRight" | "tl" | "tr" | "right" | "rightTop" | "rightBottom" | "rt" | "rb" | "bottom" | "bottomLeft" | "bottomRight" | "bl" | "br" | undefined`
 
 :::note{title=描述}
 图例位置
@@ -3721,7 +3725,7 @@ same as operator
 
 ### textPosition
 
-**Type:** `"top" | "bottom" | "left" | "right" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight" | undefined`
+**Type:** `"left" | "top" | "topLeft" | "topRight" | "right" | "bottom" | "bottomLeft" | "bottomRight" | undefined`
 
 :::note{title=描述}
 文本位置
