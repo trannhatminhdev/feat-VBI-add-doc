@@ -1,4 +1,3 @@
-export * from './playerAdapter'
 export * from './isPlayer'
 export * from './playerYX'
 export * from './playerXY'
