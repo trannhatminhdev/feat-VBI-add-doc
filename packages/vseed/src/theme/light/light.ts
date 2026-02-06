@@ -105,72 +105,7 @@ export const lightTheme = (): CustomThemeConfig => {
         pivotGrid: getLightPivotChartGridConfig(),
         annotation: getLightAnnotation(),
       },
-      raceBar: {
-        ...baseConfig,
-        legend: {
-          ...baseConfig.legend,
-          enable: false,
-        },
-        xAxis: linearAxis,
-        yAxis: barBandAxis,
-        crosshairRect,
-        player,
 
-        stackCornerRadius: [0, 4, 4, 0],
-        pivotGrid: getLightPivotChartGridConfig(),
-        annotation: getLightAnnotation(),
-      },
-      raceColumn: {
-        ...baseConfig,
-        legend: {
-          ...baseConfig.legend,
-          enable: false,
-        },
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairRect,
-        player,
-
-        stackCornerRadius: [4, 4, 0, 0],
-        pivotGrid: getLightPivotChartGridConfig(),
-        annotation: getLightAnnotation(),
-
-        regressionLine: getLightRegressionLine(),
-      },
-      raceScatter: {
-        ...baseConfig,
-        legend: {
-          ...baseConfig.legend,
-          enable: false,
-        },
-        crosshairLine,
-        sizeRange: [8, 24],
-        xAxis: {
-          ...linearAxis,
-          line: {
-            ...linearAxis.line,
-            visible: true,
-          },
-        },
-        yAxis: {
-          ...linearAxis,
-          line: {
-            ...linearAxis.line,
-            visible: true,
-          },
-        },
-        label: {
-          ...baseConfig.label,
-          showValue: false,
-          showValuePercent: false,
-        },
-        player,
-
-        pivotGrid: getLightPivotChartGridConfig(),
-        annotation: getLightAnnotation(),
-
-        regressionLine: getLightRegressionLine(),
-      },
       barParallel: {
         ...baseConfig,
         xAxis: linearAxis,
@@ -338,6 +273,110 @@ export const lightTheme = (): CustomThemeConfig => {
 
         boxPlotStyle: getLightBoxPlotStyle(),
         outlierStyle: getLightOutlierStyle(),
+      },
+
+      // race
+      raceBar: {
+        ...baseConfig,
+        legend: {
+          ...baseConfig.legend,
+          enable: false,
+        },
+        xAxis: {
+          ...linearAxis,
+          animation: {
+            duration: player.interval,
+            easing: 'linear',
+          },
+          nice: false,
+        },
+        yAxis: {
+          ...barBandAxis,
+          animation: {
+            duration: player.interval ? player.interval * 0.6 : undefined,
+            easing: 'cubicInOut',
+          },
+        },
+        crosshairRect,
+        player,
+
+        stackCornerRadius: [0, 4, 4, 0],
+        pivotGrid: getLightPivotChartGridConfig(),
+        annotation: getLightAnnotation(),
+      },
+      raceColumn: {
+        ...baseConfig,
+        legend: {
+          ...baseConfig.legend,
+          enable: false,
+        },
+        xAxis: {
+          ...bandAxis,
+          animation: {
+            duration: player.interval ? player.interval * 0.6 : undefined,
+            easing: 'cubicInOut',
+          },
+        },
+        yAxis: {
+          ...linearAxis,
+          animation: {
+            duration: player.interval,
+            easing: 'linear',
+          },
+          nice: false,
+        },
+        crosshairRect,
+        player,
+
+        stackCornerRadius: [4, 4, 0, 0],
+        pivotGrid: getLightPivotChartGridConfig(),
+        annotation: getLightAnnotation(),
+
+        regressionLine: getLightRegressionLine(),
+      },
+      raceScatter: {
+        ...baseConfig,
+        legend: {
+          ...baseConfig.legend,
+          enable: false,
+        },
+        crosshairLine,
+        sizeRange: [8, 24],
+        xAxis: {
+          ...linearAxis,
+          max: true,
+          animation: {
+            duration: player.interval ? player.interval * 0.6 : undefined,
+            easing: 'cubicInOut',
+          },
+          line: {
+            ...linearAxis.line,
+            visible: true,
+          },
+        },
+        yAxis: {
+          ...linearAxis,
+          max: true,
+          animation: {
+            duration: player.interval ? player.interval * 0.6 : undefined,
+            easing: 'cubicInOut',
+          },
+          line: {
+            ...linearAxis.line,
+            visible: true,
+          },
+        },
+        label: {
+          ...baseConfig.label,
+          showValue: false,
+          showValuePercent: false,
+        },
+        player,
+
+        pivotGrid: getLightPivotChartGridConfig(),
+        annotation: getLightAnnotation(),
+
+        regressionLine: getLightRegressionLine(),
       },
     },
   }

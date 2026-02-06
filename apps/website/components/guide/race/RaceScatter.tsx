@@ -10,7 +10,7 @@ export const RaceScatter = () => {
         encoding: 'player',
       },
       {
-        id: 'region',
+        id: 'country',
         encoding: 'color',
       },
       {
@@ -18,6 +18,7 @@ export const RaceScatter = () => {
         encoding: 'label',
       },
     ],
+    sizeRange: [5, 20],
     measures: [
       {
         id: 'income',
@@ -34,7 +35,7 @@ export const RaceScatter = () => {
     ],
     dataset: [
       {
-        country: 'China',
+        country: 'Australia',
         year: 1800,
         income: 815,
         lifeExpectancy: 34.05,
@@ -42,7 +43,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1800,
         income: 1314,
         lifeExpectancy: 39,
@@ -50,7 +51,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1800,
         income: 985,
         lifeExpectancy: 32,
@@ -58,7 +59,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1800,
         income: 864,
         lifeExpectancy: 32.2,
@@ -66,7 +67,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1800,
         income: 1244,
         lifeExpectancy: 36.5731262,
@@ -90,7 +91,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1800,
         income: 926,
         lifeExpectancy: 42.84559912,
@@ -98,7 +99,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1800,
         income: 1052,
         lifeExpectancy: 25.4424,
@@ -106,7 +107,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1800,
         income: 1050,
         lifeExpectancy: 36.4,
@@ -114,7 +115,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1800,
         income: 579,
         lifeExpectancy: 26,
@@ -122,7 +123,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1800,
         income: 576,
         lifeExpectancy: 25.8,
@@ -130,7 +131,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1800,
         income: 658,
         lifeExpectancy: 34.05,
@@ -138,7 +139,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1800,
         income: 1278,
         lifeExpectancy: 37.91620899,
@@ -146,7 +147,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1800,
         income: 1213,
         lifeExpectancy: 35.9,
@@ -154,7 +155,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1800,
         income: 1430,
         lifeExpectancy: 29.5734572,
@@ -162,7 +163,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1800,
         income: 1221,
         lifeExpectancy: 35,
@@ -170,7 +171,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1800,
         income: 3431,
         lifeExpectancy: 38.6497603,
@@ -178,7 +179,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1800,
         income: 2128,
         lifeExpectancy: 39.41,
@@ -186,7 +187,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1810,
         income: 834,
         lifeExpectancy: 34.05,
@@ -194,7 +195,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1810,
         income: 1400,
         lifeExpectancy: 39.01496774,
@@ -202,7 +203,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1810,
         income: 985,
         lifeExpectancy: 32,
@@ -210,7 +211,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1810,
         income: 970,
         lifeExpectancy: 33.64,
@@ -218,7 +219,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1810,
         income: 1267,
         lifeExpectancy: 36.9473378,
@@ -242,7 +243,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1810,
         income: 928,
         lifeExpectancy: 43.13915533,
@@ -250,7 +251,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1810,
         income: 1051,
         lifeExpectancy: 25.4424,
@@ -258,7 +259,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1810,
         income: 1064,
         lifeExpectancy: 36.40397538,
@@ -266,7 +267,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1810,
         income: 573,
         lifeExpectancy: 26,
@@ -274,7 +275,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1810,
         income: 570,
         lifeExpectancy: 25.8,
@@ -282,7 +283,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1810,
         income: 659,
         lifeExpectancy: 34.05,
@@ -290,7 +291,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1810,
         income: 1299,
         lifeExpectancy: 36.47500606,
@@ -298,7 +299,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1810,
         income: 1260,
         lifeExpectancy: 35.9,
@@ -306,7 +307,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1810,
         income: 1447,
         lifeExpectancy: 29.5734572,
@@ -314,7 +315,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1810,
         income: 1223,
         lifeExpectancy: 35,
@@ -322,7 +323,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1810,
         income: 3575,
         lifeExpectancy: 38.34738144,
@@ -330,7 +331,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1810,
         income: 2283,
         lifeExpectancy: 39.41,
@@ -338,7 +339,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1820,
         income: 853,
         lifeExpectancy: 34.05,
@@ -346,7 +347,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1820,
         income: 1491,
         lifeExpectancy: 39.02993548,
@@ -354,7 +355,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1820,
         income: 985,
         lifeExpectancy: 32,
@@ -362,7 +363,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1820,
         income: 1090,
         lifeExpectancy: 35.04,
@@ -370,7 +371,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1820,
         income: 1290,
         lifeExpectancy: 37.29122269,
@@ -394,7 +395,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1820,
         income: 929,
         lifeExpectancy: 36.56365268,
@@ -402,7 +403,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1820,
         income: 1050,
         lifeExpectancy: 25.4424,
@@ -410,7 +411,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1820,
         income: 1079,
         lifeExpectancy: 36.40795077,
@@ -418,7 +419,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1820,
         income: 567,
         lifeExpectancy: 26,
@@ -426,7 +427,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1820,
         income: 564,
         lifeExpectancy: 25.8,
@@ -434,7 +435,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1820,
         income: 660,
         lifeExpectancy: 34.05,
@@ -442,7 +443,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1820,
         income: 1320,
         lifeExpectancy: 46.96239815,
@@ -450,7 +451,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1820,
         income: 1309,
         lifeExpectancy: 35.9,
@@ -458,7 +459,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1820,
         income: 1464,
         lifeExpectancy: 29.5734572,
@@ -466,7 +467,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1820,
         income: 1225,
         lifeExpectancy: 35,
@@ -474,7 +475,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1820,
         income: 3403,
         lifeExpectancy: 41.31247671,
@@ -482,7 +483,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1820,
         income: 2242,
         lifeExpectancy: 39.41,
@@ -490,7 +491,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1830,
         income: 1399,
         lifeExpectancy: 34.05,
@@ -498,7 +499,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1830,
         income: 1651,
         lifeExpectancy: 39.04490323,
@@ -506,7 +507,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1830,
         income: 986,
         lifeExpectancy: 32,
@@ -514,7 +515,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1830,
         income: 1224,
         lifeExpectancy: 35.74,
@@ -522,7 +523,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1830,
         income: 1360,
         lifeExpectancy: 36.29644969,
@@ -546,7 +547,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1830,
         income: 1036,
         lifeExpectancy: 40.5022162,
@@ -554,7 +555,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1830,
         income: 1052,
         lifeExpectancy: 25.4424,
@@ -562,7 +563,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1830,
         income: 1094,
         lifeExpectancy: 36.41192615,
@@ -570,7 +571,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1830,
         income: 561,
         lifeExpectancy: 26,
@@ -578,7 +579,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1830,
         income: 559,
         lifeExpectancy: 25.8,
@@ -586,7 +587,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1830,
         income: 661,
         lifeExpectancy: 34.05,
@@ -594,7 +595,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1830,
         income: 1403,
         lifeExpectancy: 45.75400094,
@@ -602,7 +603,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1830,
         income: 1360,
         lifeExpectancy: 35.9,
@@ -610,7 +611,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1830,
         income: 1562,
         lifeExpectancy: 29.5734572,
@@ -618,7 +619,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1830,
         income: 1292,
         lifeExpectancy: 35,
@@ -626,7 +627,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1830,
         income: 3661,
         lifeExpectancy: 43.01830917,
@@ -634,7 +635,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1830,
         income: 2552,
         lifeExpectancy: 39.41,
@@ -642,7 +643,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1840,
         income: 2269,
         lifeExpectancy: 34.05,
@@ -650,7 +651,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1840,
         income: 1922,
         lifeExpectancy: 40.19012,
@@ -658,7 +659,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1840,
         income: 986,
         lifeExpectancy: 32,
@@ -666,7 +667,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1840,
         income: 1374,
         lifeExpectancy: 36.48,
@@ -674,7 +675,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1840,
         income: 1434,
         lifeExpectancy: 41.46900965,
@@ -698,7 +699,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1840,
         income: 1155,
         lifeExpectancy: 31.97,
@@ -706,7 +707,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1840,
         income: 1053,
         lifeExpectancy: 25.4424,
@@ -714,7 +715,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1840,
         income: 1110,
         lifeExpectancy: 36.41590154,
@@ -722,7 +723,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1840,
         income: 556,
         lifeExpectancy: 26,
@@ -730,7 +731,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1840,
         income: 553,
         lifeExpectancy: 25.8,
@@ -738,7 +739,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1840,
         income: 662,
         lifeExpectancy: 34.05,
@@ -746,7 +747,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1840,
         income: 1604,
         lifeExpectancy: 45.61661054,
@@ -754,7 +755,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1840,
         income: 1413,
         lifeExpectancy: 35.9,
@@ -762,7 +763,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1840,
         income: 1666,
         lifeExpectancy: 29.5734572,
@@ -770,7 +771,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1840,
         income: 1362,
         lifeExpectancy: 35,
@@ -778,7 +779,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1840,
         income: 4149,
         lifeExpectancy: 39.92715263,
@@ -786,7 +787,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1840,
         income: 2792,
         lifeExpectancy: 39.41,
@@ -794,7 +795,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1850,
         income: 3267,
         lifeExpectancy: 34.05,
@@ -802,7 +803,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1850,
         income: 2202,
         lifeExpectancy: 40.985432,
@@ -810,7 +811,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1850,
         income: 985,
         lifeExpectancy: 32,
@@ -818,7 +819,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1850,
         income: 1543,
         lifeExpectancy: 36.26,
@@ -826,7 +827,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1850,
         income: 1512,
         lifeExpectancy: 37.35415172,
@@ -850,7 +851,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1850,
         income: 1287,
         lifeExpectancy: 36.61,
@@ -858,7 +859,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1850,
         income: 1055,
         lifeExpectancy: 25.4424,
@@ -866,7 +867,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1850,
         income: 1125,
         lifeExpectancy: 36.41987692,
@@ -874,7 +875,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1850,
         income: 550,
         lifeExpectancy: 26,
@@ -882,7 +883,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1850,
         income: 547,
         lifeExpectancy: 25.8,
@@ -890,7 +891,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1850,
         income: 1898,
         lifeExpectancy: 34.05,
@@ -898,7 +899,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1850,
         income: 1675,
         lifeExpectancy: 49.53,
@@ -906,7 +907,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1850,
         income: 1468,
         lifeExpectancy: 35.9,
@@ -914,7 +915,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1850,
         income: 1778,
         lifeExpectancy: 29.5734572,
@@ -922,7 +923,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1850,
         income: 1436,
         lifeExpectancy: 35,
@@ -930,7 +931,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1850,
         income: 4480,
         lifeExpectancy: 42.8,
@@ -938,7 +939,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1850,
         income: 3059,
         lifeExpectancy: 39.41,
@@ -946,7 +947,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1860,
         income: 4795,
         lifeExpectancy: 34.05,
@@ -954,7 +955,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1860,
         income: 2406,
         lifeExpectancy: 41.541504,
@@ -962,7 +963,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1860,
         income: 1023,
         lifeExpectancy: 28.85,
@@ -970,7 +971,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1860,
         income: 1733,
         lifeExpectancy: 36.24,
@@ -978,7 +979,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1860,
         income: 1594,
         lifeExpectancy: 38.15099864,
@@ -1002,7 +1003,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1860,
         income: 1435,
         lifeExpectancy: 19.76,
@@ -1010,7 +1011,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1860,
         income: 1056,
         lifeExpectancy: 23,
@@ -1018,7 +1019,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1860,
         income: 1168,
         lifeExpectancy: 36.42385231,
@@ -1026,7 +1027,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1860,
         income: 545,
         lifeExpectancy: 26,
@@ -1034,7 +1035,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1860,
         income: 542,
         lifeExpectancy: 25.8,
@@ -1042,7 +1043,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1860,
         income: 3674,
         lifeExpectancy: 34.05,
@@ -1050,7 +1051,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1860,
         income: 2033,
         lifeExpectancy: 50,
@@ -1058,7 +1059,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1860,
         income: 1525,
         lifeExpectancy: 35.9,
@@ -1066,7 +1067,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1860,
         income: 1896,
         lifeExpectancy: 29.5734572,
@@ -1074,7 +1075,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1860,
         income: 1514,
         lifeExpectancy: 35,
@@ -1082,7 +1083,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1860,
         income: 5268,
         lifeExpectancy: 43.01,
@@ -1090,7 +1091,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1860,
         income: 3714,
         lifeExpectancy: 39.41,
@@ -1098,7 +1099,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1870,
         income: 5431,
         lifeExpectancy: 34.05,
@@ -1106,7 +1107,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1870,
         income: 2815,
         lifeExpectancy: 42.460624,
@@ -1114,7 +1115,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1870,
         income: 1099,
         lifeExpectancy: 31.95714286,
@@ -1122,7 +1123,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1870,
         income: 1946,
         lifeExpectancy: 29.66,
@@ -1130,7 +1131,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1870,
         income: 1897,
         lifeExpectancy: 45.66140699,
@@ -1154,7 +1155,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1870,
         income: 1599,
         lifeExpectancy: 38.37,
@@ -1162,7 +1163,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1870,
         income: 1058,
         lifeExpectancy: 25.4424,
@@ -1170,7 +1171,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1870,
         income: 1213,
         lifeExpectancy: 36.59264,
@@ -1178,7 +1179,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1870,
         income: 539,
         lifeExpectancy: 26,
@@ -1186,7 +1187,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1870,
         income: 536,
         lifeExpectancy: 25.8,
@@ -1194,7 +1195,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1870,
         income: 5156,
         lifeExpectancy: 34.05,
@@ -1202,7 +1203,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1870,
         income: 2483,
         lifeExpectancy: 50.86,
@@ -1210,7 +1211,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1870,
         income: 1584,
         lifeExpectancy: 35.9,
@@ -1218,7 +1219,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1870,
         income: 2023,
         lifeExpectancy: 31.12082604,
@@ -1226,7 +1227,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1870,
         income: 1597,
         lifeExpectancy: 35,
@@ -1234,7 +1235,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1870,
         income: 6046,
         lifeExpectancy: 40.95,
@@ -1242,7 +1243,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1870,
         income: 4058,
         lifeExpectancy: 39.41,
@@ -1250,7 +1251,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1880,
         income: 7120,
         lifeExpectancy: 39.34215686,
@@ -1258,7 +1259,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1880,
         income: 3021,
         lifeExpectancy: 44.512464,
@@ -1266,7 +1267,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1880,
         income: 1015,
         lifeExpectancy: 32,
@@ -1274,7 +1275,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1880,
         income: 2185,
         lifeExpectancy: 36.84,
@@ -1282,7 +1283,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1880,
         income: 1925,
         lifeExpectancy: 39.67,
@@ -1306,7 +1307,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1880,
         income: 2035,
         lifeExpectancy: 42.32,
@@ -1314,7 +1315,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1880,
         income: 1084,
         lifeExpectancy: 25.4424,
@@ -1322,7 +1323,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1880,
         income: 1395,
         lifeExpectancy: 37.03648,
@@ -1330,7 +1331,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1880,
         income: 534,
         lifeExpectancy: 26,
@@ -1338,7 +1339,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1880,
         income: 531,
         lifeExpectancy: 25.8,
@@ -1346,7 +1347,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1880,
         income: 6241,
         lifeExpectancy: 38.51282051,
@@ -1354,7 +1355,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1880,
         income: 2827,
         lifeExpectancy: 51.91,
@@ -1362,7 +1363,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1880,
         income: 1848,
         lifeExpectancy: 35.9,
@@ -1370,7 +1371,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1880,
         income: 2158,
         lifeExpectancy: 30.20106663,
@@ -1378,7 +1379,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1880,
         income: 1535,
         lifeExpectancy: 35,
@@ -1386,7 +1387,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1880,
         income: 6553,
         lifeExpectancy: 43.78,
@@ -1394,7 +1395,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1880,
         income: 5292,
         lifeExpectancy: 39.41,
@@ -1402,7 +1403,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1890,
         income: 7418,
         lifeExpectancy: 44.63431373,
@@ -1410,7 +1411,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1890,
         income: 3963,
         lifeExpectancy: 45.12972,
@@ -1418,7 +1419,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1890,
         income: 918,
         lifeExpectancy: 32,
@@ -1426,7 +1427,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1890,
         income: 2454,
         lifeExpectancy: 39.54,
@@ -1434,7 +1435,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1890,
         income: 2305,
         lifeExpectancy: 44.61,
@@ -1458,7 +1459,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1890,
         income: 2009,
         lifeExpectancy: 36.58,
@@ -1466,7 +1467,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1890,
         income: 1163,
         lifeExpectancy: 24.384,
@@ -1474,7 +1475,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1890,
         income: 1606,
         lifeExpectancy: 37.67568,
@@ -1482,7 +1483,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1890,
         income: 528,
         lifeExpectancy: 26,
@@ -1490,7 +1491,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1890,
         income: 526,
         lifeExpectancy: 25.8,
@@ -1498,7 +1499,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1890,
         income: 6265,
         lifeExpectancy: 42.97564103,
@@ -1506,7 +1507,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1890,
         income: 3251,
         lifeExpectancy: 48.6,
@@ -1514,7 +1515,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1890,
         income: 2156,
         lifeExpectancy: 37.41086957,
@@ -1522,7 +1523,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1890,
         income: 2233,
         lifeExpectancy: 29.93047652,
@@ -1530,7 +1531,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1890,
         income: 1838,
         lifeExpectancy: 35,
@@ -1538,7 +1539,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1890,
         income: 7169,
         lifeExpectancy: 44.75,
@@ -1546,7 +1547,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1890,
         income: 5646,
         lifeExpectancy: 45.21,
@@ -1554,7 +1555,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1900,
         income: 6688,
         lifeExpectancy: 49.92647059,
@@ -1562,7 +1563,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1900,
         income: 4858,
         lifeExpectancy: 48.288448,
@@ -1570,7 +1571,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1900,
         income: 894,
         lifeExpectancy: 32,
@@ -1578,7 +1579,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1900,
         income: 2756,
         lifeExpectancy: 33.11248,
@@ -1586,7 +1587,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1900,
         income: 2789,
         lifeExpectancy: 41.8,
@@ -1610,7 +1611,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1900,
         income: 2352,
         lifeExpectancy: 46.64,
@@ -1618,7 +1619,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1900,
         income: 1194,
         lifeExpectancy: 18.35,
@@ -1626,7 +1627,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1900,
         income: 1840,
         lifeExpectancy: 38.6,
@@ -1634,7 +1635,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1900,
         income: 523,
         lifeExpectancy: 26,
@@ -1642,7 +1643,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1900,
         income: 520,
         lifeExpectancy: 25.8,
@@ -1650,7 +1651,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1900,
         income: 7181,
         lifeExpectancy: 47.43846154,
@@ -1658,7 +1659,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1900,
         income: 3643,
         lifeExpectancy: 53.47,
@@ -1666,7 +1667,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1900,
         income: 2583,
         lifeExpectancy: 40.4326087,
@@ -1674,7 +1675,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1900,
         income: 3087,
         lifeExpectancy: 30.74960789,
@@ -1682,7 +1683,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1900,
         income: 1985,
         lifeExpectancy: 35,
@@ -1690,7 +1691,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1900,
         income: 8013,
         lifeExpectancy: 46.32,
@@ -1698,7 +1699,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1900,
         income: 6819,
         lifeExpectancy: 48.92818182,
@@ -1706,7 +1707,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1910,
         income: 8695,
         lifeExpectancy: 55.21862745,
@@ -1714,7 +1715,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1910,
         income: 6794,
         lifeExpectancy: 52.123024,
@@ -1722,7 +1723,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1910,
         income: 991,
         lifeExpectancy: 32,
@@ -1730,7 +1731,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1910,
         income: 3095,
         lifeExpectancy: 35.21936,
@@ -1738,7 +1739,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1910,
         income: 3192,
         lifeExpectancy: 48.53,
@@ -1762,7 +1763,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1910,
         income: 3012,
         lifeExpectancy: 52.67,
@@ -1770,7 +1771,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1910,
         income: 1391,
         lifeExpectancy: 23.18032,
@@ -1778,7 +1779,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1910,
         income: 1998,
         lifeExpectancy: 39.9736,
@@ -1786,7 +1787,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1910,
         income: 544,
         lifeExpectancy: 24.097344,
@@ -1794,7 +1795,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1910,
         income: 538,
         lifeExpectancy: 24.097344,
@@ -1802,7 +1803,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1910,
         income: 8896,
         lifeExpectancy: 51.90128205,
@@ -1810,7 +1811,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1910,
         income: 4332,
         lifeExpectancy: 57.99,
@@ -1818,7 +1819,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1910,
         income: 2846,
         lifeExpectancy: 43.45434783,
@@ -1826,7 +1827,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1910,
         income: 3487,
         lifeExpectancy: 31.40217766,
@@ -1834,7 +1835,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1910,
         income: 2144,
         lifeExpectancy: 35,
@@ -1842,7 +1843,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1910,
         income: 8305,
         lifeExpectancy: 53.99,
@@ -1850,7 +1851,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1910,
         income: 8287,
         lifeExpectancy: 51.8,
@@ -1858,7 +1859,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1920,
         income: 7867,
         lifeExpectancy: 60.51078431,
@@ -1866,7 +1867,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1920,
         income: 6430,
         lifeExpectancy: 56.569064,
@@ -1874,7 +1875,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1920,
         income: 1012,
         lifeExpectancy: 32,
@@ -1882,7 +1883,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1920,
         income: 4042,
         lifeExpectancy: 37.38208,
@@ -1890,7 +1891,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1920,
         income: 3097,
         lifeExpectancy: 47.55,
@@ -1914,7 +1915,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1920,
         income: 2514,
         lifeExpectancy: 54.58,
@@ -1922,7 +1923,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1920,
         income: 1197,
         lifeExpectancy: 24.71866667,
@@ -1930,7 +1931,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1920,
         income: 2496,
         lifeExpectancy: 42.04432,
@@ -1938,7 +1939,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1920,
         income: 779,
         lifeExpectancy: 27.99984,
@@ -1946,7 +1947,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1920,
         income: 756,
         lifeExpectancy: 27.99984,
@@ -1954,7 +1955,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1920,
         income: 9453,
         lifeExpectancy: 56.36410256,
@@ -1962,7 +1963,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1920,
         income: 5483,
         lifeExpectancy: 58.89,
@@ -1970,7 +1971,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1920,
         income: 3276,
         lifeExpectancy: 46.47608696,
@@ -1978,7 +1979,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1920,
         income: 1489,
         lifeExpectancy: 20.5,
@@ -1986,7 +1987,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1920,
         income: 1525,
         lifeExpectancy: 29,
@@ -1994,7 +1995,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1920,
         income: 8316,
         lifeExpectancy: 56.6,
@@ -2002,7 +2003,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1920,
         income: 9181,
         lifeExpectancy: 55.4,
@@ -2010,7 +2011,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1930,
         income: 7714,
         lifeExpectancy: 64.998,
@@ -2018,7 +2019,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1930,
         income: 7976,
         lifeExpectancy: 58.94,
@@ -2026,7 +2027,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1930,
         income: 1055,
         lifeExpectancy: 33.26984,
@@ -2034,7 +2035,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1930,
         income: 5027,
         lifeExpectancy: 42.03308,
@@ -2042,7 +2043,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1930,
         income: 4489,
         lifeExpectancy: 54.438,
@@ -2066,7 +2067,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1930,
         income: 4444,
         lifeExpectancy: 60.228,
@@ -2074,7 +2075,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1930,
         income: 1244,
         lifeExpectancy: 28.8016,
@@ -2082,7 +2083,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1930,
         income: 2592,
         lifeExpectancy: 46.65403,
@@ -2090,7 +2091,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1930,
         income: 829,
         lifeExpectancy: 33.867168,
@@ -2098,7 +2099,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1930,
         income: 784,
         lifeExpectancy: 35.244168,
@@ -2106,7 +2107,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1930,
         income: 8359,
         lifeExpectancy: 60.86092308,
@@ -2114,7 +2115,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1930,
         income: 7369,
         lifeExpectancy: 64.074,
@@ -2122,7 +2123,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1930,
         income: 3591,
         lifeExpectancy: 49.52382609,
@@ -2130,7 +2131,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1930,
         income: 3779,
         lifeExpectancy: 36.428,
@@ -2138,7 +2139,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1930,
         income: 2323,
         lifeExpectancy: 35.7818,
@@ -2146,7 +2147,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1930,
         income: 8722,
         lifeExpectancy: 60.85,
@@ -2154,7 +2155,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1930,
         income: 10139,
         lifeExpectancy: 59.556,
@@ -2162,7 +2163,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1940,
         income: 10057,
         lifeExpectancy: 66.336,
@@ -2170,7 +2171,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1940,
         income: 8871,
         lifeExpectancy: 63.99,
@@ -2178,7 +2179,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1940,
         income: 841,
         lifeExpectancy: 33.30311174,
@@ -2186,7 +2187,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1940,
         income: 4631,
         lifeExpectancy: 48.5472,
@@ -2194,7 +2195,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1940,
         income: 5439,
         lifeExpectancy: 46.586,
@@ -2218,7 +2219,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1940,
         income: 5373,
         lifeExpectancy: 65.786,
@@ -2226,7 +2227,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1940,
         income: 1081,
         lifeExpectancy: 32.13056,
@@ -2234,7 +2235,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1940,
         income: 3888,
         lifeExpectancy: 49.052,
@@ -2242,7 +2243,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1940,
         income: 1418,
         lifeExpectancy: 41.22756,
@@ -2250,7 +2251,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1940,
         income: 1322,
         lifeExpectancy: 43.98156,
@@ -2258,7 +2259,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1940,
         income: 10673,
         lifeExpectancy: 65.35774359,
@@ -2266,7 +2267,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1940,
         income: 8349,
         lifeExpectancy: 65.818,
@@ -2274,7 +2275,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1940,
         income: 3696,
         lifeExpectancy: 44.752,
@@ -2282,7 +2283,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1940,
         income: 5632,
         lifeExpectancy: 41.056,
@@ -2290,7 +2291,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1940,
         income: 3163,
         lifeExpectancy: 34.5396,
@@ -2298,7 +2299,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1940,
         income: 10935,
         lifeExpectancy: 60.89,
@@ -2306,7 +2307,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1940,
         income: 11320,
         lifeExpectancy: 63.192,
@@ -2314,7 +2315,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1950,
         income: 12073,
         lifeExpectancy: 69.134,
@@ -2322,7 +2323,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1950,
         income: 12022,
         lifeExpectancy: 68.25,
@@ -2330,7 +2331,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1950,
         income: 535,
         lifeExpectancy: 39.9994,
@@ -2338,7 +2339,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1950,
         income: 8630,
         lifeExpectancy: 59.8384,
@@ -2346,7 +2347,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1950,
         income: 7198,
         lifeExpectancy: 64.144,
@@ -2370,7 +2371,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1950,
         income: 8670,
         lifeExpectancy: 71.004,
@@ -2378,7 +2379,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1950,
         income: 908,
         lifeExpectancy: 34.6284,
@@ -2386,7 +2387,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1950,
         income: 2549,
         lifeExpectancy: 59.378,
@@ -2394,7 +2395,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1950,
         income: 868,
         lifeExpectancy: 32.2464,
@@ -2402,7 +2403,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1950,
         income: 807,
         lifeExpectancy: 43.3774,
@@ -2410,7 +2411,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1950,
         income: 14391,
         lifeExpectancy: 69.392,
@@ -2418,7 +2419,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1950,
         income: 11452,
         lifeExpectancy: 71.492,
@@ -2426,7 +2427,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1950,
         income: 4670,
         lifeExpectancy: 59.123,
@@ -2434,7 +2435,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1950,
         income: 7514,
         lifeExpectancy: 57.084,
@@ -2442,7 +2443,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1950,
         income: 3103,
         lifeExpectancy: 42.5164,
@@ -2450,7 +2451,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1950,
         income: 11135,
         lifeExpectancy: 68.58,
@@ -2458,7 +2459,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1950,
         income: 15319,
         lifeExpectancy: 67.988,
@@ -2466,7 +2467,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1951,
         income: 12229,
         lifeExpectancy: 68.8378,
@@ -2474,7 +2475,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1951,
         income: 12419,
         lifeExpectancy: 68.519,
@@ -2482,7 +2483,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1951,
         income: 582,
         lifeExpectancy: 40.936264,
@@ -2490,7 +2491,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1951,
         income: 9245,
         lifeExpectancy: 60.18618,
@@ -2498,7 +2499,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1951,
         income: 7738,
         lifeExpectancy: 65.5708,
@@ -2522,7 +2523,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1951,
         income: 8350,
         lifeExpectancy: 71.0438,
@@ -2530,7 +2531,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1951,
         income: 908,
         lifeExpectancy: 34.95868,
@@ -2538,7 +2539,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1951,
         income: 2728,
         lifeExpectancy: 61.0706,
@@ -2546,7 +2547,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1951,
         income: 729,
         lifeExpectancy: 23.12128,
@@ -2554,7 +2555,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1951,
         income: 753,
         lifeExpectancy: 40.88998,
@@ -2562,7 +2563,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1951,
         income: 13032,
         lifeExpectancy: 69.2654,
@@ -2570,7 +2571,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1951,
         income: 11986,
         lifeExpectancy: 72.4284,
@@ -2578,7 +2579,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1951,
         income: 4801,
         lifeExpectancy: 59.7336,
@@ -2586,7 +2587,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1951,
         income: 7424,
         lifeExpectancy: 57.5768,
@@ -2594,7 +2595,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1951,
         income: 3701,
         lifeExpectancy: 42.78358,
@@ -2602,7 +2603,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1951,
         income: 11416,
         lifeExpectancy: 68.176,
@@ -2610,7 +2611,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1951,
         income: 16198,
         lifeExpectancy: 68.0836,
@@ -2618,7 +2619,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1952,
         income: 12084,
         lifeExpectancy: 69.2416,
@@ -2626,7 +2627,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1952,
         income: 12911,
         lifeExpectancy: 68.718,
@@ -2634,7 +2635,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1952,
         income: 631,
         lifeExpectancy: 41.873128,
@@ -2642,7 +2643,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1952,
         income: 9446,
         lifeExpectancy: 60.82796,
@@ -2650,7 +2651,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1952,
         income: 7914,
         lifeExpectancy: 66.4476,
@@ -2674,7 +2675,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1952,
         income: 8120,
         lifeExpectancy: 72.4836,
@@ -2682,7 +2683,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1952,
         income: 912,
         lifeExpectancy: 35.62796,
@@ -2690,7 +2691,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1952,
         income: 3015,
         lifeExpectancy: 63.1132,
@@ -2698,7 +2699,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1952,
         income: 784,
         lifeExpectancy: 20.99616,
@@ -2706,7 +2707,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1952,
         income: 809,
         lifeExpectancy: 40.40256,
@@ -2714,7 +2715,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1952,
         income: 13281,
         lifeExpectancy: 69.4988,
@@ -2722,7 +2723,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1952,
         income: 12316,
         lifeExpectancy: 72.5548,
@@ -2730,7 +2731,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1952,
         income: 4832,
         lifeExpectancy: 60.9112,
@@ -2738,7 +2739,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1952,
         income: 7775,
         lifeExpectancy: 57.9696,
@@ -2746,7 +2747,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1952,
         income: 3963,
         lifeExpectancy: 43.25976,
@@ -2754,7 +2755,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1952,
         income: 11367,
         lifeExpectancy: 69.472,
@@ -2762,7 +2763,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1952,
         income: 16508,
         lifeExpectancy: 68.2992,
@@ -2770,7 +2771,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1953,
         income: 12228,
         lifeExpectancy: 69.8254,
@@ -2778,7 +2779,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1953,
         income: 13158,
         lifeExpectancy: 69.097,
@@ -2786,7 +2787,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1953,
         income: 692,
         lifeExpectancy: 42.809992,
@@ -2794,7 +2795,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1953,
         income: 8192,
         lifeExpectancy: 61.46974,
@@ -2802,7 +2803,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1953,
         income: 7877,
         lifeExpectancy: 66.5044,
@@ -2826,7 +2827,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1953,
         income: 9169,
         lifeExpectancy: 72.3034,
@@ -2834,7 +2835,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1953,
         income: 947,
         lifeExpectancy: 36.30024,
@@ -2842,7 +2843,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1953,
         income: 3168,
         lifeExpectancy: 63.4558,
@@ -2850,7 +2851,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1953,
         income: 1018,
         lifeExpectancy: 27.87104,
@@ -2858,7 +2859,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1953,
         income: 1051,
         lifeExpectancy: 45.41514,
@@ -2866,7 +2867,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1953,
         income: 13388,
         lifeExpectancy: 70.3522,
@@ -2874,7 +2875,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1953,
         income: 12707,
         lifeExpectancy: 73.0312,
@@ -2882,7 +2883,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1953,
         income: 5027,
         lifeExpectancy: 62.0038,
@@ -2890,7 +2891,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1953,
         income: 7981,
         lifeExpectancy: 58.7624,
@@ -2898,7 +2899,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1953,
         income: 4361,
         lifeExpectancy: 43.77694,
@@ -2906,7 +2907,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1953,
         income: 11751,
         lifeExpectancy: 69.738,
@@ -2914,7 +2915,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1953,
         income: 16974,
         lifeExpectancy: 68.6448,
@@ -2922,7 +2923,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1954,
         income: 12694,
         lifeExpectancy: 69.9792,
@@ -2930,7 +2931,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1954,
         income: 12687,
         lifeExpectancy: 69.956,
@@ -2938,7 +2939,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1954,
         income: 694,
         lifeExpectancy: 44.663056,
@@ -2946,7 +2947,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1954,
         income: 8492,
         lifeExpectancy: 62.11152,
@@ -2954,7 +2955,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1954,
         income: 8470,
         lifeExpectancy: 67.4612,
@@ -2978,7 +2979,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1954,
         income: 9821,
         lifeExpectancy: 73.3532,
@@ -2986,7 +2987,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1954,
         income: 962,
         lifeExpectancy: 36.97552,
@@ -2994,7 +2995,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1954,
         income: 3280,
         lifeExpectancy: 64.6984,
@@ -3002,7 +3003,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1954,
         income: 1080,
         lifeExpectancy: 38.68292,
@@ -3010,7 +3011,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1954,
         income: 1070,
         lifeExpectancy: 48.42772,
@@ -3018,7 +3019,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1954,
         income: 14907,
         lifeExpectancy: 70.4656,
@@ -3026,7 +3027,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1954,
         income: 13247,
         lifeExpectancy: 73.1076,
@@ -3034,7 +3035,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1954,
         income: 5224,
         lifeExpectancy: 63.0134,
@@ -3042,7 +3043,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1954,
         income: 8234,
         lifeExpectancy: 60.7552,
@@ -3050,7 +3051,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1954,
         income: 3892,
         lifeExpectancy: 44.33512,
@@ -3058,7 +3059,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1954,
         income: 12173,
         lifeExpectancy: 70.104,
@@ -3066,7 +3067,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1954,
         income: 16558,
         lifeExpectancy: 69.4304,
@@ -3074,7 +3075,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1955,
         income: 13082,
         lifeExpectancy: 70.303,
@@ -3082,7 +3083,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1955,
         income: 13513,
         lifeExpectancy: 70.015,
@@ -3090,7 +3091,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1955,
         income: 706,
         lifeExpectancy: 46.1666,
@@ -3098,7 +3099,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1955,
         income: 8757,
         lifeExpectancy: 62.7523,
@@ -3106,7 +3107,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1955,
         income: 8802,
         lifeExpectancy: 67.258,
@@ -3130,7 +3131,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1955,
         income: 10548,
         lifeExpectancy: 73.293,
@@ -3138,7 +3139,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1955,
         income: 963,
         lifeExpectancy: 37.6538,
@@ -3146,7 +3147,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1955,
         income: 3464,
         lifeExpectancy: 65.861,
@@ -3154,7 +3155,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1955,
         income: 1146,
         lifeExpectancy: 42.6208,
@@ -3162,7 +3163,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1955,
         income: 1139,
         lifeExpectancy: 49.9673,
@@ -3170,7 +3171,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1955,
         income: 14883,
         lifeExpectancy: 70.599,
@@ -3178,7 +3179,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1955,
         income: 13438,
         lifeExpectancy: 73.314,
@@ -3186,7 +3187,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1955,
         income: 5386,
         lifeExpectancy: 63.939,
@@ -3194,7 +3195,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1955,
         income: 8787,
         lifeExpectancy: 63.148,
@@ -3202,7 +3203,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1955,
         income: 4156,
         lifeExpectancy: 44.9343,
@@ -3210,7 +3211,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1955,
         income: 12531,
         lifeExpectancy: 70.07,
@@ -3218,7 +3219,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1955,
         income: 17409,
         lifeExpectancy: 69.476,
@@ -3226,7 +3227,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1956,
         income: 13217,
         lifeExpectancy: 70.1868,
@@ -3234,7 +3235,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1956,
         income: 14253,
         lifeExpectancy: 70.004,
@@ -3242,7 +3243,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1956,
         income: 736,
         lifeExpectancy: 48.536704,
@@ -3250,7 +3251,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1956,
         income: 9424,
         lifeExpectancy: 63.39308,
@@ -3258,7 +3259,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1956,
         income: 8971,
         lifeExpectancy: 67.8748,
@@ -3282,7 +3283,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1956,
         income: 10575,
         lifeExpectancy: 72.9728,
@@ -3290,7 +3291,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1956,
         income: 993,
         lifeExpectancy: 38.33608,
@@ -3298,7 +3299,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1956,
         income: 3646,
         lifeExpectancy: 65.7236,
@@ -3306,7 +3307,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1956,
         income: 1208,
         lifeExpectancy: 43.99568,
@@ -3314,7 +3315,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1956,
         income: 1130,
         lifeExpectancy: 50.64688,
@@ -3322,7 +3323,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1956,
         income: 15358,
         lifeExpectancy: 70.8624,
@@ -3330,7 +3331,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1956,
         income: 14054,
         lifeExpectancy: 73.3604,
@@ -3338,7 +3339,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1956,
         income: 5530,
         lifeExpectancy: 64.7816,
@@ -3346,7 +3347,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1956,
         income: 9465,
         lifeExpectancy: 64.6408,
@@ -3354,7 +3355,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1956,
         income: 4122,
         lifeExpectancy: 45.57448,
@@ -3362,7 +3363,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1956,
         income: 12572,
         lifeExpectancy: 70.336,
@@ -3370,7 +3371,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1956,
         income: 17428,
         lifeExpectancy: 69.5516,
@@ -3378,7 +3379,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1957,
         income: 13191,
         lifeExpectancy: 70.4706,
@@ -3386,7 +3387,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1957,
         income: 14177,
         lifeExpectancy: 69.923,
@@ -3394,7 +3395,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1957,
         income: 780,
         lifeExpectancy: 48.587368,
@@ -3402,7 +3403,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1957,
         income: 10636,
         lifeExpectancy: 64.03586,
@@ -3410,7 +3411,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1957,
         income: 9302,
         lifeExpectancy: 67.3716,
@@ -3434,7 +3435,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1957,
         income: 10295,
         lifeExpectancy: 73.4626,
@@ -3442,7 +3443,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1957,
         income: 959,
         lifeExpectancy: 39.02236,
@@ -3450,7 +3451,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1957,
         income: 3843,
         lifeExpectancy: 65.5962,
@@ -3458,7 +3459,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1957,
         income: 1322,
         lifeExpectancy: 44.87056,
@@ -3466,7 +3467,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1957,
         income: 1226,
         lifeExpectancy: 51.33946,
@@ -3474,7 +3475,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1957,
         income: 15441,
         lifeExpectancy: 70.3858,
@@ -3482,7 +3483,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1957,
         income: 14379,
         lifeExpectancy: 73.3068,
@@ -3490,7 +3491,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1957,
         income: 5730,
         lifeExpectancy: 65.5442,
@@ -3498,7 +3499,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1957,
         income: 9496,
         lifeExpectancy: 63.7336,
@@ -3506,7 +3507,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1957,
         income: 4943,
         lifeExpectancy: 46.25466,
@@ -3514,7 +3515,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1957,
         income: 12702,
         lifeExpectancy: 70.452,
@@ -3522,7 +3523,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1957,
         income: 17430,
         lifeExpectancy: 69.3272,
@@ -3530,7 +3531,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1958,
         income: 13545,
         lifeExpectancy: 71.0244,
@@ -3538,7 +3539,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1958,
         income: 14056,
         lifeExpectancy: 70.582,
@@ -3546,7 +3547,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1958,
         income: 889,
         lifeExpectancy: 48.143792,
@@ -3554,7 +3555,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1958,
         income: 10501,
         lifeExpectancy: 64.67964,
@@ -3562,7 +3563,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1958,
         income: 9276,
         lifeExpectancy: 68.5084,
@@ -3586,7 +3587,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1958,
         income: 10896,
         lifeExpectancy: 73.4224,
@@ -3594,7 +3595,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1958,
         income: 1005,
         lifeExpectancy: 39.71364,
@@ -3602,7 +3603,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1958,
         income: 3996,
         lifeExpectancy: 67.2188,
@@ -3610,7 +3611,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1958,
         income: 1498,
         lifeExpectancy: 45.33644,
@@ -3618,7 +3619,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1958,
         income: 1233,
         lifeExpectancy: 52.04404,
@@ -3626,7 +3627,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1958,
         income: 15688,
         lifeExpectancy: 71.0192,
@@ -3634,7 +3635,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1958,
         income: 14285,
         lifeExpectancy: 73.2932,
@@ -3642,7 +3643,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1958,
         income: 5923,
         lifeExpectancy: 66.0188,
@@ -3650,7 +3651,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1958,
         income: 10037,
         lifeExpectancy: 66.6264,
@@ -3658,7 +3659,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1958,
         income: 5252,
         lifeExpectancy: 46.97084,
@@ -3666,7 +3667,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1958,
         income: 12672,
         lifeExpectancy: 70.628,
@@ -3674,7 +3675,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1958,
         income: 16961,
         lifeExpectancy: 69.5928,
@@ -3682,7 +3683,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1959,
         income: 14076,
         lifeExpectancy: 70.5982,
@@ -3690,7 +3691,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1959,
         income: 14289,
         lifeExpectancy: 70.621,
@@ -3698,7 +3699,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1959,
         income: 958,
         lifeExpectancy: 36.336856,
@@ -3706,7 +3707,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1959,
         income: 9234,
         lifeExpectancy: 65.32842,
@@ -3714,7 +3715,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1959,
         income: 9751,
         lifeExpectancy: 68.6852,
@@ -3738,7 +3739,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1959,
         income: 10865,
         lifeExpectancy: 72.6522,
@@ -3746,7 +3747,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1959,
         income: 1002,
         lifeExpectancy: 40.41292,
@@ -3754,7 +3755,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1959,
         income: 4288,
         lifeExpectancy: 67.6114,
@@ -3762,7 +3763,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1959,
         income: 1452,
         lifeExpectancy: 45.93132,
@@ -3770,7 +3771,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1959,
         income: 1212,
         lifeExpectancy: 52.76062,
@@ -3778,7 +3779,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1959,
         income: 16454,
         lifeExpectancy: 70.9326,
@@ -3786,7 +3787,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1959,
         income: 14797,
         lifeExpectancy: 73.4196,
@@ -3794,7 +3795,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1959,
         income: 6009,
         lifeExpectancy: 65.6314,
@@ -3802,7 +3803,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1959,
         income: 9755,
         lifeExpectancy: 67.3692,
@@ -3810,7 +3811,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1959,
         income: 4869,
         lifeExpectancy: 47.72102,
@@ -3818,7 +3819,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1959,
         income: 13122,
         lifeExpectancy: 70.724,
@@ -3826,7 +3827,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1959,
         income: 17909,
         lifeExpectancy: 69.8084,
@@ -3834,7 +3835,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1960,
         income: 14346,
         lifeExpectancy: 71.042,
@@ -3842,7 +3843,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1960,
         income: 14414,
         lifeExpectancy: 71,
@@ -3850,7 +3851,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1960,
         income: 889,
         lifeExpectancy: 29.51112,
@@ -3858,7 +3859,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1960,
         income: 9213,
         lifeExpectancy: 65.9852,
@@ -3866,7 +3867,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1960,
         income: 10560,
         lifeExpectancy: 68.882,
@@ -3890,7 +3891,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1960,
         income: 10993,
         lifeExpectancy: 74.082,
@@ -3898,7 +3899,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1960,
         income: 1048,
         lifeExpectancy: 41.1222,
@@ -3906,7 +3907,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1960,
         income: 4756,
         lifeExpectancy: 67.904,
@@ -3914,7 +3915,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1960,
         income: 1544,
         lifeExpectancy: 46.2922,
@@ -3922,7 +3923,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1960,
         income: 1178,
         lifeExpectancy: 53.4912,
@@ -3930,7 +3931,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1960,
         income: 16179,
         lifeExpectancy: 71.396,
@@ -3938,7 +3939,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1960,
         income: 15542,
         lifeExpectancy: 73.436,
@@ -3946,7 +3947,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1960,
         income: 6248,
         lifeExpectancy: 67.964,
@@ -3954,7 +3955,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1960,
         income: 10496,
         lifeExpectancy: 68.382,
@@ -3962,7 +3963,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1960,
         income: 4735,
         lifeExpectancy: 48.4992,
@@ -3970,7 +3971,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1960,
         income: 13697,
         lifeExpectancy: 70.94,
@@ -3978,7 +3979,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1960,
         income: 18059,
         lifeExpectancy: 69.734,
@@ -3986,7 +3987,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1961,
         income: 14126,
         lifeExpectancy: 71.3158,
@@ -3994,7 +3995,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1961,
         income: 14545,
         lifeExpectancy: 71.229,
@@ -4002,7 +4003,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1961,
         income: 558,
         lifeExpectancy: 31.930824,
@@ -4010,7 +4011,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1961,
         income: 9248,
         lifeExpectancy: 66.64998,
@@ -4018,7 +4019,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1961,
         income: 11286,
         lifeExpectancy: 68.9088,
@@ -4042,7 +4043,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1961,
         income: 10801,
         lifeExpectancy: 73.4618,
@@ -4050,7 +4051,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1961,
         income: 1051,
         lifeExpectancy: 41.84348,
@@ -4058,7 +4059,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1961,
         income: 5276,
         lifeExpectancy: 68.5566,
@@ -4066,7 +4067,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1961,
         income: 1624,
         lifeExpectancy: 46.54408,
@@ -4074,7 +4075,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1961,
         income: 1201,
         lifeExpectancy: 54.23578,
@@ -4082,7 +4083,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1961,
         income: 16664,
         lifeExpectancy: 71.1194,
@@ -4090,7 +4091,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1961,
         income: 16425,
         lifeExpectancy: 73.4424,
@@ -4098,7 +4099,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1961,
         income: 6669,
         lifeExpectancy: 68.0866,
@@ -4106,7 +4107,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1961,
         income: 10908,
         lifeExpectancy: 68.6248,
@@ -4114,7 +4115,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1961,
         income: 4691,
         lifeExpectancy: 49.30038,
@@ -4122,7 +4123,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1961,
         income: 13887,
         lifeExpectancy: 70.686,
@@ -4130,7 +4131,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1961,
         income: 18170,
         lifeExpectancy: 70.1396,
@@ -4138,7 +4139,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1962,
         income: 14742,
         lifeExpectancy: 71.0896,
@@ -4146,7 +4147,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1962,
         income: 15276,
         lifeExpectancy: 71.258,
@@ -4154,7 +4155,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1962,
         income: 567,
         lifeExpectancy: 42.274688,
@@ -4162,7 +4163,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1962,
         income: 9273,
         lifeExpectancy: 67.32476,
@@ -4170,7 +4171,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1962,
         income: 11560,
         lifeExpectancy: 68.6156,
@@ -4194,7 +4195,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1962,
         income: 11489,
         lifeExpectancy: 73.6716,
@@ -4202,7 +4203,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1962,
         income: 1046,
         lifeExpectancy: 42.57776,
@@ -4210,7 +4211,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1962,
         income: 5686,
         lifeExpectancy: 68.8392,
@@ -4218,7 +4219,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1962,
         income: 1592,
         lifeExpectancy: 46.82096,
@@ -4226,7 +4227,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1962,
         income: 1182,
         lifeExpectancy: 54.99436,
@@ -4234,7 +4235,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1962,
         income: 16646,
         lifeExpectancy: 71.3828,
@@ -4242,7 +4243,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1962,
         income: 16793,
         lifeExpectancy: 73.3188,
@@ -4250,7 +4251,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1962,
         income: 6511,
         lifeExpectancy: 67.7492,
@@ -4258,7 +4259,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1962,
         income: 11027,
         lifeExpectancy: 68.2776,
@@ -4266,7 +4267,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1962,
         income: 4849,
         lifeExpectancy: 50.11556,
@@ -4274,7 +4275,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1962,
         income: 13897,
         lifeExpectancy: 70.752,
@@ -4282,7 +4283,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1962,
         income: 18966,
         lifeExpectancy: 70.0252,
@@ -4290,7 +4291,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1963,
         income: 15357,
         lifeExpectancy: 71.1534,
@@ -4298,7 +4299,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1963,
         income: 15752,
         lifeExpectancy: 71.267,
@@ -4306,7 +4307,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1963,
         income: 635,
         lifeExpectancy: 49.619432,
@@ -4314,7 +4315,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1963,
         income: 9244,
         lifeExpectancy: 68.00654,
@@ -4322,7 +4323,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1963,
         income: 11858,
         lifeExpectancy: 69.0224,
@@ -4346,7 +4347,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1963,
         income: 12447,
         lifeExpectancy: 72.9714,
@@ -4354,7 +4355,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1963,
         income: 1071,
         lifeExpectancy: 43.32404,
@@ -4362,7 +4363,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1963,
         income: 6106,
         lifeExpectancy: 69.9218,
@@ -4370,7 +4371,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1963,
         income: 1577,
         lifeExpectancy: 47.22984,
@@ -4378,7 +4379,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1963,
         income: 1305,
         lifeExpectancy: 55.76694,
@@ -4386,7 +4387,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1963,
         income: 17340,
         lifeExpectancy: 71.4562,
@@ -4394,7 +4395,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1963,
         income: 17347,
         lifeExpectancy: 72.9552,
@@ -4402,7 +4403,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1963,
         income: 6836,
         lifeExpectancy: 68.6818,
@@ -4410,7 +4411,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1963,
         income: 10620,
         lifeExpectancy: 68.7404,
@@ -4418,7 +4419,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1963,
         income: 5188,
         lifeExpectancy: 50.93674,
@@ -4426,7 +4427,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1963,
         income: 14393,
         lifeExpectancy: 70.658,
@@ -4434,7 +4435,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1963,
         income: 19497,
         lifeExpectancy: 69.8508,
@@ -4442,7 +4443,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1964,
         income: 16098,
         lifeExpectancy: 70.8172,
@@ -4450,7 +4451,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1964,
         income: 16464,
         lifeExpectancy: 71.646,
@@ -4458,7 +4459,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1964,
         income: 713,
         lifeExpectancy: 50.988016,
@@ -4466,7 +4467,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1964,
         income: 9179,
         lifeExpectancy: 68.69332,
@@ -4474,7 +4475,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1964,
         income: 12389,
         lifeExpectancy: 69.2292,
@@ -4498,7 +4499,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1964,
         income: 13450,
         lifeExpectancy: 73.5612,
@@ -4506,7 +4507,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1964,
         income: 1125,
         lifeExpectancy: 44.07932,
@@ -4514,7 +4515,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1964,
         income: 6741,
         lifeExpectancy: 70.3944,
@@ -4522,7 +4523,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1964,
         income: 1592,
         lifeExpectancy: 47.82972,
@@ -4530,7 +4531,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1964,
         income: 1380,
         lifeExpectancy: 56.55352,
@@ -4538,7 +4539,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1964,
         income: 17837,
         lifeExpectancy: 71.4996,
@@ -4546,7 +4547,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1964,
         income: 18118,
         lifeExpectancy: 73.4516,
@@ -4554,7 +4555,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1964,
         income: 7078,
         lifeExpectancy: 68.9144,
@@ -4562,7 +4563,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1964,
         income: 11836,
         lifeExpectancy: 69.5332,
@@ -4570,7 +4571,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1964,
         income: 5296,
         lifeExpectancy: 51.75292,
@@ -4578,7 +4579,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1964,
         income: 15067,
         lifeExpectancy: 71.444,
@@ -4586,7 +4587,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1964,
         income: 20338,
         lifeExpectancy: 70.1364,
@@ -4594,7 +4595,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1965,
         income: 16601,
         lifeExpectancy: 71.151,
@@ -4602,7 +4603,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1965,
         income: 17243,
         lifeExpectancy: 71.745,
@@ -4610,7 +4611,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1965,
         income: 772,
         lifeExpectancy: 53.26108,
@@ -4618,7 +4619,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1965,
         income: 9116,
         lifeExpectancy: 69.3761,
@@ -4626,7 +4627,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1965,
         income: 13006,
         lifeExpectancy: 68.986,
@@ -4650,7 +4651,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1965,
         income: 14173,
         lifeExpectancy: 73.831,
@@ -4658,7 +4659,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1965,
         income: 1053,
         lifeExpectancy: 44.8386,
@@ -4666,7 +4667,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1965,
         income: 7048,
         lifeExpectancy: 70.447,
@@ -4674,7 +4675,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1965,
         income: 1630,
         lifeExpectancy: 48.6336,
@@ -4682,7 +4683,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1965,
         income: 1416,
         lifeExpectancy: 57.3651,
@@ -4690,7 +4691,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1965,
         income: 18632,
         lifeExpectancy: 71.433,
@@ -4698,7 +4699,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1965,
         income: 18980,
         lifeExpectancy: 73.568,
@@ -4706,7 +4707,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1965,
         income: 7409,
         lifeExpectancy: 69.617,
@@ -4714,7 +4715,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1965,
         income: 12363,
         lifeExpectancy: 69.116,
@@ -4722,7 +4723,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1965,
         income: 5309,
         lifeExpectancy: 52.5551,
@@ -4730,7 +4731,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1965,
         income: 15292,
         lifeExpectancy: 71.43,
@@ -4738,7 +4739,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1965,
         income: 21361,
         lifeExpectancy: 70.212,
@@ -4746,7 +4747,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1966,
         income: 16756,
         lifeExpectancy: 70.9948,
@@ -4754,7 +4755,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1966,
         income: 18022,
         lifeExpectancy: 71.874,
@@ -4762,7 +4763,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1966,
         income: 826,
         lifeExpectancy: 54.364464,
@@ -4770,7 +4771,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1966,
         income: 9436,
         lifeExpectancy: 70.04688,
@@ -4778,7 +4779,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1966,
         income: 13269,
         lifeExpectancy: 69.5028,
@@ -4802,7 +4803,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1966,
         income: 15166,
         lifeExpectancy: 73.2208,
@@ -4810,7 +4811,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1966,
         income: 1037,
         lifeExpectancy: 45.59388,
@@ -4818,7 +4819,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1966,
         income: 7724,
         lifeExpectancy: 71.2596,
@@ -4826,7 +4827,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1966,
         income: 1616,
         lifeExpectancy: 49.60048,
@@ -4834,7 +4835,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1966,
         income: 1563,
         lifeExpectancy: 58.21268,
@@ -4842,7 +4843,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1966,
         income: 19467,
         lifeExpectancy: 71.2964,
@@ -4850,7 +4851,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1966,
         income: 19588,
         lifeExpectancy: 73.8444,
@@ -4858,7 +4859,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1966,
         income: 7818,
         lifeExpectancy: 70.0296,
@@ -4866,7 +4867,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1966,
         income: 12823,
         lifeExpectancy: 69.1788,
@@ -4874,7 +4875,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1966,
         income: 5906,
         lifeExpectancy: 53.33228,
@@ -4882,7 +4883,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1966,
         income: 15494,
         lifeExpectancy: 71.346,
@@ -4890,7 +4891,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1966,
         income: 22495,
         lifeExpectancy: 70.2276,
@@ -4898,7 +4899,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1967,
         income: 17570,
         lifeExpectancy: 71.2786,
@@ -4906,7 +4907,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1967,
         income: 18240,
         lifeExpectancy: 72.083,
@@ -4914,7 +4915,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1967,
         income: 719,
         lifeExpectancy: 55.889368,
@@ -4922,7 +4923,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1967,
         income: 10372,
         lifeExpectancy: 70.69866,
@@ -4930,7 +4931,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1967,
         income: 13477,
         lifeExpectancy: 69.6796,
@@ -4954,7 +4955,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1967,
         income: 14734,
         lifeExpectancy: 73.7206,
@@ -4962,7 +4963,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1967,
         income: 1096,
         lifeExpectancy: 46.33916,
@@ -4970,7 +4971,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1967,
         income: 8454,
         lifeExpectancy: 71.5522,
@@ -4978,7 +4979,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1967,
         income: 1646,
         lifeExpectancy: 50.62536,
@@ -4986,7 +4987,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1967,
         income: 1621,
         lifeExpectancy: 59.09526,
@@ -4994,7 +4995,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1967,
         income: 18309,
         lifeExpectancy: 71.6798,
@@ -5002,7 +5003,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1967,
         income: 20686,
         lifeExpectancy: 73.9108,
@@ -5010,7 +5011,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1967,
         income: 8044,
         lifeExpectancy: 69.7322,
@@ -5018,7 +5019,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1967,
         income: 13256,
         lifeExpectancy: 68.9616,
@@ -5026,7 +5027,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1967,
         income: 6020,
         lifeExpectancy: 54.08346,
@@ -5034,7 +5035,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1967,
         income: 15777,
         lifeExpectancy: 71.972,
@@ -5042,7 +5043,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1967,
         income: 22803,
         lifeExpectancy: 70.5532,
@@ -5050,7 +5051,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1968,
         income: 18261,
         lifeExpectancy: 70.9124,
@@ -5058,7 +5059,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1968,
         income: 18900,
         lifeExpectancy: 72.242,
@@ -5066,7 +5067,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1968,
         income: 669,
         lifeExpectancy: 56.860432,
@@ -5074,7 +5075,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1968,
         income: 9626,
         lifeExpectancy: 71.32644,
@@ -5082,7 +5083,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1968,
         income: 13726,
         lifeExpectancy: 69.6364,
@@ -5106,7 +5107,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1968,
         income: 13752,
         lifeExpectancy: 73.9304,
@@ -5114,7 +5115,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1968,
         income: 1095,
         lifeExpectancy: 47.07144,
@@ -5122,7 +5123,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1968,
         income: 9439,
         lifeExpectancy: 71.8748,
@@ -5130,7 +5131,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1968,
         income: 1673,
         lifeExpectancy: 51.61924,
@@ -5138,7 +5139,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1968,
         income: 1774,
         lifeExpectancy: 60.00184,
@@ -5146,7 +5147,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1968,
         income: 18082,
         lifeExpectancy: 71.3432,
@@ -5154,7 +5155,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1968,
         income: 21022,
         lifeExpectancy: 73.7872,
@@ -5162,7 +5163,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1968,
         income: 8473,
         lifeExpectancy: 70.3748,
@@ -5170,7 +5171,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1968,
         income: 13902,
         lifeExpectancy: 68.9144,
@@ -5178,7 +5179,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1968,
         income: 6295,
         lifeExpectancy: 54.80964,
@@ -5186,7 +5187,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1968,
         income: 16357,
         lifeExpectancy: 71.598,
@@ -5194,7 +5195,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1968,
         income: 23647,
         lifeExpectancy: 70.2088,
@@ -5202,7 +5203,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1969,
         income: 18949,
         lifeExpectancy: 71.3262,
@@ -5210,7 +5211,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1969,
         income: 19614,
         lifeExpectancy: 72.401,
@@ -5218,7 +5219,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1969,
         income: 732,
         lifeExpectancy: 58.367416,
@@ -5226,7 +5227,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1969,
         income: 9377,
         lifeExpectancy: 71.92622,
@@ -5234,7 +5235,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1969,
         income: 15058,
         lifeExpectancy: 69.5132,
@@ -5258,7 +5259,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1969,
         income: 13983,
         lifeExpectancy: 73.7002,
@@ -5266,7 +5267,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1969,
         income: 1141,
         lifeExpectancy: 47.78972,
@@ -5274,7 +5275,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1969,
         income: 10548,
         lifeExpectancy: 72.1074,
@@ -5282,7 +5283,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1969,
         income: 1643,
         lifeExpectancy: 52.55012,
@@ -5290,7 +5291,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1969,
         income: 1998,
         lifeExpectancy: 60.91542,
@@ -5298,7 +5299,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1969,
         income: 19745,
         lifeExpectancy: 71.7166,
@@ -5306,7 +5307,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1969,
         income: 21845,
         lifeExpectancy: 73.4936,
@@ -5314,7 +5315,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1969,
         income: 8331,
         lifeExpectancy: 69.8674,
@@ -5322,7 +5323,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1969,
         income: 13972,
         lifeExpectancy: 68.3872,
@@ -5330,7 +5331,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1969,
         income: 6470,
         lifeExpectancy: 55.51382,
@@ -5338,7 +5339,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1969,
         income: 16616,
         lifeExpectancy: 71.554,
@@ -5346,7 +5347,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1969,
         income: 24147,
         lifeExpectancy: 70.4444,
@@ -5354,7 +5355,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1970,
         income: 19719,
         lifeExpectancy: 71,
@@ -5362,7 +5363,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1970,
         income: 19842,
         lifeExpectancy: 72.6,
@@ -5370,7 +5371,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1970,
         income: 848,
         lifeExpectancy: 60,
@@ -5378,7 +5379,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1970,
         income: 8918,
         lifeExpectancy: 72.5,
@@ -5386,7 +5387,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1970,
         income: 16245,
         lifeExpectancy: 70.2,
@@ -5410,7 +5411,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1970,
         income: 14937,
         lifeExpectancy: 73.8,
@@ -5418,7 +5419,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1970,
         income: 1170,
         lifeExpectancy: 48.5,
@@ -5426,7 +5427,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1970,
         income: 14203,
         lifeExpectancy: 72.2,
@@ -5434,7 +5435,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1970,
         income: 1697,
         lifeExpectancy: 53.4,
@@ -5442,7 +5443,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1970,
         income: 2142,
         lifeExpectancy: 61.8,
@@ -5450,7 +5451,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1970,
         income: 19200,
         lifeExpectancy: 71.5,
@@ -5458,7 +5459,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1970,
         income: 22186,
         lifeExpectancy: 73.9,
@@ -5466,7 +5467,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1970,
         income: 8705,
         lifeExpectancy: 70,
@@ -5474,7 +5475,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1970,
         income: 14915,
         lifeExpectancy: 68.5,
@@ -5482,7 +5483,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1970,
         income: 6740,
         lifeExpectancy: 56.2,
@@ -5490,7 +5491,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1970,
         income: 16933,
         lifeExpectancy: 71.8,
@@ -5498,7 +5499,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1970,
         income: 23908,
         lifeExpectancy: 70.7,
@@ -5506,7 +5507,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1971,
         income: 20176,
         lifeExpectancy: 71.3,
@@ -5514,7 +5515,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1971,
         income: 20688,
         lifeExpectancy: 72.9,
@@ -5522,7 +5523,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1971,
         income: 876,
         lifeExpectancy: 60.6,
@@ -5530,7 +5531,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1971,
         income: 9471,
         lifeExpectancy: 73.2,
@@ -5538,7 +5539,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1971,
         income: 16564,
         lifeExpectancy: 70.5,
@@ -5562,7 +5563,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1971,
         income: 16687,
         lifeExpectancy: 73.8,
@@ -5570,7 +5571,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1971,
         income: 1154,
         lifeExpectancy: 48.9,
@@ -5578,7 +5579,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1971,
         income: 14673,
         lifeExpectancy: 72.8,
@@ -5586,7 +5587,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1971,
         income: 1699,
         lifeExpectancy: 54.6,
@@ -5594,7 +5595,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1971,
         income: 2427,
         lifeExpectancy: 62.3,
@@ -5602,7 +5603,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1971,
         income: 19871,
         lifeExpectancy: 71.6,
@@ -5610,7 +5611,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1971,
         income: 23239,
         lifeExpectancy: 74.1,
@@ -5618,7 +5619,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1971,
         income: 9256,
         lifeExpectancy: 70.2,
@@ -5626,7 +5627,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1971,
         income: 15170,
         lifeExpectancy: 68.6,
@@ -5634,7 +5635,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1971,
         income: 6765,
         lifeExpectancy: 56.9,
@@ -5642,7 +5643,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1971,
         income: 17207,
         lifeExpectancy: 72,
@@ -5650,7 +5651,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1971,
         income: 24350,
         lifeExpectancy: 71,
@@ -5658,7 +5659,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1972,
         income: 20385,
         lifeExpectancy: 71.7,
@@ -5666,7 +5667,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1972,
         income: 21532,
         lifeExpectancy: 72.9,
@@ -5674,7 +5675,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1972,
         income: 843,
         lifeExpectancy: 61.1,
@@ -5682,7 +5683,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1972,
         income: 9745,
         lifeExpectancy: 73.9,
@@ -5690,7 +5691,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1972,
         income: 17722,
         lifeExpectancy: 70.9,
@@ -5714,7 +5715,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1972,
         income: 17413,
         lifeExpectancy: 73.9,
@@ -5722,7 +5723,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1972,
         income: 1125,
         lifeExpectancy: 49.3,
@@ -5730,7 +5731,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1972,
         income: 15694,
         lifeExpectancy: 73.2,
@@ -5738,7 +5739,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1972,
         income: 1730,
         lifeExpectancy: 55.7,
@@ -5746,7 +5747,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1972,
         income: 2760,
         lifeExpectancy: 62.8,
@@ -5754,7 +5755,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1972,
         income: 20349,
         lifeExpectancy: 71.8,
@@ -5762,7 +5763,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1972,
         income: 24308,
         lifeExpectancy: 74.3,
@@ -5770,7 +5771,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1972,
         income: 9854,
         lifeExpectancy: 70.6,
@@ -5778,7 +5779,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1972,
         income: 15113,
         lifeExpectancy: 68.7,
@@ -5786,7 +5787,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1972,
         income: 7186,
         lifeExpectancy: 57.7,
@@ -5794,7 +5795,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1972,
         income: 17793,
         lifeExpectancy: 72,
@@ -5802,7 +5803,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1972,
         income: 25374,
         lifeExpectancy: 71.3,
@@ -5810,7 +5811,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1973,
         income: 21185,
         lifeExpectancy: 72,
@@ -5818,7 +5819,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1973,
         income: 22797,
         lifeExpectancy: 73.1,
@@ -5826,7 +5827,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1973,
         income: 894,
         lifeExpectancy: 61.7,
@@ -5834,7 +5835,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1973,
         income: 10439,
         lifeExpectancy: 74.1,
@@ -5842,7 +5843,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1973,
         income: 18804,
         lifeExpectancy: 71.3,
@@ -5866,7 +5867,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1973,
         income: 18360,
         lifeExpectancy: 74.1,
@@ -5874,7 +5875,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1973,
         income: 1151,
         lifeExpectancy: 49.9,
@@ -5882,7 +5883,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1973,
         income: 16731,
         lifeExpectancy: 73.5,
@@ -5890,7 +5891,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1973,
         income: 1751,
         lifeExpectancy: 56.8,
@@ -5898,7 +5899,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1973,
         income: 3326,
         lifeExpectancy: 63.3,
@@ -5906,7 +5907,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1973,
         income: 21342,
         lifeExpectancy: 71.8,
@@ -5914,7 +5915,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1973,
         income: 25278,
         lifeExpectancy: 74.5,
@@ -5922,7 +5923,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1973,
         income: 10504,
         lifeExpectancy: 70.9,
@@ -5930,7 +5931,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1973,
         income: 16236,
         lifeExpectancy: 68.7,
@@ -5938,7 +5939,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1973,
         income: 7442,
         lifeExpectancy: 58.3,
@@ -5946,7 +5947,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1973,
         income: 19043,
         lifeExpectancy: 72,
@@ -5954,7 +5955,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1973,
         income: 26567,
         lifeExpectancy: 71.6,
@@ -5962,7 +5963,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1974,
         income: 21383,
         lifeExpectancy: 72.1,
@@ -5970,7 +5971,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1974,
         income: 23405,
         lifeExpectancy: 73.2,
@@ -5978,7 +5979,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1974,
         income: 888,
         lifeExpectancy: 62.1,
@@ -5986,7 +5987,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1974,
         income: 10805,
         lifeExpectancy: 74.3,
@@ -5994,7 +5995,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1974,
         income: 19273,
         lifeExpectancy: 71.4,
@@ -6018,7 +6019,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1974,
         income: 19123,
         lifeExpectancy: 74.3,
@@ -6026,7 +6027,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1974,
         income: 1139,
         lifeExpectancy: 50.4,
@@ -6034,7 +6035,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1974,
         income: 16320,
         lifeExpectancy: 73.9,
@@ -6042,7 +6043,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1974,
         income: 1782,
         lifeExpectancy: 57.9,
@@ -6050,7 +6051,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1974,
         income: 3673,
         lifeExpectancy: 63.9,
@@ -6058,7 +6059,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1974,
         income: 22131,
         lifeExpectancy: 72,
@@ -6066,7 +6067,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1974,
         income: 26252,
         lifeExpectancy: 74.7,
@@ -6074,7 +6075,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1974,
         income: 11020,
         lifeExpectancy: 71.2,
@@ -6082,7 +6083,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1974,
         income: 16594,
         lifeExpectancy: 68.6,
@@ -6090,7 +6091,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1974,
         income: 7991,
         lifeExpectancy: 58.9,
@@ -6098,7 +6099,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1974,
         income: 18801,
         lifeExpectancy: 72.3,
@@ -6106,7 +6107,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1974,
         income: 26258,
         lifeExpectancy: 72.1,
@@ -6114,7 +6115,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1975,
         income: 21708,
         lifeExpectancy: 72.5,
@@ -6122,7 +6123,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1975,
         income: 23593,
         lifeExpectancy: 73.6,
@@ -6130,7 +6131,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1975,
         income: 920,
         lifeExpectancy: 62.6,
@@ -6138,7 +6139,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1975,
         income: 11176,
         lifeExpectancy: 74.6,
@@ -6146,7 +6147,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1975,
         income: 19409,
         lifeExpectancy: 71.6,
@@ -6170,7 +6171,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1975,
         income: 19023,
         lifeExpectancy: 74.7,
@@ -6178,7 +6179,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1975,
         income: 1212,
         lifeExpectancy: 50.9,
@@ -6186,7 +6187,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1975,
         income: 16632,
         lifeExpectancy: 74.4,
@@ -6194,7 +6195,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1975,
         income: 1844,
         lifeExpectancy: 58.9,
@@ -6202,7 +6203,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1975,
         income: 4108,
         lifeExpectancy: 64.4,
@@ -6210,7 +6211,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1975,
         income: 21467,
         lifeExpectancy: 72.1,
@@ -6218,7 +6219,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1975,
         income: 27553,
         lifeExpectancy: 74.8,
@@ -6226,7 +6227,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1975,
         income: 11430,
         lifeExpectancy: 70.9,
@@ -6234,7 +6235,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1975,
         income: 16530,
         lifeExpectancy: 68.2,
@@ -6242,7 +6243,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1975,
         income: 8381,
         lifeExpectancy: 59.5,
@@ -6250,7 +6251,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1975,
         income: 18699,
         lifeExpectancy: 72.6,
@@ -6258,7 +6259,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1975,
         income: 25934,
         lifeExpectancy: 72.6,
@@ -6266,7 +6267,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1976,
         income: 22372,
         lifeExpectancy: 73,
@@ -6274,7 +6275,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1976,
         income: 24563,
         lifeExpectancy: 73.9,
@@ -6282,7 +6283,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1976,
         income: 891,
         lifeExpectancy: 62.4,
@@ -6290,7 +6291,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1976,
         income: 11334,
         lifeExpectancy: 74.6,
@@ -6298,7 +6299,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1976,
         income: 19268,
         lifeExpectancy: 72,
@@ -6322,7 +6323,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1976,
         income: 19978,
         lifeExpectancy: 75.2,
@@ -6330,7 +6331,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1976,
         income: 1201,
         lifeExpectancy: 51.4,
@@ -6338,7 +6339,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1976,
         income: 17117,
         lifeExpectancy: 74.9,
@@ -6346,7 +6347,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1976,
         income: 1851,
         lifeExpectancy: 59.8,
@@ -6354,7 +6355,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1976,
         income: 4614,
         lifeExpectancy: 64.9,
@@ -6362,7 +6363,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1976,
         income: 21749,
         lifeExpectancy: 72.3,
@@ -6370,7 +6371,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1976,
         income: 29117,
         lifeExpectancy: 75,
@@ -6378,7 +6379,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1976,
         income: 11605,
         lifeExpectancy: 70.8,
@@ -6386,7 +6387,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1976,
         income: 17192,
         lifeExpectancy: 68,
@@ -6394,7 +6395,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1976,
         income: 9142,
         lifeExpectancy: 60,
@@ -6402,7 +6403,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1976,
         income: 19207,
         lifeExpectancy: 72.9,
@@ -6410,7 +6411,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1976,
         income: 27041,
         lifeExpectancy: 72.9,
@@ -6418,7 +6419,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1977,
         income: 22373,
         lifeExpectancy: 73.4,
@@ -6426,7 +6427,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1977,
         income: 25095,
         lifeExpectancy: 74.2,
@@ -6434,7 +6435,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1977,
         income: 904,
         lifeExpectancy: 63.3,
@@ -6442,7 +6443,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1977,
         income: 11712,
         lifeExpectancy: 74.4,
@@ -6450,7 +6451,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1977,
         income: 19261,
         lifeExpectancy: 72.4,
@@ -6474,7 +6475,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1977,
         income: 21583,
         lifeExpectancy: 75.6,
@@ -6482,7 +6483,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1977,
         income: 1266,
         lifeExpectancy: 52,
@@ -6490,7 +6491,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1977,
         income: 17705,
         lifeExpectancy: 75.3,
@@ -6498,7 +6499,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1977,
         income: 1884,
         lifeExpectancy: 60.7,
@@ -6506,7 +6507,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1977,
         income: 4964,
         lifeExpectancy: 65.4,
@@ -6514,7 +6515,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1977,
         income: 20623,
         lifeExpectancy: 72.4,
@@ -6522,7 +6523,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1977,
         income: 30319,
         lifeExpectancy: 75.2,
@@ -6530,7 +6531,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1977,
         income: 11713,
         lifeExpectancy: 70.6,
@@ -6538,7 +6539,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1977,
         income: 17487,
         lifeExpectancy: 67.8,
@@ -6546,7 +6547,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1977,
         income: 8863,
         lifeExpectancy: 60.9,
@@ -6554,7 +6555,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1977,
         income: 19684,
         lifeExpectancy: 73.1,
@@ -6562,7 +6563,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1977,
         income: 27990,
         lifeExpectancy: 73.2,
@@ -6570,7 +6571,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1978,
         income: 22763,
         lifeExpectancy: 73.8,
@@ -6578,7 +6579,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1978,
         income: 25853,
         lifeExpectancy: 74.4,
@@ -6586,7 +6587,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1978,
         income: 1016,
         lifeExpectancy: 63.7,
@@ -6594,7 +6595,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1978,
         income: 12312,
         lifeExpectancy: 74.5,
@@ -6602,7 +6603,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1978,
         income: 19608,
         lifeExpectancy: 72.9,
@@ -6626,7 +6627,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1978,
         income: 22659,
         lifeExpectancy: 76,
@@ -6634,7 +6635,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1978,
         income: 1305,
         lifeExpectancy: 52.6,
@@ -6642,7 +6643,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1978,
         income: 18484,
         lifeExpectancy: 75.7,
@@ -6650,7 +6651,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1978,
         income: 1809,
         lifeExpectancy: 61.5,
@@ -6658,7 +6659,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1978,
         income: 5373,
         lifeExpectancy: 66,
@@ -6666,7 +6667,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1978,
         income: 20707,
         lifeExpectancy: 72.7,
@@ -6674,7 +6675,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1978,
         income: 31348,
         lifeExpectancy: 75.3,
@@ -6682,7 +6683,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1978,
         income: 12033,
         lifeExpectancy: 70.7,
@@ -6690,7 +6691,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1978,
         income: 17818,
         lifeExpectancy: 67.7,
@@ -6698,7 +6699,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1978,
         income: 8400,
         lifeExpectancy: 61.4,
@@ -6706,7 +6707,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1978,
         income: 20337,
         lifeExpectancy: 73,
@@ -6714,7 +6715,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1978,
         income: 29281,
         lifeExpectancy: 73.5,
@@ -6722,7 +6723,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1979,
         income: 23697,
         lifeExpectancy: 74.2,
@@ -6730,7 +6731,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1979,
         income: 26665,
         lifeExpectancy: 74.7,
@@ -6738,7 +6739,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1979,
         income: 1059,
         lifeExpectancy: 64,
@@ -6746,7 +6747,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1979,
         income: 12519,
         lifeExpectancy: 74.6,
@@ -6754,7 +6755,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1979,
         income: 20918,
         lifeExpectancy: 73.3,
@@ -6778,7 +6779,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1979,
         income: 23523,
         lifeExpectancy: 76.4,
@@ -6786,7 +6787,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1979,
         income: 1211,
         lifeExpectancy: 53.1,
@@ -6794,7 +6795,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1979,
         income: 19346,
         lifeExpectancy: 76.1,
@@ -6802,7 +6803,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1979,
         income: 2015,
         lifeExpectancy: 62.2,
@@ -6810,7 +6811,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1979,
         income: 5505,
         lifeExpectancy: 66.5,
@@ -6818,7 +6819,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1979,
         income: 21144,
         lifeExpectancy: 73,
@@ -6826,7 +6827,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1979,
         income: 32737,
         lifeExpectancy: 75.5,
@@ -6834,7 +6835,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1979,
         income: 11703,
         lifeExpectancy: 70.7,
@@ -6842,7 +6843,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1979,
         income: 17632,
         lifeExpectancy: 67.4,
@@ -6850,7 +6851,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1979,
         income: 8160,
         lifeExpectancy: 62,
@@ -6858,7 +6859,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1979,
         income: 20871,
         lifeExpectancy: 73.1,
@@ -6866,7 +6867,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1979,
         income: 29951,
         lifeExpectancy: 73.7,
@@ -6874,7 +6875,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1980,
         income: 23872,
         lifeExpectancy: 74.5,
@@ -6882,7 +6883,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1980,
         income: 26678,
         lifeExpectancy: 75,
@@ -6890,7 +6891,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1980,
         income: 1073,
         lifeExpectancy: 64.5,
@@ -6898,7 +6899,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1980,
         income: 12284,
         lifeExpectancy: 74.6,
@@ -6906,7 +6907,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1980,
         income: 21965,
         lifeExpectancy: 73.7,
@@ -6930,7 +6931,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1980,
         income: 24580,
         lifeExpectancy: 76.7,
@@ -6938,7 +6939,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1980,
         income: 1270,
         lifeExpectancy: 53.6,
@@ -6946,7 +6947,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1980,
         income: 19741,
         lifeExpectancy: 76.3,
@@ -6954,7 +6955,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1980,
         income: 1887,
         lifeExpectancy: 62.9,
@@ -6962,7 +6963,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1980,
         income: 4899,
         lifeExpectancy: 66.9,
@@ -6970,7 +6971,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1980,
         income: 21259,
         lifeExpectancy: 73.2,
@@ -6978,7 +6979,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1980,
         income: 34346,
         lifeExpectancy: 75.7,
@@ -6986,7 +6987,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1980,
         income: 11307,
         lifeExpectancy: 70.6,
@@ -6994,7 +6995,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1980,
         income: 17557,
         lifeExpectancy: 67.3,
@@ -7002,7 +7003,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1980,
         income: 7828,
         lifeExpectancy: 62.7,
@@ -7010,7 +7011,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1980,
         income: 20417,
         lifeExpectancy: 73.4,
@@ -7018,7 +7019,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1980,
         income: 29619,
         lifeExpectancy: 73.8,
@@ -7026,7 +7027,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1981,
         income: 24308,
         lifeExpectancy: 74.8,
@@ -7034,7 +7035,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1981,
         income: 27171,
         lifeExpectancy: 75.4,
@@ -7042,7 +7043,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1981,
         income: 1099,
         lifeExpectancy: 64.8,
@@ -7050,7 +7051,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1981,
         income: 13224,
         lifeExpectancy: 74.6,
@@ -7058,7 +7059,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1981,
         income: 22279,
         lifeExpectancy: 74,
@@ -7082,7 +7083,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1981,
         income: 25312,
         lifeExpectancy: 76.9,
@@ -7090,7 +7091,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1981,
         income: 1322,
         lifeExpectancy: 54.2,
@@ -7098,7 +7099,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1981,
         income: 20413,
         lifeExpectancy: 76.7,
@@ -7106,7 +7107,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1981,
         income: 2073,
         lifeExpectancy: 63.6,
@@ -7114,7 +7115,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1981,
         income: 5159,
         lifeExpectancy: 67.5,
@@ -7122,7 +7123,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1981,
         income: 22191,
         lifeExpectancy: 73.5,
@@ -7130,7 +7131,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1981,
         income: 34659,
         lifeExpectancy: 75.8,
@@ -7138,7 +7139,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1981,
         income: 10610,
         lifeExpectancy: 71,
@@ -7146,7 +7147,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1981,
         income: 17619,
         lifeExpectancy: 67.5,
@@ -7154,7 +7155,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1981,
         income: 8518,
         lifeExpectancy: 63.2,
@@ -7162,7 +7163,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1981,
         income: 20149,
         lifeExpectancy: 73.8,
@@ -7170,7 +7171,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1981,
         income: 30070,
         lifeExpectancy: 74,
@@ -7178,7 +7179,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1982,
         income: 23884,
         lifeExpectancy: 75,
@@ -7186,7 +7187,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1982,
         income: 26031,
         lifeExpectancy: 75.8,
@@ -7194,7 +7195,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1982,
         income: 1175,
         lifeExpectancy: 65.2,
@@ -7202,7 +7203,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1982,
         income: 13421,
         lifeExpectancy: 74.7,
@@ -7210,7 +7211,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1982,
         income: 22873,
         lifeExpectancy: 74.3,
@@ -7234,7 +7235,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1982,
         income: 25455,
         lifeExpectancy: 77.1,
@@ -7242,7 +7243,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1982,
         income: 1334,
         lifeExpectancy: 54.6,
@@ -7250,7 +7251,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1982,
         income: 20951,
         lifeExpectancy: 77,
@@ -7258,7 +7259,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1982,
         income: 2180,
         lifeExpectancy: 64.2,
@@ -7266,7 +7267,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1982,
         income: 5483,
         lifeExpectancy: 67.9,
@@ -7274,7 +7275,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1982,
         income: 22436,
         lifeExpectancy: 73.7,
@@ -7282,7 +7283,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1982,
         income: 34704,
         lifeExpectancy: 75.9,
@@ -7290,7 +7291,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1982,
         income: 10420,
         lifeExpectancy: 71.2,
@@ -7298,7 +7299,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1982,
         income: 17951,
         lifeExpectancy: 67.9,
@@ -7306,7 +7307,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1982,
         income: 8323,
         lifeExpectancy: 63.7,
@@ -7314,7 +7315,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1982,
         income: 20607,
         lifeExpectancy: 74.1,
@@ -7322,7 +7323,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1982,
         income: 29230,
         lifeExpectancy: 74.4,
@@ -7330,7 +7331,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1983,
         income: 23584,
         lifeExpectancy: 75.3,
@@ -7338,7 +7339,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1983,
         income: 26525,
         lifeExpectancy: 76.1,
@@ -7346,7 +7347,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1983,
         income: 1229,
         lifeExpectancy: 65.6,
@@ -7354,7 +7355,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1983,
         income: 13669,
         lifeExpectancy: 74.6,
@@ -7362,7 +7363,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1983,
         income: 23351,
         lifeExpectancy: 74.5,
@@ -7386,7 +7387,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1983,
         income: 24594,
         lifeExpectancy: 77.3,
@@ -7394,7 +7395,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1983,
         income: 1412,
         lifeExpectancy: 55.1,
@@ -7402,7 +7403,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1983,
         income: 21446,
         lifeExpectancy: 77.1,
@@ -7410,7 +7411,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1983,
         income: 2138,
         lifeExpectancy: 64.8,
@@ -7418,7 +7419,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1983,
         income: 6078,
         lifeExpectancy: 68.4,
@@ -7426,7 +7427,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1983,
         income: 22808,
         lifeExpectancy: 73.9,
@@ -7434,7 +7435,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1983,
         income: 35932,
         lifeExpectancy: 76,
@@ -7442,7 +7443,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1983,
         income: 10835,
         lifeExpectancy: 71.1,
@@ -7450,7 +7451,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1983,
         income: 18417,
         lifeExpectancy: 67.7,
@@ -7458,7 +7459,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1983,
         income: 8535,
         lifeExpectancy: 64.2,
@@ -7466,7 +7467,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1983,
         income: 21357,
         lifeExpectancy: 74.3,
@@ -7474,7 +7475,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1983,
         income: 30185,
         lifeExpectancy: 74.6,
@@ -7482,7 +7483,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1984,
         income: 24934,
         lifeExpectancy: 75.5,
@@ -7490,7 +7491,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1984,
         income: 27781,
         lifeExpectancy: 76.4,
@@ -7498,7 +7499,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1984,
         income: 1456,
         lifeExpectancy: 66,
@@ -7506,7 +7507,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1984,
         income: 14019,
         lifeExpectancy: 74.4,
@@ -7514,7 +7515,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1984,
         income: 23926,
         lifeExpectancy: 74.6,
@@ -7538,7 +7539,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1984,
         income: 25356,
         lifeExpectancy: 77.4,
@@ -7546,7 +7547,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1984,
         income: 1436,
         lifeExpectancy: 55.5,
@@ -7554,7 +7555,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1984,
         income: 22268,
         lifeExpectancy: 77.4,
@@ -7562,7 +7563,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1984,
         income: 2205,
         lifeExpectancy: 65.4,
@@ -7570,7 +7571,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1984,
         income: 6612,
         lifeExpectancy: 69,
@@ -7578,7 +7579,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1984,
         income: 23698,
         lifeExpectancy: 74.1,
@@ -7586,7 +7587,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1984,
         income: 38057,
         lifeExpectancy: 76.1,
@@ -7594,7 +7595,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1984,
         income: 11138,
         lifeExpectancy: 70.8,
@@ -7602,7 +7603,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1984,
         income: 18527,
         lifeExpectancy: 67.4,
@@ -7610,7 +7611,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1984,
         income: 8798,
         lifeExpectancy: 64.8,
@@ -7618,7 +7619,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1984,
         income: 21904,
         lifeExpectancy: 74.6,
@@ -7626,7 +7627,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1984,
         income: 32110,
         lifeExpectancy: 74.8,
@@ -7634,7 +7635,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1985,
         income: 25875,
         lifeExpectancy: 75.7,
@@ -7642,7 +7643,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1985,
         income: 29016,
         lifeExpectancy: 76.5,
@@ -7650,7 +7651,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1985,
         income: 1557,
         lifeExpectancy: 66.4,
@@ -7658,7 +7659,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1985,
         income: 14135,
         lifeExpectancy: 74.3,
@@ -7666,7 +7667,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1985,
         income: 24630,
         lifeExpectancy: 74.7,
@@ -7690,7 +7691,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1985,
         income: 25997,
         lifeExpectancy: 77.6,
@@ -7698,7 +7699,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1985,
         income: 1462,
         lifeExpectancy: 55.9,
@@ -7706,7 +7707,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1985,
         income: 23554,
         lifeExpectancy: 77.8,
@@ -7714,7 +7715,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1985,
         income: 2121,
         lifeExpectancy: 65.9,
@@ -7722,7 +7723,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1985,
         income: 6970,
         lifeExpectancy: 69.5,
@@ -7730,7 +7731,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1985,
         income: 23750,
         lifeExpectancy: 74.2,
@@ -7738,7 +7739,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1985,
         income: 40031,
         lifeExpectancy: 76.1,
@@ -7746,7 +7747,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1985,
         income: 11159,
         lifeExpectancy: 70.7,
@@ -7754,7 +7755,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1985,
         income: 18576,
         lifeExpectancy: 68.2,
@@ -7762,7 +7763,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1985,
         income: 9163,
         lifeExpectancy: 65.2,
@@ -7770,7 +7771,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1985,
         income: 22648,
         lifeExpectancy: 74.7,
@@ -7778,7 +7779,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1985,
         income: 33065,
         lifeExpectancy: 74.8,
@@ -7786,7 +7787,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1986,
         income: 26057,
         lifeExpectancy: 76,
@@ -7794,7 +7795,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1986,
         income: 29482,
         lifeExpectancy: 76.6,
@@ -7802,7 +7803,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1986,
         income: 1604,
         lifeExpectancy: 66.8,
@@ -7810,7 +7811,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1986,
         income: 14025,
         lifeExpectancy: 74.5,
@@ -7818,7 +7819,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1986,
         income: 25133,
         lifeExpectancy: 74.7,
@@ -7842,7 +7843,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1986,
         income: 27379,
         lifeExpectancy: 77.6,
@@ -7850,7 +7851,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1986,
         income: 1493,
         lifeExpectancy: 56.3,
@@ -7858,7 +7859,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1986,
         income: 24116,
         lifeExpectancy: 78.1,
@@ -7866,7 +7867,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1986,
         income: 2106,
         lifeExpectancy: 66.4,
@@ -7874,7 +7875,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1986,
         income: 7996,
         lifeExpectancy: 70,
@@ -7882,7 +7883,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1986,
         income: 24180,
         lifeExpectancy: 74.2,
@@ -7890,7 +7891,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1986,
         income: 41450,
         lifeExpectancy: 76.1,
@@ -7898,7 +7899,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1986,
         income: 11429,
         lifeExpectancy: 70.9,
@@ -7906,7 +7907,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1986,
         income: 19221,
         lifeExpectancy: 69.8,
@@ -7914,7 +7915,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1986,
         income: 9556,
         lifeExpectancy: 65.7,
@@ -7922,7 +7923,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1986,
         income: 23516,
         lifeExpectancy: 74.9,
@@ -7930,7 +7931,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1986,
         income: 33899,
         lifeExpectancy: 74.9,
@@ -7938,7 +7939,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1987,
         income: 26969,
         lifeExpectancy: 76.2,
@@ -7946,7 +7947,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1987,
         income: 30288,
         lifeExpectancy: 76.8,
@@ -7954,7 +7955,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1987,
         income: 1652,
         lifeExpectancy: 67.2,
@@ -7962,7 +7963,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1987,
         income: 13805,
         lifeExpectancy: 74.6,
@@ -7970,7 +7971,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1987,
         income: 26086,
         lifeExpectancy: 74.7,
@@ -7994,7 +7995,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1987,
         income: 29335,
         lifeExpectancy: 77.7,
@@ -8002,7 +8003,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1987,
         income: 1525,
         lifeExpectancy: 56.6,
@@ -8010,7 +8011,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1987,
         income: 25018,
         lifeExpectancy: 78.4,
@@ -8018,7 +8019,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1987,
         income: 2142,
         lifeExpectancy: 66.8,
@@ -8026,7 +8027,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1987,
         income: 9096,
         lifeExpectancy: 70.4,
@@ -8034,7 +8035,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1987,
         income: 24222,
         lifeExpectancy: 74.4,
@@ -8042,7 +8043,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1987,
         income: 42225,
         lifeExpectancy: 76.1,
@@ -8050,7 +8051,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1987,
         income: 11207,
         lifeExpectancy: 71.1,
@@ -8058,7 +8059,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1987,
         income: 19355,
         lifeExpectancy: 70.1,
@@ -8066,7 +8067,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1987,
         income: 10351,
         lifeExpectancy: 66.1,
@@ -8074,7 +8075,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1987,
         income: 24551,
         lifeExpectancy: 75.1,
@@ -8082,7 +8083,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1987,
         income: 34787,
         lifeExpectancy: 75,
@@ -8090,7 +8091,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1988,
         income: 27757,
         lifeExpectancy: 76.4,
@@ -8098,7 +8099,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1988,
         income: 31356,
         lifeExpectancy: 77.1,
@@ -8106,7 +8107,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1988,
         income: 1597,
         lifeExpectancy: 67.5,
@@ -8114,7 +8115,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1988,
         income: 13925,
         lifeExpectancy: 74.6,
@@ -8122,7 +8123,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1988,
         income: 27282,
         lifeExpectancy: 74.8,
@@ -8146,7 +8147,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1988,
         income: 28780,
         lifeExpectancy: 77.8,
@@ -8154,7 +8155,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1988,
         income: 1649,
         lifeExpectancy: 57,
@@ -8162,7 +8163,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1988,
         income: 26724,
         lifeExpectancy: 78.6,
@@ -8170,7 +8171,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1988,
         income: 2198,
         lifeExpectancy: 67.2,
@@ -8178,7 +8179,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1988,
         income: 10233,
         lifeExpectancy: 71,
@@ -8186,7 +8187,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1988,
         income: 24060,
         lifeExpectancy: 74.6,
@@ -8194,7 +8195,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1988,
         income: 42101,
         lifeExpectancy: 76.3,
@@ -8202,7 +8203,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1988,
         income: 11418,
         lifeExpectancy: 71.2,
@@ -8210,7 +8211,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1988,
         income: 19660,
         lifeExpectancy: 70,
@@ -8218,7 +8219,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1988,
         income: 10421,
         lifeExpectancy: 66.5,
@@ -8226,7 +8227,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1988,
         income: 25750,
         lifeExpectancy: 75.3,
@@ -8234,7 +8235,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1988,
         income: 35929,
         lifeExpectancy: 75,
@@ -8242,7 +8243,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1989,
         income: 28556,
         lifeExpectancy: 76.6,
@@ -8250,7 +8251,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1989,
         income: 31550,
         lifeExpectancy: 77.2,
@@ -8258,7 +8259,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1989,
         income: 1474,
         lifeExpectancy: 67.7,
@@ -8266,7 +8267,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1989,
         income: 13829,
         lifeExpectancy: 74.7,
@@ -8274,7 +8275,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1989,
         income: 28735,
         lifeExpectancy: 74.8,
@@ -8298,7 +8299,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1989,
         income: 28629,
         lifeExpectancy: 78,
@@ -8306,7 +8307,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1989,
         income: 1723,
         lifeExpectancy: 57.3,
@@ -8314,7 +8315,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1989,
         income: 28077,
         lifeExpectancy: 78.9,
@@ -8322,7 +8323,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1989,
         income: 2257,
         lifeExpectancy: 67.6,
@@ -8330,7 +8331,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1989,
         income: 11002,
         lifeExpectancy: 71.5,
@@ -8338,7 +8339,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1989,
         income: 24206,
         lifeExpectancy: 75,
@@ -8346,7 +8347,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1989,
         income: 42449,
         lifeExpectancy: 76.5,
@@ -8354,7 +8355,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1989,
         income: 11212,
         lifeExpectancy: 71.1,
@@ -8362,7 +8363,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1989,
         income: 19906,
         lifeExpectancy: 69.8,
@@ -8370,7 +8371,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1989,
         income: 10103,
         lifeExpectancy: 66.9,
@@ -8378,7 +8379,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1989,
         income: 26279,
         lifeExpectancy: 75.5,
@@ -8386,7 +8387,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1989,
         income: 36830,
         lifeExpectancy: 75.2,
@@ -8394,7 +8395,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1990,
         income: 28604,
         lifeExpectancy: 77,
@@ -8402,7 +8403,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1990,
         income: 31163,
         lifeExpectancy: 77.4,
@@ -8410,7 +8411,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1990,
         income: 1516,
         lifeExpectancy: 68,
@@ -8418,7 +8419,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1990,
         income: 13670,
         lifeExpectancy: 74.7,
@@ -8426,7 +8427,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1990,
         income: 28599,
         lifeExpectancy: 75,
@@ -8450,7 +8451,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1990,
         income: 28666,
         lifeExpectancy: 78.1,
@@ -8458,7 +8459,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1990,
         income: 1777,
         lifeExpectancy: 57.7,
@@ -8466,7 +8467,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1990,
         income: 29550,
         lifeExpectancy: 79.1,
@@ -8474,7 +8475,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1990,
         income: 2076,
         lifeExpectancy: 67.9,
@@ -8482,7 +8483,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1990,
         income: 12087,
         lifeExpectancy: 72,
@@ -8490,7 +8491,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1990,
         income: 24021,
         lifeExpectancy: 75.4,
@@ -8498,7 +8499,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1990,
         income: 43296,
         lifeExpectancy: 76.8,
@@ -8506,7 +8507,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1990,
         income: 10088,
         lifeExpectancy: 70.8,
@@ -8514,7 +8515,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1990,
         income: 19349,
         lifeExpectancy: 69.6,
@@ -8522,7 +8523,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1990,
         income: 10670,
         lifeExpectancy: 67.3,
@@ -8530,7 +8531,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1990,
         income: 26424,
         lifeExpectancy: 75.7,
@@ -8538,7 +8539,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1990,
         income: 37062,
         lifeExpectancy: 75.4,
@@ -8546,7 +8547,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1991,
         income: 28122,
         lifeExpectancy: 77.4,
@@ -8554,7 +8555,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1991,
         income: 30090,
         lifeExpectancy: 77.6,
@@ -8562,7 +8563,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1991,
         income: 1634,
         lifeExpectancy: 68.3,
@@ -8570,7 +8571,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1991,
         income: 12113,
         lifeExpectancy: 74.7,
@@ -8578,7 +8579,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1991,
         income: 26761,
         lifeExpectancy: 75.4,
@@ -8602,7 +8603,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1991,
         income: 28272,
         lifeExpectancy: 78.3,
@@ -8610,7 +8611,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1991,
         income: 1760,
         lifeExpectancy: 58,
@@ -8618,7 +8619,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1991,
         income: 30437,
         lifeExpectancy: 79.2,
@@ -8626,7 +8627,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1991,
         income: 1973,
         lifeExpectancy: 68.2,
@@ -8634,7 +8635,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1991,
         income: 13130,
         lifeExpectancy: 72.5,
@@ -8642,7 +8643,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1991,
         income: 22636,
         lifeExpectancy: 75.8,
@@ -8650,7 +8651,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1991,
         income: 44419,
         lifeExpectancy: 77.1,
@@ -8658,7 +8659,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1991,
         income: 9347,
         lifeExpectancy: 70.7,
@@ -8666,7 +8667,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1991,
         income: 18332,
         lifeExpectancy: 69.4,
@@ -8674,7 +8675,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1991,
         income: 10568,
         lifeExpectancy: 67.6,
@@ -8682,7 +8683,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1991,
         income: 26017,
         lifeExpectancy: 76,
@@ -8690,7 +8691,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1991,
         income: 36543,
         lifeExpectancy: 75.6,
@@ -8698,7 +8699,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1992,
         income: 27895,
         lifeExpectancy: 77.7,
@@ -8706,7 +8707,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1992,
         income: 29977,
         lifeExpectancy: 77.7,
@@ -8714,7 +8715,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1992,
         income: 1845,
         lifeExpectancy: 68.6,
@@ -8722,7 +8723,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1992,
         income: 10637,
         lifeExpectancy: 74.8,
@@ -8730,7 +8731,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1992,
         income: 25726,
         lifeExpectancy: 75.8,
@@ -8754,7 +8755,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1992,
         income: 26977,
         lifeExpectancy: 78.5,
@@ -8762,7 +8763,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1992,
         income: 1821,
         lifeExpectancy: 58.3,
@@ -8770,7 +8771,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1992,
         income: 30610,
         lifeExpectancy: 79.4,
@@ -8778,7 +8779,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1992,
         income: 1745,
         lifeExpectancy: 68.4,
@@ -8786,7 +8787,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1992,
         income: 13744,
         lifeExpectancy: 73,
@@ -8794,7 +8795,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1992,
         income: 22651,
         lifeExpectancy: 76.1,
@@ -8802,7 +8803,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1992,
         income: 45742,
         lifeExpectancy: 77.3,
@@ -8810,7 +8811,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1992,
         income: 9553,
         lifeExpectancy: 71.1,
@@ -8818,7 +8819,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1992,
         income: 15661,
         lifeExpectancy: 68,
@@ -8826,7 +8827,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1992,
         income: 10920,
         lifeExpectancy: 67.9,
@@ -8834,7 +8835,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1992,
         income: 26062,
         lifeExpectancy: 76.3,
@@ -8842,7 +8843,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1992,
         income: 37321,
         lifeExpectancy: 75.8,
@@ -8850,7 +8851,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1993,
         income: 28732,
         lifeExpectancy: 78,
@@ -8858,7 +8859,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1993,
         income: 30424,
         lifeExpectancy: 77.8,
@@ -8866,7 +8867,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1993,
         income: 2078,
         lifeExpectancy: 68.9,
@@ -8874,7 +8875,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1993,
         income: 9001,
         lifeExpectancy: 74.8,
@@ -8882,7 +8883,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1993,
         income: 25414,
         lifeExpectancy: 76.2,
@@ -8906,7 +8907,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1993,
         income: 27055,
         lifeExpectancy: 78.7,
@@ -8914,7 +8915,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1993,
         income: 1871,
         lifeExpectancy: 58.6,
@@ -8922,7 +8923,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1993,
         income: 30587,
         lifeExpectancy: 79.6,
@@ -8930,7 +8931,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1993,
         income: 1619,
         lifeExpectancy: 68.6,
@@ -8938,7 +8939,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1993,
         income: 14466,
         lifeExpectancy: 73.5,
@@ -8946,7 +8947,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1993,
         income: 23830,
         lifeExpectancy: 76.5,
@@ -8954,7 +8955,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1993,
         income: 46765,
         lifeExpectancy: 77.6,
@@ -8962,7 +8963,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1993,
         income: 9884,
         lifeExpectancy: 71.7,
@@ -8970,7 +8971,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1993,
         income: 14320,
         lifeExpectancy: 65.2,
@@ -8978,7 +8979,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1993,
         income: 11569,
         lifeExpectancy: 68.3,
@@ -8986,7 +8987,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1993,
         income: 26688,
         lifeExpectancy: 76.5,
@@ -8994,7 +8995,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1993,
         income: 37844,
         lifeExpectancy: 75.7,
@@ -9002,7 +9003,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1994,
         income: 29580,
         lifeExpectancy: 78.2,
@@ -9010,7 +9011,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1994,
         income: 31505,
         lifeExpectancy: 77.9,
@@ -9018,7 +9019,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1994,
         income: 2323,
         lifeExpectancy: 69.3,
@@ -9026,7 +9027,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1994,
         income: 9018,
         lifeExpectancy: 74.8,
@@ -9034,7 +9035,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1994,
         income: 26301,
         lifeExpectancy: 76.5,
@@ -9058,7 +9059,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1994,
         income: 27789,
         lifeExpectancy: 78.8,
@@ -9066,7 +9067,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1994,
         income: 1959,
         lifeExpectancy: 59,
@@ -9074,7 +9075,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1994,
         income: 30746,
         lifeExpectancy: 79.8,
@@ -9082,7 +9083,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1994,
         income: 1605,
         lifeExpectancy: 68.8,
@@ -9090,7 +9091,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1994,
         income: 15577,
         lifeExpectancy: 73.8,
@@ -9098,7 +9099,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1994,
         income: 24716,
         lifeExpectancy: 76.7,
@@ -9106,7 +9107,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1994,
         income: 48850,
         lifeExpectancy: 77.8,
@@ -9114,7 +9115,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1994,
         income: 10386,
         lifeExpectancy: 71.8,
@@ -9122,7 +9123,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1994,
         income: 12535,
         lifeExpectancy: 63.6,
@@ -9130,7 +9131,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1994,
         income: 10857,
         lifeExpectancy: 68.6,
@@ -9138,7 +9139,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1994,
         income: 27691,
         lifeExpectancy: 76.7,
@@ -9146,7 +9147,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1994,
         income: 38892,
         lifeExpectancy: 75.8,
@@ -9154,7 +9155,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1995,
         income: 30359,
         lifeExpectancy: 78.4,
@@ -9162,7 +9163,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1995,
         income: 32101,
         lifeExpectancy: 78,
@@ -9170,7 +9171,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1995,
         income: 2551,
         lifeExpectancy: 69.6,
@@ -9178,7 +9179,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1995,
         income: 9195,
         lifeExpectancy: 74.9,
@@ -9186,7 +9187,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1995,
         income: 27303,
         lifeExpectancy: 76.7,
@@ -9210,7 +9211,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1995,
         income: 27671,
         lifeExpectancy: 78.9,
@@ -9218,7 +9219,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1995,
         income: 2069,
         lifeExpectancy: 59.3,
@@ -9226,7 +9227,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1995,
         income: 31224,
         lifeExpectancy: 79.9,
@@ -9234,7 +9235,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1995,
         income: 1442,
         lifeExpectancy: 62.4,
@@ -9242,7 +9243,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1995,
         income: 16798,
         lifeExpectancy: 74.2,
@@ -9250,7 +9251,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1995,
         income: 25476,
         lifeExpectancy: 76.9,
@@ -9258,7 +9259,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1995,
         income: 50616,
         lifeExpectancy: 78,
@@ -9266,7 +9267,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1995,
         income: 11093,
         lifeExpectancy: 72,
@@ -9274,7 +9275,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1995,
         income: 12013,
         lifeExpectancy: 64.2,
@@ -9282,7 +9283,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1995,
         income: 11530,
         lifeExpectancy: 69,
@@ -9290,7 +9291,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1995,
         income: 28317,
         lifeExpectancy: 76.8,
@@ -9298,7 +9299,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1995,
         income: 39476,
         lifeExpectancy: 75.9,
@@ -9306,7 +9307,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1996,
         income: 31145,
         lifeExpectancy: 78.6,
@@ -9314,7 +9315,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1996,
         income: 32290,
         lifeExpectancy: 78.3,
@@ -9322,7 +9323,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1996,
         income: 2775,
         lifeExpectancy: 69.9,
@@ -9330,7 +9331,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1996,
         income: 9871,
         lifeExpectancy: 75.2,
@@ -9338,7 +9339,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1996,
         income: 28210,
         lifeExpectancy: 76.9,
@@ -9362,7 +9363,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1996,
         income: 28839,
         lifeExpectancy: 79.1,
@@ -9370,7 +9371,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1996,
         income: 2186,
         lifeExpectancy: 59.6,
@@ -9378,7 +9379,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1996,
         income: 31958,
         lifeExpectancy: 80.3,
@@ -9386,7 +9387,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1996,
         income: 1393,
         lifeExpectancy: 62.6,
@@ -9394,7 +9395,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1996,
         income: 17835,
         lifeExpectancy: 74.7,
@@ -9402,7 +9403,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1996,
         income: 25984,
         lifeExpectancy: 77.1,
@@ -9410,7 +9411,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1996,
         income: 52892,
         lifeExpectancy: 78.1,
@@ -9418,7 +9419,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1996,
         income: 11776,
         lifeExpectancy: 72.4,
@@ -9426,7 +9427,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1996,
         income: 11597,
         lifeExpectancy: 65.9,
@@ -9434,7 +9435,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1996,
         income: 12190,
         lifeExpectancy: 69.4,
@@ -9442,7 +9443,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1996,
         income: 28998,
         lifeExpectancy: 76.9,
@@ -9450,7 +9451,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1996,
         income: 40501,
         lifeExpectancy: 76.3,
@@ -9458,7 +9459,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1997,
         income: 32013,
         lifeExpectancy: 78.9,
@@ -9466,7 +9467,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1997,
         income: 33310,
         lifeExpectancy: 78.7,
@@ -9474,7 +9475,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1997,
         income: 3000,
         lifeExpectancy: 70.3,
@@ -9482,7 +9483,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1997,
         income: 10106,
         lifeExpectancy: 75.3,
@@ -9490,7 +9491,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1997,
         income: 29884,
         lifeExpectancy: 77.1,
@@ -9514,7 +9515,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1997,
         income: 30009,
         lifeExpectancy: 79.3,
@@ -9522,7 +9523,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1997,
         income: 2235,
         lifeExpectancy: 60,
@@ -9530,7 +9531,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1997,
         income: 32391,
         lifeExpectancy: 80.6,
@@ -9538,7 +9539,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1997,
         income: 1230,
         lifeExpectancy: 62.7,
@@ -9546,7 +9547,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1997,
         income: 18687,
         lifeExpectancy: 75.1,
@@ -9554,7 +9555,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1997,
         income: 26152,
         lifeExpectancy: 77.4,
@@ -9562,7 +9563,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1997,
         income: 55386,
         lifeExpectancy: 78.2,
@@ -9570,7 +9571,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1997,
         income: 12602,
         lifeExpectancy: 72.7,
@@ -9578,7 +9579,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1997,
         income: 11779,
         lifeExpectancy: 67.4,
@@ -9586,7 +9587,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1997,
         income: 12911,
         lifeExpectancy: 69.8,
@@ -9594,7 +9595,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1997,
         income: 29662,
         lifeExpectancy: 77.2,
@@ -9602,7 +9603,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1997,
         income: 41812,
         lifeExpectancy: 76.8,
@@ -9610,7 +9611,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1998,
         income: 33085,
         lifeExpectancy: 79.1,
@@ -9618,7 +9619,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1998,
         income: 34389,
         lifeExpectancy: 78.9,
@@ -9626,7 +9627,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1998,
         income: 3205,
         lifeExpectancy: 70.7,
@@ -9634,7 +9635,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1998,
         income: 10086,
         lifeExpectancy: 75.4,
@@ -9642,7 +9643,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1998,
         income: 31423,
         lifeExpectancy: 77.3,
@@ -9666,7 +9667,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1998,
         income: 31601,
         lifeExpectancy: 79.5,
@@ -9674,7 +9675,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1998,
         income: 2332,
         lifeExpectancy: 60.3,
@@ -9682,7 +9683,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1998,
         income: 31656,
         lifeExpectancy: 80.6,
@@ -9690,7 +9691,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1998,
         income: 1267,
         lifeExpectancy: 62.8,
@@ -9698,7 +9699,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1998,
         income: 17493,
         lifeExpectancy: 75.4,
@@ -9706,7 +9707,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1998,
         income: 26077,
         lifeExpectancy: 77.8,
@@ -9714,7 +9715,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1998,
         income: 56502,
         lifeExpectancy: 78.3,
@@ -9722,7 +9723,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1998,
         income: 13225,
         lifeExpectancy: 73,
@@ -9730,7 +9731,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1998,
         income: 11173,
         lifeExpectancy: 67.6,
@@ -9738,7 +9739,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1998,
         income: 13008,
         lifeExpectancy: 70.4,
@@ -9746,7 +9747,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1998,
         income: 30614,
         lifeExpectancy: 77.4,
@@ -9754,7 +9755,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1998,
         income: 43166,
         lifeExpectancy: 77,
@@ -9762,7 +9763,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 1999,
         income: 34346,
         lifeExpectancy: 79.3,
@@ -9770,7 +9771,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 1999,
         income: 35810,
         lifeExpectancy: 79.1,
@@ -9778,7 +9779,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 1999,
         income: 3419,
         lifeExpectancy: 71.1,
@@ -9786,7 +9787,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 1999,
         income: 10674,
         lifeExpectancy: 75.6,
@@ -9794,7 +9795,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 1999,
         income: 32743,
         lifeExpectancy: 77.5,
@@ -9818,7 +9819,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 1999,
         income: 32521,
         lifeExpectancy: 79.7,
@@ -9826,7 +9827,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 1999,
         income: 2496,
         lifeExpectancy: 60.7,
@@ -9834,7 +9835,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 1999,
         income: 31535,
         lifeExpectancy: 80.7,
@@ -9842,7 +9843,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 1999,
         income: 1377,
         lifeExpectancy: 63,
@@ -9850,7 +9851,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 1999,
         income: 19233,
         lifeExpectancy: 75.8,
@@ -9858,7 +9859,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 1999,
         income: 27371,
         lifeExpectancy: 78.1,
@@ -9866,7 +9867,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 1999,
         income: 57246,
         lifeExpectancy: 78.5,
@@ -9874,7 +9875,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 1999,
         income: 13824,
         lifeExpectancy: 73.2,
@@ -9882,7 +9883,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 1999,
         income: 11925,
         lifeExpectancy: 66.2,
@@ -9890,7 +9891,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 1999,
         income: 12381,
         lifeExpectancy: 70.3,
@@ -9898,7 +9899,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 1999,
         income: 31474,
         lifeExpectancy: 77.6,
@@ -9906,7 +9907,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 1999,
         income: 44673,
         lifeExpectancy: 77.1,
@@ -9914,7 +9915,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2000,
         income: 35253,
         lifeExpectancy: 79.7,
@@ -9922,7 +9923,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2000,
         income: 37314,
         lifeExpectancy: 79.3,
@@ -9930,7 +9931,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2000,
         income: 3678,
         lifeExpectancy: 71.5,
@@ -9938,7 +9939,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2000,
         income: 11268,
         lifeExpectancy: 75.9,
@@ -9946,7 +9947,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2000,
         income: 34517,
         lifeExpectancy: 77.8,
@@ -9970,7 +9971,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2000,
         income: 33599,
         lifeExpectancy: 79.9,
@@ -9978,7 +9979,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2000,
         income: 2548,
         lifeExpectancy: 61.1,
@@ -9986,7 +9987,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2000,
         income: 32193,
         lifeExpectancy: 81.1,
@@ -9994,7 +9995,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2000,
         income: 1287,
         lifeExpectancy: 63.2,
@@ -10002,7 +10003,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2000,
         income: 20757,
         lifeExpectancy: 76.3,
@@ -10010,7 +10011,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2000,
         income: 27963,
         lifeExpectancy: 78.5,
@@ -10018,7 +10019,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2000,
         income: 58699,
         lifeExpectancy: 78.7,
@@ -10026,7 +10027,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2000,
         income: 14565,
         lifeExpectancy: 73.8,
@@ -10034,7 +10035,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2000,
         income: 13173,
         lifeExpectancy: 65.4,
@@ -10042,7 +10043,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2000,
         income: 13025,
         lifeExpectancy: 71.5,
@@ -10050,7 +10051,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2000,
         income: 32543,
         lifeExpectancy: 77.8,
@@ -10058,7 +10059,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2000,
         income: 45986,
         lifeExpectancy: 77.1,
@@ -10066,7 +10067,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2001,
         income: 35452,
         lifeExpectancy: 80.1,
@@ -10074,7 +10075,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2001,
         income: 37563,
         lifeExpectancy: 79.5,
@@ -10082,7 +10083,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2001,
         income: 3955,
         lifeExpectancy: 71.9,
@@ -10090,7 +10091,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2001,
         income: 11588,
         lifeExpectancy: 76.2,
@@ -10098,7 +10099,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2001,
         income: 35327,
         lifeExpectancy: 78.2,
@@ -10122,7 +10123,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2001,
         income: 34403,
         lifeExpectancy: 80.2,
@@ -10130,7 +10131,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2001,
         income: 2628,
         lifeExpectancy: 61.5,
@@ -10138,7 +10139,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2001,
         income: 32230,
         lifeExpectancy: 81.4,
@@ -10146,7 +10147,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2001,
         income: 1368,
         lifeExpectancy: 63.3,
@@ -10154,7 +10155,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2001,
         income: 21536,
         lifeExpectancy: 76.8,
@@ -10162,7 +10163,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2001,
         income: 28752,
         lifeExpectancy: 78.8,
@@ -10170,7 +10171,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2001,
         income: 59620,
         lifeExpectancy: 78.9,
@@ -10178,7 +10179,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2001,
         income: 14744,
         lifeExpectancy: 74.3,
@@ -10186,7 +10187,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2001,
         income: 13902,
         lifeExpectancy: 65.1,
@@ -10194,7 +10195,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2001,
         income: 12106,
         lifeExpectancy: 72,
@@ -10202,7 +10203,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2001,
         income: 33282,
         lifeExpectancy: 78,
@@ -10210,7 +10211,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2001,
         income: 45978,
         lifeExpectancy: 77.1,
@@ -10218,7 +10219,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2002,
         income: 36375,
         lifeExpectancy: 80.4,
@@ -10226,7 +10227,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2002,
         income: 38270,
         lifeExpectancy: 79.7,
@@ -10234,7 +10235,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2002,
         income: 4285,
         lifeExpectancy: 72.4,
@@ -10242,7 +10243,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2002,
         income: 11715,
         lifeExpectancy: 76.6,
@@ -10250,7 +10251,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2002,
         income: 35834,
         lifeExpectancy: 78.5,
@@ -10274,7 +10275,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2002,
         income: 34252,
         lifeExpectancy: 80.5,
@@ -10282,7 +10283,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2002,
         income: 2684,
         lifeExpectancy: 61.9,
@@ -10290,7 +10291,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2002,
         income: 32248,
         lifeExpectancy: 81.7,
@@ -10298,7 +10299,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2002,
         income: 1375,
         lifeExpectancy: 63.5,
@@ -10306,7 +10307,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2002,
         income: 23008,
         lifeExpectancy: 77.3,
@@ -10314,7 +10315,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2002,
         income: 29637,
         lifeExpectancy: 79,
@@ -10322,7 +10323,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2002,
         income: 60152,
         lifeExpectancy: 79.2,
@@ -10330,7 +10331,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2002,
         income: 14964,
         lifeExpectancy: 74.6,
@@ -10338,7 +10339,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2002,
         income: 14629,
         lifeExpectancy: 64.9,
@@ -10346,7 +10347,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2002,
         income: 12669,
         lifeExpectancy: 72.5,
@@ -10354,7 +10355,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2002,
         income: 33954,
         lifeExpectancy: 78.2,
@@ -10362,7 +10363,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2002,
         income: 46367,
         lifeExpectancy: 77.2,
@@ -10370,7 +10371,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2003,
         income: 37035,
         lifeExpectancy: 80.7,
@@ -10378,7 +10379,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2003,
         income: 38621,
         lifeExpectancy: 79.9,
@@ -10386,7 +10387,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2003,
         income: 4685,
         lifeExpectancy: 72.9,
@@ -10394,7 +10395,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2003,
         income: 12123,
         lifeExpectancy: 76.8,
@@ -10402,7 +10403,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2003,
         income: 36461,
         lifeExpectancy: 78.6,
@@ -10426,7 +10427,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2003,
         income: 34938,
         lifeExpectancy: 80.8,
@@ -10434,7 +10435,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2003,
         income: 2850,
         lifeExpectancy: 62.4,
@@ -10442,7 +10443,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2003,
         income: 32721,
         lifeExpectancy: 81.8,
@@ -10450,7 +10451,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2003,
         income: 1405,
         lifeExpectancy: 69.8,
@@ -10458,7 +10459,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2003,
         income: 23566,
         lifeExpectancy: 77.8,
@@ -10466,7 +10467,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2003,
         income: 30404,
         lifeExpectancy: 79.3,
@@ -10474,7 +10475,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2003,
         income: 60351,
         lifeExpectancy: 79.5,
@@ -10482,7 +10483,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2003,
         income: 15508,
         lifeExpectancy: 74.9,
@@ -10490,7 +10491,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2003,
         income: 15768,
         lifeExpectancy: 64.8,
@@ -10498,7 +10499,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2003,
         income: 13151,
         lifeExpectancy: 72.9,
@@ -10506,7 +10507,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2003,
         income: 35250,
         lifeExpectancy: 78.5,
@@ -10514,7 +10515,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2003,
         income: 47260,
         lifeExpectancy: 77.3,
@@ -10522,7 +10523,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2004,
         income: 38130,
         lifeExpectancy: 81,
@@ -10530,7 +10531,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2004,
         income: 39436,
         lifeExpectancy: 80.1,
@@ -10538,7 +10539,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2004,
         income: 5127,
         lifeExpectancy: 73.4,
@@ -10546,7 +10547,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2004,
         income: 12791,
         lifeExpectancy: 76.9,
@@ -10554,7 +10555,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2004,
         income: 37783,
         lifeExpectancy: 78.6,
@@ -10578,7 +10579,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2004,
         income: 37482,
         lifeExpectancy: 81.1,
@@ -10586,7 +10587,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2004,
         income: 3029,
         lifeExpectancy: 62.8,
@@ -10594,7 +10595,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2004,
         income: 33483,
         lifeExpectancy: 82,
@@ -10602,7 +10603,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2004,
         income: 1410,
         lifeExpectancy: 69.9,
@@ -10610,7 +10611,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2004,
         income: 24628,
         lifeExpectancy: 78.3,
@@ -10618,7 +10619,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2004,
         income: 31098,
         lifeExpectancy: 79.5,
@@ -10626,7 +10627,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2004,
         income: 62370,
         lifeExpectancy: 79.7,
@@ -10634,7 +10635,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2004,
         income: 16314,
         lifeExpectancy: 75,
@@ -10642,7 +10643,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2004,
         income: 16967,
         lifeExpectancy: 65,
@@ -10650,7 +10651,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2004,
         income: 14187,
         lifeExpectancy: 73.4,
@@ -10658,7 +10659,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2004,
         income: 35910,
         lifeExpectancy: 78.8,
@@ -10666,7 +10667,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2004,
         income: 48597,
         lifeExpectancy: 77.6,
@@ -10674,7 +10675,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2005,
         income: 38840,
         lifeExpectancy: 81.2,
@@ -10682,7 +10683,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2005,
         income: 40284,
         lifeExpectancy: 80.3,
@@ -10690,7 +10691,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2005,
         income: 5675,
         lifeExpectancy: 73.9,
@@ -10698,7 +10699,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2005,
         income: 14200,
         lifeExpectancy: 77.1,
@@ -10706,7 +10707,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2005,
         income: 38700,
         lifeExpectancy: 78.8,
@@ -10730,7 +10731,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2005,
         income: 39108,
         lifeExpectancy: 81.3,
@@ -10738,7 +10739,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2005,
         income: 3262,
         lifeExpectancy: 63.2,
@@ -10746,7 +10747,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2005,
         income: 33916,
         lifeExpectancy: 82.2,
@@ -10754,7 +10755,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2005,
         income: 1464,
         lifeExpectancy: 70.1,
@@ -10762,7 +10763,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2005,
         income: 25541,
         lifeExpectancy: 78.8,
@@ -10770,7 +10771,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2005,
         income: 31798,
         lifeExpectancy: 79.8,
@@ -10778,7 +10779,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2005,
         income: 63573,
         lifeExpectancy: 80.1,
@@ -10786,7 +10787,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2005,
         income: 16900,
         lifeExpectancy: 75,
@@ -10794,7 +10795,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2005,
         income: 18118,
         lifeExpectancy: 64.8,
@@ -10802,7 +10803,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2005,
         income: 15176,
         lifeExpectancy: 73.8,
@@ -10810,7 +10811,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2005,
         income: 36665,
         lifeExpectancy: 79.1,
@@ -10818,7 +10819,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2005,
         income: 49762,
         lifeExpectancy: 77.7,
@@ -10826,7 +10827,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2006,
         income: 39416,
         lifeExpectancy: 81.4,
@@ -10834,7 +10835,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2006,
         income: 41012,
         lifeExpectancy: 80.5,
@@ -10842,7 +10843,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2006,
         income: 6360,
         lifeExpectancy: 74.4,
@@ -10850,7 +10851,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2006,
         income: 15901,
         lifeExpectancy: 77.4,
@@ -10858,7 +10859,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2006,
         income: 40115,
         lifeExpectancy: 79,
@@ -10882,7 +10883,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2006,
         income: 39818,
         lifeExpectancy: 81.5,
@@ -10890,7 +10891,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2006,
         income: 3514,
         lifeExpectancy: 63.6,
@@ -10898,7 +10899,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2006,
         income: 34468,
         lifeExpectancy: 82.3,
@@ -10906,7 +10907,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2006,
         income: 1461,
         lifeExpectancy: 70.2,
@@ -10914,7 +10915,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2006,
         income: 26734,
         lifeExpectancy: 79.2,
@@ -10922,7 +10923,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2006,
         income: 32281,
         lifeExpectancy: 80,
@@ -10930,7 +10931,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2006,
         income: 64573,
         lifeExpectancy: 80.4,
@@ -10938,7 +10939,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2006,
         income: 17959,
         lifeExpectancy: 75,
@@ -10946,7 +10947,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2006,
         income: 19660,
         lifeExpectancy: 66.1,
@@ -10954,7 +10955,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2006,
         income: 16013,
         lifeExpectancy: 74.3,
@@ -10962,7 +10963,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2006,
         income: 37504,
         lifeExpectancy: 79.3,
@@ -10970,7 +10971,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2006,
         income: 50599,
         lifeExpectancy: 77.8,
@@ -10978,7 +10979,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2007,
         income: 40643,
         lifeExpectancy: 81.5,
@@ -10986,7 +10987,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2007,
         income: 41432,
         lifeExpectancy: 80.6,
@@ -10994,7 +10995,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2007,
         income: 7225,
         lifeExpectancy: 74.9,
@@ -11002,7 +11003,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2007,
         income: 17055,
         lifeExpectancy: 77.6,
@@ -11010,7 +11011,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2007,
         income: 42016,
         lifeExpectancy: 79.2,
@@ -11034,7 +11035,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2007,
         income: 42598,
         lifeExpectancy: 81.8,
@@ -11042,7 +11043,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2007,
         income: 3806,
         lifeExpectancy: 64,
@@ -11050,7 +11051,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2007,
         income: 35183,
         lifeExpectancy: 82.5,
@@ -11058,7 +11059,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2007,
         income: 1392,
         lifeExpectancy: 70.3,
@@ -11066,7 +11067,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2007,
         income: 28063,
         lifeExpectancy: 79.5,
@@ -11074,7 +11075,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2007,
         income: 32928,
         lifeExpectancy: 80.1,
@@ -11082,7 +11083,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2007,
         income: 65781,
         lifeExpectancy: 80.6,
@@ -11090,7 +11091,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2007,
         income: 19254,
         lifeExpectancy: 75.1,
@@ -11098,7 +11099,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2007,
         income: 21374,
         lifeExpectancy: 67.2,
@@ -11106,7 +11107,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2007,
         income: 16551,
         lifeExpectancy: 74.7,
@@ -11114,7 +11115,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2007,
         income: 38164,
         lifeExpectancy: 79.4,
@@ -11122,7 +11123,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2007,
         income: 51011,
         lifeExpectancy: 78.1,
@@ -11130,7 +11131,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2008,
         income: 41312,
         lifeExpectancy: 81.5,
@@ -11138,7 +11139,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2008,
         income: 41468,
         lifeExpectancy: 80.7,
@@ -11146,7 +11147,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2008,
         income: 7880,
         lifeExpectancy: 75.1,
@@ -11154,7 +11155,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2008,
         income: 17765,
         lifeExpectancy: 77.8,
@@ -11162,7 +11163,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2008,
         income: 42122,
         lifeExpectancy: 79.4,
@@ -11186,7 +11187,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2008,
         income: 42294,
         lifeExpectancy: 82,
@@ -11194,7 +11195,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2008,
         income: 3901,
         lifeExpectancy: 64.4,
@@ -11202,7 +11203,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2008,
         income: 34800,
         lifeExpectancy: 82.6,
@@ -11210,7 +11211,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2008,
         income: 1427,
         lifeExpectancy: 70.6,
@@ -11218,7 +11219,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2008,
         income: 28650,
         lifeExpectancy: 79.7,
@@ -11226,7 +11227,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2008,
         income: 32122,
         lifeExpectancy: 80.2,
@@ -11234,7 +11235,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2008,
         income: 65216,
         lifeExpectancy: 80.7,
@@ -11242,7 +11243,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2008,
         income: 19996,
         lifeExpectancy: 75.3,
@@ -11250,7 +11251,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2008,
         income: 22506,
         lifeExpectancy: 67.6,
@@ -11258,7 +11259,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2008,
         income: 16454,
         lifeExpectancy: 75.1,
@@ -11266,7 +11267,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2008,
         income: 37739,
         lifeExpectancy: 79.5,
@@ -11274,7 +11275,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2008,
         income: 50384,
         lifeExpectancy: 78.2,
@@ -11282,7 +11283,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2009,
         income: 41170,
         lifeExpectancy: 81.6,
@@ -11290,7 +11291,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2009,
         income: 39884,
         lifeExpectancy: 80.9,
@@ -11298,7 +11299,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2009,
         income: 8565,
         lifeExpectancy: 75.6,
@@ -11306,7 +11307,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2009,
         income: 18035,
         lifeExpectancy: 77.9,
@@ -11314,7 +11315,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2009,
         income: 38455,
         lifeExpectancy: 79.7,
@@ -11338,7 +11339,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2009,
         income: 39979,
         lifeExpectancy: 82.2,
@@ -11346,7 +11347,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2009,
         income: 4177,
         lifeExpectancy: 64.7,
@@ -11354,7 +11355,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2009,
         income: 32880,
         lifeExpectancy: 82.8,
@@ -11362,7 +11363,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2009,
         income: 1407,
         lifeExpectancy: 70.7,
@@ -11370,7 +11371,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2009,
         income: 28716,
         lifeExpectancy: 79.8,
@@ -11378,7 +11379,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2009,
         income: 31723,
         lifeExpectancy: 80.3,
@@ -11386,7 +11387,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2009,
         income: 63354,
         lifeExpectancy: 80.8,
@@ -11394,7 +11395,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2009,
         income: 20507,
         lifeExpectancy: 75.6,
@@ -11402,7 +11403,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2009,
         income: 20739,
         lifeExpectancy: 68.3,
@@ -11410,7 +11411,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2009,
         income: 15467,
         lifeExpectancy: 75.4,
@@ -11418,7 +11419,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2009,
         income: 35840,
         lifeExpectancy: 79.7,
@@ -11426,7 +11427,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2009,
         income: 48558,
         lifeExpectancy: 78.3,
@@ -11434,7 +11435,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2010,
         income: 41330,
         lifeExpectancy: 81.7,
@@ -11442,7 +11443,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2010,
         income: 40773,
         lifeExpectancy: 81.1,
@@ -11450,7 +11451,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2010,
         income: 9430,
         lifeExpectancy: 75.9,
@@ -11458,7 +11459,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2010,
         income: 18477,
         lifeExpectancy: 78,
@@ -11466,7 +11467,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2010,
         income: 39425,
         lifeExpectancy: 80,
@@ -11490,7 +11491,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2010,
         income: 38809,
         lifeExpectancy: 82.5,
@@ -11498,7 +11499,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2010,
         income: 4547,
         lifeExpectancy: 65.1,
@@ -11506,7 +11507,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2010,
         income: 34404,
         lifeExpectancy: 83,
@@ -11514,7 +11515,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2010,
         income: 1393,
         lifeExpectancy: 70.8,
@@ -11522,7 +11523,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2010,
         income: 30440,
         lifeExpectancy: 80,
@@ -11530,7 +11531,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2010,
         income: 31824,
         lifeExpectancy: 80.5,
@@ -11538,7 +11539,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2010,
         income: 62946,
         lifeExpectancy: 80.9,
@@ -11546,7 +11547,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2010,
         income: 21328,
         lifeExpectancy: 76.1,
@@ -11554,7 +11555,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2010,
         income: 21664,
         lifeExpectancy: 68.7,
@@ -11562,7 +11563,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2010,
         income: 16674,
         lifeExpectancy: 75.7,
@@ -11570,7 +11571,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2010,
         income: 36240,
         lifeExpectancy: 80,
@@ -11578,7 +11579,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2010,
         income: 49373,
         lifeExpectancy: 78.5,
@@ -11586,7 +11587,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2011,
         income: 41706,
         lifeExpectancy: 81.8,
@@ -11594,7 +11595,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2011,
         income: 41567,
         lifeExpectancy: 81.3,
@@ -11602,7 +11603,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2011,
         income: 10274,
         lifeExpectancy: 76.1,
@@ -11610,7 +11611,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2011,
         income: 19005,
         lifeExpectancy: 78.1,
@@ -11618,7 +11619,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2011,
         income: 40251,
         lifeExpectancy: 80.3,
@@ -11642,7 +11643,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2011,
         income: 39619,
         lifeExpectancy: 82.7,
@@ -11650,7 +11651,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2011,
         income: 4787,
         lifeExpectancy: 65.5,
@@ -11658,7 +11659,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2011,
         income: 34316,
         lifeExpectancy: 82.8,
@@ -11666,7 +11667,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2011,
         income: 1397,
         lifeExpectancy: 71,
@@ -11674,7 +11675,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2011,
         income: 31327,
         lifeExpectancy: 80.3,
@@ -11682,7 +11683,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2011,
         income: 32283,
         lifeExpectancy: 80.6,
@@ -11690,7 +11691,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2011,
         income: 62737,
         lifeExpectancy: 81.1,
@@ -11698,7 +11699,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2011,
         income: 22333,
         lifeExpectancy: 76.5,
@@ -11706,7 +11707,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2011,
         income: 22570,
         lifeExpectancy: 69.4,
@@ -11714,7 +11715,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2011,
         income: 17908,
         lifeExpectancy: 76,
@@ -11722,7 +11723,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2011,
         income: 36549,
         lifeExpectancy: 80.4,
@@ -11730,7 +11731,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2011,
         income: 49781,
         lifeExpectancy: 78.7,
@@ -11738,7 +11739,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2012,
         income: 42522,
         lifeExpectancy: 81.8,
@@ -11746,7 +11747,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2012,
         income: 41865,
         lifeExpectancy: 81.4,
@@ -11754,7 +11755,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2012,
         income: 11017,
         lifeExpectancy: 76.3,
@@ -11762,7 +11763,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2012,
         income: 19586,
         lifeExpectancy: 78.2,
@@ -11770,7 +11771,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2012,
         income: 39489,
         lifeExpectancy: 80.5,
@@ -11794,7 +11795,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2012,
         income: 39925,
         lifeExpectancy: 82.8,
@@ -11802,7 +11803,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2012,
         income: 4967,
         lifeExpectancy: 65.9,
@@ -11810,7 +11811,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2012,
         income: 34988,
         lifeExpectancy: 83.2,
@@ -11818,7 +11819,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2012,
         income: 1393,
         lifeExpectancy: 71.1,
@@ -11826,7 +11827,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2012,
         income: 31901,
         lifeExpectancy: 80.4,
@@ -11834,7 +11835,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2012,
         income: 32806,
         lifeExpectancy: 80.6,
@@ -11842,7 +11843,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2012,
         income: 63620,
         lifeExpectancy: 81.3,
@@ -11850,7 +11851,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2012,
         income: 22740,
         lifeExpectancy: 76.7,
@@ -11858,7 +11859,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2012,
         income: 23299,
         lifeExpectancy: 70.4,
@@ -11866,7 +11867,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2012,
         income: 18057,
         lifeExpectancy: 76.2,
@@ -11874,7 +11875,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2012,
         income: 36535,
         lifeExpectancy: 80.8,
@@ -11882,7 +11883,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2012,
         income: 50549,
         lifeExpectancy: 78.8,
@@ -11890,7 +11891,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2013,
         income: 42840,
         lifeExpectancy: 81.8,
@@ -11898,7 +11899,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2013,
         income: 42213,
         lifeExpectancy: 81.5,
@@ -11906,7 +11907,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2013,
         income: 11805,
         lifeExpectancy: 76.5,
@@ -11914,7 +11915,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2013,
         income: 20122,
         lifeExpectancy: 78.3,
@@ -11922,7 +11923,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2013,
         income: 38788,
         lifeExpectancy: 80.6,
@@ -11946,7 +11947,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2013,
         income: 40958,
         lifeExpectancy: 82.8,
@@ -11954,7 +11955,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2013,
         income: 5244,
         lifeExpectancy: 66.2,
@@ -11962,7 +11963,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2013,
         income: 35614,
         lifeExpectancy: 83.3,
@@ -11970,7 +11971,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2013,
         income: 1392,
         lifeExpectancy: 71.2,
@@ -11978,7 +11979,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2013,
         income: 32684,
         lifeExpectancy: 80.5,
@@ -11986,7 +11987,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2013,
         income: 33360,
         lifeExpectancy: 80.6,
@@ -11994,7 +11995,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2013,
         income: 63322,
         lifeExpectancy: 81.4,
@@ -12002,7 +12003,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2013,
         income: 23144,
         lifeExpectancy: 76.9,
@@ -12010,7 +12011,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2013,
         income: 23561,
         lifeExpectancy: 71.3,
@@ -12018,7 +12019,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2013,
         income: 18579,
         lifeExpectancy: 76.3,
@@ -12026,7 +12027,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2013,
         income: 36908,
         lifeExpectancy: 81,
@@ -12034,7 +12035,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2013,
         income: 51282,
         lifeExpectancy: 78.9,
@@ -12042,7 +12043,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2014,
         income: 43219,
         lifeExpectancy: 81.8,
@@ -12050,7 +12051,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2014,
         income: 42817,
         lifeExpectancy: 81.6,
@@ -12058,7 +12059,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2014,
         income: 12609,
         lifeExpectancy: 76.7,
@@ -12066,7 +12067,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2014,
         income: 20704,
         lifeExpectancy: 78.4,
@@ -12074,7 +12075,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2014,
         income: 38569,
         lifeExpectancy: 80.7,
@@ -12098,7 +12099,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2014,
         income: 41237,
         lifeExpectancy: 82.8,
@@ -12106,7 +12107,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2014,
         income: 5565,
         lifeExpectancy: 66.5,
@@ -12114,7 +12115,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2014,
         income: 35635,
         lifeExpectancy: 83.4,
@@ -12122,7 +12123,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2014,
         income: 1391,
         lifeExpectancy: 71.3,
@@ -12130,7 +12131,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2014,
         income: 33629,
         lifeExpectancy: 80.6,
@@ -12138,7 +12139,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2014,
         income: 33538,
         lifeExpectancy: 80.6,
@@ -12146,7 +12147,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2014,
         income: 64020,
         lifeExpectancy: 81.5,
@@ -12154,7 +12155,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2014,
         income: 23952,
         lifeExpectancy: 77.1,
@@ -12162,7 +12163,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2014,
         income: 23293,
         lifeExpectancy: 72.21,
@@ -12170,7 +12171,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2014,
         income: 18884,
         lifeExpectancy: 76.4,
@@ -12178,7 +12179,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2014,
         income: 37614,
         lifeExpectancy: 81.2,
@@ -12186,7 +12187,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2014,
         income: 52118,
         lifeExpectancy: 79,
@@ -12194,7 +12195,7 @@ export const RaceScatter = () => {
         region: 'United States',
       },
       {
-        country: 'China',
+        country: 'Australia',
         year: 2015,
         income: 44056,
         lifeExpectancy: 81.8,
@@ -12202,7 +12203,7 @@ export const RaceScatter = () => {
         region: 'Australia',
       },
       {
-        country: 'United States',
+        country: 'Canada',
         year: 2015,
         income: 43294,
         lifeExpectancy: 81.7,
@@ -12210,7 +12211,7 @@ export const RaceScatter = () => {
         region: 'Canada',
       },
       {
-        country: 'United Kingdom',
+        country: 'China',
         year: 2015,
         income: 13334,
         lifeExpectancy: 76.9,
@@ -12218,7 +12219,7 @@ export const RaceScatter = () => {
         region: 'China',
       },
       {
-        country: 'Russia',
+        country: 'Cuba',
         year: 2015,
         income: 21291,
         lifeExpectancy: 78.5,
@@ -12226,7 +12227,7 @@ export const RaceScatter = () => {
         region: 'Cuba',
       },
       {
-        country: 'India',
+        country: 'Finland',
         year: 2015,
         income: 38923,
         lifeExpectancy: 80.8,
@@ -12250,7 +12251,7 @@ export const RaceScatter = () => {
         region: 'Germany',
       },
       {
-        country: 'Australia',
+        country: 'Iceland',
         year: 2015,
         income: 42182,
         lifeExpectancy: 82.8,
@@ -12258,7 +12259,7 @@ export const RaceScatter = () => {
         region: 'Iceland',
       },
       {
-        country: 'Canada',
+        country: 'India',
         year: 2015,
         income: 5903,
         lifeExpectancy: 66.8,
@@ -12266,7 +12267,7 @@ export const RaceScatter = () => {
         region: 'India',
       },
       {
-        country: 'Cuba',
+        country: 'Japan',
         year: 2015,
         income: 36162,
         lifeExpectancy: 83.5,
@@ -12274,7 +12275,7 @@ export const RaceScatter = () => {
         region: 'Japan',
       },
       {
-        country: 'Finland',
+        country: 'North Korea',
         year: 2015,
         income: 1390,
         lifeExpectancy: 71.4,
@@ -12282,7 +12283,7 @@ export const RaceScatter = () => {
         region: 'North Korea',
       },
       {
-        country: 'Iceland',
+        country: 'South Korea',
         year: 2015,
         income: 34644,
         lifeExpectancy: 80.7,
@@ -12290,7 +12291,7 @@ export const RaceScatter = () => {
         region: 'South Korea',
       },
       {
-        country: 'Japan',
+        country: 'New Zealand',
         year: 2015,
         income: 34186,
         lifeExpectancy: 80.6,
@@ -12298,7 +12299,7 @@ export const RaceScatter = () => {
         region: 'New Zealand',
       },
       {
-        country: 'North Korea',
+        country: 'Norway',
         year: 2015,
         income: 64304,
         lifeExpectancy: 81.6,
@@ -12306,7 +12307,7 @@ export const RaceScatter = () => {
         region: 'Norway',
       },
       {
-        country: 'South Korea',
+        country: 'Poland',
         year: 2015,
         income: 24787,
         lifeExpectancy: 77.3,
@@ -12314,7 +12315,7 @@ export const RaceScatter = () => {
         region: 'Poland',
       },
       {
-        country: 'New Zealand',
+        country: 'Russia',
         year: 2015,
         income: 23038,
         lifeExpectancy: 73.13,
@@ -12322,7 +12323,7 @@ export const RaceScatter = () => {
         region: 'Russia',
       },
       {
-        country: 'Norway',
+        country: 'Turkey',
         year: 2015,
         income: 19360,
         lifeExpectancy: 76.5,
@@ -12330,7 +12331,7 @@ export const RaceScatter = () => {
         region: 'Turkey',
       },
       {
-        country: 'Poland',
+        country: 'United Kingdom',
         year: 2015,
         income: 38225,
         lifeExpectancy: 81.4,
@@ -12338,7 +12339,7 @@ export const RaceScatter = () => {
         region: 'United Kingdom',
       },
       {
-        country: 'Turkey',
+        country: 'United States',
         year: 2015,
         income: 53354,
         lifeExpectancy: 79.1,

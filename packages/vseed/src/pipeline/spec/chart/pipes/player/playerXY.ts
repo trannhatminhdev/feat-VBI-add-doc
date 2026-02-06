@@ -63,10 +63,8 @@ export const playerXY: VChartSpecPipe = (spec, context) => {
   const exchangeDuration = interval * 0.6
   const dataKey = dimensions.filter((d) => d.encoding !== 'player').map((d) => d.id)
 
-  const size = 50
   const textSize = 36
-  const textXOffset = size - textSize
-  const textYOffset = textSize + textXOffset
+  const padding = 12
   return {
     ...result,
     dataKey,
@@ -151,10 +149,10 @@ export const playerXY: VChartSpecPipe = (spec, context) => {
           textAlign: 'right',
           text: (datum: any) => datum[encodingPlayer],
           x: (_datum: any, ctx: any) => {
-            return ctx.vchart.getChart().getCanvasRect()?.width - textXOffset
+            return ctx.vchart.getChart().getCanvasRect()?.width - padding
           },
           y: (_datum: any, _ctx: any) => {
-            return textYOffset
+            return textSize + padding
           },
           fill: 'rgb(100, 100, 100)',
           fillOpacity: 0.25,

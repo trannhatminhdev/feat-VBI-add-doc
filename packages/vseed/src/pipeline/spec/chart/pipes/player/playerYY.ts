@@ -47,6 +47,8 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
   const duration = interval
   const exchangeDuration = interval * 0.6
   const dataKey = dimensions.filter((d) => d.encoding !== 'player').map((d) => d.id)
+  const padding = 12
+  const textSize = 36
   return {
     ...result,
     dataKey,
@@ -111,16 +113,16 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
         dataId: 'year',
         style: {
           textBaseline: 'bottom',
-          fontSize: 24,
+          fontSize: textSize,
           textAlign: 'right',
           fontFamily: 'PingFang SC',
           fontWeight: 600,
           text: (datum: any) => datum[encodingPlayer],
           x: (datum: any, ctx: any) => {
-            return ctx.vchart.getChart().getCanvasRect()?.width - 50
+            return ctx.vchart.getChart().getCanvasRect()?.width - padding
           },
           y: (datum: any, ctx: any) => {
-            return ctx.vchart.getChart().getCanvasRect()?.height - 50
+            return ctx.vchart.getChart().getCanvasRect()?.height - padding - textSize
           },
           fill: 'grey',
           fillOpacity: 0.5,

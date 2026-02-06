@@ -50,5 +50,21 @@ export const zXBandAxis = z.object({
       gridLineDash: z.array(z.number()).nullish(),
     })
     .nullish(),
+
+  /**
+   * @description X轴动画配置
+   */
+  animation: z
+    .object({
+      /**
+       * @description 动画时长
+       */
+      duration: z.number().nullish(),
+      /**
+       * @description 动画 easing 函数
+       */
+      easing: z.string().nullish(),
+    })
+    .nullish(),
 })
 export const zYBandAxis = zXBandAxis

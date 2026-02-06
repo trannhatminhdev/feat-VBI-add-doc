@@ -154,7 +154,22 @@ export type XBandAxis = {
      */
     gridLineDash?: number[]
   }
+
+  /**
+   * @description X轴动画配置
+   */
+  animation?: {
+    /**
+     * @description 动画时长
+     */
+    duration?: number
+    /**
+     * @description 动画 easing 函数
+     */
+    easing?: string
+  }
 }
+
 export type YBandAxis = {
   /**
    * @description 轴是否可见
@@ -310,5 +325,19 @@ export type YBandAxis = {
      * 网格线类型
      */
     gridLineDash?: number[]
+  }
+
+  /**
+   * @description Y轴动画配置
+   */
+  animation?: {
+    /**
+     * @description 动画时长
+     */
+    duration?: number
+    /**
+     * @description 动画 easing 函数
+     */
+    easing?: string
   }
 }

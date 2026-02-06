@@ -12,9 +12,9 @@ export type XLinearAxis = {
   min?: number
 
   /**
-   * @description 轴的最大值, 优先级高于 nice 与 zero
+   * @description 轴的最大值, 优先级高于 nice 与 zero, 如果为true, 则自动根据数据范围计算最大值
    */
-  max?: number
+  max?: number | boolean
 
   /**
    * @description 是否使用对数轴, 仅对数值轴生效
@@ -163,6 +163,20 @@ export type XLinearAxis = {
      * 网格线类型
      */
     gridLineDash?: number[]
+  }
+
+  /**
+   * @description Y轴动画配置
+   */
+  animation?: {
+    /**
+     * @description 动画时长
+     */
+    duration?: number
+    /**
+     * @description 动画 easing 函数
+     */
+    easing?: string
   }
 }
 
@@ -178,9 +192,9 @@ export type YLinearAxis = {
   min?: number
 
   /**
-   * @description 轴的最大值, 优先级高于 nice 与 zero
+   * @description 轴的最大值, 优先级高于 nice 与 zero, 如果为true, 则自动根据数据范围计算最大值
    */
-  max?: number
+  max?: number | boolean
 
   /**
    * @description 是否使用对数轴, 仅对数值轴生效
@@ -329,5 +343,19 @@ export type YLinearAxis = {
      * 网格线类型
      */
     gridLineDash?: number[]
+  }
+
+  /**
+   * @description Y轴动画配置
+   */
+  animation?: {
+    /**
+     * @description 动画时长
+     */
+    duration?: number
+    /**
+     * @description 动画 easing 函数
+     */
+    easing?: string
   }
 }

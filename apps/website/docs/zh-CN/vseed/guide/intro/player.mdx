@@ -8,6 +8,26 @@ import { RaceColumn, RaceBar, RaceScatter } from '@components'
 
 VSeed 支持配置 `player` 属性来实现数据的自动播放展示。
 
+## Race Scatter
+
+<RaceScatter />
+```tsx
+const vseed = {
+  chartType: 'raceScatter',
+  dimensions: [
+    { id: 'year',    encoding: 'player' },
+    { id: 'region',  encoding: 'color'  },
+    { id: 'country', encoding: 'label'  },
+  ],
+  measures: [
+    { id: 'income',         encoding: 'xAxis' },
+    { id: 'lifeExpectancy', encoding: 'yAxis' },
+    { id: 'population',     encoding: 'size'  },
+  ],
+  dataset: [......],
+}
+```
+
 ## Race Bar
 
 <RaceBar />
@@ -39,25 +59,5 @@ const vseed = {
   ],
   measures: [{ id: 'value', encoding: 'yAxis' }],
   dataset: [......]
-}
-```
-
-## Race Scatter
-
-<RaceScatter />
-```tsx
-const vseed = {
-  chartType: 'raceScatter',
-  dimensions: [
-    { id: 'year',    encoding: 'player' },
-    { id: 'region',  encoding: 'color'  },
-    { id: 'country', encoding: 'label'  },
-  ],
-  measures: [
-    { id: 'income',         encoding: 'xAxis' },
-    { id: 'lifeExpectancy', encoding: 'yAxis' },
-    { id: 'population',     encoding: 'size'  },
-  ],
-  dataset: [......],
 }
 ```
