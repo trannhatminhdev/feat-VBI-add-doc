@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.3.16
+
+### Patch Changes
+
+- e6cf347: feat: add raceScatter,raceBar,raceColumn
+
 ## 0.3.15
 
 ### Patch Changes
