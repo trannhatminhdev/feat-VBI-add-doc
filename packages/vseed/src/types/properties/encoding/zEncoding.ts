@@ -14,8 +14,8 @@ export const zEncoding = z.object({
 
   row: z.array(z.string()).nullish(),
   column: z.array(z.string()).nullish(),
+  player: z.array(z.string()).nullish(),
 
-  group: z.array(z.string()).nullish().describe('已弃用, 请使用颜色替代'),
   value: z.array(z.string()).nullish(),
   q1: z.array(z.string()).nullish(),
   q3: z.array(z.string()).nullish(),
@@ -46,5 +46,5 @@ export const EncodingEnum = {
   row: 'row',
   column: 'column',
 
-  group: 'group',
+  player: 'player',
 } as const
