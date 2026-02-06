@@ -1,33 +1,31 @@
 import { type Locale } from '../../i18n'
+
 import type {
-  BarDimension,
+  RaceBarDimension,
   BarMaxWidth,
-  BarMeasure,
   DimensionLinkage,
   Sort,
   SortLegend,
   Player,
-} from '../../properties'
-
-import {
-  type AnnotationArea,
-  type AnnotationHorizontalLine,
-  type AnnotationPoint,
-  type AnnotationVerticalLine,
-  type BackgroundColor,
-  type Brush,
-  type BarStyle,
-  type Color,
-  type CrosshairRect,
-  type Dataset,
-  type Label,
-  type Legend,
-  type StackCornerRadius,
-  type Theme,
-  type Tooltip,
-  type XLinearAxis,
-  type YBandAxis,
-  type Page,
+  AnnotationArea,
+  AnnotationHorizontalLine,
+  AnnotationPoint,
+  AnnotationVerticalLine,
+  BackgroundColor,
+  Brush,
+  BarStyle,
+  Color,
+  CrosshairRect,
+  Dataset,
+  Label,
+  Legend,
+  StackCornerRadius,
+  Theme,
+  Tooltip,
+  XLinearAxis,
+  YBandAxis,
+  Page,
+  RaceBarMeasure,
 } from '../../properties'
 
 /**
@@ -49,12 +47,12 @@ export interface RaceBar {
   /**
    * @description 维度
    */
-  dimensions?: BarDimension[]
+  dimensions?: RaceBarDimension[]
 
   /**
    * @description 指标
    */
-  measures?: BarMeasure[]
+  measures?: RaceBarMeasure[]
 
   /**
    * @description 播放器配置, 用于指定时间维度, 动态条形图的核心配置

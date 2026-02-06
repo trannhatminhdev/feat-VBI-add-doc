@@ -6,7 +6,6 @@ import {
   linearColor,
   backgroundColor,
   progressive,
-  playerYLinear,
   label,
   brush,
   tooltip,
@@ -19,8 +18,9 @@ import {
   annotationVerticalLine,
   annotationHorizontalLine,
   annotationAreaBand,
-  playerXLinear,
   playerYY,
+  xLinear,
+  yLinear,
 } from '../pipes'
 
 const raceScatter: VChartSpecPipeline = [
@@ -28,13 +28,13 @@ const raceScatter: VChartSpecPipeline = [
   colorAdapter(color, linearColor),
   backgroundColor,
   playerYY,
-  playerXLinear,
-  playerYLinear,
+  progressive,
+  xLinear,
+  yLinear,
 
   label,
   brush,
   tooltip,
-  progressive,
   colorAdapter(discreteLegend, colorLegend),
   verticalCrosshairLine,
   colorPointStyleFill(pointStyle),

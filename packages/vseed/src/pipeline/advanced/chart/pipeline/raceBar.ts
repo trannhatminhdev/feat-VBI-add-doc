@@ -1,5 +1,43 @@
 import type { AdvancedPipeline } from 'src/types'
+import {
+  initAdvancedVSeed,
+  theme,
+  buildMeasures,
+  pivotAdapter,
+  barConfig,
+  markStyle,
+  annotation,
+  sortYBandAxis,
+  sortLegend,
+  reshapeWithEncoding,
+  pivotReshapeWithEncoding,
+  defaultMeasures,
+  defaultDimensions,
+  defaultMeasureId,
+  encodingAdapter,
+  pickDimensionsForReshape,
+  page,
+  defaultEncodingForRaceBar,
+  encodingForRaceBar,
+} from '../pipes'
 
-import { barAdvancedPipeline } from './bar'
+export const raceBarAdvancedPipeline: AdvancedPipeline = [
+  page,
+  initAdvancedVSeed,
+  defaultMeasures,
+  defaultDimensions,
+  defaultMeasureId,
 
-export const raceBarAdvancedPipeline: AdvancedPipeline = barAdvancedPipeline
+  encodingAdapter(
+    [buildMeasures(['xAxis', 'detail']), defaultEncodingForRaceBar],
+    [buildMeasures(['xAxis', 'detail']), encodingForRaceBar, pickDimensionsForReshape],
+  ),
+  pivotAdapter([reshapeWithEncoding], [pivotReshapeWithEncoding]),
+
+  sortYBandAxis,
+  sortLegend,
+  barConfig,
+  theme,
+  markStyle,
+  annotation,
+]

@@ -106,7 +106,10 @@ export const darkTheme = (): CustomThemeConfig => {
       },
       raceBar: {
         ...baseConfig,
-
+        legend: {
+          ...baseConfig.legend,
+          enable: false,
+        },
         xAxis: linearAxis,
         yAxis: barBandAxis,
         crosshairRect: crosshairRect,
@@ -117,7 +120,10 @@ export const darkTheme = (): CustomThemeConfig => {
       },
       raceColumn: {
         ...baseConfig,
-
+        legend: {
+          ...baseConfig.legend,
+          enable: false,
+        },
         xAxis: bandAxis,
         yAxis: linearAxis,
         crosshairRect: crosshairRect,
@@ -130,6 +136,10 @@ export const darkTheme = (): CustomThemeConfig => {
       },
       raceScatter: {
         ...baseConfig,
+        legend: {
+          ...baseConfig.legend,
+          enable: false,
+        },
         crosshairLine,
         sizeRange: [8, 24],
         xAxis: {

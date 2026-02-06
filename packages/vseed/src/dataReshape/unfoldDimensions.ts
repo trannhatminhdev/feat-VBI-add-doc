@@ -8,6 +8,7 @@ import {
   ColorIdEncoding,
   MeasureId,
   MeasureName,
+  PlayerEncoding,
 } from './constant'
 
 /**
@@ -40,18 +41,20 @@ export const unfoldDimensions = (
     encodingDetail: DetailEncoding,
     encodingColor: ColorEncoding,
     encodingColorId: ColorIdEncoding,
+    encodingPlayer: PlayerEncoding,
 
     colorItems: [],
     colorIdMap: {},
   }
 
   // 每个通道对应的维度
-  const { color, x, y, detail, angle } = encoding
+  const { color, x, y, detail, angle, player } = encoding
   const angleDimensions = angle ? dimensions.filter((dim) => angle.includes(dim.id)) : []
   const xDimensions = x ? dimensions.filter((dim) => x.includes(dim.id)) : []
   const yDimensions = y ? dimensions.filter((dim) => y.includes(dim.id)) : []
   const colorDimensions = color ? dimensions.filter((dim) => color.includes(dim.id)) : []
   const detailDimensions = detail ? dimensions.filter((dim) => detail.includes(dim.id)) : []
+  const playerDimensions = player ? dimensions.filter((dim) => player.includes(dim.id)) : []
 
   // 离散图例项
   const colorItems = new Set<string>()
@@ -75,6 +78,7 @@ export const unfoldDimensions = (
     applyEncoding(YEncoding, yDimensions, datum, separator)
     applyEncoding(ColorEncoding, colorDimensions, datum, separator)
     applyEncoding(DetailEncoding, detailDimensions, datum, separator)
+    applyEncoding(PlayerEncoding, playerDimensions, datum, separator)
 
     // 处理离散的颜色图例
     if (!colorDimensions.length || !datum[ColorEncoding]) {

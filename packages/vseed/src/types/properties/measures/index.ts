@@ -15,5 +15,8 @@ export type { ScatterMeasure } from './scatterMeasure'
 export type { HistogramMeasure } from './histogramMeasure'
 export type { BoxPlotMeasure } from './boxPlotMeasure'
 export type { DualAxisMeasure } from './dualAxisMeasure'
+// table
 export type { TableMeasure } from './tableMeasure'
 export type { MeasureGroup, MeasureTree } from './measureTree'
+// race
+export type { RaceBarMeasure } from './raceBarMeasure'
