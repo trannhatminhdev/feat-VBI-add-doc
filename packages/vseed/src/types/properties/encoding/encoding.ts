@@ -38,10 +38,6 @@ export type Encoding = {
    * @description 标签映射通道, 支持放入多个维度字段 和 多个指标字段, 每多一个字段, label内就会多显示一个字段的信息
    */
   label?: string[]
-  /**
-   * @deprecated use color instead, 已弃用, 请使用颜色替代
-   */
-  group?: string[]
 
   /**
    * @description 行映射通道, 支持放入多个维度字段, 不支持放入指标字段, 在图表中进行行透视
@@ -51,6 +47,15 @@ export type Encoding = {
    * @description 列映射通道, 支持放入多个维度字段, 不支持放入指标字段, 在图表中进行列透视
    */
   column?: string[]
+
+  /**
+   * @description 播放映射通道, 支持放入多个维度字段, 不支持放入指标字段, 在图表中进行播放
+   */
+  player?: string[]
+
+  /**
+   * ------------------------------------------------- 直方图与boxplot -------------------------------------------------
+   */
   /**
    * @description 明细数据通道，用于直方图/boxplot等图表设置明细数据
    */

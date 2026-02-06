@@ -2,7 +2,7 @@ import type { z } from 'zod'
 import { zBarConfig } from './bar'
 import { zColumnConfig } from './column'
 import { zScatterConfig } from './scatter'
-import { zXBandAxis } from './axes'
+import { zXLinearAxis } from './axes'
 
 import { zPlayer } from './player'
 
@@ -13,7 +13,7 @@ export const zRaceColumnConfig = zColumnConfig.extend({
   player: zPlayer.nullish(),
 })
 export const zRaceScatterConfig = zScatterConfig.extend({
-  xAxis: zXBandAxis.nullish(),
+  xAxis: zXLinearAxis.nullish(),
   player: zPlayer.nullish(),
 })
 

@@ -5,7 +5,7 @@ export const zXLinearAxis = z.object({
   visible: z.boolean().default(true).nullish(),
 
   min: z.number().nullish(),
-  max: z.number().nullish(),
+  max: z.number().or(z.boolean()).nullish(),
   nice: z.boolean().default(true).nullish(),
   zero: z.boolean().default(true).nullish(),
   log: z.boolean().default(false).nullish(),
@@ -51,6 +51,22 @@ export const zXLinearAxis = z.object({
       gridColor: z.string().default('rgba(54, 65, 89, 0.15)').nullish(),
       gridWidth: z.number().default(0.5).nullish(),
       gridLineDash: z.array(z.number()).nullish(),
+    })
+    .nullish(),
+
+  /**
+   * @description X轴动画配置
+   */
+  animation: z
+    .object({
+      /**
+       * @description 动画时长
+       */
+      duration: z.number().nullish(),
+      /**
+       * @description 动画 easing 函数
+       */
+      easing: z.string().nullish(),
     })
     .nullish(),
 })

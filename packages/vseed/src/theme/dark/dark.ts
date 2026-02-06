@@ -104,58 +104,6 @@ export const darkTheme = (): CustomThemeConfig => {
         pivotGrid: getDarkPivotChartGridConfig(),
         annotation: getDarkAnnotation(),
       },
-      raceBar: {
-        ...baseConfig,
-
-        xAxis: linearAxis,
-        yAxis: barBandAxis,
-        crosshairRect: crosshairRect,
-        stackCornerRadius: [0, 4, 4, 0],
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-        player,
-      },
-      raceColumn: {
-        ...baseConfig,
-
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairRect: crosshairRect,
-        stackCornerRadius: [4, 4, 0, 0],
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-        player,
-
-        regressionLine: getDarkRegressionLine(),
-      },
-      raceScatter: {
-        ...baseConfig,
-        crosshairLine,
-        sizeRange: [8, 24],
-        xAxis: {
-          ...linearAxis,
-          line: {
-            ...linearAxis.line,
-            visible: true,
-          },
-        },
-        yAxis: {
-          ...linearAxis,
-          line: {
-            ...linearAxis.line,
-            visible: true,
-          },
-        },
-        label: {
-          ...baseConfig.label,
-          showValue: false,
-          showValuePercent: false,
-        },
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-        regressionLine: getDarkRegressionLine(),
-        player,
-      },
       barParallel: {
         ...baseConfig,
 
@@ -316,6 +264,72 @@ export const darkTheme = (): CustomThemeConfig => {
 
         boxPlotStyle: getDarkBoxPlotStyle(),
         outlierStyle: getDarkOutlierStyle(),
+      },
+
+      // race
+      raceBar: {
+        ...baseConfig,
+        legend: {
+          ...baseConfig.legend,
+          enable: false,
+        },
+        xAxis: linearAxis,
+        yAxis: barBandAxis,
+        crosshairRect: crosshairRect,
+        stackCornerRadius: [0, 4, 4, 0],
+        pivotGrid: getDarkPivotChartGridConfig(),
+        annotation: getDarkAnnotation(),
+        player,
+      },
+      raceColumn: {
+        ...baseConfig,
+        legend: {
+          ...baseConfig.legend,
+          enable: false,
+        },
+        xAxis: bandAxis,
+        yAxis: linearAxis,
+        crosshairRect: crosshairRect,
+        stackCornerRadius: [4, 4, 0, 0],
+        pivotGrid: getDarkPivotChartGridConfig(),
+        annotation: getDarkAnnotation(),
+        player,
+
+        regressionLine: getDarkRegressionLine(),
+      },
+      raceScatter: {
+        ...baseConfig,
+        legend: {
+          ...baseConfig.legend,
+          enable: false,
+        },
+        crosshairLine,
+        sizeRange: [8, 24],
+        xAxis: {
+          ...linearAxis,
+          max: true,
+          line: {
+            ...linearAxis.line,
+            visible: true,
+          },
+        },
+        yAxis: {
+          ...linearAxis,
+          max: true,
+          line: {
+            ...linearAxis.line,
+            visible: true,
+          },
+        },
+        label: {
+          ...baseConfig.label,
+          showValue: false,
+          showValuePercent: false,
+        },
+        pivotGrid: getDarkPivotChartGridConfig(),
+        annotation: getDarkAnnotation(),
+        regressionLine: getDarkRegressionLine(),
+        player,
       },
     },
   }

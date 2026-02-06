@@ -4,9 +4,9 @@
  */
 export type Player = {
   /**
-   * @description 播放器绑定的字段, 必须是维度
+   * @description 最大播放数量, 超过该数量的数据将被截断
    */
-  field: string
+  maxCount?: number
   /**
    * @description 播放间隔, 单位ms
    */

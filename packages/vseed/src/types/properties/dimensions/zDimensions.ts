@@ -4,7 +4,9 @@ import type { DimensionGroup } from './tableDimension'
 export const zDimension = z.object({
   id: z.string(),
   alias: z.string().optional(),
-  encoding: z.enum(['xAxis', 'yAxis', 'angle', 'color', 'detail', 'tooltip', 'label', 'row', 'column']).optional(),
+  encoding: z
+    .enum(['xAxis', 'yAxis', 'angle', 'color', 'detail', 'tooltip', 'label', 'row', 'column', 'player'])
+    .optional(),
 })
 export const zDimensionGroup: z.ZodType<DimensionGroup> = z.object({
   id: z.string(),

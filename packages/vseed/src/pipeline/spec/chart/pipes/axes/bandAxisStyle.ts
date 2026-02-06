@@ -16,6 +16,7 @@ export const bandAxisStyle = (config: XBandAxis) => {
     labelAutoLimitLength = 80,
     labelAutoRotate,
     labelAutoRotateAngleRange,
+    animation,
   } = config
 
   return {
@@ -76,6 +77,11 @@ export const bandAxisStyle = (config: XBandAxis) => {
         lineWidth: line?.lineWidth,
         stroke: line?.lineColor,
       },
+    },
+    animation: !!animation,
+    animationUpdate: {
+      duration: animation?.duration,
+      easing: animation?.easing,
     },
   } as Partial<ICartesianBandAxisSpec>
 }

@@ -21,8 +21,8 @@ import {
   barMaxWidth,
   brush,
   playerYX,
-  playerYBand,
-  playerXLinear,
+  xLinear,
+  yBand,
 } from '../pipes'
 
 const raceBar: VChartSpecPipeline = [
@@ -33,8 +33,8 @@ const raceBar: VChartSpecPipeline = [
   backgroundColor,
   playerYX,
   progressive,
-  playerXLinear,
-  playerYBand,
+  xLinear,
+  yBand,
 
   label,
   brush,

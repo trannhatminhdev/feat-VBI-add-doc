@@ -9,8 +9,6 @@ import {
   backgroundColor,
   playerXY,
   progressive,
-  playerXBand,
-  playerYLinear,
   label,
   brush,
   tooltip,
@@ -23,6 +21,8 @@ import {
   annotationVerticalLine,
   annotationHorizontalLine,
   annotationAreaBand,
+  xBand,
+  yLinear,
 } from '../pipes'
 
 const raceColumn: VChartSpecPipeline = [
@@ -33,8 +33,8 @@ const raceColumn: VChartSpecPipeline = [
   backgroundColor,
   playerXY,
   progressive,
-  playerXBand,
-  playerYLinear,
+  xBand,
+  yLinear,
 
   label,
   brush,

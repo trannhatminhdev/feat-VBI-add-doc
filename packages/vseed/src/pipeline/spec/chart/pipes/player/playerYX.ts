@@ -1,23 +1,26 @@
 import type { IPlayerSpec, ISpec } from '@visactor/vchart'
-import { groupBy } from 'remeda'
+import { groupBy, uniqueBy } from 'remeda'
 import { isPivotChart, isVTable } from 'src/pipeline/utils'
 import type { Player, VChartSpecPipe } from 'src/types'
 import { datasetYX } from '../dataset'
 
 export const playerYX: VChartSpecPipe = (spec, context) => {
   const { vseed, advancedVSeed } = context
-  const { datasetReshapeInfo, chartType } = advancedVSeed
+  const { dimensions = [], datasetReshapeInfo, chartType } = advancedVSeed
+
   const baseConfig = advancedVSeed.config[chartType] as { player: Player }
   const result = datasetYX(spec, context)
 
-  if (!('player' in vseed) || !baseConfig || !baseConfig.player || isVTable(vseed) || isPivotChart(vseed)) {
+  if (!baseConfig || !baseConfig.player || isVTable(vseed) || isPivotChart(vseed)) {
     return result
   }
   const { player } = baseConfig
-
   const id = datasetReshapeInfo[0].id
+  const { unfoldInfo, foldInfo } = datasetReshapeInfo[0]
+  const { encodingPlayer, encodingY } = unfoldInfo
+  const { measureValue } = foldInfo
   const {
-    field,
+    maxCount,
     autoPlay = true,
     interval = 1000,
     loop = false,
@@ -31,22 +34,41 @@ export const playerYX: VChartSpecPipe = (spec, context) => {
     backwardButtonColor,
     forwardButtonColor,
   } = player
+  const duration = interval
+  const exchangeDuration = interval * 0.6
 
-  const dataGroups = groupBy(advancedVSeed.dataset, (item) => item[field])
+  const dataGroups = groupBy(advancedVSeed.dataset, (item) => item[encodingPlayer])
   if (result.data && 'values' in result.data) {
     result.data.values = []
   }
-  const specs = Object.values(dataGroups).map((items) => ({
-    data: {
-      id: id,
-      values: items.slice(0, 10),
-    },
-  }))
 
-  const duration = interval
-  const exchangeDuration = interval * 0.6
+  const yValues = uniqueBy(
+    advancedVSeed.dataset.map((d) => d[encodingY]),
+    (item) => item,
+  )
+  const specs = Object.values(dataGroups).map((items) => {
+    // 如果当前items中不存在yValues中的值, 则填充为0, 保证每组都有同样的yValue, 都有对应的数据
+    const filledItems = items.map((item) => ({
+      ...item,
+      [encodingY]: yValues.find((yValue) => yValue === item[encodingY]) || 0,
+    }))
+    const sortedItems = filledItems.sort((a, b) => b[measureValue] - a[measureValue])
+
+    return {
+      data: {
+        id: id,
+        values: sortedItems.slice(0, maxCount),
+      },
+    }
+  })
+
+  const dataKey = dimensions.filter((d) => d.encoding !== 'player').map((d) => d.id)
+  const textSize = 36
+  const padding = 12
+
   return {
     ...result,
+    dataKey,
     stackCornerRadius: undefined,
     animationUpdate: {
       bar: [
@@ -62,10 +84,6 @@ export const playerYX: VChartSpecPipe = (spec, context) => {
           duration: exchangeDuration,
         },
       ],
-      axis: {
-        duration: exchangeDuration,
-        easing: 'circInOut',
-      },
     },
     animationEnter: {
       bar: [
@@ -83,6 +101,21 @@ export const playerYX: VChartSpecPipe = (spec, context) => {
     animationExit: {
       bar: [
         {
+          type: 'moveOut',
+          options: {
+            direction: 'x',
+          },
+          duration: exchangeDuration,
+        },
+        {
+          type: 'moveOut',
+          options: {
+            direction: 'y',
+            orient: 'negative',
+          },
+          duration: exchangeDuration,
+        },
+        {
           type: 'fadeOut',
           duration: exchangeDuration,
         },
@@ -94,19 +127,19 @@ export const playerYX: VChartSpecPipe = (spec, context) => {
         dataId: 'year',
         style: {
           textBaseline: 'bottom',
-          fontSize: 24,
+          fontSize: textSize,
           textAlign: 'right',
           fontFamily: 'PingFang SC',
           fontWeight: 600,
-          text: (datum: any) => datum.year,
-          x: (datum: any, ctx: any) => {
-            return ctx.vchart.getChart().getCanvasRect()?.width - 50
+          text: (datum: any) => datum[encodingPlayer],
+          x: (_datum: any, ctx: any) => {
+            return ctx.vchart.getChart().getCanvasRect()?.width - padding
           },
-          y: (datum: any, ctx: any) => {
-            return ctx.vchart.getChart().getCanvasRect()?.height - 50
+          y: (_datum: any, ctx: any) => {
+            return ctx.vchart.getChart().getCanvasRect()?.height - padding - textSize
           },
-          fill: 'grey',
-          fillOpacity: 0.5,
+          fill: 'rgb(100, 100, 100)',
+          fillOpacity: 0.25,
         },
       },
     ],

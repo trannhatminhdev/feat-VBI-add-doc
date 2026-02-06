@@ -6,18 +6,19 @@ import { datasetScatter } from '../dataset'
 
 export const playerYY: VChartSpecPipe = (spec, context) => {
   const { vseed, advancedVSeed } = context
-  const { datasetReshapeInfo, chartType, encoding } = advancedVSeed
+  const { datasetReshapeInfo, dimensions = [], chartType } = advancedVSeed
   const baseConfig = advancedVSeed.config[chartType] as { player: Player }
   const result = datasetScatter(spec, context)
 
-  if (!('player' in vseed) || !baseConfig || !baseConfig.player || isVTable(vseed) || isPivotChart(vseed)) {
+  if (!baseConfig || !baseConfig.player || isVTable(vseed) || isPivotChart(vseed)) {
     return result
   }
   const { player } = baseConfig
 
   const id = datasetReshapeInfo[0].id
+  const { unfoldInfo } = datasetReshapeInfo[0]
+  const { encodingPlayer } = unfoldInfo
   const {
-    field,
     autoPlay = true,
     interval = 1000,
     loop = false,
@@ -32,7 +33,7 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
     forwardButtonColor,
   } = player
 
-  const dataGroups = groupBy(advancedVSeed.dataset, (item) => item[field])
+  const dataGroups = groupBy(advancedVSeed.dataset, (item) => item[encodingPlayer])
   if (result.data && 'values' in result.data) {
     result.data.values = []
   }
@@ -43,9 +44,11 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
     },
   }))
 
-  const dataKey = encoding.color
   const duration = interval
   const exchangeDuration = interval * 0.6
+  const dataKey = dimensions.filter((d) => d.encoding !== 'player').map((d) => d.id)
+  const padding = 12
+  const textSize = 36
   return {
     ...result,
     dataKey,
@@ -110,16 +113,16 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
         dataId: 'year',
         style: {
           textBaseline: 'bottom',
-          fontSize: 24,
+          fontSize: textSize,
           textAlign: 'right',
           fontFamily: 'PingFang SC',
           fontWeight: 600,
-          text: (datum: any) => datum.year,
+          text: (datum: any) => datum[encodingPlayer],
           x: (datum: any, ctx: any) => {
-            return ctx.vchart.getChart().getCanvasRect()?.width - 50
+            return ctx.vchart.getChart().getCanvasRect()?.width - padding
           },
           y: (datum: any, ctx: any) => {
-            return ctx.vchart.getChart().getCanvasRect()?.height - 50
+            return ctx.vchart.getChart().getCanvasRect()?.height - padding - textSize
           },
           fill: 'grey',
           fillOpacity: 0.5,
