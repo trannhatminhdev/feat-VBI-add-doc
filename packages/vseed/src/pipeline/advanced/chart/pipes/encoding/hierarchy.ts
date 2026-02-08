@@ -41,17 +41,29 @@ export const encodingForHierarchy: AdvancedPipe = (advancedVSeed) => {
 const generateDefaultDimensionEncoding = (dimensions: Dimensions, encoding: Encoding, isMultiMeasure: boolean) => {
   const uniqueDimIds = unique(dimensions.map((d) => d.id))
 
-  // 默认所有维度都参与层级构建
+  // 默认所有维度都参与层级构建 (排除 MeasureId)
   encoding.hierarchy = uniqueDimIds.filter((d) => d !== MeasureId)
 
-  // 默认颜色映射与层级一致，或者如果是多指标，可能包含MeasureId
+  // 默认颜色映射:
+  // 1. 如果是多指标，通常 MeasureId 会作为颜色区分
+  // 2. 如果是单指标，按照需求，将第一个维度映射到 color
   if (isMultiMeasure) {
-    encoding.color = uniqueDimIds.slice(0)
+    // 多指标场景，通常 MeasureId 就在 uniqueDimIds 中
+    // 这里我们简单地取第一个维度作为 color，如果是多指标，MeasureId 可能会被放到 dimensions 中
+    // 但为了稳健，如果 isMultiMeasure，我们倾向于让 MeasureId 参与颜色
+    // 不过按照用户明确需求 "让第一个维度 encoding到color"
+    encoding.color = uniqueDimIds.slice(0, 1)
   } else {
-    encoding.color = encoding.hierarchy
+    // 单指标场景，取第一个维度
+    // 排除 MeasureId 以防万一 (虽然单指标通常不含 MeasureId 维度，除非显式添加)
+    const validDims = uniqueDimIds.filter((d) => d !== MeasureId)
+    encoding.color = validDims.slice(0, 1)
   }
 
-  encoding.detail = encoding.color
+  // Detail 通常跟随 Hierarchy 或者 Color
+  // 这里设为与 Hierarchy 一致，确保所有层级都被正确展开
+  encoding.detail = encoding.hierarchy
+
   encoding.tooltip = uniqueDimIds.filter((d) => d !== MeasureId)
   encoding.label = []
   encoding.row = []

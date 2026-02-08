@@ -1,12 +1,11 @@
 import { z } from 'zod'
+import { zDimensionEncoding } from '../encoding'
 import type { DimensionGroup } from './tableDimension'
 
 export const zDimension = z.object({
   id: z.string(),
   alias: z.string().optional(),
-  encoding: z
-    .enum(['xAxis', 'yAxis', 'angle', 'color', 'detail', 'tooltip', 'label', 'row', 'column', 'player'])
-    .optional(),
+  encoding: zDimensionEncoding.optional(),
 })
 export const zDimensionGroup: z.ZodType<DimensionGroup> = z.object({
   id: z.string(),
