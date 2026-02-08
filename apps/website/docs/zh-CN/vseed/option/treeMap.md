@@ -72,7 +72,7 @@
 
 ## dimensions
 
-**Type:** `Dimensions | undefined`
+**Type:** `HierarchyDimension[] | undefined`
 
 :::note{title=描述}
 维度
@@ -109,64 +109,35 @@
 
 ### encoding
 
-**Type:** `DimensionEncoding | undefined`
+**Type:** `"tooltip" | "label" | "hierarchy" | undefined`
 
 :::note{title=描述}
 维度映射的通道
 
-\- xAxis: 支持将多个维度映射到x轴, 支持柱状图、折线图、面积图等
+\- hierarchy: 支持将多个维度映射到层级通道
 
-\- yAxis: 支持将多个维度映射到y轴, 支持柱状图、折线图、面积图等
+\- label: 支持将多个维度映射到标签通道
 
-\- angle: 支持将多个维度映射到角度通道, 支持玫瑰图、雷达图等
+\- tooltip: 支持将多个维度映射到提示通道
 
-\- color: 支持将多个维度映射到颜色通道, 支持所有图表类型
+:::
 
-\- detail: 支持将多个维度映射到详情通道, 支持所有图表类型
-
-\- tooltip: 支持将多个维度映射到提示通道, 支持所有图表类型
-
-\- label: 支持将多个维度映射到标签通道, 支持所有图表类型
-
-\- row: 支持将多个维度映射到行通道, 支持所有图表类型
-
-\- column: 支持将多个维度映射到列通道, 支持所有图表类型
-
-
-
-维度映射的通道
-
-\- x: 支持将多个维度映射到x轴, 支持柱状图、折线图、面积图等
-
-\- y: 支持将多个维度映射到y轴, 支持柱状图、折线图、面积图等
-
-\- angle: 支持将多个维度映射到角度通道, 支持玫瑰图、雷达图等
-
-\- color: 支持将多个维度映射到颜色通道, 支持所有图表类型
-
-\- detail: 支持将多个维度映射到详情通道, 支持所有图表类型
-
-\- tooltip: 支持将多个维度映射到提示通道, 支持所有图表类型
-
-\- label: 支持将多个维度映射到标签通道, 支持所有图表类型
-
-\- row: 支持将多个维度映射到行通道, 支持所有图表类型
-
-\- column: 支持将多个维度映射到列通道, 支持所有图表类型
+:::tip{title=Tip}
+第一个维度会被直接映射到 color 通道
 
 :::
 
 
 ## measures
 
-**Type:** `Measures | undefined`
+**Type:** `HierarchyMeasure[] | undefined`
 
 :::note{title=描述}
 指标
 
 
 
-指标配置，用于定义矩形的大小（面积）
+指标配置，用于定义扇形的大小（面积）
 
 :::
 
@@ -494,36 +465,7 @@
 
 ### encoding
 
-**Type:** `MeasureEncoding | undefined`
-
-:::note{title=描述}
-指标映射的通道
-
-\- primaryYAxis: 指标映射的主y轴, 仅用于双轴图
-
-\- secondaryYAxis: 指标映射的次y轴, 仅用于双轴图
-
-\- xAxis: 指标映射的x轴, 适用于条形图、散点图
-
-\- yAxis: 指标映射的y轴, 适用于柱状图、折线图、面积图、散点图
-
-\- angle: 指标映射的角度, 适用于饼图、环形图、雷达图
-
-\- radius: 指标映射的半径, 适用于玫瑰图
-
-\- size: 指标映射的大小, 适用于漏斗图、散点图
-
-\- detail: 指标映射的详情, 适用于透视表、热力图
-
-\- column: 指标映射的列, 仅适用于表格
-
-\- color: 指标映射的颜色, 适用于所有图表
-
-\- label: 指标映射的标签, 适用于所有图表
-
-\- tooltip: 指标映射的提示, 适用于所有图表
-
-:::
+**Type:** `"tooltip" | "label" | "size" | undefined`
 
 ### parentId
 
@@ -536,29 +478,6 @@
 
 :::tip{title=Tip}
 指标树的配置存在两种形式, 方式一是直接配置带children的指标树, 方式二是配置parentId的扁平指标列表, 两种方式不能同时配置
-
-:::
-
-### chartType
-
-**Type:** `"area" | "column" | "areaPercent" | "line" | "columnParallel" | "columnPercent" | "scatter" | undefined`
-
-:::note{title=描述}
-设置该指标在双轴图中的图表类型, 仅适用于双轴图
-
-\- line: 折线图
-
-\- column: 柱状图
-
-\- columnParallel: 平行柱状图
-
-\- columnPercent: 百分比柱状图
-
-\- area: 面积图
-
-\- areaPercent: 百分比面积图
-
-\- scatter: 散点图
 
 :::
 

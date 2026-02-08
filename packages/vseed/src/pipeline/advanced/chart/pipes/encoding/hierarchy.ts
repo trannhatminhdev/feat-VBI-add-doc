@@ -75,7 +75,6 @@ const generateDimensionEncoding = (dimensions: Dimensions, encoding: Encoding, i
 
   // label
   encoding.label = unique(dimensions.filter((item) => item.encoding === 'label').map((item) => item.id))
-  encoding.label = encoding.label.filter((d) => d !== MeasureId)
 }
 
 /**

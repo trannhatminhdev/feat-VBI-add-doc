@@ -115,3 +115,98 @@ export default () => {
   return <VSeedRender vseed={vseedConfig} />
 }
 ```
+
+## Encoding
+
+A tree map chart, with 5 data points, each with a category, subCategory, product, sales, and profit. Encoding category, subCategory, product, sales, and profit as hierarchy, label, and size.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'treeMap',
+    dataset: [
+      {
+        category: 'Electronics',
+        subCategory: 'Computers',
+        product: 'Laptop',
+        sales: 5000,
+        profit: 500,
+      },
+      {
+        category: 'Electronics',
+        subCategory: 'Computers',
+        product: 'Tablet',
+        sales: 3000,
+        profit: 300,
+      },
+      {
+        category: 'Electronics',
+        subCategory: 'Phones',
+        product: 'Smartphone',
+        sales: 8000,
+        profit: 1200,
+      },
+      {
+        category: 'ABC',
+        subCategory: 'Phones',
+        product: 'Smartphone',
+        sales: 8000,
+        profit: 1200,
+      },
+      {
+        category: 'XYZ',
+        subCategory: 'Phones',
+        product: 'Smartphone',
+        sales: 8000,
+        profit: 1200,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'category',
+        alias: 'Category',
+        encoding: 'hierarchy',
+      },
+      {
+        id: 'subCategory',
+        alias: 'SubCategory',
+        encoding: 'hierarchy',
+      },
+      {
+        id: 'product',
+        alias: 'Product',
+        encoding: 'hierarchy',
+      },
+      {
+        id: 'product',
+        alias: 'Product',
+        encoding: 'label',
+      },
+      {
+        id: '__MeaId__',
+        encoding: 'label',
+      },
+      {
+        id: '__MeaId__',
+        encoding: 'hierarchy',
+      },
+    ],
+    measures: [
+      {
+        id: 'sales',
+        alias: 'Sales',
+        encoding: 'size',
+      },
+      {
+        id: 'profit',
+        alias: 'Profit',
+        encoding: 'size',
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
