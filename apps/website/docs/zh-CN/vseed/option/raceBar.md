@@ -30,7 +30,7 @@
 
 ## dimensions
 
-**Type:** `BarDimension[] | undefined`
+**Type:** `RaceBarDimension[] | undefined`
 
 :::note{title=描述}
 维度
@@ -58,10 +58,12 @@
 
 ### encoding
 
-**Type:** `"color" | "detail" | "tooltip" | "label" | "row" | "column" | "yAxis" | undefined`
+**Type:** `"color" | "detail" | "tooltip" | "label" | "row" | "column" | "yAxis" | "player" | undefined`
 
 :::note{title=描述}
 维度映射的通道
+
+\- player: 支持将多个维度映射到播放通道
 
 \- yAxis: 支持将多个维度映射到y轴
 
@@ -82,7 +84,7 @@
 
 ## measures
 
-**Type:** `BarMeasure[] | undefined`
+**Type:** `RaceBarMeasure[] | undefined`
 
 :::note{title=描述}
 指标
@@ -459,12 +461,12 @@
 :::
 
 
-### field
+### maxCount
 
-**Type:** `string`
+**Type:** `number | undefined`
 
 :::note{title=描述}
-播放器绑定的字段, 必须是维度
+最大播放数量, 超过该数量的数据将被截断
 
 :::
 
@@ -1476,10 +1478,10 @@ x轴配置
 
 ### max
 
-**Type:** `number | undefined`
+**Type:** `number | boolean | undefined`
 
 :::note{title=描述}
-轴的最大值, 优先级高于 nice 与 zero
+轴的最大值, 优先级高于 nice 与 zero, 如果为true, 则自动根据数据范围计算最大值
 
 :::
 
@@ -1911,6 +1913,34 @@ X轴网格线
 
 :::
 
+### animation
+
+**Type:** `{ duration?: number; easing?: string; } | undefined`
+
+:::note{title=描述}
+Y轴动画配置
+
+:::
+
+
+#### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长
+
+:::
+
+#### easing
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画 easing 函数
+
+:::
+
 
 ## yAxis
 
@@ -2238,6 +2268,34 @@ X轴网格线
 
 :::note{title=描述}
 网格线类型
+
+:::
+
+### animation
+
+**Type:** `{ duration?: number; easing?: string; } | undefined`
+
+:::note{title=描述}
+Y轴动画配置
+
+:::
+
+
+#### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长
+
+:::
+
+#### easing
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画 easing 函数
 
 :::
 

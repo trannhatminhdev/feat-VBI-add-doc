@@ -24,6 +24,9 @@ import type {
   RaceBar,
   RaceColumn,
   RaceScatter,
+  TreeMap,
+  Sunburst,
+  CirclePacking,
 } from './chartType'
 
 export type VSeed =
@@ -55,6 +58,11 @@ export type VSeed =
   | RaceBar
   | RaceColumn
   | RaceScatter
+
+  // hierarchy
+  | TreeMap
+  | Sunburst
+  | CirclePacking
 
   // other
   | Funnel

@@ -8,6 +8,7 @@ import {
   register,
   ListTableConstructorOptions,
   PivotTableConstructorOptions,
+  PivotChartConstructorOptions,
 } from '@visactor/vtable'
 import {
   registerAll,
@@ -20,6 +21,14 @@ import {
   ColorIdEncoding,
   DATUM_HIDE_KEY,
 } from '@visactor/vseed'
+
+declare global {
+  interface Window {
+    pivotChart?: PivotChart
+    vchart?: VChart
+    table?: ListTable | PivotTable
+  }
+}
 
 registerAll()
 register.chartModule('vchart', VChart)
@@ -36,7 +45,8 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
     }
     const theme = dark ? 'dark' : 'light'
     const builder = Builder.from(vseed.theme ? vseed : { ...vseed, theme })
-    let spec = builder.build()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let spec = builder.build() as Record<string, any>
     spec = {
       ...spec,
       chartDimensionLinkage: {
@@ -48,12 +58,16 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
             window.pivotChart.enableTooltipToAllChartInstances()
           }
         },
-        inBrushStateFilter: (datum) => {
+        inBrushStateFilter: (datum: Record<string, unknown>) => {
           console.log('inBrushState', datum, selectedDimValueRef.current)
-          return selectedDimValueRef.current.length ? selectedDimValueRef.current.includes(datum['__Dim_X__']) : true
+          return selectedDimValueRef.current.length
+            ? selectedDimValueRef.current.includes(datum['__Dim_X__'] as string)
+            : true
         },
-        outOfBrushStateFilter: (datum) => {
-          return selectedDimValueRef.current.length ? !selectedDimValueRef.current.includes(datum['__Dim_X__']) : false
+        outOfBrushStateFilter: (datum: Record<string, unknown>) => {
+          return selectedDimValueRef.current.length
+            ? !selectedDimValueRef.current.includes(datum['__Dim_X__'] as string)
+            : false
         },
         listenBrushChange: true,
         brushChangeDelay: 100,
@@ -65,7 +79,7 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
 
     builderRef.current = builder
     if (isPivotChart(vseed)) {
-      const tableInstance = new PivotChart(ref.current, spec)
+      const tableInstance = new PivotChart(ref.current, spec as PivotChartConstructorOptions)
 
       tableInstance.on('legend_item_click', (args) => {
         console.log('LEGEND_ITEM_CLICK', args)
@@ -78,7 +92,9 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
       })
       tableInstance.onVChartEvent('brushEnd', (args) => {
         console.log('brushEnd', args)
-        selectedDimValueRef.current = args.value.inBrushData.map((dataItem) => dataItem.__Dim_X__)
+        selectedDimValueRef.current = args.value.inBrushData.map(
+          (dataItem: Record<string, unknown>) => dataItem['__Dim_X__'] as string,
+        )
       })
       tableInstance.onVChartEvent('brushStart', () => {
         if (window.pivotChart) {
@@ -87,7 +103,9 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
       })
       tableInstance.onVChartEvent('brushChange', (args) => {
         console.log('brushChange', args)
-        selectedDimValueRef.current = args.value.inBrushData.map((dataItem) => dataItem.__Dim_X__)
+        selectedDimValueRef.current = args.value.inBrushData.map(
+          (dataItem: Record<string, unknown>) => dataItem['__Dim_X__'] as string,
+        )
       })
 
       tableInstance.on('legend_change', (args) => {

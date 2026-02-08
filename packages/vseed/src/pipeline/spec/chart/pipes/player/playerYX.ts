@@ -6,7 +6,7 @@ import { datasetYX } from '../dataset'
 
 export const playerYX: VChartSpecPipe = (spec, context) => {
   const { vseed, advancedVSeed } = context
-  const { dimensions = [], datasetReshapeInfo, chartType } = advancedVSeed
+  const { dimensions = [], datasetReshapeInfo, chartType, encoding } = advancedVSeed
 
   const baseConfig = advancedVSeed.config[chartType] as { player: Player }
   const result = datasetYX(spec, context)
@@ -62,7 +62,7 @@ export const playerYX: VChartSpecPipe = (spec, context) => {
     }
   })
 
-  const dataKey = dimensions.filter((d) => d.encoding !== 'player').map((d) => d.id)
+  const dataKey = dimensions.filter((d) => !encoding.player?.includes(d.id)).map((d) => d.id)
   const textSize = 36
   const padding = 12
 

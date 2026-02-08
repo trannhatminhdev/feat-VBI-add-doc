@@ -7,9 +7,20 @@ const rootDir = path.resolve(__dirname, '../')
 async function generateTests() {
   try {
     const testsDir = path.join(rootDir, './tests/integrations')
+    const examplesDir = path.join(rootDir, './tests/examples')
 
     // 递归查找所有JSON文件的函数
     async function findAllJsonFiles(dir) {
+      if (
+        !(await fs
+          .access(dir)
+          .then(() => true)
+          .catch(() => false))
+      ) {
+        console.warn(`Directory not found: ${dir}`)
+        return []
+      }
+
       const jsonFiles = []
       const entries = await fs.readdir(dir, { withFileTypes: true })
 
@@ -33,7 +44,9 @@ async function generateTests() {
     }
 
     // 获取所有JSON文件
-    const allJsonFiles = await findAllJsonFiles(testsDir)
+    const integrationFiles = await findAllJsonFiles(testsDir)
+    const exampleFiles = await findAllJsonFiles(examplesDir)
+    const allJsonFiles = [...integrationFiles, ...exampleFiles]
     console.log(`Found ${allJsonFiles.length} JSON files to process`)
 
     // 处理每个JSON文件

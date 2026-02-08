@@ -1,0 +1,39 @@
+# Rose
+
+## Basic Rose
+
+A nightingale rose chart (polar area chart) for cyclic data.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'rose',
+    dataset: [
+      {
+        date: '2023',
+        profit: 40,
+      },
+      {
+        date: '2022',
+        profit: 50,
+      },
+      {
+        date: '2021',
+        profit: 25,
+      },
+      {
+        date: '2020',
+        profit: 30,
+      },
+      {
+        date: '2019',
+        profit: 10,
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```

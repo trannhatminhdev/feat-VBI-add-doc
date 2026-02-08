@@ -14,7 +14,7 @@
     "format": "pnpm prettier --write .",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm turbo typecheck",
-    "g": "pnpm -r g",
+    "g": "pnpm -r g && pnpm run format",
     "dev:rsdoctor": "pnpm --filter=@visactor/vseed run dev:rsdoctor",
     "build:rsdoctor": "pnpm --filter=@visactor/vseed run build:rsdoctor",
     "test": "pnpm -r test",

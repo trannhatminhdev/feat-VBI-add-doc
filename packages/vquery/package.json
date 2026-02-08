@@ -1,6 +1,6 @@
 {
   "name": "@visactor/vquery",
-  "version": "0.3.16",
+  "version": "0.4.0",
   "type": "module",
   "exports": {
     ".": {
@@ -30,8 +30,8 @@
   "scripts": {
     "build": "rslib build",
     "build:test": "node scripts/build-tests.js",
-    "build:docs": "node scripts/build-docs.js",
-    "g": "pnpm run build:test && pnpm run build:docs",
+    "build:docs": "node scripts/build-examples.js",
+    "g": "pnpm run build:test && pnpm run build:docs && pnpm run test:update",
     "dev": "rslib build --watch --no-clean",
     "lint": "eslint .",
     "test": "rstest",

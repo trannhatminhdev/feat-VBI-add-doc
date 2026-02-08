@@ -26,7 +26,6 @@ export const label: VChartSpecPipe = (spec, context) => {
   const foldInfo = datasetReshapeInfo[0].foldInfo as FoldInfo
 
   const { label } = baseConfig
-
   result.label = buildLabel(
     label,
     vseed.measures,

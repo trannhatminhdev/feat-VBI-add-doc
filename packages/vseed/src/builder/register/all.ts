@@ -24,6 +24,9 @@ import {
   registerDualAxis,
   registerBoxPlot,
   registerHistogram,
+  registerTreeMap,
+  registerSunburst,
+  registerCirclePacking,
 } from './chartType'
 import { registerDarkTheme, registerLightTheme } from './theme'
 /**
@@ -61,6 +64,10 @@ export const registerAll = () => {
   registerHeatmap()
   registerBoxPlot()
   registerHistogram()
+  // hierarchy
+  registerTreeMap()
+  registerSunburst()
+  registerCirclePacking()
   // theme
   registerLightTheme()
   registerDarkTheme()

@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.0
+
+### Minor Changes
+
+- feat: add three hierarchy char types: sunburst,treeMap,circlePacking
+
 ## 0.3.16
 
 ### Patch Changes

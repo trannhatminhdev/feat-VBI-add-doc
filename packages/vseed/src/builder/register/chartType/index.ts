@@ -27,3 +27,8 @@ export { registerHeatmap } from './heatmap'
 export { registerFunnel } from './funnel'
 export { registerBoxPlot } from './boxplot'
 export { registerHistogram } from './histogram'
+
+// hierarchy
+export { registerTreeMap } from './treeMap'
+export { registerSunburst } from './sunburst'
+export { registerCirclePacking } from './circlePacking'

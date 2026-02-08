@@ -1,0 +1,25 @@
+# Radar
+
+## Basic Radar
+
+A radar chart for comparing multiple quantitative variables.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'radar',
+    dataset: [
+      {
+        profit: 10,
+        sales: 20,
+        count: 50,
+        rateOfReturn: 1,
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```

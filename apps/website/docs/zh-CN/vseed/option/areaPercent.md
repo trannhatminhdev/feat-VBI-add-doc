@@ -1688,6 +1688,34 @@ X轴网格线
 
 :::
 
+### animation
+
+**Type:** `{ duration?: number; easing?: string; } | undefined`
+
+:::note{title=描述}
+X轴动画配置
+
+:::
+
+
+#### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长
+
+:::
+
+#### easing
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画 easing 函数
+
+:::
+
 
 ## yAxis
 
@@ -1723,10 +1751,10 @@ y轴
 
 ### max
 
-**Type:** `number | undefined`
+**Type:** `number | boolean | undefined`
 
 :::note{title=描述}
-轴的最大值, 优先级高于 nice 与 zero
+轴的最大值, 优先级高于 nice 与 zero, 如果为true, 则自动根据数据范围计算最大值
 
 :::
 
@@ -2155,6 +2183,34 @@ X轴网格线
 
 :::note{title=描述}
 网格线类型
+
+:::
+
+### animation
+
+**Type:** `{ duration?: number; easing?: string; } | undefined`
+
+:::note{title=描述}
+Y轴动画配置
+
+:::
+
+
+#### duration
+
+**Type:** `number | undefined`
+
+:::note{title=描述}
+动画时长
+
+:::
+
+#### easing
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+动画 easing 函数
 
 :::
 

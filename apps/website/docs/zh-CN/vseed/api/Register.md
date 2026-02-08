@@ -116,6 +116,17 @@ function registerBarPercent(): void
 function registerBoxPlot(): void
 ```
 
+### registerCirclePacking
+
+:::note{title=描述}
+注册 CirclePacking Chart 的构建管线。
+注册后，Builder 将支持构建 CirclePacking Chart 的 Spec 和 Advanced Config。
+:::
+
+```ts
+function registerCirclePacking(): void
+```
+
 ### registerColumn
 
 :::note{title=描述}
@@ -314,6 +325,17 @@ function registerRoseParallel(): void
 function registerScatter(): void
 ```
 
+### registerSunburst
+
+:::note{title=描述}
+注册 Sunburst Chart 的构建管线。
+注册后，Builder 将支持构建 Sunburst Chart 的 Spec 和 Advanced Config。
+:::
+
+```ts
+function registerSunburst(): void
+```
+
 ### registerTable
 
 :::note{title=描述}
@@ -323,5 +345,16 @@ function registerScatter(): void
 
 ```ts
 function registerTable(): void
+```
+
+### registerTreeMap
+
+:::note{title=描述}
+注册 TreeMap Chart 的构建管线。
+注册后，Builder 将支持构建 TreeMap Chart 的 Spec 和 Advanced Config。
+:::
+
+```ts
+function registerTreeMap(): void
 ```
 

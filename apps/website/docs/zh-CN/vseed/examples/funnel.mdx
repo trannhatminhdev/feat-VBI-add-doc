@@ -1,0 +1,44 @@
+# Funnel
+
+## Basic Funnel
+
+A funnel chart showing the progressive reduction of data through stages.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'funnel',
+    dataset: [
+      {
+        date: '2022',
+        profit: 100,
+        sales: 100,
+      },
+      {
+        date: '2023',
+        profit: 80,
+        sales: 80,
+      },
+      {
+        date: '2020',
+        profit: 60,
+        sales: 60,
+      },
+      {
+        date: '2021',
+        profit: 40,
+        sales: 40,
+      },
+      {
+        date: '2019',
+        profit: 20,
+        sales: 20,
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```

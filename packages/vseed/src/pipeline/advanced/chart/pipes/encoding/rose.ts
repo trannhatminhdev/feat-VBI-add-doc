@@ -85,7 +85,7 @@ const generateDefaultMeasureEncoding = (measures: Measures, encoding: Encoding) 
   )
 }
 const generateMeasureEncoding = (measures: Measures, encoding: Encoding) => {
-  // y
+  // radius
   encoding.radius = unique(
     measures.filter((item) => item.encoding === 'radius' || !item.encoding).map((item) => item.id),
   )

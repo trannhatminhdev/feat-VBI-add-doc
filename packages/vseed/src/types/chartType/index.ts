@@ -26,6 +26,11 @@ export * from './pie'
 export * from './donut'
 export * from './radar'
 
+// hierarchy
+export * from './treeMap'
+export * from './sunburst'
+export * from './circlePacking'
+
 // other
 export * from './funnel'
 export * from './heatmap'
