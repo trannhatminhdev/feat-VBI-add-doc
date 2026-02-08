@@ -3,7 +3,7 @@ import { tooltip as commonTooltip } from './tooltip'
 import { pipe, uniqueBy } from 'remeda'
 import { createFormatterByMeasure, findMeasureById } from 'src/pipeline/utils'
 
-export const tooltipHierarchy: VChartSpecPipe = (spec, context) => {
+export const tooltipTreeMap: VChartSpecPipe = (spec, context) => {
   // Reuse common tooltip logic
   const result = commonTooltip(spec, context)
   const { advancedVSeed, vseed } = context
@@ -55,20 +55,25 @@ const createMarkContent = (
   )
 
   const dimContent = dims.map((item: HierarchyDimension) => ({
-    visible: (datum: Datum) => {
+    visible: (v: Datum) => {
+      const { depth } = v
+      const datum = v?.datum[depth] as Datum
       return !!datum[item.id]
     },
     hasShape: true,
     shapeType: 'rectRound',
-    key: (v: unknown) => {
-      const datum = v as Datum
+    key: (v: Datum) => {
+      const { depth } = v
+      const datum = v?.datum[depth] as Datum
       if (item.alias || item.id) {
         return item.alias || item.id
       }
       return datum && (datum[item.id] as string)
     },
-    value: (v: unknown) => {
-      const datum = v as Datum
+    value: (v: Datum) => {
+      const { depth } = v
+      const datum = v?.datum[depth] as Datum
+
       return datum && (datum[item.id] as string)
     },
   }))
@@ -77,17 +82,21 @@ const createMarkContent = (
     visible: true,
     hasShape: true,
     shapeType: 'rectRound',
-    key: (v: unknown) => {
+    key: (v: Datum) => {
+      const { depth } = v
+      const datum = v?.datum[depth] as Datum
+
       const { measureName } = foldInfo
       const { encodingColor: colorName } = unfoldInfo
 
-      const datum = v as Datum
       return (datum && (datum[measureName || colorName] as string)) || ''
     },
-    value: (v: unknown) => {
+    value: (v: Datum) => {
+      const { depth } = v
+      const datum = v?.datum[depth] as Datum
+
       const { measureId, measureValue } = foldInfo
 
-      const datum = v as Datum
       if (!datum) {
         return ''
       }
@@ -108,8 +117,10 @@ const createMarkContent = (
     hasShape: true,
     shapeType: 'rectRound',
     key: item.alias || item.id,
-    value: (v: unknown) => {
-      const datum = v as Datum
+    value: (v: Datum) => {
+      const { depth } = v
+      const datum = v?.datum[depth] as Datum
+
       if (!datum) {
         return ''
       }

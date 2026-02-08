@@ -6,10 +6,10 @@ pageType: custom
 
 ```tsx title="VSeed 示例：玫瑰图" playground
 const Demo = () => {
-  const MeasureNames = '__MeaName__'
+  const MeasureNames = '__MeaId__'
 
   const vseed: VSeed = {
-    chartType: 'sunburst',
+    chartType: 'treeMap',
     dataset: [
       { category: 'Electronics', subCategory: 'Computers', product: 'Laptop', sales: 5000, profit: 500 },
       { category: 'Electronics', subCategory: 'Computers', product: 'Tablet', sales: 3000, profit: 300 },
@@ -21,6 +21,7 @@ const Demo = () => {
       { id: 'category', alias: 'Category', encoding: 'hierarchy' },
       { id: 'subCategory', alias: 'SubCategory', encoding: 'hierarchy' },
       { id: 'product', alias: 'Product', encoding: 'hierarchy' },
+      { id: MeasureNames, encoding: 'hierarchy' },
     ],
     measures: [
       { id: 'sales', alias: 'Sales', encoding: 'size' },

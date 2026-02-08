@@ -6,7 +6,6 @@ import {
   linearColor,
   colorAdapter,
   backgroundColor,
-  tooltipHierarchy,
   labelTreeMapLeaf,
   labelTreeMapGroup,
   discreteLegend,
@@ -23,6 +22,7 @@ import {
   pivotDiscreteLegend,
   pivotColorLegend,
 } from '../pipes'
+import { tooltipTreeMap } from '../pipes/tooltip/tooltipTreeMap'
 
 const treeMap: VChartSpecPipeline = [
   initTreeMap,
@@ -30,7 +30,7 @@ const treeMap: VChartSpecPipeline = [
   colorAdapter(color, linearColor),
   backgroundColor,
   colorAdapter(discreteLegend, colorLegend),
-  tooltipHierarchy,
+  tooltipTreeMap,
   labelTreeMapLeaf,
   labelTreeMapGroup,
 ]
@@ -45,7 +45,7 @@ const pivotTreeMap: PivotChartSpecPipeline = [
     datasetHierarchy,
     colorAdapter(color, linearColor),
     backgroundColor,
-    tooltipHierarchy,
+    tooltipTreeMap,
     labelTreeMapLeaf,
     labelTreeMapGroup,
   ]),

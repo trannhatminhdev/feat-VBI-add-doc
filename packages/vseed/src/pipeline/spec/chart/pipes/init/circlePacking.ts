@@ -10,7 +10,6 @@ export const initCirclePacking: VChartSpecPipe = (spec, context) => {
   result.type = 'circlePacking'
   result.categoryField = 'name'
   result.valueField = foldInfo.measureValue
-
   // Style configuration
   result.drill = true
   result.circlePacking = {
