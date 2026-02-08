@@ -21,6 +21,7 @@ export type UnfoldInfo = {
   encodingDetail: string
   encodingAngle: string
   encodingPlayer: string
+  encodingHierarchy: string
 
   colorItems: string[]
   colorIdMap: Record<string, { id: string; alias: string }>

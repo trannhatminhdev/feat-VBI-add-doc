@@ -22,6 +22,7 @@ export const zUnfoldInfo = z.object({
   encodingDetail: z.string(),
   encodingAngle: z.string(),
   encodingPlayer: z.string(),
+  encodingHierarchy: z.string(),
   colorItems: z.array(z.string()),
   colorIdMap: z.record(z.string(), z.object({ id: z.string(), alias: z.string() })),
 })

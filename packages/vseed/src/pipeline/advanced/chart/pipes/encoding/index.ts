@@ -15,3 +15,6 @@ export { encodingForBoxplot, defaultEncodingForBoxplot } from './boxplot'
 export { encodingForRaceColumn, defaultEncodingForRaceColumn } from './raceColumn'
 export { encodingForRaceBar, defaultEncodingForRaceBar } from './raceBar'
 export { encodingForRaceScatter, defaultEncodingForRaceScatter } from './raceScatter'
+
+// hierarchy
+export { encodingForHierarchy, defaultEncodingForHierarchy } from './hierarchy'

@@ -18,6 +18,10 @@ export {
   heatmapConfig,
 }
 
+export { treeMapConfig } from './treeMap'
+export { sunburstConfig } from './sunburst'
+export { circlePackingConfig } from './circlePacking'
+
 // area
 export const areaConfig = lineConfig
 export const areaPercentConfig = lineConfig

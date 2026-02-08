@@ -275,6 +275,20 @@ export const lightTheme = (): CustomThemeConfig => {
         outlierStyle: getLightOutlierStyle(),
       },
 
+      // hierarchy
+      treeMap: {
+        ...baseConfig,
+        pivotGrid: getLightPivotChartGridConfig(),
+      },
+      sunburst: {
+        ...baseConfig,
+        pivotGrid: getLightPivotChartGridConfig(),
+      },
+      circlePacking: {
+        ...baseConfig,
+        pivotGrid: getLightPivotChartGridConfig(),
+      },
+
       // race
       raceBar: {
         ...baseConfig,

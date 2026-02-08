@@ -24,3 +24,8 @@ export { funnelSpecPipeline } from './funnel'
 export { heatmapSpecPipeline } from './heatmap'
 export { boxplotSpecPipeline } from './boxplot'
 export { histogramSpecPipeline } from './histogram'
+
+// hierarchy
+export { treeMapSpecPipeline } from './treeMap'
+export { sunburstSpecPipeline } from './sunburst'
+export { circlePackingSpecPipeline } from './circlePacking'

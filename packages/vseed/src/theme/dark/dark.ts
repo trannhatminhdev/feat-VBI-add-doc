@@ -266,6 +266,20 @@ export const darkTheme = (): CustomThemeConfig => {
         outlierStyle: getDarkOutlierStyle(),
       },
 
+      // hierarchy
+      treeMap: {
+        ...baseConfig,
+        pivotGrid: getDarkPivotChartGridConfig(),
+      },
+      sunburst: {
+        ...baseConfig,
+        pivotGrid: getDarkPivotChartGridConfig(),
+      },
+      circlePacking: {
+        ...baseConfig,
+        pivotGrid: getDarkPivotChartGridConfig(),
+      },
+
       // race
       raceBar: {
         ...baseConfig,

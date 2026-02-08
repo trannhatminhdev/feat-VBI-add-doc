@@ -20,3 +20,8 @@ export type { DualAxisDimension } from './dualAxisDimension'
 export type { RaceBarDimension, RaceBarParallelDimension, RaceBarPercentDimension } from './raceBarDimension'
 // table
 export type { TableDimension, DimensionGroup, DimensionTree } from './tableDimension'
+
+// hierarchy
+export type { TreeMapDimension } from './treeMapDimension'
+export type { SunburstDimension } from './sunburstDimension'
+export type { CirclePackingDimension } from './circlePackingDimension'
