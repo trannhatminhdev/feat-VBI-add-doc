@@ -1,8 +1,7 @@
 import { type Locale } from '../../i18n'
 import type {
-  BarDimension,
   BarMaxWidth,
-  BarMeasure,
+  RaceColumnDimension,
   DimensionLinkage,
   Sort,
   SortLegend,
@@ -25,13 +24,14 @@ import type {
   XLinearAxis,
   YBandAxis,
   Page,
+  ColumnMeasure,
 } from '../../properties'
 
 export interface RaceColumn {
   chartType: 'raceColumn'
   dataset: Dataset
-  dimensions?: BarDimension[]
-  measures?: BarMeasure[]
+  dimensions?: RaceColumnDimension[]
+  measures?: ColumnMeasure[]
   player?: Player
   sort?: Sort
   page?: Page

@@ -1,50 +1,23 @@
-import type { CustomThemeConfig, Player, YBandAxis } from 'src/types'
-import {
-  getDarkColor,
-  getDarkCrosshairLine,
-  getDarkCrosshairRect,
-  getDarkBrushConfig,
-  getDarkTableConfig,
-  getDarkPivotChartGridConfig,
-  getDarkLabel,
-  getDarkLegend,
-  getDarkColorLegend,
-  getFunnelDarkLabel,
-  getDarkPlayer,
-} from '../common'
-import { getDarkTooltip } from '../common/tooltip'
-import { getDarkBandAxis, getDarkLinearAxis } from '../common/axes'
-import { getDarkAnnotation } from '../common/annotaion'
-import { getDarkFunnelTransformTheme } from '../common/funnelTransform'
-import { getDarkHeatmapCellTheme } from '../common/heatmapCell'
-import { getDarkRegressionLine } from '../common/regressionLine'
-import { getDarkBoxPlotStyle, getDarkOutlierStyle } from '../common/boxPlot'
+import type { CustomThemeConfig } from 'src/types'
+import { getDarkTableConfig } from '../common'
+
+import { getLineTheme } from './line'
+import { getColumnTheme, getColumnParallelTheme, getColumnPercentTheme } from './column'
+import { getBarTheme, getBarParallelTheme, getBarPercentTheme } from './bar'
+import { getAreaTheme, getAreaPercentTheme } from './area'
+import { getScatterTheme } from './scatter'
+import { getDualAxisTheme } from './dualAxis'
+import { getPieTheme, getDonutTheme } from './pie'
+import { getRadarTheme } from './radar'
+import { getRoseTheme, getRoseParallelTheme } from './rose'
+import { getFunnelTheme } from './funnel'
+import { getHeatmapTheme } from './heatmap'
+import { getHistogramTheme } from './histogram'
+import { getBoxPlotTheme } from './boxPlot'
+import { getTreeMapTheme, getSunburstTheme, getCirclePackingTheme } from './hierarchy'
+import { getRaceBarTheme, getRaceColumnTheme, getRaceScatterTheme } from './race'
 
 export const darkTheme = (): CustomThemeConfig => {
-  const linearAxis = getDarkLinearAxis()
-  const bandAxis = getDarkBandAxis()
-  const barBandAxis: YBandAxis = {
-    ...bandAxis,
-    labelAutoHide: false,
-    labelAutoHideGap: 1,
-    labelAutoLimit: false,
-    labelAutoLimitLength: undefined,
-    labelAutoRotate: false,
-    labelAutoRotateAngleRange: [0, -45, -90],
-  }
-  const crosshairLine = getDarkCrosshairLine()
-  const crosshairRect = getDarkCrosshairRect()
-
-  const baseConfig = {
-    backgroundColor: 'transparent',
-    color: getDarkColor(),
-    label: getDarkLabel(),
-    legend: getDarkLegend(),
-    tooltip: getDarkTooltip(),
-    brush: getDarkBrushConfig(),
-  }
-  const player = getDarkPlayer() as Player
-
   const tableConfig = getDarkTableConfig()
 
   return {
@@ -53,298 +26,40 @@ export const darkTheme = (): CustomThemeConfig => {
       pivotTable: tableConfig,
 
       // cartesian
-      line: {
-        ...baseConfig,
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairLine: crosshairLine,
+      line: getLineTheme(),
+      column: getColumnTheme(),
+      columnParallel: getColumnParallelTheme(),
+      columnPercent: getColumnPercentTheme(),
+      bar: getBarTheme(),
+      barParallel: getBarParallelTheme(),
+      barPercent: getBarPercentTheme(),
+      area: getAreaTheme(),
+      areaPercent: getAreaPercentTheme(),
+      scatter: getScatterTheme(),
+      dualAxis: getDualAxisTheme(),
 
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-      },
-      column: {
-        ...baseConfig,
-
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairRect: crosshairRect,
-        stackCornerRadius: [4, 4, 0, 0],
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-
-        regressionLine: getDarkRegressionLine(),
-      },
-      columnParallel: {
-        ...baseConfig,
-
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairRect: crosshairRect,
-        stackCornerRadius: [4, 4, 0, 0],
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-      },
-      columnPercent: {
-        ...baseConfig,
-
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairRect: crosshairRect,
-        stackCornerRadius: [4, 4, 0, 0],
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-      },
-      bar: {
-        ...baseConfig,
-
-        xAxis: linearAxis,
-        yAxis: barBandAxis,
-        crosshairRect: crosshairRect,
-        stackCornerRadius: [0, 4, 4, 0],
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-      },
-      barParallel: {
-        ...baseConfig,
-
-        xAxis: linearAxis,
-        yAxis: barBandAxis,
-        crosshairRect: crosshairRect,
-        stackCornerRadius: [0, 4, 4, 0],
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-      },
-      barPercent: {
-        ...baseConfig,
-
-        xAxis: linearAxis,
-        yAxis: barBandAxis,
-        crosshairRect: crosshairRect,
-        stackCornerRadius: [0, 4, 4, 0],
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-      },
-      area: {
-        ...baseConfig,
-
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairLine: crosshairLine,
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-      },
-      areaPercent: {
-        ...baseConfig,
-
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairLine: crosshairLine,
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-      },
-      scatter: {
-        ...baseConfig,
-        crosshairLine,
-        sizeRange: [8, 24],
-        xAxis: {
-          ...linearAxis,
-          line: {
-            ...linearAxis.line,
-            visible: true,
-          },
-        },
-        yAxis: {
-          ...linearAxis,
-          line: {
-            ...linearAxis.line,
-            visible: true,
-          },
-        },
-        label: {
-          ...baseConfig.label,
-          showValue: false,
-          showValuePercent: false,
-        },
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-        regressionLine: getDarkRegressionLine(),
-      },
-      dualAxis: {
-        ...baseConfig,
-        xAxis: bandAxis,
-        primaryYAxis: linearAxis,
-        secondaryYAxis: { ...linearAxis, grid: { visible: false } },
-        crosshairRect,
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-      },
       // polar
-      pie: {
-        ...baseConfig,
-        label: {
-          ...baseConfig.label,
-          showValuePercent: true,
-          labelLayout: 'arc',
-          showDimension: true,
-        },
-        pivotGrid: getDarkPivotChartGridConfig(),
-      },
-      donut: {
-        ...baseConfig,
-        label: {
-          ...baseConfig.label,
-          showValuePercent: true,
-          labelLayout: 'arc',
-          showDimension: true,
-        },
-        pivotGrid: getDarkPivotChartGridConfig(),
-      },
-      radar: {
-        ...baseConfig,
-        pivotGrid: getDarkPivotChartGridConfig(),
-      },
-      rose: {
-        ...baseConfig,
-        label: {
-          ...baseConfig.label,
-          showValuePercent: true,
-          showDimension: true,
-        },
-        pivotGrid: getDarkPivotChartGridConfig(),
-      },
-      roseParallel: {
-        ...baseConfig,
-        label: {
-          ...baseConfig.label,
-          showValuePercent: true,
-          showDimension: true,
-        },
+      pie: getPieTheme(),
+      donut: getDonutTheme(),
+      radar: getRadarTheme(),
+      rose: getRoseTheme(),
+      roseParallel: getRoseParallelTheme(),
 
-        pivotGrid: getDarkPivotChartGridConfig(),
-      },
       // other
-      funnel: {
-        ...baseConfig,
-        label: getFunnelDarkLabel(),
-        transform: getDarkFunnelTransformTheme(),
-
-        pivotGrid: getDarkPivotChartGridConfig(),
-      },
-      heatmap: {
-        ...baseConfig,
-        legend: getDarkColorLegend(),
-        xAxis: bandAxis,
-        yAxis: bandAxis,
-        label: {
-          ...baseConfig.label,
-          labelColorSmartInvert: true,
-        },
-
-        cell: getDarkHeatmapCellTheme(),
-        pivotGrid: getDarkPivotChartGridConfig(),
-      },
-      histogram: {
-        ...baseConfig,
-
-        xAxis: linearAxis,
-        yAxis: linearAxis,
-        crosshairRect: crosshairRect,
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-        regressionLine: getDarkRegressionLine(),
-      },
-      boxPlot: {
-        ...baseConfig,
-
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairRect: crosshairRect,
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-
-        boxPlotStyle: getDarkBoxPlotStyle(),
-        outlierStyle: getDarkOutlierStyle(),
-      },
+      funnel: getFunnelTheme(),
+      heatmap: getHeatmapTheme(),
+      histogram: getHistogramTheme(),
+      boxPlot: getBoxPlotTheme(),
 
       // hierarchy
-      treeMap: {
-        ...baseConfig,
-        pivotGrid: getDarkPivotChartGridConfig(),
-      },
-      sunburst: {
-        ...baseConfig,
-        pivotGrid: getDarkPivotChartGridConfig(),
-      },
-      circlePacking: {
-        ...baseConfig,
-        pivotGrid: getDarkPivotChartGridConfig(),
-      },
+      treeMap: getTreeMapTheme(),
+      sunburst: getSunburstTheme(),
+      circlePacking: getCirclePackingTheme(),
 
       // race
-      raceBar: {
-        ...baseConfig,
-        legend: {
-          ...baseConfig.legend,
-          enable: false,
-        },
-        xAxis: linearAxis,
-        yAxis: barBandAxis,
-        crosshairRect: crosshairRect,
-        stackCornerRadius: [0, 4, 4, 0],
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-        player,
-      },
-      raceColumn: {
-        ...baseConfig,
-        legend: {
-          ...baseConfig.legend,
-          enable: false,
-        },
-        xAxis: bandAxis,
-        yAxis: linearAxis,
-        crosshairRect: crosshairRect,
-        stackCornerRadius: [4, 4, 0, 0],
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-        player,
-
-        regressionLine: getDarkRegressionLine(),
-      },
-      raceScatter: {
-        ...baseConfig,
-        legend: {
-          ...baseConfig.legend,
-          enable: false,
-        },
-        crosshairLine,
-        sizeRange: [8, 24],
-        xAxis: {
-          ...linearAxis,
-          max: true,
-          line: {
-            ...linearAxis.line,
-            visible: true,
-          },
-        },
-        yAxis: {
-          ...linearAxis,
-          max: true,
-          line: {
-            ...linearAxis.line,
-            visible: true,
-          },
-        },
-        label: {
-          ...baseConfig.label,
-          showValue: false,
-          showValuePercent: false,
-        },
-        pivotGrid: getDarkPivotChartGridConfig(),
-        annotation: getDarkAnnotation(),
-        regressionLine: getDarkRegressionLine(),
-        player,
-      },
+      raceBar: getRaceBarTheme(),
+      raceColumn: getRaceColumnTheme(),
+      raceScatter: getRaceScatterTheme(),
     },
   }
 }

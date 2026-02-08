@@ -8,7 +8,6 @@ export const RaceColumn = memo(() => {
     legend: {
       enable: false,
     },
-
     dimensions: [
       { id: 'name', encoding: 'xAxis' },
       { id: 'category', encoding: 'color' },
