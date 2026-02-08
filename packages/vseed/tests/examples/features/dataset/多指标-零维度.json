@@ -1,0 +1,14 @@
+{
+  "name": "多指标 零维度",
+  "description": "多指标 零维度",
+  "vseed": {
+    "chartType": "columnParallel",
+    "dataset": [
+      {
+        "profit": 1,
+        "sales": 2,
+        "discount": 0.1
+      }
+    ]
+  }
+}

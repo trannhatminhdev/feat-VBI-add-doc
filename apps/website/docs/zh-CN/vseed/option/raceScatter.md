@@ -13,7 +13,7 @@
 
 ## dimensions
 
-**Type:** `ScatterDimension[] | undefined`
+**Type:** `RaceScatterDimension[] | undefined`
 
 
 ### id
@@ -36,10 +36,10 @@
 
 ### encoding
 
-**Type:** `"color" | "detail" | "tooltip" | "label" | "row" | "column" | undefined`
+**Type:** `"color" | "detail" | "tooltip" | "label" | "row" | "column" | "player" | undefined`
 
 :::note{title=描述}
-维度映射的通道
+竞赛散点图类图表中的维度映射的通道
 
 \- color: 支持将多个维度映射到颜色通道
 
@@ -52,6 +52,8 @@
 \- row: 支持将多个维度映射到行通道
 
 \- column: 支持将多个维度映射到列通道
+
+\- player: 支持将多个维度映射到播放器通道
 
 :::
 
@@ -635,6 +637,38 @@ order:'asc'
 ## backgroundColor
 
 **Type:** `BackgroundColor`
+
+
+## size
+
+**Type:** `number | number[] | undefined`
+
+:::note{title=描述}
+散点图指标的大小, 用于定义散点图中数据点的大小 或 大小范围
+
+\- 若大小范围是一个数字, 例如10, 表示数据点的大小范围固定为10
+
+\- 若大小范围是一个长度为2的数组, 例如[10, 40], 表示数据点的大小范围在10到40之间
+
+\- 与sizeRange互斥, 优先级低于 size
+
+:::
+
+
+## sizeRange
+
+**Type:** `number | number[] | undefined`
+
+:::note{title=描述}
+散点图指标的大小范围, 用于定义散点图中数据点的大小范围,
+
+\- 若大小范围是一个长度为2的数组, 例如[10, 40], 表示数据点的大小范围在10到40之间
+
+\- 若大小范围是一个数字, 例如10, 表示数据点的大小范围固定为10
+
+\- 与sizeRange互斥, 优先级高于 size
+
+:::
 
 
 ## color
