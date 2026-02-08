@@ -1,0 +1,12 @@
+{
+  "name": "单指标 零维度",
+  "description": "单指标 零维度",
+  "vseed": {
+    "chartType": "columnParallel",
+    "dataset": [
+      {
+        "profit": 10
+      }
+    ]
+  }
+}

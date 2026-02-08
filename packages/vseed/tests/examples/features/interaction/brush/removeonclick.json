@@ -1,0 +1,12 @@
+{
+  "name": "removeOnClick",
+  "description": "removeOnClick",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [],
+    "brush": {
+      "enable": true,
+      "removeOnClick": false
+    }
+  }
+}

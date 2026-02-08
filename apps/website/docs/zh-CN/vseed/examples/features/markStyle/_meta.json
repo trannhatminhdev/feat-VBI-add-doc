@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "barStyle",
+    "label": "BarStyle"
+  },
+  {
+    "type": "file",
+    "name": "pointStyle",
+    "label": "PointStyle"
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "name": "雷达图",
+  "description": "雷达图",
+  "vseed": {
+    "chartType": "radar",
+    "dataset": [
+      {
+        "profit": 10,
+        "sales": 20,
+        "count": 50,
+        "rateOfReturn": 1
+      }
+    ]
+  }
+}

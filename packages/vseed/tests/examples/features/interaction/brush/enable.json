@@ -1,0 +1,12 @@
+{
+  "name": "enable",
+  "description": "enable",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [],
+    "brush": {
+      "enable": true,
+      "removeOnClick": true
+    }
+  }
+}

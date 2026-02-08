@@ -8,56 +8,62 @@ const __dirname = path.dirname(__filename)
 const examplesDir = path.resolve(__dirname, '../tests/examples')
 const outputDir = path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vseed/examples')
 
-// Map<category, Array<{name, description, vseed}>>
+// We will process 'chartType' and 'features' separately as top-level sections
+const sections = ['chartType', 'features']
+
+// Map<section, Map<category, Array<{fileName, json}>>>
 const examplesMap = new Map()
 
-function scanDir(dir) {
+function scanDir(dir, section, relativePath = '') {
   if (!fs.existsSync(dir)) {
-    console.error(`Directory not found: ${dir}`)
+    console.warn(`Directory not found: ${dir}`)
     return
   }
 
   const files = fs.readdirSync(dir, { withFileTypes: true })
 
-  // Sort files to ensure consistent order
+  // Sort files/dirs to ensure consistent order
   files.sort((a, b) => a.name.localeCompare(b.name))
 
   for (const file of files) {
-    const res = path.resolve(dir, file.name)
+    const fullPath = path.join(dir, file.name)
+    
     if (file.isDirectory()) {
-      scanDir(res)
+      // For chartType, immediate subdirs are categories (area, bar, etc.)
+      // For features, it might be nested (analysis/sort, etc.)
+      // We recurse, but we need to track the category logic.
+      // Current logic assumes leaf JSONs belong to the directory they are in.
+      scanDir(fullPath, section, path.join(relativePath, file.name))
     } else if (file.name.endsWith('.json')) {
-      processJson(res)
+      processJson(fullPath, section, relativePath)
     }
   }
 }
 
-function processJson(jsonPath) {
+function processJson(jsonPath, section, relativePath) {
   try {
     const content = fs.readFileSync(jsonPath, 'utf-8')
     const json = JSON.parse(content)
 
-    // Validate required fields
-    // "json配置应该保护 name、description、vseed 3个属性配置"
     if (!json.name || !json.description || !json.vseed) {
       console.warn(`Skipping ${jsonPath}: Missing name, description, or vseed`)
       return
     }
 
-    // Determine category from relative path
-    const parentDir = path.dirname(jsonPath)
-    const category = path.relative(examplesDir, parentDir)
+    // relativePath corresponds to the category path (e.g. "area" or "analysis/sort")
+    const category = relativePath
+    if (!category) return
 
-    // Skip if directly in examples root
-    if (!category) {
-      return
+    if (!examplesMap.has(section)) {
+      examplesMap.set(section, new Map())
+    }
+    const sectionMap = examplesMap.get(section)
+
+    if (!sectionMap.has(category)) {
+      sectionMap.set(category, [])
     }
 
-    if (!examplesMap.has(category)) {
-      examplesMap.set(category, [])
-    }
-
-    examplesMap.get(category).push({
+    sectionMap.get(category).push({
       fileName: path.basename(jsonPath),
       json,
     })
@@ -71,146 +77,149 @@ function generateDocs() {
     fs.mkdirSync(outputDir, { recursive: true })
   }
 
-  const sortedCategories = Array.from(examplesMap.keys()).sort()
+  for (const section of sections) {
+    const sectionMap = examplesMap.get(section)
+    if (!sectionMap) continue
 
-  for (const category of sortedCategories) {
-    const categoryName = path.basename(category)
-    const categoryTitle = categoryName.charAt(0).toUpperCase() + categoryName.slice(1)
-    const outputFile = path.join(outputDir, `${category}.mdx`)
-
-    const outputParentDir = path.dirname(outputFile)
-    if (!fs.existsSync(outputParentDir)) {
-      fs.mkdirSync(outputParentDir, { recursive: true })
+    const sectionOutputDir = path.join(outputDir, section)
+    if (!fs.existsSync(sectionOutputDir)) {
+      fs.mkdirSync(sectionOutputDir, { recursive: true })
     }
 
-    let md = `# ${categoryTitle}\n\n`
+    const categories = Array.from(sectionMap.keys()).sort()
 
-    const examples = examplesMap.get(category)
-    for (const example of examples) {
-      const { json, fileName } = example
-      const title = json.name || fileName.replace('.json', '')
-
-      md += `## ${title}\n\n`
-
-      if (json.description) {
-        md += `${json.description}\n\n`
+    for (const category of categories) {
+      // category could be "area" or "analysis/sort"
+      // If "analysis/sort", we need to ensure "analysis" dir exists and create "sort.mdx" inside it
+      const categoryParts = category.split(path.sep)
+      const categoryName = categoryParts[categoryParts.length - 1]
+      
+      // Title logic
+      const categoryTitle = categoryName.charAt(0).toUpperCase() + categoryName.slice(1)
+      
+      const outputFile = path.join(sectionOutputDir, `${category}.mdx`)
+      const outputParentDir = path.dirname(outputFile)
+      
+      if (!fs.existsSync(outputParentDir)) {
+        fs.mkdirSync(outputParentDir, { recursive: true })
       }
 
-      md += '```tsx preview \n'
-      md += "import { VSeedRender } from '@components'\n\n"
-      md += `export default () => {\n`
-      // We pass only the vseed part of the JSON to the component
-      const vseedString = JSON.stringify(json.vseed, null, 2)
-      md += `  const vseedConfig = ${vseedString}\n\n`
-      md += `  return <VSeedRender vseed={vseedConfig} />\n`
-      md += `}\n`
-      md += '```\n\n'
-    }
+      let md = `# ${categoryTitle}\n\n`
 
-    fs.writeFileSync(outputFile, md, 'utf-8')
-    console.log(`Generated documentation for ${category} at ${outputFile}`)
+      const examples = sectionMap.get(category)
+      for (const example of examples) {
+        const { json, fileName } = example
+        const title = json.name || fileName.replace('.json', '')
+
+        md += `## ${title}\n\n`
+
+        if (json.description) {
+          md += `${json.description}\n\n`
+        }
+
+        md += '```tsx preview \n'
+        md += "import { VSeedRender } from '@components'\n\n"
+        md += `export default () => {\n`
+        const vseedString = JSON.stringify(json.vseed, null, 2)
+        md += `  const vseedConfig = ${vseedString}\n\n`
+        md += `  return <VSeedRender vseed={vseedConfig} />\n`
+        md += `}\n`
+        md += '```\n\n'
+      }
+
+      fs.writeFileSync(outputFile, md, 'utf-8')
+      console.log(`Generated documentation for ${section}/${category} at ${outputFile}`)
+    }
   }
 }
 
 function generateMeta() {
-  // Generate _meta.json based on generated files/directories
-  // This simplistic approach assumes we just want to list the categories
-  // But usually we want a recursive meta generation if we have nested categories.
-  // Given "examples/[feature]/xxx.json", categories are likely top-level features.
-  // But let's look at vquery implementation.
-  // VQuery implementation hardcoded some meta or generated it.
-  // VQuery impl:
-  /*
-  const meta = [
-    { type: 'dir', name: 'select', label: 'Select' },
-    ...
-  ]
-  */
-  // I should probably generate it dynamically based on sortedCategories
+  // Helper to recursively build meta structure
+  function buildMeta(dir) {
+    if (!fs.existsSync(dir)) return []
 
-  const chartTypeOrder = [
-    // table
-    'table',
-    'pivotTable',
-    // common
-    'line',
-    'column',
-    'columnPercent',
-    'columnParallel',
-    'bar',
-    'barPercent',
-    'barParallel',
-    'area',
-    'areaPercent',
-    'scatter',
-    'dualAxis',
-    'rose',
-    'roseParallel',
-    'pie',
-    'donut',
-    'radar',
-    'raceBar',
-    'raceColumn',
-    'raceScatter',
-    // hierarchy
-    'treeMap',
-    'sunburst',
-    'circlePacking',
-    // other
-    'heatmap',
-    'funnel',
-    'boxPlot',
-    'histogram',
-  ]
+    const items = fs.readdirSync(dir, { withFileTypes: true })
+    const meta = []
 
-  const sortedCategories = Array.from(examplesMap.keys()).sort((a, b) => {
-    const nameA = path.basename(a)
-    const nameB = path.basename(b)
+    // Filter out _meta.json itself
+    const validItems = items.filter(item => item.name !== '_meta.json' && !item.name.startsWith('.'))
 
-    // Normalize casing for boxPlot/boxplot
-    const normalize = (name) => (name.toLowerCase() === 'boxplot' ? 'boxPlot' : name)
+    // Sort: directories first, then files
+    validItems.sort((a, b) => {
+      if (a.isDirectory() && !b.isDirectory()) return -1
+      if (!a.isDirectory() && b.isDirectory()) return 1
+      return a.name.localeCompare(b.name)
+    })
 
-    const indexA = chartTypeOrder.indexOf(normalize(nameA))
-    const indexB = chartTypeOrder.indexOf(normalize(nameB))
-
-    if (indexA !== -1 && indexB !== -1) {
-      return indexA - indexB
+    for (const item of validItems) {
+      if (item.isDirectory()) {
+        // Check if this directory contains sub-items that need recursion
+        // Recurse first to generate inner _meta.json
+        const subDir = path.join(dir, item.name)
+        buildMeta(subDir)
+        
+        meta.push({
+          type: 'dir',
+          name: item.name,
+          label: item.name.charAt(0).toUpperCase() + item.name.slice(1),
+          // We might want collapsed: true by default
+        })
+      } else if (item.isFile() && item.name.endsWith('.mdx')) {
+        const name = item.name.replace('.mdx', '')
+        if (name === 'index') continue 
+        
+        meta.push({
+          type: 'file',
+          name: name,
+          label: name.charAt(0).toUpperCase() + name.slice(1)
+        })
+      }
     }
-    if (indexA !== -1) return -1
-    if (indexB !== -1) return 1
-    return nameA.localeCompare(nameB)
-  })
-
-  const meta = sortedCategories.map((cat) => {
-    // Assuming flat structure for now as per requirements "examples/[feature]/xxx.json"
-    // If nested, we might need more complex logic.
-    // cat could be "column" or "bar/stacked" if nested.
-    // If strictly "examples/[feature]/xxx.json", cat is "feature".
-    const name = path.basename(cat)
-    const label = name.charAt(0).toUpperCase() + name.slice(1)
-    return {
-      type: 'file', // it's a file because we generate `${category}.mdx`
-      name: name,
-      label: label,
+    
+    // Specific sorting logic for chartTypes if needed (like the previous implementation)
+    if (dir.endsWith('chartType')) {
+       const chartTypeOrder = [
+        'table', 'pivotTable', 'line', 'column', 'columnPercent', 'columnParallel',
+        'bar', 'barPercent', 'barParallel', 'area', 'areaPercent', 'scatter',
+        'dualAxis', 'rose', 'roseParallel', 'pie', 'donut', 'radar', 
+        'raceBar', 'raceColumn', 'raceScatter', 'treeMap', 'sunburst', 'circlePacking',
+        'heatmap', 'funnel', 'boxPlot', 'histogram'
+      ]
+      
+      meta.sort((a, b) => {
+        const normalize = (name) => (name.toLowerCase() === 'boxplot' ? 'boxPlot' : name)
+        const indexA = chartTypeOrder.indexOf(normalize(a.name))
+        const indexB = chartTypeOrder.indexOf(normalize(b.name))
+        
+        if (indexA !== -1 && indexB !== -1) return indexA - indexB
+        if (indexA !== -1) return -1
+        if (indexB !== -1) return 1
+        return 0
+      })
     }
-  })
 
-  // However, vquery example showed:
-  // { type: 'dir', name: 'select', label: 'Select' }
-  // But vquery generated `${category}.mdx`. Wait.
-  // VQuery script: `const outputFile = path.join(outputDir, `${category}.mdx`)`
-  // If `category` is a directory name, then creating a file with same name.mdx works.
-  // But usually in Nextra/Rspress, if you have a folder, you use type: 'dir'. If you have a file, type: 'file'.
-  // VQuery generated .mdx files for categories. So they are files in the outputDir.
-  // So type: 'file' is correct for the top level list in `_meta.json`.
+    if (meta.length > 0) {
+      fs.writeFileSync(path.join(dir, '_meta.json'), JSON.stringify(meta, null, 2), 'utf-8')
+      console.log(`Generated _meta.json at ${path.join(dir, '_meta.json')}`)
+    }
+    
+    return meta
+  }
 
-  const metaPath = path.join(outputDir, '_meta.json')
-  fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2), 'utf-8')
-  console.log(`Generated _meta.json at ${metaPath}`)
+  // Generate for root examples dir (which contains chartType and features dirs)
+  buildMeta(outputDir)
 }
 
 console.log('Building examples documentation...')
-scanDir(examplesDir)
+
+// Clean output directory first? Maybe safer not to wipe everything if mixed content exists,
+// but for generated docs it is usually safe.
+// Let's rely on overwriting.
+
+for (const section of sections) {
+  scanDir(path.join(examplesDir, section), section)
+}
+
 generateDocs()
 generateMeta()
 console.log('Done.')

@@ -1,0 +1,47 @@
+[
+  {
+    "type": "dir",
+    "name": "analysis",
+    "label": "Analysis"
+  },
+  {
+    "type": "dir",
+    "name": "annotation",
+    "label": "Annotation"
+  },
+  {
+    "type": "dir",
+    "name": "baseConfig",
+    "label": "BaseConfig"
+  },
+  {
+    "type": "dir",
+    "name": "cellStyle",
+    "label": "CellStyle"
+  },
+  {
+    "type": "dir",
+    "name": "dataConfig",
+    "label": "DataConfig"
+  },
+  {
+    "type": "dir",
+    "name": "i18n",
+    "label": "I18n"
+  },
+  {
+    "type": "dir",
+    "name": "interaction",
+    "label": "Interaction"
+  },
+  {
+    "type": "dir",
+    "name": "markStyle",
+    "label": "MarkStyle"
+  },
+  {
+    "type": "dir",
+    "name": "regressionLine",
+    "label": "RegressionLine"
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "type": "file",
+    "name": "color",
+    "label": "Color"
+  },
+  {
+    "type": "file",
+    "name": "label",
+    "label": "Label"
+  },
+  {
+    "type": "file",
+    "name": "legend",
+    "label": "Legend"
+  }
+]
