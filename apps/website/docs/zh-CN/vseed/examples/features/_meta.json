@@ -1,47 +1,92 @@
 [
   {
-    "type": "dir",
-    "name": "analysis",
-    "label": "Analysis"
+    "type": "file",
+    "name": "annotationArea",
+    "label": "AnnotationArea"
   },
   {
-    "type": "dir",
-    "name": "annotation",
-    "label": "Annotation"
+    "type": "file",
+    "name": "annotationHorizontalLine",
+    "label": "AnnotationHorizontalLine"
   },
   {
-    "type": "dir",
-    "name": "baseConfig",
-    "label": "BaseConfig"
+    "type": "file",
+    "name": "annotationPoint",
+    "label": "AnnotationPoint"
   },
   {
-    "type": "dir",
-    "name": "cellStyle",
-    "label": "CellStyle"
+    "type": "file",
+    "name": "annotationVerticalLine",
+    "label": "AnnotationVerticalLine"
   },
   {
-    "type": "dir",
-    "name": "dataConfig",
-    "label": "DataConfig"
+    "type": "file",
+    "name": "barStyle",
+    "label": "BarStyle"
   },
   {
-    "type": "dir",
+    "type": "file",
+    "name": "bodyCellStyle",
+    "label": "BodyCellStyle"
+  },
+  {
+    "type": "file",
+    "name": "brush",
+    "label": "Brush"
+  },
+  {
+    "type": "file",
+    "name": "color",
+    "label": "Color"
+  },
+  {
+    "type": "file",
+    "name": "dataset",
+    "label": "Dataset"
+  },
+  {
+    "type": "file",
+    "name": "dimensions",
+    "label": "Dimensions"
+  },
+  {
+    "type": "file",
     "name": "i18n",
     "label": "I18n"
   },
   {
-    "type": "dir",
-    "name": "interaction",
-    "label": "Interaction"
+    "type": "file",
+    "name": "label",
+    "label": "Label"
   },
   {
-    "type": "dir",
-    "name": "markStyle",
-    "label": "MarkStyle"
+    "type": "file",
+    "name": "legend",
+    "label": "Legend"
   },
   {
-    "type": "dir",
-    "name": "regressionLine",
-    "label": "RegressionLine"
+    "type": "file",
+    "name": "measures",
+    "label": "Measures"
+  },
+  {
+    "type": "file",
+    "name": "numFormat",
+    "label": "NumFormat"
+  },
+  {
+    "type": "file",
+    "name": "pointStyle",
+    "label": "PointStyle"
+  },
+  {
+    "type": "file",
+    "name": "polynomial",
+    "label": "Polynomial"
+  },
+  {
+    "type": "file",
+    "name": "sort",
+    "label": "Sort"
   }
 ]

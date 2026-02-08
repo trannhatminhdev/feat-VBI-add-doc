@@ -162,6 +162,7 @@ function generateMeta() {
           type: 'dir',
           name: item.name,
           label: item.name.charAt(0).toUpperCase() + item.name.slice(1),
+          collapsed: true,
           // We might want collapsed: true by default
         })
       } else if (item.isFile() && item.name.endsWith('.mdx')) {
