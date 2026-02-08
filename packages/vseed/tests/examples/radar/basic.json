@@ -1,0 +1,15 @@
+{
+  "name": "Basic Radar",
+  "description": "A radar chart for comparing multiple quantitative variables.",
+  "vseed": {
+    "chartType": "radar",
+    "dataset": [
+      {
+        "profit": 10,
+        "sales": 20,
+        "count": 50,
+        "rateOfReturn": 1
+      }
+    ]
+  }
+}

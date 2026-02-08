@@ -6,7 +6,7 @@ import { datasetScatter } from '../dataset'
 
 export const playerYY: VChartSpecPipe = (spec, context) => {
   const { vseed, advancedVSeed } = context
-  const { datasetReshapeInfo, dimensions = [], chartType } = advancedVSeed
+  const { datasetReshapeInfo, dimensions = [], chartType, encoding } = advancedVSeed
   const baseConfig = advancedVSeed.config[chartType] as { player: Player }
   const result = datasetScatter(spec, context)
 
@@ -46,7 +46,7 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
 
   const duration = interval
   const exchangeDuration = interval * 0.6
-  const dataKey = dimensions.filter((d) => d.encoding !== 'player').map((d) => d.id)
+  const dataKey = dimensions.filter((d) => !encoding.player?.includes(d.id)).map((d) => d.id)
   const padding = 12
   const textSize = 36
   return {
