@@ -129,8 +129,10 @@ function generateMeta() {
   // I should probably generate it dynamically based on sortedCategories
 
   const chartTypeOrder = [
+    // table
     'table',
     'pivotTable',
+    // common
     'line',
     'column',
     'columnPercent',
@@ -150,6 +152,11 @@ function generateMeta() {
     'raceBar',
     'raceColumn',
     'raceScatter',
+    // hierarchy
+    'treeMap',
+    'sunburst',
+    'circlePacking',
+    // other
     'heatmap',
     'funnel',
     'boxPlot',

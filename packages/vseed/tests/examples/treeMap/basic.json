@@ -1,0 +1,19 @@
+{
+  "name": "Basic TreeMap",
+  "description": "A tree map showing the hierarchy and proportion of each category.",
+  "vseed": {
+    "chartType": "treeMap",
+    "dataset": [
+      { "category": "A", "subCategory": "A1", "value": 10 },
+      { "category": "A", "subCategory": "A2", "value": 20 },
+      { "category": "B", "subCategory": "B1", "value": 30 },
+      { "category": "B", "subCategory": "B2", "value": 40 },
+      { "category": "C", "subCategory": "C1", "value": 50 }
+    ],
+    "dimensions": [
+      { "id": "category", "alias": "Category" },
+      { "id": "subCategory", "alias": "SubCategory" }
+    ],
+    "measures": [{ "id": "value", "alias": "Value" }]
+  }
+}

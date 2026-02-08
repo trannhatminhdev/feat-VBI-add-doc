@@ -31,7 +31,7 @@
     "build": "rslib build",
     "build:test": "node scripts/build-tests.js",
     "build:docs": "node scripts/build-examples.js",
-    "g": "pnpm run build:test && pnpm run build:docs",
+    "g": "pnpm run build:test && pnpm run build:docs && pnpm run test:update",
     "dev": "rslib build --watch --no-clean",
     "lint": "eslint .",
     "test": "rstest",

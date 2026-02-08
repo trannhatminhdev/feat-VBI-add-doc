@@ -106,6 +106,21 @@
   },
   {
     "type": "file",
+    "name": "treeMap",
+    "label": "TreeMap"
+  },
+  {
+    "type": "file",
+    "name": "sunburst",
+    "label": "Sunburst"
+  },
+  {
+    "type": "file",
+    "name": "circlePacking",
+    "label": "CirclePacking"
+  },
+  {
+    "type": "file",
     "name": "heatmap",
     "label": "Heatmap"
   },

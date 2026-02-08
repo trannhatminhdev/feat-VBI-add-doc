@@ -518,7 +518,7 @@
 
 ### chartType
 
-**Type:** `"area" | "column" | "areaPercent" | "columnParallel" | "columnPercent" | "line" | "scatter" | undefined`
+**Type:** `"area" | "column" | "areaPercent" | "line" | "columnParallel" | "columnPercent" | "scatter" | undefined`
 
 :::note{title=描述}
 设置该指标在双轴图中的图表类型, 仅适用于双轴图
