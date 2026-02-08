@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { useDark } from '@rspress/core/runtime'
 import VChart, { ISpec } from '@visactor/vchart'
 import {
@@ -33,7 +33,38 @@ declare global {
 registerAll()
 register.chartModule('vchart', VChart)
 
-export const VSeedRender = (props: { vseed: VSeed }) => {
+const withVisible = <P extends object>(WrappedComponent: React.ComponentType<P>) => {
+  return (props: P) => {
+    const [visible, setVisible] = useState(false)
+    const ref = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            setVisible(true)
+            observer.disconnect()
+          }
+        },
+        { threshold: 0.1 },
+      )
+
+      if (ref.current) {
+        observer.observe(ref.current)
+      }
+
+      return () => observer.disconnect()
+    }, [])
+
+    return (
+      <div ref={ref} style={{ minHeight: 1 }}>
+        {visible ? <WrappedComponent {...props} /> : <div style={{ minHeight: 300 }}></div>}
+      </div>
+    )
+  }
+}
+
+export const VSeedRender = withVisible((props: { vseed: VSeed }) => {
   const { vseed } = props
   const ref = useRef<HTMLDivElement>(null)
   const builderRef = useRef<Builder>(null)
@@ -179,4 +210,4 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
       {' '}
     </div>
   )
-}
+})
