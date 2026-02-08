@@ -3,7 +3,7 @@
   "description": "removeOnClick",
   "vseed": {
     "chartType": "column",
-    "dataset": [],
+    "dataset": [{ "value": 1 }],
     "brush": {
       "enable": true,
       "removeOnClick": false

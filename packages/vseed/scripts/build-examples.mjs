@@ -27,7 +27,7 @@ function scanDir(dir, section, relativePath = '') {
 
   for (const file of files) {
     const fullPath = path.join(dir, file.name)
-    
+
     if (file.isDirectory()) {
       // For chartType, immediate subdirs are categories (area, bar, etc.)
       // For features, it might be nested (analysis/sort, etc.)
@@ -93,13 +93,13 @@ function generateDocs() {
       // If "analysis/sort", we need to ensure "analysis" dir exists and create "sort.mdx" inside it
       const categoryParts = category.split(path.sep)
       const categoryName = categoryParts[categoryParts.length - 1]
-      
+
       // Title logic
       const categoryTitle = categoryName.charAt(0).toUpperCase() + categoryName.slice(1)
-      
+
       const outputFile = path.join(sectionOutputDir, `${category}.mdx`)
       const outputParentDir = path.dirname(outputFile)
-      
+
       if (!fs.existsSync(outputParentDir)) {
         fs.mkdirSync(outputParentDir, { recursive: true })
       }
@@ -142,7 +142,7 @@ function generateMeta() {
     const meta = []
 
     // Filter out _meta.json itself
-    const validItems = items.filter(item => item.name !== '_meta.json' && !item.name.startsWith('.'))
+    const validItems = items.filter((item) => item.name !== '_meta.json' && !item.name.startsWith('.'))
 
     // Sort: directories first, then files
     validItems.sort((a, b) => {
@@ -157,7 +157,7 @@ function generateMeta() {
         // Recurse first to generate inner _meta.json
         const subDir = path.join(dir, item.name)
         buildMeta(subDir)
-        
+
         meta.push({
           type: 'dir',
           name: item.name,
@@ -166,31 +166,54 @@ function generateMeta() {
         })
       } else if (item.isFile() && item.name.endsWith('.mdx')) {
         const name = item.name.replace('.mdx', '')
-        if (name === 'index') continue 
-        
+        if (name === 'index') continue
+
         meta.push({
           type: 'file',
           name: name,
-          label: name.charAt(0).toUpperCase() + name.slice(1)
+          label: name.charAt(0).toUpperCase() + name.slice(1),
         })
       }
     }
-    
+
     // Specific sorting logic for chartTypes if needed (like the previous implementation)
     if (dir.endsWith('chartType')) {
-       const chartTypeOrder = [
-        'table', 'pivotTable', 'line', 'column', 'columnPercent', 'columnParallel',
-        'bar', 'barPercent', 'barParallel', 'area', 'areaPercent', 'scatter',
-        'dualAxis', 'rose', 'roseParallel', 'pie', 'donut', 'radar', 
-        'raceBar', 'raceColumn', 'raceScatter', 'treeMap', 'sunburst', 'circlePacking',
-        'heatmap', 'funnel', 'boxPlot', 'histogram'
+      const chartTypeOrder = [
+        'table',
+        'pivotTable',
+        'line',
+        'column',
+        'columnPercent',
+        'columnParallel',
+        'bar',
+        'barPercent',
+        'barParallel',
+        'area',
+        'areaPercent',
+        'scatter',
+        'dualAxis',
+        'rose',
+        'roseParallel',
+        'pie',
+        'donut',
+        'radar',
+        'raceBar',
+        'raceColumn',
+        'raceScatter',
+        'treeMap',
+        'sunburst',
+        'circlePacking',
+        'heatmap',
+        'funnel',
+        'boxPlot',
+        'histogram',
       ]
-      
+
       meta.sort((a, b) => {
         const normalize = (name) => (name.toLowerCase() === 'boxplot' ? 'boxPlot' : name)
         const indexA = chartTypeOrder.indexOf(normalize(a.name))
         const indexB = chartTypeOrder.indexOf(normalize(b.name))
-        
+
         if (indexA !== -1 && indexB !== -1) return indexA - indexB
         if (indexA !== -1) return -1
         if (indexB !== -1) return 1
@@ -202,7 +225,7 @@ function generateMeta() {
       fs.writeFileSync(path.join(dir, '_meta.json'), JSON.stringify(meta, null, 2), 'utf-8')
       console.log(`Generated _meta.json at ${path.join(dir, '_meta.json')}`)
     }
-    
+
     return meta
   }
 
