@@ -34,10 +34,13 @@ export const zRaceScatter = z.object({
   dimensions: zDimensions.nullish(),
   measures: zMeasures.nullish(),
   page: zPage.nullish(),
+
   player: zPlayer.nullish(),
   sort: zSort.nullish(),
 
   backgroundColor: zBackgroundColor.nullish(),
+  size: z.number().or(z.array(z.number())).nullish(),
+  sizeRange: z.number().or(z.array(z.number())).nullish(),
   color: zColor.nullish(),
   label: zLabel.nullish(),
   legend: zLegend.nullish(),

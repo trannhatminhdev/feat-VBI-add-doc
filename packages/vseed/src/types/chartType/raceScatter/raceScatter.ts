@@ -1,6 +1,5 @@
 import { type Locale } from '../../i18n'
 import type {
-  ScatterDimension,
   ScatterMeasure,
   Player,
   Sort,
@@ -21,17 +20,35 @@ import type {
   Tooltip,
   XLinearAxis,
   YLinearAxis,
+  RaceScatterDimension,
 } from '../../properties'
 
 export interface RaceScatter {
   chartType: 'raceScatter'
   dataset: Dataset
-  dimensions?: ScatterDimension[]
+  dimensions?: RaceScatterDimension[]
   measures?: ScatterMeasure[]
   player?: Player
   sort?: Sort
   page?: Page
+
   backgroundColor?: BackgroundColor
+  /**
+   * @description 散点图指标的大小, 用于定义散点图中数据点的大小 或 大小范围
+   * - 若大小范围是一个数字, 例如10, 表示数据点的大小范围固定为10
+   * - 若大小范围是一个长度为2的数组, 例如[10, 40], 表示数据点的大小范围在10到40之间
+   * - 与sizeRange互斥, 优先级低于 size
+   */
+  size?: number | number[]
+
+  /**
+   * @description 散点图指标的大小范围, 用于定义散点图中数据点的大小范围,
+   * - 若大小范围是一个长度为2的数组, 例如[10, 40], 表示数据点的大小范围在10到40之间
+   * - 若大小范围是一个数字, 例如10, 表示数据点的大小范围固定为10
+   * - 与sizeRange互斥, 优先级高于 size
+   */
+  sizeRange?: number | number[]
+
   color?: Color
   label?: Label
   legend?: Legend
