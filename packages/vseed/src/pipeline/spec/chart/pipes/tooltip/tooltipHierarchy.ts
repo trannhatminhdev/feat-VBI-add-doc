@@ -1,7 +1,7 @@
 import type { VChartSpecPipe } from 'src/types'
 import { tooltip as commonTooltip } from './tooltip'
 
-export const tooltipCirclePacking: VChartSpecPipe = (spec, context) => {
+export const tooltipHierarchy: VChartSpecPipe = (spec, context) => {
   // Reuse common tooltip logic
   const result = commonTooltip(spec, context)
 

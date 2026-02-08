@@ -6,7 +6,7 @@ import {
   linearColor,
   colorAdapter,
   backgroundColor,
-  tooltipCirclePacking,
+  tooltipHierarchy,
   labelCirclePacking,
   discreteLegend,
   colorLegend,
@@ -29,7 +29,7 @@ const circlePacking: VChartSpecPipeline = [
   colorAdapter(color, linearColor),
   backgroundColor,
   colorAdapter(discreteLegend, colorLegend),
-  tooltipCirclePacking,
+  tooltipHierarchy,
   labelCirclePacking,
 ]
 
@@ -43,7 +43,7 @@ const pivotCirclePacking: PivotChartSpecPipeline = [
     datasetHierarchy,
     colorAdapter(color, linearColor),
     backgroundColor,
-    tooltipCirclePacking,
+    tooltipHierarchy,
     labelCirclePacking,
   ]),
   pivotRowDimensions,

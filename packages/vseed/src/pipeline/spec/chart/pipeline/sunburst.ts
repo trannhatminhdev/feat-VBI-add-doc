@@ -6,7 +6,7 @@ import {
   linearColor,
   colorAdapter,
   backgroundColor,
-  tooltipSunburst,
+  tooltipHierarchy,
   labelSunburst,
   discreteLegend,
   colorLegend,
@@ -29,7 +29,7 @@ const sunburst: VChartSpecPipeline = [
   colorAdapter(color, linearColor),
   backgroundColor,
   colorAdapter(discreteLegend, colorLegend),
-  tooltipSunburst,
+  tooltipHierarchy,
   labelSunburst,
 ]
 
@@ -43,7 +43,7 @@ const pivotSunburst: PivotChartSpecPipeline = [
     datasetHierarchy,
     colorAdapter(color, linearColor),
     backgroundColor,
-    tooltipSunburst,
+    tooltipHierarchy,
     labelSunburst,
   ]),
   pivotRowDimensions,
