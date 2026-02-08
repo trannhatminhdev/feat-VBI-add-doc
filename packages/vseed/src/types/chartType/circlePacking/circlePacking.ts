@@ -3,9 +3,9 @@ import type {
   BackgroundColor,
   Color,
   Dataset,
-  Dimensions,
+  HierarchyDimension,
+  HierarchyMeasure,
   Label,
-  Measures,
   Page,
   Theme,
   Tooltip,
@@ -47,14 +47,14 @@ export interface CirclePacking {
    * @description 维度配置，用于定义数据的层级结构
    * @example [{id: 'category', alias: '类别'}]
    */
-  dimensions?: Dimensions
+  dimensions?: HierarchyDimension[]
 
   /**
    * 指标
    * @description 指标配置，用于定义圆的大小
    * @example [{id: 'value', alias: '数值'}]
    */
-  measures?: Measures
+  measures?: HierarchyMeasure[]
 
   /**
    * 分页配置

@@ -22,6 +22,4 @@ export type { RaceBarDimension, RaceBarParallelDimension, RaceBarPercentDimensio
 export type { TableDimension, DimensionGroup, DimensionTree } from './tableDimension'
 
 // hierarchy
-export type { TreeMapDimension } from './treeMapDimension'
-export type { SunburstDimension } from './sunburstDimension'
-export type { CirclePackingDimension } from './circlePackingDimension'
+export type { HierarchyDimension } from './hierarchyDimension'

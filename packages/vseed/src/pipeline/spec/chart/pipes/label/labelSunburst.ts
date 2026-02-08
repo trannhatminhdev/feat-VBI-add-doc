@@ -4,7 +4,7 @@ import { label as commonLabel } from './label'
 
 export const labelSunburst: VChartSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
-  const { chartType } = advancedVSeed
+  const { chartType, encoding } = advancedVSeed
   const baseConfig = advancedVSeed.config[chartType] as { label: Label }
   const { label } = baseConfig
 
@@ -20,7 +20,10 @@ export const labelSunburst: VChartSpecPipe = (spec, context) => {
         ...labelSpec?.style,
         fontSize: 12,
         fillOpacity: (datum: any) => {
-          return datum.isLeaf ? 0.4 : 0.8
+          if (encoding.hierarchy?.length === 1) {
+            return 1
+          }
+          return datum.isLeaf ? 0.4 : 0.6
         },
       },
     }

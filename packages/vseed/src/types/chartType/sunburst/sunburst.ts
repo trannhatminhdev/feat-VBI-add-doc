@@ -1,15 +1,6 @@
+import type { HierarchyMeasure } from 'src/types/properties/measures/hierarchyMeasures'
 import type { Locale } from '../../i18n'
-import type {
-  BackgroundColor,
-  Color,
-  Dataset,
-  Dimensions,
-  Label,
-  Measures,
-  Page,
-  Theme,
-  Tooltip,
-} from '../../properties'
+import type { BackgroundColor, Color, Dataset, HierarchyDimension, Label, Page, Theme, Tooltip } from '../../properties'
 
 /**
  * @description 旭日图，用于展示层级数据，通过扇形面积大小表示数值大小
@@ -47,14 +38,14 @@ export interface Sunburst {
    * @description 维度配置，用于定义数据的层级结构
    * @example [{id: 'category', alias: '类别'}]
    */
-  dimensions?: Dimensions
+  dimensions?: HierarchyDimension[]
 
   /**
    * 指标
    * @description 指标配置，用于定义扇形的大小（面积）
    * @example [{id: 'value', alias: '数值'}]
    */
-  measures?: Measures
+  measures?: HierarchyMeasure[]
 
   /**
    * 分页配置

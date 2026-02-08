@@ -2,7 +2,6 @@ import { unique } from 'remeda'
 import { MeasureId } from 'src/dataReshape'
 import { hasMultipleMeasureInSingleView } from 'src/pipeline/utils'
 import type { AdvancedPipe, Dimension, Dimensions, Encoding, Measure, Measures } from 'src/types'
-import { addColorToEncoding } from './color'
 
 export const defaultEncodingForHierarchy: AdvancedPipe = (advancedVSeed) => {
   const { measures = [], reshapeMeasures = [], dimensions = [] } = advancedVSeed
@@ -40,28 +39,12 @@ export const encodingForHierarchy: AdvancedPipe = (advancedVSeed) => {
  */
 const generateDefaultDimensionEncoding = (dimensions: Dimensions, encoding: Encoding, isMultiMeasure: boolean) => {
   const uniqueDimIds = unique(dimensions.map((d) => d.id))
-
-  // 默认所有维度都参与层级构建 (排除 MeasureId)
-  encoding.hierarchy = uniqueDimIds.filter((d) => d !== MeasureId)
-
-  // 默认颜色映射:
-  // 1. 如果是多指标，通常 MeasureId 会作为颜色区分
-  // 2. 如果是单指标，按照需求，将第一个维度映射到 color
-  if (isMultiMeasure) {
-    // 多指标场景，通常 MeasureId 就在 uniqueDimIds 中
-    // 这里我们简单地取第一个维度作为 color，如果是多指标，MeasureId 可能会被放到 dimensions 中
-    // 但为了稳健，如果 isMultiMeasure，我们倾向于让 MeasureId 参与颜色
-    // 不过按照用户明确需求 "让第一个维度 encoding到color"
-    encoding.color = uniqueDimIds.slice(0, 1)
+  if (!isMultiMeasure) {
+    encoding.hierarchy = uniqueDimIds.filter((d) => d !== MeasureId)
   } else {
-    // 单指标场景，取第一个维度
-    // 排除 MeasureId 以防万一 (虽然单指标通常不含 MeasureId 维度，除非显式添加)
-    const validDims = uniqueDimIds.filter((d) => d !== MeasureId)
-    encoding.color = validDims.slice(0, 1)
+    encoding.hierarchy = uniqueDimIds
   }
 
-  // Detail 通常跟随 Hierarchy 或者 Color
-  // 这里设为与 Hierarchy 一致，确保所有层级都被正确展开
   encoding.detail = encoding.hierarchy
 
   encoding.tooltip = uniqueDimIds.filter((d) => d !== MeasureId)
@@ -73,12 +56,12 @@ const generateDefaultDimensionEncoding = (dimensions: Dimensions, encoding: Enco
 const generateDimensionEncoding = (dimensions: Dimensions, encoding: Encoding, isMultiMeasure: boolean) => {
   // hierarchy
   encoding.hierarchy = unique(dimensions.filter((item) => item.encoding === 'hierarchy').map((item) => item.id))
-  if (encoding.hierarchy.length === 0) {
-    encoding.hierarchy = unique(dimensions.map((d) => d.id)).filter((d) => d !== MeasureId)
+  if (isMultiMeasure && !encoding.hierarchy.includes(MeasureId)) {
+    encoding.hierarchy.push(MeasureId)
   }
 
   // color
-  addColorToEncoding(dimensions, encoding, isMultiMeasure)
+  encoding.color = encoding.hierarchy.slice(0, 1)
 
   // detail
   encoding.detail = unique(dimensions.filter((item) => item.encoding === 'detail').map((item) => item.id))
