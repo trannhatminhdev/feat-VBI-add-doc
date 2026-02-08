@@ -16,7 +16,7 @@ export const initSunburst: VChartSpecPipe = (spec, context) => {
   result.offsetX = 0
   result.offsetY = 0
   result.drill = true
-
+  result.padding = 0
   result.sunburst = {
     visible: true,
     style: {

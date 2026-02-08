@@ -1,19 +1,28 @@
 {
-  "name": "Basic Sunburst",
-  "description": "A sunburst chart showing the hierarchy and proportion of each category.",
+  "name": "Product Sales Sunburst",
+  "description": "A sunburst chart showing sales hierarchy across product categories, sub-categories, and products.",
   "vseed": {
     "chartType": "sunburst",
     "dataset": [
-      { "category": "A", "subCategory": "A1", "value": 10 },
-      { "category": "A", "subCategory": "A2", "value": 20 },
-      { "category": "B", "subCategory": "B1", "value": 30 },
-      { "category": "B", "subCategory": "B2", "value": 40 },
-      { "category": "C", "subCategory": "C1", "value": 50 }
+      { "category": "Electronics", "subCategory": "Computers", "product": "Laptop", "sales": 5000 },
+      { "category": "Electronics", "subCategory": "Computers", "product": "Tablet", "sales": 3000 },
+      { "category": "Electronics", "subCategory": "Computers", "product": "Desktop", "sales": 4000 },
+      { "category": "Electronics", "subCategory": "Phones", "product": "Smartphone", "sales": 8000 },
+      { "category": "Electronics", "subCategory": "Phones", "product": "Landline", "sales": 1000 },
+      { "category": "Furniture", "subCategory": "Seating", "product": "Office Chair", "sales": 2000 },
+      { "category": "Furniture", "subCategory": "Seating", "product": "Sofa", "sales": 3500 },
+      { "category": "Furniture", "subCategory": "Tables", "product": "Desk", "sales": 1500 },
+      { "category": "Furniture", "subCategory": "Tables", "product": "Coffee Table", "sales": 1200 },
+      { "category": "Office Supplies", "subCategory": "Paper", "product": "Printer Paper", "sales": 800 },
+      { "category": "Office Supplies", "subCategory": "Paper", "product": "Notebook", "sales": 500 },
+      { "category": "Office Supplies", "subCategory": "Stationery", "product": "Pen", "sales": 300 },
+      { "category": "Office Supplies", "subCategory": "Stationery", "product": "Stapler", "sales": 200 }
     ],
     "dimensions": [
       { "id": "category", "alias": "Category" },
-      { "id": "subCategory", "alias": "SubCategory" }
+      { "id": "subCategory", "alias": "SubCategory" },
+      { "id": "product", "alias": "Product" }
     ],
-    "measures": [{ "id": "value", "alias": "Value" }]
+    "measures": [{ "id": "sales", "alias": "Sales" }]
   }
 }

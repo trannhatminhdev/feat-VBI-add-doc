@@ -10,6 +10,17 @@ export const initTreeMap: VChartSpecPipe = (spec, context) => {
   result.type = 'treemap'
   result.categoryField = 'name'
   result.valueField = foldInfo.measureValue
+  result.padding = 0
+
+  result.animationEnter = {
+    easing: 'cubicInOut',
+  }
+  result.animationExit = {
+    easing: 'cubicInOut',
+  }
+  result.animationUpdate = {
+    easing: 'cubicInOut',
+  }
 
   return result
 }

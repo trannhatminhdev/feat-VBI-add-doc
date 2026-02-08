@@ -19,7 +19,7 @@ export const initCirclePacking: VChartSpecPipe = (spec, context) => {
     },
   }
   result.layoutPadding = [0, 10, 10]
-
+  result.padding = 0
   // Animation configuration
   result.animationEnter = {
     easing: 'cubicInOut',

@@ -5,7 +5,7 @@ export const datasetHierarchy: VChartSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
   const { datasetReshapeInfo, dataset } = advancedVSeed
   const { foldInfo } = datasetReshapeInfo[0]
-  const { measureValue } = foldInfo
+  const { measureValue, measureId } = foldInfo
 
   // 1. 获取 hierarchy encoding 对应的字段
   // 在 advanced pipeline 中，encodingForHierarchy 已经确保了 dimensions 被正确映射到 'hierarchy' 通道
@@ -18,7 +18,7 @@ export const datasetHierarchy: VChartSpecPipe = (spec, context) => {
   }
 
   // 3. 构建树形结构
-  const tree = buildTree(dataset, hierarchyFields, measureValue)
+  const tree = buildTree(dataset, hierarchyFields, measureValue, measureId)
 
   result.data = [
     {
@@ -35,8 +35,9 @@ export const datasetHierarchy: VChartSpecPipe = (spec, context) => {
  * @param dataset 平铺的数据集
  * @param hierarchyFields 层级字段列表
  * @param measureValueField 指标值字段名
+ * @param measureIdField 指标ID字段名
  */
-const buildTree = (dataset: Datum[], hierarchyFields: string[], measureValueField: string) => {
+const buildTree = (dataset: Datum[], hierarchyFields: string[], measureValueField: string, measureIdField: string) => {
   const root: any = { name: 'root', children: [] }
 
   dataset.forEach((datum) => {
@@ -60,12 +61,42 @@ const buildTree = (dataset: Datum[], hierarchyFields: string[], measureValueFiel
     // 叶子节点：附加原始数据的所有属性
     // 这样 Tooltip 和其他通道（如 Color）可以正常工作
     Object.assign(currentNode, datum)
+    currentNode.isLeaf = true
 
     // 确保 value 字段存在，用于图表的大小映射
     if (measureValueField && datum[measureValueField] !== undefined) {
-      currentNode.value = datum[measureValueField]
+      currentNode.value = Number(datum[measureValueField])
     }
   })
+
+  // 后序遍历：自底向上聚合 value
+  const aggregate = (node: any) => {
+    if (node.children && node.children.length > 0) {
+      node.isLeaf = false
+      let sum = 0
+      node.children.forEach((child: any) => {
+        sum += aggregate(child)
+      })
+      node.value = sum
+
+      // 为中间节点补充 measureValueField 字段，保证 Tooltip 能取到值
+      if (measureValueField) {
+        node[measureValueField] = sum
+      }
+
+      // 为中间节点补充 measureIdField 字段，保证 Tooltip 能正确格式化
+      // 假设同一分支下的 measureId 是一致的，取第一个子节点的即可
+      if (measureIdField && node.children[0]) {
+        node[measureIdField] = node.children[0][measureIdField]
+      }
+
+      return sum
+    }
+    // 叶子节点直接返回值
+    return node.value || 0
+  }
+
+  root.children.forEach(aggregate)
 
   return root.children
 }

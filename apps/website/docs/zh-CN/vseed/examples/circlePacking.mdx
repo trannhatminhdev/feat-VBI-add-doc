@@ -1,8 +1,8 @@
 # CirclePacking
 
-## Basic CirclePacking
+## Product Sales CirclePacking
 
-A circle packing chart showing the hierarchy and proportion of each category.
+A circle packing chart showing sales hierarchy across product categories, sub-categories, and products.
 
 ```tsx preview
 import { VSeedRender } from '@components'
@@ -12,29 +12,82 @@ export default () => {
     chartType: 'circlePacking',
     dataset: [
       {
-        category: 'A',
-        subCategory: 'A1',
-        value: 10,
+        category: 'Electronics',
+        subCategory: 'Computers',
+        product: 'Laptop',
+        sales: 5000,
       },
       {
-        category: 'A',
-        subCategory: 'A2',
-        value: 20,
+        category: 'Electronics',
+        subCategory: 'Computers',
+        product: 'Tablet',
+        sales: 3000,
       },
       {
-        category: 'B',
-        subCategory: 'B1',
-        value: 30,
+        category: 'Electronics',
+        subCategory: 'Computers',
+        product: 'Desktop',
+        sales: 4000,
       },
       {
-        category: 'B',
-        subCategory: 'B2',
-        value: 40,
+        category: 'Electronics',
+        subCategory: 'Phones',
+        product: 'Smartphone',
+        sales: 8000,
       },
       {
-        category: 'C',
-        subCategory: 'C1',
-        value: 50,
+        category: 'Electronics',
+        subCategory: 'Phones',
+        product: 'Landline',
+        sales: 1000,
+      },
+      {
+        category: 'Furniture',
+        subCategory: 'Seating',
+        product: 'Office Chair',
+        sales: 2000,
+      },
+      {
+        category: 'Furniture',
+        subCategory: 'Seating',
+        product: 'Sofa',
+        sales: 3500,
+      },
+      {
+        category: 'Furniture',
+        subCategory: 'Tables',
+        product: 'Desk',
+        sales: 1500,
+      },
+      {
+        category: 'Furniture',
+        subCategory: 'Tables',
+        product: 'Coffee Table',
+        sales: 1200,
+      },
+      {
+        category: 'Office Supplies',
+        subCategory: 'Paper',
+        product: 'Printer Paper',
+        sales: 800,
+      },
+      {
+        category: 'Office Supplies',
+        subCategory: 'Paper',
+        product: 'Notebook',
+        sales: 500,
+      },
+      {
+        category: 'Office Supplies',
+        subCategory: 'Stationery',
+        product: 'Pen',
+        sales: 300,
+      },
+      {
+        category: 'Office Supplies',
+        subCategory: 'Stationery',
+        product: 'Stapler',
+        sales: 200,
       },
     ],
     dimensions: [
@@ -46,11 +99,15 @@ export default () => {
         id: 'subCategory',
         alias: 'SubCategory',
       },
+      {
+        id: 'product',
+        alias: 'Product',
+      },
     ],
     measures: [
       {
-        id: 'value',
-        alias: 'Value',
+        id: 'sales',
+        alias: 'Sales',
       },
     ],
   }
