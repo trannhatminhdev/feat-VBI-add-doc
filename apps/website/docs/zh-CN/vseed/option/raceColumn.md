@@ -13,7 +13,7 @@
 
 ## dimensions
 
-**Type:** `BarDimension[] | undefined`
+**Type:** `RaceColumnDimension[] | undefined`
 
 
 ### id
@@ -36,12 +36,12 @@
 
 ### encoding
 
-**Type:** `"color" | "detail" | "tooltip" | "label" | "row" | "column" | "yAxis" | undefined`
+**Type:** `"xAxis" | "color" | "detail" | "tooltip" | "label" | "row" | "column" | "player" | undefined`
 
 :::note{title=描述}
 维度映射的通道
 
-\- yAxis: 支持将多个维度映射到y轴
+\- xAxis: 支持将多个维度映射到x轴
 
 \- color: 支持将多个维度映射到颜色通道
 
@@ -55,12 +55,14 @@
 
 \- column: 支持将多个维度映射到列通道
 
+\- player: 支持将多个维度映射到播放器通道
+
 :::
 
 
 ## measures
 
-**Type:** `BarMeasure[] | undefined`
+**Type:** `ColumnMeasure[] | undefined`
 
 
 ### id
@@ -381,12 +383,12 @@
 
 ### encoding
 
-**Type:** `"xAxis" | "color" | "detail" | "tooltip" | "label" | undefined`
+**Type:** `"color" | "detail" | "tooltip" | "label" | "yAxis" | undefined`
 
 :::note{title=描述}
 指标映射的通道
 
-\- xAxis: 指标映射的x轴
+\- yAxis: 指标映射的y轴
 
 \- detail: 指标映射的详情
 

@@ -1,0 +1,15 @@
+{
+  "name": "玫瑰图(零维度)",
+  "description": "玫瑰图(零维度)",
+  "vseed": {
+    "chartType": "rose",
+    "dataset": [
+      {
+        "profit": 40,
+        "sales": 100,
+        "goalSales": 200,
+        "count": 20
+      }
+    ]
+  }
+}
