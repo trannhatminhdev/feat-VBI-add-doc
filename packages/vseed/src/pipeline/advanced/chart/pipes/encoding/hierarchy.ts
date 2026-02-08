@@ -99,12 +99,15 @@ const generateDimensionEncoding = (dimensions: Dimensions, encoding: Encoding, i
  * --------------------指标--------------------
  */
 const generateDefaultMeasureEncoding = (measures: Measures, encoding: Encoding) => {
-  // 默认情况下，指标可能不直接映射到特定通道，而是作为值（size/area）
+  encoding.size = unique(measures.filter((item) => item.encoding === 'size' || !item.encoding).map((item) => item.id))
   // 但我们可以把它们放到 tooltip 中
   encoding.tooltip = unique([...(encoding.tooltip || []), ...measures.map((m) => m.id)])
 }
 
 const generateMeasureEncoding = (measures: Measures, encoding: Encoding) => {
+  // size
+  encoding.size = unique(measures.filter((item) => item.encoding === 'size' || !item.encoding).map((item) => item.id))
+
   // color
   const color = unique(measures.filter((item) => item.encoding === 'color').map((item) => item.id))
   if (color.length > 0) {

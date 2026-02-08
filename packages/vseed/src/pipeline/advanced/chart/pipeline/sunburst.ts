@@ -26,8 +26,8 @@ export const sunburstAdvancedPipeline: AdvancedPipeline = [
   defaultMeasureId,
 
   encodingAdapter(
-    [buildMeasures(['color', 'tooltip']), defaultEncodingForHierarchy],
-    [buildMeasures(['color', 'tooltip']), encodingForHierarchy, pickDimensionsForReshape],
+    [buildMeasures(['size', 'detail']), defaultEncodingForHierarchy],
+    [buildMeasures(['size', 'detail']), encodingForHierarchy, pickDimensionsForReshape],
   ),
   pivotAdapter([reshapeWithEncoding], [pivotReshapeWithEncoding]),
 
