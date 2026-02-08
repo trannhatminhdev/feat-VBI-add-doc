@@ -7,7 +7,8 @@ import {
   colorAdapter,
   backgroundColor,
   tooltip,
-  label,
+  labelTreeMapLeaf,
+  labelTreeMapGroup,
   discreteLegend,
   colorLegend,
   pivotAdapter,
@@ -30,7 +31,8 @@ const treeMap: VChartSpecPipeline = [
   backgroundColor,
   colorAdapter(discreteLegend, colorLegend),
   tooltip,
-  label,
+  labelTreeMapLeaf,
+  labelTreeMapGroup,
 ]
 
 const pivotTreeMap: PivotChartSpecPipeline = [
@@ -38,7 +40,15 @@ const pivotTreeMap: PivotChartSpecPipeline = [
   pivotGridStyle,
   pivotIndicatorsAsRow,
   datasetPivot,
-  pivotIndicators([initTreeMap, datasetHierarchy, colorAdapter(color, linearColor), backgroundColor, tooltip, label]),
+  pivotIndicators([
+    initTreeMap,
+    datasetHierarchy,
+    colorAdapter(color, linearColor),
+    backgroundColor,
+    tooltip,
+    labelTreeMapLeaf,
+    labelTreeMapGroup,
+  ]),
   pivotRowDimensions,
   pivotColumnDimensions,
   pivotTitle,
