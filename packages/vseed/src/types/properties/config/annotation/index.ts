@@ -1,2 +1,2 @@
-export * from './zAnnotaion'
+export * from './zAnnotation'
 export type * from './annotation'
