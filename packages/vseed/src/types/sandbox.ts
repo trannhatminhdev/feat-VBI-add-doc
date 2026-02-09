@@ -17,6 +17,6 @@ export interface CodeExecutionOptions {
   code: string
   /** 输入数据 */
   data: any[]
-  /** 超时时间（毫秒），默认 1000ms */
+  /** 超时时间（毫秒），默认 2000ms */
   timeout?: number
 }

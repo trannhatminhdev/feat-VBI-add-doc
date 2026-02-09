@@ -12,9 +12,9 @@ import type {
   VSeedBuilder,
 } from 'src/types'
 import { buildAdvanced } from './buildAdvanced'
-import { buildSpec, buildSpecAsync } from './buildSpec'
+import { buildSpec } from './buildSpec'
 import { build } from './build'
-import { buildAsync } from './buildAsync'
+import { buildAsync, buildSpecAsync } from './buildAsync'
 import { intl } from 'src/i18n'
 import { getColorIdMap, getColorItems } from './advanced'
 

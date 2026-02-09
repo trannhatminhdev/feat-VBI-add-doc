@@ -1,5 +1,6 @@
 import { z } from 'zod'
-import { zSelector, zSelectors, type Selector, type Selectors } from '../../dataSelector'
+import type { ChartDynamicFilter } from '../../dataSelector'
+import { zChartDynamicFilter, zSelector, zSelectors, type Selector, type Selectors } from '../../dataSelector'
 
 export type PointStyle = {
   /**
@@ -42,6 +43,25 @@ export type PointStyle = {
   selector?: Selector | Selectors
 
   /**
+   * 动态筛选器（AI生成代码执行）
+   * @description
+   * 通过 AI 生成的 JavaScript 代码实现复杂数据筛选逻辑
+   * 适用于 Top N、统计分析、复杂条件等静态 selector 难以表达的场景
+   *
+   * 核心能力:
+   * - 支持任意复杂的数据筛选条件
+   * - 使用 内置工具函数 进行数据操作
+   * - 在浏览器环境中安全执行（Web Worker 沙箱）
+   *
+   * 环境要求: 仅支持浏览器环境，Node.js 环境将使用 fallback
+   *
+   * 注意: selector 和 dynamicFilter 不能同时使用，dynamicFilter 优先级更高
+   *
+   * @type {ChartDynamicFilter}
+   */
+  dynamicFilter?: ChartDynamicFilter
+
+  /**
    * @description 点是否可见
    */
   pointVisible?: boolean
@@ -82,6 +102,7 @@ export type PointStyle = {
 
 export const zPointStyle = z.object({
   selector: z.union([zSelector, zSelectors]).nullish(),
+  dynamicFilter: zChartDynamicFilter.nullish(),
   pointVisible: z.boolean().nullish(),
   pointSize: z.number().nullish(),
   pointColor: z.string().nullish(),

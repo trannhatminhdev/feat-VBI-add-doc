@@ -571,7 +571,7 @@ export function enhancedValidateCodeSafety(code: string): void {
  * @description 使用 Worker 池和增强安全检查
  */
 export async function executeFilterCode(options: CodeExecutionOptions): Promise<CodeExecutionResult> {
-  const { code, data, timeout = 1000 } = options
+  const { code, data, timeout = 2000 } = options
 
   // 1. 环境检查
   // if (typeof Worker === 'undefined' || typeof window === 'undefined') {

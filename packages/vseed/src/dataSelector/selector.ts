@@ -208,14 +208,14 @@ const matchesDatum = (target: Datum, candidate: Datum) => {
 }
 
 /**
- * 识别是否为表格动态过滤器
+ * 识别是否为row-with-field动态过滤器
  */
-export const isTableDynamicFilter = (selector: any): selector is TableDynamicFilter => {
+export const isRowWithFieldDynamicFilter = (selector: any): selector is TableDynamicFilter => {
   return (
     typeof selector === 'object' &&
     selector !== null &&
     'type' in selector &&
-    selector.type === 'table-dynamic' &&
+    selector.type === 'row-with-field' &&
     'code' in selector &&
     typeof selector.code === 'string'
   )
@@ -224,12 +224,12 @@ export const isTableDynamicFilter = (selector: any): selector is TableDynamicFil
 /**
  * 识别是否为图表动态过滤器
  */
-export const isChartDynamicFilter = (selector: any): selector is ChartDynamicFilter => {
+export const isPartialDatumDynamicFilter = (selector: any): selector is ChartDynamicFilter => {
   return (
     typeof selector === 'object' &&
     selector !== null &&
     'type' in selector &&
-    selector.type === 'chart-dynamic' &&
+    selector.type === 'partial-datum' &&
     'code' in selector &&
     typeof selector.code === 'string'
   )
@@ -239,7 +239,7 @@ export const isChartDynamicFilter = (selector: any): selector is ChartDynamicFil
  * 识别是否为动态过滤器
  */
 export const isDynamicFilter = (selector: any): selector is DynamicFilter => {
-  return isTableDynamicFilter(selector) || isChartDynamicFilter(selector)
+  return isRowWithFieldDynamicFilter(selector) || isPartialDatumDynamicFilter(selector)
 }
 
 /**
@@ -324,7 +324,7 @@ export const selectorWithDynamicFilter = (vchartDatum: Datum, selectorConfig: Dy
   if (!selectorConfig) {
     return true
   }
-  const selectorType = isTableDynamicFilter(selectorConfig) ? 'table' : 'chart'
+  const selectorType = isRowWithFieldDynamicFilter(selectorConfig) ? 'table' : 'chart'
 
   // 优先使用预先执行的结果
   if (selectorConfig.result?.success && selectorConfig.result.data) {
@@ -333,7 +333,7 @@ export const selectorWithDynamicFilter = (vchartDatum: Datum, selectorConfig: Dy
 
   // 降级到 fallback（执行阶段应在外部完成）
   if (selectorConfig.fallback) {
-    if (isTableDynamicFilter(selectorConfig)) {
+    if (isRowWithFieldDynamicFilter(selectorConfig)) {
       const fallbackResult = Array.isArray(selectorConfig.fallback)
         ? selectorConfig.fallback
         : [selectorConfig.fallback]

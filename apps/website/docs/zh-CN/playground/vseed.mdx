@@ -9,29 +9,42 @@ const Demo = () => {
   const MeasureNames = '__MeaName__'
 
   const vseed: VSeed = {
-    chartType: 'table',
+    chartType: 'column',
     dataset: [
-      { date: '2019', type: 'A', goalProfit: 10, profit: 10, sales: 100, leftCount: 1, salesCount: 100 },
-      { date: '2020', type: 'A', goalProfit: 30, profit: 30, sales: 320, leftCount: 2, salesCount: 200 },
-      { date: '2021', type: 'A', goalProfit: 30, profit: 30, sales: 300, leftCount: 3, salesCount: 300 },
-      { date: '2022', type: 'A', goalProfit: 50, profit: 50, sales: 240, leftCount: 4, salesCount: 400 },
-      { date: '2023', type: 'A', goalProfit: 40, profit: 40, sales: 500, leftCount: 5, salesCount: 500 },
+      { date: '2019', profit: 14, sales: 20, count: 50 },
+      { date: '2020', profit: 30, sales: 60, count: 50 },
+      { date: '2021', profit: 30, sales: 60, count: 50 },
+      { date: '2022', profit: 54, sales: 100, count: 50 },
+      { date: '2023', profit: 40, sales: 80, count: 50 },
     ],
-    bodyCellStyle: [
-      {
-        selector: [{ date: '2019', type: 'A', goalProfit: 10, profit: 10, sales: 100, leftCount: 1, salesCount: 100 }],
-        backgroundColor: 'pink',
-        dynamicFilter: {
-          type: 'table-dynamic',
-          code: `
-          return [{__row_index: 0, field: 'profit'}]
-          `,
-        },
+    barStyle: {
+      dynamicFilter: {
+        type: 'row-with-field',
+        code: `
+        return data.filter(item => item.profit / item.sales > 0.5).map(v => ({
+          __row_index: v.__row_index,
+          field: 'profit'
+        }))
+        `,
       },
-      // {
-      //   selector: { field: 'sales', operator: '>=', value: 150 },
-      //   textColor: 'red',
-      // },
+      dynamicFilter: {
+        type: 'chart-dynamic',
+        code: `
+        return data.filter(item => item.profit / item.sales > 0.5).map(v => _.pick(v, 'profit'))
+        `,
+      },
+      barColor: 'lightpink',
+      barColorOpacity: 0.8,
+      barBorderColor: 'lightpink',
+      barBorderWidth: 4,
+      barBorderStyle: 'dashed',
+      barRadius: [8, 8, 0, 0],
+    },
+    dimensions: [{ id: 'date', alias: '日期' }],
+    measures: [
+      { id: 'profit', alias: '利润' },
+      { id: 'sales', alias: '销售额' },
+      { id: 'count', alias: '数量' },
     ],
   }
 

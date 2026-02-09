@@ -125,7 +125,7 @@ export type DynamicFilterExecutionResult<T> = {
  * @environment 仅支持浏览器环境（需要 Web Worker），Node.js 环境将使用 fallback
  */
 export interface TableDynamicFilter {
-  type: 'table-dynamic'
+  type: 'row-with-field'
   /**
    * 用户的筛选需求描述（自然语言）
    * @example "高亮销售额大于1000的单元格"
@@ -138,39 +138,93 @@ export interface TableDynamicFilter {
    * @description
    * - 只能使用内置工具函数（通过 _ 或 R 访问）
    * - 输入参数: data (数组)，每个 item 包含 _index 字段表示行号
-   * - 必须返回单元格选择器数组: Array<{ row: number, field: string }>
+   * - 必须返回单元格选择器数组: Array<{ __row_index: number, field: string }>
    * - field 为 "*" 时表示整行高亮
    * - 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
    *
-   * @example 高亮销售额大于1000的单元格
-   * ```javascript
-   * const filtered = _.filter(data, item => item.sales > 1000);
-   * return _.map(filtered, item => ({
-   *   row: item._index,
-   *   field: 'sales'
-   * }));
-   * ```
+   * @example Top N 筛选
+   * dynamicFilter = {
+   *   type: 'row-with-field',
+   *   description: '高亮销售额最高的前3个产品',
+   *   code: `
+   *     const sorted = _.sortBy(data, 'sales');
+   *     const reversed = [...sorted].reverse();
+   *     const result = _.take(reversed, 3);
+   *     return _.flatten(
+   *       _.map(result, item => [
+   *         { __row_index: item._index, field: 'product' },
+   *         { __row_index: item._index, field: 'sales' }
+   *       ])
+   *     );
+   *   `,
+   *   enabled: true
+   * }
    *
-   * @example 高亮前3名产品的产品名和销售额
-   * ```javascript
-   * const sorted = _.sortBy(data, item => -item.sales);
-   * const top3 = _.take(sorted, 3);
-   * return _.flatten(
-   *   _.map(top3, item => [
-   *     { row: item._index, field: 'product' },
-   *     { row: item._index, field: 'sales' }
-   *   ])
-   * );
-   * ```
+   * @example 多条件筛选
+   * dynamicFilter = {
+   *   type: 'row-with-field',
+   *   description: '高亮利润率大于20%且销售额超过5000的产品',
+   *   code: `
+   *     const matched = _.filter(data, item => {
+   *       const profitRate = (item.profit / item.sales) * 100;
+   *       return profitRate > 20 && item.sales > 5000;
+   *     });
+   *     return _.flatten(
+   *       _.map(matched, item => [
+   *         { __row_index: item._index, field: 'product' },
+   *         { __row_index: item._index, field: 'sales' }
+   *       ])
+   *     );
+   *   `,
+   *   enabled: true
+   * }
+   *
+   * @example 相对值筛选
+   * dynamicFilter = {   *
+   *   type: 'row-with-field',
+   *   description: '高亮销售额高于平均值的产品',
+   *   code: `
+   *     const avgSales = _.meanBy(data, 'sales');
+   *     const matched = _.filter(data, item => item.sales > avgSales);
+   *     return _.flatten(
+   *       _.map(matched, item => [
+   *         { __row_index: item._index, field: 'product' },
+   *         { __row_index: item._index, field: 'sales' }
+   *       ])
+   *     );
+   *   `,
+   *   enabled: true
+   * }
+   *
+   * @example 分组筛选
+   * dynamicFilter = {
+   *  type: 'row-with-field',
+   *  description: '每个区域中销售额最高的产品',
+   *  code: `
+   *     const grouped = _.groupBy(data, 'region');
+   *     const topByRegion = _.map(_.values(grouped), group => _.maxBy(group, 'sales'));
+   *     return _.flatten(
+   *       _.map(topByRegion, item => [
+   *         { __row_index: item._index, field: 'product' },
+   *         { __row_index: item._index, field: 'sales' }
+   *       ])
+   *     );
+   *   `,
+   *   enabled: true
+   * }
    *
    * @example 整行高亮
-   * ```javascript
-   * const matched = _.filter(data, item => item.sales > item.profit);
-   * return _.map(matched, item => ({
-   *   row: item._index,
-   *   field: '*'
-   * }));
-   * ```
+   * dynamicFilter = {
+   *   description: '高亮销售额大于利润的整行',
+   *   code: `
+   *     const matched = _.filter(data, item => item.sales > item.profit);
+   *     return matched.map(item => ({
+   *       __row_index: item._index,
+   *       field: '*'
+   *     }));
+   *   `,
+   *   enabled: true
+   * }
    */
   code: string
 
@@ -192,7 +246,7 @@ export interface TableDynamicFilter {
  * @environment 仅支持浏览器环境（需要 Web Worker），Node.js 环境将使用 fallback
  */
 export interface ChartDynamicFilter {
-  type: 'chart-dynamic'
+  type: 'row-with-field'
   /**
    * 用户的筛选需求描述（自然语言）
    * @example "高亮销售额大于1000的柱子"
@@ -289,7 +343,7 @@ export const zCellSelector = z.object({
 })
 
 export const zTableDynamicFilter = z.object({
-  type: z.literal('table-dynamic'),
+  type: z.literal('row-with-field'),
   description: z.string().optional(),
   code: z.string(),
   fallback: z.union([zCellSelector, z.array(zCellSelector)]).optional(),
@@ -302,7 +356,7 @@ export const zTableDynamicFilter = z.object({
 })
 
 export const zChartDynamicFilter = z.object({
-  type: z.literal('chart-dynamic'),
+  type: z.literal('row-with-field'),
   description: z.string().optional(),
   code: z.string(),
   fallback: z.union([zSelector, zSelectors]).optional(),
