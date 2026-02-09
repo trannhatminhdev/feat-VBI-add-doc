@@ -24,10 +24,10 @@
   "dependencies": {
     "@ant-design/icons": "6.1.0",
     "@visactor/vbi": "workspace:*",
-    "@visactor/vchart": "latest",
+    "@visactor/vchart": "2.0.15",
     "@visactor/vquery": "workspace:*",
     "@visactor/vseed": "workspace:*",
-    "@visactor/vtable": "latest",
+    "@visactor/vtable": "1.23.1",
     "antd": "6.1.3",
     "zustand": "5.0.6"
   },
@@ -35,7 +35,7 @@
     "@eslint/js": "9.39.1",
     "@rsbuild/plugin-react": "1.4.2",
     "@rslib/core": "0.18.6",
-    "@rstest/core": "0.7.5",
+    "@rstest/core": "0.8.3",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.1",
     "@types/react": "19.2.7",
