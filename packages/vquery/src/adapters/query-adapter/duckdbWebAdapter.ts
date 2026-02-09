@@ -4,43 +4,23 @@ import { AsyncDuckDB, selectBundle, ConsoleLogger } from '@duckdb/duckdb-wasm'
 import { QueryAdapter } from 'src/types'
 import { QueryResult } from 'src/types/DataSet'
 
-const resolvePath = (path: string) => {
-  const URLCtor = URL
-  return new URLCtor(path, import.meta.url).href
-}
-
-// Default bundles configuration - can be overridden in tests
-export const getDefaultBundles = (): DuckDBBundles => {
-  // Use dynamic import to avoid build-time resolution of wasm files
-  const wasmModulePath = '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm'
-  const workerPath = '@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js'
-  const ehWasmModulePath = '@duckdb/duckdb-wasm/dist/duckdb-eh.wasm'
-  const ehWorkerPath = '@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js'
-
-  return {
-    mvp: {
-      mainModule: resolvePath(wasmModulePath),
-      mainWorker: resolvePath(workerPath),
-    },
-    eh: {
-      mainModule: resolvePath(ehWasmModulePath),
-      mainWorker: resolvePath(ehWorkerPath),
-    },
-  }
-}
-
 export class DuckDBWebQueryAdapter implements QueryAdapter {
   private db: AsyncDuckDB | null = null
   private connection: AsyncDuckDBConnection | null = null
-  private bundles: DuckDBBundles | null = null
 
-  constructor(bundles?: DuckDBBundles) {
-    this.bundles = bundles ?? null
-  }
+  constructor() {}
 
   open = async () => {
-    const MANUAL_BUNDLES = this.bundles ?? getDefaultBundles()
-
+    const MANUAL_BUNDLES: DuckDBBundles = {
+      mvp: {
+        mainModule: new URL('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm', import.meta.url).href,
+        mainWorker: new URL('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js', import.meta.url).toString(),
+      },
+      eh: {
+        mainModule: new URL('@duckdb/duckdb-wasm/dist/duckdb-eh.wasm', import.meta.url).href,
+        mainWorker: new URL('@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js', import.meta.url).toString(),
+      },
+    }
     const bundle = await selectBundle(MANUAL_BUNDLES)
     const worker_url = URL.createObjectURL(
       new Blob([`importScripts("${bundle.mainWorker!}");`], { type: 'text/javascript' }),

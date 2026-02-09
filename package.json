@@ -10,7 +10,7 @@
   "description": "VSeed, an elegant data composer, transforming complexity into simplicity.",
   "scripts": {
     "dev": "pnpm --filter=website run dev",
-    "build": "turbo build --filter=!/tools/*",
+    "build": "turbo build",
     "format": "pnpm prettier --write .",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm turbo typecheck",
