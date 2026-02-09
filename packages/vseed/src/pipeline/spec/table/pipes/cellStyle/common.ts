@@ -1,4 +1,6 @@
-import type { BodyCellStyle } from 'src/types'
+import { isArray } from 'remeda'
+import { InnerRowIndex } from 'src/dataReshape'
+import type { BodyCellStyle, Datum } from 'src/types'
 
 const tableStyleMap = {
   backgroundColor: 'bgColor',
@@ -16,4 +18,19 @@ export const pickBodyCellStyle = (bodyCellStyle: BodyCellStyle) => {
 
     return acc
   }, {})
+}
+
+export const getCellOriginalDataByDatum = (datum: any, hasDynamicFilter: boolean, originalDatum: Datum) => {
+  const tableInstance = datum?.table
+  let originRowData =
+    tableInstance && hasDynamicFilter ? tableInstance?.getCellOriginRecord(datum?.col, datum?.row) : null
+  if (originRowData && isArray(originRowData)) {
+    originRowData = originRowData[0]
+  }
+  return originRowData
+    ? {
+        ...originalDatum,
+        [InnerRowIndex]: originRowData?.[InnerRowIndex], // 内部行号字段
+      }
+    : null
 }

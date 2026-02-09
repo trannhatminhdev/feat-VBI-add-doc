@@ -1,4 +1,5 @@
 import { clone } from 'remeda'
+import { InnerRowIndex } from 'src/dataReshape'
 import { isMeasure, preorderTraverse } from 'src/pipeline/utils'
 import type { AdvancedPipe, Datum, Measure } from 'src/types'
 
@@ -29,7 +30,11 @@ export const defaultMeasures: AdvancedPipe = (advancedVSeed, context) => {
   }, {})
   const defaultMeasures = Object.keys(sample)
     .filter((key) => {
-      return top100dataset.some((item) => typeof item[key] === 'number') && !['', null, undefined].includes(key)
+      return (
+        key !== InnerRowIndex &&
+        top100dataset.some((item) => typeof item[key] === 'number') &&
+        !['', null, undefined].includes(key)
+      )
     })
     .map((measure) => ({
       id: measure,

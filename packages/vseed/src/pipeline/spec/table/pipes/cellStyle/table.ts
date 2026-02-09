@@ -4,9 +4,8 @@ import { isNullish, isNumber, isPlainObject, isString } from 'remeda'
 import { selector, selectorWithDynamicFilter } from 'src/dataSelector/selector'
 import type { BodyCellStyle, ListTableSpecPipe } from 'src/types'
 import type { MeasureSelector, Selectors } from 'src/types/dataSelector'
-import { pickBodyCellStyle } from './common'
+import { getCellOriginalDataByDatum, pickBodyCellStyle } from './common'
 import { preorderTraverse } from 'src/pipeline/utils/tree/traverse'
-import { InnerRowIndex } from 'src/dataReshape'
 
 export const tableBodyCell: ListTableSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
@@ -41,20 +40,17 @@ export const tableBodyCell: ListTableSpecPipe = (spec, context) => {
       return false
     }
 
+    const hasDynamicFilter = matchedStyles.some((style) => !!style.dynamicFilter)
+
     col.style = (datum: any) => {
-      const tableInstance = datum?.table
-      const originRowData = tableInstance ? tableInstance?.getCellInfo(datum?.col, datum?.row)?.originData : null
       const originalDatum = {
         [field]: datum.dataValue,
       }
-      const currentCellData = {
-        ...originalDatum,
-        [InnerRowIndex]: originRowData?.[InnerRowIndex], // 内部行号字段
-      }
+      const currentCellData = getCellOriginalDataByDatum(datum, hasDynamicFilter, originalDatum)
 
       const mergedStyle = matchedStyles.reduce<Record<string, any>>((result, style) => {
         const shouldApply = style.dynamicFilter
-          ? selectorWithDynamicFilter(currentCellData, style.dynamicFilter)
+          ? selectorWithDynamicFilter(currentCellData || originalDatum, style.dynamicFilter)
           : selector(originalDatum, style.selector)
 
         if (shouldApply) {

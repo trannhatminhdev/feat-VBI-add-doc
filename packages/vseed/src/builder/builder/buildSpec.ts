@@ -6,7 +6,6 @@ import type { ISpec } from '@visactor/vchart'
 import { executeDynamicFilter, isDynamicFilter, isTableDynamicFilter } from 'src/dataSelector/selector'
 import type { DynamicFilter } from 'src/dataSelector/selector'
 import type { ChartDynamicFilterRes, TableDynamicFilterRes } from 'src/types/dataSelector'
-import { InnerRowIndex } from 'src/dataReshape'
 
 export const buildSpec = (builder: Builder, advancedVSeed: AdvancedVSeed): Spec => {
   const start = typeof performance !== 'undefined' ? performance.now() : Date.now()
@@ -42,6 +41,7 @@ export const buildSpec = (builder: Builder, advancedVSeed: AdvancedVSeed): Spec 
 
 const dynamicFilterKeyPathsByChartType: Partial<Record<ChartType, string[]>> = {
   table: ['cellStyle.bodyCellStyle[].dynamicFilter'],
+  pivotTable: ['cellStyle.bodyCellStyle[].dynamicFilter'],
 }
 
 const parseKeyPath = (path: string) => {
@@ -89,11 +89,6 @@ const hydrateDynamicFilters = async (advancedVSeed: AdvancedVSeed, chartType: Ch
   const filters = collectDynamicFiltersByKeyPaths(advancedVSeed, chartType)
   if (!filters.length) return
 
-  // 如果有动态filter，则先增加一个内部行号字段，供动态filter使用
-  advancedVSeed.dataset = (advancedVSeed.dataset ?? []).map((item, index) => ({
-    ...item,
-    [InnerRowIndex]: index,
-  }))
   const allData = advancedVSeed.dataset ?? []
   await Promise.all(
     filters.map(async (filter) => {

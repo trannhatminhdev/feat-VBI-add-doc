@@ -24,7 +24,7 @@ const Demo = () => {
         dynamicFilter: {
           type: 'table-dynamic',
           code: `
-          return [{row: 0, field: 'profit'}]
+          return [{__row_index: 0, field: 'profit'}]
           `,
         },
       },
