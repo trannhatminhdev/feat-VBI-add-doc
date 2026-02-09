@@ -108,7 +108,7 @@ export type AreaSelectors = Array<AreaSelector>
 export type Selectors = Array<Selector>
 
 export type TableDynamicFilterRes = {
-  row: number
+  __row_index: number
   field: string | '*'
 }
 

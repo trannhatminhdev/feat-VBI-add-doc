@@ -6,8 +6,10 @@ import type { AdvancedVSeed } from '../advancedVSeed'
 
 export abstract class VSeedBuilder {
   abstract build: () => Spec
+  abstract buildAsync: () => Promise<Spec>
   abstract buildAdvanced: () => AdvancedVSeed | null
   abstract buildSpec: (advancedVSeed: AdvancedVSeed) => Spec
+  abstract buildSpecAsync: (advancedVSeed: AdvancedVSeed) => Promise<Spec>
 
   static getAdvancedPipeline: (chartType: ChartType) => AdvancedPipeline
   static getSpecPipeline: (chartType: ChartType) => SpecPipeline

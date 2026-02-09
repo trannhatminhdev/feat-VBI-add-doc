@@ -12,8 +12,9 @@ import type {
   VSeedBuilder,
 } from 'src/types'
 import { buildAdvanced } from './buildAdvanced'
-import { buildSpec } from './buildSpec'
+import { buildSpec, buildSpecAsync } from './buildSpec'
 import { build } from './build'
+import { buildAsync } from './buildAsync'
 import { intl } from 'src/i18n'
 import { getColorIdMap, getColorItems } from './advanced'
 
@@ -54,12 +55,27 @@ export class Builder implements VSeedBuilder {
   build = <T extends Spec>(): T => build(this) as T
 
   /**
+   * @description 生成最终的图表配置 (Spec)，并在构建前异步执行 dynamicFilter。
+   * @returns VChart 或 VTable 的标准 Spec 对象。
+   * @example
+   * const spec = await builder.buildAsync();
+   */
+  buildAsync = async <T extends Spec>(): Promise<T> => buildAsync(this) as Promise<T>
+
+  /**
    * @description 将中间层配置 (AdvancedVSeed) 转换为最终 Spec。
    * 仅当你需要深度定制中间层配置时使用。通常流程是：buildAdvanced() -> 修改配置 -> buildSpec()。
    * @param advanced 修改后的 AdvancedVSeed 对象。
    * @returns VChart 或 VTable 的标准 Spec 对象。
    */
   buildSpec = (advanced: AdvancedVSeed): Spec => buildSpec(this, advanced)
+
+  /**
+   * @description 将中间层配置 (AdvancedVSeed) 异步转换为最终 Spec，并预执行 dynamicFilter。
+   * @param advanced 修改后的 AdvancedVSeed 对象。
+   * @returns VChart 或 VTable 的标准 Spec 对象。
+   */
+  buildSpecAsync = async (advanced: AdvancedVSeed): Promise<Spec> => buildSpecAsync(this, advanced)
 
   /**
    * @description 生成中间层配置 (AdvancedVSeed)。

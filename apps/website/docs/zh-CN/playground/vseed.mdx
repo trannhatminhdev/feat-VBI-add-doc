@@ -9,31 +9,30 @@ const Demo = () => {
   const MeasureNames = '__MeaName__'
 
   const vseed: VSeed = {
-    chartType: 'columnParallel',
+    chartType: 'table',
     dataset: [
-      { date: '2019', region: 'east', profit: 100, sales: 1000 },
-      { date: '2020', region: 'east', profit: 200, sales: 2000 },
-      { date: '2021', region: 'east', profit: 300, sales: 3000 },
-      { date: '2022', region: 'east', profit: 400, sales: 4000 },
-      { date: '2023', region: 'east', profit: 500, sales: 5000 },
-
-      { date: '2019', region: 'north of east', profit: 900, sales: 6000 },
-      { date: '2020', region: 'north of east', profit: 800, sales: 5000 },
-      { date: '2021', region: 'north of east', profit: 700, sales: 4000 },
-      { date: '2022', region: 'north of east', profit: 400, sales: 3000 },
-      { date: '2023', region: 'north of east', profit: 100, sales: 2000 },
+      { date: '2019', type: 'A', goalProfit: 10, profit: 10, sales: 100, leftCount: 1, salesCount: 100 },
+      { date: '2020', type: 'A', goalProfit: 30, profit: 30, sales: 320, leftCount: 2, salesCount: 200 },
+      { date: '2021', type: 'A', goalProfit: 30, profit: 30, sales: 300, leftCount: 3, salesCount: 300 },
+      { date: '2022', type: 'A', goalProfit: 50, profit: 50, sales: 240, leftCount: 4, salesCount: 400 },
+      { date: '2023', type: 'A', goalProfit: 40, profit: 40, sales: 500, leftCount: 5, salesCount: 500 },
     ],
-    player: {
-      field: 'date',
-      interval: 1000,
-      autoPlay: true,
-      position: 'bottom',
-    },
-    measures: [
-      { id: 'profit', alias: '利润' },
-      { id: 'sales', alias: '销售量' },
+    bodyCellStyle: [
+      {
+        selector: [{ date: '2019', type: 'A', goalProfit: 10, profit: 10, sales: 100, leftCount: 1, salesCount: 100 }],
+        backgroundColor: 'pink',
+        dynamicFilter: {
+          type: 'table-dynamic',
+          code: `
+          return [{row: 0, field: 'profit'}]
+          `,
+        },
+      },
+      // {
+      //   selector: { field: 'sales', operator: '>=', value: 150 },
+      //   textColor: 'red',
+      // },
     ],
-    dimensions: [{ id: 'region', alias: '区域' }],
   }
 
   const parseRes = zVSeed.safeParse(vseed)
@@ -73,113 +72,92 @@ const SimpleVSeedRender = (props: { vseed: VSeed }) => {
   const dark = useDark()
   const selectedDimValueRef = useRef<string[]>([])
   useEffect(() => {
-    if (!ref.current) {
-      return
-    }
-    const theme = dark ? 'dark' : 'light'
-    const builder = Builder.from(vseed.theme ? vseed : { ...vseed, theme })
-    let spec = builder.build()
-    spec = {
-      ...spec,
-      chartDimensionLinkage: {
-        ...spec.chartDimensionLinkage,
-        clearChartState: () => {
-          console.log('!!ClearChartState')
-          selectedDimValueRef.current = []
-          window.pivotChart.enableTooltipToAllChartInstances()
-        },
-        inBrushStateFilter: (datum) => {
-          console.log('inBrushState', datum, selectedDimValueRef.current)
-          return selectedDimValueRef.current.length ? selectedDimValueRef.current.includes(datum['__Dim_X__']) : true
-        },
-        outOfBrushStateFilter: (datum) => {
-          return selectedDimValueRef.current.length ? !selectedDimValueRef.current.includes(datum['__Dim_X__']) : false
-        },
-        listenBrushChange: true,
-        brushChangeDelay: 100,
-      },
-    }
-    console.log('final spec = ', spec)
-    console.log('builder', builder)
-    console.log('builder performance', builder.performance)
+    let cleanup: (() => void) | undefined
 
-    builderRef.current = builder
-    if (isPivotChart(vseed)) {
-      const tableInstance = new PivotChart(ref.current, spec)
+    const initChart = async () => {
+      if (!ref.current) {
+        return
+      }
+      const theme = dark ? 'dark' : 'light'
+      const builder = Builder.from(vseed.theme ? vseed : { ...vseed, theme })
+      // let spec = builder.build()
+      let spec = await builder.buildAsync()
+      console.log('final spec = ', spec)
+      console.log('builder', builder)
+      console.log('builder performance', builder.performance)
 
-      tableInstance.on('legend_item_click', (args) => {
-        console.log('LEGEND_ITEM_CLICK', args)
-        tableInstance.updateFilterRules([
-          {
-            filterKey: ColorIdEncoding,
-            filteredValues: args.value,
-          },
-        ])
-      })
-      tableInstance.onVChartEvent('brushEnd', (args) => {
-        console.log('brushEnd', args)
-        selectedDimValueRef.current = args.value.inBrushData.map((dataItem) => dataItem.__Dim_X__)
-      })
-      tableInstance.onVChartEvent('brushStart', (args) => {
-        window.pivotChart.enableTooltipToAllChartInstances()
-      })
-      tableInstance.onVChartEvent('brushChange', (args) => {
-        console.log('brushChange', args)
-        selectedDimValueRef.current = args.value.inBrushData.map((dataItem) => dataItem.__Dim_X__)
-      })
+      builderRef.current = builder
+      if (isPivotChart(vseed)) {
+        const tableInstance = new PivotChart(ref.current, spec)
 
-      tableInstance.on('legend_change', (args) => {
-        const maxValue = args.value[1]
-        const minValue = args.value[0]
-
-        if (vseed.chartType === 'heatmap') {
+        tableInstance.on('legend_item_click', (args) => {
+          console.log('LEGEND_ITEM_CLICK', args)
           tableInstance.updateFilterRules([
             {
-              filterFunc: (record) => {
-                const value = record[record[ColorIdEncoding]]
-                const isShow = value >= minValue && value <= maxValue
-
-                record[DATUM_HIDE_KEY] = !isShow
-
-                return true
-              },
+              filterKey: ColorIdEncoding,
+              filteredValues: args.value,
             },
           ])
-        } else {
-          tableInstance.updateFilterRules([
-            {
-              filterFunc: (record) => {
-                const value = record[record[ColorIdEncoding]]
-                if (value >= minValue && value <= maxValue) {
+        })
+        tableInstance.on('legend_change', (args) => {
+          const maxValue = args.value[1]
+          const minValue = args.value[0]
+
+          if (vseed.chartType === 'heatmap') {
+            tableInstance.updateFilterRules([
+              {
+                filterFunc: (record) => {
+                  const value = record[record[ColorIdEncoding]]
+                  const isShow = value >= minValue && value <= maxValue
+
+                  record[DATUM_HIDE_KEY] = !isShow
+
                   return true
-                }
-                return false
+                },
               },
-            },
-          ])
-        }
-      })
-      window.pivotChart = tableInstance
-      return () => tableInstance.release()
-    } else if (isVChart(vseed)) {
-      const vchart = new VChart(spec, { dom: ref.current })
-      vchart.renderSync()
+            ])
+          } else {
+            tableInstance.updateFilterRules([
+              {
+                filterFunc: (record) => {
+                  const value = record[record[ColorIdEncoding]]
+                  if (value >= minValue && value <= maxValue) {
+                    return true
+                  }
+                  return false
+                },
+              },
+            ])
+          }
+        })
+        window.pivotChart = tableInstance
+        cleanup = () => tableInstance.release()
+      } else if (isVChart(vseed)) {
+        const vchart = new VChart(spec, { dom: ref.current })
+        vchart.renderSync()
 
-      vchart.on('brushEnd', (e) => {
-        console.log(e)
-      })
+        vchart.on('brushEnd', (e) => {
+          console.log(e)
+        })
 
-      window.vchart = vchart
-      return () => vchart.release()
-    } else if (isTable(vseed)) {
-      const tableInstance = new ListTable(ref.current, spec)
-      window.table = tableInstance
-      return () => tableInstance.release()
-    } else if (isPivotTable(vseed)) {
-      const tableInstance = new PivotTable(ref.current, spec)
+        window.vchart = vchart
+        cleanup = () => vchart.release()
+      } else if (isTable(vseed)) {
+        const tableInstance = new ListTable(ref.current, spec)
+        window.table = tableInstance
+        cleanup = () => tableInstance.release()
+      } else if (isPivotTable(vseed)) {
+        const tableInstance = new PivotTable(ref.current, spec)
 
-      window.table = tableInstance
-      return () => tableInstance.release()
+        window.table = tableInstance
+        cleanup = () => tableInstance.release()
+      }
+    }
+
+    initChart()
+
+    return () => {
+      cleanup?.()
     }
   }, [vseed, dark])
 

@@ -41,3 +41,6 @@ export const BinStartMeasureId = '__BinStart__'
 export const BinEndMeasureId = '__BinEnd__'
 export const BinCountMeasureId = '__BinCount__'
 export const BinPercentageMeasureId = '__BinPercentage__'
+
+// Inner row index for code execute
+export const InnerRowIndex = '__row_index'
