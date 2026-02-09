@@ -4,7 +4,6 @@ import type { Datum, Selector, Selectors, SpecPipelineContext, VChartSpecPipe, V
 import { isSubset } from './utils'
 import { ANNOTATION_Z_INDEX } from '../../../../utils/constant'
 import { isBarLikeChart } from 'src/pipeline/utils/chatType'
-
 export const generateAnnotationPointPipe = (options: {
   findSelectedDatas?: (
     dataset: Datum[],
@@ -20,8 +19,17 @@ export const generateAnnotationPointPipe = (options: {
     ((datum: Datum) => {
       return [
         {
-          coordinate: (data: Datum[]) => {
-            return data.find((item) => isSubset(datum, item))
+          coordinate: (data: Datum[], context) => {
+            const targetDatum = data.find((item) => isSubset(datum, item))
+            if (context.getStack() === true) {
+              const stackedDatum = { ...datum, ...targetDatum }
+              return {
+                ...stackedDatum,
+                [context.getStackValueField()]: stackedDatum['__VCHART_STACK_END'],
+              }
+            }
+
+            return targetDatum
           },
         },
       ]
