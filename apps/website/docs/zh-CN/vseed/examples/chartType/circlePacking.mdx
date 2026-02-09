@@ -116,6 +116,193 @@ export default () => {
 }
 ```
 
+## 指标组合
+
+展示食品饮料、个护家清等品类的销售额与利润分布，通过圆形嵌套展示层级与指标关系。
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'circlePacking',
+    dataset: [
+      {
+        category: '食品饮料',
+        subCategory: '饮品',
+        product: '云岭山泉矿泉水',
+        sales: 12000,
+        profit: 1800,
+      },
+      {
+        category: '食品饮料',
+        subCategory: '饮品',
+        product: '果悦鲜榨橙汁',
+        sales: 8500,
+        profit: 1400,
+      },
+      {
+        category: '食品饮料',
+        subCategory: '饮品',
+        product: '茗香乌龙茶',
+        sales: 6200,
+        profit: 950,
+      },
+      {
+        category: '食品饮料',
+        subCategory: '零食',
+        product: '脆乐薯片（番茄味）',
+        sales: 9500,
+        profit: 1600,
+      },
+      {
+        category: '食品饮料',
+        subCategory: '零食',
+        product: '果仁派对混合坚果',
+        sales: 7800,
+        profit: 2100,
+      },
+      {
+        category: '个护家清',
+        subCategory: '洗护',
+        product: '柔丝顺滑洗发露',
+        sales: 6800,
+        profit: 1100,
+      },
+      {
+        category: '个护家清',
+        subCategory: '洗护',
+        product: '净颜氨基酸洁面乳',
+        sales: 5200,
+        profit: 980,
+      },
+      {
+        category: '个护家清',
+        subCategory: '家居清洁',
+        product: '碧净多效洗衣液',
+        sales: 7200,
+        profit: 1050,
+      },
+      {
+        category: '个护家清',
+        subCategory: '家居清洁',
+        product: '洁厨灵油污喷雾',
+        sales: 4300,
+        profit: 720,
+      },
+      {
+        category: '数码家电',
+        subCategory: '智能穿戴',
+        product: '灵动S9智能手表',
+        sales: 15000,
+        profit: 3200,
+      },
+      {
+        category: '数码家电',
+        subCategory: '智能穿戴',
+        product: '悦跑Pro运动手环',
+        sales: 6500,
+        profit: 1400,
+      },
+      {
+        category: '数码家电',
+        subCategory: '小家电',
+        product: '暖风巢桌面暖风机',
+        sales: 4800,
+        profit: 880,
+      },
+      {
+        category: '数码家电',
+        subCategory: '小家电',
+        product: '鲜研磨便携咖啡机',
+        sales: 11000,
+        profit: 2600,
+      },
+      {
+        category: '数码家电',
+        subCategory: '小家电',
+        product: '净呼吸车载净化器',
+        sales: 7600,
+        profit: 1750,
+      },
+      {
+        category: '服饰鞋包',
+        subCategory: '男装',
+        product: '风度轻商务夹克',
+        sales: 8800,
+        profit: 2400,
+      },
+      {
+        category: '服饰鞋包',
+        subCategory: '男装',
+        product: '棉语基础T恤三件装',
+        sales: 5600,
+        profit: 1500,
+      },
+      {
+        category: '服饰鞋包',
+        subCategory: '女装',
+        product: '花漾碎花连衣裙',
+        sales: 9200,
+        profit: 2800,
+      },
+      {
+        category: '服饰鞋包',
+        subCategory: '女装',
+        product: '暖织羊绒围巾',
+        sales: 4100,
+        profit: 1200,
+      },
+      {
+        category: '服饰鞋包',
+        subCategory: '鞋靴',
+        product: '云步缓震跑鞋',
+        sales: 13500,
+        profit: 3600,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'category',
+        alias: '品类',
+        encoding: 'hierarchy',
+      },
+      {
+        id: 'subCategory',
+        alias: '子品类',
+        encoding: 'hierarchy',
+      },
+      {
+        id: 'product',
+        alias: '商品',
+        encoding: 'hierarchy',
+      },
+      {
+        id: '__MeaId__',
+        alias: '指标名称',
+        encoding: 'hierarchy',
+      },
+    ],
+    measures: [
+      {
+        id: 'sales',
+        alias: '销售额（元）',
+        encoding: 'size',
+        parentId: 'a',
+      },
+      {
+        id: 'profit',
+        alias: '利润（元）',
+        encoding: 'size',
+        parentId: 'b',
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
 ## Global Retail Revenue Landscape With Encoding Visualize
 
 Sales and profit distribution of a global retail chain across 4 regions (Asia Pacific, North America, Europe, Latin America), 3 channels (Online, Retail Store, Wholesale), and 3 product categories (Personal Care, Home Appliance, Food & Beverage), enabling multi-dimensional drill-down analysis via TreeMap.

@@ -104,9 +104,6 @@ export const VSeedRender = withVisible((props: { vseed: VSeed }) => {
         brushChangeDelay: 100,
       },
     }
-    console.log('final spec = ', spec)
-    console.log('builder', builder)
-    console.log('builder performance', builder.performance)
 
     builderRef.current = builder
     if (isPivotChart(vseed)) {
@@ -204,6 +201,7 @@ export const VSeedRender = withVisible((props: { vseed: VSeed }) => {
         console.log('spec', builderRef?.current?.spec)
         console.log('vseed', builderRef?.current?.vseed)
         console.log('advancedVSeed', builderRef?.current?.advancedVSeed)
+        console.log('chartInstance', window.table || window.pivotChart || window.vchart)
         console.groupEnd()
       }}
     >

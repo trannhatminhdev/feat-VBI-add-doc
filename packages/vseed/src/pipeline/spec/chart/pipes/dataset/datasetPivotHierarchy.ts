@@ -1,6 +1,7 @@
 import { findAllMeasures } from 'src/pipeline/utils'
 import type { PivotChartSpecPipe, Datum } from 'src/types'
 import { buildTree } from './datasetHierarchy'
+import { omit } from 'remeda'
 
 export const datasetPivotHierarchy: PivotChartSpecPipe = (spec, context) => {
   const result = { ...spec }
@@ -11,19 +12,31 @@ export const datasetPivotHierarchy: PivotChartSpecPipe = (spec, context) => {
   const hierarchyFields = (advancedVSeed.encoding as Datum)?.hierarchy || []
   const rows = (advancedVSeed.encoding as Datum)?.row || []
   const columns = (advancedVSeed.encoding as Datum)?.column || []
-
+  const pivotDims = [...rows, ...columns]
   const records = dataset.reduce(
     (pre, cur, index) => {
       const id = datasetReshapeInfo[index].id
-      const { foldInfo } = datasetReshapeInfo[index]
-      const groupedDataset = groupByDimensions(cur as Datum[], [...rows, ...columns]) as Datum[]
+      const { foldInfo, unfoldInfo } = datasetReshapeInfo[index]
 
-      pre[id] = groupedDataset.map((data) => {
-        return {
-          ...data,
-          children: buildTree(data.children as Datum[], hierarchyFields, foldInfo, measureKeys),
-        }
-      })
+      if (pivotDims.length > 0) {
+        const groupedDataset = groupByDimensions(cur as Datum[], pivotDims) as Datum[]
+        pre[id] = groupedDataset.flatMap((data) => {
+          const root = {
+            ...data,
+            children: buildTree(data.children as Datum[], hierarchyFields, foldInfo, unfoldInfo, measureKeys),
+          }
+          const rootProps = omit(root, ['children'])
+          const rootTree = root.children.map((child: Datum) => ({
+            ...child,
+            ...rootProps,
+          }))
+          return rootTree
+        })
+      } else {
+        const tree = buildTree(cur as Datum[], hierarchyFields, foldInfo, unfoldInfo, measureKeys)
+        pre[id] = tree
+      }
+
       return pre
     },
     {} as Record<string, any>,
