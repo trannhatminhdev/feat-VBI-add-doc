@@ -4,6 +4,7 @@ export default defineConfig({
   globals: true,
   testEnvironment: 'node',
   includeSource: ['src/**/*.{js,ts}'],
+  setupFiles: ['./tests/setup.ts'],
   coverage: {
     enabled: true,
     exclude: ['**/node_modules/**', '**/dist/**'],
@@ -17,6 +18,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@visactor/vquery': ['./src/node'],
+      '@visactor/vquery/browser': ['./src/browser'],
+      'src/*': ['./src/*'],
     },
   },
 })

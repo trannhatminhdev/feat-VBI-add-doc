@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DuckDBWebQueryAdapter } from 'src/adapters/query-adapter/duckdbWebAdapter'
+import type { DuckDBBundles } from '@duckdb/duckdb-wasm'
 
 // Mock dependencies
 const mockConnection = {
@@ -52,7 +53,18 @@ describe('DuckDBWebQueryAdapter', () => {
   })
 
   beforeEach(() => {
-    adapter = new DuckDBWebQueryAdapter()
+    // Create adapter with mock bundles to avoid loading actual wasm files
+    const mockBundles: DuckDBBundles = {
+      mvp: {
+        mainModule: 'mock-mvp.wasm',
+        mainWorker: 'mock-mvp.worker.js',
+      },
+      eh: {
+        mainModule: 'mock-eh.wasm',
+        mainWorker: 'mock-eh.worker.js',
+      },
+    }
+    adapter = new DuckDBWebQueryAdapter(mockBundles)
     rs.clearAllMocks()
 
     mockConnection.query.mockResolvedValue({
@@ -66,9 +78,6 @@ describe('DuckDBWebQueryAdapter', () => {
 
   it('should open connection', async () => {
     await adapter.open()
-    // Check if AsyncDuckDB was instantiated
-    // Since we mocked the module, we can't easily check the constructor call unless we spy on it,
-    // but we can check if connect was called on the instance
     expect(mockDB.instantiate).toHaveBeenCalled()
     expect(mockDB.connect).toHaveBeenCalled()
   })

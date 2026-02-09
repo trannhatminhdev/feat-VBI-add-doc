@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.1
+
+### Patch Changes
+
+- d7c2385: feat: optimize the pivot and combination for hierarchy chart types
+
 ## 0.4.0
 
 ### Minor Changes

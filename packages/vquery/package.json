@@ -1,6 +1,6 @@
 {
   "name": "@visactor/vquery",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "type": "module",
   "exports": {
     ".": {
@@ -49,7 +49,7 @@
     "@rslib/core": "0.16.1",
     "@rstest/core": "0.8.3",
     "@types/node": "24.10.1",
-    "@rstest/coverage-istanbul": "0.1.0",
+    "@rstest/coverage-istanbul": "0.2.1",
     "eslint": "9.39.0",
     "globals": "16.4.0",
     "typescript": "5.9.3",

@@ -4,23 +4,37 @@ import { AsyncDuckDB, selectBundle, ConsoleLogger } from '@duckdb/duckdb-wasm'
 import { QueryAdapter } from 'src/types'
 import { QueryResult } from 'src/types/DataSet'
 
+// Default bundles configuration - can be overridden in tests
+const getDefaultBundles = (): DuckDBBundles => {
+  // Use dynamic import to avoid build-time resolution of wasm files
+  const wasmModulePath = '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm'
+  const workerPath = '@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js'
+  const ehWasmModulePath = '@duckdb/duckdb-wasm/dist/duckdb-eh.wasm'
+  const ehWorkerPath = '@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js'
+
+  return {
+    mvp: {
+      mainModule: new URL(wasmModulePath, import.meta.url).href,
+      mainWorker: new URL(workerPath, import.meta.url).toString(),
+    },
+    eh: {
+      mainModule: new URL(ehWasmModulePath, import.meta.url).href,
+      mainWorker: new URL(ehWorkerPath, import.meta.url).toString(),
+    },
+  }
+}
+
 export class DuckDBWebQueryAdapter implements QueryAdapter {
   private db: AsyncDuckDB | null = null
   private connection: AsyncDuckDBConnection | null = null
+  private bundles: DuckDBBundles | null = null
 
-  constructor() {}
+  constructor(bundles?: DuckDBBundles) {
+    this.bundles = bundles ?? null
+  }
 
   open = async () => {
-    const MANUAL_BUNDLES: DuckDBBundles = {
-      mvp: {
-        mainModule: new URL('@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm', import.meta.url).href,
-        mainWorker: new URL('@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js', import.meta.url).toString(),
-      },
-      eh: {
-        mainModule: new URL('@duckdb/duckdb-wasm/dist/duckdb-eh.wasm', import.meta.url).href,
-        mainWorker: new URL('@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js', import.meta.url).toString(),
-      },
-    }
+    const MANUAL_BUNDLES = this.bundles ?? getDefaultBundles()
 
     const bundle = await selectBundle(MANUAL_BUNDLES)
     const worker_url = URL.createObjectURL(
