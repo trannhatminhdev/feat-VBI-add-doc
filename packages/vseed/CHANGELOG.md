@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.2
+
+### Patch Changes
+
+- fix: annotation point stack value err
+
 ## 0.4.1
 
 ### Patch Changes
