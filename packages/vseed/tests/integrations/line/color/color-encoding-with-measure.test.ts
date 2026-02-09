@@ -1,8 +1,8 @@
 import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseedConfig from './basic_sync.json'
+import vseedConfig from './color-encoding-with-measure.json'
 
-test('basic_sync', () => {
+test('color-encoding-with-measure', () => {
   registerAll()
   const { vseed } = vseedConfig
   const builder = Builder.from(vseed as VSeed)

@@ -1,8 +1,8 @@
 import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseedConfig from './array.json'
+import vseedConfig from './array_sync.json'
 
-test('array', () => {
+test('array_sync', () => {
   registerAll()
   const { vseed } = vseedConfig
   const builder = Builder.from(vseed as VSeed)

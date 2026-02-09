@@ -1,8 +1,8 @@
 import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseedConfig from './columnPolynomial.json'
+import vseedConfig from './columnPolynomial_sync.json'
 
-test('columnPolynomial', () => {
+test('columnPolynomial_sync', () => {
   registerAll()
   const { vseed } = vseedConfig
   const builder = Builder.from(vseed as VSeed)

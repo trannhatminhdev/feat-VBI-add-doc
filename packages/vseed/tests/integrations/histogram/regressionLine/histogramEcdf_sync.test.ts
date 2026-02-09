@@ -1,8 +1,8 @@
 import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseedConfig from './histogramEcdf.json'
+import vseedConfig from './histogramEcdf_sync.json'
 
-test('histogramEcdf', () => {
+test('histogramEcdf_sync', () => {
   registerAll()
   const { vseed } = vseedConfig
   const builder = Builder.from(vseed as VSeed)

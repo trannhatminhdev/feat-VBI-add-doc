@@ -1,8 +1,8 @@
 import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseedConfig from './basic_sync.json'
+import vseedConfig from './table-dynamic-cell-style.json'
 
-test('basic_sync', () => {
+test('table-dynamic-cell-style', () => {
   registerAll()
   const { vseed } = vseedConfig
   const builder = Builder.from(vseed as VSeed)
