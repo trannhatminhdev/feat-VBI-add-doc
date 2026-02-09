@@ -1,0 +1,332 @@
+{
+  "name": "dimension-tooltip",
+  "description": "",
+  "vseed": {
+    "chartType": "columnParallel",
+    "dataset": [
+      {
+        "PushType": "RCSS",
+        "DIMQ": "GAA",
+        "DIMQ项": "VN",
+        "nr_value": 0.2637
+      },
+      {
+        "PushType": "RCSS",
+        "DIMQ": "GAA",
+        "DIMQ项": "AU",
+        "nr_value": 0.2504
+      },
+      {
+        "PushType": "RCSS",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "失活",
+        "nr_value": 0.237000000000000005
+      },
+      {
+        "PushType": "RCSS",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "全勤",
+        "nr_value": 0.2364
+      },
+      {
+        "PushType": "RCSS",
+        "DIMQ": "GAA",
+        "DIMQ项": "BR",
+        "nr_value": 0.2344
+      },
+      {
+        "PushType": "ZBA",
+        "DIMQ": "APA",
+        "nr_value": 2.6327999999999996
+      },
+      {
+        "PushType": "ZBA",
+        "DIMQ": "GAA",
+        "DIMQ项": "JP",
+        "nr_value": 0.2749
+      },
+      {
+        "PushType": "ZBA",
+        "DIMQ": "GAA",
+        "DIMQ项": "AU",
+        "nr_value": 0.27449999999999997
+      },
+      {
+        "PushType": "ZBA",
+        "DIMQ": "GAA",
+        "DIMQ项": "BR",
+        "nr_value": 0.2671
+      },
+      {
+        "PushType": "ZBA",
+        "DIMQ": "GAA",
+        "DIMQ项": "VN",
+        "nr_value": 0.2462
+      },
+      {
+        "PushType": "强触达",
+        "DIMQ": "APA",
+        "nr_value": 0.2232
+      },
+      {
+        "PushType": "强触达",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "JD",
+        "nr_value": 0.1793
+      },
+      {
+        "PushType": "强触达",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "失活",
+        "nr_value": 0.1691
+      },
+      {
+        "PushType": "强触达",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "低活",
+        "nr_value": 0.1175
+      },
+      {
+        "PushType": "强触达",
+        "DIMQ": "GAA",
+        "DIMQ项": "TH",
+        "nr_value": 0.11109999999999999
+      },
+      {
+        "PushType": "实时触达",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "失活",
+        "nr_value": 0.13949999999999999
+      },
+      {
+        "PushType": "实时触达",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "JD",
+        "nr_value": 0.2891
+      },
+      {
+        "PushType": "实时触达",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "低活",
+        "nr_value": 0.256900000000000006
+      },
+      {
+        "PushType": "实时触达",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "中活",
+        "nr_value": 0.2325
+      },
+      {
+        "PushType": "实时触达",
+        "DIMQ": "GAA",
+        "DIMQ项": "BR",
+        "nr_value": 0.2292
+      },
+      {
+        "PushType": "必达",
+        "DIMQ": "GAA",
+        "DIMQ项": "VN",
+        "nr_value": 0.259000000000000004
+      },
+      {
+        "PushType": "必达",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "失活",
+        "nr_value": 0.2527
+      },
+      {
+        "PushType": "必达",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "JD",
+        "nr_value": 0.2398
+      },
+      {
+        "PushType": "必达",
+        "DIMQ": "GAA",
+        "DIMQ项": "ID",
+        "nr_value": 0.228399999999999998
+      },
+      {
+        "PushType": "必达",
+        "DIMQ": "GAA",
+        "DIMQ项": "TH",
+        "nr_value": 0.2233
+      },
+      {
+        "PushType": "搜推",
+        "DIMQ": "GAA",
+        "DIMQ项": "CA",
+        "nr_value": 0.5918
+      },
+      {
+        "PushType": "搜推",
+        "DIMQ": "GAA",
+        "DIMQ项": "KR",
+        "nr_value": 0.5869
+      },
+      {
+        "PushType": "搜推",
+        "DIMQ": "GAA",
+        "DIMQ项": "ID",
+        "nr_value": 0.5368999999999999
+      },
+      {
+        "PushType": "搜推",
+        "DIMQ": "GAA",
+        "DIMQ项": "BR",
+        "nr_value": 0.3172
+      },
+      {
+        "PushType": "搜推",
+        "DIMQ": "GAA",
+        "DIMQ项": "VN",
+        "nr_value": 0.2982
+      },
+      {
+        "PushType": "个推",
+        "DIMQ": "GAA",
+        "DIMQ项": "TH",
+        "nr_value": 0.43170000000000003
+      },
+      {
+        "PushType": "个推",
+        "DIMQ": "GAA",
+        "DIMQ项": "VN",
+        "nr_value": 0.2066
+      },
+      {
+        "PushType": "个推",
+        "DIMQ": "APA",
+        "nr_value": 0.1641
+      },
+      {
+        "PushType": "个推",
+        "DIMQ": "GAA",
+        "DIMQ项": "MX",
+        "nr_value": 0.1564
+      },
+      {
+        "PushType": "个推",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "中活",
+        "nr_value": 0.1318
+      },
+      {
+        "PushType": "DIMQF",
+        "DIMQ": "GAA",
+        "DIMQ项": "BR",
+        "nr_value": 0.2652
+      },
+      {
+        "PushType": "DIMQF",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "失活",
+        "nr_value": 0.2524
+      },
+      {
+        "PushType": "DIMQF",
+        "DIMQ": "GAA",
+        "DIMQ项": "JP",
+        "nr_value": 0.2394
+      },
+      {
+        "PushType": "DIMQF",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "MNU",
+        "nr_value": 0.228999999999999998
+      },
+      {
+        "PushType": "DIMQF",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "全勤",
+        "nr_value": 0.2276
+      },
+      {
+        "PushType": "HD",
+        "DIMQ": "GAA",
+        "DIMQ项": "TH",
+        "nr_value": 0.1868
+      },
+      {
+        "PushType": "HD",
+        "DIMQ": "GAA",
+        "DIMQ项": "VN",
+        "nr_value": 0.1119
+      },
+      {
+        "PushType": "HD",
+        "DIMQ": "GAA",
+        "DIMQ项": "BR",
+        "nr_value": 0.29910000000000001
+      },
+      {
+        "PushType": "HD",
+        "DIMQ": "APA",
+        "nr_value": 0.29449999999999999
+      },
+      {
+        "PushType": "HD",
+        "DIMQ": "GAA",
+        "DIMQ项": "ID",
+        "nr_value": 0.28960000000000001
+      },
+      {
+        "PushType": "QA",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "失活",
+        "nr_value": 0.1134
+      },
+      {
+        "PushType": "QA",
+        "DIMQ": "GAA",
+        "DIMQ项": "BR",
+        "nr_value": 0.11220000000000001
+      },
+      {
+        "PushType": "QA",
+        "DIMQ": "MAQQ",
+        "DIMQ项": "MNU",
+        "nr_value": 0.10439999999999999
+      },
+      {
+        "PushType": "QA",
+        "DIMQ": "GAA",
+        "DIMQ项": "CA",
+        "nr_value": 0.2967
+      },
+      {
+        "PushType": "QA",
+        "DIMQ": "GAA",
+        "DIMQ项": "TH",
+        "nr_value": 0.2934
+      }
+    ],
+    "yAxis": {
+      "numFormat": {
+        "type": "percent"
+      }
+    },
+    "xAxis": {
+      "labelAutoHide": false
+    },
+    "measures": [
+      {
+        "id": "nr_value",
+        "numFormat": {
+          "type": "percent"
+        }
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "PushType"
+      },
+      {
+        "id": "DIMQ"
+      },
+      {
+        "id": "DIMQ项"
+      }
+    ]
+  }
+}

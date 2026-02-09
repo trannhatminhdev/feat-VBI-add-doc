@@ -1,0 +1,87 @@
+{
+  "name": "scatter-legend",
+  "description": "",
+  "vseed": {
+    "chartType": "scatter",
+    "dataset": [
+      {
+        "continent": "Asia",
+        "Country": "China",
+        "LifeExpectancy": 72.961,
+        "GDP": 4959.114854,
+        "Population": 1318683096
+      },
+      {
+        "continent": "Asia",
+        "Country": "Hong Kong, China",
+        "LifeExpectancy": 82.208,
+        "GDP": 39724.97867,
+        "Population": 6980412
+      },
+      {
+        "continent": "Asia",
+        "Country": "Japan",
+        "LifeExpectancy": 82.603,
+        "GDP": 31656.06806,
+        "Population": 127467972
+      },
+      {
+        "continent": "Asia",
+        "Country": "Korea, Dem. Rep.",
+        "LifeExpectancy": 67.297,
+        "GDP": 1593.06548,
+        "Population": 23301725
+      },
+      {
+        "continent": "Asia",
+        "Country": "Korea, Rep.",
+        "LifeExpectancy": 78.623,
+        "GDP": 23348.13973,
+        "Population": 49044790
+      },
+      {
+        "continent": "Oceania",
+        "Country": "Australia",
+        "LifeExpectancy": 31.235,
+        "GDP": 34435.36744,
+        "Population": 434176
+      },
+      {
+        "continent": "Oceania",
+        "Country": "New Zealand",
+        "LifeExpectancy": 30.204,
+        "GDP": 25185.00911,
+        "Population": 3115771
+      },
+      {
+        "continent": "Oceania",
+        "Country": "New Zealand2",
+        "LifeExpectancy": 31.204,
+        "GDP": 22185.00911,
+        "Population": 3155771
+      }
+    ],
+    "measures": [
+      {
+        "id": "GDP",
+        "encoding": "xAxis"
+      },
+      {
+        "id": "LifeExpectancy",
+        "encoding": "yAxis"
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "continent",
+        "encoding": "color"
+      }
+    ],
+    "polynomialRegressionLine": {
+      "enable": true,
+      "degree": 2,
+      "confidenceIntervalVisible": true,
+      "confidenceLevel": 95
+    }
+  }
+}
