@@ -30,6 +30,8 @@ export const buildSpec = (builder: Builder, advancedVSeed: AdvancedVSeed): Spec 
     builder.spec = spec
     return spec
   } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e)
     throw new Error(`buildSpec error: ${(e as Error).message}`)
   } finally {
     const end = typeof performance !== 'undefined' ? performance.now() : Date.now()

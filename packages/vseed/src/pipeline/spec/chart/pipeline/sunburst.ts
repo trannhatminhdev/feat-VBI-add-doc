@@ -13,18 +13,21 @@ import {
   pivotAdapter,
   initPivot,
   pivotGridStyle,
-  pivotIndicatorsAsRow,
-  datasetPivot,
   pivotIndicators,
   pivotRowDimensions,
   pivotColumnDimensions,
   pivotTitle,
   pivotDiscreteLegend,
   pivotColorLegend,
+  pivotIndicatorsAsCol,
+  pivotHideIndicatorName,
+  datasetPivotHierarchy,
+  drill,
 } from '../pipes'
 
 const sunburst: VChartSpecPipeline = [
   initSunburst,
+  drill,
   datasetHierarchy,
   colorAdapter(color, linearColor),
   backgroundColor,
@@ -36,8 +39,9 @@ const sunburst: VChartSpecPipeline = [
 const pivotSunburst: PivotChartSpecPipeline = [
   initPivot,
   pivotGridStyle,
-  pivotIndicatorsAsRow,
-  datasetPivot,
+  pivotIndicatorsAsCol,
+  pivotHideIndicatorName,
+  datasetPivotHierarchy,
   pivotIndicators([
     initSunburst,
     datasetHierarchy,

@@ -21,7 +21,6 @@ export class DuckDBWebQueryAdapter implements QueryAdapter {
         mainWorker: new URL('@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js', import.meta.url).toString(),
       },
     }
-
     const bundle = await selectBundle(MANUAL_BUNDLES)
     const worker_url = URL.createObjectURL(
       new Blob([`importScripts("${bundle.mainWorker!}");`], { type: 'text/javascript' }),

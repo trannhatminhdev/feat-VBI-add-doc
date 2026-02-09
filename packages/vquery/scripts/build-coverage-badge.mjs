@@ -72,8 +72,7 @@ function updateRootReadme(coverageData) {
     let readme = readFileSync(readmePath, 'utf8')
 
     // Match the table row for vquery
-    const rowRegex =
-      /(\|\s*\[vquery\]\(\.\/packages\/vquery\)\s*\|[^|]+\|\s*)(\[!\[Coverage\]\([^)]+\)\]\([^)]+\))([^|]+\|)/
+    const rowRegex = /(\|\s*\[vquery\]\([^)]+\)\s*\|[^|]+\|\s*)(\[!\[Coverage\]\([^)]+\)\]\([^)]+\))([^|]+\|)/
     const newBadge = `[![Coverage](${coverageData.badgeUrl})](https://github.com/VisActor/VSeed/actions/workflows/coverage.yml)`
 
     if (rowRegex.test(readme)) {

@@ -13,19 +13,22 @@ import {
   pivotAdapter,
   initPivot,
   pivotGridStyle,
-  pivotIndicatorsAsRow,
-  datasetPivot,
+  datasetPivotHierarchy,
   pivotIndicators,
   pivotRowDimensions,
   pivotColumnDimensions,
   pivotTitle,
   pivotDiscreteLegend,
   pivotColorLegend,
+  pivotIndicatorsAsCol,
+  pivotHideIndicatorName,
+  drill,
 } from '../pipes'
 import { tooltipTreeMap } from '../pipes/tooltip/tooltipTreeMap'
 
 const treeMap: VChartSpecPipeline = [
   initTreeMap,
+  drill,
   datasetHierarchy,
   colorAdapter(color, linearColor),
   backgroundColor,
@@ -38,8 +41,9 @@ const treeMap: VChartSpecPipeline = [
 const pivotTreeMap: PivotChartSpecPipeline = [
   initPivot,
   pivotGridStyle,
-  pivotIndicatorsAsRow,
-  datasetPivot,
+  pivotIndicatorsAsCol,
+  pivotHideIndicatorName,
+  datasetPivotHierarchy,
   pivotIndicators([
     initTreeMap,
     datasetHierarchy,

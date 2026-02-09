@@ -13,18 +13,21 @@ import {
   pivotAdapter,
   initPivot,
   pivotGridStyle,
-  pivotIndicatorsAsRow,
-  datasetPivot,
   pivotIndicators,
   pivotRowDimensions,
   pivotColumnDimensions,
   pivotTitle,
   pivotDiscreteLegend,
   pivotColorLegend,
+  pivotIndicatorsAsCol,
+  pivotHideIndicatorName,
+  datasetPivotHierarchy,
+  drill,
 } from '../pipes'
 
 const circlePacking: VChartSpecPipeline = [
   initCirclePacking,
+  drill,
   datasetHierarchy,
   colorAdapter(color, linearColor),
   backgroundColor,
@@ -36,8 +39,9 @@ const circlePacking: VChartSpecPipeline = [
 const pivotCirclePacking: PivotChartSpecPipeline = [
   initPivot,
   pivotGridStyle,
-  pivotIndicatorsAsRow,
-  datasetPivot,
+  pivotIndicatorsAsCol,
+  pivotHideIndicatorName,
+  datasetPivotHierarchy,
   pivotIndicators([
     initCirclePacking,
     datasetHierarchy,
