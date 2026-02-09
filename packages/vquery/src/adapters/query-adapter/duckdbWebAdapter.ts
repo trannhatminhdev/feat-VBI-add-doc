@@ -4,8 +4,13 @@ import { AsyncDuckDB, selectBundle, ConsoleLogger } from '@duckdb/duckdb-wasm'
 import { QueryAdapter } from 'src/types'
 import { QueryResult } from 'src/types/DataSet'
 
+const resolvePath = (path: string) => {
+  const URLCtor = URL
+  return new URLCtor(path, import.meta.url).href
+}
+
 // Default bundles configuration - can be overridden in tests
-const getDefaultBundles = (): DuckDBBundles => {
+export const getDefaultBundles = (): DuckDBBundles => {
   // Use dynamic import to avoid build-time resolution of wasm files
   const wasmModulePath = '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm'
   const workerPath = '@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js'
@@ -14,12 +19,12 @@ const getDefaultBundles = (): DuckDBBundles => {
 
   return {
     mvp: {
-      mainModule: new URL(wasmModulePath, import.meta.url).href,
-      mainWorker: new URL(workerPath, import.meta.url).toString(),
+      mainModule: resolvePath(wasmModulePath),
+      mainWorker: resolvePath(workerPath),
     },
     eh: {
-      mainModule: new URL(ehWasmModulePath, import.meta.url).href,
-      mainWorker: new URL(ehWorkerPath, import.meta.url).toString(),
+      mainModule: resolvePath(ehWasmModulePath),
+      mainWorker: resolvePath(ehWorkerPath),
     },
   }
 }

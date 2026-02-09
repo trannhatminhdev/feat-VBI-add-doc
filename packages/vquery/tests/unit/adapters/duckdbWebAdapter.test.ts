@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DuckDBWebQueryAdapter } from 'src/adapters/query-adapter/duckdbWebAdapter'
+import { DuckDBWebQueryAdapter, getDefaultBundles } from 'src/adapters/query-adapter/duckdbWebAdapter'
 import type { DuckDBBundles } from '@duckdb/duckdb-wasm'
 
 // Mock dependencies
@@ -129,5 +129,34 @@ describe('DuckDBWebQueryAdapter', () => {
 
   it('should throw error when getting schema without connection', async () => {
     await expect(adapter.getSchema('test')).rejects.toThrow('connection is null')
+  })
+})
+
+describe('getDefaultBundles', () => {
+  let originalURL: typeof URL
+
+  beforeAll(() => {
+    originalURL = global.URL
+  })
+
+  afterAll(() => {
+    global.URL = originalURL
+  })
+
+  it('should return default bundles with correct paths', () => {
+    // Mock URL to intercept constructor calls
+    const MockURL = rs.fn((path: string) => ({
+      href: `resolved:${path}`,
+      toString: () => `resolved:${path}`,
+    })) as unknown as typeof URL
+
+    global.URL = MockURL
+
+    const bundles = getDefaultBundles()
+
+    expect(bundles.mvp.mainModule).toBe('resolved:@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm')
+    expect(bundles.mvp.mainWorker).toBe('resolved:@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js')
+    expect(bundles.eh!.mainModule).toBe('resolved:@duckdb/duckdb-wasm/dist/duckdb-eh.wasm')
+    expect(bundles.eh!.mainWorker).toBe('resolved:@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js')
   })
 })
