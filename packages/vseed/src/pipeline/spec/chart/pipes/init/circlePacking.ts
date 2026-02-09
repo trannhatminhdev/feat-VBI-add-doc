@@ -11,7 +11,6 @@ export const initCirclePacking: VChartSpecPipe = (spec, context) => {
   result.categoryField = 'name'
   result.valueField = foldInfo.measureValue
   // Style configuration
-  result.drill = true
   result.circlePacking = {
     style: {
       fillOpacity: (d: any) => (d.isLeaf ? 0.75 : 0.25),

@@ -18,8 +18,8 @@ const Demo = () => {
       { category: 'XYZ', subCategory: 'Phones', product: 'Smartphone', sales: 8000, profit: 1200 },
     ],
     dimensions: [
-      { id: 'category', alias: 'Category', encoding: 'hierarchy' },
-      { id: 'subCategory', alias: 'SubCategory', encoding: 'hierarchy' },
+      { id: 'category', alias: 'Category', encoding: 'row' },
+      { id: 'subCategory', alias: 'SubCategory', encoding: 'column' },
       { id: 'product', alias: 'Product', encoding: 'hierarchy' },
       { id: 'product', alias: 'Product', encoding: 'label' },
       { id: MeasureNames, encoding: 'label' },
@@ -74,6 +74,7 @@ const SimpleVSeedRender = (props: { vseed: VSeed }) => {
     const theme = dark ? 'dark' : 'light'
     const builder = Builder.from(vseed.theme ? vseed : { ...vseed, theme })
     let spec = builder.build()
+    console.log('debug spec', spec)
     spec = {
       ...spec,
       chartDimensionLinkage: {

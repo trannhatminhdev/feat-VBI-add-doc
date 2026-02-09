@@ -75,6 +75,9 @@ const generateDimensionEncoding = (dimensions: Dimensions, encoding: Encoding, i
 
   // label
   encoding.label = unique(dimensions.filter((item) => item.encoding === 'label').map((item) => item.id))
+
+  encoding.row = unique(dimensions.filter((item) => item.encoding === 'row').map((item) => item.id))
+  encoding.column = unique(dimensions.filter((item) => item.encoding === 'column').map((item) => item.id))
 }
 
 /**
