@@ -1,11 +1,9 @@
-import type { TableDynamicFilterRes, ChartDynamicFilterRes } from './dataSelector'
-
 /**
  * 代码执行结果
  */
 export interface CodeExecutionResult {
   success: boolean
-  data: TableDynamicFilterRes[] | ChartDynamicFilterRes[]
+  data: any // 支持多种返回类型：array | number | string
   error?: string
 }
 

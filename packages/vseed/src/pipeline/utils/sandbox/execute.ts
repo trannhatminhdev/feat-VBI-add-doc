@@ -228,31 +228,46 @@ class WorkerPool {
               clearTimeout(timeoutId);
             }
             
-            // 验证返回值
-            if (!Array.isArray(result)) {
-              throw new TypeError(
-                \`Code must return an array. Got: \${typeof result}\`
-              );
-            }
-            
-            // 验证数组内容（防止返回函数、Promise等）
-            for (let i = 0; i < result.length; i++) {
-              const item = result[i];
-              const type = typeof item;
+            // 验证返回值（只检查危险类型，不限制结构）
+            const validateResultType = (result) => {
+              const type = typeof result
               
+              // 禁止返回函数、Symbol
               if (type === 'function' || type === 'symbol') {
                 throw new TypeError(
-                  \`Array element at index \${i} has forbidden type: \${type}\`
+                  \`Code must not return \${type}. Returned types must be serializable.\`
                 );
               }
               
-              // 防止返回 Promise
-              if (item && typeof item.then === 'function') {
+              // 禁止返回 Promise
+              if (result && typeof result.then === 'function') {
                 throw new TypeError(
-                  \`Array element at index \${i} is a Promise. Async operations are not allowed.\`
+                  \`Code must not return a Promise. Async operations are not allowed.\`
                 );
               }
-            }
+              
+              // 如果是数组，检查元素的危险类型
+              if (Array.isArray(result)) {
+                for (let i = 0; i < result.length; i++) {
+                  const item = result[i];
+                  const itemType = typeof item;
+                  
+                  if (itemType === 'function' || itemType === 'symbol') {
+                    throw new TypeError(
+                      \`Array element at index \${i} has forbidden type: \${itemType}\`
+                    );
+                  }
+                  
+                  if (item && typeof item.then === 'function') {
+                    throw new TypeError(
+                      \`Array element at index \${i} is a Promise. Async operations are not allowed.\`
+                    );
+                  }
+                }
+              }
+            };
+            
+            validateResultType(result);
             
             return result;
             
@@ -314,6 +329,7 @@ class WorkerPool {
     return new Promise<Worker>((resolve, reject) => {
       const timeout = setTimeout(() => {
         worker.terminate()
+        URL.revokeObjectURL(blobURL)
         reject(new Error('Worker initialization timeout'))
       }, 10000)
 
@@ -324,14 +340,18 @@ class WorkerPool {
         } else if (e.data.initError) {
           clearTimeout(timeout)
           worker.terminate()
+          URL.revokeObjectURL(blobURL)
           reject(new Error(e.data.initError))
         }
       }
 
-      worker.onerror = (error) => {
+      worker.onerror = (errorEvent: ErrorEvent) => {
         clearTimeout(timeout)
         worker.terminate()
-        reject(error)
+        URL.revokeObjectURL(blobURL)
+        // ✅ 正确提取 ErrorEvent 中的错误信息
+        const errorMessage = errorEvent.message || errorEvent.error?.message || 'Unknown worker initialization error'
+        reject(new Error(`Worker initialization failed: ${errorMessage}`))
       }
     })
   }
@@ -444,7 +464,7 @@ export function terminateWorkerPool(): void {
  * 增强的安全验证
  * @description 针对 AI 生成代码的特定模式检查
  */
-export function enhancedValidateCodeSafety(code: string): void {
+export function validateCodeSafety(code: string): void {
   // 1. 基础检查
   if (!code || code.trim().length === 0) {
     throw new Error('Code cannot be empty')
@@ -579,7 +599,7 @@ export async function executeFilterCode(options: CodeExecutionOptions): Promise<
   // }
 
   // 2. 增强的安全验证
-  enhancedValidateCodeSafety(code)
+  validateCodeSafety(code)
 
   // 3. 验证输入数据
   if (!Array.isArray(data)) {
@@ -629,10 +649,12 @@ export async function executeFilterCode(options: CodeExecutionOptions): Promise<
       }
 
       // 错误处理
-      const errorHandler = (error: ErrorEvent) => {
+      const errorHandler = (errorEvent: ErrorEvent) => {
         clearTimeout(outerTimeoutId)
         cleanup()
-        reject(new Error(`Worker error: ${error.message || String(error)}`))
+        // ✅ 正确提取 ErrorEvent 中的错误信息
+        const errorMessage = errorEvent.message || errorEvent.error?.message || 'Unknown worker error'
+        reject(new Error(`Worker error: ${errorMessage}`))
       }
 
       worker.addEventListener('message', messageHandler)

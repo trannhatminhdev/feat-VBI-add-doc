@@ -6,7 +6,7 @@
 export {
   executeFilterCode,
   tryExecuteFilterCode,
-  enhancedValidateCodeSafety,
+  validateCodeSafety,
   initializeWorkerPool,
   terminateWorkerPool,
 } from './execute'

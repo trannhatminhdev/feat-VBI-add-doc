@@ -4,55 +4,55 @@
  */
 
 import { describe, it, expect } from 'vitest'
-import { enhancedValidateCodeSafety } from '../../../src/pipeline/utils/sandbox/execute'
+import { validateCodeSafety } from '../../../src/pipeline/utils/sandbox/execute'
 
 describe('安全验证 - 代码检查', () => {
   describe('检测危险操作', () => {
     it('应该拒绝 eval 调用', () => {
       expect(() => {
-        enhancedValidateCodeSafety('return eval("malicious code")')
+        validateCodeSafety('return eval("malicious code")')
       }).toThrow(/forbidden|security/i)
     })
 
     it('应该拒绝 Function 构造器', () => {
       expect(() => {
-        enhancedValidateCodeSafety('return new Function("return 1")')
+        validateCodeSafety('return new Function("return 1")')
       }).toThrow(/forbidden|security/i)
     })
 
     it('应该拒绝 import 语句', () => {
       expect(() => {
-        enhancedValidateCodeSafety('import fs from "fs"; return data;')
+        validateCodeSafety('import fs from "fs"; return data;')
       }).toThrow(/forbidden|security/i)
     })
 
     it('应该拒绝 fetch 调用', () => {
       expect(() => {
-        enhancedValidateCodeSafety('return fetch("http://evil.com")')
+        validateCodeSafety('return fetch("http://evil.com")')
       }).toThrow(/forbidden|security/i)
     })
 
     it('应该拒绝 XMLHttpRequest', () => {
       expect(() => {
-        enhancedValidateCodeSafety('return new XMLHttpRequest()')
+        validateCodeSafety('return new XMLHttpRequest()')
       }).toThrow(/forbidden|security/i)
     })
 
     it('应该拒绝原型链污染', () => {
       expect(() => {
-        enhancedValidateCodeSafety('Object.prototype.hack = 1; return data;')
+        validateCodeSafety('Object.prototype.hack = 1; return data;')
       }).toThrow(/forbidden|security/i)
     })
 
     it('应该拒绝 __proto__ 访问', () => {
       expect(() => {
-        enhancedValidateCodeSafety('obj.__proto__ = {}; return obj;')
+        validateCodeSafety('obj.__proto__ = {}; return obj;')
       }).toThrow(/forbidden|security/i)
     })
 
     it('应该拒绝 constructor 属性访问', () => {
       expect(() => {
-        enhancedValidateCodeSafety('return obj.constructor.constructor')
+        validateCodeSafety('return obj.constructor.constructor')
       }).toThrow(/forbidden|security/i)
     })
   })
@@ -60,19 +60,19 @@ describe('安全验证 - 代码检查', () => {
   describe('允许安全操作', () => {
     it('应该允许基本数组操作', () => {
       expect(() => {
-        enhancedValidateCodeSafety('return _.map(data, item => item.value)')
+        validateCodeSafety('return _.map(data, item => item.value)')
       }).not.toThrow()
     })
 
     it('应该允许对象操作', () => {
       expect(() => {
-        enhancedValidateCodeSafety('return _.groupBy(data, "category")')
+        validateCodeSafety('return _.groupBy(data, "category")')
       }).not.toThrow()
     })
 
     it('应该允许数学计算', () => {
       expect(() => {
-        enhancedValidateCodeSafety('return _.sumBy(data, "amount")')
+        validateCodeSafety('return _.sumBy(data, "amount")')
       }).not.toThrow()
     })
 
@@ -86,7 +86,7 @@ describe('安全验证 - 代码检查', () => {
         }));
       `
       expect(() => {
-        enhancedValidateCodeSafety(code)
+        validateCodeSafety(code)
       }).not.toThrow()
     })
   })
@@ -94,7 +94,7 @@ describe('安全验证 - 代码检查', () => {
   describe('边缘情况', () => {
     it('应该拒绝空代码', () => {
       expect(() => {
-        enhancedValidateCodeSafety('')
+        validateCodeSafety('')
       }).toThrow(/empty|cannot be empty/i)
     })
 
@@ -106,7 +106,7 @@ describe('安全验证 - 代码检查', () => {
         return _.map(data, 'name');
       `
       expect(() => {
-        enhancedValidateCodeSafety(code)
+        validateCodeSafety(code)
       }).toThrow(/forbidden|security/i)
     })
 
@@ -117,7 +117,7 @@ describe('安全验证 - 代码检查', () => {
         return data;
       `
       expect(() => {
-        enhancedValidateCodeSafety(code)
+        validateCodeSafety(code)
       }).toThrow(/forbidden|security/i)
     })
     
@@ -129,7 +129,7 @@ describe('安全验证 - 代码检查', () => {
         return _.map(filtered, 'name');
       `
       expect(() => {
-        enhancedValidateCodeSafety(code)
+        validateCodeSafety(code)
       }).not.toThrow()
     })
   })

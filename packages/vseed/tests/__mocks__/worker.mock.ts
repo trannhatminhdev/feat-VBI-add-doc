@@ -55,10 +55,48 @@ export class WorkerMock {
         const fn = new Function('data', '_', 'R', code)
         const result = fn(inputData, _, R)
         
-        // 验证返回值是数组
-        if (!Array.isArray(result)) {
-          throw new Error('Code must return an array')
+        // 验证返回值（支持多种类型）
+        // - 数组（TableDynamicFilter 或 ChartDynamicFilter）
+        // - 数值或字符串（ValueDynamicFilter）
+        const validateResultType = (result: any) => {
+          const type = typeof result
+          
+          // 禁止返回函数、Symbol
+          if (type === 'function' || type === 'symbol') {
+            throw new TypeError(
+              `Code must not return ${type}. Returned types must be serializable.`
+            )
+          }
+          
+          // 禁止返回 Promise
+          if (result && typeof result.then === 'function') {
+            throw new TypeError(
+              `Code must not return a Promise. Async operations are not allowed.`
+            )
+          }
+          
+          // 如果是数组，检查元素的危险类型
+          if (Array.isArray(result)) {
+            for (let i = 0; i < result.length; i++) {
+              const item = result[i]
+              const itemType = typeof item
+              
+              if (itemType === 'function' || itemType === 'symbol') {
+                throw new TypeError(
+                  `Array element at index ${i} has forbidden type: ${itemType}`
+                )
+              }
+              
+              if (item && typeof item.then === 'function') {
+                throw new TypeError(
+                  `Array element at index ${i} is a Promise. Async operations are not allowed.`
+                )
+              }
+            }
+          }
         }
+        
+        validateResultType(result)
         
         // 返回成功结果
         const message = new MessageEvent('message', { 
@@ -135,3 +173,4 @@ export class WorkerMock {
 export function mockWorker(): typeof Worker {
   return WorkerMock as any
 }
+
