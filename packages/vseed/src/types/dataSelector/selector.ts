@@ -402,8 +402,8 @@ export const zAreaSelector = z.union([zMeasureSelector, zDimensionSelector])
 export const zAreaSelectors = z.array(zAreaSelector)
 
 export const zCellSelector = z.object({
-  row: z.number(),
-  field: z.string(),
+  __row_index: z.number(),
+  field: z.union([z.string(), z.literal('*')]),
 })
 
 export const zTableDynamicFilter = z.object({
