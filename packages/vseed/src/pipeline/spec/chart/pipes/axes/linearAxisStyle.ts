@@ -14,7 +14,6 @@ export interface LinearAxisStyleConfig extends YLinearAxis {
   isPivot?: boolean
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const linearAxisStyle = (config: LinearAxisStyleConfig): any => {
   const {
     orient,
@@ -37,9 +36,9 @@ export const linearAxisStyle = (config: LinearAxisStyleConfig): any => {
     seriesId,
     sync,
     isPivot = false,
+    animation,
   } = config
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const axisConfig: any = {
     ...(isPivot
       ? {
@@ -102,16 +101,19 @@ export const linearAxisStyle = (config: LinearAxisStyleConfig): any => {
         stroke: line?.lineColor,
       },
     },
+    animation: !!animation,
+    animationUpdate: {
+      duration: animation?.duration,
+      easing: animation?.easing,
+    },
   }
 
   // Add innerOffset based on orientation
   if (orient === 'bottom' || orient === 'top') {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     axisConfig.innerOffset = {
       right: LINEAR_AXIS_INNER_OFFSET_TOP,
     }
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     axisConfig.innerOffset = {
       top: LINEAR_AXIS_INNER_OFFSET_TOP,
     }
@@ -119,15 +121,12 @@ export const linearAxisStyle = (config: LinearAxisStyleConfig): any => {
 
   // Add optional fields
   if (id) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     axisConfig.id = id
   }
   if (seriesId) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     axisConfig.seriesId = seriesId
   }
   if (sync) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     axisConfig.sync = sync
   }
 

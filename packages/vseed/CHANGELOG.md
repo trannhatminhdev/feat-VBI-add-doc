@@ -1,5 +1,35 @@
 # @visactor/vseed
 
+## 0.4.2
+
+### Patch Changes
+
+- fix: annotation point stack value err
+
+## 0.4.1
+
+### Patch Changes
+
+- d7c2385: feat: optimize the pivot and combination for hierarchy chart types
+
+## 0.4.0
+
+### Minor Changes
+
+- feat: add three hierarchy char types: sunburst,treeMap,circlePacking
+
+## 0.3.16
+
+### Patch Changes
+
+- e6cf347: feat: add raceScatter,raceBar,raceColumn
+
+## 0.3.15
+
+### Patch Changes
+
+- refactor: add raceColumn, raceBar, raceScatter, remove useless player for other chart types
+
 ## 0.3.14
 
 ## 0.3.13

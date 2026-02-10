@@ -16,7 +16,7 @@
     "@visactor/vchart": "2.0.15",
     "@visactor/vquery": "workspace:*",
     "@visactor/vseed": "workspace:*",
-    "@visactor/vtable": "1.23.0",
+    "@visactor/vtable": "1.23.1",
     "demo": "workspace:*",
     "minimalist": "workspace:*",
     "professional": "workspace:*",

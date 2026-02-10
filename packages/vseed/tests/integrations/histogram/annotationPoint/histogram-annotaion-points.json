@@ -1,0 +1,63 @@
+{
+  "name": "histogram-annotaion-points",
+  "description": "",
+  "vseed": {
+    "chartType": "histogram",
+    "dataset": [
+      {
+        "v": 1
+      },
+      {
+        "v": 1
+      },
+      {
+        "v": 1
+      },
+      {
+        "v": 2
+      },
+      {
+        "v": 5
+      },
+      {
+        "v": 7
+      },
+      {
+        "v": 8
+      },
+      {
+        "v": 9
+      },
+      {
+        "v": 10
+      }
+    ],
+    "annotationPoint": [
+      {
+        "selector": [
+          {
+            "field": "__BinPercentage__",
+            "op": ">=",
+            "value": 0.3
+          }
+        ],
+        "text": "最大占比标注"
+      },
+      {
+        "selector": [
+          {
+            "field": "__BinStart__",
+            "op": ">=",
+            "value": 8
+          },
+          {
+            "field": "__BinEnd__",
+            "op": "<=",
+            "value": 9
+          }
+        ],
+        "text": "区间标注"
+      }
+    ]
+  }
+}

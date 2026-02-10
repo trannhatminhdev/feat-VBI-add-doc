@@ -1,0 +1,51 @@
+import type { VChartSpecPipeline } from 'src/types'
+import {
+  initColumn,
+  stackCornerRadius,
+  barMaxWidth,
+  colorAdapter,
+  color,
+  linearColor,
+  backgroundColor,
+  playerXY,
+  progressive,
+  label,
+  brush,
+  tooltip,
+  discreteLegend,
+  colorLegend,
+  horizontalCrosshairRect,
+  colorBarStyleFill,
+  barStyle,
+  annotationPoint,
+  annotationVerticalLine,
+  annotationHorizontalLine,
+  annotationAreaBand,
+  xBand,
+  yLinear,
+} from '../pipes'
+
+const raceColumn: VChartSpecPipeline = [
+  initColumn,
+  stackCornerRadius,
+  barMaxWidth,
+  colorAdapter(color, linearColor),
+  backgroundColor,
+  playerXY,
+  progressive,
+  xBand,
+  yLinear,
+
+  label,
+  brush,
+  tooltip,
+  colorAdapter(discreteLegend, colorLegend),
+  horizontalCrosshairRect,
+  colorBarStyleFill(barStyle),
+  annotationPoint,
+  annotationVerticalLine,
+  annotationHorizontalLine,
+  annotationAreaBand,
+]
+
+export const raceColumnSpecPipeline = raceColumn

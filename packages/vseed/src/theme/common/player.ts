@@ -5,6 +5,7 @@ export const getDarkPlayer = (): Omit<Player, 'field'> => {
   const primaryColor = getDarkColorScheme()[0]
 
   return {
+    maxCount: 10,
     interval: 1000,
     loop: false,
     autoPlay: true,
@@ -26,6 +27,7 @@ export const getLightPlayer = (): Omit<Player, 'field'> => {
   const primaryColor = getLightColorScheme()[0]
 
   return {
+    maxCount: 10,
     interval: 1000,
     loop: false,
     autoPlay: true,

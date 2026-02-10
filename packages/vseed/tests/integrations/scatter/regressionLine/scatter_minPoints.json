@@ -1,0 +1,59 @@
+{
+  "name": "scatter_minPoints",
+  "description": "",
+  "vseed": {
+    "chartType": "scatter",
+    "dataset": [
+      {
+        "continent": "Americas",
+        "Country": "Argentina",
+        "LifeExpectancy": 75.32,
+        "GDP": 12779.37964,
+        "Population": 40301927
+      },
+      {
+        "continent": "Americas",
+        "Country": "Brazil",
+        "LifeExpectancy": 72.39,
+        "GDP": 9065.800825,
+        "Population": 190010647
+      },
+      {
+        "continent": "Americas",
+        "Country": "Canada",
+        "LifeExpectancy": 80.653,
+        "GDP": 36319.23501,
+        "Population": 33390141
+      }
+    ],
+    "measures": [
+      {
+        "id": "GDP",
+        "encoding": "xAxis"
+      },
+      {
+        "id": "LifeExpectancy",
+        "encoding": "yAxis"
+      }
+    ],
+    "polynomialRegressionLine": [
+      {
+        "color": "red",
+        "text": "Degree-2",
+        "degree": 2,
+        "confidenceIntervalVisible": true
+      },
+      {
+        "color": "green",
+        "text": "Degree-3",
+        "degree": 3,
+        "confidenceIntervalVisible": true
+      }
+    ],
+    "lowessRegressionLine": {
+      "color": "blue",
+      "text": "lowessRegressionLine",
+      "enable": true
+    }
+  }
+}

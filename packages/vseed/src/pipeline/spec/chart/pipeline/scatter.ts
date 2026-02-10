@@ -41,14 +41,13 @@ import {
   pivotTitle,
   dimensionLinkage,
   brush,
-  playerAdapter,
 } from '../pipes'
 
 const scatter: VChartSpecPipeline = [
   initScatter,
   colorAdapter(color, linearColor),
   backgroundColor,
-  playerAdapter(datasetScatter),
+  datasetScatter,
   progressive,
   xLinear,
   yLinear,

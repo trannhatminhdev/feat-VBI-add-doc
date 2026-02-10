@@ -18,3 +18,12 @@ export { radarAdvancedPipeline } from './radar'
 export { dualAxisAdvancedPipeline } from './dualAxis'
 export { boxplotAdvancedPipeline } from './boxplot'
 export { histogramAdvancedPipeline } from './histogram'
+// race
+export { raceBarAdvancedPipeline } from './raceBar'
+export { raceColumnAdvancedPipeline } from './raceColumn'
+export { raceScatterAdvancedPipeline } from './raceScatter'
+
+// hierarchy
+export { treeMapAdvancedPipeline } from './treeMap'
+export { sunburstAdvancedPipeline } from './sunburst'
+export { circlePackingAdvancedPipeline } from './circlePacking'

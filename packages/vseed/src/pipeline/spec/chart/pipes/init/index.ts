@@ -14,4 +14,9 @@ export { initFunnel } from './funnel'
 export { initPivot } from './pivot'
 export { initDualAxis } from './dualAxis'
 export { initHistogram } from './histogram'
+
+// hierarchy
+export { initTreeMap } from './treeMap'
+export { initSunburst } from './sunburst'
+export { initCirclePacking } from './circlePacking'
 export { initBoxplot } from './boxplot'

@@ -6,7 +6,7 @@ pageType: custom
 
 ```tsx title="VSeed 示例：玫瑰图" playground
 const Demo = () => {
-  const MeasureNames = '__MeaName__'
+  const MeasureNames = '__MeaId__'
 
   const vseed: VSeed = {
     chartType: 'line',
@@ -162,7 +162,7 @@ const SimpleVSeedRender = (props: { vseed: VSeed }) => {
   return (
     <div
       ref={ref}
-      style={{ height: 300, width: '100%' }}
+      style={{ height: 600, width: '100%' }}
       onClick={() => {
         console.group(`selected ${vseed.chartType}`)
         console.log('builder', builderRef.current)

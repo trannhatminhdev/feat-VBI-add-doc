@@ -8,6 +8,9 @@ export * from './column'
 export * from './columnParallel'
 export * from './columnPercent'
 export * from './bar'
+export * from './raceBar'
+export * from './raceColumn'
+export * from './raceScatter'
 export * from './barParallel'
 export * from './barPercent'
 export * from './area'
@@ -22,6 +25,11 @@ export * from './roseParallel'
 export * from './pie'
 export * from './donut'
 export * from './radar'
+
+// hierarchy
+export * from './treeMap'
+export * from './sunburst'
+export * from './circlePacking'
 
 // other
 export * from './funnel'

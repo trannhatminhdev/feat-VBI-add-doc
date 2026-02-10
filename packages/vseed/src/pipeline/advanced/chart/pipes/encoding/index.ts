@@ -11,3 +11,10 @@ export { encodingForRose, defaultEncodingForRose } from './rose'
 export { encodingAdapter } from './adapter'
 export { encodingForHistogram, defaultEncodingForHistogram } from './histogram'
 export { encodingForBoxplot, defaultEncodingForBoxplot } from './boxplot'
+// race
+export { encodingForRaceColumn, defaultEncodingForRaceColumn } from './raceColumn'
+export { encodingForRaceBar, defaultEncodingForRaceBar } from './raceBar'
+export { encodingForRaceScatter, defaultEncodingForRaceScatter } from './raceScatter'
+
+// hierarchy
+export { encodingForHierarchy, defaultEncodingForHierarchy } from './hierarchy'

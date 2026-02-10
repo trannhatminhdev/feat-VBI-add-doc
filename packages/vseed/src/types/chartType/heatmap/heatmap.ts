@@ -1,6 +1,16 @@
 import { type Locale } from '../../i18n'
-import type { Color, ColorLegend, HeatmapDimension, HeatmapMeasure, Player } from '../../properties'
-import { type BackgroundColor, type Dataset, type Label, type Page, type Theme, type Tooltip } from '../../properties'
+import type {
+  Color,
+  ColorLegend,
+  HeatmapDimension,
+  HeatmapMeasure,
+  BackgroundColor,
+  Dataset,
+  Label,
+  Page,
+  Theme,
+  Tooltip,
+} from '../../properties'
 import type { Brush } from '../../properties'
 
 /**
@@ -62,10 +72,6 @@ export interface Heatmap {
    * @description 分页配置
    */
   page?: Page
-  /**
-   * @description 播放器配置, 用于指定播放的字段名, 必须是维度
-   */
-  player?: Player
 
   /**
    * 图表的背景颜色

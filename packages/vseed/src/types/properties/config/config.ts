@@ -13,6 +13,10 @@ import { zHeatmapConfig } from './heatmap'
 import { zPivotTableConfig } from './pivotTable'
 import { zBoxplotConfig } from './boxplot'
 import { zHistogramConfig } from './histogram'
+import { zRaceBarConfig, zRaceColumnConfig, zRaceScatterConfig } from './race'
+import { zTreeMapConfig } from './treeMap'
+import { zSunburstConfig } from './sunburst'
+import { zCirclePackingConfig } from './circlePacking'
 
 export type Config = z.infer<typeof zConfig>
 export const zConfig = z.object({
@@ -39,6 +43,17 @@ export const zConfig = z.object({
   pie: zPieConfig.nullish(),
   donut: zDonutConfig.nullish(),
   radar: zRadarConfig.nullish(),
+
+  // race
+  raceBar: zRaceBarConfig.nullish(),
+  raceColumn: zRaceColumnConfig.nullish(),
+  raceScatter: zRaceScatterConfig.nullish(),
+
+  // hierarchy
+  treeMap: zTreeMapConfig.nullish(),
+  sunburst: zSunburstConfig.nullish(),
+  circlePacking: zCirclePackingConfig.nullish(),
+
   // other
   funnel: zFunnelConfig.nullish(),
   heatmap: zHeatmapConfig.nullish(),

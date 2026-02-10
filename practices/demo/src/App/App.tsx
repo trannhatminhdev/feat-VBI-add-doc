@@ -16,7 +16,6 @@ interface APPProps {
 }
 
 export const APP = (props: APPProps) => {
-  console.log('debug APP rerender');
   const { initialize, initialized } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,

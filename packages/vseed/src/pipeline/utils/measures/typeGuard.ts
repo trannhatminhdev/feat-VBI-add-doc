@@ -1,4 +1,4 @@
-import type { Measure, MeasureGroup } from 'src/types'
+import type { ChartType, Measure, MeasureGroup } from 'src/types'
 import { ChartTypeEnum } from '../constant'
 
 export const isMeasure = (measure: Measure | MeasureGroup): measure is Measure => {
@@ -13,12 +13,17 @@ export const isMeasures = (measures: Measure[] | MeasureGroup[]): measures is Me
   return measures.every(isMeasure)
 }
 
-export const isPositionMeasure = (measure: Measure, chartType: string): boolean => {
+export const isPositionMeasure = (measure: Measure, chartType: ChartType): boolean => {
   if (!measure.encoding) {
     return true
   }
 
-  if (chartType === ChartTypeEnum.Funnel) {
+  if (
+    ChartTypeEnum.Funnel === chartType ||
+    ChartTypeEnum.CirclePacking === chartType ||
+    ChartTypeEnum.Sunburst === chartType ||
+    ChartTypeEnum.TreeMap === chartType
+  ) {
     return measure.encoding === 'size'
   }
 

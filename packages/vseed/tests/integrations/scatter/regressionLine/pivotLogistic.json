@@ -1,0 +1,90 @@
+{
+  "name": "pivotLogistic",
+  "description": "",
+  "vseed": {
+    "chartType": "scatter",
+    "dataset": [
+      {
+        "x": 1,
+        "y": 0,
+        "type": "A"
+      },
+      {
+        "x": 2,
+        "y": 1,
+        "type": "A"
+      },
+      {
+        "x": 2,
+        "y": 0,
+        "type": "A"
+      },
+      {
+        "x": 3,
+        "y": 1,
+        "type": "A"
+      },
+      {
+        "x": 4,
+        "y": 1,
+        "type": "A"
+      },
+      {
+        "x": 5,
+        "y": 1,
+        "type": "A"
+      },
+      {
+        "x": 1,
+        "y": 0,
+        "type": "B"
+      },
+      {
+        "x": 2,
+        "y": 0,
+        "type": "B"
+      },
+      {
+        "x": 2,
+        "y": 1,
+        "type": "B"
+      },
+      {
+        "x": 3,
+        "y": 1,
+        "type": "B"
+      },
+      {
+        "x": 4,
+        "y": 1,
+        "type": "B"
+      },
+      {
+        "x": 5,
+        "y": 1,
+        "type": "B"
+      }
+    ],
+    "measures": [
+      {
+        "id": "x",
+        "encoding": "xAxis"
+      },
+      {
+        "id": "y",
+        "encoding": "yAxis"
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "type",
+        "encoding": "row"
+      }
+    ],
+    "logisticRegressionLine": {
+      "color": "#722ed1",
+      "confidenceIntervalVisible": true,
+      "confidenceLevel": 0.99
+    }
+  }
+}

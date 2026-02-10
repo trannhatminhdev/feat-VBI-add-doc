@@ -1,0 +1,251 @@
+# RaceScatter
+
+## Basic RaceScatter
+
+A dynamic scatter plot animation showing changes in correlation over time.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'raceScatter',
+    measures: [
+      {
+        id: 'sales',
+        alias: '销售额',
+        autoFormat: true,
+      },
+      {
+        id: 'profit',
+        alias: '利润',
+        autoFormat: true,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+        alias: '日期',
+      },
+      {
+        id: 'category',
+        alias: '分类',
+      },
+    ],
+    dataset: [
+      {
+        date: '2020',
+        category: 'A',
+        sales: 199,
+        profit: 35,
+      },
+      {
+        date: '2020',
+        category: 'B',
+        sales: 182,
+        profit: 20,
+      },
+      {
+        date: '2020',
+        category: 'C',
+        sales: 161,
+        profit: 17,
+      },
+      {
+        date: '2020',
+        category: 'D',
+        sales: 242,
+        profit: 48,
+      },
+      {
+        date: '2020',
+        category: 'E',
+        sales: 218,
+        profit: 41,
+      },
+      {
+        date: '2021',
+        category: 'A',
+        sales: 179,
+        profit: 50,
+      },
+      {
+        date: '2021',
+        category: 'B',
+        sales: 192,
+        profit: 19,
+      },
+      {
+        date: '2021',
+        category: 'C',
+        sales: 224,
+        profit: 58,
+      },
+      {
+        date: '2021',
+        category: 'D',
+        sales: 265,
+        profit: 71,
+      },
+      {
+        date: '2021',
+        category: 'E',
+        sales: 192,
+        profit: 55,
+      },
+      {
+        date: '2022',
+        category: 'A',
+        sales: 206,
+        profit: 20,
+      },
+      {
+        date: '2022',
+        category: 'B',
+        sales: 199,
+        profit: 21,
+      },
+      {
+        date: '2022',
+        category: 'C',
+        sales: 200,
+        profit: 28,
+      },
+      {
+        date: '2022',
+        category: 'D',
+        sales: 281,
+        profit: 73,
+      },
+      {
+        date: '2022',
+        category: 'E',
+        sales: 249,
+        profit: 64,
+      },
+      {
+        date: '2023',
+        category: 'A',
+        sales: 279,
+        profit: 61,
+      },
+      {
+        date: '2023',
+        category: 'B',
+        sales: 241,
+        profit: 57,
+      },
+      {
+        date: '2023',
+        category: 'C',
+        sales: 257,
+        profit: 61,
+      },
+      {
+        date: '2023',
+        category: 'D',
+        sales: 273,
+        profit: 57,
+      },
+      {
+        date: '2023',
+        category: 'E',
+        sales: 284,
+        profit: 85,
+      },
+      {
+        date: '2024',
+        category: 'A',
+        sales: 276,
+        profit: 46,
+      },
+      {
+        date: '2024',
+        category: 'B',
+        sales: 282,
+        profit: 78,
+      },
+      {
+        date: '2024',
+        category: 'C',
+        sales: 273,
+        profit: 35,
+      },
+      {
+        date: '2024',
+        category: 'D',
+        sales: 295,
+        profit: 29,
+      },
+      {
+        date: '2024',
+        category: 'E',
+        sales: 265,
+        profit: 58,
+      },
+      {
+        date: '2025',
+        category: 'A',
+        sales: 350,
+        profit: 49,
+      },
+      {
+        date: '2025',
+        category: 'B',
+        sales: 253,
+        profit: 50,
+      },
+      {
+        date: '2025',
+        category: 'C',
+        sales: 265,
+        profit: 45,
+      },
+      {
+        date: '2025',
+        category: 'D',
+        sales: 289,
+        profit: 60,
+      },
+      {
+        date: '2025',
+        category: 'E',
+        sales: 349,
+        profit: 59,
+      },
+      {
+        date: '2026',
+        category: 'A',
+        sales: 353,
+        profit: 49,
+      },
+      {
+        date: '2026',
+        category: 'B',
+        sales: 351,
+        profit: 84,
+      },
+      {
+        date: '2026',
+        category: 'C',
+        sales: 305,
+        profit: 82,
+      },
+      {
+        date: '2026',
+        category: 'D',
+        sales: 363,
+        profit: 65,
+      },
+      {
+        date: '2026',
+        category: 'E',
+        sales: 298,
+        profit: 68,
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```

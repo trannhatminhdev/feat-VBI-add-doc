@@ -1,0 +1,71 @@
+{
+  "name": "column-bar-style",
+  "description": "",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [
+      {
+        "date": "2019",
+        "profit": 14,
+        "sales": 20,
+        "count": 50
+      },
+      {
+        "date": "2020",
+        "profit": 30,
+        "sales": 60,
+        "count": 50
+      },
+      {
+        "date": "2021",
+        "profit": 30,
+        "sales": 60,
+        "count": 50
+      },
+      {
+        "date": "2022",
+        "profit": 54,
+        "sales": 100,
+        "count": 50
+      },
+      {
+        "date": "2023",
+        "profit": 40,
+        "sales": 80,
+        "count": 50
+      }
+    ],
+    "barStyle": {
+      "dynamicFilter": {
+        "type": "row-with-field",
+        "code": "\n        return data.filter(item => item.profit / item.sales > 0.5).map(v => ({\n          __row_index: v.__row_index,\n          field: 'profit'\n        }))\n        "
+      },
+      "barColor": "lightpink",
+      "barColorOpacity": 0.8,
+      "barBorderColor": "lightpink",
+      "barBorderWidth": 4,
+      "barBorderStyle": "dashed",
+      "barRadius": [8, 8, 0, 0]
+    },
+    "dimensions": [
+      {
+        "id": "date",
+        "alias": "日期"
+      }
+    ],
+    "measures": [
+      {
+        "id": "profit",
+        "alias": "利润"
+      },
+      {
+        "id": "sales",
+        "alias": "销售额"
+      },
+      {
+        "id": "count",
+        "alias": "数量"
+      }
+    ]
+  }
+}

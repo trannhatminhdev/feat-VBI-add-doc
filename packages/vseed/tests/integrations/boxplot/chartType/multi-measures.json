@@ -1,0 +1,246 @@
+{
+  "name": "multi-measures",
+  "description": "",
+  "vseed": {
+    "chartType": "boxPlot",
+    "dataset": [
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1,
+        "u": 2
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1,
+        "u": 2
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1,
+        "u": 4
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 2,
+        "u": 4
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 5,
+        "u": 4
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 7,
+        "u": 4
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 8,
+        "u": 4
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 9
+      },
+      {
+        "color": "red",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 10
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 1
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "male",
+        "v": 2
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 5
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 7
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 8
+      },
+      {
+        "color": "blue",
+        "shape": "circle",
+        "Sex": "female",
+        "v": 9
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1,
+        "u": 4
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1,
+        "u": 4
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1,
+        "u": 4
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 2,
+        "u": 4
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 5,
+        "u": 4
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 7,
+        "u": 4
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 8,
+        "u": 6
+      },
+      {
+        "color": "red",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 9,
+        "u": 6
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1,
+        "u": 8
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1,
+        "u": 8
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 1,
+        "u": 8
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "male",
+        "v": 2,
+        "u": 8
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 5,
+        "u": 8
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 7,
+        "u": 8
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 8,
+        "u": 8
+      },
+      {
+        "color": "blue",
+        "shape": "triangle",
+        "Sex": "female",
+        "v": 9,
+        "u": 8
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "Sex",
+        "encoding": "xAxis"
+      }
+    ],
+    "measures": [
+      {
+        "id": "v",
+        "encoding": "value"
+      },
+      {
+        "id": "u",
+        "encoding": "value"
+      }
+    ]
+  }
+}

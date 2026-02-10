@@ -25,6 +25,9 @@ export const ChartTypeEnum = {
   ColumnPercent: 'columnPercent',
   ColumnParallel: 'columnParallel',
   Bar: 'bar',
+  RaceBar: 'raceBar',
+  RaceColumn: 'raceColumn',
+  RaceScatter: 'raceScatter',
   BarPercent: 'barPercent',
   BarParallel: 'barParallel',
   Area: 'area',
@@ -37,6 +40,10 @@ export const ChartTypeEnum = {
   Pie: 'pie',
   Donut: 'donut',
   Radar: 'radar',
+  // hierarchical
+  CirclePacking: 'circlePacking',
+  Sunburst: 'sunburst',
+  TreeMap: 'treeMap',
   // other
   Funnel: 'funnel',
   Heatmap: 'heatmap',

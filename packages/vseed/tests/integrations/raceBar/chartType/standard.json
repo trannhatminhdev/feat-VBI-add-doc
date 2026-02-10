@@ -1,0 +1,36 @@
+{
+  "name": "standard",
+  "description": "A race bar chart, demonstrating player animation over time.",
+  "vseed": {
+    "chartType": "raceBar",
+    "measures": [
+      {
+        "id": "sales",
+        "alias": "销售额",
+        "autoFormat": true
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "category",
+        "alias": "分类"
+      },
+      {
+        "id": "date",
+        "alias": "日期"
+      }
+    ],
+    "dataset": [
+      { "date": "2019", "category": "A", "sales": 100 },
+      { "date": "2019", "category": "B", "sales": 150 },
+      { "date": "2020", "category": "A", "sales": 120 },
+      { "date": "2020", "category": "B", "sales": 180 },
+      { "date": "2021", "category": "A", "sales": 140 },
+      { "date": "2021", "category": "B", "sales": 200 }
+    ],
+    "player": {
+      "enable": true,
+      "field": "date"
+    }
+  }
+}

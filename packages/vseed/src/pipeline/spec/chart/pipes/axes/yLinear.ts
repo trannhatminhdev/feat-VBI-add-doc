@@ -9,9 +9,10 @@ export const yLinear: VChartSpecPipe = (spec, context) => {
   const result = { ...spec } as ISpec
   const { advancedVSeed, vseed } = context
   const { chartType } = vseed
-  const { measures = [], dimensions = [], encoding } = advancedVSeed
+  const { measures = [], dimensions = [], encoding, datasetReshapeInfo } = advancedVSeed
   const config = (advancedVSeed.config?.[chartType as 'column']?.yAxis ?? {}) as YLinearAxis
-
+  const { foldInfo, foldInfoList } = datasetReshapeInfo[0]
+  const yFoldInfo = foldInfoList?.length ? foldInfoList[1] : foldInfo
   if (!result.axes) {
     result.axes = []
   }
@@ -39,6 +40,7 @@ export const yLinear: VChartSpecPipe = (spec, context) => {
     formatMethod,
     titleText,
     isPivot,
+    max: config.max === true ? yFoldInfo.statistics.max : config.max,
   })
 
   result.axes = [...result.axes, linearAxis] as ISpec['axes']

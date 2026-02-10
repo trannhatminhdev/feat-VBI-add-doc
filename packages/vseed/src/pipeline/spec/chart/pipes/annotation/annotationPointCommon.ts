@@ -12,7 +12,6 @@ import type {
 import { isSubset } from './utils'
 import { ANNOTATION_Z_INDEX } from '../../../../utils/constant'
 import { isBarLikeChart } from 'src/pipeline/utils/chatType'
-
 export const generateAnnotationPointPipe = (options: {
   findSelectedDatas?: (options: {
     dataset: Datum[]
@@ -36,9 +35,17 @@ export const generateAnnotationPointPipe = (options: {
     ((datum: Datum) => {
       return [
         {
-          coordinate: (data: Datum[]) => {
-            const res = data.find((item) => isSubset(datum, item))
-            return res
+          coordinate: (data: Datum[], context) => {
+            const targetDatum = data.find((item) => isSubset(datum, item))
+            if (context.getStack() === true) {
+              const stackedDatum = { ...datum, ...targetDatum }
+              return {
+                ...stackedDatum,
+                [context.getStackValueField()]: stackedDatum['__VCHART_STACK_END'],
+              }
+            }
+
+            return targetDatum
           },
         },
       ]

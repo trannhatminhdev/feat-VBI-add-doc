@@ -1,0 +1,28 @@
+{
+  "name": "minPoints_column_polynomialRegressionLine",
+  "description": "",
+  "vseed": {
+    "chartType": "column",
+    "dataset": [
+      {
+        "date": "2019",
+        "profit": 10,
+        "sales": 20
+      },
+      {
+        "date": "2020",
+        "profit": 30,
+        "sales": 60
+      },
+      {
+        "date": "2021",
+        "profit": 30,
+        "sales": 60
+      }
+    ],
+    "polynomialRegressionLine": {
+      "enable": true,
+      "degree": 3
+    }
+  }
+}

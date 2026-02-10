@@ -20,3 +20,5 @@ export type DimensionEncoding =
   | 'label'
   | 'row'
   | 'column'
+  | 'player'
+  | 'hierarchy'

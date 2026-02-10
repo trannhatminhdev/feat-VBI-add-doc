@@ -1,0 +1,211 @@
+# RaceColumn
+
+## Basic RaceColumn
+
+A dynamic column chart race animation showing ranking changes over time.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'raceColumn',
+    measures: [
+      {
+        id: 'sales',
+        alias: '销售额',
+        autoFormat: true,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'date',
+        alias: '日期',
+      },
+      {
+        id: 'category',
+        alias: '分类',
+      },
+    ],
+    dataset: [
+      {
+        date: '2020',
+        category: 'A',
+        sales: 248,
+      },
+      {
+        date: '2020',
+        category: 'B',
+        sales: 162,
+      },
+      {
+        date: '2020',
+        category: 'C',
+        sales: 246,
+      },
+      {
+        date: '2020',
+        category: 'D',
+        sales: 173,
+      },
+      {
+        date: '2020',
+        category: 'E',
+        sales: 169,
+      },
+      {
+        date: '2021',
+        category: 'A',
+        sales: 231,
+      },
+      {
+        date: '2021',
+        category: 'B',
+        sales: 263,
+      },
+      {
+        date: '2021',
+        category: 'C',
+        sales: 224,
+      },
+      {
+        date: '2021',
+        category: 'D',
+        sales: 172,
+      },
+      {
+        date: '2021',
+        category: 'E',
+        sales: 255,
+      },
+      {
+        date: '2022',
+        category: 'A',
+        sales: 289,
+      },
+      {
+        date: '2022',
+        category: 'B',
+        sales: 239,
+      },
+      {
+        date: '2022',
+        category: 'C',
+        sales: 273,
+      },
+      {
+        date: '2022',
+        category: 'D',
+        sales: 279,
+      },
+      {
+        date: '2022',
+        category: 'E',
+        sales: 212,
+      },
+      {
+        date: '2023',
+        category: 'A',
+        sales: 240,
+      },
+      {
+        date: '2023',
+        category: 'B',
+        sales: 271,
+      },
+      {
+        date: '2023',
+        category: 'C',
+        sales: 267,
+      },
+      {
+        date: '2023',
+        category: 'D',
+        sales: 247,
+      },
+      {
+        date: '2023',
+        category: 'E',
+        sales: 215,
+      },
+      {
+        date: '2024',
+        category: 'A',
+        sales: 286,
+      },
+      {
+        date: '2024',
+        category: 'B',
+        sales: 240,
+      },
+      {
+        date: '2024',
+        category: 'C',
+        sales: 325,
+      },
+      {
+        date: '2024',
+        category: 'D',
+        sales: 244,
+      },
+      {
+        date: '2024',
+        category: 'E',
+        sales: 290,
+      },
+      {
+        date: '2025',
+        category: 'A',
+        sales: 322,
+      },
+      {
+        date: '2025',
+        category: 'B',
+        sales: 341,
+      },
+      {
+        date: '2025',
+        category: 'C',
+        sales: 301,
+      },
+      {
+        date: '2025',
+        category: 'D',
+        sales: 303,
+      },
+      {
+        date: '2025',
+        category: 'E',
+        sales: 276,
+      },
+      {
+        date: '2026',
+        category: 'A',
+        sales: 292,
+      },
+      {
+        date: '2026',
+        category: 'B',
+        sales: 288,
+      },
+      {
+        date: '2026',
+        category: 'C',
+        sales: 344,
+      },
+      {
+        date: '2026',
+        category: 'D',
+        sales: 352,
+      },
+      {
+        date: '2026',
+        category: 'E',
+        sales: 360,
+      },
+    ],
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```

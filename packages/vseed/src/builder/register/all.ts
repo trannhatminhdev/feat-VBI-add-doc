@@ -2,6 +2,9 @@ import {
   registerArea,
   registerAreaPercent,
   registerBar,
+  registerRaceBar,
+  registerRaceColumn,
+  registerRaceScatter,
   registerBarParallel,
   registerBarPercent,
   registerColumn,
@@ -21,6 +24,9 @@ import {
   registerDualAxis,
   registerBoxPlot,
   registerHistogram,
+  registerTreeMap,
+  registerSunburst,
+  registerCirclePacking,
 } from './chartType'
 import { registerDarkTheme, registerLightTheme } from './theme'
 /**
@@ -38,6 +44,9 @@ export const registerAll = () => {
   registerColumnParallel()
   registerColumnPercent()
   registerBar()
+  registerRaceBar()
+  registerRaceColumn()
+  registerRaceScatter()
   registerBarParallel()
   registerBarPercent()
   registerArea()
@@ -55,6 +64,10 @@ export const registerAll = () => {
   registerHeatmap()
   registerBoxPlot()
   registerHistogram()
+  // hierarchy
+  registerTreeMap()
+  registerSunburst()
+  registerCirclePacking()
   // theme
   registerLightTheme()
   registerDarkTheme()

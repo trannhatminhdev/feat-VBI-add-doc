@@ -17,9 +17,9 @@ import {
   regressionLine,
   addPivotDimensionsForScatter,
   page,
+  reshapeWithScatterEncoding,
+  pivotReshapeWithScatterEncoding,
 } from '../pipes'
-import { reshapeWithScatterEncoding } from '../pipes/reshape/reshapeWithScatterEncoding'
-import { pivotReshapeWithScatterEncoding } from '../pipes/reshape/pivotReshapeWithScatterEncoding'
 
 export const scatterAdvancedPipeline: AdvancedPipeline = [
   page,

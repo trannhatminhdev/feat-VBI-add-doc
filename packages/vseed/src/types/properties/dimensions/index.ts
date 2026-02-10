@@ -16,4 +16,16 @@ export type { ScatterDimension } from './scatterDimension'
 export type { HistogramDimension } from './histogramDimension'
 export type { BoxPlotDimension } from './boxPlotDimension'
 export type { DualAxisDimension } from './dualAxisDimension'
+// race
+export type { RaceBarDimension, RaceBarParallelDimension, RaceBarPercentDimension } from './raceBarDimension'
+export type {
+  RaceColumnDimension,
+  RaceColumnParallelDimension,
+  RaceColumnPercentDimension,
+} from './raceColumnDimension'
+export type { RaceScatterDimension } from './raceScatterDimension'
+// table
 export type { TableDimension, DimensionGroup, DimensionTree } from './tableDimension'
+
+// hierarchy
+export type { HierarchyDimension } from './hierarchyDimension'

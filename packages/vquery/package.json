@@ -1,6 +1,6 @@
 {
   "name": "@visactor/vquery",
-  "version": "0.3.14",
+  "version": "0.4.2",
   "type": "module",
   "exports": {
     ".": {
@@ -30,8 +30,8 @@
   "scripts": {
     "build": "rslib build",
     "build:test": "node scripts/build-tests.js",
-    "build:docs": "node scripts/build-docs.js",
-    "g": "pnpm run build:test && pnpm run build:docs",
+    "build:docs": "node scripts/build-examples.js",
+    "g": "pnpm run build:test && pnpm run build:docs && pnpm run test:update",
     "dev": "rslib build --watch --no-clean",
     "lint": "eslint .",
     "test": "rstest",
@@ -47,9 +47,9 @@
   "devDependencies": {
     "@eslint/js": "9.39.0",
     "@rslib/core": "0.16.1",
-    "@rstest/core": "0.7.0",
+    "@rstest/core": "0.8.3",
     "@types/node": "24.10.1",
-    "@rstest/coverage-istanbul": "0.1.0",
+    "@rstest/coverage-istanbul": "0.2.1",
     "eslint": "9.39.0",
     "globals": "16.4.0",
     "typescript": "5.9.3",
