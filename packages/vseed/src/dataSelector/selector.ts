@@ -398,7 +398,7 @@ export const matchDynamicFilterResult = (
  * 处理流程（两阶段设计）：
  *
  * 阶段1 - 执行（Execute）：
- *   - 在 buildAsync 阶段执行，结果写入 dynamicFilter.result
+ *   - 在 prepare() 阶段执行，结果写入 dynamicFilter.result
  *   - TableDynamicFilter → CellSelector[]
  *   - ChartDynamicFilter → PartialDatumSelector[]
  *   - ValueDynamicFilter → number | string（用于读取，不用于匹配）

@@ -14,7 +14,7 @@ import type {
 import { buildAdvanced } from './buildAdvanced'
 import { buildSpec } from './buildSpec'
 import { build } from './build'
-import { buildAsync, buildSpecAsync } from './buildAsync'
+import { prepare } from './prepare'
 import { intl } from 'src/i18n'
 import { getColorIdMap, getColorItems } from './advanced'
 
@@ -25,6 +25,9 @@ export class Builder implements VSeedBuilder {
   private _performance: Record<string, string | number> = {}
 
   private _locale: Locale
+
+  // prepare() 相关状态
+  private _isPrepared: boolean = false
 
   /**
    * @description 初始化 Builder 实例。
@@ -44,23 +47,54 @@ export class Builder implements VSeedBuilder {
   }
 
   /**
-   * @description 生成最终的图表配置 (Spec)。
-   * 这是最常用的核心方法。拿到 Spec 后，直接传给 VChart 或 VTable 即可渲染图表。
-   * @returns VChart 或 VTable 的标准 Spec 对象。
+   * @description 准备阶段 - 异步执行动态过滤器代码。
+   *
+   * 在 build() 之前调用，用于执行 dynamicFilter 中的 code。包含以下步骤：
+   *   1. 检查是否存在需要执行的 dynamicFilter (有 code 字段)
+   *   2. 如果存在，给 dataset 添加内部索引 __row_index
+   *   3. 生成 AdvancedVSeed 中间配置
+   *   4. 执行所有 dynamicFilter 的 code，将结果写入 filter.result
+   *   5. 缓存 AdvancedVSeed，供后续 build() 使用
+   *
+   * **注意：**
+   * - 此方法具有幂等性，多次调用不会重复执行
+   * - 如果没有 dynamicFilter code，调用此方法无副作用
+   * - 如果 dynamicFilter 只有静态 result 而没有 code，无需调用此方法
+   *
+   * @returns Promise<void>
    * @example
-   * const spec = builder.build();
-   * // const vchart = new VChart(spec, { dom: 'chart-container' });
-   * // vchart.render();
+   * // 有 dynamicFilter code 的场景
+   * const builder = VBI.from(data, 'table')
+   *   .dynamicFilter({ code: 'return data.filter(d => d.sales > 1000)' })
+   *
+   * await builder.prepare()  // 异步执行 code
+   * const spec = builder.build()  // 同步构建 spec
+   *
+   * // 没有 dynamicFilter 的场景
+   * const builder = VBI.from(data, 'table')
+   * const spec = builder.build()  // 直接构建，无需 prepare
    */
-  build = <T extends Spec>(): T => build(this) as T
+  prepare = async (): Promise<void> => prepare(this)
 
   /**
-   * @description 生成最终的图表配置 (Spec)，并在构建前异步执行 dynamicFilter。
+   * @description 生成最终的图表配置 (Spec)。
+   *
+   * 这是最常用的核心方法。拿到 Spec 后，直接传给 VChart 或 VTable 即可渲染图表。
+   *
+   * **注意：**
+   * - 如果配置中包含 dynamicFilter code，需要先调用 prepare() 异步执行
+   * - 如果已调用过 prepare()，build() 会复用缓存的结果，提升性能
+   *
    * @returns VChart 或 VTable 的标准 Spec 对象。
    * @example
-   * const spec = await builder.buildAsync();
+   * // 场景 1: 无 dynamicFilter，直接构建
+   * const spec = builder.build();
+   *
+   * // 场景 2: 有 dynamicFilter code，先 prepare 再 build
+   * await builder.prepare();
+   * const spec = builder.build();
    */
-  buildAsync = async <T extends Spec>(): Promise<T> => buildAsync(this) as Promise<T>
+  build = <T extends Spec>(): T => build(this) as T
 
   /**
    * @description 将中间层配置 (AdvancedVSeed) 转换为最终 Spec。
@@ -69,13 +103,6 @@ export class Builder implements VSeedBuilder {
    * @returns VChart 或 VTable 的标准 Spec 对象。
    */
   buildSpec = (advanced: AdvancedVSeed): Spec => buildSpec(this, advanced)
-
-  /**
-   * @description 将中间层配置 (AdvancedVSeed) 异步转换为最终 Spec，并预执行 dynamicFilter。
-   * @param advanced 修改后的 AdvancedVSeed 对象。
-   * @returns VChart 或 VTable 的标准 Spec 对象。
-   */
-  buildSpecAsync = async (advanced: AdvancedVSeed): Promise<Spec> => buildSpecAsync(this, advanced)
 
   /**
    * @description 生成中间层配置 (AdvancedVSeed)。
@@ -108,10 +135,29 @@ export class Builder implements VSeedBuilder {
   /**
    * @description 更新 VSeed 输入数据。
    * 更新后，后续调用 build() 将基于新数据生成。
+   * **注意：** 更新 vseed 后会清除 prepare() 的缓存状态。
    * @param value 新的 VSeed 对象。
    */
   set vseed(value) {
     this._vseed = value
+    // 清除 prepare 缓存
+    this._isPrepared = false
+  }
+
+  /**
+   * @description 获取 prepare() 状态
+   * @internal
+   */
+  get isPrepared() {
+    return this._isPrepared
+  }
+
+  /**
+   * @description 设置 prepare() 状态
+   * @internal
+   */
+  set isPrepared(value: boolean) {
+    this._isPrepared = value
   }
 
   /**

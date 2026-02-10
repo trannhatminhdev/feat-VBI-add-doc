@@ -117,6 +117,7 @@ export type ChartDynamicFilterRes = Datum
 export type DynamicFilterExecutionResult<T> = {
   success: boolean
   data?: T[]
+  error?: string
 }
 
 /**
@@ -235,7 +236,7 @@ export interface TableDynamicFilter {
 
   /**
    * 动态筛选执行结果（运行期字段）
-   * @description buildAsync 阶段写入，运行时只读
+   * @description prepare() 阶段写入，运行时只读
    */
   result?: DynamicFilterExecutionResult<TableDynamicFilterRes>
 }
@@ -309,7 +310,7 @@ export interface ChartDynamicFilter {
 
   /**
    * 动态筛选执行结果（运行期字段）
-   * @description buildAsync 阶段写入，运行时只读
+   * @description prepare() 阶段写入，运行时只读
    */
   result?: DynamicFilterExecutionResult<ChartDynamicFilterRes>
 }
@@ -369,7 +370,7 @@ export interface ValueDynamicFilter {
 
   /**
    * 动态筛选执行结果（运行期字段）
-   * @description buildAsync 阶段写入，运行时只读
+   * @description prepare() 阶段写入，运行时只读
    */
   result?: {
     success: boolean
