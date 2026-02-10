@@ -49,7 +49,7 @@ export const pivotTableBodyCell: PivotTableSpecPipe = (spec, context) => {
 
       const mergedStyle = bodyCellStyleList.reduce<Record<string, any>>((result, style) => {
         const shouldApply = style.dynamicFilter
-          ? selectorWithDynamicFilter(currentCellData || originalDatum, style.dynamicFilter)
+          ? selectorWithDynamicFilter(currentCellData || originalDatum, style.dynamicFilter, style.selector)
           : selector(originalDatum, style.selector)
         if (shouldApply) {
           if (selectedPos.length && selectedPos[0].col === datum?.col && selectedPos[0].row === datum?.row) {

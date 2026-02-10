@@ -39,7 +39,7 @@ export const pointStyle: VChartSpecPipe = (spec, context) => {
         level: index + 1,
         filter: (datum: Datum) => {
           const shouldApply = style.dynamicFilter
-            ? selectorWithDynamicFilter(datum, style.dynamicFilter)
+            ? selectorWithDynamicFilter(datum, style.dynamicFilter, style.selector)
             : selector(datum, style.selector)
           if (shouldApply) {
             return true

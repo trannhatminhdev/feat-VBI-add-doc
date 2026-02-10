@@ -314,6 +314,69 @@ export interface ChartDynamicFilter {
   result?: DynamicFilterExecutionResult<ChartDynamicFilterRes>
 }
 
+export interface ValueDynamicFilter {
+  type: 'value'
+  /**
+   * 用户的筛选需求描述（自然语言）
+   * @example "获取销售额最高的值作为标注线参考"
+   * @example "计算平均销售额用于标注线"
+   */
+  description?: string
+
+  /**
+   * AI 生成的 JavaScript 筛选代码
+   * @description
+   * - 只能使用内置工具函数（通过 _ 或 R 访问）
+   * - 输入参数: data (数组)
+   * - 必须返回单个数值或字符串: number | string
+   * - 适用场景：标注线（水平线、垂直线）需要的动态数值
+   * - 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+   *
+   * @example 获取销售额最大值作为标注线值
+   * ```javascript
+   * const maxSales = _.maxBy(data, 'sales')?.sales;
+   * return maxSales || 0;
+   * ```
+   *
+   * @example 计算平均值用于标注线
+   * ```javascript
+   * const avgSales = _.meanBy(data, 'sales');
+   * return _.round(avgSales, 2);
+   * ```
+   *
+   * @example 获取分位数作为标注线
+   * ```javascript
+   * const sorted = _.sortBy(data, 'sales');
+   * const index = Math.floor(sorted.length * 0.75);
+   * return sorted[index]?.sales || 0;
+   * ```
+   *
+   * @example 根据条件计算目标值
+   * ```javascript
+   * const currentYearTotal = _.sumBy(
+   *   _.filter(data, item => item.year === 2024),
+   *   'sales'
+   * );
+   * return currentYearTotal;
+   * ```
+   */
+  code: string
+
+  /**
+   * 代码执行失败或环境不支持时的降级方案
+   */
+  fallback?: string | number
+
+  /**
+   * 动态筛选执行结果（运行期字段）
+   * @description buildAsync 阶段写入，运行时只读
+   */
+  result?: {
+    success: boolean
+    data?: number | string
+  }
+}
+
 export const zPartialSelector = zDatum
 export const zMeasureSelector = z.object({
   field: z.string(),
@@ -364,6 +427,19 @@ export const zChartDynamicFilter = z.object({
     .object({
       success: z.boolean(),
       data: z.array(z.record(z.string(), z.any())).optional(),
+    })
+    .optional(),
+})
+
+export const zValueDynamicFilter = z.object({
+  type: z.literal('value'),
+  description: z.string().optional(),
+  code: z.string(),
+  fallback: z.union([z.string(), z.number()]).optional(),
+  result: z
+    .object({
+      success: z.boolean(),
+      data: z.union([z.number(), z.string()]).optional(),
     })
     .optional(),
 })

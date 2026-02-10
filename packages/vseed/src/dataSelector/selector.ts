@@ -10,13 +10,14 @@ import type {
   TableDynamicFilterRes,
   TableDynamicFilter,
   ValueSelector,
+  ValueDynamicFilter,
 } from '../types/dataSelector'
 import { omit } from 'remeda'
 import { executeFilterCode } from 'src/pipeline/utils/sandbox'
 import { InnerRowIndex } from 'src/dataReshape'
 
-export type DynamicFilter = TableDynamicFilter | ChartDynamicFilter
-export type DynamicFilterResult = TableDynamicFilterRes[] | ChartDynamicFilterRes[]
+export type DynamicFilter = TableDynamicFilter | ChartDynamicFilter | ValueDynamicFilter
+export type DynamicFilterResult = TableDynamicFilterRes[] | ChartDynamicFilterRes[] | number | string
 
 /**
  * 判断两个数字是否“近似相等”
@@ -208,38 +209,105 @@ const matchesDatum = (target: Datum, candidate: Datum) => {
 }
 
 /**
- * 识别是否为row-with-field动态过滤器
+ * 公共方法：检查是否为动态过滤器结构
  */
-export const isRowWithFieldDynamicFilter = (selector: any): selector is TableDynamicFilter => {
+const isDynamicFilterLike = (selector: any, expectedTypes: string[]): boolean => {
   return (
     typeof selector === 'object' &&
     selector !== null &&
     'type' in selector &&
-    selector.type === 'row-with-field' &&
+    expectedTypes.includes(selector.type) &&
     'code' in selector &&
     typeof selector.code === 'string'
   )
+}
+
+/**
+ * 识别是否为row-with-field动态过滤器
+ */
+export const isRowWithFieldDynamicFilter = (selector: any): selector is TableDynamicFilter => {
+  return isDynamicFilterLike(selector, ['row-with-field'])
 }
 
 /**
  * 识别是否为图表动态过滤器
  */
 export const isPartialDatumDynamicFilter = (selector: any): selector is ChartDynamicFilter => {
-  return (
-    typeof selector === 'object' &&
-    selector !== null &&
-    'type' in selector &&
-    selector.type === 'partial-datum' &&
-    'code' in selector &&
-    typeof selector.code === 'string'
-  )
+  return isDynamicFilterLike(selector, ['chart-dynamic'])
 }
 
 /**
- * 识别是否为动态过滤器
+ * 识别是否为数值动态过滤器（用于标注线等场景）
+ */
+export const isValueDynamicFilter = (selector: any): selector is ValueDynamicFilter => {
+  return isDynamicFilterLike(selector, ['value'])
+}
+
+/**
+ * 识别是否为动态过滤器（通用判断，包含所有类型的动态过滤器）
  */
 export const isDynamicFilter = (selector: any): selector is DynamicFilter => {
-  return isRowWithFieldDynamicFilter(selector) || isPartialDatumDynamicFilter(selector)
+  return isDynamicFilterLike(selector, ['row-with-field', 'chart-dynamic', 'value'])
+}
+
+/**
+ * 验证动态过滤器执行结果的类型兼容性
+ * @description
+ * 在主线程中对 Worker 返回值进行类型特定的验证
+ * - TableDynamicFilter: 必须返回包含 __row_index 和 field 的对象数组
+ * - ChartDynamicFilter: 必须返回任意对象数组
+ * - ValueDynamicFilter: 必须返回 number | string
+ *
+ * @param result Worker 返回的原始结果
+ * @param filter 动态过滤器配置
+ * @returns 验证是否通过
+ * @throws 当验证失败时抛出 TypeError
+ */
+const validateFilterResult = (result: any, filter: DynamicFilter): void => {
+  // ValueDynamicFilter：必须返回 number | string
+  if (isValueDynamicFilter(filter)) {
+    if (typeof result !== 'number' && typeof result !== 'string') {
+      throw new TypeError(
+        `ValueDynamicFilter must return a number or string, but got: ${typeof result}. ` + `Code: "${filter.code}"`,
+      )
+    }
+    return
+  }
+
+  // TableDynamicFilter 和 ChartDynamicFilter：必须返回对象数组
+  if (!Array.isArray(result)) {
+    throw new TypeError(
+      `${isRowWithFieldDynamicFilter(filter) ? 'TableDynamicFilter' : 'ChartDynamicFilter'} must return an array, ` +
+        `but got: ${typeof result}. Code: "${filter.code}"`,
+    )
+  }
+
+  // TableDynamicFilter：检查数组元素结构
+  if (isRowWithFieldDynamicFilter(filter)) {
+    for (let i = 0; i < result.length; i++) {
+      const item = result[i]
+      if (typeof item !== 'object' || item === null) {
+        throw new TypeError(`TableDynamicFilter array element at index ${i} must be an object, got: ${typeof item}`)
+      }
+      if (!(InnerRowIndex in item) && '__row_index' in item === false) {
+        throw new TypeError(
+          `TableDynamicFilter array element at index ${i} must contain __row_index or InnerRowIndex field`,
+        )
+      }
+      if (!('field' in item)) {
+        throw new TypeError(`TableDynamicFilter array element at index ${i} must contain 'field' field`)
+      }
+    }
+  }
+  // ChartDynamicFilter：宽松验证，只需要对象数组
+  else if (isPartialDatumDynamicFilter(filter)) {
+    for (let i = 0; i < result.length; i++) {
+      const item = result[i]
+      if (typeof item !== 'object' || item === null) {
+        throw new TypeError(`ChartDynamicFilter array element at index ${i} must be an object, got: ${typeof item}`)
+      }
+    }
+  }
 }
 
 /**
@@ -248,15 +316,16 @@ export const isDynamicFilter = (selector: any): selector is DynamicFilter => {
  * 阶段1：执行阶段 - 一次性执行 dynamicFilter.code，获取所有匹配结果
  * - TableDynamicFilter → CellSelector[]
  * - ChartDynamicFilter → PartialDatumSelector[]
+ * - ValueDynamicFilter → number | string
  *
  * @param filter 动态过滤器配置
  * @param allData 完整数据集
- * @returns 执行结果数组
+ * @returns 执行结果数组或标量值
  */
 export const executeDynamicFilter = async (
   filter: DynamicFilter,
   allData: Datum[],
-): Promise<{ success: boolean; data: DynamicFilterResult }> => {
+): Promise<{ success: boolean; data: DynamicFilterResult; error?: string }> => {
   const { success, data, error } = await executeFilterCode({
     code: filter.code,
     data: allData,
@@ -264,7 +333,25 @@ export const executeDynamicFilter = async (
   if (!success) {
     // eslint-disable-next-line no-console
     console.warn('[vseed] Dynamic filter execution failed:', error)
+    return {
+      success: false,
+      data: isRowWithFieldDynamicFilter(filter) || isPartialDatumDynamicFilter(filter) ? [] : '',
+    }
   }
+
+  // 主线程验证：根据过滤器类型进行特定检查
+  try {
+    validateFilterResult(data, filter)
+  } catch (validationError) {
+    // eslint-disable-next-line no-console
+    console.error('[vseed] Dynamic filter result validation failed:', validationError)
+    return {
+      success: false,
+      data: isRowWithFieldDynamicFilter(filter) || isPartialDatumDynamicFilter(filter) ? [] : '',
+      error: validationError instanceof Error ? validationError.message : String(validationError),
+    }
+  }
+
   return {
     success,
     data: data as DynamicFilterResult,
@@ -278,8 +365,9 @@ export const executeDynamicFilter = async (
  * - 使用 OR 策略：结果数组中任一项匹配即返回 true
  * - 表格场景：检查 { row, field } 是否在 CellSelector[] 中
  * - 图表场景：检查 datum 的维度值是否匹配 PartialDatumSelector[] 中任一项
+ * - 数值场景：不适用（ValueDynamicFilter返回标量值，不用于匹配）
  *
- * @param result 动态过滤器执行结果（CellSelector[] 或 PartialDatumSelector[]）
+ * @param result 动态过滤器执行结果（CellSelector[] 或 PartialDatumSelector[]，不包括 ValueDynamicFilter）
  * @param datum 当前数据项
  * @param selectorType 选择器类型（用于区分表格和图表动态过滤器）
  * @returns 是否匹配（OR 策略）
@@ -289,6 +377,11 @@ export const matchDynamicFilterResult = (
   datum: Datum,
   selectorType: 'table' | 'chart' = 'table',
 ): boolean => {
+  // ValueDynamicFilter 不应该通过这个函数处理
+  if (typeof result === 'number' || typeof result === 'string') {
+    throw new Error('matchDynamicFilterResult does not support ValueDynamicFilter results')
+  }
+
   if (selectorType === 'table') {
     return result.some((item) => {
       return matchesCellSelector(datum, item as TableDynamicFilterRes)
@@ -308,22 +401,41 @@ export const matchDynamicFilterResult = (
  *   - 在 buildAsync 阶段执行，结果写入 dynamicFilter.result
  *   - TableDynamicFilter → CellSelector[]
  *   - ChartDynamicFilter → PartialDatumSelector[]
+ *   - ValueDynamicFilter → number | string（用于读取，不用于匹配）
  *
  * 阶段2 - 匹配（Match）：
  *   - 读取 dynamicFilter.result
  *   - 使用 OR 策略：结果数组中任一项匹配即返回 true
  *   - 表格：判断 { row, field } 是否在 CellSelector[] 中
  *   - 图表：判断 datum 是否匹配 PartialDatumSelector[] 中任一项
+ *   - 数值：不用于匹配，直接返回 false（数值过滤器在主要用于标注线值，不用于行列选择）
  *
  * @param vchartDatum 单个数据项
- * @param selector 选择器配置（可包含 DynamicFilter）
+ * @param selectorConfig 选择器配置（可包含 DynamicFilter）
+ * @param defaultSelector 传统选择器（仅在 DynamicFilter 无结果且有 fallback 时使用）
  * @returns 该数据项是否符合选择条件
  */
-export const selectorWithDynamicFilter = (vchartDatum: Datum, selectorConfig: DynamicFilter): boolean => {
+export const selectorWithDynamicFilter = (
+  vchartDatum: Datum,
+  selectorConfig: DynamicFilter,
+  defaultSelector?: Selector | Selector[] | null,
+): boolean => {
   // 无有效选择器, 则认为全部匹配成功
   if (!selectorConfig) {
     return true
   }
+
+  // ValueDynamicFilter 不用于选择，直接返回 false
+  if (isValueDynamicFilter(selectorConfig)) {
+    if (selectorConfig.fallback) {
+      const fallbackSelector = Array.isArray(selectorConfig.fallback)
+        ? selectorConfig.fallback
+        : [selectorConfig.fallback]
+      return selector(vchartDatum, fallbackSelector)
+    }
+    return defaultSelector ? selector(vchartDatum, defaultSelector) : false
+  }
+
   const selectorType = isRowWithFieldDynamicFilter(selectorConfig) ? 'table' : 'chart'
 
   // 优先使用预先执行的结果
@@ -331,15 +443,8 @@ export const selectorWithDynamicFilter = (vchartDatum: Datum, selectorConfig: Dy
     return matchDynamicFilterResult(selectorConfig.result.data, vchartDatum, selectorType)
   }
 
-  // 降级到 fallback（执行阶段应在外部完成）
   if (selectorConfig.fallback) {
-    if (isRowWithFieldDynamicFilter(selectorConfig)) {
-      const fallbackResult = Array.isArray(selectorConfig.fallback)
-        ? selectorConfig.fallback
-        : [selectorConfig.fallback]
-      return matchDynamicFilterResult(fallbackResult, vchartDatum, selectorType)
-    }
-
+    // 如果有 fallback，使用传统 selector 进行匹配
     const fallbackSelector = Array.isArray(selectorConfig.fallback)
       ? selectorConfig.fallback
       : [selectorConfig.fallback]
@@ -347,5 +452,5 @@ export const selectorWithDynamicFilter = (vchartDatum: Datum, selectorConfig: Dy
   }
 
   // 没有结果也没有 fallback，返回 false
-  return false
+  return defaultSelector ? selector(vchartDatum, defaultSelector) : false
 }

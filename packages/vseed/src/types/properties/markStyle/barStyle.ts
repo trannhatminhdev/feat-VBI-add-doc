@@ -109,7 +109,7 @@ export type BarStyle = {
 
 export const zBarStyle = z.object({
   selector: z.union([zSelector, zSelectors]).nullish(),
-  dynamicFilter: zChartDynamicFilter.nullish(),
+  dynamicFilter: zChartDynamicFilter.optional(),
   barVisible: z.boolean().nullish(),
   barColor: z.string().nullish(),
   barColorOpacity: z.number().nullish(),

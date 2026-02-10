@@ -2,6 +2,7 @@ import type { ILineChartSpec, IMarkLineSpec } from '@visactor/vchart'
 import type { VChartSpecPipe } from 'src/types'
 import { isArray, isNumber, isString } from 'remeda'
 import { ANNOTATION_Z_INDEX } from '../../../../utils/constant'
+import { resolveAnnotationValue } from './utils'
 
 export const annotationHorizontalLine: VChartSpecPipe = (spec, context) => {
   const { advancedVSeed, vseed } = context
@@ -28,6 +29,7 @@ export const annotationHorizontalLine: VChartSpecPipe = (spec, context) => {
   const markLine = annotationHorizontalLineList.flatMap((annotationHorizontalLine) => {
     const {
       yValue,
+      dynamicFilter,
       text = '',
       textPosition = 'insideEnd',
       textColor = theme?.textColor ?? '#ffffff',
@@ -112,8 +114,15 @@ export const annotationHorizontalLine: VChartSpecPipe = (spec, context) => {
         },
       }
     }
-    if (isArray(yValue) || isString(yValue) || isNumber(yValue)) {
-      const yValueArr = Array.isArray(yValue) ? yValue : [yValue]
+
+    const finalYValue = resolveAnnotationValue({
+      dynamicFilter,
+      fallback: dynamicFilter?.fallback as string | number | undefined,
+      defaultValue: yValue,
+    })
+
+    if (isArray(finalYValue) || isString(finalYValue) || isNumber(finalYValue)) {
+      const yValueArr = Array.isArray(finalYValue) ? finalYValue : [finalYValue]
       return yValueArr.map(generateOneMarkLine)
     }
 

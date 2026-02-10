@@ -1,5 +1,6 @@
 import type { Spec, ChartType, AdvancedVSeed } from 'src/types'
 import { InnerRowIndex, ORIGINAL_DATA } from 'src/dataReshape'
+import { uniqueBy } from 'remeda'
 import type { Builder } from './builder'
 import { executeDynamicFilter, isDynamicFilter, isRowWithFieldDynamicFilter } from 'src/dataSelector/selector'
 import type { DynamicFilter } from 'src/dataSelector/selector'
@@ -49,17 +50,45 @@ const generateDynamicFilterKeyPaths = (): Partial<Record<ChartType, string[]>> =
   const dynamicFilterConfig: Partial<Record<ChartType, string[]>> = {
     table: ['cellStyle.bodyCellStyle'],
     pivotTable: ['cellStyle.bodyCellStyle'],
-    bar: ['markStyle.barStyle'],
-    barParallel: ['markStyle.barStyle'],
-    barPercent: ['markStyle.barStyle'],
-    column: ['markStyle.barStyle'],
-    columnParallel: ['markStyle.barStyle'],
-    columnPercent: ['markStyle.barStyle'],
-    line: ['markStyle.lineStyle', 'markStyle.pointStyle'],
-    area: ['markStyle.lineStyle', 'markStyle.pointStyle'],
-    areaPercent: ['markStyle.lineStyle', 'markStyle.pointStyle'],
-    dualAxis: ['markStyle.barStyle', 'markStyle.lineStyle', 'markStyle.pointStyle'],
-    // TODO: annotationPoint, annotationLine 后续补充
+    bar: ['markStyle.barStyle', 'annotation.annotationPoint', 'annotation.annotationVerticalLine'],
+    barParallel: ['markStyle.barStyle', 'annotation.annotationPoint', 'annotation.annotationVerticalLine'],
+    barPercent: ['markStyle.barStyle', 'annotation.annotationPoint', 'annotation.annotationVerticalLine'],
+    column: ['markStyle.barStyle', 'annotation.annotationPoint', 'annotation.annotationHorizontalLine'],
+    columnParallel: ['markStyle.barStyle', 'annotation.annotationPoint', 'annotation.annotationHorizontalLine'],
+    columnPercent: ['markStyle.barStyle', 'annotation.annotationPoint', 'annotation.annotationHorizontalLine'],
+    line: [
+      'markStyle.lineStyle',
+      'markStyle.pointStyle',
+      'annotation.annotationPoint',
+      'annotation.annotationHorizontalLine',
+    ],
+    area: [
+      'markStyle.lineStyle',
+      'markStyle.pointStyle',
+      'annotation.annotationPoint',
+      'annotation.annotationHorizontalLine',
+    ],
+    areaPercent: [
+      'markStyle.lineStyle',
+      'markStyle.pointStyle',
+      'annotation.annotationPoint',
+      'annotation.annotationHorizontalLine',
+    ],
+    dualAxis: [
+      'markStyle.barStyle',
+      'markStyle.lineStyle',
+      'markStyle.pointStyle',
+      'annotation.annotationPoint',
+      'annotation.annotationHorizontalLine',
+    ],
+    scatter: [
+      'markStyle.pointStyle',
+      'annotation.annotationPoint',
+      'annotation.annotationHorizontalLine',
+      'annotation.annotationVerticalLine',
+    ],
+    histogram: ['annotation.annotationHorizontalLine'],
+    boxPlot: ['annotation.annotationHorizontalLine'],
   }
 
   const result: Partial<Record<ChartType, string[]>> = {}
@@ -117,9 +146,12 @@ const collectDynamicFiltersByKeyPaths = (target: unknown, chartType: ChartType):
 
 const hydrateDynamicFilters = async (advancedVSeed: AdvancedVSeed, chartType: ChartType): Promise<void> => {
   const filters = collectDynamicFiltersByKeyPaths(advancedVSeed, chartType)
-  if (!filters.length) return
+  if (!filters.length || !advancedVSeed?.dataset?.length) return
 
-  const allData = (advancedVSeed.dataset ?? []).map((item) => (item?.[ORIGINAL_DATA] ? item[ORIGINAL_DATA] : item))
+  const allData = uniqueBy(
+    (advancedVSeed.dataset ?? []).map((item) => (item?.[ORIGINAL_DATA] ? item[ORIGINAL_DATA] : item)),
+    (item) => item[InnerRowIndex],
+  )
   await Promise.all(
     filters.map(async (filter) => {
       const { success, data } = await executeDynamicFilter(filter, allData)

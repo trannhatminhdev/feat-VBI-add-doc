@@ -1,3 +1,5 @@
+import type { ValueDynamicFilter } from '../../dataSelector'
+
 /**
  * @description 水平标注线, 根据用户设置的 yValue, 从左向右绘制一条末尾有箭头的线, 标签默认在标注线的终点正下方
  */
@@ -6,6 +8,19 @@ export type AnnotationHorizontalLine = {
    * @description  固定的y值, 用于标注水平线, 类目轴在y方向, 则可输入维值, 数值轴在y方向, 则可输入具体的数值
    */
   yValue?: (number | string) | (number | string)[]
+
+  /**
+   * 动态筛选器（AI生成代码执行）
+   * @description
+   * 通过 AI 生成的 JavaScript 代码动态计算标注线的值
+   * 适用于需要根据数据动态确定标注线位置，如平均值、最大值、分位数，业务线等
+   *
+   * 仅支持浏览器环境（需要 Web Worker）
+   *
+   * @type {ValueDynamicFilter}
+   */
+  dynamicFilter?: ValueDynamicFilter
+
   /**
    * @description 标注的文本
    * @default ''

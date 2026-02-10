@@ -1,7 +1,9 @@
 import { z } from 'zod'
+import { zValueDynamicFilter } from '../../dataSelector'
 
 export const zAnnotationHorizontalLine = z.object({
   yValue: z.union([z.number(), z.string(), z.array(z.union([z.number(), z.string()]))]).nullish(),
+  dynamicFilter: zValueDynamicFilter.optional(),
   text: z.string().or(z.array(z.string())).nullish(),
   textPosition: z
     .enum(['outsideStart', 'outsideEnd', 'outsideMiddle', 'insideStart', 'insideMiddle', 'insideEnd'])

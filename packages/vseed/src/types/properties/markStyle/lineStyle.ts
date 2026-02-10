@@ -92,7 +92,7 @@ export type LineStyle = {
 
 export const zLineStyle = z.object({
   selector: z.union([zSelector, zSelectors]).nullish(),
-  dynamicFilter: zChartDynamicFilter.nullish(),
+  dynamicFilter: zChartDynamicFilter.optional(),
   lineVisible: z.boolean().nullish(),
   lineSmooth: z.boolean().nullish(),
   lineColor: z.string().nullish(),

@@ -102,7 +102,7 @@ export type PointStyle = {
 
 export const zPointStyle = z.object({
   selector: z.union([zSelector, zSelectors]).nullish(),
-  dynamicFilter: zChartDynamicFilter.nullish(),
+  dynamicFilter: zChartDynamicFilter.optional(),
   pointVisible: z.boolean().nullish(),
   pointSize: z.number().nullish(),
   pointColor: z.string().nullish(),

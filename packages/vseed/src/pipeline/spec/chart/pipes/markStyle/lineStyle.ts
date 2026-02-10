@@ -51,7 +51,7 @@ export const lineStyle: VChartSpecPipe = (spec, context) => {
           const lineData = node.renderNode.context.data
           for (const d of lineData) {
             const shouldApply = style.dynamicFilter
-              ? selectorWithDynamicFilter(d, style.dynamicFilter)
+              ? selectorWithDynamicFilter(d, style.dynamicFilter, style.selector)
               : selector(d, style.selector)
             if (shouldApply) {
               return true

@@ -50,7 +50,7 @@ export const tableBodyCell: ListTableSpecPipe = (spec, context) => {
 
       const mergedStyle = matchedStyles.reduce<Record<string, any>>((result, style) => {
         const shouldApply = style.dynamicFilter
-          ? selectorWithDynamicFilter(currentCellData || originalDatum, style.dynamicFilter)
+          ? selectorWithDynamicFilter(currentCellData || originalDatum, style.dynamicFilter, style.selector)
           : selector(originalDatum, style.selector)
 
         if (shouldApply) {

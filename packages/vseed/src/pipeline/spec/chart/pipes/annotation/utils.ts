@@ -1,4 +1,4 @@
-import type { Datum } from 'src/types'
+import type { Datum, ValueDynamicFilter } from 'src/types'
 
 export const isSubset = (sub: Datum, obj: Datum, excludeMeasuresIds?: string[]) => {
   return Object.entries(sub).every(([key, value]) => {
@@ -49,4 +49,28 @@ export const ANNOTATION_AREA_TEXT_STYLE_BY_POSITION = {
     textAlign: 'right',
     textBaseline: 'middle',
   },
+}
+
+/**
+ * 解析标注线的值，优先级：dynamicFilter (success=true) > fallback > defaultValue
+ */
+export const resolveAnnotationValue = (options: {
+  dynamicFilter?: ValueDynamicFilter
+  fallback?: string | number
+  defaultValue?: any
+}): (string | number) | (string | number)[] | undefined => {
+  const { dynamicFilter, fallback, defaultValue } = options
+
+  // 优先使用 dynamicFilter
+  if (dynamicFilter?.result?.success && dynamicFilter.result.data !== undefined) {
+    return dynamicFilter.result.data
+  }
+
+  // 其次使用 fallback
+  if (fallback !== undefined) {
+    return fallback
+  }
+
+  // 最后使用原始的 defaultValue
+  return defaultValue
 }
