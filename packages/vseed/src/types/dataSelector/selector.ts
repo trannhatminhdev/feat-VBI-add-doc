@@ -410,7 +410,7 @@ export const zTableDynamicFilter = z.object({
   type: z.literal('row-with-field'),
   description: z.string().optional(),
   code: z.string(),
-  fallback: z.union([zCellSelector, z.array(zCellSelector)]).optional(),
+  fallback: z.union([zSelector, zSelectors]).optional(),
   result: z
     .object({
       success: z.boolean(),
