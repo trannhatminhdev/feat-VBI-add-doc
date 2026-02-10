@@ -402,15 +402,15 @@ export const zAreaSelector = z.union([zMeasureSelector, zDimensionSelector])
 export const zAreaSelectors = z.array(zAreaSelector)
 
 export const zCellSelector = z.object({
-  row: z.number(),
-  field: z.string(),
+  __row_index: z.number(),
+  field: z.union([z.string(), z.literal('*')]),
 })
 
 export const zTableDynamicFilter = z.object({
   type: z.literal('row-with-field'),
   description: z.string().optional(),
   code: z.string(),
-  fallback: z.union([zCellSelector, z.array(zCellSelector)]).optional(),
+  fallback: z.union([zSelector, zSelectors]).optional(),
   result: z
     .object({
       success: z.boolean(),
