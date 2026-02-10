@@ -55,7 +55,16 @@
         "backgroundColor": "pink",
         "dynamicFilter": {
           "type": "row-with-field",
-          "code": "\n          return [{__row_index: 0, field: 'profit'}]\n          "
+          "code": "\n          return [{__row_index: 0, field: 'profit'}]\n          ",
+          "result": {
+            "success": true,
+            "data": [
+              {
+                "__row_index": 0,
+                "field": "profit"
+              }
+            ]
+          }
         }
       }
     ]

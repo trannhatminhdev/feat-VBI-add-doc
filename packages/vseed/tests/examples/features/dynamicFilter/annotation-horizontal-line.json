@@ -14,7 +14,11 @@
       "yValue": 200,
       "dynamicFilter": {
         "type": "value",
-        "code": "return _.maxBy(data, 'count').count"
+        "code": "return _.maxBy(data, 'count').count",
+        "result": {
+          "success": true,
+          "data": 500
+        }
       },
       "text": "销售额最大值"
     },

@@ -89,7 +89,7 @@
 
 ## dimensions
 
-**Type:** `import("/Users/bytedance/Projects/VBI/packages/vseed/src/index").PieDimension[] | undefined`
+**Type:** `import("/Users/bytedance/Desktop/WorkSpace/VSeed/packages/vseed/src/index").PieDimension[] | undefined`
 
 :::note{title=描述}
 维度

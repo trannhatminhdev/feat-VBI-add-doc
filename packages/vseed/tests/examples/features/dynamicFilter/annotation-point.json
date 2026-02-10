@@ -38,7 +38,16 @@
     "annotationPoint": {
       "dynamicFilter": {
         "type": "row-with-field",
-        "code": "\n        return data.filter(item => item.profit / item.sales > 0.5).map(v => ({\n          __row_index: v.__row_index,\n          field: 'profit'\n        }))"
+        "code": "\n        return data.filter(item => item.profit / item.sales > 0.5).map(v => ({\n          __row_index: v.__row_index,\n          field: 'profit'\n        }))",
+        "result": {
+          "success": true,
+          "data": [
+            {
+              "__row_index": 0,
+              "field": "profit"
+            }
+          ]
+        }
       },
       "text": "利润占比很高",
       "textFontWeight": 600,

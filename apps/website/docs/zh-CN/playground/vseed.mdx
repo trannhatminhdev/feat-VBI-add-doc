@@ -77,9 +77,12 @@ const SimpleVSeedRender = (props: { vseed: VSeed }) => {
         return
       }
       const theme = dark ? 'dark' : 'light'
-      const builder = Builder.from(vseed.theme ? vseed : { ...vseed, theme })
-      // let spec = builder.build()
-      let spec = await builder.buildAsync()
+      const builder = Builder.from(vseed)
+
+      // 如果有 dynamicFilter code，需要先 prepare 再 build
+      await builder.prepare()
+      let spec = builder.build()
+
       console.log('final spec = ', spec)
       console.log('builder', builder)
       console.log('builder performance', builder.performance)
