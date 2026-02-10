@@ -31,7 +31,13 @@ import {
   zCirclePacking,
 } from './chartType'
 
-export const zVSeed = z.discriminatedUnion('chartType', [
+/**
+ * VSeed 核心 Schema 定义
+ * @description 包含所有支持的图表类型的联合类型
+ * @note 显式类型注解为 z.ZodType<any>，因为 discriminatedUnion 包含所有图表类型的复杂并集，
+ *       推断类型会超过编译器序列化限制，需要显式注解以提升编译性能
+ */
+export const zVSeed: z.ZodType<any> = z.discriminatedUnion('chartType', [
   zTable,
   zPivotTable,
   // cartesian

@@ -430,7 +430,29 @@ function getOrCreateWorkerPool(): Promise<WorkerPool> {
 
 /**
  * 初始化 Worker 池
- * @description 应用启动时预热，提升首次执行性能
+ * @description 预热 Worker 实例，提升首次执行性能
+ *
+ * **⚠️ 注意：这是一个可选的性能优化方法**
+ *
+ * - **懒加载模式**：如果不调用此方法，Worker 池会在首次使用时自动初始化
+ * - **推荐场景**：应用启动时预热，避免首次筛选时的冷启动延迟
+ * - **配置选项**：
+ *   - `poolSize`: Worker 池大小（默认 2）
+ *
+ * @param options - 初始化选项
+ * @param options.poolSize - Worker 池大小，默认为 2
+ *
+ * @example
+ * ```typescript
+ * // ✅ 推荐：应用启动时预热（可选）
+ * import { initializeWorkerPool } from '@visactor/vseed'
+ *
+ * // 在 main.ts 或入口文件中
+ * await initializeWorkerPool({ poolSize: 2 })
+ *
+ * // ✅ 也可以：不做任何事，让 Worker 池自动初始化
+ * // 首次调用 dynamicFilter 时会自动创建
+ * ```
  */
 export async function initializeWorkerPool(
   options: {
@@ -450,6 +472,28 @@ export async function initializeWorkerPool(
 
 /**
  * 销毁 Worker 池
+ * @description 终止所有 Worker 实例并清理全局状态
+ *
+ * **⚠️ 注意：大多数情况下不需要手动调用此方法**
+ *
+ * - **一般使用**：浏览器会在页面卸载时自动清理 Worker 资源
+ * - **建议场景**：
+ *   - 单元测试的清理阶段（`afterAll` 钩子）
+ *   - 开发环境热重载时清理旧实例
+ *   - 动态卸载整个图表库模块（极少见）
+ *
+ * @example
+ * ```typescript
+ * // ✅ 推荐：测试环境
+ * afterAll(() => {
+ *   terminateWorkerPool()
+ * })
+ *
+ * // ❌ 不推荐：组件卸载时（Worker 池是全局的，其他组件可能还在使用）
+ * onUnmounted(() => {
+ *   terminateWorkerPool() // 不要这样做！
+ * })
+ * ```
  */
 export function terminateWorkerPool(): void {
   if (globalWorkerPool) {
@@ -684,25 +728,4 @@ export async function executeFilterCode(options: CodeExecutionOptions): Promise<
       globalWorkerPool.release(worker)
     }
   }
-}
-
-/**
- * 尝试执行（带降级）
- */
-export async function tryExecuteFilterCode(
-  options: CodeExecutionOptions,
-  fallback: any[] = [],
-): Promise<CodeExecutionResult> {
-  const result = await executeFilterCode(options)
-
-  if (!result.success) {
-    console.error('[vseed] Enhanced filter execution failed:', result.error)
-    console.warn('[vseed] Using fallback data')
-    return {
-      success: true,
-      data: fallback,
-    }
-  }
-
-  return result
 }

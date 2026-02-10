@@ -3,13 +3,7 @@
  * @description 在 Web Worker 沙箱中安全执行动态筛选代码
  * @module secureCodeExecutor
  */
-export {
-  executeFilterCode,
-  tryExecuteFilterCode,
-  validateCodeSafety,
-  initializeWorkerPool,
-  terminateWorkerPool,
-} from './execute'
+export { executeFilterCode, validateCodeSafety, initializeWorkerPool, terminateWorkerPool } from './execute'
 
 // ===========================================
 // 内置工具库

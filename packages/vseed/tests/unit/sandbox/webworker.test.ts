@@ -7,7 +7,6 @@ import { describe, test, expect, beforeAll, afterAll } from 'vitest'
 import {
   validateCodeSafety,
   executeFilterCode,
-  tryExecuteFilterCode,
   initializeWorkerPool,
   terminateWorkerPool,
 } from '../../../src/pipeline/utils/sandbox/execute'
@@ -342,40 +341,6 @@ describe('Enhanced Secure Code Executor', () => {
         expect(result.error).toMatch(/timeout/)
       }
     }, 10000) // Vitest 超时设为 10 秒
-  })
-
-  // ============================================
-  // 降级测试
-  // ============================================
-  describe('Fallback Tests', () => {
-    test('tryExecuteFilterCodeEnhanced 应该在失败时返回降级数据', async () => {
-      const code = 'throw new Error("Intentional error"); return data;'
-      const fallback = [{ id: 999, category: 'Fallback' }]
-
-      const result = await tryExecuteFilterCode(
-        {
-          code,
-          data: sampleData,
-        },
-        fallback,
-      )
-
-      expect(result.data).toEqual(fallback)
-    })
-
-    test('tryExecuteFilterCodeEnhanced 应该在成功时返回结果', async () => {
-      const code = 'return _.take(data, 2);'
-
-      const result = await tryExecuteFilterCode(
-        {
-          code,
-          data: sampleData,
-        },
-        [],
-      )
-
-      expect(result.data).toHaveLength(2)
-    })
   })
 
   // ============================================
