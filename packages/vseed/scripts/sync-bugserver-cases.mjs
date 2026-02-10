@@ -1,11 +1,15 @@
-const fetch = require('node-fetch')
-const fs = require('fs')
-const path = require('path')
+import fetch from 'node-fetch'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 async function main() {
   // 递归读取/packages/vseed/tests目录下的所有json文件
   const files = fs
-    .readdirSync(path.resolve(__dirname, '../packages/vseed/tests'), { recursive: true })
+    .readdirSync(path.resolve(__dirname, '../tests'), { recursive: true })
     .filter((file) => file.endsWith('.json'))
 
   // 删除bugserver上的所有VSeed同case
@@ -48,7 +52,8 @@ VTable.register.chartModule('vchart', VChart.default)
 
 // your code here
 const dom = document.querySelector('#' + window.BUGSERVER_CONTAINER_ID);
-const vseed = ${content}
+const vseedConfig = ${content}
+const vseed = vseedConfig.vseed
 
 const theme = 'light'
 const builder = Builder.from({ ...vseed, theme })

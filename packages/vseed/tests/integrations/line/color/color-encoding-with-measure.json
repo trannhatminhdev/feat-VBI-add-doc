@@ -1,0 +1,79 @@
+{
+  "name": "color-encoding-with-measure",
+  "description": "",
+  "vseed": {
+    "chartType": "line",
+    "dataset": [
+      {
+        "year": "2015",
+        "population": 22000,
+        "proportion": 15.5
+      },
+      {
+        "year": "2017",
+        "population": 24100,
+        "proportion": 17.3
+      },
+      {
+        "year": "2020",
+        "population": 26400,
+        "proportion": 18.7
+      },
+      {
+        "year": "2022",
+        "population": 28000,
+        "proportion": 19.8
+      },
+      {
+        "year": "2023",
+        "population": 29700,
+        "proportion": 21.1
+      },
+      {
+        "year": "2024",
+        "population": 31000,
+        "proportion": 22
+      },
+      {
+        "year": "2025",
+        "population": 32300,
+        "proportion": 23
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "year",
+        "encoding": "xAxis",
+        "alias": "年份"
+      },
+      {
+        "id": "year",
+        "encoding": "color",
+        "alias": "年份"
+      },
+      {
+        "id": "__MeaId__",
+        "encoding": "color",
+        "alias": "年份"
+      }
+    ],
+    "measures": [
+      {
+        "id": "population",
+        "alias": "老年人口数量(万人)",
+        "parentId": "column-group"
+      },
+      {
+        "id": "proportion",
+        "alias": "占总人口比例(%)",
+        "parentId": "line-group"
+      }
+    ],
+    "label": {
+      "visible": true
+    },
+    "tooltip": {
+      "visible": true
+    }
+  }
+}
