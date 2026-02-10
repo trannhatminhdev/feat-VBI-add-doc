@@ -179,7 +179,7 @@ class WorkerPool {
         // 阶段 4: 代码执行引擎
         // ============================================
         const executeUserCodeSafely = (code, data, timeout) => {
-          // 设置超时保护
+          // 设置超时保护（内层防御）
           let timeoutId = null;
           let isTimedOut = false;
           
@@ -190,7 +190,9 @@ class WorkerPool {
           }
           
           try {
-            // 定期检查超时
+            // 超时检查函数
+            // ⚠️ 注意：这只能防御"合作式"的代码（包含 I/O、迭代、递归）
+            // 对于纯计算死循环（while(true){}），只有外层 worker.terminate() 能终止
             const checkTimeout = () => {
               if (isTimedOut) {
                 throw new Error(\`Execution timeout (exceeded \${timeout}ms)\`);
@@ -201,7 +203,6 @@ class WorkerPool {
             safeContext.data = data;
             
             // 提取安全上下文的所有变量名和值
-            // 不使用 with 语句，而是通过函数参数注入变量（兼容严格模式）
             const contextKeys = Object.keys(safeContext);
             const contextValues = contextKeys.map(key => safeContext[key]);
             
@@ -217,7 +218,10 @@ class WorkerPool {
               'onmessage',      // 消息处理器
               'onerror',        // 错误处理器
               'onmessageerror',
-              // 注意：不遮蔽 setTimeout/clearTimeout，因为内部 checkTimeout 依赖它们
+              'setTimeout',     // ⚠️ 遮蔽定时器，防止资源泄漏
+              'clearTimeout',
+              'setInterval',    // ⚠️ 防止用户创建大量定时器
+              'clearInterval',
             ];
             
             // 包装用户代码：在严格模式下执行，通过参数注入变量
@@ -227,16 +231,15 @@ class WorkerPool {
               \${code}
             \`;
             
-            // 创建函数：参数是上下文变量名 + 遮蔽的全局变量名，函数体是用户代码
-            // 例如: function(_, R, data, Array, Object, ..., checkTimeout, self, postMessage, ...) { "use strict"; 用户代码 }
+            // 创建函数：参数是上下文变量名 + checkTimeout + 遮蔽的全局变量名
             const userFunction = new Function(
               ...contextKeys,        // 安全上下文变量
-              'checkTimeout',        // 超时检查函数
+              'checkTimeout',        // 超时检查函数（用户可选调用）
               ...shadowedGlobals,    // 显式遮蔽的危险全局变量
               wrappedCode
             );
             
-            // 执行并获取结果：传入对应的值 + undefined（遮蔽全局变量）
+            // 执行并获取结果
             const result = userFunction(
               ...contextValues,                          // 安全上下文的值
               checkTimeout,                              // 超时检查函数
@@ -292,9 +295,6 @@ class WorkerPool {
             return result;
             
           } catch (error) {
-            if (timeoutId) {
-              clearTimeout(timeoutId);
-            }
             throw error;
           } finally {
             // 清理数据引用（防止内存泄漏）
@@ -306,7 +306,27 @@ class WorkerPool {
         // 阶段 5: 消息处理
         // ============================================
         self.onmessage = function(event) {
+          // ⚠️ 防御性检查：确保消息格式正确
+          if (!event || !event.data) {
+            nativePostMessage({ 
+              taskId: 'unknown',
+              success: false,
+              error: 'Invalid message format: event.data is null or undefined'
+            });
+            return;
+          }
+          
           const { code, data, timeout, taskId } = event.data;
+          
+          // 验证必需字段
+          if (!taskId) {
+            nativePostMessage({ 
+              taskId: 'unknown',
+              success: false,
+              error: 'Invalid message: taskId is required'
+            });
+            return;
+          }
           
           try {
             const result = executeUserCodeSafely(code, data, timeout);
@@ -345,31 +365,44 @@ class WorkerPool {
 
     const worker = new Worker(blobURL)
 
+    // Worker 构造函数同步加载脚本，立即回收 Blob URL 防止内存泄漏
+    URL.revokeObjectURL(blobURL)
+
     // 等待初始化消息
     return new Promise<Worker>((resolve, reject) => {
+      let isSettled = false
+
+      const cleanup = () => {
+        if (!isSettled) {
+          isSettled = true
+          worker.onmessage = null // ⚠️ 清理监听器防止内存泄漏
+          worker.onerror = null
+        }
+      }
+
       const timeout = setTimeout(() => {
+        cleanup()
         worker.terminate()
-        URL.revokeObjectURL(blobURL)
         reject(new Error('Worker initialization timeout'))
       }, 10000)
 
       worker.onmessage = (e) => {
         if (e.data.initialized) {
           clearTimeout(timeout)
+          cleanup()
           resolve(worker)
         } else if (e.data.initError) {
           clearTimeout(timeout)
+          cleanup()
           worker.terminate()
-          URL.revokeObjectURL(blobURL)
           reject(new Error(e.data.initError))
         }
       }
 
       worker.onerror = (errorEvent: ErrorEvent) => {
         clearTimeout(timeout)
+        cleanup()
         worker.terminate()
-        URL.revokeObjectURL(blobURL)
-        // ✅ 正确提取 ErrorEvent 中的错误信息
         const errorMessage = errorEvent.message || errorEvent.error?.message || 'Unknown worker initialization error'
         reject(new Error(`Worker initialization failed: ${errorMessage}`))
       }
@@ -678,6 +711,13 @@ export async function executeFilterCode(options: CodeExecutionOptions): Promise<
     // 数据大小限制（防止 OOM）
     if (data.length > 100000) {
       console.warn(`[vseed] Large dataset detected: ${data.length} items. Consider pagination for better performance.`)
+    }
+
+    // ⚠️ 数据内存大小估算（粗略）
+    const dataSize = JSON.stringify(data).length
+    if (dataSize > 10 * 1024 * 1024) {
+      // 10MB
+      throw new Error(`Input data is too large (${(dataSize / 1024 / 1024).toFixed(1)}MB). Maximum allowed is 10MB.`)
     }
 
     // 4. 初始化或获取 Worker 池（线程安全）

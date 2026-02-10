@@ -230,13 +230,6 @@ export const isRowWithFieldDynamicFilter = (selector: any): selector is TableDyn
 }
 
 /**
- * 识别是否为图表动态过滤器
- */
-export const isPartialDatumDynamicFilter = (selector: any): selector is ChartDynamicFilter => {
-  return isDynamicFilterLike(selector, ['chart-dynamic'])
-}
-
-/**
  * 识别是否为数值动态过滤器（用于标注线等场景）
  */
 export const isValueDynamicFilter = (selector: any): selector is ValueDynamicFilter => {
@@ -247,7 +240,7 @@ export const isValueDynamicFilter = (selector: any): selector is ValueDynamicFil
  * 识别是否为动态过滤器（通用判断，包含所有类型的动态过滤器）
  */
 export const isDynamicFilter = (selector: any): selector is DynamicFilter => {
-  return isDynamicFilterLike(selector, ['row-with-field', 'chart-dynamic', 'value'])
+  return isDynamicFilterLike(selector, ['row-with-field', 'value'])
 }
 
 /**
@@ -299,15 +292,6 @@ const validateFilterResult = (result: any, filter: DynamicFilter): void => {
       }
     }
   }
-  // ChartDynamicFilter：宽松验证，只需要对象数组
-  else if (isPartialDatumDynamicFilter(filter)) {
-    for (let i = 0; i < result.length; i++) {
-      const item = result[i]
-      if (typeof item !== 'object' || item === null) {
-        throw new TypeError(`ChartDynamicFilter array element at index ${i} must be an object, got: ${typeof item}`)
-      }
-    }
-  }
 }
 
 /**
@@ -337,7 +321,7 @@ export const executeDynamicFilter = async (
       console.warn('[vseed] Dynamic filter execution failed:', error)
       return {
         success: false,
-        data: isRowWithFieldDynamicFilter(filter) || isPartialDatumDynamicFilter(filter) ? [] : '',
+        data: isRowWithFieldDynamicFilter(filter) ? [] : '',
         error,
       }
     }
@@ -350,7 +334,7 @@ export const executeDynamicFilter = async (
       console.error('[vseed] Dynamic filter result validation failed:', validationError)
       return {
         success: false,
-        data: isRowWithFieldDynamicFilter(filter) || isPartialDatumDynamicFilter(filter) ? [] : '',
+        data: isRowWithFieldDynamicFilter(filter) ? [] : '',
         error: validationError instanceof Error ? validationError.message : String(validationError),
       }
     }
@@ -371,7 +355,7 @@ export const executeDynamicFilter = async (
 
     return {
       success: false,
-      data: isRowWithFieldDynamicFilter(filter) || isPartialDatumDynamicFilter(filter) ? [] : '',
+      data: isRowWithFieldDynamicFilter(filter) ? [] : '',
       error: errorMessage,
     }
   }
