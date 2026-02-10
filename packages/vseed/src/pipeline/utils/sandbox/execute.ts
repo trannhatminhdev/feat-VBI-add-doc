@@ -31,7 +31,7 @@ class WorkerPool {
         this.workers.push(worker)
         this.availableWorkers.push(worker)
       } catch (error) {
-        // ⚠️ 关键修复：某个 Worker 初始化失败时，清理已创建的 Worker
+        // 某个 Worker 初始化失败时，清理已创建的 Worker
         this.workers.forEach((w) => w.terminate())
         this.workers = []
         this.availableWorkers = []
@@ -205,6 +205,21 @@ class WorkerPool {
             const contextKeys = Object.keys(safeContext);
             const contextValues = contextKeys.map(key => safeContext[key]);
             
+            // 显式遮蔽 Worker 全局对象中的危险变量（设为 undefined）
+            const shadowedGlobals = [
+              'self',           // Worker 全局对象本身
+              'postMessage',    // 通信通道（防止滥用）
+              'close',          // Worker 终止方法
+              'importScripts',  // 动态加载脚本（已删除，但显式遮蔽更安全）
+              'addEventListener', // 事件监听器
+              'removeEventListener',
+              'dispatchEvent',
+              'onmessage',      // 消息处理器
+              'onerror',        // 错误处理器
+              'onmessageerror',
+              // 注意：不遮蔽 setTimeout/clearTimeout，因为内部 checkTimeout 依赖它们
+            ];
+            
             // 包装用户代码：在严格模式下执行，通过参数注入变量
             const wrappedCode = \`
               "use strict";
@@ -212,16 +227,21 @@ class WorkerPool {
               \${code}
             \`;
             
-            // 创建函数：参数是上下文变量名，函数体是用户代码
-            // 例如: function(_, R, data, Array, Object, ...) { "use strict"; 用户代码 }
+            // 创建函数：参数是上下文变量名 + 遮蔽的全局变量名，函数体是用户代码
+            // 例如: function(_, R, data, Array, Object, ..., checkTimeout, self, postMessage, ...) { "use strict"; 用户代码 }
             const userFunction = new Function(
-              ...contextKeys,  // 展开所有变量名作为参数
-              'checkTimeout',
+              ...contextKeys,        // 安全上下文变量
+              'checkTimeout',        // 超时检查函数
+              ...shadowedGlobals,    // 显式遮蔽的危险全局变量
               wrappedCode
             );
             
-            // 执行并获取结果：传入对应的值
-            const result = userFunction(...contextValues, checkTimeout);
+            // 执行并获取结果：传入对应的值 + undefined（遮蔽全局变量）
+            const result = userFunction(
+              ...contextValues,                          // 安全上下文的值
+              checkTimeout,                              // 超时检查函数
+              ...shadowedGlobals.map(() => undefined)   // 所有危险全局变量设为 undefined
+            );
             
             // 清除超时
             if (timeoutId) {
@@ -362,7 +382,7 @@ class WorkerPool {
     }
 
     if (this.availableWorkers.length === 0) {
-      // ⚠️ 关键修复：创建临时 Worker 时需要等待初始化完成
+      // 创建临时 Worker 时需要等待初始化完成
       try {
         const tempWorker = await this.createSecureWorker()
         return tempWorker
@@ -393,7 +413,7 @@ class WorkerPool {
 
 // 全局 Worker 池实例
 let globalWorkerPool: WorkerPool | null = null
-// ⚠️ 关键修复：添加初始化锁，防止并发创建多个 pool
+// 添加初始化锁，防止并发创建多个 pool
 let poolInitPromise: Promise<WorkerPool> | null = null
 // Worker 池配置
 let poolConfig = { poolSize: 2 }
@@ -466,7 +486,7 @@ export async function initializeWorkerPool(
     poolSize: options.poolSize ?? 2,
   }
 
-  // ⚠️ 关键修复：使用统一的 getOrCreateWorkerPool 确保状态一致
+  // 使用统一的 getOrCreateWorkerPool 确保状态一致
   await getOrCreateWorkerPool()
 }
 
@@ -500,7 +520,7 @@ export function terminateWorkerPool(): void {
     globalWorkerPool.terminate()
     globalWorkerPool = null
   }
-  // ⚠️ 关键修复：重置初始化 Promise，避免状态不一致
+  // 重置初始化 Promise，避免状态不一致
   poolInitPromise = null
 }
 
@@ -637,95 +657,109 @@ export function validateCodeSafety(code: string): void {
 export async function executeFilterCode(options: CodeExecutionOptions): Promise<CodeExecutionResult> {
   const { code, data, timeout = 2000 } = options
 
-  // 1. 环境检查
-  // if (typeof Worker === 'undefined' || typeof window === 'undefined') {
-  //   throw new Error('This feature requires browser environment with Web Worker support.')
-  // }
-
-  // 2. 增强的安全验证
-  validateCodeSafety(code)
-
-  // 3. 验证输入数据
-  if (!Array.isArray(data)) {
-    throw new Error('Input data must be an array')
+  // 1. 环境检查（返回失败结果而不是抛出异常）
+  if (typeof Worker === 'undefined') {
+    return {
+      success: false,
+      data: [],
+      error: 'Web Worker is not supported in this environment',
+    }
   }
-
-  // 数据大小限制（防止 OOM）
-  if (data.length > 100000) {
-    console.warn(`[vseed] Large dataset detected: ${data.length} items. Consider pagination for better performance.`)
-  }
-
-  // 4. 初始化或获取 Worker 池（线程安全）
-  const pool = await getOrCreateWorkerPool()
-  const worker = await pool.acquire()
-  const taskId = `task_${Date.now()}_${Math.random().toString(36).substring(7)}`
 
   try {
-    const result = await new Promise<any[]>((resolve, reject) => {
-      // ⚠️ 关键修复：使用 AbortController 和 cleanup 确保监听器总是被清理
-      let isSettled = false
-      const cleanup = () => {
-        if (!isSettled) {
-          isSettled = true
-          worker.removeEventListener('message', messageHandler)
-          worker.removeEventListener('error', errorHandler)
+    // 2. 增强的安全验证
+    validateCodeSafety(code)
+
+    // 3. 验证输入数据
+    if (!Array.isArray(data)) {
+      throw new Error('Input data must be an array')
+    }
+
+    // 数据大小限制（防止 OOM）
+    if (data.length > 100000) {
+      console.warn(`[vseed] Large dataset detected: ${data.length} items. Consider pagination for better performance.`)
+    }
+
+    // 4. 初始化或获取 Worker 池（线程安全）
+    const pool = await getOrCreateWorkerPool()
+    const worker = await pool.acquire()
+    const taskId = `task_${Date.now()}_${Math.random().toString(36).substring(7)}`
+
+    // 标记 Worker 是否应该被归还到池中（超时/错误时应该终止而不是归还）
+    let shouldReleaseWorker = true
+
+    try {
+      const result = await new Promise<any[]>((resolve, reject) => {
+        // 使用 AbortController 和 cleanup 确保监听器总是被清理
+        let isSettled = false
+        const cleanup = () => {
+          if (!isSettled) {
+            isSettled = true
+            worker.removeEventListener('message', messageHandler)
+            worker.removeEventListener('error', errorHandler)
+          }
         }
-      }
 
-      // 外层超时保护（比内层多 1 秒）
-      const outerTimeoutId = setTimeout(() => {
-        cleanup()
-        reject(new Error(`Execution timeout (exceeded ${timeout}ms) - outer guard`))
-      }, timeout + 1000)
+        // 外层超时保护（比内层多 1 秒）
+        const outerTimeoutId = setTimeout(() => {
+          cleanup()
+          shouldReleaseWorker = false // ⚠️ 超时时不归还 Worker
+          worker.terminate() // ⚠️ 立即终止 Worker，防止继续消耗 CPU
+          reject(new Error(`Execution timeout (exceeded ${timeout}ms) - outer guard`))
+        }, timeout + 1000)
 
-      // 消息处理
-      const messageHandler = (e: MessageEvent) => {
-        if (e.data.taskId !== taskId) return
+        // 消息处理
+        const messageHandler = (e: MessageEvent) => {
+          if (e.data.taskId !== taskId) return
 
-        clearTimeout(outerTimeoutId)
-        cleanup()
+          clearTimeout(outerTimeoutId)
+          cleanup()
 
-        if (e.data.success) {
-          resolve(e.data.result)
-        } else {
-          reject(new Error(`Execution failed: ${e.data.error}${e.data.errorType ? ` (${e.data.errorType})` : ''}`))
+          if (e.data.success) {
+            resolve(e.data.result)
+          } else {
+            reject(new Error(`Execution failed: ${e.data.error}${e.data.errorType ? ` (${e.data.errorType})` : ''}`))
+          }
         }
-      }
 
-      // 错误处理
-      const errorHandler = (errorEvent: ErrorEvent) => {
-        clearTimeout(outerTimeoutId)
-        cleanup()
-        // ✅ 正确提取 ErrorEvent 中的错误信息
-        const errorMessage = errorEvent.message || errorEvent.error?.message || 'Unknown worker error'
-        reject(new Error(`Worker error: ${errorMessage}`))
-      }
+        // 错误处理
+        const errorHandler = (errorEvent: ErrorEvent) => {
+          clearTimeout(outerTimeoutId)
+          cleanup()
+          shouldReleaseWorker = false // ⚠️ Worker 内部错误，不归还
+          worker.terminate() // ⚠️ 终止异常的 Worker
+          // ✅ 正确提取 ErrorEvent 中的错误信息
+          const errorMessage = errorEvent.message || errorEvent.error?.message || 'Unknown worker error'
+          reject(new Error(`Worker error: ${errorMessage}`))
+        }
 
-      worker.addEventListener('message', messageHandler)
-      worker.addEventListener('error', errorHandler)
+        worker.addEventListener('message', messageHandler)
+        worker.addEventListener('error', errorHandler)
 
-      worker.postMessage({
-        taskId,
-        code,
-        data,
-        timeout,
+        worker.postMessage({
+          taskId,
+          code,
+          data,
+          timeout,
+        })
       })
-    })
 
-    return {
-      success: true,
-      data: result,
+      return {
+        success: true,
+        data: result,
+      }
+    } finally {
+      // 只有在正常完成时才归还 Worker
+      // 超时或错误时 Worker 已被 terminate()，不应该归还到池中
+      if (shouldReleaseWorker && globalWorkerPool) {
+        globalWorkerPool.release(worker)
+      }
     }
   } catch (error) {
     return {
       success: false,
       data: [],
       error: error instanceof Error ? error.message : String(error),
-    }
-  } finally {
-    // 归还 Worker 到池中
-    if (globalWorkerPool) {
-      globalWorkerPool.release(worker)
     }
   }
 }

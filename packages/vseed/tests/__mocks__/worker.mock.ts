@@ -43,8 +43,8 @@ export class WorkerMock {
       const { taskId, code, data: inputData } = messageData
       
       try {
-        // 动态加载内置工具库 (使用 import 代替 require)
-        const { BUILTIN_UTILS_SOURCE } = await import('../../src/pipeline/utils/sandbox/builtin-utils.js')
+        // 动态加载内置工具库 (无扩展名导入，兼容 TypeScript 模块解析)
+        const { BUILTIN_UTILS_SOURCE } = await import('../../src/pipeline/utils/sandbox/builtin-utils')
         
         // 创建工具库上下文
         const utilsContext = {}

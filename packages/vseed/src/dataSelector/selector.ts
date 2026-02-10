@@ -326,35 +326,54 @@ export const executeDynamicFilter = async (
   filter: DynamicFilter,
   allData: Datum[],
 ): Promise<{ success: boolean; data: DynamicFilterResult; error?: string }> => {
-  const { success, data, error } = await executeFilterCode({
-    code: filter.code,
-    data: allData,
-  })
-  if (!success) {
-    // eslint-disable-next-line no-console
-    console.warn('[vseed] Dynamic filter execution failed:', error)
-    return {
-      success: false,
-      data: isRowWithFieldDynamicFilter(filter) || isPartialDatumDynamicFilter(filter) ? [] : '',
-    }
-  }
-
-  // 主线程验证：根据过滤器类型进行特定检查
   try {
-    validateFilterResult(data, filter)
-  } catch (validationError) {
+    const { success, data, error } = await executeFilterCode({
+      code: filter.code,
+      data: allData,
+    })
+
+    if (!success) {
+      // eslint-disable-next-line no-console
+      console.warn('[vseed] Dynamic filter execution failed:', error)
+      return {
+        success: false,
+        data: isRowWithFieldDynamicFilter(filter) || isPartialDatumDynamicFilter(filter) ? [] : '',
+        error,
+      }
+    }
+
+    // 主线程验证：根据过滤器类型进行特定检查
+    try {
+      validateFilterResult(data, filter)
+    } catch (validationError) {
+      // eslint-disable-next-line no-console
+      console.error('[vseed] Dynamic filter result validation failed:', validationError)
+      return {
+        success: false,
+        data: isRowWithFieldDynamicFilter(filter) || isPartialDatumDynamicFilter(filter) ? [] : '',
+        error: validationError instanceof Error ? validationError.message : String(validationError),
+      }
+    }
+
+    return {
+      success,
+      data: data as DynamicFilterResult,
+    }
+  } catch (error) {
+    // 捕获所有可能的异常：
+    // - Worker 不支持
+    // - Worker 池初始化/获取失败
+    // - validateCodeSafety 验证失败
+    // - 数据验证失败
+    const errorMessage = error instanceof Error ? error.message : String(error)
     // eslint-disable-next-line no-console
-    console.error('[vseed] Dynamic filter result validation failed:', validationError)
+    console.error('[vseed] Dynamic filter execution threw exception:', errorMessage)
+
     return {
       success: false,
       data: isRowWithFieldDynamicFilter(filter) || isPartialDatumDynamicFilter(filter) ? [] : '',
-      error: validationError instanceof Error ? validationError.message : String(validationError),
+      error: errorMessage,
     }
-  }
-
-  return {
-    success,
-    data: data as DynamicFilterResult,
   }
 }
 
