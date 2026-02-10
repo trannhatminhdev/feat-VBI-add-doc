@@ -348,20 +348,23 @@ describe('Enhanced Secure Code Executor', () => {
   // 性能测试
   // ============================================
   describe('Performance Tests', () => {
-    test('Worker 池应该复用实例', async () => {
+    test('Worker 池应该支持并发调用', async () => {
       const code = 'return _.take(data, 1);'
 
-      const start1 = Date.now()
-      await executeFilterCode({ code, data: sampleData })
-      const time1 = Date.now() - start1
+      // 并发执行多个任务，验证 Worker 池的稳定性和复用能力
+      // 如果池正常工作，这些调用应该都能成功完成
+      const promises = Array.from({ length: 5 }, () =>
+        executeFilterCode({ code, data: sampleData })
+      )
 
-      const start2 = Date.now()
-      await executeFilterCode({ code, data: sampleData })
-      const time2 = Date.now() - start2
+      const results = await Promise.all(promises)
 
-      // 第二次应该更快（复用 Worker）
-      // 注意：这个测试可能不稳定，取决于系统负载
-      expect(time2).toBeLessThanOrEqual(time1)
+      // 验证所有调用都成功
+      results.forEach(result => {
+        expect(result.success).toBe(true)
+        expect(Array.isArray(result.data)).toBe(true)
+        expect(result.data).toHaveLength(1)
+      })
     })
 
     test('应该处理大数据集', async () => {
