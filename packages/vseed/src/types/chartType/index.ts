@@ -11,6 +11,7 @@ export * from './bar'
 export * from './raceBar'
 export * from './raceColumn'
 export * from './raceScatter'
+export * from './raceLine'
 export * from './barParallel'
 export * from './barPercent'
 export * from './area'
@@ -30,6 +31,14 @@ export * from './radar'
 export * from './treeMap'
 export * from './sunburst'
 export * from './circlePacking'
+
+// race
+export * from './raceLine'
+export * from './raceBar'
+export * from './raceColumn'
+export * from './raceScatter'
+export * from './racePie'
+export * from './raceDonut'
 
 // other
 export * from './funnel'

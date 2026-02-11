@@ -13,7 +13,14 @@ import { zHeatmapConfig } from './heatmap'
 import { zPivotTableConfig } from './pivotTable'
 import { zBoxplotConfig } from './boxplot'
 import { zHistogramConfig } from './histogram'
-import { zRaceBarConfig, zRaceColumnConfig, zRaceScatterConfig } from './race'
+import {
+  zRaceBarConfig,
+  zRaceColumnConfig,
+  zRaceDonutConfig,
+  zRaceLineConfig,
+  zRacePieConfig,
+  zRaceScatterConfig,
+} from './race'
 import { zTreeMapConfig } from './treeMap'
 import { zSunburstConfig } from './sunburst'
 import { zCirclePackingConfig } from './circlePacking'
@@ -48,6 +55,9 @@ export const zConfig = z.object({
   raceBar: zRaceBarConfig.nullish(),
   raceColumn: zRaceColumnConfig.nullish(),
   raceScatter: zRaceScatterConfig.nullish(),
+  raceLine: zRaceLineConfig.nullish(),
+  racePie: zRacePieConfig.nullish(),
+  raceDonut: zRaceDonutConfig.nullish(),
 
   // hierarchy
   treeMap: zTreeMapConfig.nullish(),

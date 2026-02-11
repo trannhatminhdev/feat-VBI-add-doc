@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import type { IScatterChartSpec } from '@visactor/vchart'
 import type { Datum, VChartSpecPipe } from 'src/types'
 

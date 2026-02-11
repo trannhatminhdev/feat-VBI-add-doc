@@ -16,6 +16,8 @@ import { getHistogramTheme } from './histogram'
 import { getBoxPlotTheme } from './boxPlot'
 import { getTreeMapTheme, getSunburstTheme, getCirclePackingTheme } from './hierarchy'
 import { getRaceBarTheme, getRaceColumnTheme, getRaceScatterTheme } from './race'
+import { getRaceLineTheme } from './raceLine'
+import { getRacePieTheme, getRaceDonutTheme } from './racePie'
 
 export const lightTheme = (): CustomThemeConfig => {
   const tableConfig = getLightTableConfig()
@@ -58,6 +60,9 @@ export const lightTheme = (): CustomThemeConfig => {
       raceBar: getRaceBarTheme(),
       raceColumn: getRaceColumnTheme(),
       raceScatter: getRaceScatterTheme(),
+      raceLine: getRaceLineTheme(),
+      racePie: getRacePieTheme(),
+      raceDonut: getRaceDonutTheme(),
     },
   }
 }

@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const zPlayer = z.object({
   interval: z.number().optional(),
+  maxCount: z.number().or(z.literal(false)).optional(),
   autoPlay: z.boolean().optional(),
   loop: z.boolean().optional(),
   position: z.enum(['top', 'bottom', 'left', 'right']).optional(),

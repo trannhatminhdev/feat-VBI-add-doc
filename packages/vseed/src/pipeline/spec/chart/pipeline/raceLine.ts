@@ -1,0 +1,46 @@
+import type { VChartSpecPipeline } from 'src/types'
+import {
+  initLine,
+  backgroundColor,
+  label,
+  tooltip,
+  discreteLegend,
+  color,
+  lineStyle,
+  annotationVerticalLine,
+  annotationHorizontalLine,
+  verticalCrosshairLine,
+  progressive,
+  colorAdapter,
+  linearColor,
+  colorLegend,
+  brush,
+  xBand,
+  yLinear,
+  colorLineStyleFill,
+  annotationArea,
+  splitLine,
+  playerLine,
+} from '../pipes'
+
+const raceLine: VChartSpecPipeline = [
+  initLine,
+  colorAdapter(color, linearColor),
+  backgroundColor,
+  playerLine,
+  progressive,
+  xBand,
+  yLinear,
+  brush,
+  verticalCrosshairLine,
+  colorAdapter(discreteLegend, colorLegend),
+  colorLineStyleFill(lineStyle),
+  label,
+  tooltip,
+  annotationVerticalLine,
+  annotationHorizontalLine,
+  annotationArea,
+  splitLine,
+]
+
+export const raceLineSpecPipeline = raceLine

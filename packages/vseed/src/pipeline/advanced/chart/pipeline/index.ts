@@ -22,6 +22,9 @@ export { histogramAdvancedPipeline } from './histogram'
 export { raceBarAdvancedPipeline } from './raceBar'
 export { raceColumnAdvancedPipeline } from './raceColumn'
 export { raceScatterAdvancedPipeline } from './raceScatter'
+export { raceLineAdvancedPipeline } from './raceLine'
+export { racePieAdvancedPipeline } from './racePie'
+export { raceDonutAdvancedPipeline } from './raceDonut'
 
 // hierarchy
 export { treeMapAdvancedPipeline } from './treeMap'

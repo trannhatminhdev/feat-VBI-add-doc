@@ -5,6 +5,9 @@ import {
   registerRaceBar,
   registerRaceColumn,
   registerRaceScatter,
+  registerRaceLine,
+  registerRacePie,
+  registerRaceDonut,
   registerBarParallel,
   registerBarPercent,
   registerColumn,
@@ -47,6 +50,9 @@ export const registerAll = () => {
   registerRaceBar()
   registerRaceColumn()
   registerRaceScatter()
+  registerRaceLine()
+  registerRacePie()
+  registerRaceDonut()
   registerBarParallel()
   registerBarPercent()
   registerArea()
