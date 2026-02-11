@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.3
+
+### Patch Changes
+
+- Support selector code
+
 ## 0.4.2
 
 ### Patch Changes
