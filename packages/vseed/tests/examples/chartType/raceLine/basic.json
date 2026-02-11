@@ -1,8 +1,8 @@
 {
-  "name": "Basic RaceBar",
-  "description": "A dynamic bar chart race animation showing ranking changes over time.",
+  "name": "Basic RaceLine",
+  "description": "A dynamic line chart race animation showing ranking changes over time.",
   "vseed": {
-    "chartType": "raceBar",
+    "chartType": "raceLine",
     "measures": [
       {
         "id": "sales",

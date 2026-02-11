@@ -91,6 +91,16 @@
   },
   {
     "type": "file",
+    "name": "raceScatter",
+    "label": "RaceScatter"
+  },
+  {
+    "type": "file",
+    "name": "raceLine",
+    "label": "RaceLine"
+  },
+  {
+    "type": "file",
     "name": "raceBar",
     "label": "RaceBar"
   },
@@ -101,8 +111,13 @@
   },
   {
     "type": "file",
-    "name": "raceScatter",
-    "label": "RaceScatter"
+    "name": "racePie",
+    "label": "RacePie"
+  },
+  {
+    "type": "file",
+    "name": "raceDonut",
+    "label": "RaceDonut"
   },
   {
     "type": "file",

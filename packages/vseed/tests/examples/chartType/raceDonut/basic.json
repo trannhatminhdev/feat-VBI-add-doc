@@ -1,8 +1,8 @@
 {
-  "name": "Basic RaceBar",
-  "description": "A dynamic bar chart race animation showing ranking changes over time.",
+  "name": "Basic RaceDonut",
+  "description": "A dynamic donut chart race animation showing ranking changes over time.",
   "vseed": {
-    "chartType": "raceBar",
+    "chartType": "raceDonut",
     "measures": [
       {
         "id": "sales",

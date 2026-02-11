@@ -33,6 +33,8 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
     forwardButtonColor,
   } = player
 
+  const { maxCount } = player
+
   const dataGroups = groupBy(advancedVSeed.dataset, (item) => item[encodingPlayer])
   if (result.data && 'values' in result.data) {
     result.data.values = []
@@ -40,7 +42,7 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
   const specs = Object.values(dataGroups).map((items) => ({
     data: {
       id: id,
-      values: items,
+      values: maxCount ? items.slice(0, maxCount) : items,
     },
   }))
 

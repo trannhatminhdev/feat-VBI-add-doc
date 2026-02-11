@@ -21,6 +21,7 @@ import {
   annotationArea,
   splitLine,
   playerLine,
+  annotationPoint,
 } from '../pipes'
 
 const raceLine: VChartSpecPipeline = [
@@ -37,6 +38,7 @@ const raceLine: VChartSpecPipeline = [
   colorLineStyleFill(lineStyle),
   label,
   tooltip,
+  annotationPoint,
   annotationVerticalLine,
   annotationHorizontalLine,
   annotationArea,

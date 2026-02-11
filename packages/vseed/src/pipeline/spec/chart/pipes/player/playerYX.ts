@@ -57,7 +57,7 @@ export const playerYX: VChartSpecPipe = (spec, context) => {
     return {
       data: {
         id: id,
-        values: sortedItems.slice(0, maxCount),
+        values: maxCount === false ? sortedItems : sortedItems.slice(0, maxCount as number),
       },
     }
   })

@@ -432,10 +432,10 @@
 
 ### maxCount
 
-**Type:** `number | undefined`
+**Type:** `number | false | undefined`
 
 :::note{title=描述}
-最大播放数量, 超过该数量的数据将被截断
+最大播放数量, 超过该数量的数据将被截断, 设为 false 表示不限制
 
 :::
 
