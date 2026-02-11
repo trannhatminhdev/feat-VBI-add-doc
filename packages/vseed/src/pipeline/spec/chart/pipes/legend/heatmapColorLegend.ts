@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { VChartSpecPipe } from 'src/types'
 import { colorLegend } from './colorLegend'
 import type { Datum, IHeatmapChartSpec } from '@visactor/vchart'

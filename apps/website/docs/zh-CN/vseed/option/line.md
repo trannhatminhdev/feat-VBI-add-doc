@@ -68,7 +68,7 @@
 
 ## dataset
 
-**Type:** `Record<string | number, any>[]`
+**Type:** `Record[]`
 
 :::note{title=描述}
 数据源, 符合TidyData规范的且已经聚合的数据集，用于定义图表的数据来源和结构, 用户输入的数据集并不需要进行任何处理, VSeed带有强大的数据重塑功能, 会自行进行数据重塑, 折线图的数据最终会被转换为2个维度, 1个指标.
@@ -83,7 +83,7 @@
 
 ## dimensions
 
-**Type:** `import("/Users/bytedance/Desktop/WorkSpace/VSeed/packages/vseed/src/index").ColumnDimension[] | undefined`
+**Type:** `ColumnDimension[] | undefined`
 
 :::note{title=描述}
 维度, 折线图的第一个维度被映射到X轴, 其余维度会与指标名称(存在多个指标时)合并, 作为图例项展示
@@ -140,7 +140,7 @@
 
 ## measures
 
-**Type:** `import("/Users/bytedance/Desktop/WorkSpace/VSeed/packages/vseed/src/index").ColumnMeasure[] | undefined`
+**Type:** `ColumnMeasure[] | undefined`
 
 :::note{title=描述}
 指标, 折线图的所有指标会自动合并为一个指标, 映射到Y轴, 存在多个指标时, 指标名称会与其余维度合并, 作为图例项展示.
@@ -2434,7 +2434,7 @@ order:'asc'
 
 ### brand
 
-**Type:** `unique symbol`
+**Type:** `brand`
 
 
 ## pointStyle

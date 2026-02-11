@@ -4,9 +4,9 @@
  */
 export type Player = {
   /**
-   * @description 最大播放数量, 超过该数量的数据将被截断
+   * @description 最大播放数量, 超过该数量的数据将被截断, 设为 false 表示不限制
    */
-  maxCount?: number
+  maxCount?: number | false
   /**
    * @description 播放间隔, 单位ms
    */

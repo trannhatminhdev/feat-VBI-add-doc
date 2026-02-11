@@ -7,7 +7,7 @@ import {
   color,
   linearColor,
   backgroundColor,
-  playerXY,
+  playerColumn,
   progressive,
   label,
   brush,
@@ -23,6 +23,8 @@ import {
   annotationAreaBand,
   xBand,
   yLinear,
+  datasetXY,
+  isPlayer,
 } from '../pipes'
 
 const raceColumn: VChartSpecPipeline = [
@@ -31,7 +33,7 @@ const raceColumn: VChartSpecPipeline = [
   barMaxWidth,
   colorAdapter(color, linearColor),
   backgroundColor,
-  playerXY,
+  isPlayer(playerColumn, datasetXY),
   progressive,
   xBand,
   yLinear,

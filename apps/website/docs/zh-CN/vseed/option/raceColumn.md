@@ -1,19 +1,71 @@
 # RaceColumn
 
+:::note{title=描述}
+动态柱状图 (Race Column Chart)
+
+适用于展示数据随时间变化的排名情况，柱子竖向排列
+
+适用场景：
+
+\- 数据项名称较长时
+
+\- 需要直观比较不同类别的数值大小并展示其随时间的变化排序
+
+\- 展示时间序列数据变化趋势，并动态更新柱子排序
+
+:::
+
+:::note{title=Note}
+动态柱状图：
+
+\- X轴为类目轴（分类数据），展示维度值
+
+\- Y轴为数值轴（连续数据），展示指标值
+
+\- 支持通过播放器控制时间维度，动态展示数据变化
+
+\- 柱子在动画中根据数值大小动态排序
+
+:::
+
 
 ## chartType
 
 **Type:** `"raceColumn"`
 
+:::note{title=描述}
+动态柱状图，适用于展示数据随时间变化的排名情况
+
+:::
+
 
 ## dataset
 
-**Type:** `Record<string | number, any>[]`
+**Type:** `Record[]`
+
+:::note{title=描述}
+符合TidyData规范的且已经聚合的数据集
+
+:::
+
+**示例**
+[{category:'A', value:100, date: '2020'}, {category:'B', value:200, date: '2020'}]
+
+
 
 
 ## dimensions
 
 **Type:** `RaceColumnDimension[] | undefined`
+
+:::note{title=描述}
+维度
+
+
+
+第一个维度映射到player，第二个维度映射到X轴
+
+:::
 
 
 ### id
@@ -63,6 +115,20 @@
 ## measures
 
 **Type:** `ColumnMeasure[] | undefined`
+
+:::note{title=描述}
+指标
+
+
+
+动态柱状图的所有指标会自动合并为一个指标, 映射到Y轴, 存在多个指标时, 指标名称会与其余维度合并, 作为图例项展示.
+
+:::
+
+**示例**
+[{id: "value", alias: "数值"}]
+
+
 
 
 ### id
@@ -420,6 +486,12 @@
 **Type:** `Player | undefined`
 
 :::note{title=描述}
+播放器配置，用于指定时间维度，是动态柱状图的核心配置
+
+通过播放器控制时间维度的播放进度，实现数据的动态更新和排序变化
+
+
+
 播放器配置, 用于指定播放的字段名, 必须是维度
 
 :::
@@ -432,10 +504,10 @@
 
 ### maxCount
 
-**Type:** `number | undefined`
+**Type:** `number | false | undefined`
 
 :::note{title=描述}
-最大播放数量, 超过该数量的数据将被截断
+最大播放数量, 超过该数量的数据将被截断, 设为 false 表示不限制
 
 :::
 
@@ -553,6 +625,12 @@
 **Type:** `Sort | undefined`
 
 :::note{title=描述}
+排序配置，动态柱状图通常需要根据数值动态排序
+
+控制柱子在X轴上的排序方式
+
+
+
 类目轴排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
 
 :::
@@ -609,6 +687,11 @@ order:'asc'
 
 **Type:** `Page | undefined`
 
+:::note{title=描述}
+分页配置，用于处理数据量较大的场景
+
+:::
+
 
 ### field
 
@@ -638,10 +721,20 @@ order:'asc'
 
 **Type:** `BackgroundColor`
 
+:::note{title=描述}
+背景颜色配置
+
+:::
+
 
 ## color
 
 **Type:** `Color | undefined`
+
+:::note{title=描述}
+颜色配置，用于区分不同的维度或指标
+
+:::
 
 
 ### colorScheme
@@ -711,6 +804,11 @@ order:'asc'
 ## label
 
 **Type:** `Label | undefined`
+
+:::note{title=描述}
+标签配置，用于在柱子上显示数据标签
+
+:::
 
 
 ### enable
@@ -1052,6 +1150,11 @@ same as operator
 
 **Type:** `Legend | undefined`
 
+:::note{title=描述}
+图例配置
+
+:::
+
 
 ### enable
 
@@ -1211,6 +1314,11 @@ maxSize: 2
 
 **Type:** `Tooltip | undefined`
 
+:::note{title=描述}
+提示信息配置，用于鼠标悬停时展示详细信息
+
+:::
+
 
 ### enable
 
@@ -1227,6 +1335,10 @@ maxSize: 2
 **Type:** `Brush | undefined`
 
 :::note{title=描述}
+框选配置，用于支持框选交互
+
+
+
 图表框选配置
 
 :::
@@ -1381,7 +1493,12 @@ brush的类型
 
 ## xAxis
 
-**Type:** `YBandAxis | undefined`
+**Type:** `XBandAxis | undefined`
+
+:::note{title=描述}
+X轴配置，为类目轴，展示维度值，柱子竖向排列
+
+:::
 
 
 ### visible
@@ -1708,7 +1825,7 @@ X轴网格线
 **Type:** `{ duration?: number; easing?: string; } | undefined`
 
 :::note{title=描述}
-Y轴动画配置
+X轴动画配置
 
 :::
 
@@ -1734,7 +1851,12 @@ Y轴动画配置
 
 ## yAxis
 
-**Type:** `XLinearAxis | undefined`
+**Type:** `YLinearAxis | undefined`
+
+:::note{title=描述}
+Y轴配置，为数值轴，展示指标值
+
+:::
 
 
 ### visible
@@ -2226,6 +2348,10 @@ Y轴动画配置
 **Type:** `CrosshairRect | undefined`
 
 :::note{title=描述}
+十字线配置，用于展示数据的精确值
+
+
+
 十字准星线矩形区域配置，是一种用于在图表中显示十字准星线矩形区域的配置类型
 
 :::
@@ -2281,10 +2407,20 @@ Y轴动画配置
 
 **Type:** `number | number[] | undefined`
 
+:::note{title=描述}
+堆叠圆角配置
+
+:::
+
 
 ## barMaxWidth
 
 **Type:** `string | number | undefined`
+
+:::note{title=描述}
+矩形的最大宽度配置
+
+:::
 
 
 ## sortLegend
@@ -2292,6 +2428,10 @@ Y轴动画配置
 **Type:** `SortLegend | undefined`
 
 :::note{title=描述}
+图例排序配置
+
+
+
 图例排序配置, 支持根据维度或指标排序, 以及自定义排序顺序; 排序数组遵循从左到右或从上到下的顺序
 
 :::
@@ -2349,6 +2489,10 @@ order:'asc'
 **Type:** `Theme | undefined`
 
 :::note{title=描述}
+主题配置
+
+
+
 主题
 
 
@@ -2364,12 +2508,17 @@ order:'asc'
 
 ### brand
 
-**Type:** `unique symbol`
+**Type:** `brand`
 
 
 ## barStyle
 
 **Type:** `BarStyle | BarStyle[] | undefined`
+
+:::note{title=描述}
+柱形样式配置，可以为单个样式或数组形式
+
+:::
 
 
 ### selector
@@ -2767,6 +2916,11 @@ dotted
 ## annotationPoint
 
 **Type:** `AnnotationPoint | AnnotationPoint[] | undefined`
+
+:::note{title=描述}
+标注点配置，用于在特定数据点上添加标记
+
+:::
 
 
 ### selector
@@ -3255,6 +3409,11 @@ offsetX: 5, 标注点整体向右偏移5像素
 
 **Type:** `AnnotationVerticalLine | AnnotationVerticalLine[] | undefined`
 
+:::note{title=描述}
+数值标注线，竖向标注线，标记特定的X轴数值
+
+:::
+
 
 ### xValue
 
@@ -3646,6 +3805,11 @@ true
 ## annotationHorizontalLine
 
 **Type:** `AnnotationHorizontalLine | AnnotationHorizontalLine[] | undefined`
+
+:::note{title=描述}
+维度值标注线，横向标注线，标记特定的Y轴类别
+
+:::
 
 
 ### yValue
@@ -4079,6 +4243,11 @@ true
 
 **Type:** `AnnotationArea | AnnotationArea[] | undefined`
 
+:::note{title=描述}
+标注区域配置，用于突出显示特定的数据范围
+
+:::
+
 
 ### selector
 
@@ -4446,6 +4615,10 @@ true
 **Type:** `DimensionLinkage | undefined`
 
 :::note{title=描述}
+维度联动配置，支持多个图表间的维度联动交互
+
+
+
 透视图表维度联动配置
 
 :::
@@ -4482,4 +4655,9 @@ true
 ## locale
 
 **Type:** `Locale | undefined`
+
+:::note{title=描述}
+语言配置
+
+:::
 

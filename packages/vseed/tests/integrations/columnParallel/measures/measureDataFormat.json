@@ -13,7 +13,7 @@
           "ratio": 1000,
           "symbol": "K",
           "thousandSeparator": true,
-          "decimalPlaces": 2,
+          "fractionDigits": 2,
           "round": "round",
           "prefix": "¥",
           "suffix": ""
@@ -28,7 +28,7 @@
           "ratio": 10000,
           "symbol": "万",
           "thousandSeparator": true,
-          "decimalPlaces": 2,
+          "fractionDigits": 2,
           "round": "round",
           "prefix": "¥"
         }
@@ -39,7 +39,7 @@
         "parentId": "group2",
         "format": {
           "type": "percent",
-          "decimalPlaces": 2,
+          "fractionDigits": 2,
           "round": "round"
         }
       },
@@ -48,7 +48,7 @@
         "alias": "回报率",
         "format": {
           "type": "number",
-          "decimalPlaces": 2,
+          "fractionDigits": 2,
           "round": "floor"
         }
       }

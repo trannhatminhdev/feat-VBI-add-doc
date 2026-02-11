@@ -182,7 +182,7 @@ export const splitLine: VChartSpecPipe = (spec, context) => {
         }
 
         lineGraphics[0].setAttributes(attrs as unknown as Record<string, any>)
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
         lineGraphics[0].setFinalAttributes?.(attrs)
         const start = lineSeries.getRegion().getLayoutStartPoint()
         const range = scale.range() as number[]
@@ -269,7 +269,6 @@ export const splitLine: VChartSpecPipe = (spec, context) => {
       return datum?.[measureValueKey] < splitValue ? colorConfig.negativeColor : colorConfig.positiveColor
     }
     if (seriesSpec.label && (seriesSpec.label as any).visible && isNullish((seriesSpec.label as any).style?.fill)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       ;(seriesSpec.label as any).style = {
         ...(seriesSpec.label as any).style,
         fill: (datum: any) => {

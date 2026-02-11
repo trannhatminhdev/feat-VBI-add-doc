@@ -245,13 +245,13 @@ export class Builder implements VSeedBuilder {
    * @param themeKey 主题名称 (例如 'light', 'dark')。如果不传，默认为 'light'。
    * @returns 主题配置对象。
    */
-  static getTheme = (themeKey?: string) => Builder._themeMap[themeKey || 'light']
+  static getTheme = (themeKey?: string): CustomThemeConfig => Builder._themeMap[themeKey || 'light']
 
   /**
    * @description 获取所有已注册的主题配置。
    * @returns 主题配置映射表。
    */
-  static getThemeMap = () => Builder._themeMap
+  static getThemeMap = (): Record<string, CustomThemeConfig> => Builder._themeMap
 
   /**
    * @description 静态工厂方法，用于便捷地创建 Builder 实例。

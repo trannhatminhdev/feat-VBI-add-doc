@@ -53,9 +53,6 @@ const generateDefaultDimensionEncoding = (dimensions: Dimensions, encoding: Enco
 const generateDimensionEncoding = (dimensions: Dimensions, encoding: Encoding, isMultiMeasure: boolean) => {
   // player
   encoding.player = unique(dimensions.filter((item) => item.encoding === 'player').map((item) => item.id))
-  if (encoding.player.length === 0) {
-    encoding.player = [dimensions[0].id]
-  }
 
   // y
   encoding.y = unique(dimensions.filter((item) => item.encoding === 'yAxis').map((item) => item.id))

@@ -1,6 +1,0 @@
-export * from './kde'
-export * from './ecdf'
-export * from './linear'
-export * from './polynomial'
-export * from './lowess'
-export * from './logistic'

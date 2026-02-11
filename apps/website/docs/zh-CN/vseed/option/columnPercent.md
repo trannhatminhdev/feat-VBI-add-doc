@@ -74,7 +74,7 @@
 
 ## dataset
 
-**Type:** `Record<string | number, any>[]`
+**Type:** `Record[]`
 
 :::note{title=描述}
 数据集
@@ -2436,7 +2436,7 @@ order:'asc'
 
 ### brand
 
-**Type:** `unique symbol`
+**Type:** `brand`
 
 
 ## barStyle

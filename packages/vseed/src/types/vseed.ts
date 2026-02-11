@@ -24,6 +24,9 @@ import type {
   RaceBar,
   RaceColumn,
   RaceScatter,
+  RaceLine,
+  RacePie,
+  RaceDonut,
   TreeMap,
   Sunburst,
   CirclePacking,
@@ -58,6 +61,9 @@ export type VSeed =
   | RaceBar
   | RaceColumn
   | RaceScatter
+  | RaceLine
+  | RacePie
+  | RaceDonut
 
   // hierarchy
   | TreeMap

@@ -72,7 +72,7 @@
 
 ## dataset
 
-**Type:** `Record<string | number, any>[]`
+**Type:** `Record[]`
 
 :::note{title=描述}
 数据集
@@ -1399,7 +1399,7 @@ brush的类型
 
 ### brand
 
-**Type:** `unique symbol`
+**Type:** `brand`
 
 
 ## locale

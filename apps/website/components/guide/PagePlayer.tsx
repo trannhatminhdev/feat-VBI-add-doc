@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, memo } from 'react'
-import VChart from '@visactor/vchart'
-import { ListTable, PivotTable } from '@visactor/vtable'
+import VChart, { ISpec } from '@visactor/vchart'
+import { ListTable, ListTableConstructorOptions, PivotTableConstructorOptions, PivotTable } from '@visactor/vtable'
 import { registerAll, VSeed, Builder, isTable, isPivotTable } from '@visactor/vseed'
 registerAll()
 
@@ -625,21 +625,21 @@ const PagePlayer = memo(() => {
     console.log(spec)
     if (isTable(seed)) {
       if (tableRef.current) {
-        tableRef.current.updateOption(spec)
+        tableRef.current.updateOption(spec as PivotTableConstructorOptions & ListTableConstructorOptions)
       } else {
-        tableRef.current = new ListTable(ref.current, spec)
+        tableRef.current = new ListTable(ref.current, spec as unknown as ListTableConstructorOptions)
       }
     } else if (isPivotTable(seed)) {
       if (tableRef.current) {
-        tableRef.current.updateOption(spec)
+        tableRef.current.updateOption(spec as PivotTableConstructorOptions & ListTableConstructorOptions)
       } else {
-        tableRef.current = new PivotTable(ref.current, spec)
+        tableRef.current = new PivotTable(ref.current, spec as unknown as PivotTableConstructorOptions)
       }
     } else {
       if (chartRef.current) {
-        chartRef.current.updateSpec(spec)
+        chartRef.current.updateSpec(spec as unknown as ISpec)
       } else {
-        chartRef.current = new VChart(spec, { dom: ref.current })
+        chartRef.current = new VChart(spec as unknown as ISpec, { dom: ref.current })
         chartRef.current.renderSync()
       }
     }

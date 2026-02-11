@@ -13,7 +13,6 @@ export const pointStyle: VChartSpecPipe = (spec, context) => {
       style: {},
     },
   } as IAreaChartSpec
-
   if (isNullish(pointStyle) || isEmpty(pointStyle)) {
     return result
   }

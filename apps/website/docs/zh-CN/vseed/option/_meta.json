@@ -101,6 +101,21 @@
   },
   {
     "type": "file",
+    "name": "raceDonut",
+    "label": "raceDonut "
+  },
+  {
+    "type": "file",
+    "name": "raceLine",
+    "label": "raceLine "
+  },
+  {
+    "type": "file",
+    "name": "racePie",
+    "label": "racePie "
+  },
+  {
+    "type": "file",
     "name": "raceScatter",
     "label": "raceScatter "
   },

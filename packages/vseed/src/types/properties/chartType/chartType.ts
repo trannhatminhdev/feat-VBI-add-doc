@@ -25,6 +25,9 @@ export type ChartType =
   | 'raceBar'
   | 'raceColumn'
   | 'raceScatter'
+  | 'raceLine'
+  | 'racePie'
+  | 'raceDonut'
   // hierarchy
   | 'treeMap'
   | 'sunburst'
@@ -61,6 +64,9 @@ export const zChartType = z.enum([
   'raceBar',
   'raceColumn',
   'raceScatter',
+  'raceLine',
+  'racePie',
+  'raceDonut',
   // hierarchy
   'treeMap',
   'sunburst',

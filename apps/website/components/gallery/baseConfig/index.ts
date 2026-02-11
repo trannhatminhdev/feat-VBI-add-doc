@@ -1,5 +1,0 @@
-export { BaseConfigColorScheme, BaseConfigColorMapping } from './color'
-export { BaseConfigBackgroundColor } from './backgroundColor'
-export { BaseConfigLabel } from './label'
-export * from './legend'
-export { BaseConfigTooltip } from './tooltip'

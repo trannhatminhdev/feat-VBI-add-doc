@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { VSeed } from '@visactor/vseed'
-import { VChartRender } from 'components/render/Chart'
+import { VChartRender } from '@components/render/Chart'
 
 export const Dataset20K = memo(() => {
   const vseed: VSeed = {

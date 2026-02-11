@@ -1,5 +1,12 @@
 # @visactor/vseed
 
+## 0.4.4
+
+### Patch Changes
+
+- feat: add raceLine\racePie\raceDonut
+- feat: disable player then player encoding is empty
+
 ## 0.4.3
 
 ### Patch Changes
