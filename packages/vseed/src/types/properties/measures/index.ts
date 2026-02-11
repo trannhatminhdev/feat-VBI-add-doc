@@ -20,7 +20,6 @@ export type { TableMeasure } from './tableMeasure'
 export type { MeasureGroup, MeasureTree } from './measureTree'
 // race
 export type { RaceBarMeasure } from './raceBarMeasure'
-export type { RaceLineMeasure } from './raceLineMeasure'
 export type { RacePieMeasure } from './racePieMeasure'
 export type { RaceDonutMeasure } from './raceDonutMeasure'
 // hierarchy

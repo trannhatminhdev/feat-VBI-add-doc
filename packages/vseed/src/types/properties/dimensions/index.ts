@@ -24,7 +24,6 @@ export type {
   RaceColumnPercentDimension,
 } from './raceColumnDimension'
 export type { RaceScatterDimension } from './raceScatterDimension'
-export type { RaceLineDimension } from './raceLineDimension'
 export type { RacePieDimension } from './racePieDimension'
 export type { RaceDonutDimension } from './raceDonutDimension'
 // table
