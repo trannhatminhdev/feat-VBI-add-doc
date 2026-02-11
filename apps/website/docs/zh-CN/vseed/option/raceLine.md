@@ -1,52 +1,28 @@
 # RaceLine
 
-:::info{title=推荐}
-\- 推荐字段配置: `1`个指标, `2`个维度
-
-\- 支持数据重塑: 至少`1`个指标, `0`个维度
-
-:::
-
-:::info{title=编码映射}
-折线图支持以下视觉通道:
-
-`x`      : x轴通道, 支持`多个维度`, 按维度值映射至x轴
-
-`y`      : y轴通道, 支持`多个指标`, 按指标值映射至y轴
-
-`color`  : 颜色通道, 支持`多个维度`或 `一个指标`, 维度颜色用于区分不同的数据系列, 指标颜色用于线性映射指标值到图形颜色
-
-`tooltip`: 提示通道, 支持`多个维度`与 `多个指标`, 会在鼠标悬停在数据点上时展示
-
-`label`  : 标签通道, 支持`多个维度`与 `多个指标`, 会在数据点上展示数据标签
-
-:::
-
 :::note{title=描述}
-折线图，适用于展示数据随时间或有序类别变化的趋势，通过线段连接数据点形成趋势线
+动态折线图 (Race Line Chart)
+
+适用于展示数据随时间变化的趋势，通过线段连接数据点形成趋势线
 
 适用场景:
 
-\- 展示时间序列数据的变化趋势
+\- 展示多个数据系列随时间的变化趋势
 
-\- 比较多个数据系列的趋势对比
+\- 比较不同类别的增长或下降规律
 
-\- 分析数据的增长或下降规律
+\- 观察数据在时间维度上的波动情况
 
 :::
 
-:::warning{title=Warning}
-数据要求:
+:::note{title=Note}
+动态折线图：
 
-\- 至少1个数值字段（度量）
+\- X轴通常为时间轴或类目轴，展示维度值
 
-\- 第一个维度会放至X轴, 其余维度会与指标名称(存在多个指标时)合并, 作为图例项展示
+\- Y轴为数值轴，展示指标值
 
-\- 所有指标会自动合并为一个指标
-
-默认开启的功能:
-
-\- 默认开启图例、坐标轴、数据点标记、提示信息、趋势线
+\- 支持通过播放器控制时间维度，动态展示折线的延伸过程
 
 :::
 
@@ -56,44 +32,29 @@
 **Type:** `"raceLine"`
 
 :::note{title=描述}
-折线图，适用于展示数据随时间或有序类别变化的趋势
+动态折线图，适用于展示数据随时间变化的趋势
 
 :::
-
-**示例**
-'line'
-
-
 
 
 ## dataset
 
-**Type:** `Record<string | number, any>[]`
+**Type:** `Record[]`
 
 :::note{title=描述}
-数据源, 符合TidyData规范的且已经聚合的数据集，用于定义图表的数据来源和结构, 用户输入的数据集并不需要进行任何处理, VSeed带有强大的数据重塑功能, 会自行进行数据重塑, 折线图的数据最终会被转换为2个维度, 1个指标.
+数据源
 
 :::
-
-**示例**
-[{month:'1月', value:100}, {month:'2月', value:150}, {month:'3月', value:120}]
-
-
 
 
 ## dimensions
 
-**Type:** `import("/Users/bytedance/Projects/VBI/packages/vseed/src/index").ColumnDimension[] | undefined`
+**Type:** `ColumnDimension[] | undefined`
 
 :::note{title=描述}
-维度, 折线图的第一个维度被映射到X轴, 其余维度会与指标名称(存在多个指标时)合并, 作为图例项展示
+维度
 
 :::
-
-**示例**
-[{id: "month", alias: "月份"}]
-
-
 
 
 ### id
@@ -140,17 +101,12 @@
 
 ## measures
 
-**Type:** `import("/Users/bytedance/Projects/VBI/packages/vseed/src/index").ColumnMeasure[] | undefined`
+**Type:** `ColumnMeasure[] | undefined`
 
 :::note{title=描述}
-指标, 折线图的所有指标会自动合并为一个指标, 映射到Y轴, 存在多个指标时, 指标名称会与其余维度合并, 作为图例项展示.
+指标
 
 :::
-
-**示例**
-[{id: "value", alias: "数值"}]
-
-
 
 
 ### id
@@ -679,11 +635,7 @@
 **Type:** `BackgroundColor`
 
 :::note{title=描述}
-图表的背景颜色
-
-
-
-图表的背景颜色, 默认为透明背景, 背景颜色可以是颜色字符串, 例如'red', 'blue', 也可以是hex, rgb或rgba'#ff0000', 'rgba(255,0,0,0.5)'
+背景颜色
 
 :::
 
@@ -693,11 +645,7 @@
 **Type:** `Color | undefined`
 
 :::note{title=描述}
-颜色
-
-
-
-颜色配置, 用于定义图表的颜色方案, 包括颜色列表, 颜色映射, 颜色渐变等.
+颜色配置
 
 :::
 
@@ -771,11 +719,7 @@
 **Type:** `Label | undefined`
 
 :::note{title=描述}
-标签
-
-
-
-标签配置, 用于定义图表的数据标签, 包括数据标签的位置, 格式, 样式等.
+标签配置
 
 :::
 
@@ -1120,11 +1064,7 @@ same as operator
 **Type:** `Legend | undefined`
 
 :::note{title=描述}
-图例
-
-
-
-图例配置, 用于定义图表的图例, 包括图例的位置, 格式, 样式等.
+图例配置
 
 :::
 
@@ -1288,11 +1228,7 @@ maxSize: 2
 **Type:** `Tooltip | undefined`
 
 :::note{title=描述}
-提示信息
-
-
-
-提示信息配置, 用于定义图表的提示信息, 包括提示信息的位置, 格式, 样式等.
+提示信息配置
 
 :::
 
@@ -1312,11 +1248,7 @@ maxSize: 2
 **Type:** `Brush | undefined`
 
 :::note{title=描述}
-框选
-
-
-
-框选配置，用于开启/关闭 brush 框选能力
+框选配置
 
 
 
@@ -1477,11 +1409,7 @@ brush的类型
 **Type:** `XBandAxis | undefined`
 
 :::note{title=描述}
-x轴
-
-
-
-类目轴, x轴配置, 用于定义图表的x轴, 包括x轴的位置, 格式, 样式等.
+x轴配置，为类目轴，展示维度值
 
 :::
 
@@ -1839,11 +1767,7 @@ X轴动画配置
 **Type:** `YLinearAxis | undefined`
 
 :::note{title=描述}
-y轴
-
-
-
-数值轴, y轴配置, 用于定义图表的y轴, 包括y轴的位置, 格式, 样式等.
+y轴配置，为数值轴，展示指标值
 
 :::
 
@@ -2337,11 +2261,7 @@ Y轴动画配置
 **Type:** `CrosshairLine | undefined`
 
 :::note{title=描述}
-垂直提示线
-
-
-
-鼠标移动到图表上时, 显示的垂直提示线
+垂直提示线配置
 
 
 
@@ -2401,7 +2321,7 @@ Y轴动画配置
 **Type:** `Sort | undefined`
 
 :::note{title=描述}
-X轴排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
+X轴排序配置
 
 
 
@@ -2410,14 +2330,6 @@ X轴排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
 :::
 
 **示例**
-sort: {
-  orderBy: 'profit',
-  order: 'asc',
-}
-sort: {
-  customOrder:['2019', '2020', '2021']
-}
-
 \- order:'asc'
 \- orderBy:'date'
 或
@@ -2470,7 +2382,7 @@ order:'asc'
 **Type:** `SortLegend | undefined`
 
 :::note{title=描述}
-图例排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
+图例排序配置
 
 
 
@@ -2479,14 +2391,6 @@ order:'asc'
 :::
 
 **示例**
-sortLegend: {
-  orderBy: 'profit',
-  order: 'asc',
-}
-sortLegend: {
-  customOrder:['2019', '2020', '2021']
-}
-
 \- order:'asc'
 \- orderBy:'date'
 或
@@ -2539,11 +2443,7 @@ order:'asc'
 **Type:** `Theme | undefined`
 
 :::note{title=描述}
-图表的主题, 主题是优先级较低的功能配置, 包含所有图表类型共用的通用配置, 与单类图表类型共用的图表配置
-
-
-
-内置light与dark两种主题, 用户可以通过Builder自定义主题
+主题配置
 
 
 
@@ -2555,15 +2455,6 @@ order:'asc'
 
 :::
 
-**示例**
-'dark'
-
-'light'
-
-'customThemeName'
-
-
-
 
 ### length
 
@@ -2571,7 +2462,7 @@ order:'asc'
 
 ### brand
 
-**Type:** `unique symbol`
+**Type:** `brand`
 
 
 ## pointStyle
@@ -2579,19 +2470,7 @@ order:'asc'
 **Type:** `PointStyle | PointStyle[] | undefined`
 
 :::note{title=描述}
-点图元样式
-
-
-
-点图元样式配置, 用于定义图表的点图元样式, 包括点图元的颜色, 边框等.
-
-支持全局样式或条件样式配置
-
-数据筛选器
-
-若配置selector, 提供数值 selector, 局部数据 selector, 条件维度 selector, 条件指标 selector 共四类数据匹配能力
-
-若未配置selector, 则样式全局生效.
+点图元样式配置
 
 :::
 
@@ -2694,6 +2573,211 @@ same as operator
 选择数据项中维度字段的值, 支持数组
 
 :::
+
+### dynamicFilter
+
+**Type:** `ChartDynamicFilter | undefined`
+
+:::note{title=描述}
+动态筛选器（AI生成代码执行）
+
+
+
+通过 AI 生成的 JavaScript 代码实现复杂数据筛选逻辑
+
+适用于 Top N、统计分析、复杂条件等静态 selector 难以表达的场景
+
+
+
+核心能力:
+
+\- 支持任意复杂的数据筛选条件
+
+\- 使用 内置工具函数 进行数据操作
+
+\- 在浏览器环境中安全执行（Web Worker 沙箱）
+
+
+
+环境要求: 仅支持浏览器环境，Node.js 环境将使用 fallback
+
+
+
+注意: selector 和 dynamicFilter 不能同时使用，dynamicFilter 优先级更高
+
+
+
+图表动态筛选器配置
+
+
+
+通过 AI 生成的 JavaScript 代码实现图表标记（柱子、点等）的筛选
+
+:::
+
+
+#### type
+
+**Type:** `"row-with-field"`
+
+#### description
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+用户的筛选需求描述（自然语言）
+
+:::
+
+**示例**
+"高亮销售额大于1000的柱子"
+
+"高亮每个区域中利润率最高的柱子"
+
+
+
+#### code
+
+**Type:** `string`
+
+:::note{title=描述}
+AI 生成的 JavaScript 筛选代码
+
+
+
+\- 只能使用内置工具函数（通过 _ 或 R 访问）
+
+\- 输入参数: data (数组)
+
+\- 必须返回部分数据项数组: Array<{ [dimField]: value }>
+
+\- 返回的对象包含能唯一标识图表标记的维度字段组合
+
+\- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+
+:::
+
+**示例**
+高亮销售额大于1000的柱子
+```javascript
+const filtered = _.filter(data, item => item.sales > 1000);
+// 假设柱子由 product 和 area 两个维度唯一标识
+return _.map(filtered, item => ({
+product: item.product,
+area: item.area
+}));
+```
+
+高亮每个区域中利润率最高的柱子
+```javascript
+const grouped = _.groupBy(data, 'area');
+const result = _.map(grouped, group => {
+const maxProfitRateItem = _.maxBy(group, item =>
+item.profit / item.sales
+);
+return {
+product: maxProfitRateItem.product,
+area: maxProfitRateItem.area
+};
+});
+return result;
+```
+
+高亮多条件筛选
+```javascript
+const filtered = _.filter(data, item => {
+const profitRate = item.profit / item.sales;
+return profitRate > 0.2 && item.sales > 5000;
+});
+return _.map(filtered, item => ({
+product: item.product,
+region: item.region
+}));
+```
+
+
+
+#### fallback
+
+**Type:** `Selector | Selectors | undefined`
+
+:::note{title=描述}
+代码执行失败或环境不支持时的降级方案
+
+:::
+
+
+##### field
+
+**Type:** `string`
+
+:::note{title=描述}
+维度字段, dimensions 某一项的 id
+
+:::
+
+##### operator
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+:::
+
+##### op
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+same as operator
+
+:::
+
+##### value
+
+**Type:** `string | number | (string | number)[]`
+
+:::note{title=描述}
+选择数据项中维度字段的值, 支持数组
+
+:::
+
+#### result
+
+**Type:** `DynamicFilterExecutionResult<Record<string | number, any>> | undefined`
+
+:::note{title=描述}
+动态筛选执行结果（运行期字段）
+
+
+
+prepare() 阶段写入，运行时只读
+
+:::
+
+
+##### success
+
+**Type:** `false | true`
+
+##### data
+
+**Type:** `T[] | undefined`
+
+##### error
+
+**Type:** `string | undefined`
 
 ### pointVisible
 
@@ -2797,19 +2881,7 @@ dotted
 **Type:** `LineStyle | LineStyle[] | undefined`
 
 :::note{title=描述}
-线图元样式
-
-
-
-线图元样式配置, 用于定义图表的线图元样式, 包括线图元的颜色, 透明度, 曲线等.
-
-支持全局样式或条件样式配置
-
-数据筛选器
-
-若配置selector, 提供数值 selector, 局部数据 selector, 条件维度 selector, 条件指标 selector 共四类数据匹配能力
-
-若未配置selector, 则样式全局生效.
+线图元样式配置
 
 :::
 
@@ -2913,6 +2985,211 @@ same as operator
 
 :::
 
+### dynamicFilter
+
+**Type:** `ChartDynamicFilter | undefined`
+
+:::note{title=描述}
+动态筛选器（AI生成代码执行）
+
+
+
+通过 AI 生成的 JavaScript 代码实现复杂数据筛选逻辑
+
+适用于 Top N、统计分析、复杂条件等静态 selector 难以表达的场景
+
+
+
+核心能力:
+
+\- 支持任意复杂的数据筛选条件
+
+\- 使用 内置工具函数 进行数据操作
+
+\- 在浏览器环境中安全执行（Web Worker 沙箱）
+
+
+
+环境要求: 仅支持浏览器环境，Node.js 环境将使用 fallback
+
+
+
+注意: selector 和 dynamicFilter 不能同时使用，dynamicFilter 优先级更高
+
+
+
+图表动态筛选器配置
+
+
+
+通过 AI 生成的 JavaScript 代码实现图表标记（柱子、点等）的筛选
+
+:::
+
+
+#### type
+
+**Type:** `"row-with-field"`
+
+#### description
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+用户的筛选需求描述（自然语言）
+
+:::
+
+**示例**
+"高亮销售额大于1000的柱子"
+
+"高亮每个区域中利润率最高的柱子"
+
+
+
+#### code
+
+**Type:** `string`
+
+:::note{title=描述}
+AI 生成的 JavaScript 筛选代码
+
+
+
+\- 只能使用内置工具函数（通过 _ 或 R 访问）
+
+\- 输入参数: data (数组)
+
+\- 必须返回部分数据项数组: Array<{ [dimField]: value }>
+
+\- 返回的对象包含能唯一标识图表标记的维度字段组合
+
+\- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+
+:::
+
+**示例**
+高亮销售额大于1000的柱子
+```javascript
+const filtered = _.filter(data, item => item.sales > 1000);
+// 假设柱子由 product 和 area 两个维度唯一标识
+return _.map(filtered, item => ({
+product: item.product,
+area: item.area
+}));
+```
+
+高亮每个区域中利润率最高的柱子
+```javascript
+const grouped = _.groupBy(data, 'area');
+const result = _.map(grouped, group => {
+const maxProfitRateItem = _.maxBy(group, item =>
+item.profit / item.sales
+);
+return {
+product: maxProfitRateItem.product,
+area: maxProfitRateItem.area
+};
+});
+return result;
+```
+
+高亮多条件筛选
+```javascript
+const filtered = _.filter(data, item => {
+const profitRate = item.profit / item.sales;
+return profitRate > 0.2 && item.sales > 5000;
+});
+return _.map(filtered, item => ({
+product: item.product,
+region: item.region
+}));
+```
+
+
+
+#### fallback
+
+**Type:** `Selector | Selectors | undefined`
+
+:::note{title=描述}
+代码执行失败或环境不支持时的降级方案
+
+:::
+
+
+##### field
+
+**Type:** `string`
+
+:::note{title=描述}
+维度字段, dimensions 某一项的 id
+
+:::
+
+##### operator
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+:::
+
+##### op
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+same as operator
+
+:::
+
+##### value
+
+**Type:** `string | number | (string | number)[]`
+
+:::note{title=描述}
+选择数据项中维度字段的值, 支持数组
+
+:::
+
+#### result
+
+**Type:** `DynamicFilterExecutionResult<Record<string | number, any>> | undefined`
+
+:::note{title=描述}
+动态筛选执行结果（运行期字段）
+
+
+
+prepare() 阶段写入，运行时只读
+
+:::
+
+
+##### success
+
+**Type:** `false | true`
+
+##### data
+
+**Type:** `T[] | undefined`
+
+##### error
+
+**Type:** `string | undefined`
+
 ### lineVisible
 
 **Type:** `boolean | undefined`
@@ -2964,11 +3241,7 @@ same as operator
 **Type:** `AnnotationPoint | AnnotationPoint[] | undefined`
 
 :::note{title=描述}
-标注点
-
-
-
-标注点配置, 根据选择的数据, 定义图表的标注点, 包括标注点的位置, 格式, 样式等.
+标注点配置
 
 :::
 
@@ -3028,6 +3301,211 @@ same as operator
 选择数据项中维度字段的值, 支持数组
 
 :::
+
+### dynamicFilter
+
+**Type:** `ChartDynamicFilter | undefined`
+
+:::note{title=描述}
+动态筛选器（AI生成代码执行）
+
+
+
+通过 AI 生成的 JavaScript 代码实现复杂数据筛选逻辑
+
+适用于 Top N、统计分析、复杂条件等静态 selector 难以表达的场景
+
+
+
+核心能力:
+
+\- 支持任意复杂的数据筛选条件
+
+\- 使用 内置工具函数 进行数据操作
+
+\- 在浏览器环境中安全执行（Web Worker 沙箱）
+
+
+
+环境要求: 仅支持浏览器环境，Node.js 环境将使用 fallback
+
+
+
+注意: selector 和 dynamicFilter 不能同时使用，dynamicFilter 优先级更高
+
+
+
+图表动态筛选器配置
+
+
+
+通过 AI 生成的 JavaScript 代码实现图表标记（柱子、点等）的筛选
+
+:::
+
+
+#### type
+
+**Type:** `"row-with-field"`
+
+#### description
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+用户的筛选需求描述（自然语言）
+
+:::
+
+**示例**
+"高亮销售额大于1000的柱子"
+
+"高亮每个区域中利润率最高的柱子"
+
+
+
+#### code
+
+**Type:** `string`
+
+:::note{title=描述}
+AI 生成的 JavaScript 筛选代码
+
+
+
+\- 只能使用内置工具函数（通过 _ 或 R 访问）
+
+\- 输入参数: data (数组)
+
+\- 必须返回部分数据项数组: Array<{ [dimField]: value }>
+
+\- 返回的对象包含能唯一标识图表标记的维度字段组合
+
+\- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+
+:::
+
+**示例**
+高亮销售额大于1000的柱子
+```javascript
+const filtered = _.filter(data, item => item.sales > 1000);
+// 假设柱子由 product 和 area 两个维度唯一标识
+return _.map(filtered, item => ({
+product: item.product,
+area: item.area
+}));
+```
+
+高亮每个区域中利润率最高的柱子
+```javascript
+const grouped = _.groupBy(data, 'area');
+const result = _.map(grouped, group => {
+const maxProfitRateItem = _.maxBy(group, item =>
+item.profit / item.sales
+);
+return {
+product: maxProfitRateItem.product,
+area: maxProfitRateItem.area
+};
+});
+return result;
+```
+
+高亮多条件筛选
+```javascript
+const filtered = _.filter(data, item => {
+const profitRate = item.profit / item.sales;
+return profitRate > 0.2 && item.sales > 5000;
+});
+return _.map(filtered, item => ({
+product: item.product,
+region: item.region
+}));
+```
+
+
+
+#### fallback
+
+**Type:** `Selector | Selectors | undefined`
+
+:::note{title=描述}
+代码执行失败或环境不支持时的降级方案
+
+:::
+
+
+##### field
+
+**Type:** `string`
+
+:::note{title=描述}
+维度字段, dimensions 某一项的 id
+
+:::
+
+##### operator
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+:::
+
+##### op
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+same as operator
+
+:::
+
+##### value
+
+**Type:** `string | number | (string | number)[]`
+
+:::note{title=描述}
+选择数据项中维度字段的值, 支持数组
+
+:::
+
+#### result
+
+**Type:** `DynamicFilterExecutionResult<Record<string | number, any>> | undefined`
+
+:::note{title=描述}
+动态筛选执行结果（运行期字段）
+
+
+
+prepare() 阶段写入，运行时只读
+
+:::
+
+
+##### success
+
+**Type:** `false | true`
+
+##### data
+
+**Type:** `T[] | undefined`
+
+##### error
+
+**Type:** `string | undefined`
 
 ### text
 
@@ -3255,7 +3733,7 @@ offsetX: 5, 标注点整体向右偏移5像素
 **Type:** `AnnotationVerticalLine | AnnotationVerticalLine[] | undefined`
 
 :::note{title=描述}
-维度值标注线，竖直方向展示，能够设置标注线的位置, 样式等
+维度值标注线配置
 
 :::
 
@@ -3268,6 +3746,129 @@ offsetX: 5, 标注点整体向右偏移5像素
 固定的x值, 用于标注垂直线, 类目轴在x方向, 则可输入维值, 数值轴在x方向, 则可输入具体的数值
 
 :::
+
+### dynamicFilter
+
+**Type:** `ValueDynamicFilter | undefined`
+
+:::note{title=描述}
+动态筛选器（AI生成代码执行）
+
+
+
+通过 AI 生成的 JavaScript 代码动态计算标注线的值
+
+适用于需要根据数据动态确定标注线位置，如平均值、最大值、分位数，业务线等
+
+
+
+仅支持浏览器环境（需要 Web Worker）
+
+:::
+
+
+#### type
+
+**Type:** `"value"`
+
+#### description
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+用户的筛选需求描述（自然语言）
+
+:::
+
+**示例**
+"获取销售额最高的值作为标注线参考"
+
+"计算平均销售额用于标注线"
+
+
+
+#### code
+
+**Type:** `string`
+
+:::note{title=描述}
+AI 生成的 JavaScript 筛选代码
+
+
+
+\- 只能使用内置工具函数（通过 _ 或 R 访问）
+
+\- 输入参数: data (数组)
+
+\- 必须返回单个数值或字符串: number | string
+
+\- 适用场景：标注线（水平线、垂直线）需要的动态数值
+
+\- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+
+:::
+
+**示例**
+获取销售额最大值作为标注线值
+```javascript
+const maxSales = _.maxBy(data, 'sales')?.sales;
+return maxSales || 0;
+```
+
+计算平均值用于标注线
+```javascript
+const avgSales = _.meanBy(data, 'sales');
+return _.round(avgSales, 2);
+```
+
+获取分位数作为标注线
+```javascript
+const sorted = _.sortBy(data, 'sales');
+const index = Math.floor(sorted.length * 0.75);
+return sorted[index]?.sales || 0;
+```
+
+根据条件计算目标值
+```javascript
+const currentYearTotal = _.sumBy(
+_.filter(data, item => item.year === 2024),
+'sales'
+);
+return currentYearTotal;
+```
+
+
+
+#### fallback
+
+**Type:** `string | number | undefined`
+
+:::note{title=描述}
+代码执行失败或环境不支持时的降级方案
+
+:::
+
+#### result
+
+**Type:** `{ success: boolean; data?: number | string; } | undefined`
+
+:::note{title=描述}
+动态筛选执行结果（运行期字段）
+
+
+
+prepare() 阶段写入，运行时只读
+
+:::
+
+
+##### success
+
+**Type:** `false | true`
+
+##### data
+
+**Type:** `string | number | undefined`
 
 ### text
 
@@ -3529,7 +4130,7 @@ true
 **Type:** `AnnotationHorizontalLine | AnnotationHorizontalLine[] | undefined`
 
 :::note{title=描述}
-数值标注线(包括均值线、最大值线、最小值线等)，水平方向展示，能够设置标注线的位置, 样式等，如需绘制均值线等数值对应的标注线请使用该配置
+数值标注线配置
 
 :::
 
@@ -3542,6 +4143,129 @@ true
 固定的y值, 用于标注水平线, 类目轴在y方向, 则可输入维值, 数值轴在y方向, 则可输入具体的数值
 
 :::
+
+### dynamicFilter
+
+**Type:** `ValueDynamicFilter | undefined`
+
+:::note{title=描述}
+动态筛选器（AI生成代码执行）
+
+
+
+通过 AI 生成的 JavaScript 代码动态计算标注线的值
+
+适用于需要根据数据动态确定标注线位置，如平均值、最大值、分位数，业务线等
+
+
+
+仅支持浏览器环境（需要 Web Worker）
+
+:::
+
+
+#### type
+
+**Type:** `"value"`
+
+#### description
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+用户的筛选需求描述（自然语言）
+
+:::
+
+**示例**
+"获取销售额最高的值作为标注线参考"
+
+"计算平均销售额用于标注线"
+
+
+
+#### code
+
+**Type:** `string`
+
+:::note{title=描述}
+AI 生成的 JavaScript 筛选代码
+
+
+
+\- 只能使用内置工具函数（通过 _ 或 R 访问）
+
+\- 输入参数: data (数组)
+
+\- 必须返回单个数值或字符串: number | string
+
+\- 适用场景：标注线（水平线、垂直线）需要的动态数值
+
+\- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+
+:::
+
+**示例**
+获取销售额最大值作为标注线值
+```javascript
+const maxSales = _.maxBy(data, 'sales')?.sales;
+return maxSales || 0;
+```
+
+计算平均值用于标注线
+```javascript
+const avgSales = _.meanBy(data, 'sales');
+return _.round(avgSales, 2);
+```
+
+获取分位数作为标注线
+```javascript
+const sorted = _.sortBy(data, 'sales');
+const index = Math.floor(sorted.length * 0.75);
+return sorted[index]?.sales || 0;
+```
+
+根据条件计算目标值
+```javascript
+const currentYearTotal = _.sumBy(
+_.filter(data, item => item.year === 2024),
+'sales'
+);
+return currentYearTotal;
+```
+
+
+
+#### fallback
+
+**Type:** `string | number | undefined`
+
+:::note{title=描述}
+代码执行失败或环境不支持时的降级方案
+
+:::
+
+#### result
+
+**Type:** `{ success: boolean; data?: number | string; } | undefined`
+
+:::note{title=描述}
+动态筛选执行结果（运行期字段）
+
+
+
+prepare() 阶段写入，运行时只读
+
+:::
+
+
+##### success
+
+**Type:** `false | true`
+
+##### data
+
+**Type:** `string | number | undefined`
 
 ### text
 
@@ -3843,11 +4567,7 @@ true
 **Type:** `AnnotationArea | AnnotationArea[] | undefined`
 
 :::note{title=描述}
-标注区域
-
-
-
-标注区域配置, 根据选择的数据, 定义图表的标注区域, 包括标注区域的位置, 样式等.
+标注区域配置
 
 :::
 
@@ -4218,9 +4938,7 @@ true
 **Type:** `DimensionLinkage | undefined`
 
 :::note{title=描述}
-当图表开启透视功能或者指标组合的是否，是否开启维度联动功能
-
-当hover 到某个维度值时，联动高亮其他图表中相同维度值的数据
+维度联动配置
 
 
 
@@ -4262,11 +4980,7 @@ true
 **Type:** `Locale | undefined`
 
 :::note{title=描述}
-语言
-
-
-
-图表语言配置, 支持'zh\-CN'与'en\-US'两种语言, 另外可以调用 intl.setLocale('zh\-CN') 方法设置语言
+语言配置
 
 :::
 

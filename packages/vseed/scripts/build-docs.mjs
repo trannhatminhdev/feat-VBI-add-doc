@@ -214,13 +214,45 @@ class DocsGenerator {
    */
   formatType(node) {
     const propType = node.getType()
-    if (propType.isUnion() && propType.getUnionTypes().every((t) => t.isLiteral())) {
-      return propType
+
+    // Special handling for array of imported types (e.g. FunnelDimension[] which is alias for PieDimension[])
+    if (propType.isArray()) {
+      const elementType = propType.getArrayElementType()
+      const elementText = this.formatTypeFromType(elementType, node)
+      return `${elementText}[]`
+    }
+
+    return this.formatTypeFromType(propType, node)
+  }
+
+  formatTypeFromType(type, node) {
+    // 1. Handle union types with all literals
+    if (type.isUnion() && type.getUnionTypes().every((t) => t.isLiteral())) {
+      return type
         .getUnionTypes()
         .map((t) => t.getText())
         .join(' | ')
     }
-    return propType.getText(node).replace(/\n/g, ' ').replace(/\s+/g, ' ')
+
+    // 2. Handle type aliases (e.g. FunnelDimension -> PieDimension)
+    const aliasSymbol = type.getAliasSymbol()
+    if (aliasSymbol) {
+      return aliasSymbol.getName()
+    }
+
+    // 3. Handle direct symbol references (e.g. Interface types)
+    const symbol = type.getSymbol()
+    if (symbol) {
+      return symbol.getName()
+    }
+
+    // 4. Fallback to default text representation, cleaning up import paths if they leak
+    let text = type.getText(node)
+
+    // Clean up import("...") patterns if they still appear
+    text = text.replace(/import\(".*?"\)\./g, '')
+
+    return text.replace(/\n/g, ' ').replace(/\s+/g, ' ')
   }
 
   /**

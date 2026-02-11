@@ -1,19 +1,60 @@
 # RaceScatter
 
+:::note{title=描述}
+动态散点图 (Race Scatter Chart)
+
+适用于展示数据随时间变化的分布情况，通过数据点的位置表示两个指标的数值
+
+适用场景：
+
+\- 分析数据在二维空间中的分布特征并展示其随时间的动态变化
+
+\- 展示多个变量之间的相关性随时间的演变
+
+\- 观察数据点在二维空间中的运动轨迹
+
+:::
+
+:::note{title=Note}
+动态散点图：
+
+\- X轴和Y轴均为数值轴（连续数据），支持多个指标映射
+
+\- 支持通过播放器控制时间维度，动态展示数据变化
+
+\- 通过数据点的位置变化直观展示数据的动态变化
+
+:::
+
 
 ## chartType
 
 **Type:** `"raceScatter"`
 
+:::note{title=描述}
+动态散点图，适用于展示数据随时间变化的分布情况
+
+:::
+
 
 ## dataset
 
-**Type:** `Record<string | number, any>[]`
+**Type:** `Record[]`
+
+:::note{title=描述}
+数据源，符合TidyData规范的数据集
+
+:::
 
 
 ## dimensions
 
 **Type:** `RaceScatterDimension[] | undefined`
+
+:::note{title=描述}
+维度，用于区分不同的数据系列和进行图例展示
+
+:::
 
 
 ### id
@@ -61,6 +102,11 @@
 ## measures
 
 **Type:** `ScatterMeasure[] | undefined`
+
+:::note{title=描述}
+指标，至少需要2个指标分别映射至X轴和Y轴
+
+:::
 
 
 ### id
@@ -420,6 +466,12 @@
 **Type:** `Player | undefined`
 
 :::note{title=描述}
+播放器配置，用于指定时间维度，是动态散点图的核心配置
+
+通过播放器控制时间维度的播放进度，实现数据的动态更新
+
+
+
 播放器配置, 用于指定播放的字段名, 必须是维度
 
 :::
@@ -553,6 +605,10 @@
 **Type:** `Sort | undefined`
 
 :::note{title=描述}
+排序配置，用于控制维度值的排序方式
+
+
+
 类目轴排序配置, 支持根据维度或指标排序, 以及自定义排序顺序
 
 :::
@@ -609,6 +665,11 @@ order:'asc'
 
 **Type:** `Page | undefined`
 
+:::note{title=描述}
+分页配置，用于处理数据量较大的场景
+
+:::
+
 
 ### field
 
@@ -637,6 +698,11 @@ order:'asc'
 ## backgroundColor
 
 **Type:** `BackgroundColor`
+
+:::note{title=描述}
+背景颜色配置
+
+:::
 
 
 ## size
@@ -674,6 +740,11 @@ order:'asc'
 ## color
 
 **Type:** `Color | undefined`
+
+:::note{title=描述}
+颜色配置，用于区分不同的维度或指标
+
+:::
 
 
 ### colorScheme
@@ -743,6 +814,11 @@ order:'asc'
 ## label
 
 **Type:** `Label | undefined`
+
+:::note{title=描述}
+标签配置，用于在数据点上显示数据标签
+
+:::
 
 
 ### enable
@@ -1084,6 +1160,11 @@ same as operator
 
 **Type:** `Legend | undefined`
 
+:::note{title=描述}
+图例配置
+
+:::
+
 
 ### enable
 
@@ -1243,6 +1324,11 @@ maxSize: 2
 
 **Type:** `Tooltip | undefined`
 
+:::note{title=描述}
+提示信息配置，用于鼠标悬停时展示详细信息
+
+:::
+
 
 ### enable
 
@@ -1259,6 +1345,10 @@ maxSize: 2
 **Type:** `Brush | undefined`
 
 :::note{title=描述}
+框选配置，用于支持框选交互
+
+
+
 图表框选配置
 
 :::
@@ -1414,6 +1504,11 @@ brush的类型
 ## xAxis
 
 **Type:** `XLinearAxis | undefined`
+
+:::note{title=描述}
+X轴配置，为数值轴，展示第一个指标值
+
+:::
 
 
 ### visible
@@ -1903,6 +1998,11 @@ Y轴动画配置
 ## yAxis
 
 **Type:** `YLinearAxis | undefined`
+
+:::note{title=描述}
+Y轴配置，为数值轴，展示第二个指标值
+
+:::
 
 
 ### visible
@@ -2394,6 +2494,10 @@ Y轴动画配置
 **Type:** `CrosshairLine | undefined`
 
 :::note{title=描述}
+十字线配置，用于展示数据的精确位置
+
+
+
 十字准星线配置，是一种用于在图表中显示十字准星线（提示线）的配置类型
 
 :::
@@ -2450,6 +2554,10 @@ Y轴动画配置
 **Type:** `Theme | undefined`
 
 :::note{title=描述}
+主题配置
+
+
+
 主题
 
 
@@ -2465,12 +2573,17 @@ Y轴动画配置
 
 ### brand
 
-**Type:** `unique symbol`
+**Type:** `brand`
 
 
 ## pointStyle
 
 **Type:** `PointStyle | PointStyle[] | undefined`
+
+:::note{title=描述}
+数据点样式配置，可以为单个样式或数组形式，支持全局样式或条件样式配置
+
+:::
 
 
 ### selector
@@ -2877,6 +2990,11 @@ dotted
 ## annotationPoint
 
 **Type:** `AnnotationPoint | AnnotationPoint[] | undefined`
+
+:::note{title=描述}
+标注点配置，用于在特定数据点上添加标记
+
+:::
 
 
 ### selector
@@ -3365,6 +3483,11 @@ offsetX: 5, 标注点整体向右偏移5像素
 
 **Type:** `AnnotationVerticalLine | AnnotationVerticalLine[] | undefined`
 
+:::note{title=描述}
+数值标注线，竖向标注线，标记特定的X轴数值
+
+:::
+
 
 ### xValue
 
@@ -3756,6 +3879,11 @@ true
 ## annotationHorizontalLine
 
 **Type:** `AnnotationHorizontalLine | AnnotationHorizontalLine[] | undefined`
+
+:::note{title=描述}
+数值标注线，横向标注线，标记特定的Y轴数值
+
+:::
 
 
 ### yValue
@@ -4189,6 +4317,11 @@ true
 
 **Type:** `AnnotationArea | AnnotationArea[] | undefined`
 
+:::note{title=描述}
+标注区域配置，用于突出显示特定的数据范围
+
+:::
+
 
 ### selector
 
@@ -4554,4 +4687,9 @@ true
 ## locale
 
 **Type:** `Locale | undefined`
+
+:::note{title=描述}
+语言配置
+
+:::
 

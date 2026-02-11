@@ -20,7 +20,7 @@
 
 ## dataset
 
-**Type:** `Record<string | number, any>[]`
+**Type:** `Record[]`
 
 :::note{title=描述}
 数据源
@@ -1453,7 +1453,7 @@ brush的类型
 **Type:** `XLinearAxis | undefined`
 
 :::note{title=描述}
-x轴配置
+x轴配置，为数值轴，展示指标值
 
 :::
 
@@ -1947,7 +1947,7 @@ Y轴动画配置
 **Type:** `YBandAxis | undefined`
 
 :::note{title=描述}
-y轴配置
+y轴配置，为类目轴，展示维度值，柱子竖向排列
 
 :::
 
@@ -2461,7 +2461,7 @@ order:'asc'
 
 ### brand
 
-**Type:** `unique symbol`
+**Type:** `brand`
 
 
 ## barStyle
