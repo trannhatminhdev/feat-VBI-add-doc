@@ -33,7 +33,7 @@ export const getRaceLineTheme = () => {
     },
     player: {
       ...player,
-      maxCount: false,
-    },
+      maxCount: false as const,
+    } as Player,
   }
 }

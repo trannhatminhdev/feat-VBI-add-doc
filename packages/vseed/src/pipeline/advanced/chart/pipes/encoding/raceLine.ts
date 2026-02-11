@@ -52,16 +52,17 @@ const generateDefaultDimensionEncoding = (dimensions: Dimensions, encoding: Enco
   encoding.column = [] // 默认不进行列透视
 }
 const generateDimensionEncoding = (dimensions: Dimensions, encoding: Encoding, isMultiMeasure: boolean) => {
-  // player
-  encoding.player = unique(dimensions.filter((item) => item.encoding === 'player').map((item) => item.id))
-  if (encoding.player.length === 0) {
-    encoding.player = [dimensions[0].id]
-  }
+  // player & x
+  const playerDims = dimensions.filter((item) => item.encoding === 'player').map((item) => item.id)
+  const xDims = dimensions.filter((item) => item.encoding === 'xAxis').map((item) => item.id)
+  const merged = unique([...playerDims, ...xDims])
 
-  // x
-  encoding.x = unique(dimensions.filter((item) => item.encoding === 'xAxis').map((item) => item.id))
-  if (encoding.x.length === 0) {
-    encoding.x = [dimensions[1].id]
+  if (merged.length > 0) {
+    encoding.player = merged
+    encoding.x = merged
+  } else {
+    encoding.player = [dimensions[0].id]
+    encoding.x = [dimensions[0].id]
   }
 
   // color

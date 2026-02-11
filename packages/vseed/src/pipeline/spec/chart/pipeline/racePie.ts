@@ -14,9 +14,9 @@ import {
   linearColor,
   colorLegend,
   brush,
-  datasetXY,
   colorPieStyleFill,
   labelPie,
+  playerPie,
   annotationArea,
 } from '../pipes'
 
@@ -24,7 +24,7 @@ const racePie: VChartSpecPipeline = [
   initPie,
   colorAdapter(color, linearColor),
   backgroundColor,
-  datasetXY,
+  playerPie,
   progressive,
   brush,
   colorPieStyleFill(pieStyle),

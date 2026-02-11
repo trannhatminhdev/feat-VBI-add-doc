@@ -270,6 +270,39 @@ function registerRaceBar(): void
 function registerRaceColumn(): void
 ```
 
+### registerRaceDonut
+
+:::note{title=描述}
+注册 RaceDonut Chart 的构建管线。
+注册后，Builder 将支持构建 RaceDonut Chart 的 Spec。
+:::
+
+```ts
+function registerRaceDonut(): void
+```
+
+### registerRaceLine
+
+:::note{title=描述}
+注册 RaceLine Chart 的构建管线。
+注册后，Builder 将支持构建 RaceLine Chart 的 Spec。
+:::
+
+```ts
+function registerRaceLine(): void
+```
+
+### registerRacePie
+
+:::note{title=描述}
+注册 RacePie Chart 的构建管线。
+注册后，Builder 将支持构建 RacePie Chart 的 Spec。
+:::
+
+```ts
+function registerRacePie(): void
+```
+
 ### registerRaceScatter
 
 :::note{title=描述}

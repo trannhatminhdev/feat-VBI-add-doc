@@ -91,7 +91,7 @@
 
 ## dimensions
 
-**Type:** `import("/Users/bytedance/Projects/VBI/packages/vseed/src/index").PieDimension[] | undefined`
+**Type:** `RaceDonutDimension[] | undefined`
 
 :::note{title=描述}
 维度
@@ -128,7 +128,7 @@
 
 ### encoding
 
-**Type:** `"color" | "detail" | "tooltip" | "label" | "row" | "column" | undefined`
+**Type:** `"color" | "detail" | "tooltip" | "label" | "row" | "column" | "player" | undefined`
 
 :::note{title=描述}
 维度映射的通道
@@ -144,6 +144,8 @@
 \- row: 支持将多个维度映射到行通道
 
 \- column: 支持将多个维度映射到列通道
+
+\- player: 支持将多个维度映射到播放器通道
 
 :::
 

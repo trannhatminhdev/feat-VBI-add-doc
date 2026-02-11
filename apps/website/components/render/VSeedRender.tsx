@@ -8,6 +8,7 @@ import {
   register,
   ListTableConstructorOptions,
   PivotTableConstructorOptions,
+  PivotChartConstructorOptions,
 } from '@visactor/vtable'
 import {
   registerAll,
@@ -40,6 +41,7 @@ export const SimpleVSeedRender = (props: { vseed: VSeed }) => {
     spec = {
       ...spec,
       chartDimensionLinkage: {
+        // @ts-expect-error type err
         ...spec.chartDimensionLinkage,
         clearChartState: () => {
           console.log('!!ClearChartState')
@@ -65,7 +67,7 @@ export const SimpleVSeedRender = (props: { vseed: VSeed }) => {
 
     builderRef.current = builder
     if (isPivotChart(vseed)) {
-      const tableInstance = new PivotChart(ref.current, spec)
+      const tableInstance = new PivotChart(ref.current, spec as PivotChartConstructorOptions)
 
       tableInstance.on('legend_item_click', (args) => {
         console.log('LEGEND_ITEM_CLICK', args)
@@ -78,7 +80,9 @@ export const SimpleVSeedRender = (props: { vseed: VSeed }) => {
       })
       tableInstance.onVChartEvent('brushEnd', (args) => {
         console.log('brushEnd', args)
-        selectedDimValueRef.current = args.value.inBrushData.map((dataItem) => dataItem.__Dim_X__)
+        selectedDimValueRef.current = args.value.inBrushData.map(
+          (dataItem: Record<string, unknown>) => dataItem.__Dim_X__ as string,
+        )
       })
       tableInstance.onVChartEvent('brushStart', () => {
         if (window.pivotChart) {
@@ -87,7 +91,9 @@ export const SimpleVSeedRender = (props: { vseed: VSeed }) => {
       })
       tableInstance.onVChartEvent('brushChange', (args) => {
         console.log('brushChange', args)
-        selectedDimValueRef.current = args.value.inBrushData.map((dataItem) => dataItem.__Dim_X__)
+        selectedDimValueRef.current = args.value.inBrushData.map(
+          (dataItem: Record<string, unknown>) => dataItem.__Dim_X__ as string,
+        )
       })
 
       tableInstance.on('legend_change', (args) => {

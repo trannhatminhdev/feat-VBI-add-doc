@@ -3,7 +3,6 @@ import type {
   BackgroundColor,
   Color,
   Dataset,
-  DonutDimension,
   Legend,
   DonutMeasure,
   PieLabel,
@@ -11,6 +10,7 @@ import type {
   Tooltip,
   Page,
   Player,
+  RaceDonutDimension,
 } from '../../properties'
 import type { Brush } from '../../properties'
 
@@ -60,7 +60,7 @@ export interface RaceDonut {
    * @description 环形图的所有维度会与指标名称(存在多个指标时)合并成1个维度, 映射到饼图的角度, 并作为图例项展示.
    * @example [{id: 'category', alias: '类别'}]
    */
-  dimensions?: DonutDimension[]
+  dimensions?: RaceDonutDimension[]
 
   /**
    * 指标

@@ -12,6 +12,28 @@ export const getRaceLineTheme = () => {
       ...lineTheme.legend,
       enable: false,
     },
-    player,
+    xAxis: {
+      ...lineTheme.xAxis,
+      animation: {
+        duration: player.interval,
+      },
+    },
+    label: {
+      ...lineTheme.label,
+      enable: false,
+    },
+    yAxis: {
+      ...lineTheme.yAxis,
+      max: true,
+      animation: {
+        duration: player.interval,
+        easing: 'linear',
+      },
+      nice: true,
+    },
+    player: {
+      ...player,
+      maxCount: false as const,
+    } as Player,
   }
 }
