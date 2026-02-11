@@ -9,7 +9,7 @@ const Demo = () => {
   const MeasureNames = '__MeaId__'
 
   const vseed: VSeed = {
-    chartType: 'line',
+    chartType: 'raceColumn',
     dataset: [
       { date: '2019', profit: 100, sales: 200, count: 500 },
       { date: '2020', profit: 30, sales: 60, count: 50 },
@@ -77,7 +77,7 @@ const SimpleVSeedRender = (props: { vseed: VSeed }) => {
         return
       }
       const theme = dark ? 'dark' : 'light'
-      const builder = Builder.from(vseed)
+      const builder = Builder.from(vseed.theme ? vseed : { ...vseed, theme })
 
       // 如果有 dynamicFilter code，需要先 prepare 再 build
       await builder.prepare()

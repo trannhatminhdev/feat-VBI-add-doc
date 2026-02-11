@@ -273,7 +273,15 @@ function getMemberSignature(member, memberName) {
         .getParameters()
         .map((p) => p.getText())
         .join(', ')
-      const returnType = arrowFunc.getReturnType().getText(member)
+
+      let returnType = ''
+      const returnTypeNode = arrowFunc.getReturnTypeNode()
+      if (returnTypeNode) {
+        returnType = returnTypeNode.getText()
+      } else {
+        returnType = formatType(arrowFunc.getReturnType(), member)
+      }
+
       const typeParams = arrowFunc
         .getTypeParameters()
         .map((tp) => tp.getText())
@@ -284,7 +292,7 @@ function getMemberSignature(member, memberName) {
       signatureCode = `${isStatic}${memberName}${typeParamStr}(${params}): ${returnType}`
     } else {
       const isStatic = member.isStatic() ? 'static ' : ''
-      const type = member.getType().getText(member)
+      const type = formatType(member.getType(), member)
       signatureCode = `${isStatic}${memberName}: ${type}`
     }
   }
@@ -338,7 +346,7 @@ function generateCommonFunctionMarkdown(name, node) {
         .getParameters()
         .map((p) => p.getText())
         .join(', ')
-      const returnType = arrowFunc.getReturnType().getText(node)
+      const returnType = formatType(arrowFunc.getReturnType(), node)
       const typeParams = arrowFunc
         .getTypeParameters()
         .map((tp) => tp.getText())
@@ -347,7 +355,7 @@ function generateCommonFunctionMarkdown(name, node) {
 
       signature = `function ${name}${typeParamStr}(${params}): ${returnType}`
     } else {
-      signature = `const ${node.getName()}: ${node.getType().getText(node)}`
+      signature = `const ${node.getName()}: ${formatType(node.getType(), node)}`
     }
   }
 
@@ -372,6 +380,52 @@ function generateCommonFunctionMarkdown(name, node) {
   }
 
   return markdown
+}
+
+function formatType(type, node) {
+  // 1. Array
+  if (type.isArray()) {
+    const elementType = type.getArrayElementType()
+    return `${formatType(elementType, node)}[]`
+  }
+
+  // 2. Alias
+  const aliasSymbol = type.getAliasSymbol()
+  if (aliasSymbol) {
+    const aliasName = aliasSymbol.getName()
+    if (aliasName !== '__type') {
+      return aliasName
+    }
+  }
+
+  // 3. Interface/Class symbol
+  const symbol = type.getSymbol()
+  if (symbol) {
+    const typeArgs = type.getTypeArguments()
+    if (typeArgs.length > 0) {
+      const typeName = symbol.getName()
+      const args = typeArgs.map((t) => formatType(t, node)).join(', ')
+      return `${typeName}<${args}>`
+    }
+    return symbol.getName()
+  }
+
+  // 4. Union
+  if (type.isUnion()) {
+    // Only use union simplification if it results in a shorter string or uses aliases
+    // But for now, let's just try to format each part.
+    // However, if we blindly map, we might get "A | B" where A and B are expanded objects if they don't have aliases.
+    // So formatType on components is good.
+    return type
+      .getUnionTypes()
+      .map((t) => formatType(t, node))
+      .join(' | ')
+  }
+
+  // 5. Fallback
+  let text = type.getText(node)
+  text = text.replace(/import\(".*?"\)\./g, '')
+  return text.replace(/\n/g, ' ').replace(/\s+/g, ' ')
 }
 
 function cleanType(text) {
