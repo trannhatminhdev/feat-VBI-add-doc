@@ -1,5 +1,5 @@
 import type { IAreaChartSpec } from '@visactor/vchart'
-import { selector } from '../../../../../dataSelector'
+import { selector, selectorWithDynamicFilter } from '../../../../../dataSelector'
 import type { Datum, LineStyle, VChartSpecPipe } from 'src/types'
 import { isEmpty, isNullish } from 'remeda'
 import { getCurveTension, getCurveType } from './curve'
@@ -50,7 +50,10 @@ export const lineStyle: VChartSpecPipe = (spec, context) => {
         ) => {
           const lineData = node.renderNode.context.data
           for (const d of lineData) {
-            if (selector(d, style.selector)) {
+            const shouldApply = style.dynamicFilter
+              ? selectorWithDynamicFilter(d, style.dynamicFilter, style.selector)
+              : selector(d, style.selector)
+            if (shouldApply) {
               return true
             }
           }

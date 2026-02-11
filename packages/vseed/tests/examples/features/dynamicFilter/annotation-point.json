@@ -1,18 +1,18 @@
 {
-  "name": "area-line-point-style",
+  "name": "annotation-point",
   "description": "",
   "vseed": {
-    "chartType": "area",
+    "chartType": "column",
     "dataset": [
       {
         "date": "2019",
-        "profit": 10,
+        "profit": 15,
         "sales": 20,
         "count": 50
       },
       {
         "date": "2020",
-        "profit": 35,
+        "profit": 30,
         "sales": 60,
         "count": 50
       },
@@ -35,22 +35,29 @@
         "count": 50
       }
     ],
-    "lineStyle": {
+    "annotationPoint": {
       "dynamicFilter": {
         "type": "row-with-field",
-        "code": "\n        return [{__row_index: 0, field: 'profit'}]\n        "
+        "code": "\n        return data.filter(item => item.profit / item.sales > 0.5).map(v => ({\n          __row_index: v.__row_index,\n          field: 'profit'\n        }))",
+        "result": {
+          "success": true,
+          "data": [
+            {
+              "__row_index": 0,
+              "field": "profit"
+            }
+          ]
+        }
       },
-      "lineColor": "red",
-      "lineWidth": 2,
-      "lineStyle": "solid"
-    },
-    "pointStyle": {
-      "dynamicFilter": {
-        "type": "row-with-field",
-        "code": "\n        return data.filter(item => item.profit / item.sales > 0.5).map(v => ({\n          __row_index: v.__row_index,\n          field: 'profit'\n        }))\n        "
-      },
-      "pointColor": "red",
-      "pointSize": 10
+      "text": "利润占比很高",
+      "textFontWeight": 600,
+      "textBaseline": "bottom",
+      "textAlign": "center",
+      "textColor": "#fff",
+      "backgroundColor": "gray",
+      "backgroundBorderRadius": 10,
+      "backgroundPadding": 10,
+      "offsetY": -5
     },
     "dimensions": [
       {

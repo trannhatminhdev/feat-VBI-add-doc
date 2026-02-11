@@ -10,7 +10,8 @@ vi.mock('src/dataSelector/selector', () => ({
 
 // Mock common
 vi.mock('src/pipeline/spec/table/pipes/cellStyle/common', () => ({
-  pickBodyCellStyle: vi.fn().mockReturnValue({ bgColor: 'red' })
+  pickBodyCellStyle: vi.fn().mockReturnValue({ bgColor: 'red' }),
+  getCellOriginalDataByDatum: vi.fn().mockReturnValue(null)
 }))
 
 describe('cellStyle pipes', () => {

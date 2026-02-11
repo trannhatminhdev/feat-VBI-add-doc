@@ -5,6 +5,7 @@ import type { AdvancedPipeline, SpecPipeline } from '../pipeline'
 import type { AdvancedVSeed } from '../advancedVSeed'
 
 export abstract class VSeedBuilder {
+  abstract prepare: () => Promise<void>
   abstract build: () => Spec
   abstract buildAdvanced: () => AdvancedVSeed | null
   abstract buildSpec: (advancedVSeed: AdvancedVSeed) => Spec

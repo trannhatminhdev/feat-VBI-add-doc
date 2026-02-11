@@ -1,19 +1,35 @@
 import type { ISpec, IMarkPointSpec } from '@visactor/vchart'
-import { selector } from '../../../../../dataSelector'
-import type { Datum, Selector, Selectors, SpecPipelineContext, VChartSpecPipe, VSeed } from 'src/types'
+import { selector, selectorWithDynamicFilter } from '../../../../../dataSelector'
+import type {
+  ChartDynamicFilter,
+  Datum,
+  Selector,
+  Selectors,
+  SpecPipelineContext,
+  VChartSpecPipe,
+  VSeed,
+} from 'src/types'
 import { isSubset } from './utils'
 import { ANNOTATION_Z_INDEX } from '../../../../utils/constant'
 import { isBarLikeChart } from 'src/pipeline/utils/chatType'
 export const generateAnnotationPointPipe = (options: {
-  findSelectedDatas?: (
-    dataset: Datum[],
-    selector: Selector | Selectors | undefined | null,
-    spec: ISpec,
-    context: SpecPipelineContext,
-  ) => Datum[]
+  findSelectedDatas?: (options: {
+    dataset: Datum[]
+    selector: Selector | Selectors | undefined | null
+    dynamicFilter?: ChartDynamicFilter
+    spec: ISpec
+    context: SpecPipelineContext
+  }) => Datum[]
   generateMarkPoint?: (datum: Datum, spec: ISpec, context: SpecPipelineContext) => IMarkPointSpec[] | undefined
 }) => {
-  const findSelectedDatas = options.findSelectedDatas ?? ((dataset, s) => dataset.filter((datum) => selector(datum, s)))
+  const findSelectedDatas =
+    options.findSelectedDatas ??
+    ((opts) => {
+      const { dataset, selector: s, dynamicFilter } = opts
+      return dataset.filter((datum) => {
+        return dynamicFilter ? selectorWithDynamicFilter(datum, dynamicFilter, s) : selector(datum, s)
+      })
+    })
   const generateMarkPoint =
     options.generateMarkPoint ??
     ((datum: Datum) => {
@@ -60,6 +76,7 @@ export const generateAnnotationPointPipe = (options: {
     const markPoint = annotationPointList.flatMap((annotationPoint) => {
       const {
         selector: selectorPoint,
+        dynamicFilter,
         text = '',
         textColor = theme?.textColor ?? '#ffffff',
         textFontSize = theme?.textFontSize ?? 12,
@@ -77,7 +94,16 @@ export const generateAnnotationPointPipe = (options: {
       } = annotationPoint
 
       const dataset = advancedVSeed.dataset.flat()
-      const selectedData = selectorPoint ? findSelectedDatas(dataset, selectorPoint, spec, context) : []
+      const selectedData =
+        selectorPoint || dynamicFilter
+          ? findSelectedDatas({
+              dataset,
+              selector: selectorPoint,
+              dynamicFilter,
+              spec,
+              context,
+            })
+          : []
       const dx = -10 - (isHorizontalBar ? (textFontSize as number) : 0) // 由于vchart tag实现问题，需要设置这个强制偏移量
       const dy = isHorizontalBar ? 0 : (textFontSize as number)
       const markPointStyle = {

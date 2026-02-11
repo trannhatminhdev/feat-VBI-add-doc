@@ -1,6 +1,5 @@
-import type { Spec, VChartSpecPipeline } from 'src/types'
+import type { AdvancedVSeed, Spec, SpecPipelineContext, VChartSpecPipeline } from 'src/types'
 import { Builder } from './builder'
-import type { AdvancedVSeed, SpecPipelineContext } from 'src/types'
 import { execPipeline } from '../../pipeline'
 import { intl } from 'src/i18n'
 import type { ISpec } from '@visactor/vchart'

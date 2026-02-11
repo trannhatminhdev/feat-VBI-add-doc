@@ -2552,6 +2552,211 @@ same as operator
 
 :::
 
+### dynamicFilter
+
+**Type:** `ChartDynamicFilter | undefined`
+
+:::note{title=描述}
+动态筛选器（AI生成代码执行）
+
+
+
+通过 AI 生成的 JavaScript 代码实现复杂数据筛选逻辑
+
+适用于 Top N、统计分析、复杂条件等静态 selector 难以表达的场景
+
+
+
+核心能力:
+
+\- 支持任意复杂的数据筛选条件
+
+\- 使用 内置工具函数 进行数据操作
+
+\- 在浏览器环境中安全执行（Web Worker 沙箱）
+
+
+
+环境要求: 仅支持浏览器环境，Node.js 环境将使用 fallback
+
+
+
+注意: selector 和 dynamicFilter 不能同时使用，dynamicFilter 优先级更高
+
+
+
+图表动态筛选器配置
+
+
+
+通过 AI 生成的 JavaScript 代码实现图表标记（柱子、点等）的筛选
+
+:::
+
+
+#### type
+
+**Type:** `"row-with-field"`
+
+#### description
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+用户的筛选需求描述（自然语言）
+
+:::
+
+**示例**
+"高亮销售额大于1000的柱子"
+
+"高亮每个区域中利润率最高的柱子"
+
+
+
+#### code
+
+**Type:** `string`
+
+:::note{title=描述}
+AI 生成的 JavaScript 筛选代码
+
+
+
+\- 只能使用内置工具函数（通过 _ 或 R 访问）
+
+\- 输入参数: data (数组)
+
+\- 必须返回部分数据项数组: Array<{ [dimField]: value }>
+
+\- 返回的对象包含能唯一标识图表标记的维度字段组合
+
+\- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+
+:::
+
+**示例**
+高亮销售额大于1000的柱子
+```javascript
+const filtered = _.filter(data, item => item.sales > 1000);
+// 假设柱子由 product 和 area 两个维度唯一标识
+return _.map(filtered, item => ({
+product: item.product,
+area: item.area
+}));
+```
+
+高亮每个区域中利润率最高的柱子
+```javascript
+const grouped = _.groupBy(data, 'area');
+const result = _.map(grouped, group => {
+const maxProfitRateItem = _.maxBy(group, item =>
+item.profit / item.sales
+);
+return {
+product: maxProfitRateItem.product,
+area: maxProfitRateItem.area
+};
+});
+return result;
+```
+
+高亮多条件筛选
+```javascript
+const filtered = _.filter(data, item => {
+const profitRate = item.profit / item.sales;
+return profitRate > 0.2 && item.sales > 5000;
+});
+return _.map(filtered, item => ({
+product: item.product,
+region: item.region
+}));
+```
+
+
+
+#### fallback
+
+**Type:** `Selector | Selectors | undefined`
+
+:::note{title=描述}
+代码执行失败或环境不支持时的降级方案
+
+:::
+
+
+##### field
+
+**Type:** `string`
+
+:::note{title=描述}
+维度字段, dimensions 某一项的 id
+
+:::
+
+##### operator
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+:::
+
+##### op
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+same as operator
+
+:::
+
+##### value
+
+**Type:** `string | number | (string | number)[]`
+
+:::note{title=描述}
+选择数据项中维度字段的值, 支持数组
+
+:::
+
+#### result
+
+**Type:** `DynamicFilterExecutionResult<Record<string | number, any>> | undefined`
+
+:::note{title=描述}
+动态筛选执行结果（运行期字段）
+
+
+
+prepare() 阶段写入，运行时只读
+
+:::
+
+
+##### success
+
+**Type:** `false | true`
+
+##### data
+
+**Type:** `T[] | undefined`
+
+##### error
+
+**Type:** `string | undefined`
+
 ### barVisible
 
 **Type:** `boolean | undefined`
@@ -2705,6 +2910,211 @@ same as operator
 选择数据项中维度字段的值, 支持数组
 
 :::
+
+### dynamicFilter
+
+**Type:** `ChartDynamicFilter | undefined`
+
+:::note{title=描述}
+动态筛选器（AI生成代码执行）
+
+
+
+通过 AI 生成的 JavaScript 代码实现复杂数据筛选逻辑
+
+适用于 Top N、统计分析、复杂条件等静态 selector 难以表达的场景
+
+
+
+核心能力:
+
+\- 支持任意复杂的数据筛选条件
+
+\- 使用 内置工具函数 进行数据操作
+
+\- 在浏览器环境中安全执行（Web Worker 沙箱）
+
+
+
+环境要求: 仅支持浏览器环境，Node.js 环境将使用 fallback
+
+
+
+注意: selector 和 dynamicFilter 不能同时使用，dynamicFilter 优先级更高
+
+
+
+图表动态筛选器配置
+
+
+
+通过 AI 生成的 JavaScript 代码实现图表标记（柱子、点等）的筛选
+
+:::
+
+
+#### type
+
+**Type:** `"row-with-field"`
+
+#### description
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+用户的筛选需求描述（自然语言）
+
+:::
+
+**示例**
+"高亮销售额大于1000的柱子"
+
+"高亮每个区域中利润率最高的柱子"
+
+
+
+#### code
+
+**Type:** `string`
+
+:::note{title=描述}
+AI 生成的 JavaScript 筛选代码
+
+
+
+\- 只能使用内置工具函数（通过 _ 或 R 访问）
+
+\- 输入参数: data (数组)
+
+\- 必须返回部分数据项数组: Array<{ [dimField]: value }>
+
+\- 返回的对象包含能唯一标识图表标记的维度字段组合
+
+\- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+
+:::
+
+**示例**
+高亮销售额大于1000的柱子
+```javascript
+const filtered = _.filter(data, item => item.sales > 1000);
+// 假设柱子由 product 和 area 两个维度唯一标识
+return _.map(filtered, item => ({
+product: item.product,
+area: item.area
+}));
+```
+
+高亮每个区域中利润率最高的柱子
+```javascript
+const grouped = _.groupBy(data, 'area');
+const result = _.map(grouped, group => {
+const maxProfitRateItem = _.maxBy(group, item =>
+item.profit / item.sales
+);
+return {
+product: maxProfitRateItem.product,
+area: maxProfitRateItem.area
+};
+});
+return result;
+```
+
+高亮多条件筛选
+```javascript
+const filtered = _.filter(data, item => {
+const profitRate = item.profit / item.sales;
+return profitRate > 0.2 && item.sales > 5000;
+});
+return _.map(filtered, item => ({
+product: item.product,
+region: item.region
+}));
+```
+
+
+
+#### fallback
+
+**Type:** `Selector | Selectors | undefined`
+
+:::note{title=描述}
+代码执行失败或环境不支持时的降级方案
+
+:::
+
+
+##### field
+
+**Type:** `string`
+
+:::note{title=描述}
+维度字段, dimensions 某一项的 id
+
+:::
+
+##### operator
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+:::
+
+##### op
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+same as operator
+
+:::
+
+##### value
+
+**Type:** `string | number | (string | number)[]`
+
+:::note{title=描述}
+选择数据项中维度字段的值, 支持数组
+
+:::
+
+#### result
+
+**Type:** `DynamicFilterExecutionResult<Record<string | number, any>> | undefined`
+
+:::note{title=描述}
+动态筛选执行结果（运行期字段）
+
+
+
+prepare() 阶段写入，运行时只读
+
+:::
+
+
+##### success
+
+**Type:** `false | true`
+
+##### data
+
+**Type:** `T[] | undefined`
+
+##### error
+
+**Type:** `string | undefined`
 
 ### text
 
@@ -2945,6 +3355,129 @@ offsetX: 5, 标注点整体向右偏移5像素
 固定的x值, 用于标注垂直线, 类目轴在x方向, 则可输入维值, 数值轴在x方向, 则可输入具体的数值
 
 :::
+
+### dynamicFilter
+
+**Type:** `ValueDynamicFilter | undefined`
+
+:::note{title=描述}
+动态筛选器（AI生成代码执行）
+
+
+
+通过 AI 生成的 JavaScript 代码动态计算标注线的值
+
+适用于需要根据数据动态确定标注线位置，如平均值、最大值、分位数，业务线等
+
+
+
+仅支持浏览器环境（需要 Web Worker）
+
+:::
+
+
+#### type
+
+**Type:** `"value"`
+
+#### description
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+用户的筛选需求描述（自然语言）
+
+:::
+
+**示例**
+"获取销售额最高的值作为标注线参考"
+
+"计算平均销售额用于标注线"
+
+
+
+#### code
+
+**Type:** `string`
+
+:::note{title=描述}
+AI 生成的 JavaScript 筛选代码
+
+
+
+\- 只能使用内置工具函数（通过 _ 或 R 访问）
+
+\- 输入参数: data (数组)
+
+\- 必须返回单个数值或字符串: number | string
+
+\- 适用场景：标注线（水平线、垂直线）需要的动态数值
+
+\- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+
+:::
+
+**示例**
+获取销售额最大值作为标注线值
+```javascript
+const maxSales = _.maxBy(data, 'sales')?.sales;
+return maxSales || 0;
+```
+
+计算平均值用于标注线
+```javascript
+const avgSales = _.meanBy(data, 'sales');
+return _.round(avgSales, 2);
+```
+
+获取分位数作为标注线
+```javascript
+const sorted = _.sortBy(data, 'sales');
+const index = Math.floor(sorted.length * 0.75);
+return sorted[index]?.sales || 0;
+```
+
+根据条件计算目标值
+```javascript
+const currentYearTotal = _.sumBy(
+_.filter(data, item => item.year === 2024),
+'sales'
+);
+return currentYearTotal;
+```
+
+
+
+#### fallback
+
+**Type:** `string | number | undefined`
+
+:::note{title=描述}
+代码执行失败或环境不支持时的降级方案
+
+:::
+
+#### result
+
+**Type:** `{ success: boolean; data?: number | string; } | undefined`
+
+:::note{title=描述}
+动态筛选执行结果（运行期字段）
+
+
+
+prepare() 阶段写入，运行时只读
+
+:::
+
+
+##### success
+
+**Type:** `false | true`
+
+##### data
+
+**Type:** `string | number | undefined`
 
 ### text
 
@@ -3219,6 +3752,129 @@ true
 固定的y值, 用于标注水平线, 类目轴在y方向, 则可输入维值, 数值轴在y方向, 则可输入具体的数值
 
 :::
+
+### dynamicFilter
+
+**Type:** `ValueDynamicFilter | undefined`
+
+:::note{title=描述}
+动态筛选器（AI生成代码执行）
+
+
+
+通过 AI 生成的 JavaScript 代码动态计算标注线的值
+
+适用于需要根据数据动态确定标注线位置，如平均值、最大值、分位数，业务线等
+
+
+
+仅支持浏览器环境（需要 Web Worker）
+
+:::
+
+
+#### type
+
+**Type:** `"value"`
+
+#### description
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+用户的筛选需求描述（自然语言）
+
+:::
+
+**示例**
+"获取销售额最高的值作为标注线参考"
+
+"计算平均销售额用于标注线"
+
+
+
+#### code
+
+**Type:** `string`
+
+:::note{title=描述}
+AI 生成的 JavaScript 筛选代码
+
+
+
+\- 只能使用内置工具函数（通过 _ 或 R 访问）
+
+\- 输入参数: data (数组)
+
+\- 必须返回单个数值或字符串: number | string
+
+\- 适用场景：标注线（水平线、垂直线）需要的动态数值
+
+\- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+
+:::
+
+**示例**
+获取销售额最大值作为标注线值
+```javascript
+const maxSales = _.maxBy(data, 'sales')?.sales;
+return maxSales || 0;
+```
+
+计算平均值用于标注线
+```javascript
+const avgSales = _.meanBy(data, 'sales');
+return _.round(avgSales, 2);
+```
+
+获取分位数作为标注线
+```javascript
+const sorted = _.sortBy(data, 'sales');
+const index = Math.floor(sorted.length * 0.75);
+return sorted[index]?.sales || 0;
+```
+
+根据条件计算目标值
+```javascript
+const currentYearTotal = _.sumBy(
+_.filter(data, item => item.year === 2024),
+'sales'
+);
+return currentYearTotal;
+```
+
+
+
+#### fallback
+
+**Type:** `string | number | undefined`
+
+:::note{title=描述}
+代码执行失败或环境不支持时的降级方案
+
+:::
+
+#### result
+
+**Type:** `{ success: boolean; data?: number | string; } | undefined`
+
+:::note{title=描述}
+动态筛选执行结果（运行期字段）
+
+
+
+prepare() 阶段写入，运行时只读
+
+:::
+
+
+##### success
+
+**Type:** `false | true`
+
+##### data
+
+**Type:** `string | number | undefined`
 
 ### text
 

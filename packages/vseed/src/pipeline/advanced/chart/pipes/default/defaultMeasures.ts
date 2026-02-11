@@ -1,4 +1,5 @@
 import { clone } from 'remeda'
+import { InnerRowIndex } from 'src/dataReshape'
 import type { AdvancedPipe, Datum, Measure } from 'src/types'
 /**
  * @description 如果用户没有配置 measures, 则基于 dataset 构建默认的 measures
@@ -26,7 +27,11 @@ export const defaultMeasures: AdvancedPipe = (advancedVSeed, context) => {
   }, {})
   const defaultMeasures = Object.keys(sample)
     .filter((key) => {
-      return top100dataset.some((item) => typeof item[key] === 'number') && !['', null, undefined].includes(key)
+      return (
+        key !== InnerRowIndex &&
+        top100dataset.some((item) => typeof item[key] === 'number') &&
+        !['', null, undefined].includes(key)
+      )
     })
     .map((measure) => ({
       id: measure,

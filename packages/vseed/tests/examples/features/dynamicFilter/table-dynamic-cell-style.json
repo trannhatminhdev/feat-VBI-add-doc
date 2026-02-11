@@ -1,8 +1,8 @@
 {
-  "name": "pivot-table-cell-style",
+  "name": "table-dynamic-cell-style",
   "description": "",
   "vseed": {
-    "chartType": "pivotTable",
+    "chartType": "table",
     "dataset": [
       {
         "date": "2019",
@@ -52,34 +52,20 @@
     ],
     "bodyCellStyle": [
       {
+        "backgroundColor": "pink",
         "dynamicFilter": {
           "type": "row-with-field",
-          "code": "\n        return data.filter(item => item.profit / item.sales >= 0.1).map(v => ({\n          __row_index: v.__row_index,\n          field: 'profit'\n        }))\n        "
-        },
-        "backgroundColor": "#e3f2fd",
-        "textColor": "#0d47a1"
-      }
-    ],
-    "dimensions": [
-      {
-        "id": "date",
-        "alias": "日期",
-        "encoding": "column"
-      },
-      {
-        "id": "type",
-        "alias": "类型",
-        "encoding": "row"
-      }
-    ],
-    "measures": [
-      {
-        "id": "profit",
-        "alias": "利润"
-      },
-      {
-        "id": "sales",
-        "alias": "销售量"
+          "code": "\n          return [{__row_index: 0, field: 'profit'}]\n          ",
+          "result": {
+            "success": true,
+            "data": [
+              {
+                "__row_index": 0,
+                "field": "profit"
+              }
+            ]
+          }
+        }
       }
     ]
   }

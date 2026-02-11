@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { ListTableConstructorOptions, ColumnDefine } from '@visactor/vtable'
 import { array } from '@visactor/vutils'
 import { isNullish, isNumber, isPlainObject, isString } from 'remeda'
-import { selector } from 'src/dataSelector/selector'
+import { selector, selectorWithDynamicFilter } from 'src/dataSelector/selector'
 import type { BodyCellStyle, ListTableSpecPipe } from 'src/types'
 import type { MeasureSelector, Selectors } from 'src/types/dataSelector'
-import { pickBodyCellStyle } from './common'
+import { getCellOriginalDataByDatum, pickBodyCellStyle } from './common'
 import { preorderTraverse } from 'src/pipeline/utils/tree/traverse'
 
 export const tableBodyCell: ListTableSpecPipe = (spec, context) => {
@@ -22,6 +21,9 @@ export const tableBodyCell: ListTableSpecPipe = (spec, context) => {
   const setStyleOfColumn = (col: ColumnDefine) => {
     const field = col.field as string
     const matchedStyles = bodyCellStyleList.filter((style) => {
+      if (style?.dynamicFilter) {
+        return style.dynamicFilter?.result?.success === true || !!style.dynamicFilter?.fallback
+      }
       if (isNullish(style.selector)) {
         return true
       }
@@ -38,13 +40,20 @@ export const tableBodyCell: ListTableSpecPipe = (spec, context) => {
       return false
     }
 
+    const hasDynamicFilter = matchedStyles.some((style) => !!style.dynamicFilter)
+
     col.style = (datum: any) => {
       const originalDatum = {
         [field]: datum.dataValue,
       }
+      const currentCellData = getCellOriginalDataByDatum(datum, hasDynamicFilter, originalDatum)
 
       const mergedStyle = matchedStyles.reduce<Record<string, any>>((result, style) => {
-        if (selector(originalDatum, style.selector)) {
+        const shouldApply = style.dynamicFilter
+          ? selectorWithDynamicFilter(currentCellData || originalDatum, style.dynamicFilter, style.selector)
+          : selector(originalDatum, style.selector)
+
+        if (shouldApply) {
           if (selectedPos.length && selectedPos[0].col === datum?.col && selectedPos[0].row === datum?.row) {
             // 说明重复进入了，清空历史
             selectedPos.length = 0

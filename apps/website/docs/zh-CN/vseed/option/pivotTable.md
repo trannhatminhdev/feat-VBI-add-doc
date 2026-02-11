@@ -658,6 +658,10 @@
 
 若未配置selector, 则样式全局生效.
 
+
+
+注意: selector 和 dynamicFilter 不能同时使用，dynamicFilter 优先级更高
+
 :::
 
 **示例**
@@ -743,6 +747,258 @@ same as operator
 选择数据项中维度字段的值, 支持数组
 
 :::
+
+### dynamicFilter
+
+**Type:** `TableDynamicFilter | undefined`
+
+:::note{title=描述}
+动态筛选器（代码驱动）
+
+
+
+通过 AI 生成的 JavaScript 代码实现复杂数据筛选逻辑
+
+适用于 Top N、统计分析、复杂条件等静态 selector 难以表达的场景
+
+
+
+核心能力:
+
+\- 支持任意复杂的数据筛选条件
+
+\- 使用 内置工具函数 进行数据操作
+
+\- 在浏览器环境中安全执行（Web Worker 沙箱）
+
+
+
+环境要求: 仅支持浏览器环境，Node.js 环境将使用 fallback
+
+
+
+注意: selector 和 dynamicFilter 不能同时使用，dynamicFilter 优先级更高
+
+
+
+表格动态筛选器配置
+
+
+
+通过 AI 生成的 JavaScript 代码实现表格单元格级别的精确筛选
+
+:::
+
+
+#### type
+
+**Type:** `"row-with-field"`
+
+#### description
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+用户的筛选需求描述（自然语言）
+
+:::
+
+**示例**
+"高亮销售额大于1000的单元格"
+
+"高亮每行中最大值所在的单元格"
+
+
+
+#### code
+
+**Type:** `string`
+
+:::note{title=描述}
+AI 生成的 JavaScript 筛选代码
+
+
+
+\- 只能使用内置工具函数（通过 _ 或 R 访问）
+
+\- 输入参数: data (数组)，每个 item 包含 _index 字段表示行号
+
+\- 必须返回单元格选择器数组: Array<{ __row_index: number, field: string }>
+
+\- field 为 "*" 时表示整行高亮
+
+\- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+
+:::
+
+**示例**
+Top N 筛选
+dynamicFilter = {
+type: 'row\-with\-field',
+description: '高亮销售额最高的前3个产品',
+code: `
+const sorted = _.sortBy(data, 'sales');
+const reversed = [...sorted].reverse();
+const result = _.take(reversed, 3);
+return _.flatten(
+_.map(result, item => [
+{ __row_index: item._index, field: 'product' },
+{ __row_index: item._index, field: 'sales' }
+])
+);
+`,
+enabled: true
+}
+
+多条件筛选
+dynamicFilter = {
+type: 'row\-with\-field',
+description: '高亮利润率大于20%且销售额超过5000的产品',
+code: `
+const matched = _.filter(data, item => {
+const profitRate = (item.profit / item.sales) * 100;
+return profitRate > 20 && item.sales > 5000;
+});
+return _.flatten(
+_.map(matched, item => [
+{ __row_index: item._index, field: 'product' },
+{ __row_index: item._index, field: 'sales' }
+])
+);
+`,
+enabled: true
+}
+
+相对值筛选
+dynamicFilter = {   *
+type: 'row\-with\-field',
+description: '高亮销售额高于平均值的产品',
+code: `
+const avgSales = _.meanBy(data, 'sales');
+const matched = _.filter(data, item => item.sales > avgSales);
+return _.flatten(
+_.map(matched, item => [
+{ __row_index: item._index, field: 'product' },
+{ __row_index: item._index, field: 'sales' }
+])
+);
+`,
+enabled: true
+}
+
+分组筛选
+dynamicFilter = {
+type: 'row\-with\-field',
+description: '每个区域中销售额最高的产品',
+code: `
+const grouped = _.groupBy(data, 'region');
+const topByRegion = _.map(_.values(grouped), group => _.maxBy(group, 'sales'));
+return _.flatten(
+_.map(topByRegion, item => [
+{ __row_index: item._index, field: 'product' },
+{ __row_index: item._index, field: 'sales' }
+])
+);
+`,
+enabled: true
+}
+
+整行高亮
+dynamicFilter = {
+description: '高亮销售额大于利润的整行',
+code: `
+const matched = _.filter(data, item => item.sales > item.profit);
+return matched.map(item => ({
+__row_index: item._index,
+field: '*'
+}));
+`,
+enabled: true
+}
+
+
+
+#### fallback
+
+**Type:** `Selector | Selectors | undefined`
+
+:::note{title=描述}
+代码执行失败或环境不支持时的降级方案
+
+:::
+
+
+##### field
+
+**Type:** `string`
+
+:::note{title=描述}
+维度字段, dimensions 某一项的 id
+
+:::
+
+##### operator
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+:::
+
+##### op
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+same as operator
+
+:::
+
+##### value
+
+**Type:** `string | number | (string | number)[]`
+
+:::note{title=描述}
+选择数据项中维度字段的值, 支持数组
+
+:::
+
+#### result
+
+**Type:** `DynamicFilterExecutionResult<TableDynamicFilterRes> | undefined`
+
+:::note{title=描述}
+动态筛选执行结果（运行期字段）
+
+
+
+prepare() 阶段写入，运行时只读
+
+:::
+
+
+##### success
+
+**Type:** `false | true`
+
+##### data
+
+**Type:** `T[] | undefined`
+
+##### error
+
+**Type:** `string | undefined`
 
 ### backgroundColor
 

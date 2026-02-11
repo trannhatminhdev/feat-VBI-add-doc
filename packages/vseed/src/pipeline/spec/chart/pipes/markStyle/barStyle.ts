@@ -1,5 +1,5 @@
 import type { IBarChartSpec } from '@visactor/vchart'
-import { selector } from '../../../../../dataSelector'
+import { selector, selectorWithDynamicFilter } from '../../../../../dataSelector'
 import type { BarStyle, Datum, VChartSpecPipe } from 'src/types'
 import { isEmpty, isNullish } from 'remeda'
 
@@ -51,7 +51,10 @@ export const barStyle: VChartSpecPipe = (spec, context) => {
         // 优先级: 后者覆盖前者
         level: index + 1,
         filter: (datum: Datum) => {
-          if (selector(datum, style.selector)) {
+          const shouldApply = style.dynamicFilter
+            ? selectorWithDynamicFilter(datum, style.dynamicFilter, style.selector)
+            : selector(datum, style.selector)
+          if (shouldApply) {
             return true
           }
           return false

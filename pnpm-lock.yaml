@@ -9247,7 +9247,7 @@ snapshots:
 
   '@babel/code-frame@7.26.2':
     dependencies:
-      '@babel/helper-validator-identifier': 7.27.1
+      '@babel/helper-validator-identifier': 7.28.5
       js-tokens: 4.0.0
       picocolors: 1.1.1
 
@@ -11726,7 +11726,7 @@ snapshots:
       fs-extra: 11.3.0
       lodash: 4.17.21
       path-browserify: 1.0.1
-      semver: 7.7.2
+      semver: 7.7.3
       source-map: 0.7.6
     transitivePeerDependencies:
       - '@rsbuild/core'
@@ -12666,7 +12666,7 @@ snapshots:
 
   '@types/tapable@2.2.7':
     dependencies:
-      tapable: 2.2.2
+      tapable: 2.3.0
 
   '@types/unist@2.0.11': {}
 
@@ -13517,7 +13517,7 @@ snapshots:
   axios@1.12.1:
     dependencies:
       follow-redirects: 1.15.11
-      form-data: 4.0.4
+      form-data: 4.0.5
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
@@ -13693,7 +13693,7 @@ snapshots:
 
   browserslist-to-es-version@1.1.1:
     dependencies:
-      browserslist: 4.25.1
+      browserslist: 4.28.1
 
   browserslist@4.25.1:
     dependencies:
@@ -14276,7 +14276,7 @@ snapshots:
   enhanced-resolve@5.12.0:
     dependencies:
       graceful-fs: 4.2.11
-      tapable: 2.2.2
+      tapable: 2.3.0
 
   enhanced-resolve@5.18.3:
     dependencies:

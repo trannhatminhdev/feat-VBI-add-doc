@@ -93,7 +93,7 @@
 
 ## dimensions
 
-**Type:** `import("/Users/bytedance/Projects/VBI/packages/vseed/src/index").RadarDimension[] | undefined`
+**Type:** `import("/Users/bytedance/Desktop/WorkSpace/VSeed/packages/vseed/src/index").RadarDimension[] | undefined`
 
 :::note{title=描述}
 维度
@@ -154,7 +154,7 @@
 
 ## measures
 
-**Type:** `import("/Users/bytedance/Projects/VBI/packages/vseed/src/index").RadarMeasure[] | undefined`
+**Type:** `import("/Users/bytedance/Desktop/WorkSpace/VSeed/packages/vseed/src/index").RadarMeasure[] | undefined`
 
 :::note{title=描述}
 指标

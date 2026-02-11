@@ -23,7 +23,7 @@ export const zPivotTable = z.object({
   hoverHeaderInlineBackgroundColor: z.string().nullish(),
   selectedBorderColor: z.string().nullish(),
   selectedBackgroundColor: z.string().nullish(),
-  bodyCellStyle: zBodyCellStyle.nullish(),
+  bodyCellStyle: z.array(zBodyCellStyle).or(zBodyCellStyle).nullish(),
 
   theme: zTheme.nullish(),
   locale: zLocale.nullish(),
