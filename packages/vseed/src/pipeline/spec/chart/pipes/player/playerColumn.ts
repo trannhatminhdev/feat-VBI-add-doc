@@ -1,14 +1,14 @@
 import type { IPlayerSpec, ISpec } from '@visactor/vchart'
-import { groupBy } from 'remeda'
+import { groupBy, uniqueBy } from 'remeda'
 import { isPivotChart, isVTable } from 'src/pipeline/utils'
 import type { Player, VChartSpecPipe } from 'src/types'
-import { datasetScatter } from '../dataset'
+import { datasetXY } from '../dataset'
 
-export const playerYY: VChartSpecPipe = (spec, context) => {
+export const playerColumn: VChartSpecPipe = (spec, context) => {
   const { vseed, advancedVSeed } = context
-  const { datasetReshapeInfo, dimensions = [], chartType, encoding } = advancedVSeed
+  const { dimensions = [], datasetReshapeInfo, chartType, encoding } = advancedVSeed
   const baseConfig = advancedVSeed.config[chartType] as { player: Player }
-  const result = datasetScatter(spec, context)
+  const result = datasetXY(spec, context)
 
   if (!baseConfig || !baseConfig.player || isVTable(vseed) || isPivotChart(vseed)) {
     return result
@@ -16,9 +16,11 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
   const { player } = baseConfig
 
   const id = datasetReshapeInfo[0].id
-  const { unfoldInfo } = datasetReshapeInfo[0]
-  const { encodingPlayer } = unfoldInfo
+  const { unfoldInfo, foldInfo } = datasetReshapeInfo[0]
+  const { encodingPlayer, encodingX } = unfoldInfo
+  const { measureValue } = foldInfo
   const {
+    maxCount,
     autoPlay = true,
     interval = 1000,
     loop = false,
@@ -33,24 +35,37 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
     forwardButtonColor,
   } = player
 
-  const { maxCount } = player
-
   const dataGroups = groupBy(advancedVSeed.dataset, (item) => item[encodingPlayer])
   if (result.data && 'values' in result.data) {
     result.data.values = []
   }
-  const specs = Object.values(dataGroups).map((items) => ({
-    data: {
-      id: id,
-      values: maxCount ? items.slice(0, maxCount) : items,
-    },
-  }))
+
+  const xValues = uniqueBy(
+    advancedVSeed.dataset.map((d) => d[encodingX]),
+    (item) => item,
+  )
+  const specs = Object.values(dataGroups).map((items) => {
+    // 如果当前items中不存在xValues中的值, 则填充为0, 保证每组都有同样的xValue, 都有对应的数据
+    const filledItems = items.map((item) => ({
+      ...item,
+      [encodingX]: xValues.find((xValue) => xValue === item[encodingX]) || 0,
+    }))
+    const sortedItems = filledItems.sort((a, b) => b[measureValue] - a[measureValue])
+    return {
+      data: {
+        id: id,
+        values: maxCount === false ? sortedItems : sortedItems.slice(0, maxCount as number),
+      },
+    }
+  })
 
   const duration = interval
   const exchangeDuration = interval * 0.6
+
   const dataKey = dimensions.filter((d) => !encoding.player?.includes(d.id)).map((d) => d.id)
-  const padding = 12
+
   const textSize = 36
+  const padding = 12
   return {
     ...result,
     dataKey,
@@ -104,6 +119,22 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
     animationExit: {
       bar: [
         {
+          type: 'moveOut',
+          options: {
+            direction: 'y',
+            orient: 'negative',
+          },
+          duration: exchangeDuration,
+        },
+        {
+          type: 'moveOut',
+          options: {
+            direction: 'x',
+            orient: 'negative',
+          },
+          duration: exchangeDuration,
+        },
+        {
           type: 'fadeOut',
           duration: exchangeDuration,
         },
@@ -117,17 +148,15 @@ export const playerYY: VChartSpecPipe = (spec, context) => {
           textBaseline: 'bottom',
           fontSize: textSize,
           textAlign: 'right',
-          fontFamily: 'PingFang SC',
-          fontWeight: 600,
           text: (datum: any) => datum[encodingPlayer],
-          x: (datum: any, ctx: any) => {
+          x: (_datum: any, ctx: any) => {
             return ctx.vchart.getChart().getCanvasRect()?.width - padding
           },
-          y: (datum: any, ctx: any) => {
-            return ctx.vchart.getChart().getCanvasRect()?.height - padding - textSize
+          y: (_datum: any, _ctx: any) => {
+            return textSize + padding
           },
-          fill: 'grey',
-          fillOpacity: 0.5,
+          fill: 'rgb(100, 100, 100)',
+          fillOpacity: 0.25,
         },
       },
     ],

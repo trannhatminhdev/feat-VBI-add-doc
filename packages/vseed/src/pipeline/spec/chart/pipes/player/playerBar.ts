@@ -4,7 +4,7 @@ import { isPivotChart, isVTable } from 'src/pipeline/utils'
 import type { Player, VChartSpecPipe } from 'src/types'
 import { datasetYX } from '../dataset'
 
-export const playerYX: VChartSpecPipe = (spec, context) => {
+export const playerBar: VChartSpecPipe = (spec, context) => {
   const { vseed, advancedVSeed } = context
   const { dimensions = [], datasetReshapeInfo, chartType, encoding } = advancedVSeed
 
