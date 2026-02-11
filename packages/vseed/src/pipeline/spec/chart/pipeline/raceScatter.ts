@@ -28,12 +28,14 @@ import {
   lowessRegressionLine,
   polynomialRegressionLine,
   logisticRegressionLine,
+  datasetScatter,
+  isPlayer,
 } from '../pipes'
 const raceScatter: VChartSpecPipeline = [
   initScatter,
   colorAdapter(color, linearColor),
   backgroundColor,
-  playerScatter,
+  isPlayer(playerScatter, datasetScatter),
   progressive,
   xLinear,
   yLinear,

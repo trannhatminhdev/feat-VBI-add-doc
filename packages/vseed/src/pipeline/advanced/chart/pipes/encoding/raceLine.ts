@@ -57,11 +57,11 @@ const generateDimensionEncoding = (dimensions: Dimensions, encoding: Encoding, i
   const xDims = dimensions.filter((item) => item.encoding === 'xAxis').map((item) => item.id)
   const merged = unique([...playerDims, ...xDims])
 
-  if (merged.length > 0) {
+  if (playerDims.length > 0) {
     encoding.player = merged
     encoding.x = merged
   } else {
-    encoding.player = [dimensions[0].id]
+    encoding.player = []
     encoding.x = [dimensions[0].id]
   }
 

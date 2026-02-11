@@ -18,13 +18,15 @@ import {
   colorPieStyleFill,
   playerPie,
   annotationArea,
+  datasetXY,
+  isPlayer,
 } from '../pipes'
 
 const raceDonut: VChartSpecPipeline = [
   initDonut,
   colorAdapter(color, linearColor),
   backgroundColor,
-  playerPie,
+  isPlayer(playerPie, datasetXY),
   progressive,
   brush,
   labelPie,

@@ -22,13 +22,15 @@ import {
   splitLine,
   playerLine,
   annotationPoint,
+  datasetXY,
+  isPlayer,
 } from '../pipes'
 
 const raceLine: VChartSpecPipeline = [
   initLine,
   colorAdapter(color, linearColor),
   backgroundColor,
-  playerLine,
+  isPlayer(playerLine, datasetXY),
   progressive,
   xBand,
   yLinear,

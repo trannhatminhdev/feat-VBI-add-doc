@@ -1,16 +1,15 @@
 import type { IPlayerSpec, ISpec } from '@visactor/vchart'
 import { groupBy, uniqueBy } from 'remeda'
-import { isPivotChart, isVTable } from 'src/pipeline/utils'
 import type { Player, VChartSpecPipe } from 'src/types'
 import { datasetXY } from '../dataset'
 
 export const playerColumn: VChartSpecPipe = (spec, context) => {
-  const { vseed, advancedVSeed } = context
+  const { advancedVSeed } = context
   const { dimensions = [], datasetReshapeInfo, chartType, encoding } = advancedVSeed
   const baseConfig = advancedVSeed.config[chartType] as { player: Player }
   const result = datasetXY(spec, context)
 
-  if (!baseConfig || !baseConfig.player || isVTable(vseed) || isPivotChart(vseed)) {
+  if (!baseConfig || !baseConfig.player) {
     return result
   }
   const { player } = baseConfig
