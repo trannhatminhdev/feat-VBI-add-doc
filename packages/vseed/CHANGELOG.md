@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.5
+
+### Patch Changes
+
+- 9f734d2: feat: remove the useless player in raceLine
+
 ## 0.4.4
 
 ### Patch Changes

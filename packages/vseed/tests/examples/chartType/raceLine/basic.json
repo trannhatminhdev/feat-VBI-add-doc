@@ -10,6 +10,9 @@
         "autoFormat": true
       }
     ],
+    "player": {
+      "interval": 500
+    },
     "dimensions": [
       {
         "id": "date",

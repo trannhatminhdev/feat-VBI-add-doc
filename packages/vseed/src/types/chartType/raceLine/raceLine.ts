@@ -21,9 +21,9 @@ import type {
   Sort,
   SortLegend,
   DimensionLinkage,
-  LineMeasure,
-  LineDimension,
   Player,
+  LineDimension,
+  LineMeasure,
 } from '../../properties'
 
 /**
