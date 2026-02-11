@@ -753,6 +753,9 @@ function generateChartSpecificTypes() {
     BoxPlot: 'boxPlotDimension.ts',
     DualAxis: 'dualAxisDimension.ts',
     Table: 'tableDimension.ts',
+    CirclePacking: 'hierarchyDimension.ts',
+    Sunburst: 'hierarchyDimension.ts',
+    TreeMap: 'hierarchyDimension.ts',
   }
 
   const measureFileMap: Record<string, string> = {

@@ -100,12 +100,12 @@ export interface RaceBar {
   brush?: Brush
 
   /**
-   * @description x轴配置
+   * @description x轴配置，为数值轴，展示指标值
    */
   xAxis?: XLinearAxis
 
   /**
-   * @description y轴配置
+   * @description y轴配置，为类目轴，展示维度值，柱子竖向排列
    */
   yAxis?: YBandAxis
 
