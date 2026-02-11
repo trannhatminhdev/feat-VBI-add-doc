@@ -1,4 +1,4 @@
-import type { HierarchyMeasure } from 'src/types/properties/measures/hierarchyMeasures'
+import type { HierarchyMeasure } from 'src/types/properties/measures/hierarchyMeasure'
 import type { Locale } from '../../i18n'
 import type { BackgroundColor, Color, Dataset, HierarchyDimension, Label, Page, Theme, Tooltip } from '../../properties'
 
