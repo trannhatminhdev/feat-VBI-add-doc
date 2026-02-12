@@ -1,6 +1,6 @@
 {
   "name": "@visactor/vseed",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "type": "module",
   "exports": {
     ".": {
@@ -11,8 +11,11 @@
     }
   },
   "main": "./dist/cjs/index.cjs",
-  "types": "./dist/esm/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "browser": "./dist/umd/index.js",
   "unpkg": "./dist/umd/index.js",
+  "jsdelivr": "./dist/umd/index.js",
+  "types": "./dist/esm/index.d.ts",
   "files": [
     "dist"
   ],
