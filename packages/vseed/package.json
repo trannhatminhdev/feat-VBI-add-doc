@@ -11,8 +11,11 @@
     }
   },
   "main": "./dist/cjs/index.cjs",
-  "types": "./dist/esm/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "browser": "./dist/umd/index.js",
   "unpkg": "./dist/umd/index.js",
+  "jsdelivr": "./dist/umd/index.js",
+  "types": "./dist/esm/index.d.ts",
   "files": [
     "dist"
   ],
