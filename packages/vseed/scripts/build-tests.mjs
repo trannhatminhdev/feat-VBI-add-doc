@@ -6,10 +6,7 @@ const rootDir = path.resolve(__dirname, '../')
 
 async function generateTests() {
   try {
-    const testsRoots = [
-      path.join(rootDir, './tests/integrations'),
-      path.join(rootDir, './tests/examples')
-    ]
+    const testsRoots = [path.join(rootDir, './tests/integrations'), path.join(rootDir, './tests/examples')]
 
     // Helper: Recursively find all JSON files
     async function findAllJsonFiles(dir) {
@@ -18,7 +15,7 @@ async function generateTests() {
       for (const entry of list) {
         const fullPath = path.join(dir, entry.name)
         if (entry.isDirectory()) {
-           if (entry.name === '__snapshots__') {
+          if (entry.name === '__snapshots__') {
             await fs.rm(fullPath, { recursive: true, force: true })
             // console.log(`Removed directory: ${fullPath}`)
           } else {
@@ -59,16 +56,16 @@ async function generateTests() {
 
       // Get direct subdirectories (Groups)
       const groups = await fs.readdir(rootPath, { withFileTypes: true })
-      
+
       for (const group of groups) {
         if (!group.isDirectory()) continue
-        
+
         const groupPath = path.join(rootPath, group.name)
         const groupName = group.name
 
         // 1. Find all JSON files recursively in this group
         const jsonFiles = await findAllJsonFiles(groupPath)
-        
+
         if (jsonFiles.length === 0) continue
 
         // 2. Delete ALL existing .test.ts files in this group
@@ -143,7 +140,6 @@ describe('${groupName}', () => {
     }
 
     console.log('Test generation complete.')
-
   } catch (err) {
     console.error('Error generating tests:', err)
     process.exit(1)
