@@ -18,7 +18,7 @@ import { prepare } from './prepare'
 import { intl } from 'src/i18n'
 import { getColorIdMap, getColorItems } from './advanced'
 
-export class Builder implements VSeedBuilder {
+export class Builder<S extends Spec = Spec> implements VSeedBuilder {
   private _vseed: VSeed
   private _advancedVSeed: AdvancedVSeed | null = null
   private _spec: Spec | null = null
@@ -51,12 +51,12 @@ export class Builder implements VSeedBuilder {
   /**
    * @description 生成最终的图表配置 (Spec)。这是最常用的核心方法。如果配置中包含 dynamicFilter code，需要先调用 prepare()
    */
-  build = <T extends Spec>(): T => build(this) as T
+  build = <T = S>(): T => build(this) as T
 
   /**
    * @description 将中间层配置 (AdvancedVSeed) 转换为最终 Spec。仅当你需要深度定制中间层配置时使用
    */
-  buildSpec = (advanced: AdvancedVSeed): Spec => buildSpec(this, advanced)
+  buildSpec = <T = S>(advanced: AdvancedVSeed): T => buildSpec(this, advanced) as T
 
   /**
    * @description 生成中间层配置 (AdvancedVSeed)，即图表模版。比原始 VSeed 更详细，暴露了更多图表细节
@@ -149,7 +149,10 @@ export class Builder implements VSeedBuilder {
    */
   static getAdvancedPipeline = (chartType: ChartType) => {
     const customPipe = Builder._customAdvancedPipe[chartType] as AdvancedPipe
-    const pipeline = [...(Builder._advancedPipelineMap[chartType] as AdvancedPipeline)]
+    const originalPipeline = Builder._advancedPipelineMap[chartType] as AdvancedPipeline
+    if (!originalPipeline) return originalPipeline
+
+    const pipeline = [...originalPipeline]
     if (customPipe) {
       pipeline.push(customPipe)
     }
@@ -161,7 +164,10 @@ export class Builder implements VSeedBuilder {
    */
   static getSpecPipeline = (chartType: ChartType) => {
     const customPipe = Builder._customSpecPipe[chartType] as SpecPipe
-    const pipeline = [...(Builder._specPipelineMap[chartType] as SpecPipeline)]
+    const originalPipeline = Builder._specPipelineMap[chartType] as SpecPipeline
+    if (!originalPipeline) return originalPipeline
+
+    const pipeline = [...originalPipeline]
     if (customPipe) {
       pipeline.push(customPipe)
     }
@@ -181,7 +187,7 @@ export class Builder implements VSeedBuilder {
   /**
    * @description 静态工厂方法，用于便捷地创建 Builder 实例
    */
-  static from = (vseed: VSeed) => new Builder(vseed)
+  static from = <T extends Spec = Spec>(vseed: VSeed) => new Builder<T>(vseed)
 
   /**
    * @description [扩展方法] 注册新图表类型的模版构建管线

@@ -1,7 +1,14 @@
-import { describe, test, expect } from 'vitest';
-import { VSeedBuilder } from 'src/types/builder/builder';
+import { describe, test, expect, beforeAll } from 'vitest';
+import { VSeedBuilder,  } from 'src/types/builder/builder';
+import { Builder } from 'src/builder';
+import { registerAll } from 'src/builder/register/all';
+import type { PivotChartConstructorOptions } from '@visactor/vtable';
 
 describe('VSeedBuilder', () => {
+  beforeAll(() => {
+    registerAll();
+  });
+
   test('should be defined', () => {
     expect(VSeedBuilder).toBeDefined();
   });
@@ -13,6 +20,7 @@ describe('VSeedBuilder', () => {
       buildSpec = () => ({}) as any;
       getColorItems = () => [];
       getColorIdMap = () => ({});
+      prepare = async () => {};
       
       private _spec: any = null;
       get spec() { return this._spec; }
@@ -32,4 +40,23 @@ describe('VSeedBuilder', () => {
     expect(builder.build()).toBeDefined();
     expect(builder.getColorItems()).toEqual([]);
   });
+
+  test('spec chart type as const', () => {
+    const testVseed = { chartType: 'table' as const, dataset: [{a:1}] } 
+    const testSpec = Builder.from(testVseed).build()
+    expect(testSpec).toBeDefined()
+  })
+
+  test('spec chart template', () => {
+    const testVseed = { 
+      chartType: 'column' as const,
+      dataset: [{ a: 'test', b: 2 }], 
+      dimension:[{ id: 'a', encoding: 'row' }],
+      measures: [{ id: 'b'}]
+    } 
+    const testSpec1 = Builder.from<PivotChartConstructorOptions>(testVseed).build()
+    const testSpec2 = Builder.from(testVseed).build<PivotChartConstructorOptions>()
+    expect(testSpec1).toBeDefined()
+    expect(testSpec2).toBeDefined()
+  })
 });
