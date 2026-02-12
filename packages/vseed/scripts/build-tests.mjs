@@ -6,96 +6,147 @@ const rootDir = path.resolve(__dirname, '../')
 
 async function generateTests() {
   try {
-    const testsDir = path.join(rootDir, './tests/integrations')
-    const examplesDir = path.join(rootDir, './tests/examples')
+    const testsRoots = [
+      path.join(rootDir, './tests/integrations'),
+      path.join(rootDir, './tests/examples')
+    ]
 
-    // 递归查找所有JSON文件的函数
+    // Helper: Recursively find all JSON files
     async function findAllJsonFiles(dir) {
+      let results = []
+      const list = await fs.readdir(dir, { withFileTypes: true })
+      for (const entry of list) {
+        const fullPath = path.join(dir, entry.name)
+        if (entry.isDirectory()) {
+           if (entry.name === '__snapshots__') {
+            await fs.rm(fullPath, { recursive: true, force: true })
+            // console.log(`Removed directory: ${fullPath}`)
+          } else {
+            results = results.concat(await findAllJsonFiles(fullPath))
+          }
+        } else if (entry.isFile() && entry.name.endsWith('.json') && entry.name !== 'tsconfig.json') {
+          results.push(fullPath)
+        }
+      }
+      return results
+    }
+
+    // Helper: Recursively delete all .test.ts files
+    async function deleteAllTestFiles(dir) {
+      const list = await fs.readdir(dir, { withFileTypes: true })
+      for (const entry of list) {
+        const fullPath = path.join(dir, entry.name)
+        if (entry.isDirectory()) {
+          await deleteAllTestFiles(fullPath)
+        } else if (entry.isFile() && entry.name.endsWith('.test.ts')) {
+          await fs.unlink(fullPath)
+          // console.log(`Deleted: ${fullPath}`)
+        }
+      }
+    }
+
+    // Process each root directory (integrations, examples)
+    for (const rootPath of testsRoots) {
       if (
         !(await fs
-          .access(dir)
+          .access(rootPath)
           .then(() => true)
           .catch(() => false))
       ) {
-        console.warn(`Directory not found: ${dir}`)
-        return []
+        console.warn(`Directory not found: ${rootPath}`)
+        continue
       }
 
-      const jsonFiles = []
-      const entries = await fs.readdir(dir, { withFileTypes: true })
+      // Get direct subdirectories (Groups)
+      const groups = await fs.readdir(rootPath, { withFileTypes: true })
+      
+      for (const group of groups) {
+        if (!group.isDirectory()) continue
+        
+        const groupPath = path.join(rootPath, group.name)
+        const groupName = group.name
 
-      for (const entry of entries) {
-        const fullPath = path.join(dir, entry.name)
+        // 1. Find all JSON files recursively in this group
+        const jsonFiles = await findAllJsonFiles(groupPath)
+        
+        if (jsonFiles.length === 0) continue
 
-        if (entry.isDirectory() && entry.name === '__snapshots__') {
-          // 删除残留的 __snapshots__ 目录
-          await fs.rmdir(fullPath, { recursive: true })
-          console.log(`Removed directory: ${fullPath}`)
-        } else if (entry.isDirectory()) {
-          // 递归处理子目录
-          const subFiles = await findAllJsonFiles(fullPath)
-          jsonFiles.push(...subFiles)
-        } else if (entry.isFile() && entry.name.endsWith('.json') && entry.name !== 'tsconfig.json') {
-          jsonFiles.push(fullPath)
-        }
+        // 2. Delete ALL existing .test.ts files in this group
+        await deleteAllTestFiles(groupPath)
+
+        // 3. Generate ONE test file for the group
+        await generateGroupTestFile(groupPath, groupName, jsonFiles)
       }
-
-      return jsonFiles
     }
 
-    // 获取所有JSON文件
-    const integrationFiles = await findAllJsonFiles(testsDir)
-    const exampleFiles = await findAllJsonFiles(examplesDir)
-    const allJsonFiles = [...integrationFiles, ...exampleFiles]
-    console.log(`Found ${allJsonFiles.length} JSON files to process`)
+    async function generateGroupTestFile(dir, groupName, jsonFiles) {
+      // Sort files to ensure deterministic order
+      jsonFiles.sort()
 
-    // 处理每个JSON文件
-    for (const jsonPath of allJsonFiles) {
-      const testPath = jsonPath.replace('.json', '.test.ts')
-      const testName = path.basename(jsonPath, '.json')
-      const relativeJsonPath = path.relative(path.dirname(testPath), jsonPath)
+      const imports = jsonFiles
+        .map((file, index) => {
+          // Calculate relative path from group directory to json file
+          const relativePath = path.relative(dir, file)
+          // Ensure path starts with ./ if it's in the same directory or subdirectory
+          const importPath = relativePath.startsWith('.') ? relativePath : `./${relativePath}`
+          return `import config_${index} from '${importPath}'`
+        })
+        .join('\n')
 
-      try {
-        await fs.unlink(testPath)
-        console.log(`Removed existing test file: ${testPath}`)
-      } catch (error) {
-        if (error.code !== 'ENOENT') {
-          throw error
-        }
-      }
+      const cases = jsonFiles
+        .map((file, index) => {
+          // Use a unique name for the test case, e.g., relative path without extension
+          const relativePath = path.relative(dir, file)
+          const name = relativePath.replace(/\.json$/, '')
+          return `{ name: '${name}', vseed: config_${index} }`
+        })
+        .join(',\n  ')
 
       const testContent = `import type { VSeed } from '@visactor/vseed'
 import { Builder, registerAll } from '@visactor/vseed'
-import vseedConfig from './${relativeJsonPath}'
+${imports}
 
-test('${testName}', () => {
-  registerAll()
-  const { vseed } = vseedConfig
-  const builder = Builder.from(vseed as VSeed)
-  const advanced = builder.buildAdvanced()
-  
-  expect(advanced).toBeDefined()
-  expect(advanced).not.toBeNull()
-  
-  const spec = builder.buildSpec(advanced!)
-  
-  expect(spec).toBeDefined()
-  expect(spec).not.toBeNull()
-  
-  // Verify builder methods return valid results
-  expect(builder.getColorIdMap()).toBeDefined()
-  expect(builder.getColorItems()).toBeDefined()
-  expect(Builder.getAdvancedPipeline(builder.vseed.chartType)).toBeDefined()
-  expect(Builder.getSpecPipeline(builder.vseed.chartType)).toBeDefined()
-  expect(Builder.getTheme(builder.vseed.theme)).toBeDefined()
-  expect(Builder.getThemeMap()).toBeDefined()
+const cases = [
+  ${cases}
+]
+
+describe('${groupName}', () => {
+  cases.forEach(({ name, vseed }) => {
+    test(name, () => {
+      registerAll()
+      const { vseed: vseedConfig } = vseed as { vseed: unknown }
+      const builder = Builder.from(vseedConfig as VSeed)
+      const advanced = builder.buildAdvanced()
+      
+      expect(advanced).toBeDefined()
+      expect(advanced).not.toBeNull()
+      
+      const spec = builder.buildSpec(advanced!)
+      
+      expect(spec).toBeDefined()
+      expect(spec).not.toBeNull()
+      
+      // Verify builder methods return valid results
+      expect(builder.getColorIdMap()).toBeDefined()
+      expect(builder.getColorItems()).toBeDefined()
+      expect(Builder.getAdvancedPipeline(builder.vseed.chartType)).toBeDefined()
+      expect(Builder.getSpecPipeline(builder.vseed.chartType)).toBeDefined()
+      expect(Builder.getTheme(builder.vseed.theme)).toBeDefined()
+      expect(Builder.getThemeMap()).toBeDefined()
+    });
+  });
 });
 `
-      await fs.writeFile(testPath, testContent)
-      console.log(`Generated test file: ${testPath}`)
+      const testFilePath = path.join(dir, `${groupName}.test.ts`)
+      await fs.writeFile(testFilePath, testContent)
+      console.log(`Generated aggregated test file: ${testFilePath}`)
     }
+
+    console.log('Test generation complete.')
+
   } catch (err) {
     console.error('Error generating tests:', err)
+    process.exit(1)
   }
 }
 
