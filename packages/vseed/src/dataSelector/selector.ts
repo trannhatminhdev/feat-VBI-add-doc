@@ -1,13 +1,13 @@
 import type { Datum } from 'src/types'
 import type {
   ChartDynamicFilter,
-  ChartDynamicFilterRes,
+  PartialDatumRes,
   DimensionSelector,
   MeasureSelector,
   PartialDatumSelector,
   Selector,
   Selectors,
-  TableDynamicFilterRes,
+  RowWithFieldRes,
   TableDynamicFilter,
   ValueSelector,
   ValueDynamicFilter,
@@ -17,7 +17,7 @@ import { executeFilterCode } from 'src/pipeline/utils/sandbox'
 import { InnerRowIndex } from 'src/dataReshape'
 
 export type DynamicFilter = TableDynamicFilter | ChartDynamicFilter | ValueDynamicFilter
-export type DynamicFilterResult = TableDynamicFilterRes[] | ChartDynamicFilterRes[] | number | string
+export type DynamicFilterResult = RowWithFieldRes[] | PartialDatumRes[] | number | string
 
 /**
  * 判断两个数字是否“近似相等”
@@ -199,7 +199,7 @@ export const selectByValue = (selector: ValueSelector, datum: Datum) => {
   return Object.values(datum).some((v) => v === selector)
 }
 
-const matchesCellSelector = (cell: Datum, filterRes: TableDynamicFilterRes) => {
+const matchesCellSelector = (cell: Datum, filterRes: RowWithFieldRes) => {
   if (filterRes[InnerRowIndex] !== cell[InnerRowIndex]) return false
   return filterRes.field === '*' || Object.keys(cell).includes(filterRes.field)
 }
@@ -387,7 +387,7 @@ export const matchDynamicFilterResult = (
 
   if (selectorType === 'table') {
     return result.some((item) => {
-      return matchesCellSelector(datum, item as TableDynamicFilterRes)
+      return matchesCellSelector(datum, item as RowWithFieldRes)
     })
   }
   return result.some((item) => {

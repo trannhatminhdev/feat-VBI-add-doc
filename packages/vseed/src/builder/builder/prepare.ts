@@ -3,7 +3,6 @@ import { InnerRowIndex } from 'src/dataReshape'
 import type { Builder } from './builder'
 import { executeDynamicFilter, isDynamicFilter } from 'src/dataSelector/selector'
 import type { DynamicFilter } from 'src/dataSelector/selector'
-import type { ChartDynamicFilterRes, TableDynamicFilterRes } from 'src/types/dataSelector'
 
 /**
  * 生成完整的 keyPath 配置
@@ -121,7 +120,7 @@ const executeDynamicFiltersAndInject = async (filters: DynamicFilter[], dataset:
       filter.result = {
         success,
         error,
-        data: data as TableDynamicFilterRes[] | ChartDynamicFilterRes[],
+        data: data as any,
       }
     }),
   )

@@ -107,12 +107,30 @@ export type AreaSelectors = Array<AreaSelector>
 
 export type Selectors = Array<Selector>
 
-export type TableDynamicFilterRes = {
+/**
+ * 行索引与字段组合的数据结构
+ * @description 用于表示动态筛选器返回的结果，指向原始数据中特定行的特定字段
+ */
+export type RowWithFieldRes = {
+  /**
+   * 原始数据项的行索引
+   * @description 从 0 开始计数，对应数据源中数据项的位置
+   */
   __row_index: number
+  /**
+   * 字段名称
+   * @description
+   * - 具体字段名：表示该行中的某个特定字段
+   * - '*'：表示该行的所有字段（整行）
+   */
   field: string | '*'
 }
 
-export type ChartDynamicFilterRes = Datum
+/**
+ * 部分数据项结果
+ * @description 用于表示动态筛选器返回的部分数据项
+ */
+export type PartialDatumRes = Datum
 
 export type DynamicFilterExecutionResult<T> = {
   success: boolean
@@ -238,7 +256,7 @@ export interface TableDynamicFilter {
    * 动态筛选执行结果（运行期字段）
    * @description prepare() 阶段写入，运行时只读
    */
-  result?: DynamicFilterExecutionResult<TableDynamicFilterRes>
+  result?: DynamicFilterExecutionResult<RowWithFieldRes>
 }
 
 /**
@@ -259,46 +277,46 @@ export interface ChartDynamicFilter {
    * AI 生成的 JavaScript 筛选代码
    * @description
    * - 只能使用内置工具函数（通过 _ 或 R 访问）
-   * - 输入参数: data (数组)
-   * - 必须返回部分数据项数组: Array<{ [dimField]: value }>
-   * - 返回的对象包含能唯一标识图表标记的维度字段组合
+   * - 输入参数: data (数组)，每个 item 包含 __row_index 字段表示行号
+   * - 必须返回行索引与字段组合的数组: Array<{ __row_index: number, field: string }>
+   * - __row_index 表示原始数据项的行号，field 表示需要高亮的字段
    * - 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
    *
-   * @example 高亮销售额大于1000的柱子
+   * @example 高亮销售额大于1000的数据项的 sales 字段
    * ```javascript
    * const filtered = _.filter(data, item => item.sales > 1000);
-   * // 假设柱子由 product 和 area 两个维度唯一标识
    * return _.map(filtered, item => ({
-   *   product: item.product,
-   *   area: item.area
+   *   __row_index: item.__row_index,
+   *   field: 'sales'
    * }));
    * ```
    *
-   * @example 高亮每个区域中利润率最高的柱子
+   * @example 高亮每个区域中利润率最高的数据项
    * ```javascript
    * const grouped = _.groupBy(data, 'area');
-   * const result = _.map(grouped, group => {
-   *   const maxProfitRateItem = _.maxBy(group, item =>
-   *     item.profit / item.sales
-   *   );
-   *   return {
-   *     product: maxProfitRateItem.product,
-   *     area: maxProfitRateItem.area
-   *   };
-   * });
-   * return result;
+   * const maxItems = _.map(grouped, group =>
+   *   _.maxBy(group, item => item.profit / item.sales)
+   * );
+   * return _.flatten(
+   *   _.map(maxItems, item => [
+   *     { __row_index: item.__row_index, field: 'product' },
+   *     { __row_index: item.__row_index, field: 'profit' }
+   *   ])
+   * );
    * ```
    *
-   * @example 高亮多条件筛选
+   * @example 高亮多条件筛选的数据项
    * ```javascript
    * const filtered = _.filter(data, item => {
    *   const profitRate = item.profit / item.sales;
    *   return profitRate > 0.2 && item.sales > 5000;
    * });
-   * return _.map(filtered, item => ({
-   *   product: item.product,
-   *   region: item.region
-   * }));
+   * return _.flatten(
+   *   _.map(filtered, item => [
+   *     { __row_index: item.__row_index, field: 'product' },
+   *     { __row_index: item.__row_index, field: 'sales' }
+   *   ])
+   * );
    * ```
    */
   code: string
@@ -312,7 +330,7 @@ export interface ChartDynamicFilter {
    * 动态筛选执行结果（运行期字段）
    * @description prepare() 阶段写入，运行时只读
    */
-  result?: DynamicFilterExecutionResult<ChartDynamicFilterRes>
+  result?: DynamicFilterExecutionResult<RowWithFieldRes>
 }
 
 export interface ValueDynamicFilter {
@@ -427,7 +445,7 @@ export const zChartDynamicFilter = z.object({
   result: z
     .object({
       success: z.boolean(),
-      data: z.array(z.record(z.string(), z.any())).optional(),
+      data: z.array(zCellSelector).optional(),
     })
     .optional(),
 })
