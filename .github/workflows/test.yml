@@ -22,7 +22,7 @@ jobs:
         run: cp .env.example .env
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@master # v4.2.0
+        uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # v4.2.0
         with:
           cache: true
 
@@ -49,7 +49,7 @@ jobs:
         run: cp .env.example .env
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@master # v4.2.0
+        uses: pnpm/action-setup@1e1c8eafbd745f64b1ef30a7d7ed7965034c486c # v4.2.0
         with:
           cache: true
 
