@@ -4,33 +4,30 @@ import type { Builder } from './builder'
 import { executeDynamicFilter, isDynamicFilter } from 'src/dataSelector/selector'
 import type { DynamicFilter } from 'src/dataSelector/selector'
 
+/** 支持动态过滤的keyPath 白名单 */
+const dynamicFilterConfig: Partial<Record<ChartType, string[]>> = {
+  table: ['bodyCellStyle'],
+  pivotTable: ['bodyCellStyle'],
+  bar: ['barStyle', 'annotationPoint', 'annotationVerticalLine'],
+  barParallel: ['barStyle', 'annotationPoint', 'annotationVerticalLine'],
+  barPercent: ['barStyle', 'annotationPoint', 'annotationVerticalLine'],
+  column: ['barStyle', 'annotationPoint', 'annotationHorizontalLine'],
+  columnParallel: ['barStyle', 'annotationPoint', 'annotationHorizontalLine'],
+  columnPercent: ['barStyle', 'annotationPoint', 'annotationHorizontalLine'],
+  line: ['lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
+  area: ['lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
+  areaPercent: ['lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
+  dualAxis: ['barStyle', 'lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
+  scatter: ['pointStyle', 'annotationPoint', 'annotationHorizontalLine', 'annotationVerticalLine'],
+  histogram: ['annotationHorizontalLine'],
+  boxPlot: ['annotationHorizontalLine'],
+}
+
 /**
  * 生成完整的 keyPath 配置
  * 对每个基路径生成数组和非数组两种形式
  */
 const generateDynamicFilterKeyPaths = (): Partial<Record<ChartType, string[]>> => {
-  /**
-   * 动态筛选器基础配置 - 配置每个图表类型中可能包含动态筛选器的字段
-   * 生成时会自动添加 [] 和非 [] 两种形式
-   */
-  const dynamicFilterConfig: Partial<Record<ChartType, string[]>> = {
-    table: ['bodyCellStyle'],
-    pivotTable: ['bodyCellStyle'],
-    bar: ['barStyle', 'annotationPoint', 'annotationVerticalLine'],
-    barParallel: ['barStyle', 'annotationPoint', 'annotationVerticalLine'],
-    barPercent: ['barStyle', 'annotationPoint', 'annotationVerticalLine'],
-    column: ['barStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    columnParallel: ['barStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    columnPercent: ['barStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    line: ['lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    area: ['lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    areaPercent: ['lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    dualAxis: ['barStyle', 'lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    scatter: ['pointStyle', 'annotationPoint', 'annotationHorizontalLine', 'annotationVerticalLine'],
-    histogram: ['annotationHorizontalLine'],
-    boxPlot: ['annotationHorizontalLine'],
-  }
-
   const result: Partial<Record<ChartType, string[]>> = {}
   for (const [chartType, baseKeyPaths] of Object.entries(dynamicFilterConfig)) {
     result[chartType as ChartType] = baseKeyPaths.flatMap((basePath) => [
@@ -47,25 +44,7 @@ const dynamicFilterKeyPathsByChartType = generateDynamicFilterKeyPaths()
  * 提取图表类型对应的基础路径（用于深拷贝）
  */
 const getBasePathsForDeepClone = (chartType: ChartType): string[] => {
-  const config: Partial<Record<ChartType, string[]>> = {
-    table: ['bodyCellStyle'],
-    pivotTable: ['bodyCellStyle'],
-    bar: ['barStyle', 'annotationPoint', 'annotationVerticalLine'],
-    barParallel: ['barStyle', 'annotationPoint', 'annotationVerticalLine'],
-    barPercent: ['barStyle', 'annotationPoint', 'annotationVerticalLine'],
-    column: ['barStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    columnParallel: ['barStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    columnPercent: ['barStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    line: ['lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    area: ['lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    areaPercent: ['lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    dualAxis: ['barStyle', 'lineStyle', 'pointStyle', 'annotationPoint', 'annotationHorizontalLine'],
-    scatter: ['pointStyle', 'annotationPoint', 'annotationHorizontalLine', 'annotationVerticalLine'],
-    histogram: ['annotationHorizontalLine'],
-    boxPlot: ['annotationHorizontalLine'],
-  }
-
-  return config[chartType] ?? []
+  return dynamicFilterConfig[chartType] ?? []
 }
 
 const parseKeyPath = (path: string) => {
