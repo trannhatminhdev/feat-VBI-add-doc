@@ -30,6 +30,7 @@ export const defaultMeasures: AdvancedPipe = (advancedVSeed, context) => {
   }, {})
   const defaultMeasures = Object.keys(sample)
     .filter((key) => {
+      // InnerRowIndex 是prepare阶段 内部注入的行索引字段，不应该作为 measure
       return (
         key !== InnerRowIndex &&
         top100dataset.some((item) => typeof item[key] === 'number') &&
