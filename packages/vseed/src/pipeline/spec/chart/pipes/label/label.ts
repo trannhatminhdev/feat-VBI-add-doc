@@ -14,7 +14,7 @@ import type {
   VChartSpecPipe,
 } from 'src/types'
 import { isNumber, merge, uniqueBy } from 'remeda'
-import { selector } from 'src/dataSelector'
+import { selector, selectorWithDynamicFilter } from 'src/dataSelector'
 import { MeasureId } from 'src/dataReshape/constant'
 
 export const label: VChartSpecPipe = (spec, context) => {
@@ -114,7 +114,13 @@ export const buildLabel = (
     visible: enable,
     dataFilter: (data: Datum[]) => {
       return data.filter((entry) => {
-        return entry.data?.[DATUM_HIDE_KEY] !== true && selector(entry.data as Datum, label.selector, 'Or')
+        if (entry.data?.[DATUM_HIDE_KEY]) {
+          return false
+        }
+        const shouldApply = label.dynamicFilter
+          ? selectorWithDynamicFilter(entry.data as Datum, label.dynamicFilter, label.selector)
+          : selector(entry.data as Datum, label.selector, 'Or')
+        return shouldApply
       })
     },
     formatMethod: (_: unknown, datum: Datum) => {

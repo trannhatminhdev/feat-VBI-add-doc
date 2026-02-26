@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { zNumFormat } from '../../format'
-import { zSelector, zSelectors } from 'src/types/dataSelector'
+import { zChartDynamicFilter, zSelector, zSelectors } from 'src/types/dataSelector'
 
 export const zLabel = z.object({
   enable: z.boolean().nullish(),
@@ -18,4 +18,5 @@ export const zLabel = z.object({
   labelPosition: z.string().nullish(),
   labelOverlap: z.boolean().nullish(),
   selector: z.union([zSelector, zSelectors]).nullish(),
+  dynamicFilter: zChartDynamicFilter.optional(),
 })
