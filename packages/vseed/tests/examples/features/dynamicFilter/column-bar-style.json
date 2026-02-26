@@ -35,7 +35,36 @@
         "count": 50
       }
     ],
-    "barStyle": {
+    "barStyle": [
+      { "barColorOpacity": 0.2, "barBorderWidth": 0 },
+      {
+        "dynamicFilter": {
+          "type": "row-with-field",
+          "code": "\n        return data.filter(item => item.profit / item.sales > 0.5).map(v => ({\n          __row_index: v.__row_index,\n          field: 'profit'\n        }))\n        ",
+          "result": {
+            "success": true,
+            "data": [
+              {
+                "__row_index": 0,
+                "field": "profit"
+              },
+              {
+                "__row_index": 3,
+                "field": "profit"
+              }
+            ]
+          }
+        },
+        "barColor": "lightpink",
+        "barColorOpacity": 0.8,
+        "barBorderColor": "lightpink",
+        "barBorderWidth": 4,
+        "barBorderStyle": "dashed",
+        "barRadius": [8, 8, 0, 0]
+      }
+    ],
+    "label": {
+      "enable": true,
       "dynamicFilter": {
         "type": "row-with-field",
         "code": "\n        return data.filter(item => item.profit / item.sales > 0.5).map(v => ({\n          __row_index: v.__row_index,\n          field: 'profit'\n        }))\n        ",
@@ -52,13 +81,7 @@
             }
           ]
         }
-      },
-      "barColor": "lightpink",
-      "barColorOpacity": 0.8,
-      "barBorderColor": "lightpink",
-      "barBorderWidth": 4,
-      "barBorderStyle": "dashed",
-      "barRadius": [8, 8, 0, 0]
+      }
     },
     "dimensions": [
       {
