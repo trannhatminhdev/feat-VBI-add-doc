@@ -40,6 +40,6 @@
         }
       }
     ],
-    "totalType": "sum"
+    "totals": "sum"
   }
 }

@@ -116,7 +116,7 @@ export interface Table {
    * - 'count': 显示计数行
    * @example 'sum'
    */
-  totalType?: TotalType
+  totals?: TotalType
 
   /**
    * @default light 默认为亮色主题

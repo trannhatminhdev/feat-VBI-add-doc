@@ -33,7 +33,7 @@ export const zTable = z.object({
   selectedBackgroundColor: z.string().nullish(),
   bodyCellStyle: z.array(zBodyCellStyle).or(zBodyCellStyle).nullish(),
 
-  totalType: zTotalType.nullish(),
+  totals: zTotalType.nullish(),
 
   theme: zTheme.nullish(),
   locale: zLocale.nullish(),

@@ -1,6 +1,7 @@
-import type { ColumnsDefine, ListTableConstructorOptions } from '@visactor/vtable'
+import type { ListTableConstructorOptions } from '@visactor/vtable'
 import { createFormatterByMeasure, isMeasure } from 'src/pipeline/utils'
 import type { MeasureGroup, Measure, MeasureTree, ListTableSpecPipe, Datum } from 'src/types'
+import { treeTreeToColumns } from './utils'
 
 export const measureTreeToColumns: ListTableSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
@@ -32,39 +33,4 @@ const fieldFormat = (node: Measure) => {
     const value = datum[id] as number | string | undefined
     return formatter(value)
   }
-}
-const treeTreeToColumns = <
-  T extends { id: string; alias?: string },
-  U extends { id: string; alias?: string; children?: (T | U)[] },
->(
-  tree: (T | U)[],
-  callback?: (node: T | U) => object,
-): ColumnsDefine[] => {
-  const result = tree.map((item) => {
-    if ('children' in item && Array.isArray(item.children)) {
-      const groupNode = item as unknown as U
-      const field = groupNode.id
-      const title = groupNode.alias ?? groupNode.id
-      const props = callback?.(groupNode) || {}
-      // group
-      return {
-        field,
-        title,
-        columns: treeTreeToColumns(item.children, callback),
-        ...props,
-      }
-    } else {
-      const field = item.id
-      const title = item.alias ?? item.id
-      const props = callback?.(item) || {}
-      // leaf
-      return {
-        field,
-        title,
-        ...props,
-      }
-    }
-  }) as unknown as ColumnsDefine[]
-
-  return result || []
 }

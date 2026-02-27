@@ -1,6 +1,7 @@
 import { intl } from 'src/i18n'
-import { createFormatterByMeasure } from 'src/pipeline/utils'
+import { createFormatterByMeasure, isMeasure, findTreeNodesBy } from 'src/pipeline/utils'
 import type { ListTableSpecPipe, Measure } from 'src/types'
+import { extractLeafIds } from './utils'
 
 /**
  * @description 为表格列添加汇总行配置
@@ -10,9 +11,9 @@ import type { ListTableSpecPipe, Measure } from 'src/types'
  */
 export const columnsAggregation: ListTableSpecPipe = (spec, context) => {
   const { vseed, advancedVSeed } = context
-  const { totalType } = vseed as any
+  const { totals } = vseed as any
 
-  if (!totalType) {
+  if (!totals) {
     return spec
   }
 
@@ -25,7 +26,7 @@ export const columnsAggregation: ListTableSpecPipe = (spec, context) => {
     count: intl.i18n`计数`,
   }
 
-  const totalLabel = totalLabelMap[totalType] || intl.i18n`合计`
+  const totalLabel = totalLabelMap[totals] || intl.i18n`合计`
 
   // 映射到 VTable 的聚合类型
   const vtableAggregationMap: Record<string, string> = {
@@ -36,17 +37,20 @@ export const columnsAggregation: ListTableSpecPipe = (spec, context) => {
     count: 'COUNT',
   }
 
-  const vtableAggregationType = vtableAggregationMap[totalType] || 'SUM'
+  const vtableAggregationType = vtableAggregationMap[totals] || 'SUM'
 
-  // 普通表格的 dimensionTree 和 measureTree 是扁平结构，直接取 id
-  const dimensionIds = new Set((advancedVSeed.dimensionTree || []).map((d) => d.id))
+  // 从树形结构中提取所有叶子节点的ID
+  const dimensionIds = extractLeafIds(advancedVSeed.dimensionTree || [])
   const measureTree = advancedVSeed.measureTree || []
-  const measureIds = new Set(measureTree.map((m) => m.id))
+  const measureIds = extractLeafIds(measureTree)
 
   // 创建 measure id 到 measure 对象的映射
+  const leafMeasures = findTreeNodesBy(measureTree, () => true)
   const measureMap = new Map<string, Measure>()
-  measureTree.forEach((measure) => {
-    measureMap.set(measure.id, measure as Measure)
+  leafMeasures.forEach((node) => {
+    if (isMeasure(node)) {
+      measureMap.set(node.id, node as Measure)
+    }
   })
 
   let isFirstDimensionColumn = true

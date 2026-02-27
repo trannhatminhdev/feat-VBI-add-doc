@@ -85,12 +85,13 @@ import config_81 from './scatter/example-3.json'
 import config_82 from './sunburst/basic.json'
 import config_83 from './sunburst/combination.json'
 import config_84 from './sunburst/encoding.json'
-import config_85 from './table/basic.json'
-import config_86 from './table/example-2.json'
-import config_87 from './table/example-3.json'
-import config_88 from './treeMap/basic.json'
-import config_89 from './treeMap/combination.json'
-import config_90 from './treeMap/encoding.json'
+import config_85 from './table/aggregation-sum.json'
+import config_86 from './table/basic.json'
+import config_87 from './table/example-2.json'
+import config_88 from './table/example-3.json'
+import config_89 from './treeMap/basic.json'
+import config_90 from './treeMap/combination.json'
+import config_91 from './treeMap/encoding.json'
 
 const cases = [
   { name: 'area/basic', vseed: config_0 },
@@ -178,12 +179,13 @@ const cases = [
   { name: 'sunburst/basic', vseed: config_82 },
   { name: 'sunburst/combination', vseed: config_83 },
   { name: 'sunburst/encoding', vseed: config_84 },
-  { name: 'table/basic', vseed: config_85 },
-  { name: 'table/example-2', vseed: config_86 },
-  { name: 'table/example-3', vseed: config_87 },
-  { name: 'treeMap/basic', vseed: config_88 },
-  { name: 'treeMap/combination', vseed: config_89 },
-  { name: 'treeMap/encoding', vseed: config_90 }
+  { name: 'table/aggregation-sum', vseed: config_85 },
+  { name: 'table/basic', vseed: config_86 },
+  { name: 'table/example-2', vseed: config_87 },
+  { name: 'table/example-3', vseed: config_88 },
+  { name: 'treeMap/basic', vseed: config_89 },
+  { name: 'treeMap/combination', vseed: config_90 },
+  { name: 'treeMap/encoding', vseed: config_91 }
 ]
 
 describe('chartType', () => {
