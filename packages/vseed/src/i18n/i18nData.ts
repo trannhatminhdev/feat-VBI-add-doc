@@ -37,4 +37,12 @@ export const translateMap: TranslateRecordType = {
     'en-US': 'Lower Whisker',
     'zh-CN': '下边界',
   },
+  总计: {
+    'en-US': 'Total',
+    'zh-CN': '总计',
+  },
+  小计: {
+    'en-US': 'Sub Total',
+    'zh-CN': '小计',
+  },
 }
