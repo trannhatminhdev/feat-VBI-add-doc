@@ -1,0 +1,45 @@
+{
+  "name": "Table with Sum Aggregation",
+  "description": "A table with sum aggregation at the bottom.",
+  "vseed": {
+    "chartType": "table",
+    "dataset": [
+      {
+        "product": "Product A",
+        "sales": 1000,
+        "profit": 200
+      },
+      {
+        "product": "Product B",
+        "sales": 1500,
+        "profit": 300
+      },
+      {
+        "product": "Product C",
+        "sales": 800,
+        "profit": 150
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "product",
+        "alias": "产品名称"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "alias": "销售额"
+      },
+      {
+        "id": "profit",
+        "alias": "利润",
+        "numFormat": {
+          "type": "number",
+          "fractionDigits": 1
+        }
+      }
+    ],
+    "totalType": "sum"
+  }
+}
