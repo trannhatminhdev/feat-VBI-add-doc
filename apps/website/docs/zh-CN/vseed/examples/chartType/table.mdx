@@ -1,5 +1,59 @@
 # Table
 
+## Table with Sum Aggregation
+
+A table with sum aggregation at the bottom.
+
+```tsx preview
+import { VSeedRender } from '@components'
+
+export default () => {
+  const vseedConfig = {
+    chartType: 'table',
+    dataset: [
+      {
+        product: 'Product A',
+        sales: 1000,
+        profit: 200,
+      },
+      {
+        product: 'Product B',
+        sales: 1500,
+        profit: 300,
+      },
+      {
+        product: 'Product C',
+        sales: 800,
+        profit: 150,
+      },
+    ],
+    dimensions: [
+      {
+        id: 'product',
+        alias: '产品名称',
+      },
+    ],
+    measures: [
+      {
+        id: 'sales',
+        alias: '销售额',
+      },
+      {
+        id: 'profit',
+        alias: '利润',
+        numFormat: {
+          type: 'number',
+          fractionDigits: 1,
+        },
+      },
+    ],
+    totalType: 'sum',
+  }
+
+  return <VSeedRender vseed={vseedConfig} />
+}
+```
+
 ## Basic Table
 
 A basic table for displaying raw data in rows and columns.

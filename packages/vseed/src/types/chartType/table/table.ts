@@ -1,7 +1,6 @@
 import { type Locale } from '../../i18n'
-import type { BodyCellStyle, DimensionTree, MeasureTree, Page } from '../../properties'
+import type { BodyCellStyle, DimensionTree, MeasureTree, Page, TotalType } from '../../properties'
 import { type BackgroundColor, type Dataset, type Theme } from '../../properties'
-
 /**
  * @description 表格，适用于详细数据展示场景，行列分明，便于查看具体数值
  * 适用场景:
@@ -107,6 +106,17 @@ export interface Table {
    * @description 设置表格正文部分单元格的特殊样式
    */
   bodyCellStyle?: BodyCellStyle | BodyCellStyle[]
+
+  /**
+   * @description 显示汇总行的类型，仅对度量列生效
+   * - 'sum': 显示求和行
+   * - 'avg': 显示平均值行
+   * - 'max': 显示最大值行
+   * - 'min': 显示最小值行
+   * - 'count': 显示计数行
+   * @example 'sum'
+   */
+  totalType?: TotalType
 
   /**
    * @default light 默认为亮色主题
