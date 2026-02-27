@@ -83,6 +83,12 @@
         "alias": "类型",
         "encoding": "column"
       }
-    ]
+    ],
+    "totals": {
+      "column": {
+        "showGrandTotals": true,
+        "showSubTotals": true
+      }
+    }
   }
 }

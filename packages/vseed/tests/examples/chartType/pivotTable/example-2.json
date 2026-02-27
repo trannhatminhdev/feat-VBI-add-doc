@@ -83,6 +83,13 @@
         "alias": "类型",
         "encoding": "row"
       }
-    ]
+    ],
+    "totals": {
+      "row": {
+        "showGrandTotals": true,
+        "showSubTotals": true,
+        "subTotalsDimensions": ["date"]
+      }
+    }
   }
 }

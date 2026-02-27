@@ -154,6 +154,13 @@ export default () => {
         encoding: 'row',
       },
     ],
+    totals: {
+      row: {
+        showGrandTotals: true,
+        showSubTotals: true,
+        subTotalsDimensions: ['date'],
+      },
+    },
   }
 
   return <VSeedRender vseed={vseedConfig} />
@@ -251,6 +258,12 @@ export default () => {
         encoding: 'column',
       },
     ],
+    totals: {
+      column: {
+        showGrandTotals: true,
+        showSubTotals: true,
+      },
+    },
   }
 
   return <VSeedRender vseed={vseedConfig} />
