@@ -1046,6 +1046,21 @@ prepare() 阶段写入，运行时只读
 :::
 
 
+## indicatorsAsCol
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+指标是否作为列展示，当为 true 时指标在列方向展开，为 false 时在行方向展开
+
+:::
+
+**示例**
+true
+
+
+
+
 ## totals
 
 **Type:** `PivotTableTotals | undefined`
