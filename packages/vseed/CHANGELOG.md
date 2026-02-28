@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.7
+
+### Patch Changes
+
+- Support totals in table/pivotTable, support **MeaId** column encoding in pivotTable
+
 ## 0.4.6
 
 ### Patch Changes
