@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.7
+
+### Patch Changes
+
+- Remove dataReshape in pivotTable, support indicatorsAsCol also
+
 ## 0.4.6
 
 ### Patch Changes
