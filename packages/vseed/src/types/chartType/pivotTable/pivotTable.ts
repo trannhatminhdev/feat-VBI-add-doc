@@ -1,5 +1,5 @@
 import { type Locale } from '../../i18n'
-import type { BodyCellStyle, Page, TableDimension, TableMeasure } from '../../properties'
+import type { BodyCellStyle, Page, TableDimension, TableMeasure, PivotTableTotals } from '../../properties'
 import { type BackgroundColor, type Dataset, type Theme } from '../../properties'
 
 /**
@@ -110,6 +110,12 @@ export interface PivotTable {
    * @description 设置表格正文部分单元格的特殊样式
    */
   bodyCellStyle?: BodyCellStyle | BodyCellStyle[]
+
+  /**
+   * @description 透视表的总计和小计配置
+   * @example { row: { showGrandTotals: true, showSubTotals: true, subTotalsDimensions: ['category'] } }
+   */
+  totals?: PivotTableTotals
 
   /**
    * 图表的主题, 主题是优先级较低的功能配置, 包含所有图表类型共用的通用配置, 与单类图表类型共用的图表配置

@@ -37,4 +37,32 @@ export const translateMap: TranslateRecordType = {
     'en-US': 'Lower Whisker',
     'zh-CN': '下边界',
   },
+  总计: {
+    'en-US': 'Total',
+    'zh-CN': '总计',
+  },
+  小计: {
+    'en-US': 'Sub Total',
+    'zh-CN': '小计',
+  },
+  合计: {
+    'en-US': 'Total',
+    'zh-CN': '合计',
+  },
+  平均: {
+    'en-US': 'Average',
+    'zh-CN': '平均',
+  },
+  最大值: {
+    'en-US': 'Max',
+    'zh-CN': '最大值',
+  },
+  最小值: {
+    'en-US': 'Min',
+    'zh-CN': '最小值',
+  },
+  计数: {
+    'en-US': 'Count',
+    'zh-CN': '计数',
+  },
 }

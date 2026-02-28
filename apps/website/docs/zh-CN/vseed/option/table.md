@@ -995,7 +995,7 @@ same as operator
 
 #### result
 
-**Type:** `DynamicFilterExecutionResult<TableDynamicFilterRes> | undefined`
+**Type:** `DynamicFilterExecutionResult<RowWithFieldRes> | undefined`
 
 :::note{title=描述}
 动态筛选执行结果（运行期字段）
@@ -1063,6 +1063,45 @@ prepare() 阶段写入，运行时只读
 单元格边框线宽
 
 :::
+
+
+## totals
+
+**Type:** `TotalType | undefined`
+
+:::note{title=描述}
+显示汇总行的类型，仅对度量列生效
+
+\- 'sum': 显示求和行
+
+\- 'avg': 显示平均值行
+
+\- 'max': 显示最大值行
+
+\- 'min': 显示最小值行
+
+\- 'count': 显示计数行
+
+
+
+表格汇总行的类型
+
+\- 'sum': 求和
+
+\- 'avg': 平均值
+
+\- 'max': 最大值
+
+\- 'min': 最小值
+
+\- 'count': 计数
+
+:::
+
+**示例**
+'sum'
+
+
 
 
 ## theme

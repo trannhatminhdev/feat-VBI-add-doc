@@ -20,6 +20,7 @@ export const pivotTableConfig: AdvancedPipe = (advancedVSeed, context) => {
     'hoverHeaderInlineBackgroundColor',
     'selectedBorderColor',
     'selectedBackgroundColor',
+    'totals',
   ]) as Config['table']
 
   result.config = {

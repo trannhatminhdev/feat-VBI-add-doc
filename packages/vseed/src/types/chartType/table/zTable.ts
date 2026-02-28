@@ -1,8 +1,15 @@
 import { z } from 'zod'
 import { zLocale } from '../../i18n'
-import { zBackgroundColor, zBodyCellStyle, zDataset, zDimensions, zMeasureTree, zTheme } from '../../properties'
+import {
+  zBackgroundColor,
+  zBodyCellStyle,
+  zDataset,
+  zDimensions,
+  zMeasureTree,
+  zTheme,
+  zTotalType,
+} from '../../properties'
 import { zPage } from '../../properties/page'
-
 export const zTable = z.object({
   chartType: z.literal('table'),
   dataset: zDataset.nullish(),
@@ -25,6 +32,8 @@ export const zTable = z.object({
   selectedBorderColor: z.string().nullish(),
   selectedBackgroundColor: z.string().nullish(),
   bodyCellStyle: z.array(zBodyCellStyle).or(zBodyCellStyle).nullish(),
+
+  totals: zTotalType.nullish(),
 
   theme: zTheme.nullish(),
   locale: zLocale.nullish(),

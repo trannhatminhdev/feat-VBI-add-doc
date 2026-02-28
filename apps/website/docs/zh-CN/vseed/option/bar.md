@@ -979,6 +979,209 @@ same as operator
 
 :::
 
+### dynamicFilter
+
+**Type:** `ChartDynamicFilter | undefined`
+
+:::note{title=描述}
+动态筛选器（AI生成代码执行）
+
+
+
+通过 AI 生成的 JavaScript 代码实现复杂数据筛选逻辑
+
+
+
+核心能力:
+
+\- 支持任意复杂的数据筛选条件
+
+\- 使用 内置工具函数 进行数据操作
+
+\- 在浏览器环境中安全执行（Web Worker 沙箱）
+
+
+
+环境要求: 仅支持浏览器环境，Node.js 环境将使用 fallback
+
+
+
+注意: selector 和 dynamicFilter 不能同时使用，dynamicFilter 优先级更高
+
+
+
+图表动态筛选器配置
+
+
+
+通过 AI 生成的 JavaScript 代码实现图表标记（柱子、点等）的筛选
+
+:::
+
+
+#### type
+
+**Type:** `"row-with-field"`
+
+#### description
+
+**Type:** `string | undefined`
+
+:::note{title=描述}
+用户的筛选需求描述（自然语言）
+
+:::
+
+**示例**
+"高亮销售额大于1000的柱子"
+
+"高亮每个区域中利润率最高的柱子"
+
+
+
+#### code
+
+**Type:** `string`
+
+:::note{title=描述}
+AI 生成的 JavaScript 筛选代码
+
+
+
+\- 只能使用内置工具函数（通过 _ 或 R 访问）
+
+\- 输入参数: data (数组)，每个 item 包含 __row_index 字段表示行号
+
+\- 必须返回行索引与字段组合的数组: Array<{ __row_index: number, field: string }>
+
+\- __row_index 表示原始数据项的行号，field 表示需要高亮的字段
+
+\- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
+
+:::
+
+**示例**
+高亮销售额大于1000的数据项的 sales 字段
+```javascript
+const filtered = _.filter(data, item => item.sales > 1000);
+return _.map(filtered, item => ({
+__row_index: item.__row_index,
+field: 'sales'
+}));
+```
+
+高亮每个区域中利润率最高的数据项
+```javascript
+const grouped = _.groupBy(data, 'area');
+const maxItems = _.map(grouped, group =>
+_.maxBy(group, item => item.profit / item.sales)
+);
+return _.flatten(
+_.map(maxItems, item => [
+{ __row_index: item.__row_index, field: 'product' },
+{ __row_index: item.__row_index, field: 'profit' }
+])
+);
+```
+
+高亮多条件筛选的数据项
+```javascript
+const filtered = _.filter(data, item => {
+const profitRate = item.profit / item.sales;
+return profitRate > 0.2 && item.sales > 5000;
+});
+return _.flatten(
+_.map(filtered, item => [
+{ __row_index: item.__row_index, field: 'product' },
+{ __row_index: item.__row_index, field: 'sales' }
+])
+);
+```
+
+
+
+#### fallback
+
+**Type:** `Selector | Selectors | undefined`
+
+:::note{title=描述}
+代码执行失败或环境不支持时的降级方案
+
+:::
+
+
+##### field
+
+**Type:** `string`
+
+:::note{title=描述}
+维度字段, dimensions 某一项的 id
+
+:::
+
+##### operator
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+:::
+
+##### op
+
+**Type:** `"in" | "not in" | undefined`
+
+:::note{title=描述}
+操作符
+
+\- in: 选择数据项中维度字段的值在 value 中的数据项
+
+\- not in: 选择数据项中维度字段的值不在 value 中的数据项
+
+same as operator
+
+:::
+
+##### value
+
+**Type:** `string | number | (string | number)[]`
+
+:::note{title=描述}
+选择数据项中维度字段的值, 支持数组
+
+:::
+
+#### result
+
+**Type:** `DynamicFilterExecutionResult<RowWithFieldRes> | undefined`
+
+:::note{title=描述}
+动态筛选执行结果（运行期字段）
+
+
+
+prepare() 阶段写入，运行时只读
+
+:::
+
+
+##### success
+
+**Type:** `false | true`
+
+##### data
+
+**Type:** `T[] | undefined`
+
+##### error
+
+**Type:** `string | undefined`
+
 
 ## legend
 
@@ -2625,52 +2828,52 @@ AI 生成的 JavaScript 筛选代码
 
 \- 只能使用内置工具函数（通过 _ 或 R 访问）
 
-\- 输入参数: data (数组)
+\- 输入参数: data (数组)，每个 item 包含 __row_index 字段表示行号
 
-\- 必须返回部分数据项数组: Array<{ [dimField]: value }>
+\- 必须返回行索引与字段组合的数组: Array<{ __row_index: number, field: string }>
 
-\- 返回的对象包含能唯一标识图表标记的维度字段组合
+\- __row_index 表示原始数据项的行号，field 表示需要高亮的字段
 
 \- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
 
 :::
 
 **示例**
-高亮销售额大于1000的柱子
+高亮销售额大于1000的数据项的 sales 字段
 ```javascript
 const filtered = _.filter(data, item => item.sales > 1000);
-// 假设柱子由 product 和 area 两个维度唯一标识
 return _.map(filtered, item => ({
-product: item.product,
-area: item.area
+__row_index: item.__row_index,
+field: 'sales'
 }));
 ```
 
-高亮每个区域中利润率最高的柱子
+高亮每个区域中利润率最高的数据项
 ```javascript
 const grouped = _.groupBy(data, 'area');
-const result = _.map(grouped, group => {
-const maxProfitRateItem = _.maxBy(group, item =>
-item.profit / item.sales
+const maxItems = _.map(grouped, group =>
+_.maxBy(group, item => item.profit / item.sales)
 );
-return {
-product: maxProfitRateItem.product,
-area: maxProfitRateItem.area
-};
-});
-return result;
+return _.flatten(
+_.map(maxItems, item => [
+{ __row_index: item.__row_index, field: 'product' },
+{ __row_index: item.__row_index, field: 'profit' }
+])
+);
 ```
 
-高亮多条件筛选
+高亮多条件筛选的数据项
 ```javascript
 const filtered = _.filter(data, item => {
 const profitRate = item.profit / item.sales;
 return profitRate > 0.2 && item.sales > 5000;
 });
-return _.map(filtered, item => ({
-product: item.product,
-region: item.region
-}));
+return _.flatten(
+_.map(filtered, item => [
+{ __row_index: item.__row_index, field: 'product' },
+{ __row_index: item.__row_index, field: 'sales' }
+])
+);
 ```
 
 
@@ -2733,7 +2936,7 @@ same as operator
 
 #### result
 
-**Type:** `DynamicFilterExecutionResult<Record<string | number, any>> | undefined`
+**Type:** `DynamicFilterExecutionResult<RowWithFieldRes> | undefined`
 
 :::note{title=描述}
 动态筛选执行结果（运行期字段）
@@ -2984,52 +3187,52 @@ AI 生成的 JavaScript 筛选代码
 
 \- 只能使用内置工具函数（通过 _ 或 R 访问）
 
-\- 输入参数: data (数组)
+\- 输入参数: data (数组)，每个 item 包含 __row_index 字段表示行号
 
-\- 必须返回部分数据项数组: Array<{ [dimField]: value }>
+\- 必须返回行索引与字段组合的数组: Array<{ __row_index: number, field: string }>
 
-\- 返回的对象包含能唯一标识图表标记的维度字段组合
+\- __row_index 表示原始数据项的行号，field 表示需要高亮的字段
 
 \- 禁止使用: eval, Function, 异步操作, DOM API, 网络请求
 
 :::
 
 **示例**
-高亮销售额大于1000的柱子
+高亮销售额大于1000的数据项的 sales 字段
 ```javascript
 const filtered = _.filter(data, item => item.sales > 1000);
-// 假设柱子由 product 和 area 两个维度唯一标识
 return _.map(filtered, item => ({
-product: item.product,
-area: item.area
+__row_index: item.__row_index,
+field: 'sales'
 }));
 ```
 
-高亮每个区域中利润率最高的柱子
+高亮每个区域中利润率最高的数据项
 ```javascript
 const grouped = _.groupBy(data, 'area');
-const result = _.map(grouped, group => {
-const maxProfitRateItem = _.maxBy(group, item =>
-item.profit / item.sales
+const maxItems = _.map(grouped, group =>
+_.maxBy(group, item => item.profit / item.sales)
 );
-return {
-product: maxProfitRateItem.product,
-area: maxProfitRateItem.area
-};
-});
-return result;
+return _.flatten(
+_.map(maxItems, item => [
+{ __row_index: item.__row_index, field: 'product' },
+{ __row_index: item.__row_index, field: 'profit' }
+])
+);
 ```
 
-高亮多条件筛选
+高亮多条件筛选的数据项
 ```javascript
 const filtered = _.filter(data, item => {
 const profitRate = item.profit / item.sales;
 return profitRate > 0.2 && item.sales > 5000;
 });
-return _.map(filtered, item => ({
-product: item.product,
-region: item.region
-}));
+return _.flatten(
+_.map(filtered, item => [
+{ __row_index: item.__row_index, field: 'product' },
+{ __row_index: item.__row_index, field: 'sales' }
+])
+);
 ```
 
 
@@ -3092,7 +3295,7 @@ same as operator
 
 #### result
 
-**Type:** `DynamicFilterExecutionResult<Record<string | number, any>> | undefined`
+**Type:** `DynamicFilterExecutionResult<RowWithFieldRes> | undefined`
 
 :::note{title=描述}
 动态筛选执行结果（运行期字段）

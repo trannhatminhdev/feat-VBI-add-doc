@@ -7,7 +7,15 @@ import { zEncoding } from './properties/encoding'
 import { zDatasetReshapeInfo } from './properties/datasetReshapeInfo'
 import { zTheme, zCustomThemeConfig } from './properties/theme'
 import { zConfig, type Config } from './properties/config'
-import { zAnalysis, zAnnotation, zRegressionLine, zMarkStyle, zPage } from './properties'
+import {
+  zAnalysis,
+  zAnnotation,
+  zRegressionLine,
+  zMarkStyle,
+  zPage,
+  zPivotTableTotals,
+  type PivotTableTotals,
+} from './properties'
 import { zLocale } from './i18n'
 import { zCellStyle } from './properties/cellStyle/cellStyle'
 
@@ -33,6 +41,7 @@ export type AdvancedVSeed = {
   annotation: z.infer<typeof zAnnotation>
   locale: z.infer<typeof zLocale>
   regressionLine: z.infer<typeof zRegressionLine>
+  totals?: PivotTableTotals
 }
 
 export const zAdvancedVSeed: z.ZodType<AdvancedVSeed> = z.object({
@@ -57,4 +66,5 @@ export const zAdvancedVSeed: z.ZodType<AdvancedVSeed> = z.object({
   annotation: zAnnotation,
   locale: zLocale,
   regressionLine: zRegressionLine,
+  totals: zPivotTableTotals.optional(),
 })

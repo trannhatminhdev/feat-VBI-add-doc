@@ -976,7 +976,7 @@ same as operator
 
 #### result
 
-**Type:** `DynamicFilterExecutionResult<TableDynamicFilterRes> | undefined`
+**Type:** `DynamicFilterExecutionResult<RowWithFieldRes> | undefined`
 
 :::note{title=描述}
 动态筛选执行结果（运行期字段）
@@ -1044,6 +1044,118 @@ prepare() 阶段写入，运行时只读
 单元格边框线宽
 
 :::
+
+
+## totals
+
+**Type:** `PivotTableTotals | undefined`
+
+:::note{title=描述}
+透视表的总计和小计配置
+
+
+
+透视表的总计小计配置
+
+:::
+
+**示例**
+{ row: { showGrandTotals: true, showSubTotals: true, subTotalsDimensions: ['category'] } }
+
+
+
+
+### row
+
+**Type:** `RowOrColumnTotalConfig | undefined`
+
+:::note{title=描述}
+行的总计小计配置
+
+
+
+行或列的总计小计配置
+
+:::
+
+
+#### showGrandTotals
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否显示总计（总计行/列）
+
+:::
+
+#### showSubTotals
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否显示小计
+
+:::
+
+#### subTotalsDimensions
+
+**Type:** `string[] | undefined`
+
+:::note{title=描述}
+小计的维度，按哪些维度进行小计分组
+
+:::
+
+**示例**
+['category', 'region']
+
+
+
+### column
+
+**Type:** `RowOrColumnTotalConfig | undefined`
+
+:::note{title=描述}
+列的总计小计配置
+
+
+
+行或列的总计小计配置
+
+:::
+
+
+#### showGrandTotals
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否显示总计（总计行/列）
+
+:::
+
+#### showSubTotals
+
+**Type:** `boolean | undefined`
+
+:::note{title=描述}
+是否显示小计
+
+:::
+
+#### subTotalsDimensions
+
+**Type:** `string[] | undefined`
+
+:::note{title=描述}
+小计的维度，按哪些维度进行小计分组
+
+:::
+
+**示例**
+['category', 'region']
+
+
 
 
 ## theme
