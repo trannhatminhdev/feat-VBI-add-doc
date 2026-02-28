@@ -1,10 +1,16 @@
 # @visactor/vseed
 
-## 0.4.7
+## 0.4.8
 
 ### Patch Changes
 
 - Remove dataReshape in pivotTable, support indicatorsAsCol also
+
+## 0.4.7
+
+### Patch Changes
+
+- Support totals in table/pivotTable, support **MeaId** column encoding in pivotTable
 
 ## 0.4.6
 
