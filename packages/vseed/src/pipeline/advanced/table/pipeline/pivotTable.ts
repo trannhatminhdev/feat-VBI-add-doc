@@ -3,13 +3,12 @@ import { theme } from '../../chart/pipes'
 import {
   cellStyle,
   defaultDimensions,
-  defaultMeasureId,
   defaultMeasures,
   encodingForPivotTable,
   initAdvancedVSeed,
   page,
   pivotTableConfig,
-  reshapePivotTable,
+  records,
 } from '../pipes'
 
 export const pivotTableAdvancedPipeline: AdvancedPipeline = [
@@ -17,11 +16,10 @@ export const pivotTableAdvancedPipeline: AdvancedPipeline = [
   initAdvancedVSeed,
   defaultMeasures,
   defaultDimensions,
-  defaultMeasureId,
   cellStyle,
 
   encodingForPivotTable,
-  reshapePivotTable,
+  records,
   pivotTableConfig,
   theme,
 ]

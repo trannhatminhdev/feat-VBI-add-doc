@@ -34,6 +34,7 @@ export const zPivotTable = z.object({
   selectedBackgroundColor: z.string().nullish(),
   bodyCellStyle: z.array(zBodyCellStyle).or(zBodyCellStyle).nullish(),
 
+  indicatorsAsCol: z.boolean().nullish(),
   totals: zPivotTableTotals.nullish(),
 
   theme: zTheme.nullish(),

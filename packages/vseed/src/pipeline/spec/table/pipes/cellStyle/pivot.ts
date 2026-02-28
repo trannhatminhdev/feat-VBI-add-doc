@@ -1,10 +1,9 @@
 import type { IIndicator, PivotTableConstructorOptions } from '@visactor/vtable'
 import { array } from '@visactor/vutils'
-import { isNullish, isString } from 'remeda'
+import { isString } from 'remeda'
 import { selector, selectorWithDynamicFilter } from 'src/dataSelector/selector'
 import type { BodyCellStyle, Datum, PivotTableSpecPipe } from 'src/types'
 import { getCellOriginalDataByDatum, pickBodyCellStyle } from './common'
-import { FoldMeasureValue, MeasureId } from 'src/dataReshape'
 
 export const pivotTableBodyCell: PivotTableSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
@@ -42,9 +41,6 @@ export const pivotTableBodyCell: PivotTableSpecPipe = (spec, context) => {
         }
       })
 
-      if (!isNullish(originalDatum[MeasureId]) && !isNullish(originalDatum[FoldMeasureValue])) {
-        originalDatum[originalDatum[MeasureId]] = originalDatum[FoldMeasureValue]
-      }
       const currentCellData = getCellOriginalDataByDatum(datum, hasDynamicFilter, originalDatum)
 
       const mergedStyle = bodyCellStyleList.reduce<Record<string, any>>((result, style) => {
