@@ -79,9 +79,9 @@ import config_75 from './sort/维度排序.json'
 import config_76 from './sort/自定义排序(图例id).json'
 import config_77 from './sort/自定义排序(图例名称).json'
 import config_78 from './sort/自定义排序.json'
-import config_79 from './totals/列总计.json'
-import config_80 from './totals/单指标总计.json'
-import config_81 from './totals/行总计.json'
+import config_79 from './totals/columnTotal.json'
+import config_80 from './totals/rowTotal.json'
+import config_81 from './totals/singleIndicator.json'
 
 const cases = [
   { name: 'annotationArea/bar', vseed: config_0 },
@@ -163,9 +163,9 @@ const cases = [
   { name: 'sort/自定义排序(图例id)', vseed: config_76 },
   { name: 'sort/自定义排序(图例名称)', vseed: config_77 },
   { name: 'sort/自定义排序', vseed: config_78 },
-  { name: 'totals/列总计', vseed: config_79 },
-  { name: 'totals/单指标总计', vseed: config_80 },
-  { name: 'totals/行总计', vseed: config_81 }
+  { name: 'totals/columnTotal', vseed: config_79 },
+  { name: 'totals/rowTotal', vseed: config_80 },
+  { name: 'totals/singleIndicator', vseed: config_81 }
 ]
 
 describe('features', () => {

@@ -88,5 +88,10 @@
     "type": "file",
     "name": "sort",
     "label": "Sort"
+  },
+  {
+    "type": "file",
+    "name": "totals",
+    "label": "Totals"
   }
 ]
