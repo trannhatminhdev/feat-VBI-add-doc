@@ -7,7 +7,7 @@ export const titleOnDimension: PivotTableSpecPipe = (spec) => {
   return {
     ...spec,
     corner: {
-      titleOnDimension: rowsLength <= 1 && columns.length >= 1 ? 'column' : 'row',
+      titleOnDimension: rowsLength <= 1 && columns.length >= 1 && !indicatorsAsCol ? 'column' : 'row',
     },
   }
 }
