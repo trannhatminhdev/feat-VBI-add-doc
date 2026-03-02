@@ -8,7 +8,7 @@ export const dataConfig: PivotTableSpecPipe = (spec, context) => {
 
   const aggregationRules = measures.map((measure) => ({
     field: measure.id,
-    aggregationType: 'NONE',
+    aggregationType: 'SUM',
     indicatorKey: measure.id,
   }))
 
