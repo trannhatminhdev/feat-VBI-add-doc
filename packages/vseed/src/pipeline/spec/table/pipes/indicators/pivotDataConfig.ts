@@ -1,6 +1,6 @@
 import { intl } from 'src/i18n'
 import { findAllMeasures } from 'src/pipeline/utils'
-import type { PivotTable, PivotTableSpecPipe } from 'src/types'
+import type { Dimension, PivotTable, PivotTableSpecPipe } from 'src/types'
 
 export const dataConfig: PivotTableSpecPipe = (spec, context) => {
   const { advancedVSeed, vseed } = context
@@ -8,7 +8,7 @@ export const dataConfig: PivotTableSpecPipe = (spec, context) => {
 
   const aggregationRules = measures.map((measure) => ({
     field: measure.id,
-    aggregationType: 'NONE',
+    aggregationType: 'SUM',
     indicatorKey: measure.id,
   }))
 
@@ -21,12 +21,14 @@ export const dataConfig: PivotTableSpecPipe = (spec, context) => {
   if (totals) {
     const grandTotalLabel = intl.i18n`总计`
     const subTotalLabel = intl.i18n`小计`
-    const dimensionIds = (advancedVSeed.dimensionTree || []).map((dim) => dim.id)
 
     dataConfigObj.totals = {}
 
     // 处理行配置
     if (totals.row) {
+      const dimensionIds = (advancedVSeed.dimensionTree || [])
+        .filter((dim: Dimension) => dim.encoding === 'row')
+        .map((dim) => dim.id)
       const rowSubDimensions = totals.row.subTotalsDimensions?.filter((dim) => dimensionIds.includes(dim))
       const normalizedRowSubDimensions =
         totals.row.showSubTotals && (!rowSubDimensions || rowSubDimensions.length === 0)
@@ -46,6 +48,9 @@ export const dataConfig: PivotTableSpecPipe = (spec, context) => {
 
     // 处理列配置
     if (totals.column) {
+      const dimensionIds = (advancedVSeed.dimensionTree || [])
+        .filter((dim: Dimension) => dim.encoding === 'column')
+        .map((dim) => dim.id)
       const columnSubDimensions = totals.column.subTotalsDimensions?.filter((dim) => dimensionIds.includes(dim))
       const normalizedColumnSubDimensions =
         totals.column.showSubTotals && (!columnSubDimensions || columnSubDimensions.length === 0)

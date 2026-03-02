@@ -112,6 +112,13 @@ export interface PivotTable {
   bodyCellStyle?: BodyCellStyle | BodyCellStyle[]
 
   /**
+   * @description 指标是否作为列展示，当为 true 时指标在列方向展开，为 false 时在行方向展开
+   * @default true
+   * @example true
+   */
+  indicatorsAsCol?: boolean
+
+  /**
    * @description 透视表的总计和小计配置
    * @example { row: { showGrandTotals: true, showSubTotals: true, subTotalsDimensions: ['category'] } }
    */

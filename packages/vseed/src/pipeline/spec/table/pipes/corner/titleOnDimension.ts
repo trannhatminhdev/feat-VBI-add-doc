@@ -1,12 +1,13 @@
 import type { PivotTableSpecPipe } from 'src/types'
 
 export const titleOnDimension: PivotTableSpecPipe = (spec) => {
-  const { rows = [], columns = [] } = spec
+  const { rows = [], columns = [], indicatorsAsCol, indicators = [] } = spec
+  const rowsLength = rows.length + (indicatorsAsCol ? 0 : indicators?.length > 0 ? 1 : 0)
 
   return {
     ...spec,
     corner: {
-      titleOnDimension: (rows as any[]).length <= 1 && (columns as any[]).length >= 1 ? 'column' : 'row',
+      titleOnDimension: rowsLength <= 1 && columns.length >= 1 && !indicatorsAsCol ? 'column' : 'row',
     },
   }
 }

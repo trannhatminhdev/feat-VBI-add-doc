@@ -1,4 +1,5 @@
 import { unique } from 'remeda'
+import { MeasureId, MeasureName } from 'src/dataReshape'
 import { findAllMeasures } from 'src/pipeline/utils'
 import type { AdvancedPipe, Dimension, Dimensions, Encoding, Measure, Measures } from 'src/types'
 
@@ -6,14 +7,18 @@ export const encodingForPivotTable: AdvancedPipe = (advancedVSeed) => {
   const { measureTree = [], dimensionTree = [] } = advancedVSeed
   const measures = findAllMeasures(measureTree)
 
-  const hasDimensionEncoding = dimensionTree.some((item: Dimension) => item.encoding)
+  // 过滤掉用户输入中可能存在的虚拟指标维度（__MeaId__ / __MeaName__），
+  // pivotTable 不再做 data reshape，这些虚拟维度不再需要
+  const filteredDimensionTree = dimensionTree.filter((dim: Dimension) => dim.id !== MeasureId && dim.id !== MeasureName)
+
+  const hasDimensionEncoding = filteredDimensionTree.some((item: Dimension) => item.encoding)
   const hasMeasureEncoding = measures.some((item: Measure) => item.encoding)
   const encoding: Encoding = {}
 
   if (hasDimensionEncoding) {
-    generateDimensionEncoding(dimensionTree, encoding)
+    generateDimensionEncoding(filteredDimensionTree, encoding)
   } else {
-    generateDefaultDimensionEncoding(dimensionTree, encoding)
+    generateDefaultDimensionEncoding(filteredDimensionTree, encoding)
   }
 
   if (hasMeasureEncoding) {
@@ -22,7 +27,7 @@ export const encodingForPivotTable: AdvancedPipe = (advancedVSeed) => {
     generateDefaultMeasureEncoding(measures, encoding)
   }
 
-  return { ...advancedVSeed, encoding }
+  return { ...advancedVSeed, dimensionTree: filteredDimensionTree, encoding }
 }
 
 /**
