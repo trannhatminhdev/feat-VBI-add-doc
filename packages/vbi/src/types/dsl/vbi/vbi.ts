@@ -4,12 +4,14 @@ import { zVBIDimensionTree } from '../dimensions/dimensions'
 import { zVBIMeasureTree } from '../measures/measures'
 import { zVBIDSLTheme } from '../theme/theme'
 import { zVBIDSLLocale } from '../locale/locale'
+import { zVBIHavingArray } from '../having/having'
 
 export const zVBIDSL = z.object({
   connectorId: z.string(),
   chartType: z.custom<ChartType>(),
   dimensions: zVBIDimensionTree,
   measures: zVBIMeasureTree,
+  having: zVBIHavingArray,
   theme: zVBIDSLTheme,
   locale: zVBIDSLLocale,
   version: z.number().int().min(0),
