@@ -2,8 +2,8 @@ import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
 import vqueryConfig from './multi-conditions.json'
 
-describe('Having with Multiple Conditions', () => {
-  it('Having with AND conditions', async () => {
+describe('Having Example with multiple conditions (AND/OR)', () => {
+  it('Having Example with multiple conditions (AND/OR)', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 
@@ -17,10 +17,6 @@ describe('Having with Multiple Conditions', () => {
 
     const dataset = await vquery.connectDataset(datasetId)
 
-    // Using having filter: sum(salary) > 5000 AND count > 1
-    // HR: sum=11000 (> 5000), count=2 (> 1) ✓
-    // Engineering: sum=17000 (> 5000), count=2 (> 1) ✓
-    // Marketing: sum=4000 (< 5000), count=1 (= 1) ✗
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 
     await dataset.disconnect()
