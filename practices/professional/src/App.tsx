@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { ConfigProvider, theme, Dropdown, Button } from 'antd';
@@ -44,7 +45,10 @@ export function APP() {
   const [dimensionFields, setDimensionFields] = useState<string[]>([]);
   const [measureFields, setMeasureFields] = useState<string[]>([]);
   const [measuresDetail, setMeasuresDetail] = useState<
-    Record<string, { alias?: string; aggregate?: { func: string; quantile?: number } }>
+    Record<
+      string,
+      { alias?: string; aggregate?: { func: string; quantile?: number } }
+    >
   >({});
   const [chartTypeOptions, setChartTypeOptions] = useState<string[]>([]);
   const [currentChartType, setCurrentChartType] = useState<string>('table');
@@ -79,8 +83,12 @@ export function APP() {
       if (builder?.getSchema) {
         try {
           const schema = await builder.getSchema();
-          const dims = schema.filter((d: any) => d.type !== 'number').map((d: any) => d.name);
-          const meas = schema.filter((d: any) => d.type === 'number').map((d: any) => d.name);
+          const dims = schema
+            .filter((d: any) => d.type !== 'number')
+            .map((d: any) => d.name);
+          const meas = schema
+            .filter((d: any) => d.type === 'number')
+            .map((d: any) => d.name);
           setDimensions(dims);
           setMeasures(meas);
         } catch (err) {
@@ -105,7 +113,9 @@ export function APP() {
           const aggregate = value.aggregate;
           detail[alias] = {
             alias,
-            aggregate: aggregate ? { func: aggregate.func, quantile: aggregate.quantile } : undefined,
+            aggregate: aggregate
+              ? { func: aggregate.func, quantile: aggregate.quantile }
+              : undefined,
           };
         });
       }
@@ -122,7 +132,9 @@ export function APP() {
 
   // 上传 CSV - 暂未实现，目前仅支持 demo 数据
   const handleUploadCSV = () => {
-    alert('Function not yet implemented. Currently only demo data is supported.');
+    alert(
+      'Function not yet implemented. Currently only demo data is supported.',
+    );
   };
 
   const dataMenuItems = [
@@ -211,7 +223,9 @@ export function APP() {
           const aggregate = value.aggregate;
           detail[alias] = {
             alias,
-            aggregate: aggregate ? { func: aggregate.func, quantile: aggregate.quantile } : undefined,
+            aggregate: aggregate
+              ? { func: aggregate.func, quantile: aggregate.quantile }
+              : undefined,
           };
         });
       }
@@ -264,7 +278,9 @@ export function APP() {
       // 更新 measureFields 中的别名
       setMeasureFields((prev) => prev.map((m) => (m === alias ? newAlias : m)));
       // 如果这个字段来自 dimension，更新 dimensionMeasures 中的别名
-      setDimensionMeasures((prev) => prev.map((m) => (m === alias ? newAlias : m)));
+      setDimensionMeasures((prev) =>
+        prev.map((m) => (m === alias ? newAlias : m)),
+      );
       syncMeasuresDetail();
       setRenderKey((prev) => prev + 1);
     }
@@ -273,7 +289,7 @@ export function APP() {
   const handleChangeAggregateFunc = (
     alias: string,
     func: string,
-    quantile?: number
+    quantile?: number,
   ) => {
     if (builderRef.current?.measures && builderRef.current.doc) {
       const { measures, doc } = builderRef.current;

@@ -6,6 +6,7 @@ import { MeasuresBuilder } from './sub-builders/measures'
 import { VBIDSL, VBIBuilderInterface } from 'src/types'
 import { buildVQuery } from 'src/pipeline'
 import { ChartTypeBuilder } from './sub-builders/chart-type'
+import { HavingBuilder } from './sub-builders/having'
 import { getConnector } from './connector'
 import { VQueryDSL } from '@visactor/vquery'
 
@@ -17,6 +18,7 @@ export class VBIBuilder implements VBIBuilderInterface {
   public chartType: ChartTypeBuilder
   public measures: MeasuresBuilder
   public dimensions: DimensionsBuilder
+  public having: HavingBuilder
 
   constructor(doc: Y.Doc) {
     this.doc = doc
@@ -26,6 +28,7 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.chartType = new ChartTypeBuilder(doc, this.dsl)
     this.measures = new MeasuresBuilder(doc, this.dsl)
     this.dimensions = new DimensionsBuilder(doc, this.dsl)
+    this.having = new HavingBuilder(doc, this.dsl)
   }
 
   public applyUpdate(update: Uint8Array) {

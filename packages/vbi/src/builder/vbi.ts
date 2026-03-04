@@ -16,6 +16,7 @@ const createVBI = () => {
         chartType: 'table',
         measures: [],
         dimensions: [],
+        having: [],
         theme: 'light',
         locale: 'zh-CN',
         version: 0,
@@ -42,6 +43,12 @@ const createVBI = () => {
           dsl.set('dimensions', new Y.Array<any>())
         } else {
           dsl.set('dimensions', vbi.dimensions)
+        }
+
+        if (!dsl.get('having')) {
+          dsl.set('having', new Y.Array<any>())
+        } else {
+          dsl.set('having', vbi.having)
         }
       })
 
