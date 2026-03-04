@@ -4,6 +4,7 @@ describe('having', () => {
   it('simple with sum', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -33,8 +34,10 @@ describe('having', () => {
   it('simple with count', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
+      count: number
     }
 
     const sql = convertDSLToSQL<ORDER, 'orders'>(
@@ -62,7 +65,9 @@ describe('having', () => {
   it('simple with avg', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
+      avg_amount: number
       region: string
     }
 
@@ -91,6 +96,7 @@ describe('having', () => {
   it('simple with >', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -120,6 +126,7 @@ describe('having', () => {
   it('simple with >=', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -149,6 +156,7 @@ describe('having', () => {
   it('simple with <', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -178,6 +186,7 @@ describe('having', () => {
   it('simple with <=', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -207,6 +216,7 @@ describe('having', () => {
   it('simple with =', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -236,6 +246,7 @@ describe('having', () => {
   it('simple with !=', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -265,6 +276,7 @@ describe('having', () => {
   it('with or conditions', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -299,8 +311,10 @@ describe('having', () => {
   it('with and conditions', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
+      count: number
     }
 
     const sql = convertDSLToSQL<ORDER, 'orders'>(
@@ -333,8 +347,10 @@ describe('having', () => {
   it('with nested conditions', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
+      count: number
     }
 
     const sql = convertDSLToSQL<ORDER, 'orders'>(
@@ -377,6 +393,7 @@ describe('having', () => {
   it('empty', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -394,6 +411,7 @@ describe('having', () => {
   it('with between', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -423,6 +441,7 @@ describe('having', () => {
   it('with in', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -452,6 +471,7 @@ describe('having', () => {
   it('with is null', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -481,6 +501,7 @@ describe('having', () => {
   it('with is not null', () => {
     interface ORDER {
       id: number
+      total: number
       amount: number
       region: string
     }
@@ -508,133 +529,138 @@ describe('having', () => {
   })
 })
 
-  it('with not between', () => {
-    interface ORDER {
-      id: number
-      amount: number
-      region: string
-    }
+it('with not between', () => {
+  interface ORDER {
+    id: number
+    amount: number
+    total: number
+    region: string
+  }
 
-    const sql = convertDSLToSQL<ORDER, 'orders'>(
-      {
-        select: ['region', 'total'],
-        groupBy: ['region'],
-        having: {
-          op: 'and',
-          conditions: [
-            {
-              field: 'total',
-              op: 'not between',
-              value: [100, 1000],
-            },
-          ],
-        },
+  const sql = convertDSLToSQL<ORDER, 'orders'>(
+    {
+      select: ['region', 'total'],
+      groupBy: ['region'],
+      having: {
+        op: 'and',
+        conditions: [
+          {
+            field: 'total',
+            op: 'not between',
+            value: [100, 1000],
+          },
+        ],
       },
-      'orders',
-    )
-    expect(sql).toMatchInlineSnapshot(
-      `"select "region", "total" from "orders" group by "region" having ("total" not between 100 and 1000)"`,
-    )
-  })
+    },
+    'orders',
+  )
+  expect(sql).toMatchInlineSnapshot(
+    `"select "region", "total" from "orders" group by "region" having ("total" not between 100 and 1000)"`,
+  )
+})
 
-  it('simple with min', () => {
-    interface ORDER {
-      id: number
-      amount: number
-      region: string
-    }
+it('simple with min', () => {
+  interface ORDER {
+    id: number
+    amount: number
+    region: string
+    min_amount: number
+  }
 
-    const sql = convertDSLToSQL<ORDER, 'orders'>(
-      {
-        select: ['region', 'min_amount'],
-        groupBy: ['region'],
-        having: {
-          op: 'and',
-          conditions: [
-            {
-              field: 'min_amount',
-              op: 'min',
-              value: 100,
-            },
-          ],
-        },
+  const sql = convertDSLToSQL<ORDER, 'orders'>(
+    {
+      select: ['region', 'min_amount'],
+      groupBy: ['region'],
+      having: {
+        op: 'and',
+        conditions: [
+          {
+            field: 'min_amount',
+            op: 'min',
+            value: 100,
+          },
+        ],
       },
-      'orders',
-    )
-    expect(sql).toMatchInlineSnapshot(
-      `"select "region", "min_amount" from "orders" group by "region" having (min("min_amount") = 100)"`,
-    )
-  })
+    },
+    'orders',
+  )
+  expect(sql).toMatchInlineSnapshot(
+    `"select "region", "min_amount" from "orders" group by "region" having (min("min_amount") = 100)"`,
+  )
+})
 
-  it('simple with max', () => {
-    interface ORDER {
-      id: number
-      amount: number
-      region: string
-    }
+it('simple with max', () => {
+  interface ORDER {
+    id: number
+    amount: number
+    total: number
+    region: string
+    max_amount: number
+  }
 
-    const sql = convertDSLToSQL<ORDER, 'orders'>(
-      {
-        select: ['region', 'max_amount'],
-        groupBy: ['region'],
-        having: {
-          op: 'and',
-          conditions: [
-            {
-              field: 'max_amount',
-              op: 'max',
-              value: 1000,
-            },
-          ],
-        },
+  const sql = convertDSLToSQL<ORDER, 'orders'>(
+    {
+      select: ['region', 'max_amount'],
+      groupBy: ['region'],
+      having: {
+        op: 'and',
+        conditions: [
+          {
+            field: 'max_amount',
+            op: 'max',
+            value: 1000,
+          },
+        ],
       },
-      'orders',
-    )
-    expect(sql).toMatchInlineSnapshot(
-      `"select "region", "max_amount" from "orders" group by "region" having (max("max_amount") = 1000)"`,
-    )
-  })
+    },
+    'orders',
+  )
+  expect(sql).toMatchInlineSnapshot(
+    `"select "region", "max_amount" from "orders" group by "region" having (max("max_amount") = 1000)"`,
+  )
+})
 
-  it('with nested having group', () => {
-    interface ORDER {
-      id: number
-      amount: number
-      region: string
-    }
+it('with nested having group', () => {
+  interface ORDER {
+    id: number
+    amount: number
+    total: number
+    region: string
+  }
 
-    const sql = convertDSLToSQL<ORDER, 'orders'>(
-      {
-        select: ['region', 'total'],
-        groupBy: ['region'],
-        having: {
-          op: 'or',
-          conditions: [
-            {
-              op: 'and',
-              conditions: [
-                {
-                  field: 'total',
-                  op: '>',
-                  value: 1000,
-                },
-                {
-                  field: 'total',
-                  op: '<',
-                  value: 5000,
-                },
-              ],
-            },
-            {
-              field: 'total',
-              op: '<',
-              value: 100,
-            },
-          ],
-        },
+  const sql = convertDSLToSQL<ORDER, 'orders'>(
+    {
+      select: ['region', 'total'],
+      groupBy: ['region'],
+      having: {
+        op: 'or',
+        conditions: [
+          {
+            op: 'and',
+            conditions: [
+              {
+                field: 'total',
+                op: '>',
+                value: 1000,
+              },
+              {
+                field: 'total',
+                op: '<',
+                value: 5000,
+              },
+            ],
+          },
+          {
+            field: 'total',
+            op: '<',
+            value: 100,
+          },
+        ],
       },
-      'orders',
-    )
-    expect(sql).toMatchInlineSnapshot(
-      `"select "region", "total" from "orders" group by "region" having (("total" > 1000 and "total" < 5000) or "total" < 100)"`,
-    )
-  })
+    },
+    'orders',
+  )
+  expect(sql).toMatchInlineSnapshot(
+    `"select "region", "total" from "orders" group by "region" having (("total" > 1000 and "total" < 5000) or "total" < 100)"`,
+  )
+})

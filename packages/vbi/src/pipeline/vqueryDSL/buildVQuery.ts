@@ -10,13 +10,7 @@ export const buildVQuery = (vbiDSL: VBIDSL, builder: VBIBuilder) => {
     return (queryDSL: VQueryDSL): VQueryDSL => processor(queryDSL, { vbiDSL, builder })
   }
 
-  return pipe(
-    {} as VQueryDSL,
-    wrapper(buildSelect),
-    wrapper(buildGroupBy),
-    wrapper(buildHaving),
-    wrapper(buildLimit)
-  )
+  return pipe({} as VQueryDSL, wrapper(buildSelect), wrapper(buildGroupBy), wrapper(buildHaving), wrapper(buildLimit))
 }
 
 const buildSelect: buildPipe = (queryDSL, context) => {

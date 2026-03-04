@@ -91,7 +91,12 @@ export const createLocalConnector = (connectorId: string) => {
           // 识别度量列（那些有 func 属性的列）
           const measureAliases: string[] = [];
           for (const item of queryDSL.select) {
-            if (typeof item === 'object' && item !== null && 'func' in item && item.func) {
+            if (
+              typeof item === 'object' &&
+              item !== null &&
+              'func' in item &&
+              item.func
+            ) {
               const alias = (item as any).alias || (item as any).field;
               if (alias) {
                 measureAliases.push(alias);
@@ -126,7 +131,9 @@ export const createLocalConnector = (connectorId: string) => {
                   }
                 }
 
-                console.log(`After: ${alias} = ${next[alias]} (type: ${typeof next[alias]})`);
+                console.log(
+                  `After: ${alias} = ${next[alias]} (type: ${typeof next[alias]})`,
+                );
               }
               return next;
             });

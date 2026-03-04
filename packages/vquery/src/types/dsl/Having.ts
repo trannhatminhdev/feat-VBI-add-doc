@@ -52,6 +52,8 @@ export type HavingOperator =
   // 范围操作符
   | 'between'
   | 'not between'
+  | 'in'
+  | 'not in'
   // 存在性检查
   | 'is null'
   | 'is not null'

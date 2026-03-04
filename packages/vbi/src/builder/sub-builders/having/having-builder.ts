@@ -24,11 +24,7 @@ export class HavingBuilder {
    * @param value - 筛选值
    * @returns HavingFilterNodeBuilder 或 HavingBuilder（链式调用）
    */
-  addFilter(
-    field: string,
-    operator: string,
-    value: unknown,
-  ): HavingFilterNodeBuilder
+  addFilter(field: string, operator: string, value: unknown): HavingFilterNodeBuilder
   addFilter(
     field: string,
     operator: string,
@@ -76,9 +72,7 @@ export class HavingBuilder {
     }
 
     const having = this.dsl.get('having') as Y.Array<any>
-    const index = having
-      .toArray()
-      .findIndex((item: any) => item.get('field') === field)
+    const index = having.toArray().findIndex((item: any) => item.get('field') === field)
 
     if (index !== -1) {
       this.dsl.get('having').delete(index, 1)

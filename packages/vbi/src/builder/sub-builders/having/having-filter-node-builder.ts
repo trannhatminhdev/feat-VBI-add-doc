@@ -26,22 +26,9 @@ export class HavingFilterNodeBuilder {
    * @param operator - 操作符
    */
   setOperator(operator: FilterOperator): this {
-    const validOperators = [
-      'eq',
-      'neq',
-      'gt',
-      'gte',
-      'lt',
-      'lte',
-      'contains',
-      'startsWith',
-      'endsWith',
-      'between',
-    ]
+    const validOperators = ['eq', 'neq', 'gt', 'gte', 'lt', 'lte', 'contains', 'startsWith', 'endsWith', 'between']
     if (!validOperators.includes(operator)) {
-      this.validationErrors.push(
-        `Invalid operator: "${operator}". Valid options: ${validOperators.join(', ')}`
-      )
+      this.validationErrors.push(`Invalid operator: "${operator}". Valid options: ${validOperators.join(', ')}`)
       return this
     }
     this.yMap.set('operator', operator)
@@ -71,9 +58,9 @@ export class HavingFilterNodeBuilder {
     const result = zVBIHavingFilter.safeParse(data)
 
     if (!result.success) {
-      const errorMessages = result.error.issues.map(
-        (issue: ZodIssue) => `${issue.path.join('.')}: ${issue.message}`
-      ).join('; ')
+      const errorMessages = result.error.issues
+        .map((issue: ZodIssue) => `${issue.path.join('.')}: ${issue.message}`)
+        .join('; ')
       throw new Error(`HavingFilter validation failed: ${errorMessages}`)
     }
 
