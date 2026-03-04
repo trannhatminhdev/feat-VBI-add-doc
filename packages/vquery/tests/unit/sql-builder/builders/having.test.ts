@@ -507,3 +507,90 @@ describe('having', () => {
     )
   })
 })
+
+  it('with not between', () => {
+    interface ORDER {
+      id: number
+      amount: number
+      region: string
+    }
+
+    const sql = convertDSLToSQL<ORDER, 'orders'>(
+      {
+        select: ['region', 'total'],
+        groupBy: ['region'],
+        having: {
+          op: 'and',
+          conditions: [
+            {
+              field: 'total',
+              op: 'not between',
+              value: [100, 1000],
+            },
+          ],
+        },
+      },
+      'orders',
+    )
+    expect(sql).toMatchInlineSnapshot(
+      `"select "region", "total" from "orders" group by "region" having ("total" not between 100 and 1000)"`,
+    )
+  })
+
+  it('simple with min', () => {
+    interface ORDER {
+      id: number
+      amount: number
+      region: string
+    }
+
+    const sql = convertDSLToSQL<ORDER, 'orders'>(
+      {
+        select: ['region', 'min_amount'],
+        groupBy: ['region'],
+        having: {
+          op: 'and',
+          conditions: [
+            {
+              field: 'min_amount',
+              op: 'min',
+              value: 100,
+            },
+          ],
+        },
+      },
+      'orders',
+    )
+    expect(sql).toMatchInlineSnapshot(
+      `"select "region", "min_amount" from "orders" group by "region" having (min("min_amount") = 100)"`,
+    )
+  })
+
+  it('simple with max', () => {
+    interface ORDER {
+      id: number
+      amount: number
+      region: string
+    }
+
+    const sql = convertDSLToSQL<ORDER, 'orders'>(
+      {
+        select: ['region', 'max_amount'],
+        groupBy: ['region'],
+        having: {
+          op: 'and',
+          conditions: [
+            {
+              field: 'max_amount',
+              op: 'max',
+              value: 1000,
+            },
+          ],
+        },
+      },
+      'orders',
+    )
+    expect(sql).toMatchInlineSnapshot(
+      `"select "region", "max_amount" from "orders" group by "region" having (max("max_amount") = 1000)"`,
+    )
+  })
