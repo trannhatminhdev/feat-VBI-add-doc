@@ -594,3 +594,47 @@ describe('having', () => {
       `"select "region", "max_amount" from "orders" group by "region" having (max("max_amount") = 1000)"`,
     )
   })
+
+  it('with nested having group', () => {
+    interface ORDER {
+      id: number
+      amount: number
+      region: string
+    }
+
+    const sql = convertDSLToSQL<ORDER, 'orders'>(
+      {
+        select: ['region', 'total'],
+        groupBy: ['region'],
+        having: {
+          op: 'or',
+          conditions: [
+            {
+              op: 'and',
+              conditions: [
+                {
+                  field: 'total',
+                  op: '>',
+                  value: 1000,
+                },
+                {
+                  field: 'total',
+                  op: '<',
+                  value: 5000,
+                },
+              ],
+            },
+            {
+              field: 'total',
+              op: '<',
+              value: 100,
+            },
+          ],
+        },
+      },
+      'orders',
+    )
+    expect(sql).toMatchInlineSnapshot(
+      `"select "region", "total" from "orders" group by "region" having (("total" > 1000 and "total" < 5000) or "total" < 100)"`,
+    )
+  })
