@@ -1,4 +1,4 @@
-import type { Select, VQueryDSL } from '@visactor/vquery'
+import type { Select, VQueryDSL, Having } from '@visactor/vquery'
 import { VBIDSL } from '../../types'
 import { DimensionsBuilder, MeasuresBuilder, VBIBuilder } from 'src'
 import { pipe } from 'remeda'
@@ -10,7 +10,13 @@ export const buildVQuery = (vbiDSL: VBIDSL, builder: VBIBuilder) => {
     return (queryDSL: VQueryDSL): VQueryDSL => processor(queryDSL, { vbiDSL, builder })
   }
 
-  return pipe({} as VQueryDSL, wrapper(buildSelect), wrapper(buildGroupBy), wrapper(buildLimit))
+  return pipe(
+    {} as VQueryDSL,
+    wrapper(buildSelect),
+    wrapper(buildGroupBy),
+    wrapper(buildHaving),
+    wrapper(buildLimit)
+  )
 }
 
 const buildSelect: buildPipe = (queryDSL, context) => {
@@ -49,6 +55,41 @@ const buildGroupBy: buildPipe = (queryDSL, context) => {
   const dimensionNodes = dimensions.filter((dimension) => DimensionsBuilder.isDimensionNode(dimension))
 
   result.groupBy = dimensionNodes.map((dimension) => dimension.field)
+  return result as VQueryDSL
+}
+
+const buildHaving: buildPipe = (queryDSL, context) => {
+  const result = { ...queryDSL }
+  const { vbiDSL } = context
+
+  const having = vbiDSL.having
+  if (!having || having.length === 0) {
+    return result as VQueryDSL
+  }
+
+  // Convert VBI having filters to VQuery having format
+  const havingConditions = having.map((filter): any => {
+    // Handle simple filter
+    if ('field' in filter && 'operator' in filter && 'value' in filter) {
+      return {
+        [filter.field]: {
+          [filter.operator]: {
+            field: filter.field,
+            op: filter.operator,
+            value: filter.value,
+          },
+        },
+      }
+    }
+    return filter
+  })
+
+  // Wrap in a group with 'and' logic
+  result.having = {
+    op: 'and',
+    conditions: havingConditions,
+  } as Having<Record<string, unknown>>
+
   return result as VQueryDSL
 }
 
