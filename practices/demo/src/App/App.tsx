@@ -4,7 +4,10 @@ import { MeasuresList } from 'src/components/Fields/MeasuresList';
 import { DimensionsList } from 'src/components/Fields/DimensionsList';
 import { VBIBuilder } from '@visactor/vbi';
 import { ChartTypeSelector } from 'src/components/ChartType';
-import { FilterPanel, type FilterItem } from 'src/components/Filter/FilterPanel';
+import {
+  FilterPanel,
+  type FilterItem,
+} from 'src/components/Filter/FilterPanel';
 
 import { MeasureShelf } from 'src/components/Shelfs/MeasureShelf';
 import { DimensionShelf } from 'src/components/Shelfs/DimensionShelf';
@@ -29,7 +32,8 @@ export const APP = (props: APPProps) => {
   const activeFields = useMemo(() => {
     if (!dsl) return [];
     const fields = new Set<string>();
-    
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const extractFields = (items: any[]) => {
       items?.forEach((item) => {
         if (item && typeof item === 'object') {
@@ -48,7 +52,9 @@ export const APP = (props: APPProps) => {
     return Array.from(fields);
   }, [dsl]);
 
-  const [allFields, setAllFields] = useState<{ name: string; role: 'dimension' | 'measure' }[]>([]);
+  const [allFields, setAllFields] = useState<
+    { name: string; role: 'dimension' | 'measure' }[]
+  >([]);
   const [filters, setFilters] = useState<FilterItem[]>([]);
 
   useEffect(() => {
@@ -56,7 +62,8 @@ export const APP = (props: APPProps) => {
       setFilters((prev) => prev.slice(0, -1));
     };
     window.addEventListener('vbi-filter-error', handleFilterError);
-    return () => window.removeEventListener('vbi-filter-error', handleFilterError);
+    return () =>
+      window.removeEventListener('vbi-filter-error', handleFilterError);
   }, []);
 
   useEffect(() => {
@@ -71,7 +78,7 @@ export const APP = (props: APPProps) => {
           schema.map((s: { name: string; type: string }) => ({
             name: s.name,
             role: s.type === 'number' ? 'measure' : 'dimension',
-          }))
+          })),
         );
       };
       fetchSchema();
@@ -116,7 +123,12 @@ export const APP = (props: APPProps) => {
       }}
     >
       <Flex vertical={true} gap={20} style={{ flexBasis: 300 }}>
-        <FilterPanel fields={allFields} activeFields={activeFields} filters={filters} onChange={handleFilterChange} />
+        <FilterPanel
+          fields={allFields}
+          activeFields={activeFields}
+          filters={filters}
+          onChange={handleFilterChange}
+        />
         <ChartTypeSelector style={{ flexBasis: 32, minHeight: 0 }} />
         <DimensionsList style={{ flex: 1, minHeight: 0 }} />
         <MeasuresList style={{ flex: 1, minHeight: 0 }} />

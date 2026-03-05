@@ -90,10 +90,13 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
         );
         return () => tableInstance.release();
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error);
-      message.error("筛选器配置有误导致数据构建失败，已为您自动移除无效筛选器，请重新配置。");
-      
+      message.error(
+        '筛选器配置有误导致数据构建失败，已为您自动移除无效筛选器，请重新配置。',
+      );
+
       const storeBuilder = useVBIStore.getState().builder;
       if (storeBuilder) {
         storeBuilder.doc.transact(() => {
@@ -102,7 +105,9 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
             // Remove the last filter added since it's most likely the offending one
             const lastFilter = filters[filters.length - 1];
             storeBuilder.filters.removeFilter(filters.length - 1);
-            window.dispatchEvent(new CustomEvent('vbi-filter-error', { detail: lastFilter }));
+            window.dispatchEvent(
+              new CustomEvent('vbi-filter-error', { detail: lastFilter }),
+            );
           }
         });
       }

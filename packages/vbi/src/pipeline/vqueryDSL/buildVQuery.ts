@@ -10,7 +10,14 @@ export const buildVQuery = (vbiDSL: VBIDSL, builder: VBIBuilder) => {
     return (queryDSL: VQueryDSL): VQueryDSL => processor(queryDSL, { vbiDSL, builder })
   }
 
-  return pipe({} as VQueryDSL, wrapper(buildSelect), wrapper(buildGroupBy), wrapper(buildWhere), wrapper(buildOrderBy), wrapper(buildLimit))
+  return pipe(
+    {} as VQueryDSL,
+    wrapper(buildSelect),
+    wrapper(buildGroupBy),
+    wrapper(buildWhere),
+    wrapper(buildOrderBy),
+    wrapper(buildLimit),
+  )
 }
 
 const buildWhere: buildPipe = (queryDSL, context) => {
@@ -28,28 +35,43 @@ const buildWhere: buildPipe = (queryDSL, context) => {
   result.where = {
     op: 'and',
     conditions: normalFilters.flatMap((filter) => {
-      if (filter.operator === 'between' && filter.value && typeof filter.value === 'object' && !Array.isArray(filter.value)) {
-        const conditions = [];
+      if (
+        filter.operator === 'between' &&
+        filter.value &&
+        typeof filter.value === 'object' &&
+        !Array.isArray(filter.value)
+      ) {
+        const conditions = []
         if (filter.value.min !== undefined && filter.value.min !== null && filter.value.min !== '') {
-          conditions.push({ field: filter.field, op: filter.value.leftOp === '<' ? '>' : '>=', value: filter.value.min });
+          conditions.push({
+            field: filter.field,
+            op: filter.value.leftOp === '<' ? '>' : '>=',
+            value: filter.value.min,
+          })
         }
         if (filter.value.max !== undefined && filter.value.max !== null && filter.value.max !== '') {
-          conditions.push({ field: filter.field, op: filter.value.rightOp === '<' ? '<' : '<=', value: filter.value.max });
+          conditions.push({
+            field: filter.field,
+            op: filter.value.rightOp === '<' ? '<' : '<=',
+            value: filter.value.max,
+          })
         }
-        return conditions as any;
+        return conditions as any
       }
-      
-      let mappedOp = filter.operator;
+
+      let mappedOp = filter.operator
       if (Array.isArray(filter.value)) {
-         if (mappedOp === '=') mappedOp = 'in';
-         if (mappedOp === '!=') mappedOp = 'not in';
+        if (mappedOp === '=') mappedOp = 'in'
+        if (mappedOp === '!=') mappedOp = 'not in'
       }
-      
-      return [{
-        field: filter.field,
-        op: mappedOp,
-        value: filter.value,
-      }] as any;
+
+      return [
+        {
+          field: filter.field,
+          op: mappedOp,
+          value: filter.value,
+        },
+      ] as any
     }),
   }
 
@@ -59,7 +81,7 @@ const buildWhere: buildPipe = (queryDSL, context) => {
 const buildOrderBy: buildPipe = (queryDSL, context) => {
   const { vbiDSL } = context
   const filters = vbiDSL.filters || []
-  
+
   // Extract sort items
   const sortItems = filters.filter((f) => f.enabled !== false && f.actionType === 'sort')
 
@@ -119,7 +141,7 @@ const buildLimit: buildPipe = (queryDSL, context) => {
   const result = { ...queryDSL }
   const { vbiDSL } = context
   const filters = vbiDSL.filters || []
-  
+
   // Extract sort items to check for limit
   const sortItems = filters.filter((f) => f.enabled !== false && f.actionType === 'sort')
   const validLimitItem = sortItems.find((f) => f.limit !== undefined && f.limit !== null)

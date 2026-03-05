@@ -8,7 +8,7 @@ export class FiltersBuilder {
   constructor(doc: Y.Doc, dsl: Y.Map<any>) {
     this.doc = doc
     this.dsl = dsl
-    
+
     // Ensure filters array exists in Y.Map
     if (!this.dsl.get('filters')) {
       this.doc.transact(() => {

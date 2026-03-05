@@ -5,7 +5,7 @@ import { LeftOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
 import DimensionShelf from './components/Shelfs/DimensionShelf';
 import MeasureShelf from './components/Shelfs/MeasureShelf';
 import { FilterPanel, type FilterItem } from './components/Filter/FilterPanel';
-import type { VBIFilter } from '@visactor/vbi';
+
 import { ChartTypeSelector } from './components/ChartType';
 import FieldsList from './components/Fields/FieldList';
 import { VSeedRender } from './components/Render';
@@ -60,7 +60,8 @@ export function APP() {
   const activeFields = useMemo(() => {
     if (!dsl) return [];
     const fields = new Set<string>();
-    
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const extractFields = (items: any[]) => {
       items?.forEach((item) => {
         if (item && typeof item === 'object') {
@@ -79,7 +80,9 @@ export function APP() {
     return Array.from(fields);
   }, [dsl]);
 
-  const [allFields, setAllFields] = useState<{ name: string; role: 'dimension' | 'measure' }[]>([]);
+  const [allFields, setAllFields] = useState<
+    { name: string; role: 'dimension' | 'measure' }[]
+  >([]);
   const [filters, setFilters] = useState<FilterItem[]>([]);
 
   useEffect(() => {
@@ -87,7 +90,8 @@ export function APP() {
       setFilters((prev) => prev.slice(0, -1));
     };
     window.addEventListener('vbi-filter-error', handleFilterError);
-    return () => window.removeEventListener('vbi-filter-error', handleFilterError);
+    return () =>
+      window.removeEventListener('vbi-filter-error', handleFilterError);
   }, []);
 
   useEffect(() => {
@@ -98,7 +102,7 @@ export function APP() {
           schema.map((s: { name: string; type: string }) => ({
             name: s.name,
             role: s.type === 'number' ? 'measure' : 'dimension',
-          }))
+          })),
         );
       };
       fetchSchema();
@@ -326,32 +330,6 @@ export function APP() {
   };
 
   // 数据筛选变化
-  const handleAddFilter = (filter: VBIFilter) => {
-    if (builder && builder.doc) {
-      builder.doc.transact(() => {
-        builder.filters.addFilter(filter);
-      });
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
-  const handleUpdateFilter = (index: number, filter: Partial<VBIFilter>) => {
-    if (builder && builder.doc) {
-      builder.doc.transact(() => {
-        builder.filters.updateFilter(index, filter);
-      });
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
-  const handleDeleteFilter = (index: number) => {
-    if (builder && builder.doc) {
-      builder.doc.transact(() => {
-        builder.filters.removeFilter(index);
-      });
-      setRenderKey((prev) => prev + 1);
-    }
-  };
 
   useEffect(() => {
     if (!dragging) return;
@@ -417,8 +395,21 @@ export function APP() {
                 </div>
                 {(dimensions.length > 0 || measures.length > 0) && (
                   <div style={{ padding: '0 12px' }}>
-                    <FilterPanel 
-                      fields={allFields.length > 0 ? allFields : [...dimensions.map(d => ({name: d, role: 'dimension' as const})), ...measures.map(m => ({name: m, role: 'measure' as const}))]} 
+                    <FilterPanel
+                      fields={
+                        allFields.length > 0
+                          ? allFields
+                          : [
+                              ...dimensions.map((d) => ({
+                                name: d,
+                                role: 'dimension' as const,
+                              })),
+                              ...measures.map((m) => ({
+                                name: m,
+                                role: 'measure' as const,
+                              })),
+                            ]
+                      }
                       activeFields={activeFields}
                       filters={filters}
                       onChange={handleFilterChange}

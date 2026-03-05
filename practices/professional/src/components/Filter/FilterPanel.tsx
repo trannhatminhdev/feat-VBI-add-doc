@@ -1,6 +1,26 @@
 import React, { useState } from 'react';
-import { Select, Input, Button, Space, Card, Modal, Form, List, Typography, Tooltip, Radio, InputNumber } from 'antd';
-import { FilterOutlined, DeleteOutlined, PlusOutlined, EyeOutlined, EyeInvisibleOutlined, EditOutlined } from '@ant-design/icons';
+import {
+  Select,
+  Input,
+  Button,
+  Space,
+  Card,
+  Modal,
+  Form,
+  List,
+  Typography,
+  Tooltip,
+  Radio,
+  InputNumber,
+} from 'antd';
+import {
+  FilterOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
+  EditOutlined,
+} from '@ant-design/icons';
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -10,6 +30,7 @@ export interface FilterItem {
   name: string;
   field: string;
   operator: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any;
   isActive: boolean;
   actionType?: 'filter' | 'sort';
@@ -44,7 +65,12 @@ const MEASURE_OPERATORS = [
   { label: '范围 (between)', value: 'between' },
 ];
 
-export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields = [], filters = [], onChange }) => {
+export const FilterPanel: React.FC<FilterPanelProps> = ({
+  fields,
+  activeFields = [],
+  filters = [],
+  onChange,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [form] = Form.useForm();
@@ -65,7 +91,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
   const operator = Form.useWatch('operator', form);
   const selectedField = Form.useWatch('field', form);
   const displayFields = React.useMemo(() => {
-    return sortedFields.filter(f => f.role === selectedRole);
+    return sortedFields.filter((f) => f.role === selectedRole);
   }, [sortedFields, selectedRole]);
 
   const availableOperators = React.useMemo(() => {
@@ -75,7 +101,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
   React.useEffect(() => {
     if (isModalOpen) {
       const currentOperator = form.getFieldValue('operator');
-      if (currentOperator && !availableOperators.find(op => op.value === currentOperator)) {
+      if (
+        currentOperator &&
+        !availableOperators.find((op) => op.value === currentOperator)
+      ) {
         form.setFieldValue('operator', availableOperators[0]?.value);
       }
     }
@@ -85,11 +114,19 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
     if (isModalOpen && operator) {
       const currentValue = form.getFieldValue('value');
       if (operator === 'between') {
-        if (typeof currentValue !== 'object' || Array.isArray(currentValue) || currentValue === null) {
+        if (
+          typeof currentValue !== 'object' ||
+          Array.isArray(currentValue) ||
+          currentValue === null
+        ) {
           form.setFieldValue('value', { leftOp: '<=', rightOp: '<=' });
         }
       } else {
-        if (typeof currentValue === 'object' && !Array.isArray(currentValue) && currentValue !== null) {
+        if (
+          typeof currentValue === 'object' &&
+          !Array.isArray(currentValue) &&
+          currentValue !== null
+        ) {
           form.setFieldValue('value', undefined);
         }
       }
@@ -97,14 +134,19 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
   }, [operator, isModalOpen, form]);
 
   React.useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleFilterError = (e: any) => {
       const lastFilter = e.detail;
       if (lastFilter) {
         // Find role based on field
-        const fieldRole = fields.find(f => f.name === lastFilter.field)?.role || 'dimension';
-        const value = lastFilter.operator === 'between' 
-          ? lastFilter.value 
-          : Array.isArray(lastFilter.value) ? lastFilter.value.join(',') : lastFilter.value;
+        const fieldRole =
+          fields.find((f) => f.name === lastFilter.field)?.role || 'dimension';
+        const value =
+          lastFilter.operator === 'between'
+            ? lastFilter.value
+            : Array.isArray(lastFilter.value)
+              ? lastFilter.value.join(',')
+              : lastFilter.value;
         form.setFieldsValue({
           role: fieldRole,
           name: lastFilter.name,
@@ -120,22 +162,32 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
     };
 
     window.addEventListener('vbi-filter-error', handleFilterError);
-    return () => window.removeEventListener('vbi-filter-error', handleFilterError);
+    return () =>
+      window.removeEventListener('vbi-filter-error', handleFilterError);
   }, [form, fields]);
 
   const handleAddClick = () => {
     setEditingIndex(null);
     form.resetFields();
-    form.setFieldsValue({ role: 'dimension', operator: 'in', actionType: 'filter', sortOrder: 'desc' });
+    form.setFieldsValue({
+      role: 'dimension',
+      operator: 'in',
+      actionType: 'filter',
+      sortOrder: 'desc',
+    });
     setIsModalOpen(true);
   };
 
   const handleEdit = (index: number) => {
     const item = filters[index];
-    const value = item.operator === 'between'
-      ? item.value
-      : Array.isArray(item.value) ? item.value.join(',') : item.value;
-    const fieldRole = fields.find(f => f.name === item.field)?.role || 'dimension';
+    const value =
+      item.operator === 'between'
+        ? item.value
+        : Array.isArray(item.value)
+          ? item.value.join(',')
+          : item.value;
+    const fieldRole =
+      fields.find((f) => f.name === item.field)?.role || 'dimension';
     setEditingIndex(index);
     form.setFieldsValue({
       role: fieldRole,
@@ -151,12 +203,18 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
   };
 
   const handleSubmit = () => {
-    form.validateFields().then(values => {
-      const { name, field, operator, value, actionType, sortOrder, limit } = values;
-      const finalValue = (operator === 'in' || operator === 'not in' || operator === '=' || operator === '!=') && typeof value === 'string' 
-        ? value.split(',').map((v: string) => v.trim()) 
-        : value;
-      
+    form.validateFields().then((values) => {
+      const { name, field, operator, value, actionType, sortOrder, limit } =
+        values;
+      const finalValue =
+        (operator === 'in' ||
+          operator === 'not in' ||
+          operator === '=' ||
+          operator === '!=') &&
+        typeof value === 'string'
+          ? value.split(',').map((v: string) => v.trim())
+          : value;
+
       if (editingIndex !== null) {
         const newFilters = [...filters];
         newFilters[editingIndex] = {
@@ -184,7 +242,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
         };
         onChange([...filters, newFilter]);
       }
-      
+
       setIsModalOpen(false);
       setEditingIndex(null);
       form.resetFields();
@@ -204,10 +262,22 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
   };
 
   return (
-    <Card 
-      size="small" 
-      title={<Space><FilterOutlined />数据筛选器</Space>}
-      extra={<Button type="text" size="small" icon={<PlusOutlined />} onClick={handleAddClick} />}
+    <Card
+      size="small"
+      title={
+        <Space>
+          <FilterOutlined />
+          数据筛选器
+        </Space>
+      }
+      extra={
+        <Button
+          type="text"
+          size="small"
+          icon={<PlusOutlined />}
+          onClick={handleAddClick}
+        />
+      }
       style={{ marginBottom: 0 }}
       styles={{
         body: {
@@ -216,7 +286,14 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
       }}
     >
       {filters.length === 0 ? (
-        <div style={{ color: '#999', fontSize: 12, textAlign: 'center', padding: '10px 0' }}>
+        <div
+          style={{
+            color: '#999',
+            fontSize: 12,
+            textAlign: 'center',
+            padding: '10px 0',
+          }}
+        >
           暂无筛选条件
         </div>
       ) : (
@@ -229,48 +306,65 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
                 style={{ padding: '8px 0' }}
                 actions={[
                   <Tooltip title="编辑" key="edit">
-                    <Button 
-                      type="text" 
-                      size="small" 
-                      icon={<EditOutlined />} 
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={<EditOutlined />}
                       onClick={() => handleEdit(index)}
                       style={{ color: '#1890ff' }}
                     />
                   </Tooltip>,
                   <Tooltip title={item.isActive ? '停用' : '启用'} key="toggle">
-                    <Button 
-                      type="text" 
-                      size="small" 
-                      icon={item.isActive ? <EyeOutlined /> : <EyeInvisibleOutlined />} 
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={
+                        item.isActive ? (
+                          <EyeOutlined />
+                        ) : (
+                          <EyeInvisibleOutlined />
+                        )
+                      }
                       onClick={() => handleToggleActive(index)}
                       style={{ color: item.isActive ? '#1890ff' : '#999' }}
                     />
                   </Tooltip>,
                   <Tooltip title="删除" key="delete">
-                    <Button 
-                      type="text" 
-                      size="small" 
-                      danger 
-                      icon={<DeleteOutlined />} 
+                    <Button
+                      type="text"
+                      size="small"
+                      danger
+                      icon={<DeleteOutlined />}
                       onClick={() => handleDelete(index)}
                     />
-                  </Tooltip>
+                  </Tooltip>,
                 ]}
               >
-                <div style={{ display: 'flex', flexDirection: 'column', opacity: item.isActive ? 1 : 0.5, maxWidth: '140px' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    opacity: item.isActive ? 1 : 0.5,
+                    maxWidth: '140px',
+                  }}
+                >
                   {(() => {
-                    const displayLabel = item.actionType === 'sort' 
-                      ? `排序: ${item.sortOrder === 'asc' ? '升序' : '降序'}${item.limit ? ` (Top ${item.limit})` : ''}`
-                      : item.operator === 'between' && item.value
-                        ? `${item.value.min ?? ''} ${item.value.leftOp ?? '<='} 变量 ${item.value.rightOp ?? '<='} ${item.value.max ?? ''}`
-                        : `${item.operator} ${String(item.value)}`;
+                    const displayLabel =
+                      item.actionType === 'sort'
+                        ? `排序: ${item.sortOrder === 'asc' ? '升序' : '降序'}${item.limit ? ` (Top ${item.limit})` : ''}`
+                        : item.operator === 'between' && item.value
+                          ? `${item.value.min ?? ''} ${item.value.leftOp ?? '<='} 变量 ${item.value.rightOp ?? '<='} ${item.value.max ?? ''}`
+                          : `${item.operator} ${String(item.value)}`;
                     return (
                       <>
                         <Text style={{ fontSize: 13 }} ellipsis>
                           {item.name || `${item.field} ${displayLabel}`}
                         </Text>
                         {item.name && (
-                          <Text style={{ fontSize: 11, color: '#888' }} ellipsis>
+                          <Text
+                            style={{ fontSize: 11, color: '#888' }}
+                            ellipsis
+                          >
                             {item.field} {displayLabel}
                           </Text>
                         )}
@@ -285,48 +379,75 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
       )}
 
       <Modal
-        title={editingIndex !== null ? "编辑筛选器" : "新增筛选器"}
+        title={editingIndex !== null ? '编辑筛选器' : '新增筛选器'}
         open={isModalOpen}
         onOk={handleSubmit}
-        onCancel={() => { setIsModalOpen(false); setEditingIndex(null); }}
-        okText={editingIndex !== null ? "保存" : "添加"}
+        onCancel={() => {
+          setIsModalOpen(false);
+          setEditingIndex(null);
+        }}
+        okText={editingIndex !== null ? '保存' : '添加'}
         cancelText="取消"
         destroyOnClose
       >
-        <Form form={form} layout="vertical" initialValues={{ operator: 'in', role: 'dimension', actionType: 'filter', sortOrder: 'desc' }}>
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={{
+            operator: 'in',
+            role: 'dimension',
+            actionType: 'filter',
+            sortOrder: 'desc',
+          }}
+        >
           <Form.Item label="字段类型" name="role">
-            <Radio.Group optionType="button" onChange={(e) => {
-              form.setFieldsValue({
-                field: undefined,
-                operator: e.target.value === 'measure' ? '=' : 'in',
-                value: undefined,
-                actionType: 'filter',
-                sortOrder: 'desc',
-                limit: undefined,
-                name: undefined
-              });
-            }}>
+            <Radio.Group
+              optionType="button"
+              onChange={(e) => {
+                form.setFieldsValue({
+                  field: undefined,
+                  operator: e.target.value === 'measure' ? '=' : 'in',
+                  value: undefined,
+                  actionType: 'filter',
+                  sortOrder: 'desc',
+                  limit: undefined,
+                  name: undefined,
+                });
+              }}
+            >
               <Radio value="dimension">维度 (Dimension)</Radio>
               <Radio value="measure">度量 (Measure)</Radio>
             </Radio.Group>
           </Form.Item>
-          
-          <Form.Item label="字段" name="field" rules={[{ required: true, message: '请选择字段' }]}>
-            <Select placeholder="选择要筛选的字段" showSearch onChange={() => {
-              form.setFieldsValue({
-                actionType: 'filter',
-                operator: selectedRole === 'measure' ? '=' : 'in',
-                value: undefined,
-                sortOrder: 'desc',
-                limit: undefined,
-                name: undefined
-              });
-            }}>
-              {displayFields.map(f => {
+
+          <Form.Item
+            label="字段"
+            name="field"
+            rules={[{ required: true, message: '请选择字段' }]}
+          >
+            <Select
+              placeholder="选择要筛选的字段"
+              showSearch
+              onChange={() => {
+                form.setFieldsValue({
+                  actionType: 'filter',
+                  operator: selectedRole === 'measure' ? '=' : 'in',
+                  value: undefined,
+                  sortOrder: 'desc',
+                  limit: undefined,
+                  name: undefined,
+                });
+              }}
+            >
+              {displayFields.map((f) => {
                 const isActive = activeFields.includes(f.name);
                 return (
                   <Option key={f.name} value={f.name}>
-                    <span style={isActive ? { color: '#e39700' , fontWeight: 'bold'} : {}}>
+                    <span
+                      style={
+                        isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
+                      }
+                    >
                       {f.name} {isActive ? '(推荐)' : ''}
                     </span>
                   </Option>
@@ -334,64 +455,107 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
               })}
             </Select>
           </Form.Item>
-          
+
           {selectedRole === 'measure' && (
             <Form.Item label="行为类型" name="actionType">
-              <Radio.Group optionType="button" onChange={(e) => {
-                form.setFieldsValue({
-                  operator: selectedRole === 'measure' ? '=' : 'in',
-                  value: undefined,
-                  sortOrder: 'desc',
-                  limit: undefined,
-                  name: undefined
-                });
-              }}>
+              <Radio.Group
+                optionType="button"
+                onChange={() => {
+                  form.setFieldsValue({
+                    operator: selectedRole === 'measure' ? '=' : 'in',
+                    value: undefined,
+                    sortOrder: 'desc',
+                    limit: undefined,
+                    name: undefined,
+                  });
+                }}
+              >
                 <Radio value="filter">筛选</Radio>
                 <Radio value="sort">排序</Radio>
               </Radio.Group>
             </Form.Item>
           )}
-          
+
           {actionType === 'sort' ? (
             <>
-              <Form.Item label="排序方向" name="sortOrder" rules={[{ required: true }]}>
-                <Radio.Group optionType="button" onChange={() => {
-                  form.setFieldsValue({ limit: undefined, name: undefined });
-                }}>
+              <Form.Item
+                label="排序方向"
+                name="sortOrder"
+                rules={[{ required: true }]}
+              >
+                <Radio.Group
+                  optionType="button"
+                  onChange={() => {
+                    form.setFieldsValue({ limit: undefined, name: undefined });
+                  }}
+                >
                   <Radio value="desc">降序 (DESC)</Radio>
                   <Radio value="asc">升序 (ASC)</Radio>
                 </Radio.Group>
               </Form.Item>
               <Form.Item label="截断数量 (Top N)" name="limit">
-                <InputNumber min={1} placeholder="选填，例如: 10" style={{ width: '100%' }} />
+                <InputNumber
+                  min={1}
+                  placeholder="选填，例如: 10"
+                  style={{ width: '100%' }}
+                />
               </Form.Item>
             </>
           ) : (
             <>
-              <Form.Item label="操作符" name="operator" rules={[{ required: true }]}>
+              <Form.Item
+                label="操作符"
+                name="operator"
+                rules={[{ required: true }]}
+              >
                 {selectedRole === 'dimension' ? (
-                  <Radio.Group optionType="button" onChange={() => {
-                    form.setFieldsValue({ value: undefined, name: undefined });
-                  }}>
-                    {availableOperators.map(op => (
-                      <Radio key={op.value} value={op.value}>{op.label}</Radio>
+                  <Radio.Group
+                    optionType="button"
+                    onChange={() => {
+                      form.setFieldsValue({
+                        value: undefined,
+                        name: undefined,
+                      });
+                    }}
+                  >
+                    {availableOperators.map((op) => (
+                      <Radio key={op.value} value={op.value}>
+                        {op.label}
+                      </Radio>
                     ))}
                   </Radio.Group>
                 ) : (
-                  <Select onChange={() => {
-                    form.setFieldsValue({ value: undefined, name: undefined });
-                  }}>
-                    {availableOperators.map(op => (
-                      <Option key={op.value} value={op.value}>{op.label}</Option>
+                  <Select
+                    onChange={() => {
+                      form.setFieldsValue({
+                        value: undefined,
+                        name: undefined,
+                      });
+                    }}
+                  >
+                    {availableOperators.map((op) => (
+                      <Option key={op.value} value={op.value}>
+                        {op.label}
+                      </Option>
                     ))}
                   </Select>
                 )}
               </Form.Item>
               {operator === 'between' ? (
                 <Form.Item label="范围设置">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
                     <Form.Item name={['value', 'min']} noStyle>
-                      <InputNumber placeholder="最小值" style={{ width: '80px' }} controls={false} />
+                      <InputNumber
+                        placeholder="最小值"
+                        style={{ width: '80px' }}
+                        controls={false}
+                      />
                     </Form.Item>
                     <Form.Item name={['value', 'leftOp']} noStyle>
                       <Select style={{ width: '60px' }}>
@@ -399,7 +563,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
                         <Option value="<=">&lt;=</Option>
                       </Select>
                     </Form.Item>
-                    <Text ellipsis style={{ maxWidth: '80px', textAlign: 'center' }} title={selectedField || '变量'}>
+                    <Text
+                      ellipsis
+                      style={{ maxWidth: '80px', textAlign: 'center' }}
+                      title={selectedField || '变量'}
+                    >
                       {selectedField || '变量'}
                     </Text>
                     <Form.Item name={['value', 'rightOp']} noStyle>
@@ -409,13 +577,27 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({ fields, activeFields =
                       </Select>
                     </Form.Item>
                     <Form.Item name={['value', 'max']} noStyle>
-                      <InputNumber placeholder="最大值" style={{ width: '80px' }} controls={false} />
+                      <InputNumber
+                        placeholder="最大值"
+                        style={{ width: '80px' }}
+                        controls={false}
+                      />
                     </Form.Item>
                   </div>
                 </Form.Item>
               ) : (
-                <Form.Item label="筛选值" name="value" rules={[{ required: true, message: '请输入筛选值' }]}>
-                  <Input placeholder={['in', 'not in', '=', '!='].includes(operator) ? "输入筛选值 (如需多选，请用英文逗号分隔)" : "输入筛选值"} />
+                <Form.Item
+                  label="筛选值"
+                  name="value"
+                  rules={[{ required: true, message: '请输入筛选值' }]}
+                >
+                  <Input
+                    placeholder={
+                      ['in', 'not in', '=', '!='].includes(operator)
+                        ? '输入筛选值 (如需多选，请用英文逗号分隔)'
+                        : '输入筛选值'
+                    }
+                  />
                 </Form.Item>
               )}
             </>
