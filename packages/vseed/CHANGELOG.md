@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.9
+
+### Patch Changes
+
+- Add color scale && barProgress feature in bodyCellStyle
+
 ## 0.4.8
 
 ### Patch Changes
@@ -9,6 +15,7 @@
 ## 0.4.7
 
 ### Patch Changes
+
 - Support totals in table/pivotTable, support **MeaId** column encoding in pivotTable
 
 ## 0.4.6
