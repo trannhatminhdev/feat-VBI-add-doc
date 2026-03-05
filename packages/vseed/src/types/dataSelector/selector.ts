@@ -115,7 +115,7 @@ export type DimensionSelector = {
 
 export type Selector = ValueSelector | PartialDatumSelector | MeasureSelector | DimensionSelector
 
-export type AreaSelector = FieldSelector | MeasureSelector | DimensionSelector
+export type AreaSelector = MeasureSelector | DimensionSelector
 
 export type AreaSelectors = Array<AreaSelector>
 
