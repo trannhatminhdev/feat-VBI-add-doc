@@ -48,91 +48,13 @@ export const registerDemoConnector = () => {
           );
         }
         const dataset = await vquery.connectDataset(connectorId);
-        try {
-          const queryResult = await dataset.query(
-            queryDSL as VQueryDSL<Record<string, string | number>>,
-          );
+        const queryResult = await dataset.query(
+          queryDSL as VQueryDSL<Record<string, string | number>>,
+        );
 
-          // Measure-aware type conversion: convert measure results from string to number
-          let normalizedDataset = queryResult.dataset;
-          if (queryDSL.select && Array.isArray(queryDSL.select)) {
-            // Identify measure columns (those with func property) and dimension columns
-            // 使用 field 而不是 alias 作为列名，保持与 buildVSeed 的 id 一致
-            const measureFields: { field: string; alias: string }[] = [];
-            const dimensionFields: { field: string; alias: string }[] = [];
-            
-            for (const item of queryDSL.select) {
-              if (typeof item === 'object' && item !== null) {
-                const field = (item as any).field;
-                const alias = (item as any).alias;
-                
-                if ('func' in item && (item as any).func) {
-                  // This is a measure
-                  if (field) {
-                    measureFields.push({ field, alias });
-                  }
-                } else {
-                  // This is a dimension
-                  if (field) {
-                    dimensionFields.push({ field, alias });
-                  }
-                }
-              }
-            }
-
-
-            if (measureFields.length > 0 || dimensionFields.length > 0) {
-              // CRITICAL: Must reassign the result
-              // 将列从 alias 名重命名为 field 名
-              normalizedDataset = queryResult.dataset.map((row) => {
-                const next: Record<string, any> = {};
-
-                // Process measures: convert string to number and rename from alias to field
-                for (const { field, alias } of measureFields) {
-                  const raw = (row as any)[alias];
-
-                  if (raw != null) {
-                    // Handle both string and bigint types from Arrow
-                    let num: number;
-                    if (typeof raw === 'string') {
-                      num = Number(raw);
-                    } else if (typeof raw === 'bigint') {
-                      num = Number(raw);
-                    } else if (typeof raw === 'number') {
-                      num = raw;
-                    } else {
-                      num = NaN;
-                    }
-
-                    // Only assign if valid，用 field 作为新的列名
-                    if (!Number.isNaN(num)) {
-                      next[field] = num;
-                    }
-                  }
-                }
-
-                // Process dimensions: just rename from alias to field
-                for (const { field, alias } of dimensionFields) {
-                  const raw = (row as any)[alias];
-                  if (raw != null) {
-                    next[field] = raw;
-                  }
-                }
-
-                return next;
-              });
-
-
-            }
-          }
-
-          return {
-            dataset: normalizedDataset,
-          };
-        } catch (error) {
-          console.error('[demoConnector] Query error:', error);
-          throw error;
-        }
+        return {
+          dataset: queryResult.dataset,
+        };
       },
     };
   });

@@ -1,16 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import './App.css';
 import { ConfigProvider, theme, Dropdown, Button } from 'antd';
 import { LeftOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
 import DimensionShelf from './components/Shelfs/DimensionShelf';
 import MeasureShelf from './components/Shelfs/MeasureShelf';
+import { FilterPanel, type FilterItem } from './components/Filter/FilterPanel';
+import type { VBIFilter } from '@visactor/vbi';
 import { ChartTypeSelector } from './components/ChartType';
 import FieldsList from './components/Fields/FieldList';
-import MeasureFieldList from './components/Fields/MeasureFieldList';
 import { VSeedRender } from './components/Render';
 import { useVBIStore } from './model';
 import { useShallow } from 'zustand/shallow';
+import { setLocalData } from './utils/localConnector';
 
 export function APP() {
   const [leftWidth, setLeftWidth] = useState(220);
@@ -26,9 +27,6 @@ export function APP() {
     measures?: {
       addMeasure: (field: string, callback?: (node: unknown) => void) => void;
       removeMeasure: (field: string) => void;
-      renameMeasure: (alias: string, newAlias: string) => void;
-      modifyAggregate: (alias: string, func: string, quantile?: number) => void;
-      getMeasures: () => any[];
     };
     chartType?: {
       changeChartType: (type: string) => void;
@@ -44,24 +42,91 @@ export function APP() {
   const [measures, setMeasures] = useState<string[]>([]);
   const [dimensionFields, setDimensionFields] = useState<string[]>([]);
   const [measureFields, setMeasureFields] = useState<string[]>([]);
-  const [measuresDetail, setMeasuresDetail] = useState<
-    Record<string, { alias?: string; aggregate?: { func: string; quantile?: number } }>
-  >({});
   const [chartTypeOptions, setChartTypeOptions] = useState<string[]>([]);
   const [currentChartType, setCurrentChartType] = useState<string>('table');
   const [renderKey, setRenderKey] = useState(0);
-  // Track which measures came from dimensions (to restrict their aggregates)
-  const [dimensionMeasures, setDimensionMeasures] = useState<string[]>([]);
 
   // 获取 vbi store 的状态
-  const { initialize, initialized, builder, vseed } = useVBIStore(
+  const { initialize, initialized, builder, vseed, dsl } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
       initialized: state.initialized,
       builder: state.builder,
       vseed: state.vseed,
+      dsl: state.dsl,
     })),
   );
+
+  const activeFields = useMemo(() => {
+    if (!dsl) return [];
+    const fields = new Set<string>();
+    
+    const extractFields = (items: any[]) => {
+      items?.forEach((item) => {
+        if (item && typeof item === 'object') {
+          if ('field' in item && typeof item.field === 'string') {
+            fields.add(item.field);
+          }
+          if ('children' in item && Array.isArray(item.children)) {
+            extractFields(item.children);
+          }
+        }
+      });
+    };
+
+    extractFields(dsl.dimensions || []);
+    extractFields(dsl.measures || []);
+    return Array.from(fields);
+  }, [dsl]);
+
+  const [allFields, setAllFields] = useState<{ name: string; role: 'dimension' | 'measure' }[]>([]);
+  const [filters, setFilters] = useState<FilterItem[]>([]);
+
+  useEffect(() => {
+    const handleFilterError = () => {
+      setFilters((prev) => prev.slice(0, -1));
+    };
+    window.addEventListener('vbi-filter-error', handleFilterError);
+    return () => window.removeEventListener('vbi-filter-error', handleFilterError);
+  }, []);
+
+  useEffect(() => {
+    if (initialized && builder) {
+      const fetchSchema = async () => {
+        const schema = await builder.getSchema();
+        setAllFields(
+          schema.map((s: { name: string; type: string }) => ({
+            name: s.name,
+            role: s.type === 'number' ? 'measure' : 'dimension',
+          }))
+        );
+      };
+      fetchSchema();
+    }
+  }, [initialized, builder]);
+
+  const handleFilterChange = (newFilters: FilterItem[]) => {
+    setFilters(newFilters);
+    if (builder) {
+      builder.doc.transact(() => {
+        builder.filters.clearFilters();
+        newFilters.forEach((f) => {
+          if (f.isActive) {
+            builder.filters.addFilter({
+              field: f.field,
+              operator: f.operator,
+              value: f.value,
+              actionType: f.actionType,
+              sortOrder: f.sortOrder,
+              limit: f.limit,
+              enabled: true,
+            });
+          }
+        });
+      });
+      setRenderKey((prev) => prev + 1);
+    }
+  };
 
   // 初始化
   useEffect(() => {
@@ -74,58 +139,104 @@ export function APP() {
       const types = builder.chartType.getAvailableChartTypes();
       setChartTypeOptions(types);
     }
-
-    // 从 connector schema 获取可用的字段
-    const loadSchema = async () => {
-      if (builder?.getSchema) {
-        try {
-          const schema = await builder.getSchema();
-          const dims = schema.filter((d: any) => d.type !== 'number').map((d: any) => d.name);
-          const meas = schema.filter((d: any) => d.type === 'number').map((d: any) => d.name);
-          setDimensions(dims);
-          setMeasures(meas);
-        } catch (err) {
-          console.error('Failed to load schema:', err);
-        }
-      }
-    };
-
-    loadSchema();
-
-    // 初始化度量字段详情
-    if (builder?.measures?.getMeasures) {
-      const measures = builder.measures.getMeasures();
-      const detail: Record<
-        string,
-        { alias?: string; aggregate?: { func: string; quantile?: number } }
-      > = {};
-
-      if (Array.isArray(measures)) {
-        measures.forEach((value: any) => {
-          const field = value.field;
-          const alias = value.alias || '';
-          const aggregate = value.aggregate;
-          // 使用 field 作为 key，而不是 alias
-          detail[field] = {
-            alias,
-            aggregate: aggregate ? { func: aggregate.func, quantile: aggregate.quantile } : undefined,
-          };
-        });
-      }
-
-      setMeasuresDetail(detail);
-    }
   }, []);
 
   // 加载 demo 数据
   const handleLoadDemo = async () => {
-    // 数据已经通过 demoConnector 的 query 方法从云端加载
-    // 字段列表已经通过 getSchema 获得
+    try {
+      const url = 'https://visactor.github.io/VBI/dataset/supermarket.csv';
+      const response = await fetch(url);
+      const csv = await response.text();
+
+      const lines = csv.split('\n');
+      const headers = lines[0].split(',').map((h: string) => h.trim());
+      const data = lines
+        .slice(1)
+        .map((line: string) => {
+          const values = line.split(',').map((v: string) => v.trim());
+          const row: Record<string, unknown> = {};
+          headers.forEach((header: string, index: number) => {
+            const value = values[index];
+            row[header] = isNaN(Number(value)) ? value : Number(value);
+          });
+          return row;
+        })
+        .filter((row: Record<string, unknown>) =>
+          Object.values(row).some((v) => v !== ''),
+        );
+
+      // 设置本地数据
+      setLocalData(data);
+
+      // 识别维度和度量
+      if (data.length > 0) {
+        const dims = headers.filter((h: string) => isNaN(Number(data[0]?.[h])));
+        const meas = headers.filter(
+          (h: string) => !isNaN(Number(data[0]?.[h])),
+        );
+        setDimensions(dims.length > 0 ? dims : headers.slice(0, 3));
+        setMeasures(meas.length > 0 ? meas : headers.slice(3));
+        setDimensionFields([]);
+        setMeasureFields([]);
+      }
+
+      console.log('Demo 数据已加载');
+    } catch (err) {
+      console.error('加载 Demo 数据失败:', err);
+    }
   };
 
-  // 上传 CSV - 暂未实现，目前仅支持 demo 数据
+  // 上传 CSV
   const handleUploadCSV = () => {
-    alert('Function not yet implemented. Currently only demo data is supported.');
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv';
+    input.onchange = (e: Event) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event: ProgressEvent<FileReader>) => {
+        try {
+          const csv = event.target?.result as string;
+          const lines = csv.split('\n');
+          const headers = lines[0].split(',').map((h: string) => h.trim());
+          const data = lines
+            .slice(1)
+            .map((line: string) => {
+              const values = line.split(',').map((v: string) => v.trim());
+              const row: Record<string, unknown> = {};
+              headers.forEach((header: string, index: number) => {
+                const value = values[index];
+                row[header] = isNaN(Number(value)) ? value : Number(value);
+              });
+              return row;
+            })
+            .filter((row: Record<string, unknown>) =>
+              Object.values(row).some((v) => v !== ''),
+            );
+
+          // 设置本地数据
+          setLocalData(data);
+
+          const dims = headers.filter((h: string) =>
+            isNaN(Number(data[0]?.[h])),
+          );
+          const meas = headers.filter(
+            (h: string) => !isNaN(Number(data[0]?.[h])),
+          );
+          setDimensions(dims.length > 0 ? dims : headers);
+          setMeasures(meas.length > 0 ? meas : []);
+          setDimensionFields([]);
+          setMeasureFields([]);
+          console.log(`CSV 已上传，共 ${data.length} 行`);
+        } catch (err) {
+          console.error('CSV 解析失败:', err);
+        }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
   };
 
   const dataMenuItems = [
@@ -161,32 +272,6 @@ export function APP() {
     }
   };
 
-  // 从 dimension 添加 measure（默认使用 count 聚合）
-  const handleAddMeasureFromDimension = (field: string) => {
-    if (!measureFields.includes(field)) {
-      const newMeas = [...measureFields, field];
-      setMeasureFields(newMeas);
-      setDimensionMeasures((prev) => [...prev, field]);
-      if (builderRef.current?.measures && builderRef.current.doc) {
-        const { measures, doc } = builderRef.current;
-        doc.transact(() => {
-          measures.addMeasure(field, (node: unknown) => {
-            const nodeObj = node as any;
-            if (nodeObj?.setAlias) {
-              nodeObj.setAlias(field);
-            }
-            // Dimension 转为 measure 时默认使用 count 聚合
-            if (nodeObj?.setAggregate) {
-              nodeObj.setAggregate({ func: 'count' });
-            }
-          });
-        });
-        syncMeasuresDetail();
-      }
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
   const handleRemoveDimension = (field: string) => {
     const newDims = dimensionFields.filter((d) => d !== field);
     setDimensionFields(newDims);
@@ -197,32 +282,6 @@ export function APP() {
       });
     }
     setRenderKey((prev) => prev + 1);
-  };
-
-  // 同步度量字段详情
-  const syncMeasuresDetail = () => {
-    if (builderRef.current?.measures) {
-      const measures = builderRef.current.measures.getMeasures();
-      const detail: Record<
-        string,
-        { alias?: string; aggregate?: { func: string; quantile?: number } }
-      > = {};
-
-      if (Array.isArray(measures)) {
-        measures.forEach((value: any) => {
-          const field = value.field;
-          const alias = value.alias || '';
-          const aggregate = value.aggregate;
-          // 使用 field 作为 key，而不是 alias
-          detail[field] = {
-            alias,
-            aggregate: aggregate ? { func: aggregate.func, quantile: aggregate.quantile } : undefined,
-          };
-        });
-      }
-
-      setMeasuresDetail(detail);
-    }
   };
 
   // 度量字段变化
@@ -240,7 +299,6 @@ export function APP() {
             }
           });
         });
-        syncMeasuresDetail();
       }
       setRenderKey((prev) => prev + 1);
     }
@@ -249,42 +307,13 @@ export function APP() {
   const handleRemoveMeasure = (field: string) => {
     const newMeas = measureFields.filter((m) => m !== field);
     setMeasureFields(newMeas);
-    setDimensionMeasures((prev) => prev.filter((m) => m !== field));
     if (builderRef.current?.measures && builderRef.current.doc) {
       const { measures, doc } = builderRef.current;
       doc.transact(() => {
         measures.removeMeasure(field);
       });
-      syncMeasuresDetail();
     }
     setRenderKey((prev) => prev + 1);
-  };
-
-  const handleRenameMeasure = (field: string, newAlias: string) => {
-    if (builderRef.current?.measures && builderRef.current.doc) {
-      const { measures, doc } = builderRef.current;
-      doc.transact(() => {
-        measures.renameMeasure(field, newAlias);
-      });
-      // measureFields 存的是 field，不需要改
-      syncMeasuresDetail();
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
-  const handleChangeAggregateFunc = (
-    field: string,
-    func: string,
-    quantile?: number
-  ) => {
-    if (builderRef.current?.measures && builderRef.current.doc) {
-      const { measures, doc } = builderRef.current;
-      doc.transact(() => {
-        measures.modifyAggregate(field, func, quantile);
-      });
-      syncMeasuresDetail();
-      setRenderKey((prev) => prev + 1);
-    }
   };
 
   // 图表类型变化
@@ -294,6 +323,34 @@ export function APP() {
       builderRef.current.chartType.changeChartType(type);
     }
     setRenderKey((prev) => prev + 1);
+  };
+
+  // 数据筛选变化
+  const handleAddFilter = (filter: VBIFilter) => {
+    if (builder && builder.doc) {
+      builder.doc.transact(() => {
+        builder.filters.addFilter(filter);
+      });
+      setRenderKey((prev) => prev + 1);
+    }
+  };
+
+  const handleUpdateFilter = (index: number, filter: Partial<VBIFilter>) => {
+    if (builder && builder.doc) {
+      builder.doc.transact(() => {
+        builder.filters.updateFilter(index, filter);
+      });
+      setRenderKey((prev) => prev + 1);
+    }
+  };
+
+  const handleDeleteFilter = (index: number) => {
+    if (builder && builder.doc) {
+      builder.doc.transact(() => {
+        builder.filters.removeFilter(index);
+      });
+      setRenderKey((prev) => prev + 1);
+    }
   };
 
   useEffect(() => {
@@ -358,6 +415,16 @@ export function APP() {
                     />
                   </Dropdown>
                 </div>
+                {(dimensions.length > 0 || measures.length > 0) && (
+                  <div style={{ padding: '0 12px' }}>
+                    <FilterPanel 
+                      fields={allFields.length > 0 ? allFields : [...dimensions.map(d => ({name: d, role: 'dimension' as const})), ...measures.map(m => ({name: m, role: 'measure' as const}))]} 
+                      activeFields={activeFields}
+                      filters={filters}
+                      onChange={handleFilterChange}
+                    />
+                  </div>
+                )}
                 {dimensions.length > 0 && (
                   <>
                     <div
@@ -372,8 +439,7 @@ export function APP() {
                     </div>
                     <DimensionShelf
                       items={dimensions}
-                      onAddDimension={handleAddDimension}
-                      onAddMeasure={handleAddMeasureFromDimension}
+                      onAdd={handleAddDimension}
                       existingFields={dimensionFields}
                     />
                   </>
@@ -446,12 +512,10 @@ export function APP() {
                   onRemove={handleRemoveDimension}
                   style={{ flex: 1, minHeight: 0 }}
                 />
-                <MeasureFieldList
+                <FieldsList
+                  title="MEASURES"
                   items={measureFields}
-                  measures={measuresDetail}
-                  dimensionMeasures={Array.from(dimensionMeasures)}
-                  onRename={handleRenameMeasure}
-                  onChangeAggregate={handleChangeAggregateFunc}
+                  onAdd={handleAddMeasure}
                   onRemove={handleRemoveMeasure}
                   style={{ flex: 1, minHeight: 0, marginTop: 12 }}
                 />

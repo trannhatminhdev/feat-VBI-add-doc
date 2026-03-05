@@ -16,7 +16,7 @@ const createVBI = () => {
         chartType: 'table',
         measures: [],
         dimensions: [],
-        having: [],
+        filters: [],
         theme: 'light',
         locale: 'zh-CN',
         version: 0,
@@ -33,6 +33,12 @@ const createVBI = () => {
         if (vbi.locale) dsl.set('locale', vbi.locale)
         if (vbi.version) dsl.set('version', vbi.version)
 
+        if (!dsl.get('filters')) {
+          dsl.set('filters', new Y.Array<any>())
+        } else if (vbi.filters) {
+          dsl.set('filters', vbi.filters)
+        }
+
         if (!dsl.get('measures')) {
           dsl.set('measures', new Y.Array<any>())
         } else {
@@ -43,12 +49,6 @@ const createVBI = () => {
           dsl.set('dimensions', new Y.Array<any>())
         } else {
           dsl.set('dimensions', vbi.dimensions)
-        }
-
-        if (!dsl.get('having')) {
-          dsl.set('having', new Y.Array<any>())
-        } else {
-          dsl.set('having', vbi.having)
         }
       })
 

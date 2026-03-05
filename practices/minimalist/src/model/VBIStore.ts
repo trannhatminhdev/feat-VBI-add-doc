@@ -55,6 +55,21 @@ export const useVBIStore = create<BearState>((set, get) => ({
         const newVSeed = await builder.buildVSeed();
         setVSeed(newVSeed);
         setDsl(builder.dsl.toJSON() as VBIDSL);
+      } catch (e: any) {
+        console.error("VSeed Build Error:", e);
+        import('antd').then(({ message }) => {
+          message.error("筛选器配置有误导致数据构建失败，已为您自动移除无效筛选器，请重新配置。");
+        });
+        
+        const filters = builder.filters.getFilters();
+        if (filters && filters.length > 0) {
+          const lastFilter = filters[filters.length - 1];
+          builder.doc.transact(() => {
+            builder.filters.removeFilter(filters.length - 1);
+          });
+          // Avoid triggering immediately if possible, or let it trigger again and succeed
+          window.dispatchEvent(new CustomEvent('vbi-filter-error', { detail: lastFilter }));
+        }
       } finally {
         setLoading(false);
       }

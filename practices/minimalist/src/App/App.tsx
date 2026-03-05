@@ -5,10 +5,11 @@ import { MeasuresList } from 'src/components/Fields/MeasuresList';
 import { DimensionsList } from 'src/components/Fields/DimensionsList';
 import { VBIBuilder } from '@visactor/vbi';
 import { ChartTypeSelector } from 'src/components/ChartType';
+import { FilterPanel, type FilterItem } from 'src/components/Filter/FilterPanel';
 import { MeasureShelf } from 'src/components/Shelfs/MeasureShelf';
 import { DimensionShelf } from 'src/components/Shelfs/DimensionShelf';
 import { useVBIStore } from 'src/model';
-import { useEffect } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 interface APPProps {
@@ -16,12 +17,84 @@ interface APPProps {
 }
 
 export const APP = (props: APPProps) => {
-  const { initialize, initialized } = useVBIStore(
+  const { initialize, initialized, builder, dsl } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
       initialized: state.initialized,
+      builder: state.builder,
+      dsl: state.dsl,
     })),
   );
+
+  const activeFields = useMemo(() => {
+    if (!dsl) return [];
+    const fields = new Set<string>();
+    
+    const extractFields = (items: any[]) => {
+      items?.forEach((item) => {
+        if (item && typeof item === 'object') {
+          if ('field' in item && typeof item.field === 'string') {
+            fields.add(item.field);
+          }
+          if ('children' in item && Array.isArray(item.children)) {
+            extractFields(item.children);
+          }
+        }
+      });
+    };
+
+    extractFields(dsl.dimensions || []);
+    extractFields(dsl.measures || []);
+    return Array.from(fields);
+  }, [dsl]);
+
+  const [allFields, setAllFields] = useState<{ name: string; role: 'dimension' | 'measure' }[]>([]);
+  const [filters, setFilters] = useState<FilterItem[]>([]);
+
+  useEffect(() => {
+    const handleFilterError = () => {
+      setFilters((prev) => prev.slice(0, -1));
+    };
+    window.addEventListener('vbi-filter-error', handleFilterError);
+    return () => window.removeEventListener('vbi-filter-error', handleFilterError);
+  }, []);
+
+  useEffect(() => {
+    if (initialized && builder) {
+      const fetchSchema = async () => {
+        const schema = await builder.getSchema();
+        setAllFields(
+          schema.map((s: { name: string; type: string }) => ({
+            name: s.name,
+            role: s.type === 'number' ? 'measure' : 'dimension',
+          }))
+        );
+      };
+      fetchSchema();
+    }
+  }, [initialized, builder]);
+
+  const handleFilterChange = (newFilters: FilterItem[]) => {
+    setFilters(newFilters);
+    if (builder) {
+      builder.doc.transact(() => {
+        builder.filters.clearFilters();
+        newFilters.forEach((f) => {
+          if (f.isActive) {
+            builder.filters.addFilter({
+              field: f.field,
+              operator: f.operator,
+              value: f.value,
+              actionType: f.actionType,
+              sortOrder: f.sortOrder,
+              limit: f.limit,
+              enabled: true,
+            });
+          }
+        });
+      });
+    }
+  };
 
   // --- 彻底修复：只调用 Hook，不接收任何变量 ---
   theme.useToken();
@@ -44,12 +117,18 @@ export const APP = (props: APPProps) => {
     },
     {
       key: '2',
+      label: '筛选器',
+      children: <FilterPanel fields={allFields} activeFields={activeFields} filters={filters} onChange={handleFilterChange} />,
+      forceRender: true,
+    },
+    {
+      key: '3',
       label: '维度',
       children: <DimensionsList />,
       forceRender: true,
     },
     {
-      key: '3',
+      key: '4',
       label: '指标',
       children: <MeasuresList />,
       forceRender: true,
@@ -129,7 +208,7 @@ export const APP = (props: APPProps) => {
           <div style={styles.sidebarScrollArea}>
             <Collapse
               ghost
-              defaultActiveKey={['1', '2', '3']}
+              defaultActiveKey={['1', '2', '3', '4']}
               expandIcon={({ isActive }) => (
                 <CaretRightOutlined rotate={isActive ? 90 : 0} />
               )}
