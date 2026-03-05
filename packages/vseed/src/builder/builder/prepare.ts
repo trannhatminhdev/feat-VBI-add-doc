@@ -185,6 +185,7 @@ export const prepare = async (builder: Builder): Promise<void> => {
     datasetWithIndex = originalDataset.map((item, index) => ({
       ...item,
       [InnerRowIndex]: index,
+      _index: index, // 兼容部分 dynamicFilter 可能使用 _index
     }))
   }
 
