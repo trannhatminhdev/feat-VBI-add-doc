@@ -1,8 +1,15 @@
 import { Where, WhereClause } from 'src/types'
 import { sql } from 'kysely'
-import type { RawBuilder } from 'kysely'
+import type { RawBuilder, SelectQueryBuilder } from 'kysely'
 
-export const applyWhere = <T>(where: Where<T> | WhereClause<T>): RawBuilder<boolean> => {
+export const applyWhere = <DB, TB extends keyof DB & string, O, T>(
+  qb: SelectQueryBuilder<DB, TB, O>,
+  where?: Where<T> | WhereClause<T>,
+): SelectQueryBuilder<DB, TB, O> => {
+  if (!where) {
+    return qb
+  }
+
   const toRaw = (w: Where<T> | WhereClause<T>): RawBuilder<boolean> => {
     if ('op' in w && 'conditions' in w) {
       const parts: RawBuilder<boolean>[] = (w.conditions as Array<WhereClause<T>>).map((c) => toRaw(c))
@@ -37,5 +44,5 @@ export const applyWhere = <T>(where: Where<T> | WhereClause<T>): RawBuilder<bool
         return sql<boolean>`${sql.ref(field)} ${sql.raw(leaf.op)} ${sql.val(value)}`
     }
   }
-  return toRaw(where)
+  return qb.where(toRaw(where))
 }
