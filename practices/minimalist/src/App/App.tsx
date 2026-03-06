@@ -4,18 +4,11 @@ import { MeasuresList } from 'src/components/Fields/MeasuresList';
 import { DimensionsList } from 'src/components/Fields/DimensionsList';
 import { VBIBuilder } from '@visactor/vbi';
 import { ChartTypeSelector } from 'src/components/ChartType';
-import {
-  FilterPanel,
-  type FilterItem,
-} from 'src/components/Filter/FilterPanel';
-
 import { MeasureShelf } from 'src/components/Shelfs/MeasureShelf';
 import { DimensionShelf } from 'src/components/Shelfs/DimensionShelf';
 import { useVBIStore } from 'src/model';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useShallow } from 'zustand/shallow';
-
-  
 
 const { Title } = Typography;
 
@@ -24,16 +17,12 @@ interface APPProps {
 }
 
 export const APP = (props: APPProps) => {
-  const { initialize, initialized, builder, dsl } = useVBIStore(
+  const { initialize, initialized } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
       initialized: state.initialized,
-      builder: state.builder,
-      dsl: state.dsl,
     })),
   );
-
-
 
   useEffect(() => {
     return initialize(props.builder);
@@ -44,7 +33,10 @@ export const APP = (props: APPProps) => {
   }
 
   return (
-    <Flex vertical style={{ height: '100vh', padding: '16px', backgroundColor: '#f5f5f5' }}>
+    <Flex
+      vertical
+      style={{ height: '100vh', padding: '16px', backgroundColor: '#f5f5f5' }}
+    >
       {/* 1. Webpage Title */}
       <Title level={3} style={{ margin: '0 0 16px 0', color: '#333' }}>
         Minimalist
@@ -54,12 +46,22 @@ export const APP = (props: APPProps) => {
         {/* Left Column: Chart Selector & Selected Shelves */}
         <Flex vertical gap={20} style={{ width: '250px', flexShrink: 0 }}>
           <ChartTypeSelector />
-          
-          <Card title="Selected Dimensions" styles={{ body: { padding: '12px', overflowY: 'auto', maxHeight: '30vh' } }}>
+
+          <Card
+            title="Selected Dimensions"
+            styles={{
+              body: { padding: '12px', overflowY: 'auto', maxHeight: '30vh' },
+            }}
+          >
             <DimensionShelf style={{ flexDirection: 'column' }} />
           </Card>
 
-          <Card title="Selected Measures" styles={{ body: { padding: '12px', overflowY: 'auto', maxHeight: '30vh' } }}>
+          <Card
+            title="Selected Measures"
+            styles={{
+              body: { padding: '12px', overflowY: 'auto', maxHeight: '30vh' },
+            }}
+          >
             <MeasureShelf style={{ flexDirection: 'column' }} />
           </Card>
         </Flex>
@@ -97,6 +99,3 @@ const ChartWrapper = () => {
     </Card>
   );
 };
-
-
-

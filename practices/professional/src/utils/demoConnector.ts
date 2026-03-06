@@ -69,7 +69,9 @@ export const registerDemoConnector = () => {
 
               if (typeof item === 'object' && item !== null) {
                 const field = (item as any).field as string | undefined;
-                const alias = ((item as any).alias ?? field) as string | undefined;
+                const alias = ((item as any).alias ?? field) as
+                  | string
+                  | undefined;
 
                 if (!field || !alias) {
                   continue;

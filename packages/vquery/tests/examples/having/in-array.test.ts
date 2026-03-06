@@ -32,6 +32,10 @@ describe('Having Example with array IN operator', () => {
           "Total Salary": 17000,
           "department": "Engineering",
         },
+        {
+          "Total Salary": 4000,
+          "department": "Marketing",
+        },
       ]
     `)
   })

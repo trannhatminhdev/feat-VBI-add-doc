@@ -75,7 +75,9 @@ export const createLocalConnector = (connectorId: string) => {
 
             if (typeof item === 'object' && item !== null) {
               const field = (item as any).field as string | undefined;
-              const alias = ((item as any).alias ?? field) as string | undefined;
+              const alias = ((item as any).alias ?? field) as
+                | string
+                | undefined;
 
               if (!field || !alias) {
                 continue;
@@ -98,7 +100,9 @@ export const createLocalConnector = (connectorId: string) => {
               for (const { field, alias } of measureFields) {
                 const sourceKey = alias || field;
                 const raw = (row as any)[sourceKey];
-                console.log(`Before: ${sourceKey} = ${raw} (type: ${typeof raw})`);
+                console.log(
+                  `Before: ${sourceKey} = ${raw} (type: ${typeof raw})`,
+                );
 
                 if (raw != null) {
                   let num: number;

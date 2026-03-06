@@ -34,6 +34,11 @@ describe('Having Example with multiple conditions (AND/OR)', () => {
           "Total Salary": 17000,
           "department": "Engineering",
         },
+        {
+          "Count": 1,
+          "Total Salary": 4000,
+          "department": "Marketing",
+        },
       ]
     `)
   })

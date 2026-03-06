@@ -28,6 +28,14 @@ describe('Having Example with MIN aggregate function', () => {
           "Min Salary": 5000,
           "department": "HR",
         },
+        {
+          "Min Salary": 8000,
+          "department": "Engineering",
+        },
+        {
+          "Min Salary": 4000,
+          "department": "Marketing",
+        },
       ]
     `)
   })
