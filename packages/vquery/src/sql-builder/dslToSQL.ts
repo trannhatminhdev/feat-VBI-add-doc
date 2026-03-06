@@ -1,38 +1,26 @@
-import { QueryDSL, VQueryDSL } from 'src/types'
+import type { QueryDSL, VQueryDSL } from 'src/types'
 import { Kysely } from 'kysely'
 import { PostgresDialect } from './dialect'
 import { inlineParameters } from './compile'
-import { applyWhere, applyGroupBy, applyLimit, applySelect } from './builders'
-
-type TableDB<TableName extends string, Row> = {
-  [K in TableName]: Row
-}
+import { applyWhere, applyGroupBy, applyHaving, applyLimit, applyOrder, applySelect } from './builders'
 
 export const convertDSLToSQL = <T, TableName extends string>(
   dsl: QueryDSL<T> | VQueryDSL<T>,
   tableName: TableName,
 ): string => {
-  const db = new Kysely<TableDB<TableName, T>>({ dialect: new PostgresDialect() })
+  const db = new Kysely<Record<TableName, T>>({
+    dialect: new PostgresDialect(),
+  })
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let qb: any = db.selectFrom(tableName)
+  let qb = db.selectFrom(tableName)
 
   qb = applySelect(qb, dsl.select)
-
-  if (dsl.where) {
-    qb = qb.where(applyWhere<T>(dsl.where))
-  }
-
-  qb = applyGroupBy(qb, dsl.groupBy as Array<Extract<keyof T, string>> | undefined)
-
-  if (dsl.orderBy && dsl.orderBy.length > 0) {
-    for (const o of dsl.orderBy) {
-      qb = qb.orderBy(o.field as Extract<keyof T, string>, (o.order ?? 'asc') as 'asc' | 'desc')
-    }
-  }
-
+  qb = applyWhere(qb, dsl.where)
+  qb = applyGroupBy(qb, dsl.groupBy as string[] | undefined)
+  qb = applyHaving(qb, dsl.having)
+  qb = applyOrder(qb, dsl.orderBy as Array<{ field: string; order?: 'asc' | 'desc' }> | undefined)
   qb = applyLimit(qb, dsl.limit)
 
-  const compiled = qb.compile()
-  return inlineParameters(compiled.sql, compiled.parameters)
+  const { sql, parameters } = qb.compile()
+  return inlineParameters(sql, parameters)
 }
