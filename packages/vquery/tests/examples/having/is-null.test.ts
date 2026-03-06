@@ -1,9 +1,9 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
-import vqueryConfig from './count.json'
+import vqueryConfig from './is-null.json'
 
-describe('Select Count Example', () => {
-  it('Select Count Example', async () => {
+describe('Having Example with IS NULL operator', () => {
+  it('Having Example with IS NULL operator', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 
@@ -25,7 +25,8 @@ describe('Select Count Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "total_count": 5,
+          "Total Salary": null,
+          "department": "Marketing",
         },
       ]
     `)

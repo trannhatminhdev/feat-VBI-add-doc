@@ -1,9 +1,9 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
-import vqueryConfig from './count.json'
+import vqueryConfig from './between.json'
 
-describe('Select Count Example', () => {
-  it('Select Count Example', async () => {
+describe('Having Example with BETWEEN operator', () => {
+  it('Having Example with BETWEEN operator', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 
@@ -25,7 +25,8 @@ describe('Select Count Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "total_count": 5,
+          "Total Salary": 11000,
+          "department": "HR",
         },
       ]
     `)

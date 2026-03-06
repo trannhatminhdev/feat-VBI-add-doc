@@ -1,9 +1,9 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
-import vqueryConfig from './count.json'
+import vqueryConfig from './min.json'
 
-describe('Select Count Example', () => {
-  it('Select Count Example', async () => {
+describe('Having Example with MIN aggregate function', () => {
+  it('Having Example with MIN aggregate function', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 
@@ -25,7 +25,8 @@ describe('Select Count Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "total_count": 5,
+          "Min Salary": 5000,
+          "department": "HR",
         },
       ]
     `)

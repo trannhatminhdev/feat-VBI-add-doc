@@ -1,9 +1,9 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
 import { VQuery } from '@visactor/vquery'
-import vqueryConfig from './count.json'
+import vqueryConfig from './in-array.json'
 
-describe('Select Count Example', () => {
-  it('Select Count Example', async () => {
+describe('Having Example with array IN operator', () => {
+  it('Having Example with array IN operator', async () => {
     const vquery = new VQuery()
     const { datasetId, schema, dataset: rawDataset, vquery: vqueryDSL } = vqueryConfig
 
@@ -25,7 +25,12 @@ describe('Select Count Example', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
-          "total_count": 5,
+          "Total Salary": 11000,
+          "department": "HR",
+        },
+        {
+          "Total Salary": 17000,
+          "department": "Engineering",
         },
       ]
     `)
