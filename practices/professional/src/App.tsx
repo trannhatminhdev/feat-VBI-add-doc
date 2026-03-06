@@ -1,16 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import './App.css';
 import { ConfigProvider, theme, Dropdown, Button } from 'antd';
 import { LeftOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
+import { getChartEncodingSupport } from '@visactor/vbi';
 import DimensionShelf from './components/Shelfs/DimensionShelf';
 import MeasureShelf from './components/Shelfs/MeasureShelf';
 import { ChartTypeSelector } from './components/ChartType';
 import FieldsList from './components/Fields/FieldList';
 import MeasureFieldList from './components/Fields/MeasureFieldList';
+import EncodingPanel from './components/Fields/EncodingPanel';
 import { VSeedRender } from './components/Render';
 import { useVBIStore } from './model';
 import { useShallow } from 'zustand/shallow';
+
+type EncodingChannel = 'yAxis' | 'xAxis' | 'color' | 'label' | 'tooltip' | 'size';
 
 export function APP() {
   const [leftWidth, setLeftWidth] = useState(220);
@@ -28,6 +32,7 @@ export function APP() {
       removeMeasure: (field: string) => void;
       renameMeasure: (alias: string, newAlias: string) => void;
       modifyAggregate: (alias: string, func: string, quantile?: number) => void;
+      modifyEncoding: (field: string, encoding: EncodingChannel) => void;
       getMeasures: () => any[];
     };
     chartType?: {
@@ -37,6 +42,7 @@ export function APP() {
     doc?: {
       transact: (callback: () => void) => void;
     };
+    getEncodings?: (spec: any, measureNames: string[]) => Array<{ encoding: string; measures: string[] }>;
   }>(null);
 
   // 可用的字段和选中的字段
@@ -47,7 +53,11 @@ export function APP() {
   const [measuresDetail, setMeasuresDetail] = useState<
     Record<
       string,
-      { alias?: string; aggregate?: { func: string; quantile?: number } }
+      {
+        alias?: string;
+        aggregate?: { func: string; quantile?: number };
+        encoding?: EncodingChannel;
+      }
     >
   >({});
   const [chartTypeOptions, setChartTypeOptions] = useState<string[]>([]);
@@ -104,7 +114,11 @@ export function APP() {
       const measures = builder.measures.getMeasures();
       const detail: Record<
         string,
-        { alias?: string; aggregate?: { func: string; quantile?: number } }
+        {
+          alias?: string;
+          aggregate?: { func: string; quantile?: number };
+          encoding?: EncodingChannel;
+        }
       > = {};
 
       if (Array.isArray(measures)) {
@@ -118,6 +132,7 @@ export function APP() {
             aggregate: aggregate
               ? { func: aggregate.func, quantile: aggregate.quantile }
               : undefined,
+            encoding: value.encoding,
           };
         });
       }
@@ -125,6 +140,37 @@ export function APP() {
       setMeasuresDetail(detail);
     }
   }, []);
+
+  // Compute encoding information from DSL as the single source of truth
+  const encodingInfo = useMemo(() => {
+    if (!measureFields.length) {
+      return [];
+    }
+
+    const map: Record<string, string[]> = {};
+
+    for (const field of measureFields) {
+      const detail = measuresDetail[field];
+      const encoding = detail?.encoding ?? 'yAxis';
+      const displayName = detail?.alias || field;
+
+      if (!map[encoding]) {
+        map[encoding] = [];
+      }
+      map[encoding].push(displayName);
+    }
+
+    return Object.entries(map).map(([encoding, measures]) => ({
+      encoding,
+      measures,
+    }));
+  }, [measureFields, measuresDetail]);
+
+  // Compute supported encodings for current chart type
+  const supportedEncodings = useMemo(() => {
+    const encodingConfig = getChartEncodingSupport(currentChartType);
+    return encodingConfig.measure || [];
+  }, [currentChartType]);
 
   // 加载 demo 数据
   const handleLoadDemo = async () => {
@@ -216,7 +262,11 @@ export function APP() {
       const measures = builderRef.current.measures.getMeasures();
       const detail: Record<
         string,
-        { alias?: string; aggregate?: { func: string; quantile?: number } }
+        {
+          alias?: string;
+          aggregate?: { func: string; quantile?: number };
+          encoding?: EncodingChannel;
+        }
       > = {};
 
       if (Array.isArray(measures)) {
@@ -230,6 +280,7 @@ export function APP() {
             aggregate: aggregate
               ? { func: aggregate.func, quantile: aggregate.quantile }
               : undefined,
+            encoding: value.encoding,
           };
         });
       }
@@ -298,6 +349,75 @@ export function APP() {
       syncMeasuresDetail();
       setRenderKey((prev) => prev + 1);
     }
+  };
+
+  const handleDropMeasureToEncoding = (field: string, encoding: EncodingChannel) => {
+    if (!builderRef.current?.measures || !builderRef.current.doc) {
+      return;
+    }
+
+    const { measures, doc } = builderRef.current;
+    const hasMeasure = measureFields.includes(field);
+
+    if (!supportedEncodings.includes(encoding)) {
+      return;
+    }
+
+    doc.transact(() => {
+      if (hasMeasure) {
+        measures.modifyEncoding(field, encoding);
+      } else {
+        measures.addMeasure(field);
+        measures.modifyEncoding(field, encoding);
+      }
+    });
+
+    if (!hasMeasure) {
+      setMeasureFields((prev) => [...prev, field]);
+    }
+
+    syncMeasuresDetail();
+    setRenderKey((prev) => prev + 1);
+  };
+
+  const handleDropDimensionToEncoding = (field: string, encoding: EncodingChannel) => {
+    if (!builderRef.current?.measures || !builderRef.current.doc) {
+      return;
+    }
+
+    const { measures, doc } = builderRef.current;
+    const hasMeasure = measureFields.includes(field);
+
+    if (!supportedEncodings.includes(encoding)) {
+      return;
+    }
+
+    doc.transact(() => {
+      if (hasMeasure) {
+        // Already added as measure, just modify encoding
+        measures.modifyEncoding(field, encoding);
+      } else {
+        // Add dimension as measure with count aggregate
+        measures.addMeasure(field, (node: unknown) => {
+          const nodeObj = node as any;
+          if (nodeObj?.setAlias) {
+            nodeObj.setAlias(field);
+          }
+          if (nodeObj?.setAggregate) {
+            nodeObj.setAggregate({ func: 'count' });
+          }
+        });
+        measures.modifyEncoding(field, encoding);
+      }
+    });
+
+    if (!hasMeasure) {
+      setMeasureFields((prev) => [...prev, field]);
+      setDimensionMeasures((prev) => [...prev, field]);
+    }
+
+    syncMeasuresDetail();
+    setRenderKey((prev) => prev + 1);
   };
 
   // 图表类型变化
@@ -452,22 +572,68 @@ export function APP() {
                     <LeftOutlined />
                   </button>
                 </div>
-                <FieldsList
-                  title="DIMENSIONS"
-                  items={dimensionFields}
-                  onAdd={handleAddDimension}
-                  onRemove={handleRemoveDimension}
-                  style={{ flex: 1, minHeight: 0 }}
-                />
-                <MeasureFieldList
-                  items={measureFields}
-                  measures={measuresDetail}
-                  dimensionMeasures={Array.from(dimensionMeasures)}
-                  onRename={handleRenameMeasure}
-                  onChangeAggregate={handleChangeAggregateFunc}
-                  onRemove={handleRemoveMeasure}
-                  style={{ flex: 1, minHeight: 0, marginTop: 12 }}
-                />
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr',
+                    gap: '12px',
+                    padding: '0 12px 12px 12px',
+                    flex: 1,
+                    minHeight: 0,
+                    overflow: 'hidden',
+                  }}
+                >
+                  {/* Top Panel: Configuration */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0',
+                      backgroundColor: '#1a1b33',
+                      borderRadius: '4px',
+                      border: '1px solid #2a2b4d',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <FieldsList
+                      title="DIMENSIONS"
+                      items={dimensionFields}
+                      onAdd={handleAddDimension}
+                      onRemove={handleRemoveDimension}
+                      onDropDimension={handleAddDimension}
+                      style={{ flex: 1, minHeight: 0 }}
+                    />
+                    <MeasureFieldList
+                      items={measureFields}
+                      measures={measuresDetail}
+                      dimensionMeasures={Array.from(dimensionMeasures)}
+                      onRename={handleRenameMeasure}
+                      onChangeAggregate={handleChangeAggregateFunc}
+                      onRemove={handleRemoveMeasure}
+                      onDropDimension={handleAddMeasureFromDimension}
+                      style={{ flex: 1, minHeight: 0, borderTop: '1px solid #2a2b4d' }}
+                    />
+                  </div>
+
+                  {/* Bottom Panel: Encoding */}
+                  <div
+                    style={{
+                      backgroundColor: '#1a1b33',
+                      borderRadius: '4px',
+                      border: '1px solid #2a2b4d',
+                      overflow: 'auto',
+                      minHeight: '200px',
+                    }}
+                  >
+                    <EncodingPanel
+                      supportedEncodings={supportedEncodings}
+                      encodingInfo={encodingInfo}
+                      onDropMeasureToEncoding={handleDropMeasureToEncoding}
+                      onDropDimensionToEncoding={handleDropDimensionToEncoding}
+                      style={{ height: '100%' }}
+                    />
+                  </div>
+                </div>
               </div>
             </>
           )}
