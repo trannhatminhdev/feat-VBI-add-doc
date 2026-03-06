@@ -20,6 +20,7 @@ describe('VBI', () => {
             "field": "area",
           },
         ],
+        "filters": [],
         "measures": [
           {
             "aggregate": {

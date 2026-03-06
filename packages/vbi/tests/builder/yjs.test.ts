@@ -19,6 +19,7 @@ describe('VBI YJS Integration', () => {
     expect(b2.build()).toMatchInlineSnapshot(`
       {
         "dimensions": [],
+        "filters": [],
         "measures": [
           {
             "aggregate": {
@@ -51,19 +52,20 @@ describe('VBI YJS Integration', () => {
     expect(update.length).toBeGreaterThan(0)
 
     expect(b2.build()).toMatchInlineSnapshot(`
-        {
-          "dimensions": [],
-          "measures": [
-            {
-              "aggregate": {
-                "func": "max",
-              },
-              "alias": "Max Sales",
-              "encoding": "yAxis",
-              "field": "sales",
+      {
+        "dimensions": [],
+        "filters": [],
+        "measures": [
+          {
+            "aggregate": {
+              "func": "max",
             },
-          ],
-        }
-      `)
+            "alias": "Max Sales",
+            "encoding": "yAxis",
+            "field": "sales",
+          },
+        ],
+      }
+    `)
   })
 })

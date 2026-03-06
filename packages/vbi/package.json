@@ -22,6 +22,7 @@
     "format": "prettier --write .",
     "lint": "eslint .",
     "test": "rstest",
+    "test:update": "rstest --update",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

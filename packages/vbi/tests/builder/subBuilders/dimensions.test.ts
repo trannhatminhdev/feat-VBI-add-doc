@@ -15,6 +15,7 @@ describe('DimensionsBuilder', () => {
             "field": "category",
           },
         ],
+        "filters": [],
         "measures": [],
       }
     `)
@@ -43,6 +44,7 @@ describe('DimensionsBuilder', () => {
             "field": "city",
           },
         ],
+        "filters": [],
         "measures": [],
       }
     `)
