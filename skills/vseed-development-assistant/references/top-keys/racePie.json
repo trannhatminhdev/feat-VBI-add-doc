@@ -1,0 +1,80 @@
+[
+  {
+    "name": "dataset",
+    "componentName": "Dataset",
+    "type": "Dataset",
+    "description": "数据源"
+  },
+  {
+    "name": "dimensions",
+    "componentName": "RacePieDimension",
+    "type": "RacePieDimension[]",
+    "description": "维度"
+  },
+  {
+    "name": "measures",
+    "componentName": "PieMeasure",
+    "type": "PieMeasure[]",
+    "description": "指标"
+  },
+  {
+    "name": "page",
+    "componentName": "Page",
+    "type": "Page",
+    "description": "分页配置"
+  },
+  {
+    "name": "player",
+    "componentName": "Player",
+    "type": "Player",
+    "description": "播放器配置, 用于指定时间维度, 动态饼图的核心配置"
+  },
+  {
+    "name": "backgroundColor",
+    "componentName": "BackgroundColor",
+    "type": "BackgroundColor",
+    "description": "背景颜色"
+  },
+  {
+    "name": "color",
+    "componentName": "Color",
+    "type": "Color",
+    "description": "颜色配置"
+  },
+  {
+    "name": "label",
+    "componentName": "PieLabel",
+    "type": "PieLabel",
+    "description": "标签配置"
+  },
+  {
+    "name": "legend",
+    "componentName": "Legend",
+    "type": "Legend",
+    "description": "图例配置"
+  },
+  {
+    "name": "tooltip",
+    "componentName": "Tooltip",
+    "type": "Tooltip",
+    "description": "提示信息配置"
+  },
+  {
+    "name": "brush",
+    "componentName": "Brush",
+    "type": "Brush",
+    "description": "框选配置"
+  },
+  {
+    "name": "theme",
+    "componentName": "Theme",
+    "type": "Theme",
+    "description": "主题配置"
+  },
+  {
+    "name": "locale",
+    "componentName": "Locale",
+    "type": "Locale",
+    "description": "语言配置"
+  }
+]
