@@ -195,7 +195,7 @@ const VSEED_CHART_ENCODINGS: Record<string, { dimension: string[]; measure: stri
  */
 function filterSupportedEncodings(encodings: string[]): VBIEncoding[] {
   const supportedSet = new Set(VBI_SUPPORTED_ENCODINGS)
-  
+
   // Map chart-specific size encodings to VBI's standard 'size' encoding
   // angle (pie, polar) and radius (rose, sunburst) both represent size/magnitude
   const normalized = encodings.map((enc) => {
@@ -204,11 +204,9 @@ function filterSupportedEncodings(encodings: string[]): VBIEncoding[] {
     }
     return enc
   })
-  
+
   // Remove duplicates and filter to only supported encodings
-  return Array.from(new Set(
-    normalized.filter((enc) => supportedSet.has(enc as VBIEncoding)) as VBIEncoding[]
-  ))
+  return Array.from(new Set(normalized.filter((enc) => supportedSet.has(enc as VBIEncoding)) as VBIEncoding[]))
 }
 
 /**
@@ -219,16 +217,16 @@ function filterSupportedEncodings(encodings: string[]): VBIEncoding[] {
  */
 export function getChartEncodingSupport(chartType: string): ChartEncodingConfig {
   const hasExplicitConfig = chartType in VSEED_CHART_ENCODINGS
-  
+
   if (!hasExplicitConfig) {
     console.warn(
       `[VBI] Chart type "${chartType}" is not explicitly defined in chartEncodings. ` +
-      `Using default encoding configuration. This may result in incorrect encoding slots. ` +
-      `Please add an explicit configuration for this chart type in packages/vbi/src/config/chartEncodings.ts`,
-      { chartType }
+        `Using default encoding configuration. This may result in incorrect encoding slots. ` +
+        `Please add an explicit configuration for this chart type in packages/vbi/src/config/chartEncodings.ts`,
+      { chartType },
     )
   }
-  
+
   const config = VSEED_CHART_ENCODINGS[chartType] || VSEED_CHART_ENCODINGS.default
 
   return {

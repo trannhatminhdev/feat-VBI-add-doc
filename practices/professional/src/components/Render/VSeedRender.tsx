@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { message } from 'antd';
 import { useVBIStore } from 'src/model';
 import VChart, { ISpec } from '@visactor/vchart';
@@ -25,8 +25,11 @@ import {
 registerAll();
 register.chartModule('vchart', VChart);
 
-export const VSeedRender = (props: { vseed: VSeed }) => {
-  const { vseed } = props;
+export const VSeedRender = (props: {
+  vseed: VSeed;
+  style?: React.CSSProperties;
+}) => {
+  const { vseed, style } = props;
   const ref = useRef<HTMLDivElement>(null);
   const vseedBuilderRef = useRef<VSeedBuilder>(null);
 
@@ -46,14 +49,14 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
           spec as PivotChartConstructorOptions,
         );
 
-      tableInstance.on('legend_item_click', (args) => {
-        tableInstance.updateFilterRules([
-          {
-            filterKey: ColorIdEncoding,
-            filteredValues: args.value,
-          },
-        ]);
-      });
+        tableInstance.on('legend_item_click', (args) => {
+          tableInstance.updateFilterRules([
+            {
+              filterKey: ColorIdEncoding,
+              filteredValues: args.value,
+            },
+          ]);
+        });
 
         tableInstance.on('legend_change', (args) => {
           const maxValue = args.value[1];

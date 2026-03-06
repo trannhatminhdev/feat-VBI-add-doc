@@ -17,7 +17,13 @@ import { useVBIStore } from './model';
 import { useShallow } from 'zustand/shallow';
 import { setLocalData } from './utils/localConnector';
 
-type EncodingChannel = 'yAxis' | 'xAxis' | 'color' | 'label' | 'tooltip' | 'size';
+type EncodingChannel =
+  | 'yAxis'
+  | 'xAxis'
+  | 'color'
+  | 'label'
+  | 'tooltip'
+  | 'size';
 
 export function APP() {
   const [leftWidth, setLeftWidth] = useState(220);
@@ -45,7 +51,10 @@ export function APP() {
     doc?: {
       transact: (callback: () => void) => void;
     };
-    getEncodings?: (spec: any, measureNames: string[]) => Array<{ encoding: string; measures: string[] }>;
+    getEncodings?: (
+      spec: any,
+      measureNames: string[],
+    ) => Array<{ encoding: string; measures: string[] }>;
   }>(null);
 
   // 可用的字段和选中的字段
@@ -63,6 +72,7 @@ export function APP() {
       }
     >
   >({});
+  const [dimensionMeasures, setDimensionMeasures] = useState<string[]>([]);
   const [chartTypeOptions, setChartTypeOptions] = useState<string[]>([]);
   const [currentChartType, setCurrentChartType] = useState<string>('table');
   const [renderKey, setRenderKey] = useState(0);
@@ -438,7 +448,37 @@ export function APP() {
     }
   };
 
-  const handleDropMeasureToEncoding = (field: string, encoding: EncodingChannel) => {
+  const handleAddMeasureFromDimension = (field: string) => {
+    if (!builderRef.current?.measures || !builderRef.current.doc) {
+      return;
+    }
+
+    const { measures, doc } = builderRef.current;
+    const hasMeasure = measureFields.includes(field);
+
+    if (!hasMeasure) {
+      doc.transact(() => {
+        measures.addMeasure(field, (node: unknown) => {
+          const nodeObj = node as any;
+          if (nodeObj?.setAlias) {
+            nodeObj.setAlias(field);
+          }
+          if (nodeObj?.setAggregate) {
+            nodeObj.setAggregate({ func: 'count' });
+          }
+        });
+      });
+      setMeasureFields((prev) => [...prev, field]);
+      setDimensionMeasures((prev) => [...prev, field]);
+      syncMeasuresDetail();
+      setRenderKey((prev) => prev + 1);
+    }
+  };
+
+  const handleDropMeasureToEncoding = (
+    field: string,
+    encoding: EncodingChannel,
+  ) => {
     if (!builderRef.current?.measures || !builderRef.current.doc) {
       return;
     }
@@ -467,7 +507,10 @@ export function APP() {
     setRenderKey((prev) => prev + 1);
   };
 
-  const handleDropDimensionToEncoding = (field: string, encoding: EncodingChannel) => {
+  const handleDropDimensionToEncoding = (
+    field: string,
+    encoding: EncodingChannel,
+  ) => {
     if (!builderRef.current?.measures || !builderRef.current.doc) {
       return;
     }
@@ -722,7 +765,11 @@ export function APP() {
                       onChangeAggregate={handleChangeAggregateFunc}
                       onRemove={handleRemoveMeasure}
                       onDropDimension={handleAddMeasureFromDimension}
-                      style={{ flex: 1, minHeight: 0, borderTop: '1px solid #2a2b4d' }}
+                      style={{
+                        flex: 1,
+                        minHeight: 0,
+                        borderTop: '1px solid #2a2b4d',
+                      }}
                     />
                   </div>
 

@@ -3,6 +3,7 @@ import * as Y from 'yjs'
 import { VSeedDSL } from '@visactor/vseed'
 import { DimensionsBuilder } from './sub-builders/dimensions'
 import { MeasuresBuilder } from './sub-builders/measures'
+import { HavingBuilder } from './sub-builders/having'
 import { FiltersBuilder } from './sub-builders/filters'
 import { VBIDSL, VBIBuilderInterface } from 'src/types'
 import { buildVQuery } from 'src/pipeline'
@@ -20,6 +21,7 @@ export class VBIBuilder implements VBIBuilderInterface {
   public measures: MeasuresBuilder
   public dimensions: DimensionsBuilder
   public having: HavingBuilder
+  public filters: FiltersBuilder
   public encoding: EncodingBuilder
 
   constructor(doc: Y.Doc) {
@@ -31,6 +33,7 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.measures = new MeasuresBuilder(doc, this.dsl)
     this.dimensions = new DimensionsBuilder(doc, this.dsl)
     this.having = new HavingBuilder(doc, this.dsl)
+    this.filters = new FiltersBuilder(doc, this.dsl)
     this.encoding = new EncodingBuilder()
   }
 
@@ -50,40 +53,6 @@ export class VBIBuilder implements VBIBuilderInterface {
     const queryDSL = this.buildVQuery()
     const schema = await connector.discoverSchema()
     const queryResult = await connector.query({ queryDSL, schema, connectorId })
-
-    // 将 VBI DSL 的 measures/dimensions 转换为 VSeed 格式
-    const mapMeasures = (tree: any[]): any[] => {
-      return tree.map((node) => {
-        if (MeasuresBuilder.isMeasureNode(node)) {
-          return {
-            id: node.field, // field → id
-            alias: node.alias,
-            encoding: node.encoding,
-          }
-        } else {
-          return {
-            alias: node.alias,
-            children: mapMeasures(node.children),
-          }
-        }
-      })
-    }
-
-    const mapDimensions = (tree: any[]): any[] => {
-      return tree.map((node) => {
-        if (DimensionsBuilder.isDimensionNode(node)) {
-          return {
-            id: node.field, // field → id
-            alias: node.alias,
-          }
-        } else {
-          return {
-            alias: node.alias,
-            children: mapDimensions(node.children),
-          }
-        }
-      })
-    }
 
     return {
       chartType: vbiDSL.chartType,

@@ -1,11 +1,11 @@
 import { Select } from 'antd';
 import { useVBIStore } from 'src/model';
-import { 
-  BarChartOutlined, 
-  LineChartOutlined, 
-  PieChartOutlined, 
+import {
+  BarChartOutlined,
+  LineChartOutlined,
+  PieChartOutlined,
   TableOutlined,
-  DotChartOutlined
+  DotChartOutlined,
 } from '@ant-design/icons';
 
 export const ChartTypeSelector = (props: { style?: React.CSSProperties }) => {
@@ -30,7 +30,14 @@ export const ChartTypeSelector = (props: { style?: React.CSSProperties }) => {
   };
 
   return (
-    <div style={{ ...style, backgroundColor: '#fff', padding: '12px', borderRadius: '8px' }}>
+    <div
+      style={{
+        ...style,
+        backgroundColor: '#fff',
+        padding: '12px',
+        borderRadius: '8px',
+      }}
+    >
       <div style={{ marginBottom: '8px', fontWeight: 500 }}>Chart Type</div>
       <Select
         defaultValue={builder.chartType.getChartType()}

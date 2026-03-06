@@ -32,7 +32,10 @@ const DimensionShelf: React.FC<DimensionShelfProps> = ({
               className="shelf-item"
               draggable
               onDragStart={(e) => {
-                e.dataTransfer.setData('application/x-vbi-dimension-field', field);
+                e.dataTransfer.setData(
+                  'application/x-vbi-dimension-field',
+                  field,
+                );
                 e.dataTransfer.setData('text/plain', field);
                 e.dataTransfer.effectAllowed = 'move';
               }}

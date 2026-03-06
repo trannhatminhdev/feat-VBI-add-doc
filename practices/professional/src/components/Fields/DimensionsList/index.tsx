@@ -4,7 +4,13 @@ import { CalendarOutlined, FontSizeOutlined } from '@ant-design/icons';
 import { useVBIStore } from 'src/model';
 
 export const DimensionsList = memo(
-  ({ style, onDropDimension }: { style?: React.CSSProperties; onDropDimension?: (field: string) => void }) => {
+  ({
+    style,
+    onDropDimension,
+  }: {
+    style?: React.CSSProperties;
+    onDropDimension?: (field: string) => void;
+  }) => {
     const builder = useVBIStore((state) => state.builder);
     const [hoveredDropZone, setHoveredDropZone] = useState(false);
     console.log('debug DimensionsList rerender');
@@ -69,8 +75,9 @@ export const DimensionsList = memo(
         onDrop={(e) => {
           if (!onDropDimension) return;
           e.preventDefault();
-          const field = e.dataTransfer.getData('application/x-vbi-dimension-field') ||
-                        e.dataTransfer.getData('text/plain');
+          const field =
+            e.dataTransfer.getData('application/x-vbi-dimension-field') ||
+            e.dataTransfer.getData('text/plain');
           if (field) {
             onDropDimension(field);
           }

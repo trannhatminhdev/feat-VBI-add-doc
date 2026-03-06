@@ -52,8 +52,9 @@ const FieldList: React.FC<FieldListProps> = ({
       onDrop={(e) => {
         if (!onDropDimension) return;
         e.preventDefault();
-        const field = e.dataTransfer.getData('application/x-vbi-dimension-field') ||
-                      e.dataTransfer.getData('text/plain');
+        const field =
+          e.dataTransfer.getData('application/x-vbi-dimension-field') ||
+          e.dataTransfer.getData('text/plain');
         if (field) {
           onDropDimension(field);
         }

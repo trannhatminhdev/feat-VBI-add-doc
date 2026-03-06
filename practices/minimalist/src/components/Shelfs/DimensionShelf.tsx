@@ -23,8 +23,6 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
     builder.dimensions.removeDimension(field);
   };
 
-
-
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     try {
@@ -37,22 +35,43 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
         });
       }
     } catch (err) {
-      console.error("Drop error", err);
+      console.error('Drop error', err);
     }
   };
 
   return (
-    <Flex 
-      vertical={true} 
-      gap={8} 
-      style={{ minHeight: '60px', padding: '8px', border: '1px dashed #d9d9d9', borderRadius: '8px', ...style }}
+    <Flex
+      vertical={true}
+      gap={8}
+      style={{
+        minHeight: '60px',
+        padding: '8px',
+        border: '1px dashed #d9d9d9',
+        borderRadius: '8px',
+        ...style,
+      }}
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
     >
-      {dimensions.length === 0 && <div style={{ color: '#bfbfbf', textAlign: 'center' }}>Drop Dimensions Here</div>}
+      {dimensions.length === 0 && (
+        <div style={{ color: '#bfbfbf', textAlign: 'center' }}>
+          Drop Dimensions Here
+        </div>
+      )}
       {dimensions.map((dimension) => (
-        <Space.Compact key={`dimension-shelf-${dimension.field}`} style={{ width: '100%' }}>
-          <Button shape="round" style={{ color: '#1890ff', flexGrow: 1, textAlign: 'left', borderRight: 0 }}>
+        <Space.Compact
+          key={`dimension-shelf-${dimension.field}`}
+          style={{ width: '100%' }}
+        >
+          <Button
+            shape="round"
+            style={{
+              color: '#1890ff',
+              flexGrow: 1,
+              textAlign: 'left',
+              borderRight: 0,
+            }}
+          >
             {dimension.alias}
           </Button>
           <Button

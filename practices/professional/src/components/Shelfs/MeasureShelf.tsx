@@ -32,7 +32,10 @@ const MeasureShelf: React.FC<MeasureShelfProps> = ({
               className="shelf-item"
               draggable
               onDragStart={(e) => {
-                e.dataTransfer.setData('application/x-vbi-measure-field', field);
+                e.dataTransfer.setData(
+                  'application/x-vbi-measure-field',
+                  field,
+                );
                 e.dataTransfer.setData('text/plain', field);
                 e.dataTransfer.effectAllowed = 'move';
               }}

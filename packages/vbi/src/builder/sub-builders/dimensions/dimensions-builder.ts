@@ -56,8 +56,6 @@ export class DimensionsBuilder {
     return this.dsl.get('dimensions').toJSON()
   }
 
-
-
   observe(callback: ObserveCallback) {
     this.dsl.get('dimensions').observe(callback)
   }
@@ -73,6 +71,4 @@ export class DimensionsBuilder {
   static isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup {
     return 'children' in node
   }
-
 }
-

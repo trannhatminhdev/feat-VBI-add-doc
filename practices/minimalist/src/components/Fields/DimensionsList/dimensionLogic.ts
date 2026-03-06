@@ -1,17 +1,22 @@
 import { FieldItem, GroupedFields } from './types';
 
+//给一些dimension进行分组
 
- //给一些dimension进行分组
-
-export const classifyDimensions = (dimensions: FieldItem[]): { groups: GroupedFields, standalone: FieldItem[] } => {
+export const classifyDimensions = (
+  dimensions: FieldItem[],
+): { groups: GroupedFields; standalone: FieldItem[] } => {
   const initialGroups: GroupedFields = { Area: [] };
   const initialStandalone: FieldItem[] = [];
 
   dimensions.forEach((d) => {
     const nameLower = d.name.toLowerCase();
-    
+
     // 1. 区域关键词匹配
-    if (nameLower.includes('city') || nameLower.includes('area') || nameLower.includes('province')) {
+    if (
+      nameLower.includes('city') ||
+      nameLower.includes('area') ||
+      nameLower.includes('province')
+    ) {
       initialGroups.Area.push(d);
       return;
     }
@@ -27,7 +32,7 @@ export const classifyDimensions = (dimensions: FieldItem[]): { groups: GroupedFi
         return;
       }
 
-      const existingIndex = initialStandalone.findIndex(s => {
+      const existingIndex = initialStandalone.findIndex((s) => {
         const sMatch = s.name.match(/^([a-zA-Z0-9]+)[-_]/);
         return sMatch && sMatch[1].toLowerCase() === prefix.toLowerCase();
       });
@@ -45,22 +50,21 @@ export const classifyDimensions = (dimensions: FieldItem[]): { groups: GroupedFi
   return { groups: initialGroups, standalone: initialStandalone };
 };
 
-
 //一些分组
 export const extractItem = (
   type: string,
   name: string,
   gName: string | undefined,
   nextGroups: GroupedFields,
-  nextStandalone: FieldItem[]
+  nextStandalone: FieldItem[],
 ): FieldItem | undefined => {
   let item: FieldItem | undefined;
 
   if (type === 'standalone') {
-    const idx = nextStandalone.findIndex(f => f.name === name);
+    const idx = nextStandalone.findIndex((f) => f.name === name);
     if (idx > -1) item = nextStandalone.splice(idx, 1)[0];
   } else if (type === 'group' && gName && nextGroups[gName]) {
-    const idx = nextGroups[gName].findIndex(f => f.name === name);
+    const idx = nextGroups[gName].findIndex((f) => f.name === name);
     if (idx > -1) {
       item = nextGroups[gName].splice(idx, 1)[0];
       if (nextGroups[gName].length === 0) delete nextGroups[gName];
