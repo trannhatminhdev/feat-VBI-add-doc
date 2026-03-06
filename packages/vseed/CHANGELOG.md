@@ -20,6 +20,8 @@
 
 ## 0.4.6
 
+### Patch Changes
+
 - a266c74: fix: jsdelivr application/node err
 
 ## 0.4.5

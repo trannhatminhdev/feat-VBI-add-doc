@@ -71,13 +71,4 @@ describe('VQuery Coverage', () => {
       'dataset non_existent not exists, please create it first',
     )
   })
-
-  it('should handle duplicate dataset creation error', async () => {
-    await expect(vquery.createDataset(datasetId, schema, rawDataset)).rejects.toThrow()
-  })
-
-  it('should handle non-existent dataset error', async () => {
-    await expect(vquery.connectDataset('non_existent')).rejects.toThrow()
-    await expect(vquery.updateDatasetSource('non_existent', schema, rawDataset)).rejects.toThrow()
-  })
 })

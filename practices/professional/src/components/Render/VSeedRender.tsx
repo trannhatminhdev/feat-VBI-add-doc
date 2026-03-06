@@ -1,53 +1,50 @@
 import { useRef, useEffect } from 'react';
-import VChart from '@visactor/vchart';
-import type { ISpec } from '@visactor/vchart';
+import { message } from 'antd';
+import { useVBIStore } from 'src/model';
+import VChart, { ISpec } from '@visactor/vchart';
 import {
   ListTable,
   PivotTable,
   PivotChart,
   register,
-  type PivotChartConstructorOptions,
-  type ListTableConstructorOptions,
-  type PivotTableConstructorOptions,
+  PivotChartConstructorOptions,
+  ListTableConstructorOptions,
+  PivotTableConstructorOptions,
 } from '@visactor/vtable';
 import {
   registerAll,
-  type VSeed,
-  ColorIdEncoding,
+  VSeed,
   isPivotChart,
   isVChart,
   isPivotTable,
   isTable,
+  ColorIdEncoding,
   Builder as VSeedBuilder,
 } from '@visactor/vseed';
 
 registerAll();
 register.chartModule('vchart', VChart);
 
-export interface VSeedRenderProps {
-  vseed: VSeed;
-  style?: React.CSSProperties;
-}
-
-export const VSeedRender = (props: VSeedRenderProps) => {
-  const { vseed, style } = props;
+export const VSeedRender = (props: { vseed: VSeed }) => {
+  const { vseed } = props;
   const ref = useRef<HTMLDivElement>(null);
-  const vseedBuilderRef = useRef<VSeedBuilder | null>(null);
+  const vseedBuilderRef = useRef<VSeedBuilder>(null);
 
   useEffect(() => {
     if (!ref.current) {
       return;
     }
-    const theme = 'light';
-    const builder = VSeedBuilder.from({ ...vseed, theme });
-    const spec = builder.build();
+    try {
+      const theme = 'light';
+      const builder = VSeedBuilder.from({ ...vseed, theme });
+      const spec = builder.build();
 
-    vseedBuilderRef.current = builder;
-    if (isPivotChart(vseed)) {
-      const tableInstance = new PivotChart(
-        ref.current,
-        spec as PivotChartConstructorOptions,
-      );
+      vseedBuilderRef.current = builder;
+      if (isPivotChart(vseed)) {
+        const tableInstance = new PivotChart(
+          ref.current,
+          spec as PivotChartConstructorOptions,
+        );
 
       tableInstance.on('legend_item_click', (args) => {
         tableInstance.updateFilterRules([
@@ -58,39 +55,61 @@ export const VSeedRender = (props: VSeedRenderProps) => {
         ]);
       });
 
-      tableInstance.on('legend_change', (args) => {
-        const maxValue = args.value[1];
-        const minValue = args.value[0];
-        tableInstance.updateFilterRules([
-          {
-            filterFunc: (record) => {
-              const value = record[record[ColorIdEncoding]];
-              if (value >= minValue && value <= maxValue) {
-                return true;
-              }
-              return false;
+        tableInstance.on('legend_change', (args) => {
+          const maxValue = args.value[1];
+          const minValue = args.value[0];
+          tableInstance.updateFilterRules([
+            {
+              filterFunc: (record) => {
+                const value = record[record[ColorIdEncoding]];
+                if (value >= minValue && value <= maxValue) {
+                  return true;
+                }
+                return false;
+              },
             },
-          },
-        ]);
-      });
+          ]);
+        });
 
-      return () => tableInstance.release();
-    } else if (isVChart(vseed)) {
-      const vchart = new VChart(spec as ISpec, { dom: ref.current });
-      vchart.renderSync();
-      return () => vchart.release();
-    } else if (isTable(vseed)) {
-      const tableInstance = new ListTable(
-        ref.current,
-        spec as ListTableConstructorOptions,
+        return () => tableInstance.release();
+      } else if (isVChart(vseed)) {
+        const vchart = new VChart(spec as ISpec, { dom: ref.current });
+        vchart.renderSync();
+        return () => vchart.release();
+      } else if (isTable(vseed)) {
+        const tableInstance = new ListTable(
+          ref.current,
+          spec as ListTableConstructorOptions,
+        );
+        return () => tableInstance.release();
+      } else if (isPivotTable(vseed)) {
+        const tableInstance = new PivotTable(
+          ref.current,
+          spec as PivotTableConstructorOptions,
+        );
+        return () => tableInstance.release();
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error(error);
+      message.error(
+        '筛选器配置有误导致数据构建失败，已为您自动移除无效筛选器，请重新配置。',
       );
-      return () => tableInstance.release();
-    } else if (isPivotTable(vseed)) {
-      const tableInstance = new PivotTable(
-        ref.current,
-        spec as PivotTableConstructorOptions,
-      );
-      return () => tableInstance.release();
+
+      const storeBuilder = useVBIStore.getState().builder;
+      if (storeBuilder) {
+        storeBuilder.doc.transact(() => {
+          const filters = storeBuilder.filters.getFilters();
+          if (filters && filters.length > 0) {
+            // Remove the last filter added since it's most likely the offending one
+            const lastFilter = filters[filters.length - 1];
+            storeBuilder.filters.removeFilter(filters.length - 1);
+            window.dispatchEvent(
+              new CustomEvent('vbi-filter-error', { detail: lastFilter }),
+            );
+          }
+        });
+      }
     }
   }, [vseed]);
 
@@ -111,4 +130,4 @@ export const VSeedRender = (props: VSeedRenderProps) => {
   );
 };
 
-export default VSeedRender;
+// react 应用程序, 有一个非常非常重要的概念是: UI状态和业务逻辑是分离的

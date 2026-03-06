@@ -78,7 +78,7 @@ const FieldList: React.FC<FieldListProps> = ({
         }}
       >
         {items.length === 0 && (
-          <div className="fieldlist-empty">No {title.toLowerCase()} added</div>
+          <div className="fieldlist-empty">Drop {title.toLowerCase()} here</div>
         )}
         {items.map((field) => (
           <div

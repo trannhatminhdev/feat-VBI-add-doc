@@ -22,42 +22,17 @@ export const createLocalConnector = (connectorId: string) => {
           return [];
         }
 
-        // 从数据推断字段类型 - 检查多行来更准确地识别数字字段
+        // 从数据的第一行推断字段类型
         const firstRow = localData[0];
         if (typeof firstRow !== 'object' || firstRow === null) {
           return [];
         }
-
-        const fieldNames = Object.keys(firstRow as Record<string, unknown>);
-        const schema = fieldNames.map((name) => {
-          // 检查该字段在前100行（或全部行）中是否主要是数字
-          const sampleSize = Math.min(localData.length, 100);
-          let numberCount = 0;
-
-          for (let i = 0; i < sampleSize; i++) {
-            const row = localData[i];
-            if (typeof row === 'object' && row !== null) {
-              const value = (row as Record<string, unknown>)[name];
-              // 尝试将值转换为数字
-              if (value !== null && value !== undefined && value !== '') {
-                const num = Number(value);
-                if (!isNaN(num) && isFinite(num)) {
-                  numberCount++;
-                }
-              }
-            }
-          }
-
-          // 如果超过70%的非空值都是数字，则认为该字段是 number 类型
-          const nonEmptyCount = sampleSize;
-          const isNumberField = numberCount / nonEmptyCount > 0.7;
-
-          return {
+        const schema = Object.entries(firstRow as Record<string, unknown>).map(
+          ([name, value]) => ({
             name,
-            type: isNumberField ? 'number' : 'string',
-          };
-        });
-
+            type: typeof value === 'number' ? 'number' : 'string',
+          }),
+        );
         console.log('Schema discovered:', schema);
         return schema;
       },
@@ -164,7 +139,7 @@ export const createLocalConnector = (connectorId: string) => {
         }
 
         return {
-          dataset: normalizedDataset,
+          dataset: queryResult.dataset,
         };
       },
     };

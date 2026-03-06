@@ -6,6 +6,8 @@ import { LeftOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
 import { getChartEncodingSupport } from '@visactor/vbi';
 import DimensionShelf from './components/Shelfs/DimensionShelf';
 import MeasureShelf from './components/Shelfs/MeasureShelf';
+import { FilterPanel, type FilterItem } from './components/Filter/FilterPanel';
+
 import { ChartTypeSelector } from './components/ChartType';
 import FieldsList from './components/Fields/FieldList';
 import MeasureFieldList from './components/Fields/MeasureFieldList';
@@ -13,6 +15,7 @@ import EncodingPanel from './components/Fields/EncodingPanel';
 import { VSeedRender } from './components/Render';
 import { useVBIStore } from './model';
 import { useShallow } from 'zustand/shallow';
+import { setLocalData } from './utils/localConnector';
 
 type EncodingChannel = 'yAxis' | 'xAxis' | 'color' | 'label' | 'tooltip' | 'size';
 
@@ -63,18 +66,92 @@ export function APP() {
   const [chartTypeOptions, setChartTypeOptions] = useState<string[]>([]);
   const [currentChartType, setCurrentChartType] = useState<string>('table');
   const [renderKey, setRenderKey] = useState(0);
-  // Track which measures came from dimensions (to restrict their aggregates)
-  const [dimensionMeasures, setDimensionMeasures] = useState<string[]>([]);
 
   // 获取 vbi store 的状态
-  const { initialize, initialized, builder, vseed } = useVBIStore(
+  const { initialize, initialized, builder, vseed, dsl } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
       initialized: state.initialized,
       builder: state.builder,
       vseed: state.vseed,
+      dsl: state.dsl,
     })),
   );
+
+  const activeFields = useMemo(() => {
+    if (!dsl) return [];
+    const fields = new Set<string>();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const extractFields = (items: any[]) => {
+      items?.forEach((item) => {
+        if (item && typeof item === 'object') {
+          if ('field' in item && typeof item.field === 'string') {
+            fields.add(item.field);
+          }
+          if ('children' in item && Array.isArray(item.children)) {
+            extractFields(item.children);
+          }
+        }
+      });
+    };
+
+    extractFields(dsl.dimensions || []);
+    extractFields(dsl.measures || []);
+    return Array.from(fields);
+  }, [dsl]);
+
+  const [allFields, setAllFields] = useState<
+    { name: string; role: 'dimension' | 'measure' }[]
+  >([]);
+  const [filters, setFilters] = useState<FilterItem[]>([]);
+
+  useEffect(() => {
+    const handleFilterError = () => {
+      setFilters((prev) => prev.slice(0, -1));
+    };
+    window.addEventListener('vbi-filter-error', handleFilterError);
+    return () =>
+      window.removeEventListener('vbi-filter-error', handleFilterError);
+  }, []);
+
+  useEffect(() => {
+    if (initialized && builder) {
+      const fetchSchema = async () => {
+        const schema = await builder.getSchema();
+        setAllFields(
+          schema.map((s: { name: string; type: string }) => ({
+            name: s.name,
+            role: s.type === 'number' ? 'measure' : 'dimension',
+          })),
+        );
+      };
+      fetchSchema();
+    }
+  }, [initialized, builder]);
+
+  const handleFilterChange = (newFilters: FilterItem[]) => {
+    setFilters(newFilters);
+    if (builder) {
+      builder.doc.transact(() => {
+        builder.filters.clearFilters();
+        newFilters.forEach((f) => {
+          if (f.isActive) {
+            builder.filters.addFilter({
+              field: f.field,
+              operator: f.operator,
+              value: f.value,
+              actionType: f.actionType,
+              sortOrder: f.sortOrder,
+              limit: f.limit,
+              enabled: true,
+            });
+          }
+        });
+      });
+      setRenderKey((prev) => prev + 1);
+    }
+  };
 
   // 初始化
   useEffect(() => {
@@ -174,11 +251,50 @@ export function APP() {
 
   // 加载 demo 数据
   const handleLoadDemo = async () => {
-    // 数据已经通过 demoConnector 的 query 方法从云端加载
-    // 字段列表已经通过 getSchema 获得
+    try {
+      const url = 'https://visactor.github.io/VBI/dataset/supermarket.csv';
+      const response = await fetch(url);
+      const csv = await response.text();
+
+      const lines = csv.split('\n');
+      const headers = lines[0].split(',').map((h: string) => h.trim());
+      const data = lines
+        .slice(1)
+        .map((line: string) => {
+          const values = line.split(',').map((v: string) => v.trim());
+          const row: Record<string, unknown> = {};
+          headers.forEach((header: string, index: number) => {
+            const value = values[index];
+            row[header] = isNaN(Number(value)) ? value : Number(value);
+          });
+          return row;
+        })
+        .filter((row: Record<string, unknown>) =>
+          Object.values(row).some((v) => v !== ''),
+        );
+
+      // 设置本地数据
+      setLocalData(data);
+
+      // 识别维度和度量
+      if (data.length > 0) {
+        const dims = headers.filter((h: string) => isNaN(Number(data[0]?.[h])));
+        const meas = headers.filter(
+          (h: string) => !isNaN(Number(data[0]?.[h])),
+        );
+        setDimensions(dims.length > 0 ? dims : headers.slice(0, 3));
+        setMeasures(meas.length > 0 ? meas : headers.slice(3));
+        setDimensionFields([]);
+        setMeasureFields([]);
+      }
+
+      console.log('Demo 数据已加载');
+    } catch (err) {
+      console.error('加载 Demo 数据失败:', err);
+    }
   };
 
-  // 上传 CSV - 暂未实现，目前仅支持 demo 数据
+  // 上传 CSV
   const handleUploadCSV = () => {
     alert(
       'Function not yet implemented. Currently only demo data is supported.',
@@ -213,32 +329,6 @@ export function APP() {
             }
           });
         });
-      }
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
-  // 从 dimension 添加 measure（默认使用 count 聚合）
-  const handleAddMeasureFromDimension = (field: string) => {
-    if (!measureFields.includes(field)) {
-      const newMeas = [...measureFields, field];
-      setMeasureFields(newMeas);
-      setDimensionMeasures((prev) => [...prev, field]);
-      if (builderRef.current?.measures && builderRef.current.doc) {
-        const { measures, doc } = builderRef.current;
-        doc.transact(() => {
-          measures.addMeasure(field, (node: unknown) => {
-            const nodeObj = node as any;
-            if (nodeObj?.setAlias) {
-              nodeObj.setAlias(field);
-            }
-            // Dimension 转为 measure 时默认使用 count 聚合
-            if (nodeObj?.setAggregate) {
-              nodeObj.setAggregate({ func: 'count' });
-            }
-          });
-        });
-        syncMeasuresDetail();
       }
       setRenderKey((prev) => prev + 1);
     }
@@ -304,7 +394,6 @@ export function APP() {
             }
           });
         });
-        syncMeasuresDetail();
       }
       setRenderKey((prev) => prev + 1);
     }
@@ -313,13 +402,11 @@ export function APP() {
   const handleRemoveMeasure = (field: string) => {
     const newMeas = measureFields.filter((m) => m !== field);
     setMeasureFields(newMeas);
-    setDimensionMeasures((prev) => prev.filter((m) => m !== field));
     if (builderRef.current?.measures && builderRef.current.doc) {
       const { measures, doc } = builderRef.current;
       doc.transact(() => {
         measures.removeMeasure(field);
       });
-      syncMeasuresDetail();
     }
     setRenderKey((prev) => prev + 1);
   };
@@ -429,6 +516,8 @@ export function APP() {
     setRenderKey((prev) => prev + 1);
   };
 
+  // 数据筛选变化
+
   useEffect(() => {
     if (!dragging) return;
 
@@ -491,6 +580,29 @@ export function APP() {
                     />
                   </Dropdown>
                 </div>
+                {(dimensions.length > 0 || measures.length > 0) && (
+                  <div style={{ padding: '0 12px' }}>
+                    <FilterPanel
+                      fields={
+                        allFields.length > 0
+                          ? allFields
+                          : [
+                              ...dimensions.map((d) => ({
+                                name: d,
+                                role: 'dimension' as const,
+                              })),
+                              ...measures.map((m) => ({
+                                name: m,
+                                role: 'measure' as const,
+                              })),
+                            ]
+                      }
+                      activeFields={activeFields}
+                      filters={filters}
+                      onChange={handleFilterChange}
+                    />
+                  </div>
+                )}
                 {dimensions.length > 0 && (
                   <>
                     <div
@@ -505,8 +617,7 @@ export function APP() {
                     </div>
                     <DimensionShelf
                       items={dimensions}
-                      onAddDimension={handleAddDimension}
-                      onAddMeasure={handleAddMeasureFromDimension}
+                      onAdd={handleAddDimension}
                       existingFields={dimensionFields}
                     />
                   </>

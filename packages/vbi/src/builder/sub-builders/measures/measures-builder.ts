@@ -1,6 +1,5 @@
 import * as Y from 'yjs'
 import type { ObserveCallback, VBIMeasure, VBIMeasureGroup, VBIMeasureTree } from 'src/types'
-import { materialize } from '../../../utils'
 import { MeasureNodeBuilder } from './measure-node-builder'
 
 export class MeasuresBuilder {
@@ -33,7 +32,11 @@ export class MeasuresBuilder {
       defaultMeasure.aggregate = fieldOrMeasure.aggregate
     }
 
-    const yMap = materialize(defaultMeasure) as Y.Map<any>
+    const yMap = new Y.Map<any>()
+
+    for (const [key, value] of Object.entries(defaultMeasure)) {
+      yMap.set(key, value)
+    }
     this.dsl.get('measures').push([yMap])
 
     const measureNode = new MeasureNodeBuilder(yMap)

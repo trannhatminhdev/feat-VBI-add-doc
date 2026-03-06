@@ -1,7 +1,7 @@
 import type { VQueryDSL } from '@visactor/vquery'
 import type { VBIDSL } from '../dsl'
 import type { VSeedDSL } from '@visactor/vseed'
-import type { MeasuresBuilder, DimensionsBuilder, ChartTypeBuilder, HavingBuilder } from 'src/builder/sub-builders'
+import type { MeasuresBuilder, DimensionsBuilder, ChartTypeBuilder, FiltersBuilder, HavingBuilder } from 'src/builder/sub-builders'
 import type { EncodingBuilder } from 'src/builder/encoding-builder'
 import type { Map, Doc, UndoManager } from 'yjs'
 

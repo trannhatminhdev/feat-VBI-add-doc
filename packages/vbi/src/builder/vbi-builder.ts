@@ -3,10 +3,10 @@ import * as Y from 'yjs'
 import { VSeedDSL } from '@visactor/vseed'
 import { DimensionsBuilder } from './sub-builders/dimensions'
 import { MeasuresBuilder } from './sub-builders/measures'
+import { FiltersBuilder } from './sub-builders/filters'
 import { VBIDSL, VBIBuilderInterface } from 'src/types'
 import { buildVQuery } from 'src/pipeline'
 import { ChartTypeBuilder } from './sub-builders/chart-type'
-import { HavingBuilder } from './sub-builders/having'
 import { getConnector } from './connector'
 import { VQueryDSL } from '@visactor/vquery'
 import { EncodingBuilder } from './encoding-builder'
@@ -88,8 +88,6 @@ export class VBIBuilder implements VBIBuilderInterface {
     return {
       chartType: vbiDSL.chartType,
       dataset: queryResult.dataset,
-      measures: vbiDSL.measures.length > 0 ? mapMeasures(vbiDSL.measures) : undefined,
-      dimensions: vbiDSL.dimensions.length > 0 ? mapDimensions(vbiDSL.dimensions) : undefined,
     } as VSeedDSL
   }
 

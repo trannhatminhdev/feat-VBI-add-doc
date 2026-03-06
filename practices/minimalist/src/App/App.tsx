@@ -4,11 +4,15 @@ import { MeasuresList } from 'src/components/Fields/MeasuresList';
 import { DimensionsList } from 'src/components/Fields/DimensionsList';
 import { VBIBuilder } from '@visactor/vbi';
 import { ChartTypeSelector } from 'src/components/ChartType';
+import {
+  FilterPanel,
+  type FilterItem,
+} from 'src/components/Filter/FilterPanel';
 
 import { MeasureShelf } from 'src/components/Shelfs/MeasureShelf';
 import { DimensionShelf } from 'src/components/Shelfs/DimensionShelf';
 import { useVBIStore } from 'src/model';
-import { useEffect } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useShallow } from 'zustand/shallow';
 
   
@@ -20,10 +24,12 @@ interface APPProps {
 }
 
 export const APP = (props: APPProps) => {
-  const { initialize, initialized } = useVBIStore(
+  const { initialize, initialized, builder, dsl } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
       initialized: state.initialized,
+      builder: state.builder,
+      dsl: state.dsl,
     })),
   );
 

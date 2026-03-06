@@ -2,7 +2,7 @@ import { QueryDSL, VQueryDSL } from 'src/types'
 import { Kysely } from 'kysely'
 import { PostgresDialect } from './dialect'
 import { inlineParameters } from './compile'
-import { applyWhere, applyGroupBy, applyLimit, applySelect, applyHaving } from './builders'
+import { applyWhere, applyGroupBy, applyLimit, applySelect } from './builders'
 
 type TableDB<TableName extends string, Row> = {
   [K in TableName]: Row
@@ -24,11 +24,6 @@ export const convertDSLToSQL = <T, TableName extends string>(
   }
 
   qb = applyGroupBy(qb, dsl.groupBy as Array<Extract<keyof T, string>> | undefined)
-
-  // Apply having after groupBy
-  if (dsl.having) {
-    qb = qb.having(applyHaving<T>(dsl.having))
-  }
 
   if (dsl.orderBy && dsl.orderBy.length > 0) {
     for (const o of dsl.orderBy) {
