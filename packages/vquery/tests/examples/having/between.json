@@ -15,7 +15,7 @@
       "op": "and",
       "conditions": [
         {
-          "field": "salary",
+          "field": "Total Salary",
           "op": "between",
           "value": [5000, 12000]
         }

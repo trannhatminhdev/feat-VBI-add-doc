@@ -25,8 +25,8 @@ describe('Having Example with MAX aggregate function', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
+          "Max Salary": 9000,
           "department": "Engineering",
-          "salary": 9000,
         },
       ]
     `)

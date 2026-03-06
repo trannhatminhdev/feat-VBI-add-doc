@@ -25,8 +25,8 @@ describe('Having Example with BETWEEN operator', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
+          "Total Salary": 11000,
           "department": "HR",
-          "salary": 11000,
         },
       ]
     `)

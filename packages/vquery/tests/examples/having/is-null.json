@@ -15,7 +15,7 @@
       "op": "and",
       "conditions": [
         {
-          "field": "salary",
+          "field": "Total Salary",
           "op": "is null"
         }
       ]

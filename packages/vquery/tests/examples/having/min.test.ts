@@ -25,8 +25,8 @@ describe('Having Example with MIN aggregate function', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
+          "Min Salary": 5000,
           "department": "HR",
-          "salary": 5000,
         },
       ]
     `)

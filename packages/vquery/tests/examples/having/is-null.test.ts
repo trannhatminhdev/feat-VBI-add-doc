@@ -25,8 +25,8 @@ describe('Having Example with IS NULL operator', () => {
     expect(queryResult.dataset).toMatchInlineSnapshot(`
       [
         {
+          "Total Salary": null,
           "department": "Marketing",
-          "salary": null,
         },
       ]
     `)
