@@ -32,10 +32,6 @@ describe('Having Example with IS NOT NULL operator', () => {
           "Total Salary": 8000,
           "department": "Engineering",
         },
-        {
-          "Total Salary": null,
-          "department": "Marketing",
-        },
       ]
     `)
   })

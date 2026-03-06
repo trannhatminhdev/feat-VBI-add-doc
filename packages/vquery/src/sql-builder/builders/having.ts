@@ -1,8 +1,16 @@
+import type { SelectQueryBuilder } from 'kysely'
 import { Having, HavingClause } from 'src/types'
 import { sql } from 'kysely'
 import type { RawBuilder } from 'kysely'
 
-export const applyHaving = <T>(having: Having<T> | HavingClause<T>): RawBuilder<boolean> => {
+export const applyHaving = <DB, TB extends keyof DB & string, O, T>(
+  qb: SelectQueryBuilder<DB, TB, O>,
+  having?: Having<T> | HavingClause<T>,
+): SelectQueryBuilder<DB, TB, O> => {
+  if (!having) {
+    return qb
+  }
+
   const toRaw = (h: Having<T> | HavingClause<T>): RawBuilder<boolean> => {
     if ('op' in h && 'conditions' in h) {
       const parts: RawBuilder<boolean>[] = (h.conditions as Array<HavingClause<T>>).map((c) => toRaw(c))
@@ -46,5 +54,5 @@ export const applyHaving = <T>(having: Having<T> | HavingClause<T>): RawBuilder<
         return sql<boolean>`${sql.ref(field)} ${sql.raw(op)} ${sql.val(value)}`
     }
   }
-  return toRaw(having)
+  return qb.having(toRaw(having))
 }

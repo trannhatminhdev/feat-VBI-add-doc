@@ -28,14 +28,6 @@ describe('Having Example with single value IN operator', () => {
           "Total Salary": 11000,
           "department": "HR",
         },
-        {
-          "Total Salary": 17000,
-          "department": "Engineering",
-        },
-        {
-          "Total Salary": 4000,
-          "department": "Marketing",
-        },
       ]
     `)
   })

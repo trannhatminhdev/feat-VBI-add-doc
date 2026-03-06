@@ -2,7 +2,7 @@ import type { QueryDSL, VQueryDSL } from 'src/types'
 import { Kysely } from 'kysely'
 import { PostgresDialect } from './dialect'
 import { inlineParameters } from './compile'
-import { applyWhere, applyGroupBy, applyLimit, applyOrder, applySelect } from './builders'
+import { applyWhere, applyGroupBy, applyHaving, applyLimit, applyOrder, applySelect } from './builders'
 
 export const convertDSLToSQL = <T, TableName extends string>(
   dsl: QueryDSL<T> | VQueryDSL<T>,
@@ -17,6 +17,7 @@ export const convertDSLToSQL = <T, TableName extends string>(
   qb = applySelect(qb, dsl.select)
   qb = applyWhere(qb, dsl.where)
   qb = applyGroupBy(qb, dsl.groupBy as string[] | undefined)
+  qb = applyHaving(qb, dsl.having)
   qb = applyOrder(qb, dsl.orderBy as Array<{ field: string; order?: 'asc' | 'desc' }> | undefined)
   qb = applyLimit(qb, dsl.limit)
 
