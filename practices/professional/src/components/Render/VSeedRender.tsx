@@ -46,15 +46,14 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
           spec as PivotChartConstructorOptions,
         );
 
-        tableInstance.on('legend_item_click', (args) => {
-          console.log('LEGEND_ITEM_CLICK', args);
-          tableInstance.updateFilterRules([
-            {
-              filterKey: ColorIdEncoding,
-              filteredValues: args.value,
-            },
-          ]);
-        });
+      tableInstance.on('legend_item_click', (args) => {
+        tableInstance.updateFilterRules([
+          {
+            filterKey: ColorIdEncoding,
+            filteredValues: args.value,
+          },
+        ]);
+      });
 
         tableInstance.on('legend_change', (args) => {
           const maxValue = args.value[1];
@@ -117,25 +116,17 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
   return (
     <div
       ref={ref}
-      style={{ height: '100%', width: '100%', minHeight: 300 }}
-      onClick={() => {
-        console.group(`selected ${vseed.chartType}`);
-        console.log('builder', vseedBuilderRef.current);
-        console.log(
-          'spec',
-          vseedBuilderRef.current && vseedBuilderRef.current.spec,
-        );
-        console.log(
-          'vseed',
-          vseedBuilderRef.current && vseedBuilderRef.current.vseed,
-        );
-        console.log(
-          'advancedVSeed',
-          vseedBuilderRef.current && vseedBuilderRef.current.advancedVSeed,
-        );
-        console.groupEnd();
+      style={{
+        height: '100%',
+        width: '100%',
+        minHeight: 300,
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: 'transparent',
+        ...style,
       }}
-    ></div>
+      onClick={() => {}}
+    />
   );
 };
 

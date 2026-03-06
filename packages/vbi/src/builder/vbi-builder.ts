@@ -9,6 +9,7 @@ import { buildVQuery } from 'src/pipeline'
 import { ChartTypeBuilder } from './sub-builders/chart-type'
 import { getConnector } from './connector'
 import { VQueryDSL } from '@visactor/vquery'
+import { EncodingBuilder } from './encoding-builder'
 
 export class VBIBuilder implements VBIBuilderInterface {
   public doc: Y.Doc
@@ -18,7 +19,8 @@ export class VBIBuilder implements VBIBuilderInterface {
   public chartType: ChartTypeBuilder
   public measures: MeasuresBuilder
   public dimensions: DimensionsBuilder
-  public filters: FiltersBuilder
+  public having: HavingBuilder
+  public encoding: EncodingBuilder
 
   constructor(doc: Y.Doc) {
     this.doc = doc
@@ -28,7 +30,8 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.chartType = new ChartTypeBuilder(doc, this.dsl)
     this.measures = new MeasuresBuilder(doc, this.dsl)
     this.dimensions = new DimensionsBuilder(doc, this.dsl)
-    this.filters = new FiltersBuilder(doc, this.dsl)
+    this.having = new HavingBuilder(doc, this.dsl)
+    this.encoding = new EncodingBuilder()
   }
 
   public applyUpdate(update: Uint8Array) {
@@ -47,6 +50,40 @@ export class VBIBuilder implements VBIBuilderInterface {
     const queryDSL = this.buildVQuery()
     const schema = await connector.discoverSchema()
     const queryResult = await connector.query({ queryDSL, schema, connectorId })
+
+    // 将 VBI DSL 的 measures/dimensions 转换为 VSeed 格式
+    const mapMeasures = (tree: any[]): any[] => {
+      return tree.map((node) => {
+        if (MeasuresBuilder.isMeasureNode(node)) {
+          return {
+            id: node.field, // field → id
+            alias: node.alias,
+            encoding: node.encoding,
+          }
+        } else {
+          return {
+            alias: node.alias,
+            children: mapMeasures(node.children),
+          }
+        }
+      })
+    }
+
+    const mapDimensions = (tree: any[]): any[] => {
+      return tree.map((node) => {
+        if (DimensionsBuilder.isDimensionNode(node)) {
+          return {
+            id: node.field, // field → id
+            alias: node.alias,
+          }
+        } else {
+          return {
+            alias: node.alias,
+            children: mapDimensions(node.children),
+          }
+        }
+      })
+    }
 
     return {
       chartType: vbiDSL.chartType,
@@ -68,5 +105,15 @@ export class VBIBuilder implements VBIBuilderInterface {
     const con = await getConnector(connectorId)
     const result = await con.discoverSchema()
     return result
+  }
+
+  /**
+   * Get measure encoding information from a VChart spec
+   * @param spec VChart spec to analyze
+   * @param measureNames List of measure names
+   * @returns Array of {encoding, measures} pairs
+   */
+  public getEncodings(spec: any, measureNames: string[] = []) {
+    return this.encoding.getMeasureEncodings(spec, measureNames)
   }
 }
