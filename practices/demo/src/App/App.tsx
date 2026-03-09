@@ -92,19 +92,13 @@ export const APP = (props: APPProps) => {
   const handleFilterChange = (newFilters: FilterItem[]) => {
     setFilters(newFilters);
     builder.doc.transact(() => {
-      builder.filters.clearFilters();
+      builder.whereFilters.clearWhereFilters();
       newFilters.forEach((f) => {
-        if (f.isActive) {
-          builder.filters.addFilter({
-            field: f.field,
-            operator: f.operator,
-            value: f.value,
-            actionType: f.actionType,
-            sortOrder: f.sortOrder,
-            limit: f.limit,
-            enabled: true,
-          });
-        }
+        builder.whereFilters.addWhereFilter({
+          field: f.field,
+          operator: f.operator,
+          value: f.value,
+        });
       });
     });
   };

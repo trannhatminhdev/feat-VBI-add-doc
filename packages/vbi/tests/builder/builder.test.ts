@@ -19,7 +19,7 @@ describe('VBI', () => {
           field: 'area',
         },
       ],
-      filters: [],
+      whereFilters: [],
       measures: [
         {
           aggregate: {

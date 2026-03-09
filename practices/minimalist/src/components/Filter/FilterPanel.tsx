@@ -17,8 +17,6 @@ import {
   FilterOutlined,
   DeleteOutlined,
   PlusOutlined,
-  EyeOutlined,
-  EyeInvisibleOutlined,
   EditOutlined,
 } from '@ant-design/icons';
 
@@ -26,16 +24,10 @@ const { Option } = Select;
 const { Text } = Typography;
 
 export interface FilterItem {
-  id: string;
-  name: string;
   field: string;
   operator: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any;
-  isActive: boolean;
-  actionType?: 'filter' | 'sort';
-  sortOrder?: 'asc' | 'desc';
-  limit?: number;
 }
 
 export interface FilterField {
@@ -87,7 +79,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   }, [fields, activeFields]);
 
   const selectedRole = Form.useWatch('role', form);
-  const actionType = Form.useWatch('actionType', form);
   const operator = Form.useWatch('operator', form);
   const selectedField = Form.useWatch('field', form);
   const displayFields = React.useMemo(() => {
@@ -149,13 +140,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               : lastFilter.value;
         form.setFieldsValue({
           role: fieldRole,
-          name: lastFilter.name,
           field: lastFilter.field,
           operator: lastFilter.operator,
           value: value,
-          actionType: lastFilter.actionType || 'filter',
-          sortOrder: lastFilter.sortOrder || 'desc',
-          limit: lastFilter.limit,
         });
       }
       setIsModalOpen(true);
@@ -172,8 +159,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     form.setFieldsValue({
       role: 'dimension',
       operator: 'in',
-      actionType: 'filter',
-      sortOrder: 'desc',
     });
     setIsModalOpen(true);
   };
@@ -191,21 +176,16 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     setEditingIndex(index);
     form.setFieldsValue({
       role: fieldRole,
-      name: item.name,
       field: item.field,
       operator: item.operator,
       value: value,
-      actionType: item.actionType || 'filter',
-      sortOrder: item.sortOrder || 'desc',
-      limit: item.limit,
     });
     setIsModalOpen(true);
   };
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      const { name, field, operator, value, actionType, sortOrder, limit } =
-        values;
+      const { field, operator, value } = values;
       const finalValue =
         (operator === 'in' ||
           operator === 'not in' ||
@@ -219,26 +199,16 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         const newFilters = [...filters];
         newFilters[editingIndex] = {
           ...newFilters[editingIndex],
-          name: name,
           field,
           operator,
           value: finalValue,
-          actionType: actionType === 'sort' ? 'sort' : 'filter',
-          sortOrder: actionType === 'sort' ? sortOrder : undefined,
-          limit: actionType === 'sort' ? limit : undefined,
         };
         onChange(newFilters);
       } else {
         const newFilter: FilterItem = {
-          id: Date.now().toString(),
-          name: name,
           field,
           operator,
           value: finalValue,
-          isActive: true,
-          actionType: actionType === 'sort' ? 'sort' : 'filter',
-          sortOrder: actionType === 'sort' ? sortOrder : undefined,
-          limit: actionType === 'sort' ? limit : undefined,
         };
         onChange([...filters, newFilter]);
       }
@@ -247,12 +217,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       setEditingIndex(null);
       form.resetFields();
     });
-  };
-
-  const handleToggleActive = (index: number) => {
-    const newFilters = [...filters];
-    newFilters[index].isActive = !newFilters[index].isActive;
-    onChange(newFilters);
   };
 
   const handleDelete = (index: number) => {
@@ -314,21 +278,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                       style={{ color: '#1890ff' }}
                     />
                   </Tooltip>,
-                  <Tooltip title={item.isActive ? '停用' : '启用'} key="toggle">
-                    <Button
-                      type="text"
-                      size="small"
-                      icon={
-                        item.isActive ? (
-                          <EyeOutlined />
-                        ) : (
-                          <EyeInvisibleOutlined />
-                        )
-                      }
-                      onClick={() => handleToggleActive(index)}
-                      style={{ color: item.isActive ? '#1890ff' : '#999' }}
-                    />
-                  </Tooltip>,
                   <Tooltip title="删除" key="delete">
                     <Button
                       type="text"
@@ -344,30 +293,19 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    opacity: item.isActive ? 1 : 0.5,
                     maxWidth: '140px',
                   }}
                 >
                   {(() => {
                     const displayLabel =
-                      item.actionType === 'sort'
-                        ? `排序: ${item.sortOrder === 'asc' ? '升序' : '降序'}${item.limit ? ` (Top ${item.limit})` : ''}`
-                        : item.operator === 'between' && item.value
-                          ? `${item.value.min ?? ''} ${item.value.leftOp ?? '<='} 变量 ${item.value.rightOp ?? '<='} ${item.value.max ?? ''}`
-                          : `${item.operator} ${String(item.value)}`;
+                      item.operator === 'between' && item.value
+                        ? `${item.value.min ?? ''} ${item.value.leftOp ?? '<='} 变量 ${item.value.rightOp ?? '<='} ${item.value.max ?? ''}`
+                        : `${item.operator} ${String(item.value)}`;
                     return (
                       <>
                         <Text style={{ fontSize: 13 }} ellipsis>
-                          {item.name || `${item.field} ${displayLabel}`}
+                          {`${item.field} ${displayLabel}`}
                         </Text>
-                        {item.name && (
-                          <Text
-                            style={{ fontSize: 11, color: '#888' }}
-                            ellipsis
-                          >
-                            {item.field} {displayLabel}
-                          </Text>
-                        )}
                       </>
                     );
                   })()}
@@ -396,8 +334,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           initialValues={{
             operator: 'in',
             role: 'dimension',
-            actionType: 'filter',
-            sortOrder: 'desc',
           }}
         >
           <Form.Item label="字段类型" name="role">
@@ -408,10 +344,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                   field: undefined,
                   operator: e.target.value === 'measure' ? '=' : 'in',
                   value: undefined,
-                  actionType: 'filter',
-                  sortOrder: 'desc',
-                  limit: undefined,
-                  name: undefined,
                 });
               }}
             >
@@ -430,12 +362,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               showSearch
               onChange={() => {
                 form.setFieldsValue({
-                  actionType: 'filter',
                   operator: selectedRole === 'measure' ? '=' : 'in',
                   value: undefined,
-                  sortOrder: 'desc',
-                  limit: undefined,
-                  name: undefined,
                 });
               }}
             >
@@ -456,155 +384,101 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             </Select>
           </Form.Item>
 
-          {selectedRole === 'measure' && (
-            <Form.Item label="行为类型" name="actionType">
+          <Form.Item
+            label="操作符"
+            name="operator"
+            rules={[{ required: true }]}
+          >
+            {selectedRole === 'dimension' ? (
               <Radio.Group
                 optionType="button"
                 onChange={() => {
                   form.setFieldsValue({
-                    operator: selectedRole === 'measure' ? '=' : 'in',
                     value: undefined,
-                    sortOrder: 'desc',
-                    limit: undefined,
-                    name: undefined,
                   });
                 }}
               >
-                <Radio value="filter">筛选</Radio>
-                <Radio value="sort">排序</Radio>
+                {availableOperators.map((op) => (
+                  <Radio key={op.value} value={op.value}>
+                    {op.label}
+                  </Radio>
+                ))}
               </Radio.Group>
-            </Form.Item>
-          )}
-
-          {actionType === 'sort' ? (
-            <>
-              <Form.Item
-                label="排序方向"
-                name="sortOrder"
-                rules={[{ required: true }]}
+            ) : (
+              <Select
+                onChange={() => {
+                  form.setFieldsValue({
+                    value: undefined,
+                  });
+                }}
               >
-                <Radio.Group
-                  optionType="button"
-                  onChange={() => {
-                    form.setFieldsValue({ limit: undefined, name: undefined });
-                  }}
-                >
-                  <Radio value="desc">降序 (DESC)</Radio>
-                  <Radio value="asc">升序 (ASC)</Radio>
-                </Radio.Group>
-              </Form.Item>
-              <Form.Item label="截断数量 (Top N)" name="limit">
-                <InputNumber
-                  min={1}
-                  placeholder="选填，例如: 10"
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
-            </>
-          ) : (
-            <>
-              <Form.Item
-                label="操作符"
-                name="operator"
-                rules={[{ required: true }]}
+                {availableOperators.map((op) => (
+                  <Option key={op.value} value={op.value}>
+                    {op.label}
+                  </Option>
+                ))}
+              </Select>
+            )}
+          </Form.Item>
+          {operator === 'between' ? (
+            <Form.Item label="范围设置">
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
               >
-                {selectedRole === 'dimension' ? (
-                  <Radio.Group
-                    optionType="button"
-                    onChange={() => {
-                      form.setFieldsValue({
-                        value: undefined,
-                        name: undefined,
-                      });
-                    }}
-                  >
-                    {availableOperators.map((op) => (
-                      <Radio key={op.value} value={op.value}>
-                        {op.label}
-                      </Radio>
-                    ))}
-                  </Radio.Group>
-                ) : (
-                  <Select
-                    onChange={() => {
-                      form.setFieldsValue({
-                        value: undefined,
-                        name: undefined,
-                      });
-                    }}
-                  >
-                    {availableOperators.map((op) => (
-                      <Option key={op.value} value={op.value}>
-                        {op.label}
-                      </Option>
-                    ))}
-                  </Select>
-                )}
-              </Form.Item>
-              {operator === 'between' ? (
-                <Form.Item label="范围设置">
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                    }}
-                  >
-                    <Form.Item name={['value', 'min']} noStyle>
-                      <InputNumber
-                        placeholder="最小值"
-                        style={{ width: '80px' }}
-                        controls={false}
-                      />
-                    </Form.Item>
-                    <Form.Item name={['value', 'leftOp']} noStyle>
-                      <Select style={{ width: '60px' }}>
-                        <Option value="<">&lt;</Option>
-                        <Option value="<=">&lt;=</Option>
-                      </Select>
-                    </Form.Item>
-                    <Text
-                      ellipsis
-                      style={{ maxWidth: '80px', textAlign: 'center' }}
-                      title={selectedField || '变量'}
-                    >
-                      {selectedField || '变量'}
-                    </Text>
-                    <Form.Item name={['value', 'rightOp']} noStyle>
-                      <Select style={{ width: '60px' }}>
-                        <Option value="<">&lt;</Option>
-                        <Option value="<=">&lt;=</Option>
-                      </Select>
-                    </Form.Item>
-                    <Form.Item name={['value', 'max']} noStyle>
-                      <InputNumber
-                        placeholder="最大值"
-                        style={{ width: '80px' }}
-                        controls={false}
-                      />
-                    </Form.Item>
-                  </div>
-                </Form.Item>
-              ) : (
-                <Form.Item
-                  label="筛选值"
-                  name="value"
-                  rules={[{ required: true, message: '请输入筛选值' }]}
-                >
-                  <Input
-                    placeholder={
-                      ['in', 'not in', '=', '!='].includes(operator)
-                        ? '输入筛选值 (如需多选，请用英文逗号分隔)'
-                        : '输入筛选值'
-                    }
+                <Form.Item name={['value', 'min']} noStyle>
+                  <InputNumber
+                    placeholder="最小值"
+                    style={{ width: '80px' }}
+                    controls={false}
                   />
                 </Form.Item>
-              )}
-            </>
+                <Form.Item name={['value', 'leftOp']} noStyle>
+                  <Select style={{ width: '60px' }}>
+                    <Option value="<">&lt;</Option>
+                    <Option value="<=">&lt;=</Option>
+                  </Select>
+                </Form.Item>
+                <Text
+                  ellipsis
+                  style={{ maxWidth: '80px', textAlign: 'center' }}
+                  title={selectedField || '变量'}
+                >
+                  {selectedField || '变量'}
+                </Text>
+                <Form.Item name={['value', 'rightOp']} noStyle>
+                  <Select style={{ width: '60px' }}>
+                    <Option value="<">&lt;</Option>
+                    <Option value="<=">&lt;=</Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item name={['value', 'max']} noStyle>
+                  <InputNumber
+                    placeholder="最大值"
+                    style={{ width: '80px' }}
+                    controls={false}
+                  />
+                </Form.Item>
+              </div>
+            </Form.Item>
+          ) : (
+            <Form.Item
+              label="筛选值"
+              name="value"
+              rules={[{ required: true, message: '请输入筛选值' }]}
+            >
+              <Input
+                placeholder={
+                  ['in', 'not in', '=', '!='].includes(operator)
+                    ? '输入筛选值 (如需多选，请用英文逗号分隔)'
+                    : '输入筛选值'
+                }
+              />
+            </Form.Item>
           )}
-          <Form.Item label="名称" name="name">
-            <Input placeholder=" (选填) 例：华东区客户" />
-          </Form.Item>
         </Form>
       </Modal>
     </Card>

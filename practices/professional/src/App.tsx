@@ -143,19 +143,13 @@ export function APP() {
     setFilters(newFilters);
     if (builder) {
       builder.doc.transact(() => {
-        builder.filters.clearFilters();
+        builder.whereFilters.clearWhereFilters();
         newFilters.forEach((f) => {
-          if (f.isActive) {
-            builder.filters.addFilter({
-              field: f.field,
-              operator: f.operator,
-              value: f.value,
-              actionType: f.actionType,
-              sortOrder: f.sortOrder,
-              limit: f.limit,
-              enabled: true,
-            });
-          }
+          builder.whereFilters.addWhereFilter({
+            field: f.field,
+            operator: f.operator,
+            value: f.value,
+          });
         });
       });
       setRenderKey((prev) => prev + 1);

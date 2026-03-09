@@ -30,6 +30,7 @@ describe('Locale', () => {
       theme: 'light',
       locale: 'en-US',
       version: 1,
+      whereFilters: [],
       limit: 50,
     })
 
@@ -51,7 +52,6 @@ describe('Locale', () => {
             "field": "province",
           },
         ],
-        "filters": [],
         "limit": 50,
         "locale": "en-US",
         "measures": [
@@ -66,6 +66,7 @@ describe('Locale', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -254,6 +255,7 @@ describe('Locale', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      whereFilters: [],
       limit: 50,
     })
 
@@ -275,7 +277,6 @@ describe('Locale', () => {
             "field": "province",
           },
         ],
-        "filters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -290,6 +291,7 @@ describe('Locale', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 

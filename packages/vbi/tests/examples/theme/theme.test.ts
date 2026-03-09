@@ -51,7 +51,6 @@ describe('Theme', () => {
             "field": "province",
           },
         ],
-        "filters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -66,6 +65,7 @@ describe('Theme', () => {
         ],
         "theme": "dark",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -275,7 +275,6 @@ describe('Theme', () => {
             "field": "province",
           },
         ],
-        "filters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -290,6 +289,7 @@ describe('Theme', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 

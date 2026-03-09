@@ -22,19 +22,16 @@ export const buildVQuery = (vbiDSL: VBIDSL, builder: VBIBuilder) => {
 
 const buildWhere: buildPipe = (queryDSL, context) => {
   const { vbiDSL } = context
-  const filters = vbiDSL.filters || []
+  const whereFilters = vbiDSL.whereFilters || []
 
-  // Only use normal filters for WHERE clause, exclude 'sort' actionType
-  const normalFilters = filters.filter((f) => f.enabled !== false && f.actionType !== 'sort')
-
-  if (normalFilters.length === 0) {
+  if (whereFilters.length === 0) {
     return queryDSL
   }
 
   const result = { ...queryDSL }
   result.where = {
     op: 'and',
-    conditions: normalFilters.flatMap((filter) => {
+    conditions: whereFilters.flatMap((filter) => {
       if (
         filter.operator === 'between' &&
         filter.value &&
@@ -59,7 +56,7 @@ const buildWhere: buildPipe = (queryDSL, context) => {
         return conditions as any
       }
 
-      let mappedOp = filter.operator
+      let mappedOp = filter.operator ?? '='
       if (Array.isArray(filter.value)) {
         if (mappedOp === '=') mappedOp = 'in'
         if (mappedOp === '!=') mappedOp = 'not in'
@@ -79,23 +76,10 @@ const buildWhere: buildPipe = (queryDSL, context) => {
 }
 
 const buildOrderBy: buildPipe = (queryDSL, context) => {
-  const { vbiDSL } = context
-  const filters = vbiDSL.filters || []
-
-  // Extract sort items
-  const sortItems = filters.filter((f) => f.enabled !== false && f.actionType === 'sort')
-
-  if (sortItems.length === 0) {
-    return queryDSL
-  }
-
-  const result = { ...queryDSL }
-  result.orderBy = sortItems.map((item) => ({
-    field: item.field,
-    order: item.sortOrder || 'desc',
-  })) as any
-
-  return result as VQueryDSL
+  // Order by is now handled separately via having or other mechanisms
+  // This function is kept for potential future use
+  void context
+  return queryDSL
 }
 
 const buildSelect: buildPipe = (queryDSL, context) => {

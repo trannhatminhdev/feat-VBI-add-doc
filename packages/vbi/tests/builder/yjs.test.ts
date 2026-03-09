@@ -18,7 +18,7 @@ describe('VBI YJS Integration', () => {
 
     expect(b2.build()).toEqual({
       dimensions: [],
-      filters: [],
+      whereFilters: [],
       measures: [
         {
           aggregate: {
@@ -52,7 +52,7 @@ test('encodeStateAsUpdate', () => {
 
   expect(b2.build()).toEqual({
     dimensions: [],
-    filters: [],
+    whereFilters: [],
     measures: [
       {
         aggregate: {

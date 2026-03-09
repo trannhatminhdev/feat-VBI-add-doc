@@ -9,7 +9,7 @@
     "chartType": "bar",
     "dimensions": [{ "field": "province", "alias": "Province" }],
     "measures": [{ "field": "sales", "alias": "Sales", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
-    "filters": [],
+    "whereFilters": [],
     "theme": "light",
     "locale": "en-US",
     "version": 1,

@@ -9,7 +9,7 @@
     "chartType": "bar",
     "dimensions": [{ "field": "province", "alias": "省份" }],
     "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
-    "filters": [],
+    "whereFilters": [],
     "theme": "light",
     "locale": "zh-CN",
     "version": 1,

@@ -1,1 +1,1 @@
-export { FiltersBuilder } from './filters-builder'
+export { WhereFiltersBuilder } from './filters-builder'

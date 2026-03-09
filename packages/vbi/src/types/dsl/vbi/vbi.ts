@@ -10,7 +10,7 @@ export const zVBIDSL = z.object({
   chartType: z.custom<any>(), // Use any to avoid circular dependency or simplify for now
   dimensions: zVBIDimensionTree,
   measures: zVBIMeasureTree,
-  filters: z.array(zVBIFilter).optional().default([]),
+  whereFilters: z.array(zVBIFilter).optional().default([]),
   theme: zVBIDSLTheme,
   locale: zVBIDSLLocale,
   limit: z.number().int().min(1).optional(),

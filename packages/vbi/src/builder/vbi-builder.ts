@@ -5,7 +5,7 @@ import { VQueryDSL } from '@visactor/vquery'
 import { DimensionsBuilder } from './sub-builders/dimensions'
 import { MeasuresBuilder } from './sub-builders/measures'
 import { HavingBuilder } from './sub-builders/having'
-import { FiltersBuilder } from './sub-builders'
+import { WhereFiltersBuilder } from './sub-builders'
 import { ChartTypeBuilder } from './sub-builders'
 
 import { VBIDSL, VBIBuilderInterface } from 'src/types'
@@ -22,7 +22,7 @@ export class VBIBuilder implements VBIBuilderInterface {
   public measures: MeasuresBuilder
   public dimensions: DimensionsBuilder
   public having: HavingBuilder
-  public filters: FiltersBuilder
+  public whereFilters: WhereFiltersBuilder
   public encoding: EncodingBuilder
 
   constructor(doc: Y.Doc) {
@@ -34,7 +34,7 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.measures = new MeasuresBuilder(doc, this.dsl)
     this.dimensions = new DimensionsBuilder(doc, this.dsl)
     this.having = new HavingBuilder(doc, this.dsl)
-    this.filters = new FiltersBuilder(doc, this.dsl)
+    this.whereFilters = new WhereFiltersBuilder(doc, this.dsl)
     this.encoding = new EncodingBuilder()
   }
 
