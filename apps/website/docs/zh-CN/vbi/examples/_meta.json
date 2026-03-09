@@ -13,5 +13,10 @@
     "type": "file",
     "name": "theme",
     "label": "Theme"
+  },
+  {
+    "type": "file",
+    "name": "whereFilters",
+    "label": "WhereFilters"
   }
 ]

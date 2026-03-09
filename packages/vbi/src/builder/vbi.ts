@@ -17,6 +17,7 @@ const createVBI = () => {
         measures: [],
         dimensions: [],
         whereFilters: [],
+        havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
         version: 0,
@@ -43,6 +44,7 @@ const createVBI = () => {
           return yArr
         }
         dsl.set('whereFilters', ensureYArray(vbi.whereFilters))
+        dsl.set('havingFilters', ensureYArray(vbi.havingFilters))
         dsl.set('measures', ensureYArray(vbi.measures))
         dsl.set('dimensions', ensureYArray(vbi.dimensions))
       })

@@ -101,7 +101,7 @@ function generateExamplePreview(json) {
   code += `        chartType: ${JSON.stringify(json.dsl?.chartType || 'line')},\n`
   code += `        dimensions: ${JSON.stringify(json.dsl?.dimensions || [])},\n`
   code += `        measures: ${JSON.stringify(json.dsl?.measures || [])},\n`
-  code += '        filters: [],\n'
+  code += `        whereFilters: ${JSON.stringify(json.dsl?.whereFilters || [])},\n`
   code += `        theme: ${JSON.stringify(json.dsl?.theme || 'light')},\n`
   code += "        locale: 'zh-CN',\n"
   code += '        version: 1\n'
