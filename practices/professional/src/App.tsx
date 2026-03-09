@@ -92,7 +92,6 @@ export function APP() {
     if (!dsl) return [];
     const fields = new Set<string>();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const extractFields = (items: any[]) => {
       items?.forEach((item) => {
         if (item && typeof item === 'object') {
@@ -448,7 +447,6 @@ export function APP() {
     }
   };
 
-<<<<<<< HEAD
   const handleAddMeasureFromDimension = (field: string) => {
     if (!builderRef.current?.measures || !builderRef.current.doc) {
       return;
@@ -476,8 +474,6 @@ export function APP() {
     }
   };
 
-=======
->>>>>>> a8e1b6dcf (docs: add skill)
   const handleDropMeasureToEncoding = (
     field: string,
     encoding: EncodingChannel,
