@@ -1,0 +1,37 @@
+{
+  "name": "clear-having-filters",
+  "description": "清空所有Having过滤条件",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [],
+    "measures": [],
+    "havingFilters": [
+      {
+        "field": "sales",
+        "operator": "gt",
+        "value": 100000
+      },
+      {
+        "field": "profit",
+        "operator": "gt",
+        "value": 50000
+      }
+    ],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.clear(); }"
+}

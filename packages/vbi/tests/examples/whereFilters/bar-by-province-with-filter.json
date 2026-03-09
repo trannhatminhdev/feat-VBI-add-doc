@@ -2,14 +2,35 @@
   "name": "bar-by-province-with-filter",
   "description": "柱状图 - 按省份销售额（带过滤条件）",
   "schema": [
-    { "name": "province", "type": "string" },
-    { "name": "sales", "type": "number" }
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
   ],
   "dsl": {
     "chartType": "bar",
-    "dimensions": [{ "field": "province", "alias": "省份" }],
-    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "xAxis", "aggregate": { "func": "sum" } }],
-    "filters": []
+    "dimensions": [
+      {
+        "field": "province",
+        "alias": "省份"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "xAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "filters": [],
+    "limit": 20
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilters.add('sales', node => { node.setOperator('gt').setValue(100000); }); }"
 }

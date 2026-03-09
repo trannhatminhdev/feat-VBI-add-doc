@@ -1,0 +1,37 @@
+{
+  "name": "remove-where-filter",
+  "description": "删除Where过滤条件",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [],
+    "measures": [],
+    "whereFilters": [
+      {
+        "field": "product_type",
+        "operator": "eq",
+        "value": "Office Supplies"
+      },
+      {
+        "field": "province",
+        "operator": "eq",
+        "value": "Beijing"
+      }
+    ],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilters.remove('product_type'); }"
+}

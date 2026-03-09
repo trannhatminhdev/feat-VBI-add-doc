@@ -11,7 +11,6 @@ import { ChartTypeBuilder } from './sub-builders'
 import { VBIDSL, VBIBuilderInterface } from 'src/types'
 import { buildVQuery } from 'src/pipeline'
 import { getConnector } from './connector'
-import { EncodingBuilder } from './encoding-builder'
 
 export class VBIBuilder implements VBIBuilderInterface {
   public doc: Y.Doc
@@ -23,7 +22,6 @@ export class VBIBuilder implements VBIBuilderInterface {
   public dimensions: DimensionsBuilder
   public havingFilters: HavingFiltersBuilder
   public whereFilters: WhereFiltersBuilder
-  public encoding: EncodingBuilder
 
   constructor(doc: Y.Doc) {
     this.doc = doc
@@ -35,7 +33,6 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.dimensions = new DimensionsBuilder(doc, this.dsl)
     this.havingFilters = new HavingFiltersBuilder(doc, this.dsl)
     this.whereFilters = new WhereFiltersBuilder(doc, this.dsl)
-    this.encoding = new EncodingBuilder()
   }
 
   public applyUpdate(update: Uint8Array) {
@@ -92,15 +89,5 @@ export class VBIBuilder implements VBIBuilderInterface {
   public setTheme(theme: string): this {
     this.dsl.set('theme', theme)
     return this
-  }
-
-  /**
-   * Get measure encoding information from a VChart spec
-   * @param spec VChart spec to analyze
-   * @param measureNames List of measure names
-   * @returns Array of {encoding, measures} pairs
-   */
-  public getEncodings(spec: any, measureNames: string[] = []) {
-    return this.encoding.getMeasureEncodings(spec, measureNames)
   }
 }

@@ -1,0 +1,21 @@
+{
+  "name": "add-dimension",
+  "description": "添加维度",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [],
+    "measures": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.dimensions.add('product_type', node => { node.setAlias('产品类型'); }); }"
+}

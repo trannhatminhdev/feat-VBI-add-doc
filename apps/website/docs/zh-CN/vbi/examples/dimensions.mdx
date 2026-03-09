@@ -1,0 +1,252 @@
+# dimensions
+
+## add-dimension
+
+添加维度
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'product_type', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { product_type: 'product_type0', sales: 100 },
+        { product_type: 'product_type1', sales: 200 },
+        { product_type: 'product_type2', sales: 300 },
+        { product_type: 'product_type3', sales: 400 },
+        { product_type: 'product_type4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.dimensions.add('product_type', (node) => {
+          node.setAlias('产品类型')
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## add-multiple-dimensions
+
+添加多个维度（链式调用）
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'product_type', type: 'string' },
+        { name: 'province', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { product_type: 'product_type0', province: 'province0', sales: 100 },
+        { product_type: 'product_type1', province: 'province1', sales: 200 },
+        { product_type: 'product_type2', province: 'province2', sales: 300 },
+        { product_type: 'product_type3', province: 'province3', sales: 400 },
+        { product_type: 'product_type4', province: 'province4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.dimensions.add('product_type', (n) => n.setAlias('产品类型')).add('province', (n) => n.setAlias('省份'))
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## remove-dimension
+
+删除维度
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'product_type', type: 'string' },
+        { name: 'province', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { product_type: 'product_type0', province: 'province0', sales: 100 },
+        { product_type: 'product_type1', province: 'province1', sales: 200 },
+        { product_type: 'product_type2', province: 'province2', sales: 300 },
+        { product_type: 'product_type3', province: 'province3', sales: 400 },
+        { product_type: 'product_type4', province: 'province4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'table',
+        dimensions: [
+          { field: 'product_type', alias: '产品类型' },
+          { field: 'province', alias: '省份' },
+        ],
+        measures: [],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.dimensions.remove('product_type')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## update-dimension
+
+更新维度
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'product_type', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { product_type: 'product_type0', sales: 100 },
+        { product_type: 'product_type1', sales: 200 },
+        { product_type: 'product_type2', sales: 300 },
+        { product_type: 'product_type3', sales: 400 },
+        { product_type: 'product_type4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'table',
+        dimensions: [{ field: 'product_type', alias: '原产品类型' }],
+        measures: [],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.dimensions.update('product_type', (n) => n.setAlias('新产品类型'))
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```

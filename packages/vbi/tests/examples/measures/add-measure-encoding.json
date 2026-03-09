@@ -1,0 +1,25 @@
+{
+  "name": "add-measure-encoding",
+  "description": "添加度量并设置编码",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [],
+    "measures": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.measures.add('sales', n => n.setAlias('销售额').setEncoding('yAxis')); }"
+}

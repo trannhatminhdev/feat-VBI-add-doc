@@ -1,0 +1,26 @@
+{
+  "name": "add-multiple-where-filters",
+  "description": "添加多个Where过滤条件（链式调用）",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [],
+    "measures": [],
+    "whereFilters": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilters.add('product_type', n => n.setOperator('eq')).add('province', n => n.setOperator('in')); }"
+}

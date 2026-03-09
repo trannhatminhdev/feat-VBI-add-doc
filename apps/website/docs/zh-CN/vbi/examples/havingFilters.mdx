@@ -1,0 +1,256 @@
+# havingFilters
+
+## add-having-filter
+
+添加Having过滤条件
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'product_type', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { product_type: 'product_type0', sales: 100 },
+        { product_type: 'product_type1', sales: 200 },
+        { product_type: 'product_type2', sales: 300 },
+        { product_type: 'product_type3', sales: 400 },
+        { product_type: 'product_type4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters.add('sales', (node) => {
+          node.setOperator('gt').setValue(100000)
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## add-multiple-having-filters
+
+添加多个Having过滤条件（链式调用）
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'product_type', type: 'string' },
+        { name: 'sales', type: 'number' },
+        { name: 'profit', type: 'number' },
+      ]
+      const dataset = [
+        { product_type: 'product_type0', sales: 100, profit: 100 },
+        { product_type: 'product_type1', sales: 200, profit: 200 },
+        { product_type: 'product_type2', sales: 300, profit: 300 },
+        { product_type: 'product_type3', sales: 400, profit: 400 },
+        { product_type: 'product_type4', sales: 500, profit: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters.add('sales', (n) => n.setOperator('gt')).add('profit', (n) => n.setOperator('gte'))
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## clear-having-filters
+
+清空所有Having过滤条件
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'product_type', type: 'string' },
+        { name: 'sales', type: 'number' },
+        { name: 'profit', type: 'number' },
+      ]
+      const dataset = [
+        { product_type: 'product_type0', sales: 100, profit: 100 },
+        { product_type: 'product_type1', sales: 200, profit: 200 },
+        { product_type: 'product_type2', sales: 300, profit: 300 },
+        { product_type: 'product_type3', sales: 400, profit: 400 },
+        { product_type: 'product_type4', sales: 500, profit: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilters: [],
+        havingFilters: [
+          { field: 'sales', operator: 'gt', value: 100000 },
+          { field: 'profit', operator: 'gt', value: 50000 },
+        ],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters.clear()
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## remove-having-filter
+
+删除Having过滤条件
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'product_type', type: 'string' },
+        { name: 'sales', type: 'number' },
+        { name: 'profit', type: 'number' },
+      ]
+      const dataset = [
+        { product_type: 'product_type0', sales: 100, profit: 100 },
+        { product_type: 'product_type1', sales: 200, profit: 200 },
+        { product_type: 'product_type2', sales: 300, profit: 300 },
+        { product_type: 'product_type3', sales: 400, profit: 400 },
+        { product_type: 'product_type4', sales: 500, profit: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'table',
+        dimensions: [],
+        measures: [],
+        whereFilters: [],
+        havingFilters: [
+          { field: 'sales', operator: 'gt', value: 100000 },
+          { field: 'profit', operator: 'gt', value: 50000 },
+        ],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters.remove('sales')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```

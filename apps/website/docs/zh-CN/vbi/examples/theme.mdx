@@ -37,9 +37,11 @@ export default () => {
         dimensions: [{ field: 'province', alias: '省份' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [],
+        havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
         version: 1,
+        limit: 50,
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
@@ -96,9 +98,11 @@ export default () => {
         dimensions: [{ field: 'province', alias: '省份' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [],
+        havingFilters: [],
         theme: 'dark',
         locale: 'zh-CN',
         version: 1,
+        limit: 50,
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
