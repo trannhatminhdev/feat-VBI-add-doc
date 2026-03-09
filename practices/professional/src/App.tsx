@@ -31,31 +31,8 @@ export function APP() {
   const [builderCollapsed, setBuilderCollapsed] = useState(false);
 
   // VBI builder 相关
-  const builderRef = useRef<{
-    dimensions?: {
-      addDimension: (field: string, callback?: (node: unknown) => void) => void;
-      removeDimension: (field: string) => void;
-    };
-    measures?: {
-      addMeasure: (field: string, callback?: (node: unknown) => void) => void;
-      removeMeasure: (field: string) => void;
-      renameMeasure: (alias: string, newAlias: string) => void;
-      modifyAggregate: (alias: string, func: string, quantile?: number) => void;
-      modifyEncoding: (field: string, encoding: EncodingChannel) => void;
-      getMeasures: () => any[];
-    };
-    chartType?: {
-      changeChartType: (type: string) => void;
-      getAvailableChartTypes: () => string[];
-    };
-    doc?: {
-      transact: (callback: () => void) => void;
-    };
-    getEncodings?: (
-      spec: any,
-      measureNames: string[],
-    ) => Array<{ encoding: string; measures: string[] }>;
-  }>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const builderRef = useRef<any>(null);
 
   // 可用的字段和选中的字段
   const [dimensions, setDimensions] = useState<string[]>([]);
@@ -143,19 +120,12 @@ export function APP() {
     setFilters(newFilters);
     if (builder) {
       builder.doc.transact(() => {
-        builder.filters.clearFilters();
+        builder.whereFilters.clear();
         newFilters.forEach((f) => {
-          if (f.isActive) {
-            builder.filters.addFilter({
-              field: f.field,
-              operator: f.operator,
-              value: f.value,
-              actionType: f.actionType,
-              sortOrder: f.sortOrder,
-              limit: f.limit,
-              enabled: true,
-            });
-          }
+          builder.whereFilters.add(f.field, (node) => {
+            node.setOperator(f.operator);
+            node.setValue(f.value);
+          });
         });
       });
       setRenderKey((prev) => prev + 1);
@@ -196,8 +166,8 @@ export function APP() {
     loadSchema();
 
     // 初始化度量字段详情
-    if (builder?.measures?.getMeasures) {
-      const measures = builder.measures.getMeasures();
+    if (builder?.measures?.toJson) {
+      const measures = builder.measures.toJson();
       const detail: Record<
         string,
         {
@@ -331,7 +301,7 @@ export function APP() {
       if (builderRef.current?.dimensions && builderRef.current.doc) {
         const { dimensions, doc } = builderRef.current;
         doc.transact(() => {
-          dimensions.addDimension(field, (node: unknown) => {
+          dimensions.add(field, (node: unknown) => {
             const nodeObj = node as Record<string, (field: string) => void>;
             if (nodeObj?.setAlias) {
               nodeObj.setAlias(field);
@@ -358,7 +328,7 @@ export function APP() {
   // 同步度量字段详情
   const syncMeasuresDetail = () => {
     if (builderRef.current?.measures) {
-      const measures = builderRef.current.measures.getMeasures();
+      const measures = builderRef.current.measures.toJson();
       const detail: Record<
         string,
         {
@@ -396,7 +366,7 @@ export function APP() {
       if (builderRef.current?.measures && builderRef.current.doc) {
         const { measures, doc } = builderRef.current;
         doc.transact(() => {
-          measures.addMeasure(field, (node: unknown) => {
+          measures.add(field, (node: unknown) => {
             const nodeObj = node as Record<string, (field: string) => void>;
             if (nodeObj?.setAlias) {
               nodeObj.setAlias(field);
@@ -457,7 +427,7 @@ export function APP() {
 
     if (!hasMeasure) {
       doc.transact(() => {
-        measures.addMeasure(field, (node: unknown) => {
+        measures.add(field, (node: unknown) => {
           const nodeObj = node as any;
           if (nodeObj?.setAlias) {
             nodeObj.setAlias(field);
@@ -493,7 +463,7 @@ export function APP() {
       if (hasMeasure) {
         measures.modifyEncoding(field, encoding);
       } else {
-        measures.addMeasure(field);
+        measures.add(field);
         measures.modifyEncoding(field, encoding);
       }
     });
@@ -527,7 +497,7 @@ export function APP() {
         measures.modifyEncoding(field, encoding);
       } else {
         // Add dimension as measure with count aggregate
-        measures.addMeasure(field, (node: unknown) => {
+        measures.add(field, (node: unknown) => {
           const nodeObj = node as any;
           if (nodeObj?.setAlias) {
             nodeObj.setAlias(field);

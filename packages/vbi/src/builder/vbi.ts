@@ -16,7 +16,8 @@ const createVBI = () => {
         chartType: 'table',
         measures: [],
         dimensions: [],
-        filters: [],
+        whereFilters: [],
+        havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
         version: 0,
@@ -34,10 +35,18 @@ const createVBI = () => {
         if (vbi.locale) dsl.set('locale', vbi.locale)
         if (vbi.version) dsl.set('version', vbi.version)
 
-        // Initialize arrays
-        dsl.set('filters', vbi.filters ?? new Y.Array())
-        dsl.set('measures', vbi.measures ?? new Y.Array())
-        dsl.set('dimensions', vbi.dimensions ?? new Y.Array())
+        // Initialize arrays - convert plain arrays to Y.Array if needed
+        const ensureYArray = (arr: any) => {
+          if (!arr) return new Y.Array()
+          if (arr instanceof Y.Array) return arr
+          const yArr = new Y.Array()
+          yArr.push(arr)
+          return yArr
+        }
+        dsl.set('whereFilters', ensureYArray(vbi.whereFilters))
+        dsl.set('havingFilters', ensureYArray(vbi.havingFilters))
+        dsl.set('measures', ensureYArray(vbi.measures))
+        dsl.set('dimensions', ensureYArray(vbi.dimensions))
       })
 
       return new VBIBuilder(doc)

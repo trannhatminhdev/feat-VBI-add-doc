@@ -1,4 +1,4 @@
-import { VBI } from '@visactor/vbi'
+import { VBI, VBIBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('ChartType', () => {
@@ -26,7 +26,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -51,7 +52,7 @@ describe('ChartType', () => {
             "field": "order_date",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -66,6 +67,7 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -326,7 +328,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -351,7 +354,7 @@ describe('ChartType', () => {
             "field": "product_type",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -366,6 +369,7 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -438,7 +442,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -463,7 +468,7 @@ describe('ChartType', () => {
             "field": "province",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -478,6 +483,7 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -662,7 +668,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -687,7 +694,7 @@ describe('ChartType', () => {
             "field": "area",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -702,6 +709,7 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -786,7 +794,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -811,7 +820,7 @@ describe('ChartType', () => {
             "field": "customer_type",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -826,6 +835,7 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -898,7 +908,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -923,7 +934,7 @@ describe('ChartType', () => {
             "field": "province",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -938,6 +949,7 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -1122,7 +1134,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1147,7 +1160,7 @@ describe('ChartType', () => {
             "field": "province",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -1162,6 +1175,7 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -1346,7 +1360,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1371,7 +1386,7 @@ describe('ChartType', () => {
             "field": "area",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -1386,6 +1401,7 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -1470,7 +1486,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1495,7 +1512,7 @@ describe('ChartType', () => {
             "field": "city",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -1510,6 +1527,7 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -1773,7 +1791,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1793,7 +1812,7 @@ describe('ChartType', () => {
         "chartType": "bar",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -1816,6 +1835,7 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 

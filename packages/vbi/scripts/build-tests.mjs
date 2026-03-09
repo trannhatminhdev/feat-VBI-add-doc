@@ -57,7 +57,8 @@ function generateTestCase(json, jsonPath) {
     chartType: json.chartType || 'line',
     dimensions: json.dsl?.dimensions || [],
     measures: json.dsl?.measures || [],
-    filters: [],
+    whereFilters: [],
+    havingFilters: [],
     theme: json.dsl?.theme || 'light',
     locale: 'zh-CN',
     version: 1,
@@ -119,7 +120,7 @@ function generateTestFile(dirName, testsDir) {
   // Convert directory name to label (e.g., chartType -> Chart Type)
   const label = dirName.charAt(0).toUpperCase() + dirName.slice(1).replace(/-/g, ' ')
 
-  const template = `import { VBI } from '@visactor/vbi'
+  const template = `import { VBI, VBIBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from ${connectorImport}
 
 describe('${label}', () => {

@@ -9,11 +9,11 @@
     "chartType": "bar",
     "dimensions": [{ "field": "province", "alias": "省份" }],
     "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
-    "filters": [],
+    "whereFilters": [],
     "theme": "light",
     "locale": "zh-CN",
     "version": 1,
     "limit": 50
   },
-  "code": "const applyBuilder = (builder) => { builder.setLocale('zh-CN'); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setLocale('zh-CN'); }"
 }

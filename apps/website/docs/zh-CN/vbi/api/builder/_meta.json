@@ -1,0 +1,32 @@
+[
+  {
+    "type": "file",
+    "name": "chart-type",
+    "label": "chartType",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "measures",
+    "label": "measures",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "dimensions",
+    "label": "dimensions",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "where-filters",
+    "label": "whereFilters",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "having-filters",
+    "label": "havingFilters",
+    "collapsed": true
+  }
+]

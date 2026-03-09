@@ -7,19 +7,19 @@ import { useVBIStore } from 'src/model';
 export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
   const [measures, setMeasures] = useState<VBIMeasure[]>(
-    builder.measures.getMeasures(),
+    builder.measures.toJson(),
   );
 
   useEffect(() => {
     const updateMeasures: ObserveCallback = () => {
-      setMeasures(builder.measures.getMeasures());
+      setMeasures(builder.measures.toJson());
     };
-    builder.measures.observe(updateMeasures);
-    return () => builder.measures.unobserve(updateMeasures);
+    const unobserve = builder.measures.observe(updateMeasures);
+    return unobserve;
   }, [builder]);
 
   const deleteMeasure = (field: VBIMeasure['field']) => {
-    builder.measures.removeMeasure(field);
+    builder.measures.remove(field);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -28,7 +28,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       const data = JSON.parse(e.dataTransfer.getData('application/json'));
       if (data.type === 'measure') {
         builder.doc.transact(() => {
-          builder.measures.addMeasure(data.name, (node) => {
+          builder.measures.add(data.name, (node) => {
             node.setAlias(data.name);
             node.setAggregate({ func: 'sum' });
           });

@@ -1,4 +1,4 @@
-import { VBI } from '@visactor/vbi'
+import { VBI, VBIBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('Locale', () => {
@@ -26,7 +26,8 @@ describe('Locale', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'en-US',
       version: 1,
@@ -34,7 +35,7 @@ describe('Locale', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder) => {
+    const applyBuilder = (builder: VBIBuilder) => {
       builder.setLocale('en-US')
     }
     applyBuilder(builder)
@@ -51,7 +52,7 @@ describe('Locale', () => {
             "field": "province",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "en-US",
         "measures": [
@@ -66,6 +67,7 @@ describe('Locale', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -250,7 +252,8 @@ describe('Locale', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -258,7 +261,7 @@ describe('Locale', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder) => {
+    const applyBuilder = (builder: VBIBuilder) => {
       builder.setLocale('zh-CN')
     }
     applyBuilder(builder)
@@ -275,7 +278,7 @@ describe('Locale', () => {
             "field": "province",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -290,6 +293,7 @@ describe('Locale', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 

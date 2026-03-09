@@ -1,4 +1,4 @@
-import { VBI } from '@visactor/vbi'
+import { VBI, VBIBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('Theme', () => {
@@ -26,7 +26,8 @@ describe('Theme', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -51,7 +52,7 @@ describe('Theme', () => {
             "field": "province",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -66,6 +67,7 @@ describe('Theme', () => {
         ],
         "theme": "dark",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
@@ -250,7 +252,8 @@ describe('Theme', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'dark',
       locale: 'zh-CN',
       version: 1,
@@ -275,7 +278,7 @@ describe('Theme', () => {
             "field": "province",
           },
         ],
-        "filters": [],
+        "havingFilters": [],
         "limit": 50,
         "locale": "zh-CN",
         "measures": [
@@ -290,6 +293,7 @@ describe('Theme', () => {
         ],
         "theme": "light",
         "version": 1,
+        "whereFilters": [],
       }
     `)
 
