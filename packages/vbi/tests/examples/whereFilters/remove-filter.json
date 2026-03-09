@@ -1,0 +1,51 @@
+{
+  "name": "remove-where-filter",
+  "description": "删除Where过滤条件",
+  "schema": [
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "province",
+        "alias": "省份"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [
+      {
+        "field": "product_type",
+        "operator": "eq",
+        "value": "办公用品"
+      },
+      {
+        "field": "province",
+        "operator": "eq",
+        "value": "浙江"
+      }
+    ],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilters.remove('product_type'); }"
+}

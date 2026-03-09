@@ -1,8 +1,7 @@
 {
   "name": "@visactor/vbi",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
-  "private": true,
   "exports": {
     ".": {
       "source": "./src/index.ts",
@@ -23,7 +22,7 @@
     "lint": "eslint .",
     "test": "rstest",
     "test:update": "rstest --update",
-    "test:coverage": "rstest --coverage && open coverage/index.html",
+    "test:coverage": "rstest --coverage && node scripts/build-coverage-badge.mjs && open coverage/index.html",
     "typecheck": "tsc --noEmit",
     "build:test": "node scripts/build-tests.mjs",
     "build:examples": "node scripts/build-examples.mjs",

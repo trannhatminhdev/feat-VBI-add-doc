@@ -1,0 +1,200 @@
+# havingFilters
+
+import { registerDemoConnector } from '@components'
+
+{registerDemoConnector()}
+
+## add-having-filter
+
+添加Having过滤条件
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters.add('销售额', (node) => {
+          node.setOperator('gt').setValue(1000000)
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## add-multiple-having-filters
+
+添加多个Having过滤条件（链式调用）
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters
+          .add('销售额', (n) => n.setOperator('gt').setValue(1000000))
+          .add('利润', (n) => n.setOperator('gt').setValue(200000))
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## clear-having-filters
+
+清空所有Having过滤条件
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
+        whereFilters: [],
+        havingFilters: [
+          { field: '销售额', operator: 'gt', value: 1000000 },
+          { field: '利润', operator: 'gt', value: 200000 },
+        ],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters.clear()
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## remove-having-filter
+
+删除Having过滤条件
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
+        whereFilters: [],
+        havingFilters: [
+          { field: '销售额', operator: 'gt', value: 1000000 },
+          { field: '利润', operator: 'gt', value: 200000 },
+        ],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters.remove('销售额')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```

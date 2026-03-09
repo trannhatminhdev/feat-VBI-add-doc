@@ -1,0 +1,37 @@
+{
+  "name": "add-having-filter",
+  "description": "添加Having过滤条件",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [],
+    "havingFilters": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.add('销售额', node => { node.setOperator('gt').setValue(1000000); }); }"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "add-measure",
+  "description": "添加度量",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [],
+    "measures": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.measures.add('sales', node => { node.setAlias('销售额').setAggregate({ func: 'sum' }); }); }"
+}

@@ -1,0 +1,30 @@
+{
+  "name": "update-measure",
+  "description": "更新度量",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "原销售额",
+        "aggregate": {
+          "func": "sum"
+        },
+        "encoding": "yAxis"
+      }
+    ],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.measures.update('sales', n => n.setAlias('新销售额').setAggregate({ func: 'avg' })); }"
+}

@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.10
+
+### Patch Changes
+
+- d42ef8e: feat: release @visactor/vbi
+
 ## 0.4.9
 
 ### Patch Changes

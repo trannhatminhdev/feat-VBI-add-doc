@@ -1354,7 +1354,7 @@ describe('ChartType', () => {
         {
           field: 'sales',
           alias: '销售额',
-          encoding: 'angle',
+          encoding: 'size',
           aggregate: {
             func: 'sum',
           },
@@ -1395,7 +1395,7 @@ describe('ChartType', () => {
               "func": "sum",
             },
             "alias": "销售额",
-            "encoding": "angle",
+            "encoding": "size",
             "field": "sales",
           },
         ],
@@ -1777,7 +1777,7 @@ describe('ChartType', () => {
         {
           field: 'sales',
           alias: '销售额',
-          encoding: 'x',
+          encoding: 'xAxis',
           aggregate: {
             func: 'sum',
           },
@@ -1785,7 +1785,7 @@ describe('ChartType', () => {
         {
           field: 'profit',
           alias: '利润',
-          encoding: 'y',
+          encoding: 'yAxis',
           aggregate: {
             func: 'sum',
           },
@@ -1821,7 +1821,7 @@ describe('ChartType', () => {
               "func": "sum",
             },
             "alias": "销售额",
-            "encoding": "x",
+            "encoding": "xAxis",
             "field": "sales",
           },
           {
@@ -1829,7 +1829,7 @@ describe('ChartType', () => {
               "func": "sum",
             },
             "alias": "利润",
-            "encoding": "y",
+            "encoding": "yAxis",
             "field": "profit",
           },
         ],

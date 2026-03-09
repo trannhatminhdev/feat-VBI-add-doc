@@ -2,14 +2,35 @@
   "name": "column-by-area-multiple-filters",
   "description": "柱状图 - 按区域销售额（多过滤条件）",
   "schema": [
-    { "name": "area", "type": "string" },
-    { "name": "sales", "type": "number" }
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
   ],
   "dsl": {
     "chartType": "column",
-    "dimensions": [{ "field": "area", "alias": "区域" }],
-    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
-    "filters": []
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [],
+    "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilters\n    .add('sales', node => node.setOperator('gt').setValue(500000))\n    .add('area', node => node.setOperator('in').setValue(['华东', '华北']));\n}"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilters\n    .add('product_type', node => node.setOperator('eq').setValue('办公用品'))\n    .add('area', node => node.setOperator('in').setValue(['华东', '华北']));\n}"
 }

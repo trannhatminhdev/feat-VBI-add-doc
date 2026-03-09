@@ -1,0 +1,60 @@
+{
+  "name": "remove-having-filter",
+  "description": "删除Having过滤条件",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [],
+    "havingFilters": [
+      {
+        "field": "销售额",
+        "operator": "gt",
+        "value": 1000000
+      },
+      {
+        "field": "利润",
+        "operator": "gt",
+        "value": 200000
+      }
+    ],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.remove('销售额'); }"
+}

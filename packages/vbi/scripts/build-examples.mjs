@@ -10,143 +10,208 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+// ============ Constants ============
 const EXAMPLES_DIR = path.resolve(__dirname, '../tests/examples')
 const OUTPUT_DIR = path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vbi/examples')
+const DEFAULT_LOCALE = 'zh-CN'
 
-/**
- * Find all subdirectories in examples
- */
+const TAG_COLORS = {
+  基础: 'blue',
+  进阶: 'purple',
+  高级: 'red',
+  新增: 'green',
+  实验性: 'orange',
+  basic: 'blue',
+  advanced: 'purple',
+  pro: 'red',
+  new: 'green',
+  experimental: 'orange',
+}
+
+const DEFAULT_DSL = {
+  chartType: 'line',
+  dimensions: [],
+  measures: [],
+  whereFilters: [],
+  havingFilters: [],
+  theme: 'light',
+  locale: DEFAULT_LOCALE,
+  version: 1,
+}
+
+// ============ Utils ============
+function parseDescription(json, locale = DEFAULT_LOCALE) {
+  const desc = json.description || json.name || ''
+  const match = desc.match(new RegExp(`\\{${locale}\\}([^]*?)\\{/${locale}\\}`, 'i'))
+  return match ? match[1].trim() : desc.replace(/\{[^}]+\}/g, '').trim() || desc
+}
+
+function parseTags(json) {
+  return json.tags || []
+}
+
+function readJsonFile(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+}
+
 function findSubDirs(dir) {
-  const subDirs = []
-  const items = fs.readdirSync(dir, { withFileTypes: true })
-
-  for (const item of items) {
-    if (item.isDirectory()) {
-      subDirs.push(item.name)
-    }
-  }
-
-  return subDirs
+  return fs
+    .readdirSync(dir, { withFileTypes: true })
+    .filter((item) => item.isDirectory())
+    .map((item) => item.name)
 }
 
-/**
- * Find JSON files in a specific directory
- */
 function findJsonFilesInDir(dir) {
-  const files = []
-  const items = fs.readdirSync(dir, { withFileTypes: true })
+  const files = fs
+    .readdirSync(dir, { withFileTypes: true })
+    .filter((item) => item.isFile() && item.name.endsWith('.json'))
+    .map((item) => path.join(dir, item.name))
 
-  for (const item of items) {
-    const fullPath = path.join(dir, item.name)
-    if (item.isFile() && item.name.endsWith('.json')) {
-      files.push(fullPath)
-    }
-  }
-
-  return files
+  return files.sort((a, b) => {
+    const jsonA = readJsonFile(a)
+    const jsonB = readJsonFile(b)
+    const [pa, pb] = [jsonA.priority ?? 5, jsonB.priority ?? 5]
+    return pa !== pb ? pa - pb : (jsonA.name || a).localeCompare(jsonB.name || b)
+  })
 }
 
-/**
- * Generate mock data from schema
- */
-function generateMockData(schema) {
-  const lines = []
-  const dataCount = 5
-
-  for (let i = 0; i < dataCount; i++) {
-    const row = schema
-      .map((field) => {
-        if (field.type === 'string') {
-          return `${field.name}: '${field.name}${i}'`
-        } else if (field.type === 'number') {
-          return `${field.name}: ${(i + 1) * 100}`
-        }
-        return `${field.name}: null`
-      })
-      .join(', ')
-    lines.push(`      { ${row} },`)
+// ============ Code Generation ============
+function generateDSLConfig(dsl) {
+  return {
+    ...DEFAULT_DSL,
+    whereFilters: dsl.whereFilters || dsl.filters || [],
+    ...dsl,
   }
-
-  return lines.join('\n')
 }
 
-/**
- * Generate single example preview code
- */
 function generateExamplePreview(json) {
-  const mockData = generateMockData(json.schema || [])
+  const dsl = generateDSLConfig(json.dsl || {})
 
-  let code = ''
-  code += "import { VBI } from '@visactor/vbi'\n"
-  code += "import { VSeedRender } from '@components'\n"
-  code += "import { useEffect, useState } from 'react'\n\n"
-  code += 'export default () => {\n'
-  code += '  const [vseed, setVSeed] = useState(null)\n\n'
-  code += '  useEffect(() => {\n'
-  code += '    const run = async () => {\n'
-  code += '      const schema = [\n'
-  for (const field of json.schema || []) {
-    code += `        { name: '${field.name}', type: '${field.type}' },\n`
-  }
-  code += '      ]\n'
-  code += '      const dataset = [\n'
-  code += mockData + '\n'
-  code += '      ]\n\n'
-  code += "      VBI.registerConnector('demo', async () => ({\n"
-  code += '        discoverSchema: async () => schema,\n'
-  code += '        query: async () => ({ dataset })\n'
-  code += '      }))\n\n'
-  code += '      const builder = VBI.from({\n'
-  code += "        connectorId: 'demo',\n"
-  code += `        chartType: ${JSON.stringify(json.dsl?.chartType || 'line')},\n`
-  code += `        dimensions: ${JSON.stringify(json.dsl?.dimensions || [])},\n`
-  code += `        measures: ${JSON.stringify(json.dsl?.measures || [])},\n`
-  code += `        whereFilters: ${JSON.stringify(json.dsl?.whereFilters || [])},\n`
-  code += `        theme: ${JSON.stringify(json.dsl?.theme || 'light')},\n`
-  code += "        locale: 'zh-CN',\n"
-  code += '        version: 1\n'
-  code += '      })\n\n'
-  code += `      ${json.code}\n`
-  code += '      applyBuilder(builder)\n\n'
-  code += '      const result = await builder.buildVSeed()\n'
-  code += '      setVSeed(result)\n'
-  code += '    }\n'
-  code += '    run()\n'
-  code += '  }, [])\n\n'
-  code += '  if (!vseed) return <div>Loading...</div>\n\n'
-  code += '  return <VSeedRender vseed={vseed} />\n'
-  code += '}\n'
+  const code = `
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
 
-  return code
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: ${JSON.stringify(dsl.chartType)},
+        dimensions: ${JSON.stringify(dsl.dimensions)},
+        measures: ${JSON.stringify(dsl.measures)},
+        whereFilters: ${JSON.stringify(dsl.whereFilters)},
+        havingFilters: ${JSON.stringify(dsl.havingFilters)},
+        theme: ${JSON.stringify(dsl.theme)},
+        locale: ${JSON.stringify(dsl.locale)},
+        version: ${dsl.version}${dsl.limit !== undefined ? `,\n        limit: ${dsl.limit}` : ''}${dsl.orderBy ? `,\n        orderBy: ${JSON.stringify(dsl.orderBy)}` : ''}
+      })
+
+      ${json.code}
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}`
+
+  return code.trim()
 }
 
-/**
- * Generate docs for a directory
- */
-function generateDirDocs(dirName) {
+function generateTagsHtml(tags) {
+  if (!tags?.length) return ''
+  const badges = tags.map((tag) => `<Badge type="${TAG_COLORS[tag] || 'default'}">${tag}</Badge>`).join(' ')
+  return `\n\n<Tip>${badges}</Tip>\n`
+}
+
+// ============ Page Generation ============
+function generateDirDocs(dirName, locale = DEFAULT_LOCALE) {
   const dirPath = path.join(EXAMPLES_DIR, dirName)
   const jsonFiles = findJsonFilesInDir(dirPath)
-
-  if (jsonFiles.length === 0) return ''
+  if (!jsonFiles.length) return ''
 
   let md = `# ${dirName}\n\n`
+  // Add connector registration once at the top of each MDX file
+  md += `import { registerDemoConnector } from '@components'\n\n`
+  md += `{registerDemoConnector()}\n\n`
 
   for (const file of jsonFiles) {
-    const content = fs.readFileSync(file, 'utf-8')
-    const json = JSON.parse(content)
-    const name = json.name || path.basename(file, '.json')
-    const description = json.description || name
-
-    md += `## ${name}\n\n`
-    md += `${description}\n\n`
+    const json = readJsonFile(file)
+    md += `## ${json.name || path.basename(file, '.json')}\n\n`
+    md += `${parseDescription(json, locale)}\n`
+    md += `${generateTagsHtml(parseTags(json))}\n\n`
     md += '```tsx preview\n'
-    md += generateExamplePreview(json)
+    md += `${generateExamplePreview(json)}\n`
     md += '```\n\n'
   }
 
   return md
 }
 
+function generateIndexPage(subDirs, locale = DEFAULT_LOCALE) {
+  let md = '# VBI 示例\n\n本页面展示 VBI 的各种使用示例。\n\n'
+
+  for (const dir of subDirs) {
+    const jsonFiles = findJsonFilesInDir(path.join(EXAMPLES_DIR, dir))
+    if (!jsonFiles.length) continue
+
+    const examples = jsonFiles.map((file) => {
+      const json = readJsonFile(file)
+      return {
+        name: json.name || path.basename(file, '.json'),
+        description: parseDescription(json, locale),
+        tags: parseTags(json),
+      }
+    })
+
+    md += `## ${dir}\n\n| 示例 | 描述 | 标签 |\n| --- | --- | --- |\n`
+    md += examples
+      .map((ex) => `| [${ex.name}](./${dir}#${ex.name}) | ${ex.description} | ${ex.tags.join(', ') || '-'} |`)
+      .join('\n')
+    md += '\n\n'
+  }
+
+  return md
+}
+
+function generateStats(subDirs) {
+  const stats = { total: 0, byCategory: {}, byTag: {} }
+
+  for (const dir of subDirs) {
+    const jsonFiles = findJsonFilesInDir(path.join(EXAMPLES_DIR, dir))
+    stats.byCategory[dir] = jsonFiles.length
+    stats.total += jsonFiles.length
+
+    for (const file of jsonFiles) {
+      for (const tag of parseTags(readJsonFile(file))) {
+        stats.byTag[tag] = (stats.byTag[tag] || 0) + 1
+      }
+    }
+  }
+
+  return stats
+}
+
+function generateTagsPage(subDirs) {
+  const stats = generateStats(subDirs)
+  const tagEntries = Object.entries(stats.byTag).sort((a, b) => b[1] - a[1])
+
+  let md = `# 标签\n\n共 ${stats.total} 个示例，${tagEntries.length} 个标签。\n\n`
+  md += '| 标签 | 数量 |\n| --- | --- |\n'
+  md += tagEntries.map(([tag, count]) => `| ${tag} | ${count} |`).join('\n')
+
+  return md
+}
+
+// ============ Main ============
 function generateDocs() {
   console.log('Building docs from JSON files...')
 
@@ -155,33 +220,39 @@ function generateDocs() {
   }
 
   const subDirs = findSubDirs(EXAMPLES_DIR)
+  const stats = generateStats(subDirs)
+  console.log(`Found ${stats.total} examples in ${subDirs.length} categories`)
 
-  const meta = []
-
-  for (const dir of subDirs) {
-    const label = dir.charAt(0).toUpperCase() + dir.slice(1).replace(/-/g, ' ')
-    meta.push({ type: 'file', name: dir, label })
-  }
-
-  // Write _meta.json
-  fs.writeFileSync(path.join(OUTPUT_DIR, '_meta.json'), JSON.stringify(meta, null, 2), 'utf-8')
+  // _meta.json
+  const meta = subDirs.map((dir) => ({
+    type: 'file',
+    name: dir,
+    label: dir.charAt(0).toUpperCase() + dir.slice(1).replace(/-/g, ' '),
+    count: stats.byCategory[dir],
+  }))
+  fs.writeFileSync(path.join(OUTPUT_DIR, '_meta.json'), JSON.stringify(meta, null, 2))
   console.log('Generated: _meta.json')
 
-  // Generate each category page
+  // index.mdx
+  fs.writeFileSync(path.join(OUTPUT_DIR, 'index.mdx'), generateIndexPage(subDirs))
+  console.log('Generated: index.mdx')
+
+  // tags.mdx
+  fs.writeFileSync(path.join(OUTPUT_DIR, 'tags.mdx'), generateTagsPage(subDirs))
+  console.log('Generated: tags.mdx')
+
+  // category pages
   let totalExamples = 0
   for (const dir of subDirs) {
     const md = generateDirDocs(dir)
     if (md) {
-      const outputPath = path.join(OUTPUT_DIR, `${dir}.mdx`)
-      fs.writeFileSync(outputPath, md, 'utf-8')
+      fs.writeFileSync(path.join(OUTPUT_DIR, `${dir}.mdx`), md)
       console.log(`Generated: ${dir}.mdx`)
-
-      const jsonFiles = findJsonFilesInDir(path.join(EXAMPLES_DIR, dir))
-      totalExamples += jsonFiles.length
+      totalExamples += findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).length
     }
   }
 
-  console.log(`Generated docs for ${totalExamples} examples in ${subDirs.length} categories`)
+  console.log(`\n✅ Successfully generated docs for ${totalExamples} examples in ${subDirs.length} categories`)
 }
 
 generateDocs()

@@ -1,12 +1,16 @@
 # theme
 
+import { registerDemoConnector } from '@components'
+
+{registerDemoConnector()}
+
 ## dark-theme
 
 深色主题图表
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -14,32 +18,17 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const schema = [
-        { name: 'province', type: 'string' },
-        { name: 'sales', type: 'number' },
-      ]
-      const dataset = [
-        { province: 'province0', sales: 100 },
-        { province: 'province1', sales: 200 },
-        { province: 'province2', sales: 300 },
-        { province: 'province3', sales: 400 },
-        { province: 'province4', sales: 500 },
-      ]
-
-      VBI.registerConnector('demo', async () => ({
-        discoverSchema: async () => schema,
-        query: async () => ({ dataset }),
-      }))
-
       const builder = VBI.from({
-        connectorId: 'demo',
+        connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'province', alias: '省份' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [],
+        havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
         version: 1,
+        limit: 50,
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
@@ -65,7 +54,7 @@ export default () => {
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -73,32 +62,17 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const schema = [
-        { name: 'province', type: 'string' },
-        { name: 'sales', type: 'number' },
-      ]
-      const dataset = [
-        { province: 'province0', sales: 100 },
-        { province: 'province1', sales: 200 },
-        { province: 'province2', sales: 300 },
-        { province: 'province3', sales: 400 },
-        { province: 'province4', sales: 500 },
-      ]
-
-      VBI.registerConnector('demo', async () => ({
-        discoverSchema: async () => schema,
-        query: async () => ({ dataset }),
-      }))
-
       const builder = VBI.from({
-        connectorId: 'demo',
+        connectorId: DEMO_CONNECTOR_ID,
         chartType: 'table',
         dimensions: [{ field: 'province', alias: '省份' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [],
+        havingFilters: [],
         theme: 'dark',
         locale: 'zh-CN',
         version: 1,
+        limit: 50,
       })
 
       const applyBuilder = (builder: VBIBuilder) => {

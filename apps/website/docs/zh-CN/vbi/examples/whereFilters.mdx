@@ -1,12 +1,16 @@
 # whereFilters
 
-## bar-by-province-with-filter
+import { registerDemoConnector } from '@components'
 
-柱状图 - 按省份销售额（带过滤条件）
+{registerDemoConnector()}
+
+## add-multiple-where-filters
+
+添加多个Where过滤条件（链式调用）
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -14,38 +18,162 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const schema = [
-        { name: 'province', type: 'string' },
-        { name: 'sales', type: 'number' },
-      ]
-      const dataset = [
-        { province: 'province0', sales: 100 },
-        { province: 'province1', sales: 200 },
-        { province: 'province2', sales: 300 },
-        { province: 'province3', sales: 400 },
-        { province: 'province4', sales: 500 },
-      ]
-
-      VBI.registerConnector('demo', async () => ({
-        discoverSchema: async () => schema,
-        query: async () => ({ dataset }),
-      }))
-
       const builder = VBI.from({
-        connectorId: 'demo',
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilters
+          .add('product_type', (n) => n.setOperator('eq').setValue('办公用品'))
+          .add('province', (n) => n.setOperator('in').setValue(['浙江', '江苏']))
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## add-where-filter
+
+添加Where过滤条件
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilters.add('product_type', (node) => {
+          node.setOperator('eq').setValue('办公用品')
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## bar-by-province-with-filter
+
+柱状图 - 按省份销售额（带过滤条件）
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
         chartType: 'bar',
         dimensions: [{ field: 'province', alias: '省份' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'xAxis', aggregate: { func: 'sum' } }],
         whereFilters: [],
+        havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
         version: 1,
+        limit: 20,
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.whereFilters.add('sales', (node) => {
-          node.setOperator('gt').setValue(100000)
+        builder.whereFilters.add('product_type', (node) => {
+          node.setOperator('eq').setValue('办公用品')
         })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## clear-where-filters
+
+清空所有Where过滤条件
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilters: [
+          { field: 'product_type', operator: 'eq', value: '办公用品' },
+          { field: 'province', operator: 'eq', value: '浙江' },
+        ],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilters.clear()
       }
       applyBuilder(builder)
 
@@ -67,7 +195,7 @@ export default () => {
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
-import { VSeedRender } from '@components'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
 import { useEffect, useState } from 'react'
 
 export default () => {
@@ -75,38 +203,70 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const schema = [
-        { name: 'area', type: 'string' },
-        { name: 'sales', type: 'number' },
-      ]
-      const dataset = [
-        { area: 'area0', sales: 100 },
-        { area: 'area1', sales: 200 },
-        { area: 'area2', sales: 300 },
-        { area: 'area3', sales: 400 },
-        { area: 'area4', sales: 500 },
-      ]
-
-      VBI.registerConnector('demo', async () => ({
-        discoverSchema: async () => schema,
-        query: async () => ({ dataset }),
-      }))
-
       const builder = VBI.from({
-        connectorId: 'demo',
+        connectorId: DEMO_CONNECTOR_ID,
         chartType: 'column',
         dimensions: [{ field: 'area', alias: '区域' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [],
+        havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
         version: 1,
+        limit: 20,
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.whereFilters
-          .add('sales', (node) => node.setOperator('gt').setValue(500000))
+          .add('product_type', (node) => node.setOperator('eq').setValue('办公用品'))
           .add('area', (node) => node.setOperator('in').setValue(['华东', '华北']))
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## remove-where-filter
+
+删除Where过滤条件
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilters: [
+          { field: 'product_type', operator: 'eq', value: '办公用品' },
+          { field: 'province', operator: 'eq', value: '浙江' },
+        ],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilters.remove('product_type')
       }
       applyBuilder(builder)
 

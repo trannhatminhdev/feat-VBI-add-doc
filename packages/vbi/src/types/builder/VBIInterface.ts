@@ -8,7 +8,6 @@ import type {
   HavingFiltersBuilder,
   WhereFiltersBuilder,
 } from 'src/builder/sub-builders'
-import type { EncodingBuilder } from 'src/builder/encoding-builder'
 import type { Map, Doc, UndoManager } from 'yjs'
 
 export interface VBIBuilderInterface {
@@ -21,7 +20,6 @@ export interface VBIBuilderInterface {
   dimensions: DimensionsBuilder
   havingFilters: HavingFiltersBuilder
   whereFilters: WhereFiltersBuilder
-  encoding: EncodingBuilder
 
   applyUpdate: (update: Uint8Array, origin?: any) => void
   encodeStateAsUpdate: (targetStateVector?: Uint8Array) => Uint8Array
@@ -29,7 +27,6 @@ export interface VBIBuilderInterface {
   buildVSeed: () => Promise<VSeedDSL>
   buildVQuery: () => VQueryDSL
   build: () => VBIDSL
-  getEncodings: (spec: any, measureNames?: string[]) => any[]
 
   setLimit: (limit: number) => this
 }

@@ -9,8 +9,8 @@
     "chartType": "scatter",
     "dimensions": [],
     "measures": [
-      { "field": "sales", "alias": "销售额", "encoding": "x", "aggregate": { "func": "sum" } },
-      { "field": "profit", "alias": "利润", "encoding": "y", "aggregate": { "func": "sum" } }
+      { "field": "sales", "alias": "销售额", "encoding": "xAxis", "aggregate": { "func": "sum" } },
+      { "field": "profit", "alias": "利润", "encoding": "yAxis", "aggregate": { "func": "sum" } }
     ],
     "limit": 50
   },

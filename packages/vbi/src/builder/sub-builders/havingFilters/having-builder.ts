@@ -1,6 +1,5 @@
 import * as Y from 'yjs'
 import type { VBIHavingFilter } from 'src/types'
-import { materialize } from '../../../utils'
 import { HavingFiltersNodeBuilder } from './having-node-builder'
 import type { YArrayEvent, Transaction } from 'yjs'
 
@@ -30,7 +29,10 @@ export class HavingFiltersBuilder {
       value: null,
     }
 
-    const yMap = materialize(defaultFilter) as Y.Map<any>
+    const yMap = new Y.Map<any>()
+    for (const [key, value] of Object.entries(defaultFilter)) {
+      yMap.set(key, value)
+    }
     this.dsl.get('havingFilters').push([yMap])
 
     const filterNode = new HavingFiltersNodeBuilder(yMap)
@@ -102,11 +104,12 @@ export class HavingFiltersBuilder {
   /**
    * @description 清空所有 Having 过滤条件
    */
-  clear(): void {
+  clear(): this {
     const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
     if (havingFilters.length > 0) {
       havingFilters.delete(0, havingFilters.length)
     }
+    return this
   }
 
   /**

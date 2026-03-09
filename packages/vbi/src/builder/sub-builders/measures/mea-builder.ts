@@ -116,7 +116,7 @@ export class MeasuresBuilder {
   }
 
   static isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure {
-    return 'field' in node
+    return 'encoding' in node || 'aggregate' in node
   }
 
   static isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup {

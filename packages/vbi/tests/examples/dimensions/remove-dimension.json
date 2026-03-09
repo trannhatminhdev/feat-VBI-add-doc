@@ -1,0 +1,34 @@
+{
+  "name": "remove-dimension",
+  "description": "删除维度",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [
+      {
+        "field": "product_type",
+        "alias": "产品类型"
+      },
+      {
+        "field": "province",
+        "alias": "省份"
+      }
+    ],
+    "measures": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.dimensions.remove('product_type'); }"
+}
