@@ -7,7 +7,8 @@
     "noEmit": true,
     "lib": ["ESNext", "DOM"],
     "paths": {
-      "@visactor/vbi": ["./src"]
+      "@visactor/vbi": ["./src"],
+      "src/*": ["./src/*"]
     }
   }
 }

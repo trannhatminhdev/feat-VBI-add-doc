@@ -127,6 +127,9 @@ pnpm --filter=@visactor/vbi run test          # 运行测试
 pnpm --filter=@visactor/vbi run test:update   # 更新快照
 pnpm --filter=@visactor/vbi run test:coverage # 生成测试覆盖率报告
 
+# 生成器
+pnpm --filter=@visactor/vbi run g          # 从 JSON 生成文档、测试文件
+
 # 代码质量
 pnpm --filter=@visactor/vbi run lint
 pnpm --filter=@visactor/vbi run format
@@ -149,9 +152,19 @@ packages/
 apps/
 └── website/    # 文档站点
 
-packages/vseed/tests/
-├── unit/        # 单元测试
-└── integrations/ # 集成测试 (JSON Spec)
+packages/vbi/tests/
+├── builder/        # 单元测试
+├── query/          # 查询集成测试
+├── examples/       # 集成测试 (JSON Spec)
+│   ├── line/       # 按图表类型分类
+│   ├── bar/
+│   ├── column/
+│   ├── pie/
+│   └── table/
+├── mocks/          # Mock 文件
+└── scripts/        # 构建脚本
+    ├── build-tests.mjs
+    └── build-docs.mjs
 ```
 
 ---

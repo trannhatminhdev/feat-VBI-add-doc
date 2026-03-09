@@ -3,6 +3,11 @@
   "playground",
   {
     "type": "dir",
+    "name": "examples",
+    "label": "示例"
+  },
+  {
+    "type": "dir",
     "name": "practices",
     "label": "Practices"
   }
