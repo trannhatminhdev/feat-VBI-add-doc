@@ -51,10 +51,9 @@ export class HavingFiltersBuilder {
    * @param field - 字段名
    * @returns 是否成功删除
    */
-  remove(field: string): boolean {
+  remove(field: string): HavingFiltersBuilder {
     if (!field || typeof field !== 'string') {
       console.error('[HavingFiltersBuilder] Invalid field name:', field)
-      return false
     }
 
     const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
@@ -62,38 +61,36 @@ export class HavingFiltersBuilder {
 
     if (index !== -1) {
       this.dsl.get('havingFilters').delete(index, 1)
-      return true
     }
-    return false
+    return this
   }
 
   /**
    * @description 更新指定字段的过滤条件
    * @param field - 字段名
-   * @param updates - 更新的内容
+   * @param callback - 回调函数，用于进一步配置节点
    * @returns 是否成功更新
    */
-  update(field: string, updates: Partial<Omit<VBIHavingFilter, 'field'>>): boolean {
+  update(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder {
     const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
     const index = havingFilters.toArray().findIndex((item: any) => item.get('field') === field)
 
     if (index === -1) {
-      return false
+      throw new Error(`Having filter with field "${field}" not found`)
     }
 
     const filterYMap = havingFilters.get(index)
-    for (const [key, value] of Object.entries(updates)) {
-      filterYMap.set(key, value)
-    }
-    return true
+    const node = new HavingFiltersNodeBuilder(filterYMap)
+    callback(node)
+    return this
   }
 
   /**
    * @description 根据字段名查找 Having 过滤条件
    * @param field - 字段名
-   * @returns 过滤条件
+   * @returns 过滤条件节点构建器
    */
-  find(field: string): VBIHavingFilter | undefined {
+  find(field: string): HavingFiltersNodeBuilder | undefined {
     const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
     const index = havingFilters.toArray().findIndex((item: any) => item.get('field') === field)
 
@@ -101,15 +98,16 @@ export class HavingFiltersBuilder {
       return undefined
     }
 
-    return havingFilters.get(index).toJSON() as VBIHavingFilter
+    return new HavingFiltersNodeBuilder(havingFilters.get(index))
   }
 
   /**
    * @description 获取所有 Having 过滤条件
-   * @returns 过滤条件数组
+   * @returns 过滤条件节点构建器数组
    */
-  findAll(): VBIHavingFilter[] {
-    return (this.dsl.get('havingFilters') as Y.Array<any>).toJSON() as VBIHavingFilter[]
+  findAll(): HavingFiltersNodeBuilder[] {
+    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
+    return havingFilters.toArray().map((yMap: any) => new HavingFiltersNodeBuilder(yMap))
   }
 
   /**

@@ -1,4 +1,4 @@
-import { VBI } from '@visactor/vbi'
+import { VBI, VBIBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('WhereFilters', () => {
@@ -26,15 +26,19 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      filters: [],
     })
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters.add({ field: 'sales', operator: 'gt', value: 100000 })
+      builder.whereFilters.add('sales', (node) => {
+        node.setOperator('gt').setValue(100000)
+      })
     }
     applyBuilder(builder)
 
@@ -140,17 +144,19 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      filters: [],
     })
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.whereFilters
-        .add({ field: 'sales', operator: 'gt', value: 500000 })
-        .add({ field: 'area', operator: 'in', value: ['华东', '华北'] })
+        .add('sales', (node) => node.setOperator('gt').setValue(500000))
+        .add('area', (node) => node.setOperator('in').setValue(['华东', '华北']))
     }
     applyBuilder(builder)
 

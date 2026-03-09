@@ -1,4 +1,4 @@
-import { VBI } from '@visactor/vbi'
+import { VBI, VBIBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('Theme', () => {
@@ -26,7 +26,8 @@ describe('Theme', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -251,7 +252,8 @@ describe('Theme', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'dark',
       locale: 'zh-CN',
       version: 1,

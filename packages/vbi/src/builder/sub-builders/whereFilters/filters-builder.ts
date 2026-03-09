@@ -1,5 +1,6 @@
 import * as Y from 'yjs'
 import type { VBIFilter, ObserveCallback } from 'src/types'
+import { WhereFilterNodeBuilder } from './where-filter-node-builder'
 
 /**
  * @description Where 过滤构建器 - 用于构建 SQL WHERE 条件
@@ -23,71 +24,92 @@ export class WhereFiltersBuilder {
 
   /**
    * @description 添加一个 Where 过滤条件
-   * @param filter - 过滤条件
-   * @returns 自身（支持链式调用）
+   * @param field - 字段名
+   * @param callback - 可选回调，用于进一步配置过滤节点
+   * @returns 自身或节点构建器（支持链式调用）
    */
-  add(filter: VBIFilter) {
+  add(field: string): WhereFilterNodeBuilder
+  add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder
+  add(field: string, callback?: (node: WhereFilterNodeBuilder) => void): WhereFilterNodeBuilder | WhereFiltersBuilder {
+    const filter: VBIFilter = {
+      field,
+    }
+
     const yMap = new Y.Map<any>()
     for (const [key, value] of Object.entries(filter)) {
       yMap.set(key, value)
     }
     this.dsl.get('whereFilters').push([yMap])
+
+    const node = new WhereFilterNodeBuilder(yMap)
+
+    if (callback) {
+      callback(node)
+      return this
+    }
+    return node
+  }
+
+  /**
+   * @description 更新指定字段的过滤条件
+   * @param field - 字段名
+   * @param callback - 回调函数，用于进一步配置节点
+   * @returns 是否成功更新
+   */
+  update(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
+    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
+    const index = whereFilters.toArray().findIndex((item: any) => item.get('field') === field)
+
+    if (index === -1) {
+      throw new Error(`Where filter with field ${field} not found`)
+    }
+
+    const filterYMap = whereFilters.get(index)
+    const node = new WhereFilterNodeBuilder(filterYMap)
+    callback(node)
     return this
   }
 
   /**
-   * @description 更新指定索引的过滤条件
-   * @param index - 索引
-   * @param filter - 过滤条件
-   * @returns 自身（支持链式调用）
+   * @description 删除指定字段的过滤条件
+   * @param field - 字段名
+   * @returns 是否成功删除
    */
-  update(index: number, filter: Partial<VBIFilter>) {
-    const whereFilters = this.dsl.get('whereFilters')
-    if (index >= 0 && index < whereFilters.length) {
-      const oldFilter = whereFilters.get(index)
-      const updated = { ...oldFilter.toJSON(), ...filter }
-      const yMap = new Y.Map<any>()
-      for (const [key, value] of Object.entries(updated)) {
-        yMap.set(key, value)
-      }
-      whereFilters.delete(index, 1)
-      whereFilters.insert(index, [yMap])
+  remove(field: string): WhereFiltersBuilder {
+    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
+    const index = whereFilters.toArray().findIndex((item: any) => item.get('field') === field)
+
+    if (index === -1) {
+      return this
     }
+
+    whereFilters.delete(index, 1)
     return this
   }
 
   /**
-   * @description 删除指定索引的过滤条件
-   * @param index - 索引
-   * @returns 自身（支持链式调用）
+   * @description 根据字段名查找过滤条件
+   * @param field - 字段名
+   * @returns 过滤条件节点构建器
    */
-  remove(index: number) {
-    const whereFilters = this.dsl.get('whereFilters')
-    if (index >= 0 && index < whereFilters.length) {
-      whereFilters.delete(index, 1)
-    }
-    return this
-  }
+  find(field: string): WhereFilterNodeBuilder | undefined {
+    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
+    const index = whereFilters.toArray().findIndex((item: any) => item.get('field') === field)
 
-  /**
-   * @description 根据索引查找过滤条件
-   * @param index - 索引
-   * @returns 过滤条件
-   */
-  find(index: number): VBIFilter | undefined {
-    const whereFilters = this.dsl.get('whereFilters')
-    if (index >= 0 && index < whereFilters.length) {
-      return whereFilters.get(index).toJSON() as VBIFilter
+    if (index === -1) {
+      return undefined
     }
-    return undefined
+
+    return new WhereFilterNodeBuilder(whereFilters.get(index))
   }
 
   /**
    * @description 获取所有 Where 过滤条件
-   * @returns 过滤条件数组
+   * @returns 过滤条件节点构建器数组
    */
-  findAll(): VBIFilter[] {
-    return this.dsl.get('whereFilters').toJSON() as VBIFilter[]
+  findAll(): WhereFilterNodeBuilder[] {
+    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
+    return whereFilters.toArray().map((yMap: any) => new WhereFilterNodeBuilder(yMap))
   }
 
   /**

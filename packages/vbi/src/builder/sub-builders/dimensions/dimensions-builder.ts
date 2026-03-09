@@ -20,9 +20,7 @@ export class DimensionsBuilder {
    * @param callback - 可选回调，用于进一步配置维度节点
    * @returns 维度节点或自身（支持链式调用）
    */
-  add(field: string): DimensionNodeBuilder
-  add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
-  add(field: string, callback?: (node: DimensionNodeBuilder) => void): DimensionNodeBuilder | DimensionsBuilder {
+  add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder {
     const dimension: VBIDimension = {
       alias: field,
       field,
@@ -38,29 +36,29 @@ export class DimensionsBuilder {
 
     if (callback) {
       callback(node)
-      return this
     }
-    return node
+    return this
   }
 
   /**
    * @description 删除指定字段的维度
    * @param field - 字段名
    */
-  remove(field: VBIDimension['field']) {
+  remove(field: VBIDimension['field']): DimensionsBuilder {
     const dimensions = this.dsl.get('dimensions')
     const index = dimensions.toArray().findIndex((item: any) => item.get('field') === field)
     if (index !== -1) {
       this.dsl.get('dimensions').delete(index, 1)
     }
+    return this
   }
 
   /**
    * @description 更新指定维度字段的配置
    * @param field - 字段名
-   * @param updates - 更新的配置
+   * @param callback - 回调函数，用于进一步配置维度节点
    */
-  update(field: string, updates: Partial<Omit<VBIDimension, 'field'>>): void {
+  update(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder {
     const dimensions = this.dsl.get('dimensions') as Y.Array<any>
     const index = dimensions.toArray().findIndex((item: any) => item.get('field') === field)
 
@@ -69,27 +67,34 @@ export class DimensionsBuilder {
     }
 
     const dimensionYMap = dimensions.get(index)
-    for (const [key, value] of Object.entries(updates)) {
-      dimensionYMap.set(key, value)
-    }
+    const node = new DimensionNodeBuilder(dimensionYMap)
+    callback(node)
+    return this
   }
 
   /**
    * @description 根据字段名查找维度
    * @param field - 字段名
-   * @returns 维度配置
+   * @returns 维度节点构建器
    */
-  find(field: VBIDimension['field']): VBIDimension | undefined {
-    const dimensions = this.dsl.get('dimensions').toJSON() as VBIDimension[]
-    return dimensions.find((d) => d.field === field)
+  find(field: VBIDimension['field']): DimensionNodeBuilder | undefined {
+    const dimensions = this.dsl.get('dimensions') as Y.Array<any>
+    const index = dimensions.toArray().findIndex((item: any) => item.get('field') === field)
+
+    if (index === -1) {
+      return undefined
+    }
+
+    return new DimensionNodeBuilder(dimensions.get(index))
   }
 
   /**
    * @description 获取所有维度
-   * @returns 维度配置数组
+   * @returns 维度节点构建器数组
    */
-  findAll(): VBIDimension[] {
-    return this.dsl.get('dimensions').toJSON() as VBIDimension[]
+  findAll(): DimensionNodeBuilder[] {
+    const dimensions = this.dsl.get('dimensions') as Y.Array<any>
+    return dimensions.toArray().map((yMap: any) => new DimensionNodeBuilder(yMap))
   }
 
   /**

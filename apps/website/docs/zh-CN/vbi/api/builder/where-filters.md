@@ -19,71 +19,52 @@ Where 过滤构建器 - 用于构建 SQL WHERE 条件
 **定义**:
 
 ```typescript
-add(filter: VBIFilter): new Y.Map<any>()
+add(field: string): WhereFilterNodeBuilder
 ```
 
-**返回**: `new Y.Map<any>()`
+**返回**: `WhereFilterNodeBuilder`
 
 **参数**:
 
 | 参数 | 类型 |
 | --- | --- |
-| `filter` | VBIFilter |
-
-### update
-
-更新指定索引的过滤条件
-
-**定义**:
-
-```typescript
-update(index: number, filter: Partial<VBIFilter>): any
-```
-
-**返回**: `any`
-
-**参数**:
-
-| 参数 | 类型 |
-| --- | --- |
-| `index` | number |
-| `filter` | Partial<VBIFilter> |
+| `field` | string |
 
 ### remove
 
-删除指定索引的过滤条件
+更新指定字段的过滤条件
 
 **定义**:
 
 ```typescript
-remove(index: number): any
+remove(field: string): boolean
 ```
 
-**返回**: `any`
+**返回**: `boolean`
 
 **参数**:
 
 | 参数 | 类型 |
 | --- | --- |
-| `index` | number |
+| `field` | string |
 
 ### find
 
-根据索引查找过滤条件
+根据字段名查找过滤条件
 
 **定义**:
 
 ```typescript
-find(index: number): VBIFilter | undefined
+find(field: string): WhereFilterNodeBuilder | undefined
 ```
 
-**返回**: `VBIFilter | undefined`
+**返回**: `WhereFilterNodeBuilder | undefined`
 
 **参数**:
 
 | 参数 | 类型 |
 | --- | --- |
-| `index` | number |
+| `field` | string |
 
 ### findAll
 
@@ -92,10 +73,10 @@ find(index: number): VBIFilter | undefined
 **定义**:
 
 ```typescript
-findAll(): VBIFilter[]
+findAll(): WhereFilterNodeBuilder[]
 ```
 
-**返回**: `VBIFilter[]`
+**返回**: `WhereFilterNodeBuilder[]`
 
 ### clear
 

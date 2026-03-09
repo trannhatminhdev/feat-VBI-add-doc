@@ -26,11 +26,11 @@ describe('Locale', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'en-US',
       version: 1,
-      whereFilters: [],
       limit: 50,
     })
 
@@ -252,11 +252,11 @@ describe('Locale', () => {
           },
         },
       ],
-      filters: [],
+      whereFilters: [],
+      havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
-      whereFilters: [],
       limit: 50,
     })
 

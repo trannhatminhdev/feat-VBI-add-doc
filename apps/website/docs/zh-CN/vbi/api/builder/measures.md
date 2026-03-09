@@ -48,94 +48,17 @@ remove(field: VBIMeasure['field']): any
 | --- | --- |
 | `field` | VBIMeasure['field'] |
 
-### rename
-
-重命名度量的显示名称
-
-**定义**:
-
-```typescript
-rename(field: string, newAlias: string): void
-```
-
-**返回**: `void`
-
-**参数**:
-
-| 参数 | 类型 |
-| --- | --- |
-| `field` | string |
-| `newAlias` | string |
-
-### aggregate
-
-更新度量使用的聚合函数（sum/avg/count/max/min/quantile）
-
-**定义**:
-
-```typescript
-aggregate(field: string, func: string, quantile?: number): void
-```
-
-**返回**: `void`
-
-**参数**:
-
-| 参数 | 类型 |
-| --- | --- |
-| `field` | string |
-| `func` | string |
-| `quantile?` | number |
-
-### encoding
-
-更新度量的图表编码位置（yAxis/xAxis/color 等）
-
-**定义**:
-
-```typescript
-encoding(field: string, encoding: VBIMeasure['encoding']): void
-```
-
-**返回**: `void`
-
-**参数**:
-
-| 参数 | 类型 |
-| --- | --- |
-| `field` | string |
-| `encoding` | VBIMeasure['encoding'] |
-
-### update
+### find
 
 更新度量配置
 
 **定义**:
 
 ```typescript
-update(field: string, updates: Partial<Omit<VBIMeasure, 'field'>>): void
+find(field: VBIMeasure['field']): MeasureNodeBuilder | undefined
 ```
 
-**返回**: `void`
-
-**参数**:
-
-| 参数 | 类型 |
-| --- | --- |
-| `field` | string |
-| `updates` | Partial<Omit<VBIMeasure, 'field'>> |
-
-### find
-
-根据字段名查找度量
-
-**定义**:
-
-```typescript
-find(field: VBIMeasure['field']): VBIMeasure | undefined
-```
-
-**返回**: `VBIMeasure | undefined`
+**返回**: `MeasureNodeBuilder | undefined`
 
 **参数**:
 
@@ -150,10 +73,10 @@ find(field: VBIMeasure['field']): VBIMeasure | undefined
 **定义**:
 
 ```typescript
-findAll(): VBIMeasure[]
+findAll(): MeasureNodeBuilder[]
 ```
 
-**返回**: `VBIMeasure[]`
+**返回**: `MeasureNodeBuilder[]`
 
 ### toJson
 

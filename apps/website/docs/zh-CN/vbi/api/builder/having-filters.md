@@ -30,36 +30,17 @@ remove(field: string): boolean
 | --- | --- |
 | `field` | string |
 
-### update
+### find
 
 更新指定字段的过滤条件
 
 **定义**:
 
 ```typescript
-update(field: string, updates: Partial<Omit<VBIHavingFilter, 'field'>>): boolean
+find(field: string): HavingFiltersNodeBuilder | undefined
 ```
 
-**返回**: `boolean`
-
-**参数**:
-
-| 参数 | 类型 |
-| --- | --- |
-| `field` | string |
-| `updates` | Partial<Omit<VBIHavingFilter, 'field'>> |
-
-### find
-
-根据字段名查找 Having 过滤条件
-
-**定义**:
-
-```typescript
-find(field: string): VBIHavingFilter | undefined
-```
-
-**返回**: `VBIHavingFilter | undefined`
+**返回**: `HavingFiltersNodeBuilder | undefined`
 
 **参数**:
 
@@ -74,10 +55,10 @@ find(field: string): VBIHavingFilter | undefined
 **定义**:
 
 ```typescript
-findAll(): VBIHavingFilter[]
+findAll(): HavingFiltersNodeBuilder[]
 ```
 
-**返回**: `VBIHavingFilter[]`
+**返回**: `HavingFiltersNodeBuilder[]`
 
 ### toJson
 

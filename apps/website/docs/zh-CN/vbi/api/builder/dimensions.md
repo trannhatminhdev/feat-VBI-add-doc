@@ -48,36 +48,17 @@ remove(field: VBIDimension['field']): any
 | --- | --- |
 | `field` | VBIDimension['field'] |
 
-### update
+### find
 
 更新指定维度字段的配置
 
 **定义**:
 
 ```typescript
-update(field: string, updates: Partial<Omit<VBIDimension, 'field'>>): void
+find(field: VBIDimension['field']): DimensionNodeBuilder | undefined
 ```
 
-**返回**: `void`
-
-**参数**:
-
-| 参数 | 类型 |
-| --- | --- |
-| `field` | string |
-| `updates` | Partial<Omit<VBIDimension, 'field'>> |
-
-### find
-
-根据字段名查找维度
-
-**定义**:
-
-```typescript
-find(field: VBIDimension['field']): VBIDimension | undefined
-```
-
-**返回**: `VBIDimension | undefined`
+**返回**: `DimensionNodeBuilder | undefined`
 
 **参数**:
 
@@ -92,10 +73,10 @@ find(field: VBIDimension['field']): VBIDimension | undefined
 **定义**:
 
 ```typescript
-findAll(): VBIDimension[]
+findAll(): DimensionNodeBuilder[]
 ```
 
-**返回**: `VBIDimension[]`
+**返回**: `DimensionNodeBuilder[]`
 
 ### toJson
 

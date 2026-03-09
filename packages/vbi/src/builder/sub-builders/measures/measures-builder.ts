@@ -51,61 +51,21 @@ export class MeasuresBuilder {
    * @description 删除指定字段的度量
    * @param field - 字段名
    */
-  remove(field: VBIMeasure['field']) {
+  remove(field: VBIMeasure['field']): MeasuresBuilder {
     const measures = this.dsl.get('measures')
     const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
     if (index !== -1) {
       this.dsl.get('measures').delete(index, 1)
     }
-  }
-
-  /**
-   * @description 重命名度量的显示名称
-   * @param field - 字段名
-   * @param newAlias - 新的显示名称
-   */
-  rename(field: string, newAlias: string): void {
-    this.update(field, { alias: newAlias })
-  }
-
-  /**
-   * @description 更新度量使用的聚合函数（sum/avg/count/max/min/quantile）
-   * @param field - 字段名
-   * @param func - 聚合函数
-   * @param quantile - 分位数（仅当 func 为 'quantile' 时需要）
-   */
-  aggregate(field: string, func: string, quantile?: number): void {
-    const measures = this.dsl.get('measures') as Y.Array<any>
-    const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
-
-    if (index === -1) {
-      throw new Error(`Measure with field "${field}" not found`)
-    }
-
-    const measureYMap = measures.get(index)
-    const newAggregate = new Y.Map()
-    newAggregate.set('func', func)
-    if (func === 'quantile' && quantile !== undefined) {
-      newAggregate.set('quantile', quantile)
-    }
-    measureYMap.set('aggregate', newAggregate)
-  }
-
-  /**
-   * @description 更新度量的图表编码位置（yAxis/xAxis/color 等）
-   * @param field - 字段名
-   * @param encoding - 编码位置
-   */
-  encoding(field: string, encoding: VBIMeasure['encoding']): void {
-    this.update(field, { encoding })
+    return this
   }
 
   /**
    * @description 更新度量配置
    * @param field - 字段名
-   * @param updates - 更新的配置
+   * @param callback - 回调函数，用于进一步配置度量节点
    */
-  update(field: string, updates: Partial<Omit<VBIMeasure, 'field'>>): void {
+  update(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder {
     const measures = this.dsl.get('measures') as Y.Array<any>
     const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
 
@@ -114,27 +74,34 @@ export class MeasuresBuilder {
     }
 
     const measureYMap = measures.get(index)
-    for (const [key, value] of Object.entries(updates)) {
-      measureYMap.set(key, value)
-    }
+    const node = new MeasureNodeBuilder(measureYMap)
+    callback(node)
+    return this
   }
 
   /**
    * @description 根据字段名查找度量
    * @param field - 字段名
-   * @returns 度量配置
+   * @returns 度量节点构建器
    */
-  find(field: VBIMeasure['field']): VBIMeasure | undefined {
-    const measures = this.dsl.get('measures').toJSON() as VBIMeasure[]
-    return measures.find((m) => m.field === field)
+  find(field: VBIMeasure['field']): MeasureNodeBuilder | undefined {
+    const measures = this.dsl.get('measures') as Y.Array<any>
+    const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
+
+    if (index === -1) {
+      return undefined
+    }
+
+    return new MeasureNodeBuilder(measures.get(index))
   }
 
   /**
    * @description 获取所有度量
-   * @returns 度量配置数组
+   * @returns 度量节点构建器数组
    */
-  findAll(): VBIMeasure[] {
-    return this.dsl.get('measures').toJSON() as VBIMeasure[]
+  findAll(): MeasureNodeBuilder[] {
+    const measures = this.dsl.get('measures') as Y.Array<any>
+    return measures.toArray().map((yMap: any) => new MeasureNodeBuilder(yMap))
   }
 
   /**
