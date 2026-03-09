@@ -6,33 +6,33 @@
 
 ```javascript
 const schema = {
-  chartType: "column",
+  chartType: 'column',
   dataset: [
-    { date: "2019", sales: 100, profit: 20, rate: 0.2 },
-    { date: "2020", sales: 120, profit: 30, rate: 0.25 },
-    { date: "2021", sales: 150, profit: 45, rate: 0.3 },
-    { date: "2022", sales: 180, profit: 54, rate: 0.3 },
-    { date: "2023", sales: 200, profit: 70, rate: 0.35 },
+    { date: '2019', sales: 100, profit: 20, rate: 0.2 },
+    { date: '2020', sales: 120, profit: 30, rate: 0.25 },
+    { date: '2021', sales: 150, profit: 45, rate: 0.3 },
+    { date: '2022', sales: 180, profit: 54, rate: 0.3 },
+    { date: '2023', sales: 200, profit: 70, rate: 0.35 },
   ],
-  dimensions: [{ id: "date", alias: "年份" }],
+  dimensions: [{ id: 'date', alias: '年份' }],
   measures: [
     {
-      id: "sales",
-      alias: "销售额",
-      parentId: "group1",
+      id: 'sales',
+      alias: '销售额',
+      parentId: 'group1',
     },
     {
-      id: "profit",
-      alias: "利润",
-      parentId: "group1",
+      id: 'profit',
+      alias: '利润',
+      parentId: 'group1',
     },
     {
-      id: "rate",
-      alias: "利润率",
-      parentId: "group2",
+      id: 'rate',
+      alias: '利润率',
+      parentId: 'group2',
     },
   ],
-};
+}
 ```
 
 **效果**：创建两个子图，第一个显示销售额和利润的柱状图，第二个显示利润率的柱状图。
@@ -41,73 +41,73 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "column",
+  chartType: 'column',
   dataset: [
     {
-      region: "华北",
-      product: "产品A",
+      region: '华北',
+      product: '产品A',
       revenue: 1000,
       cost: 600,
       units: 50,
     },
     {
-      region: "华北",
-      product: "产品B",
+      region: '华北',
+      product: '产品B',
       revenue: 800,
       cost: 500,
       units: 40,
     },
     {
-      region: "华东",
-      product: "产品A",
+      region: '华东',
+      product: '产品A',
       revenue: 1200,
       cost: 700,
       units: 60,
     },
     {
-      region: "华东",
-      product: "产品B",
+      region: '华东',
+      product: '产品B',
       revenue: 900,
       cost: 550,
       units: 45,
     },
     {
-      region: "华南",
-      product: "产品A",
+      region: '华南',
+      product: '产品A',
       revenue: 1100,
       cost: 650,
       units: 55,
     },
     {
-      region: "华南",
-      product: "产品B",
+      region: '华南',
+      product: '产品B',
       revenue: 950,
       cost: 580,
       units: 48,
     },
   ],
   dimensions: [
-    { id: "region", alias: "地区" },
-    { id: "product", alias: "产品", encoding: "color" },
+    { id: 'region', alias: '地区' },
+    { id: 'product', alias: '产品', encoding: 'color' },
   ],
   measures: [
     {
-      id: "revenue",
-      alias: "收入",
-      parentId: "financial",
+      id: 'revenue',
+      alias: '收入',
+      parentId: 'financial',
     },
     {
-      id: "cost",
-      alias: "成本",
-      parentId: "financial",
+      id: 'cost',
+      alias: '成本',
+      parentId: 'financial',
     },
     {
-      id: "units",
-      alias: "销量",
-      parentId: "quantity",
+      id: 'units',
+      alias: '销量',
+      parentId: 'quantity',
     },
   ],
-};
+}
 ```
 
 **效果**：创建两个子图，第一个按地区和产品显示收入和成本，第二个显示销量。
@@ -116,83 +116,83 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "column",
+  chartType: 'column',
   dataset: [
     {
-      date: "2019",
-      region: "east",
-      category: "Grocery",
+      date: '2019',
+      region: 'east',
+      category: 'Grocery',
       profit: 10,
       sales: 100,
     },
     {
-      date: "2019",
-      region: "east",
-      category: "Beverages",
+      date: '2019',
+      region: 'east',
+      category: 'Beverages',
       profit: 30,
       sales: 200,
     },
     {
-      date: "2019",
-      region: "west",
-      category: "Grocery",
+      date: '2019',
+      region: 'west',
+      category: 'Grocery',
       profit: 15,
       sales: 150,
     },
     {
-      date: "2019",
-      region: "west",
-      category: "Beverages",
+      date: '2019',
+      region: 'west',
+      category: 'Beverages',
       profit: 25,
       sales: 180,
     },
     {
-      date: "2020",
-      region: "east",
-      category: "Grocery",
+      date: '2020',
+      region: 'east',
+      category: 'Grocery',
       profit: 12,
       sales: 120,
     },
     {
-      date: "2020",
-      region: "east",
-      category: "Beverages",
+      date: '2020',
+      region: 'east',
+      category: 'Beverages',
       profit: 35,
       sales: 220,
     },
     {
-      date: "2020",
-      region: "west",
-      category: "Grocery",
+      date: '2020',
+      region: 'west',
+      category: 'Grocery',
       profit: 18,
       sales: 160,
     },
     {
-      date: "2020",
-      region: "west",
-      category: "Beverages",
+      date: '2020',
+      region: 'west',
+      category: 'Beverages',
       profit: 28,
       sales: 200,
     },
   ],
   dimensions: [
-    { id: "category", alias: "类别" },
-    { id: "date", alias: "日期", encoding: "column" },
-    { id: "region", alias: "区域", encoding: "row" },
+    { id: 'category', alias: '类别' },
+    { id: 'date', alias: '日期', encoding: 'column' },
+    { id: 'region', alias: '区域', encoding: 'row' },
   ],
   measures: [
     {
-      id: "sales",
-      alias: "销售额",
-      parentId: "sales-and-profit",
+      id: 'sales',
+      alias: '销售额',
+      parentId: 'sales-and-profit',
     },
     {
-      id: "profit",
-      alias: "利润",
-      parentId: "sales-and-profit",
+      id: 'profit',
+      alias: '利润',
+      parentId: 'sales-and-profit',
     },
   ],
-};
+}
 ```
 
 **效果**：创建 2×2 透视网格，每个网格内同时显示销售额和利润。

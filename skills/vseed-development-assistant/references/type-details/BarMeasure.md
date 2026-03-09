@@ -1,4 +1,5 @@
 ### BarMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

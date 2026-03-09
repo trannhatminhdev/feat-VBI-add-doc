@@ -1,4 +1,5 @@
 ### ColumnPercentMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

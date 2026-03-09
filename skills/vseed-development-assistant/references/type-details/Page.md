@@ -1,5 +1,7 @@
 ### Page
+
 用于指定分页的字段名, 必须是维度
+
 ```typescript
 export type Page = {
   /**

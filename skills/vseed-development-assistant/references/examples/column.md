@@ -8,17 +8,17 @@
 
 ```javascript
 const schema = {
-  chartType: "column",
+  chartType: 'column',
   dataset: [
-    { city: "北京", sales: 1200 },
-    { city: "上海", sales: 1500 },
-    { city: "广州", sales: 980 },
-    { city: "深圳", sales: 1100 },
-    { city: "杭州", sales: 850 },
+    { city: '北京', sales: 1200 },
+    { city: '上海', sales: 1500 },
+    { city: '广州', sales: 980 },
+    { city: '深圳', sales: 1100 },
+    { city: '杭州', sales: 850 },
   ],
-  dimensions: [{ id: "city", encoding: "xAxis" }],
-  measures: [{ id: "sales", alias: "销售额", encoding: "yAxis" }],
-};
+  dimensions: [{ id: 'city', encoding: 'xAxis' }],
+  measures: [{ id: 'sales', alias: '销售额', encoding: 'yAxis' }],
+}
 ```
 
 ## 配置说明
@@ -39,21 +39,21 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "column",
+  chartType: 'column',
   dataset: [
-    { city: "北京", quarter: "Q1", sales: 1200 },
-    { city: "北京", quarter: "Q2", sales: 1400 },
-    { city: "上海", quarter: "Q1", sales: 1500 },
-    { city: "上海", quarter: "Q2", sales: 1600 },
-    { city: "广州", quarter: "Q1", sales: 980 },
-    { city: "广州", quarter: "Q2", sales: 1100 },
+    { city: '北京', quarter: 'Q1', sales: 1200 },
+    { city: '北京', quarter: 'Q2', sales: 1400 },
+    { city: '上海', quarter: 'Q1', sales: 1500 },
+    { city: '上海', quarter: 'Q2', sales: 1600 },
+    { city: '广州', quarter: 'Q1', sales: 980 },
+    { city: '广州', quarter: 'Q2', sales: 1100 },
   ],
   dimensions: [
-    { id: "city", encoding: "xAxis" },
-    { id: "quarter", encoding: "color" },
+    { id: 'city', encoding: 'xAxis' },
+    { id: 'quarter', encoding: 'color' },
   ],
-  measures: [{ id: "sales", alias: "销售额", encoding: "yAxis" }],
-};
+  measures: [{ id: 'sales', alias: '销售额', encoding: 'yAxis' }],
+}
 ```
 
 ## 配置说明
@@ -74,21 +74,21 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "column",
+  chartType: 'column',
   dataset: [
-    { city: "北京", sales: 1200 },
-    { city: "上海", sales: 1500 },
-    { city: "广州", sales: 980 },
-    { city: "深圳", sales: 1100 },
-    { city: "杭州", sales: 850 },
+    { city: '北京', sales: 1200 },
+    { city: '上海', sales: 1500 },
+    { city: '广州', sales: 980 },
+    { city: '深圳', sales: 1100 },
+    { city: '杭州', sales: 850 },
   ],
-  dimensions: [{ id: "city", encoding: "xAxis" }],
-  measures: [{ id: "sales", alias: "销售额", encoding: "yAxis" }],
+  dimensions: [{ id: 'city', encoding: 'xAxis' }],
+  measures: [{ id: 'sales', alias: '销售额', encoding: 'yAxis' }],
   label: {
     visible: true,
-    position: "top",
+    position: 'top',
   },
-};
+}
 ```
 
 ## 配置说明

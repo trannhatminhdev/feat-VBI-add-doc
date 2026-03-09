@@ -1,4 +1,5 @@
 ### BarDimension
+
 ```typescript
 export type BaseDimension = {
   /**

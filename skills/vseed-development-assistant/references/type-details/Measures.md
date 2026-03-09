@@ -1,5 +1,7 @@
 ### Measure
+
 指标
+
 ```typescript
 export interface NumFormat {
   /**
@@ -210,5 +212,4 @@ export type Measure = BaseMeasure & {
 }
 
 export type Measures = Measure[]
-
 ```

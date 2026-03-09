@@ -1,5 +1,7 @@
 ### RaceScatterDimension
+
 维度，用于区分不同的数据系列和进行图例展示
+
 ```typescript
 export type RaceScatterDimension = BaseDimension & {
   /**
@@ -25,6 +27,4 @@ export type BaseDimension = {
    */
   alias?: string
 }
-
-
 ```

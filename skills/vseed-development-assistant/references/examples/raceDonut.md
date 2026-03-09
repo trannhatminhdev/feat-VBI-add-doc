@@ -8,33 +8,33 @@ A dynamic donut chart race animation showing ranking changes over time.
 
 ```javascript
 const schema = {
-  chartType: "raceDonut",
+  chartType: 'raceDonut',
   measures: [
     {
-      id: "sales",
-      alias: "销售额(万元)",
+      id: 'sales',
+      alias: '销售额(万元)',
       autoFormat: true,
-      encoding: "angle",
+      encoding: 'angle',
     },
   ],
   dimensions: [
     {
-      id: "date",
-      alias: "年份",
-      encoding: "player",
+      id: 'date',
+      alias: '年份',
+      encoding: 'player',
     },
     {
-      id: "category",
-      alias: "商品分类",
-      encoding: "color",
+      id: 'category',
+      alias: '商品分类',
+      encoding: 'color',
     },
   ],
   dataset: [
     {
-      date: "1990",
-      category: "电子产品",
+      date: '1990',
+      category: '电子产品',
       sales: 119,
     },
   ],
-};
+}
 ```

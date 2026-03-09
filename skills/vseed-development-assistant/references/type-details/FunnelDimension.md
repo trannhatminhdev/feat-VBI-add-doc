@@ -1,4 +1,5 @@
 ### FunnelDimension
+
 ```typescript
 export type BaseDimension = {
   /**

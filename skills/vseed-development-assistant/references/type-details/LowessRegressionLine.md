@@ -1,5 +1,7 @@
 ### LowessRegressionLine
+
 局部加权回归线配置项, 包括局部加权回归线的样式等.
+
 ```typescript
 export type LowessRegressionLine = {
   /**

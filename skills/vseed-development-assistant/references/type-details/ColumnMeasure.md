@@ -1,4 +1,5 @@
 ### ColumnMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

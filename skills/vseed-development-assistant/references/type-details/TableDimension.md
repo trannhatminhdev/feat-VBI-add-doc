@@ -1,4 +1,5 @@
 ### TableDimension
+
 ```typescript
 export type BaseDimension = {
   /**

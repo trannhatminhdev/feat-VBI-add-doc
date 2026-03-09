@@ -1,5 +1,7 @@
 ### RaceDonutDimension
+
 维度
+
 ```typescript
 export type RaceDonutDimension = Omit<DonutDimension, 'encoding'> & {
   /**

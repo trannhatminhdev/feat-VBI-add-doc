@@ -8,23 +8,23 @@
 
 ```javascript
 const schema = {
-  chartType: "column",
+  chartType: 'column',
   dataset: [
-    { date: "2019", region: "east", category: "Grocery", sales: 100 },
-    { date: "2019", region: "east", category: "Beverages", sales: 200 },
-    { date: "2019", region: "west", category: "Grocery", sales: 150 },
-    { date: "2019", region: "west", category: "Beverages", sales: 180 },
-    { date: "2020", region: "east", category: "Grocery", sales: 120 },
-    { date: "2020", region: "east", category: "Beverages", sales: 220 },
-    { date: "2020", region: "west", category: "Grocery", sales: 160 },
-    { date: "2020", region: "west", category: "Beverages", sales: 200 },
+    { date: '2019', region: 'east', category: 'Grocery', sales: 100 },
+    { date: '2019', region: 'east', category: 'Beverages', sales: 200 },
+    { date: '2019', region: 'west', category: 'Grocery', sales: 150 },
+    { date: '2019', region: 'west', category: 'Beverages', sales: 180 },
+    { date: '2020', region: 'east', category: 'Grocery', sales: 120 },
+    { date: '2020', region: 'east', category: 'Beverages', sales: 220 },
+    { date: '2020', region: 'west', category: 'Grocery', sales: 160 },
+    { date: '2020', region: 'west', category: 'Beverages', sales: 200 },
   ],
   dimensions: [
-    { id: "category", alias: "类别", encoding: "xAxis" },
-    { id: "region", alias: "区域", encoding: "row" },
+    { id: 'category', alias: '类别', encoding: 'xAxis' },
+    { id: 'region', alias: '区域', encoding: 'row' },
   ],
-  measures: [{ id: "sales", alias: "销售额", encoding: "yAxis" }],
-};
+  measures: [{ id: 'sales', alias: '销售额', encoding: 'yAxis' }],
+}
 ```
 
 **效果**：垂直排列两个子图，分别显示东部和西部的数据。
@@ -33,23 +33,23 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "column",
+  chartType: 'column',
   dataset: [
-    { date: "2019", region: "east", category: "Grocery", sales: 100 },
-    { date: "2019", region: "east", category: "Beverages", sales: 200 },
-    { date: "2019", region: "west", category: "Grocery", sales: 150 },
-    { date: "2019", region: "west", category: "Beverages", sales: 180 },
-    { date: "2020", region: "east", category: "Grocery", sales: 120 },
-    { date: "2020", region: "east", category: "Beverages", sales: 220 },
-    { date: "2020", region: "west", category: "Grocery", sales: 160 },
-    { date: "2020", region: "west", category: "Beverages", sales: 200 },
+    { date: '2019', region: 'east', category: 'Grocery', sales: 100 },
+    { date: '2019', region: 'east', category: 'Beverages', sales: 200 },
+    { date: '2019', region: 'west', category: 'Grocery', sales: 150 },
+    { date: '2019', region: 'west', category: 'Beverages', sales: 180 },
+    { date: '2020', region: 'east', category: 'Grocery', sales: 120 },
+    { date: '2020', region: 'east', category: 'Beverages', sales: 220 },
+    { date: '2020', region: 'west', category: 'Grocery', sales: 160 },
+    { date: '2020', region: 'west', category: 'Beverages', sales: 200 },
   ],
   dimensions: [
-    { id: "category", alias: "类别", encoding: "xAxis" },
-    { id: "date", alias: "日期", encoding: "column" },
+    { id: 'category', alias: '类别', encoding: 'xAxis' },
+    { id: 'date', alias: '日期', encoding: 'column' },
   ],
-  measures: [{ id: "sales", alias: "销售额", encoding: "yAxis" }],
-};
+  measures: [{ id: 'sales', alias: '销售额', encoding: 'yAxis' }],
+}
 ```
 
 **效果**：水平排列两个子图，分别显示2019年和2020年的数据。
@@ -60,24 +60,24 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "column",
+  chartType: 'column',
   dataset: [
-    { date: "2019", region: "east", category: "Grocery", sales: 100 },
-    { date: "2019", region: "east", category: "Beverages", sales: 200 },
-    { date: "2019", region: "west", category: "Grocery", sales: 150 },
-    { date: "2019", region: "west", category: "Beverages", sales: 180 },
-    { date: "2020", region: "east", category: "Grocery", sales: 120 },
-    { date: "2020", region: "east", category: "Beverages", sales: 220 },
-    { date: "2020", region: "west", category: "Grocery", sales: 160 },
-    { date: "2020", region: "west", category: "Beverages", sales: 200 },
+    { date: '2019', region: 'east', category: 'Grocery', sales: 100 },
+    { date: '2019', region: 'east', category: 'Beverages', sales: 200 },
+    { date: '2019', region: 'west', category: 'Grocery', sales: 150 },
+    { date: '2019', region: 'west', category: 'Beverages', sales: 180 },
+    { date: '2020', region: 'east', category: 'Grocery', sales: 120 },
+    { date: '2020', region: 'east', category: 'Beverages', sales: 220 },
+    { date: '2020', region: 'west', category: 'Grocery', sales: 160 },
+    { date: '2020', region: 'west', category: 'Beverages', sales: 200 },
   ],
   dimensions: [
-    { id: "category", alias: "类别", encoding: "xAxis" },
-    { id: "date", alias: "日期", encoding: "column" },
-    { id: "region", alias: "区域", encoding: "row" },
+    { id: 'category', alias: '类别', encoding: 'xAxis' },
+    { id: 'date', alias: '日期', encoding: 'column' },
+    { id: 'region', alias: '区域', encoding: 'row' },
   ],
-  measures: [{ id: "sales", alias: "销售额", encoding: "yAxis" }],
-};
+  measures: [{ id: 'sales', alias: '销售额', encoding: 'yAxis' }],
+}
 ```
 
 **效果**：创建 2×2 网格布局，行表示区域，列表示年份。
@@ -88,29 +88,29 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "line", // 时间趋势建议用折线图
+  chartType: 'line', // 时间趋势建议用折线图
   dataset: [
-    { province: "广东", year: 2020, population: 12601 },
-    { province: "广东", year: 2021, population: 12684 },
-    { province: "广东", year: 2022, population: 12700 },
-    { province: "广东", year: 2023, population: 12720 },
-    { province: "河南", year: 2020, population: 9937 },
-    { province: "河南", year: 2021, population: 9883 },
-    { province: "河南", year: 2022, population: 9872 },
-    { province: "河南", year: 2023, population: 9870 },
-    { province: "山东", year: 2020, population: 10152 },
-    { province: "山东", year: 2021, population: 10169 },
-    { province: "山东", year: 2022, population: 10162 },
-    { province: "山东", year: 2023, population: 10123 },
+    { province: '广东', year: 2020, population: 12601 },
+    { province: '广东', year: 2021, population: 12684 },
+    { province: '广东', year: 2022, population: 12700 },
+    { province: '广东', year: 2023, population: 12720 },
+    { province: '河南', year: 2020, population: 9937 },
+    { province: '河南', year: 2021, population: 9883 },
+    { province: '河南', year: 2022, population: 9872 },
+    { province: '河南', year: 2023, population: 9870 },
+    { province: '山东', year: 2020, population: 10152 },
+    { province: '山东', year: 2021, population: 10169 },
+    { province: '山东', year: 2022, population: 10162 },
+    { province: '山东', year: 2023, population: 10123 },
   ],
   dimensions: [
-    { id: "province", alias: "省份", encoding: "row" }, // 关键：每个省份一行
-    { id: "year", alias: "年份", encoding: "xAxis" }, // 时间作为X轴
+    { id: 'province', alias: '省份', encoding: 'row' }, // 关键：每个省份一行
+    { id: 'year', alias: '年份', encoding: 'xAxis' }, // 时间作为X轴
   ],
   measures: [
-    { id: "population", alias: "人口数(万人)", encoding: "yAxis" }, // 数值作为Y轴
+    { id: 'population', alias: '人口数(万人)', encoding: 'yAxis' }, // 数值作为Y轴
   ],
-};
+}
 ```
 
 **效果**：垂直排列三个子图，每个子图显示一个省份的人口时间变化趋势。
@@ -119,24 +119,24 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "column",
+  chartType: 'column',
   dataset: [
-    { region: "华北", year: 2020, gdp: 8.5 },
-    { region: "华北", year: 2021, gdp: 9.2 },
-    { region: "华北", year: 2022, gdp: 9.8 },
-    { region: "华东", year: 2020, gdp: 12.3 },
-    { region: "华东", year: 2021, gdp: 13.1 },
-    { region: "华东", year: 2022, gdp: 13.9 },
-    { region: "华南", year: 2020, gdp: 6.8 },
-    { region: "华南", year: 2021, gdp: 7.2 },
-    { region: "华南", year: 2022, gdp: 7.6 },
+    { region: '华北', year: 2020, gdp: 8.5 },
+    { region: '华北', year: 2021, gdp: 9.2 },
+    { region: '华北', year: 2022, gdp: 9.8 },
+    { region: '华东', year: 2020, gdp: 12.3 },
+    { region: '华东', year: 2021, gdp: 13.1 },
+    { region: '华东', year: 2022, gdp: 13.9 },
+    { region: '华南', year: 2020, gdp: 6.8 },
+    { region: '华南', year: 2021, gdp: 7.2 },
+    { region: '华南', year: 2022, gdp: 7.6 },
   ],
   dimensions: [
-    { id: "region", alias: "地区", encoding: "xAxis" }, // 地区作为X轴
-    { id: "year", alias: "年份", encoding: "column" }, // 关键：每年一列
+    { id: 'region', alias: '地区', encoding: 'xAxis' }, // 地区作为X轴
+    { id: 'year', alias: '年份', encoding: 'column' }, // 关键：每年一列
   ],
-  measures: [{ id: "gdp", alias: "GDP(万亿元)", encoding: "yAxis" }],
-};
+  measures: [{ id: 'gdp', alias: 'GDP(万亿元)', encoding: 'yAxis' }],
+}
 ```
 
 **效果**：水平排列三个子图，每个子图显示一年内各地区的GDP对比。

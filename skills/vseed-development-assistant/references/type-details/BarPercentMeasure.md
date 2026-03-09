@@ -1,4 +1,5 @@
 ### BarPercentMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

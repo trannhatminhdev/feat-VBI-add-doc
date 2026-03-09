@@ -32,11 +32,11 @@
 ```javascript
 dimensions: [
   {
-    id: "year", // dataset 中的时间字段
-    alias: "年份", // 显示别名
-    encoding: "player", // 映射到播放通道，时间轴控制
+    id: 'year', // dataset 中的时间字段
+    alias: '年份', // 显示别名
+    encoding: 'player', // 映射到播放通道，时间轴控制
   },
-];
+]
 ```
 
 ---
@@ -49,9 +49,9 @@ dimensions: [
 
 ```javascript
 dimensions: [
-  { id: "year", encoding: "player" },
-  { id: "country", encoding: "color" }, // 用颜色区分不同国家
-];
+  { id: 'year', encoding: 'player' },
+  { id: 'country', encoding: 'color' }, // 用颜色区分不同国家
+]
 ```
 
 **支持的 Encoding**：
@@ -67,10 +67,10 @@ dimensions: [
 
 ```javascript
 dimensions: [
-  { id: "year", encoding: "player" },
-  { id: "country", encoding: "color" }, // 国家用颜色
-  { id: "continent", encoding: "detail" }, // 大陆信息在详情中
-];
+  { id: 'year', encoding: 'player' },
+  { id: 'country', encoding: 'color' }, // 国家用颜色
+  { id: 'continent', encoding: 'detail' }, // 大陆信息在详情中
+]
 ```
 
 ---

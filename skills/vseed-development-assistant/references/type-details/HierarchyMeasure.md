@@ -1,5 +1,7 @@
 ### HierarchyMeasure
+
 指标配置，用于定义扇形的大小（面积）
+
 ```typescript
 export type HierarchyMeasure = BaseMeasure & {
   /**
@@ -67,6 +69,4 @@ export type BaseMeasure = {
    */
   parentId?: string
 }
-
-
 ```

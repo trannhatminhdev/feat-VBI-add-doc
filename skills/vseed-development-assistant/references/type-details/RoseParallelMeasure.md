@@ -1,4 +1,5 @@
 ### RoseParallelMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

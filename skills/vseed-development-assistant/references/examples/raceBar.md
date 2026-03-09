@@ -8,37 +8,37 @@
 
 ```javascript
 const schema = {
-  chartType: "raceBar",
+  chartType: 'raceBar',
   dataset: [
     {
       year: 2016,
-      province: "广东",
+      province: '广东',
       population: 10999,
     },
   ],
   dimensions: [
     {
-      id: "year",
-      alias: "年份",
-      encoding: "player",
+      id: 'year',
+      alias: '年份',
+      encoding: 'player',
     },
     {
-      id: "province",
-      alias: "省份",
-      encoding: "xAxis",
+      id: 'province',
+      alias: '省份',
+      encoding: 'xAxis',
     },
     {
-      id: "province",
-      alias: "省份",
-      encoding: "color",
+      id: 'province',
+      alias: '省份',
+      encoding: 'color',
     },
   ],
   measures: [
     {
-      id: "population",
-      alias: "人口数量(万人)",
-      encoding: "yAxis",
+      id: 'population',
+      alias: '人口数量(万人)',
+      encoding: 'yAxis',
     },
   ],
-};
+}
 ```

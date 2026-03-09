@@ -86,150 +86,109 @@ const theme = {
 
 ```javascript
 const theme = {
-  "enterprise-blue": {
+  'enterprise-blue': {
     isDark: false,
-    colorScheme: [
-      "#003f87",
-      "#0066cc",
-      "#3399ff",
-      "#66b3ff",
-      "#99ccff",
-      "#0052a3",
-      "#004da8",
-      "#003d82",
-    ],
-    linearColorScheme: ["#f7fbff", "#08519c"],
-    positiveColor: "#2ca02c",
-    negativeColor: "#d62728",
-    backgroundColor: "#ffffff",
+    colorScheme: ['#003f87', '#0066cc', '#3399ff', '#66b3ff', '#99ccff', '#0052a3', '#004da8', '#003d82'],
+    linearColorScheme: ['#f7fbff', '#08519c'],
+    positiveColor: '#2ca02c',
+    negativeColor: '#d62728',
+    backgroundColor: '#ffffff',
   },
-};
+}
 ```
 
 ### 深色彩虹
 
 ```javascript
 const theme = {
-  "dark-rainbow": {
+  'dark-rainbow': {
     isDark: true,
-    colorScheme: [
-      "#ff6b6b",
-      "#feca57",
-      "#48dbfb",
-      "#1dd1a1",
-      "#5f27cd",
-      "#00d2d3",
-      "#ff9ff3",
-      "#54a0ff",
-    ],
-    linearColorScheme: ["#2c3e50", "#ecf0f1"],
-    positiveColor: "#1dd1a1",
-    negativeColor: "#ff6b6b",
+    colorScheme: ['#ff6b6b', '#feca57', '#48dbfb', '#1dd1a1', '#5f27cd', '#00d2d3', '#ff9ff3', '#54a0ff'],
+    linearColorScheme: ['#2c3e50', '#ecf0f1'],
+    positiveColor: '#1dd1a1',
+    negativeColor: '#ff6b6b',
   },
-};
+}
 ```
 
 ### 热力图专用
 
 ```javascript
 const theme = {
-  "heatmap-gradient": {
+  'heatmap-gradient': {
     isDark: false,
-    colorScheme: [
-      "#313695",
-      "#4575b4",
-      "#74add1",
-      "#abd9e9",
-      "#e0f3f8",
-      "#fee090",
-      "#fdae61",
-      "#f46d43",
-    ],
+    colorScheme: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#fee090', '#fdae61', '#f46d43'],
     linearColorScheme: [
-      "#313695",
-      "#4575b4",
-      "#74add1",
-      "#abd9e9",
-      "#ffffbf",
-      "#fee090",
-      "#fdae61",
-      "#f46d43",
-      "#d73027",
+      '#313695',
+      '#4575b4',
+      '#74add1',
+      '#abd9e9',
+      '#ffffbf',
+      '#fee090',
+      '#fdae61',
+      '#f46d43',
+      '#d73027',
     ],
-    positiveColor: "#2ca02c",
-    negativeColor: "#d62728",
+    positiveColor: '#2ca02c',
+    negativeColor: '#d62728',
   },
-};
+}
 ```
 
 ### 财富分布配色（浅色）
 
 ```javascript
 const theme = {
-  "wealth-distribution": {
+  'wealth-distribution': {
     isDark: false,
     colorScheme: [
-      "#4A90A4",
-      "#9B6BA3",
-      "#5BADC6",
-      "#E8824E",
-      "#3B7A8E",
-      "#D97C3A",
-      "#6E5B9F",
-      "#48C3D8",
-      "#2D6A7F",
-      "#B85C2A",
-      "#5E4B8F",
-      "#38B3C8",
+      '#4A90A4',
+      '#9B6BA3',
+      '#5BADC6',
+      '#E8824E',
+      '#3B7A8E',
+      '#D97C3A',
+      '#6E5B9F',
+      '#48C3D8',
+      '#2D6A7F',
+      '#B85C2A',
+      '#5E4B8F',
+      '#38B3C8',
     ],
-    linearColorScheme: [
-      "#F5F5F0",
-      "#D6DFE6",
-      "#B8C9D9",
-      "#8FADC3",
-      "#6891AD",
-      "#4A7897",
-    ],
-    positiveColor: "#2FB56A",
-    negativeColor: "#E84B3C",
-    backgroundColor: "#F5F5F0",
+    linearColorScheme: ['#F5F5F0', '#D6DFE6', '#B8C9D9', '#8FADC3', '#6891AD', '#4A7897'],
+    positiveColor: '#2FB56A',
+    negativeColor: '#E84B3C',
+    backgroundColor: '#F5F5F0',
   },
-};
+}
 ```
 
 ### 工业金属配色（深色）
 
 ```javascript
 const theme = {
-  "industrial-metal": {
+  'industrial-metal': {
     isDark: true,
     colorScheme: [
-      "#3D7EA6",
-      "#5EB8D4",
-      "#8AD4E8",
-      "#B8E6F0",
-      "#2A5F82",
-      "#4A9FBF",
-      "#6AC2D8",
-      "#9AD8E8",
-      "#1E4A66",
-      "#3E8AAA",
-      "#5EB2CA",
-      "#7ECAE0",
+      '#3D7EA6',
+      '#5EB8D4',
+      '#8AD4E8',
+      '#B8E6F0',
+      '#2A5F82',
+      '#4A9FBF',
+      '#6AC2D8',
+      '#9AD8E8',
+      '#1E4A66',
+      '#3E8AAA',
+      '#5EB2CA',
+      '#7ECAE0',
     ],
-    linearColorScheme: [
-      "#1a2e3e",
-      "#2a4e6e",
-      "#3a6e8e",
-      "#5a9eae",
-      "#7abece",
-      "#9adede",
-    ],
-    positiveColor: "#4ECB71",
-    negativeColor: "#E85D4E",
-    backgroundColor: "#3a3e42",
+    linearColorScheme: ['#1a2e3e', '#2a4e6e', '#3a6e8e', '#5a9eae', '#7abece', '#9adede'],
+    positiveColor: '#4ECB71',
+    negativeColor: '#E85D4E',
+    backgroundColor: '#3a3e42',
   },
-};
+}
 ```
 
 ---

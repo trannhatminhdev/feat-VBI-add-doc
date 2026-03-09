@@ -24,12 +24,12 @@
 
 ```javascript
 // 检查必要字段
-const requiredFields = ["chartType", "dataset", "dimensions", "measures"];
+const requiredFields = ['chartType', 'dataset', 'dimensions', 'measures']
 requiredFields.forEach((field) => {
   if (!schema[field]) {
     // 提示用户补充
   }
-});
+})
 ```
 
 **关键约束补充**：
@@ -112,10 +112,10 @@ requiredFields.forEach((field) => {
 
 ```javascript
 // 添加新配置项
-schema.label = { enable: true, position: "top" };
+schema.label = { enable: true, position: 'top' }
 
 // 修改现有配置项（保留原有配置）
-schema.legend = { ...schema.legend, position: "bottom" };
+schema.legend = { ...schema.legend, position: 'bottom' }
 ```
 
 ---
@@ -180,8 +180,8 @@ python <SKILL_DIR>/scripts/generate_html.py \
 ```javascript
 schema.label = {
   enable: true,
-  position: "top",
-};
+  position: 'top',
+}
 ```
 
 ---
@@ -195,9 +195,9 @@ schema.label = {
 ```javascript
 schema.legend = {
   enable: true,
-  position: "bottom",
-  orient: "horizontal",
-};
+  position: 'bottom',
+  orient: 'horizontal',
+}
 ```
 
 ### 场景 C：添加颜色分组
@@ -210,9 +210,9 @@ schema.legend = {
 
 ```javascript
 schema.dimensions.push({
-  id: "type",
-  encoding: "color",
-});
+  id: 'type',
+  encoding: 'color',
+})
 ```
 
 ### 场景 D：添加标注线
@@ -225,11 +225,11 @@ schema.dimensions.push({
 schema.annotationHorizontalLine = [
   {
     value: 100, // 或使用 valueField 指定数据字段
-    text: "平均值",
-    lineColor: "#ff0000",
-    lineStyle: "dashed",
+    text: '平均值',
+    lineColor: '#ff0000',
+    lineStyle: 'dashed',
   },
-];
+]
 ```
 
 ### 场景 E：修改坐标轴
@@ -245,9 +245,9 @@ schema.yAxis = {
   max: 1000,
   title: {
     visible: true,
-    titleText: "销售额（万元）",
+    titleText: '销售额（万元）',
   },
-};
+}
 ```
 
 ### 场景 F：修改颜色方案
@@ -258,9 +258,9 @@ schema.yAxis = {
 
 ```javascript
 schema.color = {
-  type: "ordinal",
-  range: ["#1890ff", "#2fc25b", "#facc14", "#f04864"],
-};
+  type: 'ordinal',
+  range: ['#1890ff', '#2fc25b', '#facc14', '#f04864'],
+}
 ```
 
 ### 场景 G：添加透视分面
@@ -274,17 +274,17 @@ schema.color = {
 ```javascript
 // 添加行透视（垂直分面）
 schema.dimensions.push({
-  id: "region",
-  alias: "地区",
-  encoding: "row",
-});
+  id: 'region',
+  alias: '地区',
+  encoding: 'row',
+})
 
 // 或添加列透视（水平分面）
 schema.dimensions.push({
-  id: "region",
-  alias: "地区",
-  encoding: "column",
-});
+  id: 'region',
+  alias: '地区',
+  encoding: 'column',
+})
 ```
 
 ### 场景 H：创建度量组合图
@@ -299,21 +299,21 @@ schema.dimensions.push({
 // 重新配置 measures 的 parentId
 schema.measures = [
   {
-    id: "sales",
-    alias: "销售额",
-    parentId: "business-metrics",
+    id: 'sales',
+    alias: '销售额',
+    parentId: 'business-metrics',
   },
   {
-    id: "profit",
-    alias: "利润",
-    parentId: "business-metrics", // 与销售额同组
+    id: 'profit',
+    alias: '利润',
+    parentId: 'business-metrics', // 与销售额同组
   },
   {
-    id: "growth",
-    alias: "增长率",
-    parentId: "rate-metrics", // 独立组
+    id: 'growth',
+    alias: '增长率',
+    parentId: 'rate-metrics', // 独立组
   },
-];
+]
 ```
 
 ### 场景 I：透视 + 组合复合配置
@@ -325,29 +325,29 @@ schema.measures = [
 ```javascript
 // 添加列透视
 schema.dimensions.push({
-  id: "year",
-  alias: "年份",
-  encoding: "column",
-});
+  id: 'year',
+  alias: '年份',
+  encoding: 'column',
+})
 
 // 配置度量组合
 schema.measures = [
   {
-    id: "sales",
-    alias: "销售额",
-    parentId: "primary",
+    id: 'sales',
+    alias: '销售额',
+    parentId: 'primary',
   },
   {
-    id: "cost",
-    alias: "成本",
-    parentId: "primary", // 与销售额同子图
+    id: 'cost',
+    alias: '成本',
+    parentId: 'primary', // 与销售额同子图
   },
   {
-    id: "profitRate",
-    alias: "利润率",
-    parentId: "secondary", // 独立子图
+    id: 'profitRate',
+    alias: '利润率',
+    parentId: 'secondary', // 独立子图
   },
-];
+]
 ```
 
 **效果**：每个年份一列，每列内有两个子图（销售成本图 + 利润率图）。
@@ -426,12 +426,12 @@ schema.measures = [
 
 ```javascript
 // 只需修改 chartType，其余配置保持不变
-schema.chartType = "columnParallel";
+schema.chartType = 'columnParallel'
 ```
 
 **用户需求**："横过来"（当前图表为 `columnParallel`）
 
 ```javascript
 // 修改 chartType 为对应的 Bar 系列类型
-schema.chartType = "barParallel";
+schema.chartType = 'barParallel'
 ```

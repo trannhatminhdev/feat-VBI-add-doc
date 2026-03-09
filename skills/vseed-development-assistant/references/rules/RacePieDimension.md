@@ -39,15 +39,15 @@
 ```javascript
 // ✅ 正确：年份作为 player 维度
 dimensions: [
-  { id: "year", encoding: "player" }, // 有序时间数据
-  { id: "category", encoding: "color" }, // 扇区分类
-];
+  { id: 'year', encoding: 'player' }, // 有序时间数据
+  { id: 'category', encoding: 'color' }, // 扇区分类
+]
 
 // ❌ 错误：无序分类作为 player 维度
 dimensions: [
-  { id: "product", encoding: "player" }, // 错误！产品名称无序
-  { id: "region", encoding: "color" },
-];
+  { id: 'product', encoding: 'player' }, // 错误！产品名称无序
+  { id: 'region', encoding: 'color' },
+]
 ```
 
 ---
@@ -65,15 +65,15 @@ dimensions: [
 ```javascript
 // ✅ 正确：分类维度映射到 color
 dimensions: [
-  { id: "year", encoding: "player" },
-  { id: "category", encoding: "color" }, // 扇区分类
-];
+  { id: 'year', encoding: 'player' },
+  { id: 'category', encoding: 'color' }, // 扇区分类
+]
 
 // ❌ 错误：缺少 color 维度
 dimensions: [
-  { id: "year", encoding: "player" },
+  { id: 'year', encoding: 'player' },
   // 缺少分类维度！饼图无法显示扇区
-];
+]
 ```
 
 ---
@@ -87,9 +87,9 @@ dimensions: [
 ```javascript
 // ✅ 正确：多个维度可以映射到 player
 dimensions: [
-  { id: "year", encoding: "player" },
-  { id: "quarter", encoding: "player" }, // 支持多个 player 维度
-];
+  { id: 'year', encoding: 'player' },
+  { id: 'quarter', encoding: 'player' }, // 支持多个 player 维度
+]
 ```
 
 **其他维度可以设置多个 encoding**（用逗号分隔）：
@@ -97,9 +97,9 @@ dimensions: [
 ```javascript
 // ✅ 正确：分类维度既映射 color（扇区），又映射 tooltip（提示）
 dimensions: [
-  { id: "year", encoding: "player" },
-  { id: "category", encoding: "color,tooltip" }, // 同时用于扇区和提示
-];
+  { id: 'year', encoding: 'player' },
+  { id: 'category', encoding: 'color,tooltip' }, // 同时用于扇区和提示
+]
 ```
 
 ---
@@ -172,24 +172,24 @@ dimensions: [
 ```javascript
 // ✅ 正确的数据结构
 dataset: [
-  { year: "2020", category: "产品A", sales: 100 },
-  { year: "2020", category: "产品B", sales: 200 },
-  { year: "2020", category: "产品C", sales: 150 },
-  { year: "2021", category: "产品A", sales: 120 },
-  { year: "2021", category: "产品B", sales: 180 },
-  { year: "2021", category: "产品C", sales: 160 },
-];
+  { year: '2020', category: '产品A', sales: 100 },
+  { year: '2020', category: '产品B', sales: 200 },
+  { year: '2020', category: '产品C', sales: 150 },
+  { year: '2021', category: '产品A', sales: 120 },
+  { year: '2021', category: '产品B', sales: 180 },
+  { year: '2021', category: '产品C', sales: 160 },
+]
 
 // dimensions 配置
 dimensions: [
-  { id: "year", encoding: "player" }, // 对应 dataset 中的 year 字段
-  { id: "category", encoding: "color" }, // 对应 dataset 中的 category 字段
-];
+  { id: 'year', encoding: 'player' }, // 对应 dataset 中的 year 字段
+  { id: 'category', encoding: 'color' }, // 对应 dataset 中的 category 字段
+]
 
 // measures 配置
 measures: [
-  { id: "sales" }, // 对应 dataset 中的 sales 字段（扇区大小）
-];
+  { id: 'sales' }, // 对应 dataset 中的 sales 字段（扇区大小）
+]
 ```
 
 **关键要求**：

@@ -1,4 +1,5 @@
 ### HeatmapDimension
+
 ```typescript
 export type BaseDimension = {
   /**

@@ -27,7 +27,7 @@
 ```javascript
 // 示例：用户在场景1生成后说"为什么不显示"
 // 从历史提取刚才生成的完整 schema
-const problemSchema = extractFromHistory();
+const problemSchema = extractFromHistory()
 ```
 
 **1.2 问题描述收集**
@@ -82,12 +82,12 @@ const problemSchema = extractFromHistory();
 ```javascript
 // 错误：拼写错误
 {
-  chartType: "columns";
+  chartType: 'columns'
 }
 
 // 正确
 {
-  chartType: "column";
+  chartType: 'column'
 }
 ```
 
@@ -104,11 +104,11 @@ const problemSchema = extractFromHistory();
 
 ```javascript
 // 错误：大小写不一致
-dataset: [{ category: "类目A", value: 100 }];
-dimensions: [{ id: "Category" }]; // 'C' 大写错误
+dataset: [{ category: '类目A', value: 100 }]
+dimensions: [{ id: 'Category' }] // 'C' 大写错误
 
 // 正确：完全一致
-dimensions: [{ id: "category" }];
+dimensions: [{ id: 'category' }]
 ```
 
 ---
@@ -182,23 +182,23 @@ dimensions: [{ id: "category" }];
 
 ```javascript
 // 1. 检查 dataset 是否有数据
-console.log("dataset length:", schema.dataset.length);
+console.log('dataset length:', schema.dataset.length)
 
 // 2. 检查字段名是否匹配
-const dataFields = Object.keys(schema.dataset[0] || {});
-const dimIds = schema.dimensions.map((d) => d.id);
-const measureIds = schema.measures.map((m) => m.id);
+const dataFields = Object.keys(schema.dataset[0] || {})
+const dimIds = schema.dimensions.map((d) => d.id)
+const measureIds = schema.measures.map((m) => m.id)
 
-console.log("Dataset fields:", dataFields);
-console.log("Dimension ids:", dimIds);
-console.log("Measure ids:", measureIds);
+console.log('Dataset fields:', dataFields)
+console.log('Dimension ids:', dimIds)
+console.log('Measure ids:', measureIds)
 
 // 3. 检查是否存在不匹配
-const missingDims = dimIds.filter((id) => !dataFields.includes(id));
-const missingMeasures = measureIds.filter((id) => !dataFields.includes(id));
+const missingDims = dimIds.filter((id) => !dataFields.includes(id))
+const missingMeasures = measureIds.filter((id) => !dataFields.includes(id))
 
-if (missingDims.length) console.error("Missing dims:", missingDims);
-if (missingMeasures.length) console.error("Missing measures:", missingMeasures);
+if (missingDims.length) console.error('Missing dims:', missingDims)
+if (missingMeasures.length) console.error('Missing measures:', missingMeasures)
 ```
 
 ---
@@ -215,9 +215,9 @@ if (missingMeasures.length) console.error("Missing measures:", missingMeasures);
 ```javascript
 // 添加颜色分组
 dimensions: [
-  { id: "date" },
-  { id: "category", encoding: "color" }, // 添加颜色编码
-];
+  { id: 'date' },
+  { id: 'category', encoding: 'color' }, // 添加颜色编码
+]
 ```
 
 ---
@@ -234,9 +234,9 @@ dimensions: [
 ```javascript
 // 检查是否有不合理的轴范围
 if (schema.yAxis?.min !== undefined && schema.yAxis?.max !== undefined) {
-  const dataMax = Math.max(...schema.dataset.map((d) => d[measureId]));
+  const dataMax = Math.max(...schema.dataset.map((d) => d[measureId]))
   if (schema.yAxis.max < dataMax) {
-    console.warn("yAxis.max 小于数据最大值");
+    console.warn('yAxis.max 小于数据最大值')
   }
 }
 ```
@@ -254,13 +254,13 @@ if (schema.yAxis?.min !== undefined && schema.yAxis?.max !== undefined) {
 
 ```javascript
 // 显示标签
-schema.label = { enable: true };
+schema.label = { enable: true }
 
 // 显示图例
-schema.legend = { enable: true };
+schema.legend = { enable: true }
 
 // 显示提示
-schema.tooltip = { enable: true };
+schema.tooltip = { enable: true }
 ```
 
 ---

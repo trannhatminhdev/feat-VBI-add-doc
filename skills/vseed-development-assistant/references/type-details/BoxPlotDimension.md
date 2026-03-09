@@ -1,4 +1,5 @@
 ### BoxPlotDimension
+
 ```typescript
 export type BaseDimension = {
   /**

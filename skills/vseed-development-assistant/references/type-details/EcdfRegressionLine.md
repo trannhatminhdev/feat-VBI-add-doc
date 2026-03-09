@@ -1,5 +1,7 @@
 ### EcdfRegressionLine
+
 经验累积分布函数回归线配置, 用于展示数据的累积分布情况
+
 ```typescript
 export type EcdfRegressionLine = {
   /**

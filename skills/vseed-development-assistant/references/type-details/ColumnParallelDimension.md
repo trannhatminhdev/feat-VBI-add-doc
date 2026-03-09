@@ -1,4 +1,5 @@
 ### ColumnParallelDimension
+
 ```typescript
 export type BaseDimension = {
   /**

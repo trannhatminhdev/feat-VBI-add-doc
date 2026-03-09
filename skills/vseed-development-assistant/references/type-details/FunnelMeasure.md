@@ -1,4 +1,5 @@
 ### FunnelMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

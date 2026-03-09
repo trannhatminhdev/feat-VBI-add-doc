@@ -1,5 +1,7 @@
 ### Measure
+
 指标
+
 ```typescript
 export interface NumFormat {
   /**
@@ -211,7 +213,6 @@ export type Measure = BaseMeasure & {
 
 export type Measures = Measure[]
 
-
 export type TableMeasure = BaseMeasure & {
   /**
    * @description 指标映射的通道
@@ -237,5 +238,4 @@ export type MeasureGroup = {
 }
 
 export type MeasureTree = (TableMeasure | MeasureGroup)[]
-
 ```

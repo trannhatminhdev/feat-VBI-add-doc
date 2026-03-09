@@ -8,17 +8,17 @@
 
 ```javascript
 const schema = {
-  chartType: "pie",
+  chartType: 'pie',
   dataset: [
-    { category: "类目A", value: 300 },
-    { category: "类目B", value: 250 },
-    { category: "类目C", value: 200 },
-    { category: "类目D", value: 150 },
-    { category: "类目E", value: 100 },
+    { category: '类目A', value: 300 },
+    { category: '类目B', value: 250 },
+    { category: '类目C', value: 200 },
+    { category: '类目D', value: 150 },
+    { category: '类目E', value: 100 },
   ],
-  dimensions: [{ id: "category", encoding: "color" }],
-  measures: [{ id: "value", alias: "数值", encoding: "angle" }],
-};
+  dimensions: [{ id: 'category', encoding: 'color' }],
+  measures: [{ id: 'value', alias: '数值', encoding: 'angle' }],
+}
 ```
 
 ## 配置说明
@@ -39,17 +39,17 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "donut",
+  chartType: 'donut',
   dataset: [
-    { category: "类目A", value: 300 },
-    { category: "类目B", value: 250 },
-    { category: "类目C", value: 200 },
-    { category: "类目D", value: 150 },
-    { category: "类目E", value: 100 },
+    { category: '类目A', value: 300 },
+    { category: '类目B', value: 250 },
+    { category: '类目C', value: 200 },
+    { category: '类目D', value: 150 },
+    { category: '类目E', value: 100 },
   ],
-  dimensions: [{ id: "category", encoding: "color" }],
-  measures: [{ id: "value", alias: "数值", encoding: "angle" }],
-};
+  dimensions: [{ id: 'category', encoding: 'color' }],
+  measures: [{ id: 'value', alias: '数值', encoding: 'angle' }],
+}
 ```
 
 ## 配置说明
@@ -69,21 +69,21 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "pie",
+  chartType: 'pie',
   dataset: [
-    { category: "类目A", value: 300 },
-    { category: "类目B", value: 250 },
-    { category: "类目C", value: 200 },
-    { category: "类目D", value: 150 },
-    { category: "类目E", value: 100 },
+    { category: '类目A', value: 300 },
+    { category: '类目B', value: 250 },
+    { category: '类目C', value: 200 },
+    { category: '类目D', value: 150 },
+    { category: '类目E', value: 100 },
   ],
-  dimensions: [{ id: "category", encoding: "color" }],
-  measures: [{ id: "value", alias: "数值", encoding: "angle" }],
+  dimensions: [{ id: 'category', encoding: 'color' }],
+  measures: [{ id: 'value', alias: '数值', encoding: 'angle' }],
   label: {
     visible: true,
-    position: "outside",
+    position: 'outside',
   },
-};
+}
 ```
 
 ## 配置说明

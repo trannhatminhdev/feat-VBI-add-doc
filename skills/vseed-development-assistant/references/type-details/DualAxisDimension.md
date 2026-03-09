@@ -1,4 +1,5 @@
 ### DualAxisDimension
+
 ```typescript
 export type BaseDimension = {
   /**

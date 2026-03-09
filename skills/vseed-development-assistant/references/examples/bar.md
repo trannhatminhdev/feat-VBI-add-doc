@@ -8,17 +8,17 @@
 
 ```javascript
 const schema = {
-  chartType: "bar",
+  chartType: 'bar',
   dataset: [
-    { product: "智能手机", sales: 2500 },
-    { product: "笔记本电脑", sales: 1800 },
-    { product: "平板电脑", sales: 1200 },
-    { product: "智能手表", sales: 800 },
-    { product: "无线耳机", sales: 1500 },
+    { product: '智能手机', sales: 2500 },
+    { product: '笔记本电脑', sales: 1800 },
+    { product: '平板电脑', sales: 1200 },
+    { product: '智能手表', sales: 800 },
+    { product: '无线耳机', sales: 1500 },
   ],
-  dimensions: [{ id: "product", encoding: "yAxis" }],
-  measures: [{ id: "sales", alias: "销售额", encoding: "xAxis" }],
-};
+  dimensions: [{ id: 'product', encoding: 'yAxis' }],
+  measures: [{ id: 'sales', alias: '销售额', encoding: 'xAxis' }],
+}
 ```
 
 ## 配置说明
@@ -39,21 +39,21 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "bar",
+  chartType: 'bar',
   dataset: [
-    { product: "智能手机", region: "华北", sales: 2500 },
-    { product: "智能手机", region: "华东", sales: 2800 },
-    { product: "笔记本电脑", region: "华北", sales: 1800 },
-    { product: "笔记本电脑", region: "华东", sales: 2100 },
-    { product: "平板电脑", region: "华北", sales: 1200 },
-    { product: "平板电脑", region: "华东", sales: 1400 },
+    { product: '智能手机', region: '华北', sales: 2500 },
+    { product: '智能手机', region: '华东', sales: 2800 },
+    { product: '笔记本电脑', region: '华北', sales: 1800 },
+    { product: '笔记本电脑', region: '华东', sales: 2100 },
+    { product: '平板电脑', region: '华北', sales: 1200 },
+    { product: '平板电脑', region: '华东', sales: 1400 },
   ],
   dimensions: [
-    { id: "product", encoding: "yAxis" },
-    { id: "region", encoding: "color" },
+    { id: 'product', encoding: 'yAxis' },
+    { id: 'region', encoding: 'color' },
   ],
-  measures: [{ id: "sales", alias: "销售额", encoding: "xAxis" }],
-};
+  measures: [{ id: 'sales', alias: '销售额', encoding: 'xAxis' }],
+}
 ```
 
 ## 配置说明

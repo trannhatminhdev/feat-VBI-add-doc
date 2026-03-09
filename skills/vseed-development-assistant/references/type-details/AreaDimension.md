@@ -1,4 +1,5 @@
 ### AreaDimension
+
 ```typescript
 export type BaseDimension = {
   /**

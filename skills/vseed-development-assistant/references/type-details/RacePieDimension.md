@@ -1,5 +1,7 @@
 ### RacePieDimension
+
 维度
+
 ```typescript
 export type RacePieDimension = Omit<PieDimension, 'encoding'> & {
   /**

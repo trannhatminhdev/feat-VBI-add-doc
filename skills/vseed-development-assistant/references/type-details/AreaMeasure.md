@@ -1,4 +1,5 @@
 ### AreaMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

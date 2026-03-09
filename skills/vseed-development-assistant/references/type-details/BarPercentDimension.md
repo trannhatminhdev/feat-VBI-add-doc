@@ -1,4 +1,5 @@
 ### BarPercentDimension
+
 ```typescript
 export type BaseDimension = {
   /**

@@ -33,12 +33,12 @@
 ```javascript
 dimensions: [
   {
-    id: "year", // dataset 中的时间字段
-    alias: "年份", // 显示别名
-    encoding: "player", // 映射到播放通道，时间轴控制
+    id: 'year', // dataset 中的时间字段
+    alias: '年份', // 显示别名
+    encoding: 'player', // 映射到播放通道，时间轴控制
   },
   // ... 其他维度
-];
+]
 ```
 
 ---
@@ -79,9 +79,9 @@ dimensions: [
 ```javascript
 // ✅ 正确：多个维度可以映射到 player
 dimensions: [
-  { id: "year", encoding: "player" },
-  { id: "quarter", encoding: "player" }, // 支持多个 player 维度
-];
+  { id: 'year', encoding: 'player' },
+  { id: 'quarter', encoding: 'player' }, // 支持多个 player 维度
+]
 ```
 
 **其他维度可以设置多个 encoding**（用逗号分隔）：
@@ -89,10 +89,10 @@ dimensions: [
 ```javascript
 // ✅ 正确：第二个维度既映射 xAxis（排名），又映射 color（分组）
 dimensions: [
-  { id: "year", encoding: "player" },
-  { id: "country", encoding: "xAxis" }, // 同时用于排名和颜色分组
-  { id: "country", encoding: "color" }, // 同时用于排名和颜色分组
-];
+  { id: 'year', encoding: 'player' },
+  { id: 'country', encoding: 'xAxis' }, // 同时用于排名和颜色分组
+  { id: 'country', encoding: 'color' }, // 同时用于排名和颜色分组
+]
 ```
 
 **为什么允许多 encoding**：

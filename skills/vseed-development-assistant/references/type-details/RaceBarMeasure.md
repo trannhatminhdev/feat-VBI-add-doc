@@ -1,5 +1,7 @@
 ### RaceBarMeasure
+
 指标
+
 ```typescript
 export type RaceBarMeasure = BaseMeasure & {
   /**
@@ -69,6 +71,4 @@ export type BaseMeasure = {
    */
   parentId?: string
 }
-
-
 ```

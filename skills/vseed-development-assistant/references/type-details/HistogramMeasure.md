@@ -1,4 +1,5 @@
 ### HistogramMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

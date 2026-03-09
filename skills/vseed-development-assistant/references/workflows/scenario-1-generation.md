@@ -30,11 +30,11 @@
 ```javascript
 // TidyData 示例
 const dataset = [
-  { category: "类目A", value: 100, date: "2024-01" },
-  { category: "类目B", value: 200, date: "2024-01" },
-  { category: "类目A", value: 150, date: "2024-02" },
-  { category: "类目B", value: 180, date: "2024-02" },
-];
+  { category: '类目A', value: 100, date: '2024-01' },
+  { category: '类目B', value: 200, date: '2024-01' },
+  { category: '类目A', value: 150, date: '2024-02' },
+  { category: '类目B', value: 180, date: '2024-02' },
+]
 ```
 
 **如果用户未提供数据**：
@@ -225,10 +225,10 @@ dataset: { id: "xxx", data: [...] }  // 不要这样写
 
 ```javascript
 dimensions: [
-  { id: "category", encoding: "xAxis" }, // 类目维度
-  { id: "type", encoding: "color" }, // 颜色分组（可选）
-  { id: "region", encoding: "row" }, // 行透视（可选）
-];
+  { id: 'category', encoding: 'xAxis' }, // 类目维度
+  { id: 'type', encoding: 'color' }, // 颜色分组（可选）
+  { id: 'region', encoding: 'row' }, // 行透视（可选）
+]
 ```
 
 - `id` 必须与 dataset 字段名完全一致（大小写敏感）
@@ -241,10 +241,10 @@ dimensions: [
 
 ```javascript
 measures: [
-  { id: "value" }, // 基础配置
-  { id: "sales", alias: "销售额" }, // 带显示名称
-  { id: "revenue", parentId: "primary" }, // 度量组合（可选）
-];
+  { id: 'value' }, // 基础配置
+  { id: 'sales', alias: '销售额' }, // 带显示名称
+  { id: 'revenue', parentId: 'primary' }, // 度量组合（可选）
+]
 ```
 
 - `id` 必须与 dataset 字段名完全一致

@@ -1,4 +1,5 @@
 ### PieDimension
+
 ```typescript
 export type BaseDimension = {
   /**

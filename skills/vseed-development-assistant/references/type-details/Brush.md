@@ -1,5 +1,7 @@
 ### Brush
+
 框选配置，用于开启/关闭 brush 框选能力
+
 ```typescript
 export type Brush = {
   /**

@@ -1,4 +1,5 @@
 ### ScatterDimension
+
 ```typescript
 export type BaseDimension = {
   /**

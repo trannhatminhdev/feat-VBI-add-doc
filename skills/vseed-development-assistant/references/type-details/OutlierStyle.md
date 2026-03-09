@@ -1,5 +1,7 @@
 ### OutlierStyle
+
 异常点的样式配置，支持全局或选择器粒度生效
+
 ```typescript
 export type OutlierStyle = {
   /**
@@ -82,49 +84,48 @@ export type OutlierStyle = {
 ```
 
 ### Selector
+
 ```typescript
 export type Selector =
   | string
   | number
   | {
-      field: string;
-      operator?: ("=" | "==" | "!=" | ">" | "<" | ">=" | "<=" | "between") | null;
-      op?: ("=" | "==" | "!=" | ">" | "<" | ">=" | "<=" | "between") | null;
-      value: string | number | (string | number)[];
+      field: string
+      operator?: ('=' | '==' | '!=' | '>' | '<' | '>=' | '<=' | 'between') | null
+      op?: ('=' | '==' | '!=' | '>' | '<' | '>=' | '<=' | 'between') | null
+      value: string | number | (string | number)[]
     }
   | {
-      field: string;
-      operator?: ("in" | "not in") | null;
-      op?: ("in" | "not in") | null;
-      value: string | number | (string | number)[];
+      field: string
+      operator?: ('in' | 'not in') | null
+      op?: ('in' | 'not in') | null
+      value: string | number | (string | number)[]
     }
   | {
-      [k: string]: unknown;
-    };
-
+      [k: string]: unknown
+    }
 ```
 
 ### Selectors
+
 ```typescript
 export type Selectors = (
   | string
   | number
   | {
-      field: string;
-      operator?: ("=" | "==" | "!=" | ">" | "<" | ">=" | "<=" | "between") | null;
-      op?: ("=" | "==" | "!=" | ">" | "<" | ">=" | "<=" | "between") | null;
-      value: string | number | (string | number)[];
+      field: string
+      operator?: ('=' | '==' | '!=' | '>' | '<' | '>=' | '<=' | 'between') | null
+      op?: ('=' | '==' | '!=' | '>' | '<' | '>=' | '<=' | 'between') | null
+      value: string | number | (string | number)[]
     }
   | {
-      field: string;
-      operator?: ("in" | "not in") | null;
-      op?: ("in" | "not in") | null;
-      value: string | number | (string | number)[];
+      field: string
+      operator?: ('in' | 'not in') | null
+      op?: ('in' | 'not in') | null
+      value: string | number | (string | number)[]
     }
   | {
-      [k: string]: unknown;
+      [k: string]: unknown
     }
-)[];
-
+)[]
 ```
-  

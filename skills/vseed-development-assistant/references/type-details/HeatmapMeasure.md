@@ -1,4 +1,5 @@
 ### HeatmapMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

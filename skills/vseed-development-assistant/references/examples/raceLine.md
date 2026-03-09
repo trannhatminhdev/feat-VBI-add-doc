@@ -8,33 +8,33 @@
 
 ```javascript
 const schema = {
-  chartType: "raceLine",
+  chartType: 'raceLine',
   measures: [
     {
-      id: "sales",
-      alias: "销售额(万元)",
+      id: 'sales',
+      alias: '销售额(万元)',
       autoFormat: true,
-      encoding: "yAxis",
+      encoding: 'yAxis',
     },
   ],
   dimensions: [
     {
-      id: "date",
-      alias: "年份",
-      encoding: "xAxis",
+      id: 'date',
+      alias: '年份',
+      encoding: 'xAxis',
     },
     {
-      id: "category",
-      alias: "商品分类",
-      encoding: "color",
+      id: 'category',
+      alias: '商品分类',
+      encoding: 'color',
     },
   ],
   dataset: [
     {
-      date: "1990",
-      category: "电子产品",
+      date: '1990',
+      category: '电子产品',
       sales: 119,
     },
   ],
-};
+}
 ```

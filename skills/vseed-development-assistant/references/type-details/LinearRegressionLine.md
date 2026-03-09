@@ -1,5 +1,7 @@
 ### LinearRegressionLine
+
 线性回归线配置, 包括线性回归线的样式等.
+
 ```typescript
 export type LinearRegressionLine = {
   /**

@@ -1,4 +1,5 @@
 ### Dimensions
+
 ```typescript
 /**
  * @description 维度映射的通道
@@ -56,5 +57,4 @@ export type Dimension = BaseDimension & {
 }
 
 export type Dimensions = Dimension[]
-
 ```

@@ -1,4 +1,5 @@
 ### RadarDimension
+
 ```typescript
 export type BaseDimension = {
   /**

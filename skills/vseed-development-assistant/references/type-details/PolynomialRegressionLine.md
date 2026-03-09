@@ -1,5 +1,7 @@
 ### PolynomialRegressionLine
+
 多项式回归线配置, 包括多项式的阶数、回归线的样式等.
+
 ```typescript
 export type PolynomialRegressionLine = {
   /**

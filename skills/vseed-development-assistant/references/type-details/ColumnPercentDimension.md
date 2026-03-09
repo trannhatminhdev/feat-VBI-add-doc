@@ -1,4 +1,5 @@
 ### ColumnPercentDimension
+
 ```typescript
 export type BaseDimension = {
   /**

@@ -7,17 +7,17 @@
 ## 配置结构
 
 ```typescript
-type FieldFormatMap = Record<string, NumFormat>;
+type FieldFormatMap = Record<string, NumFormat>
 
 interface NumFormat {
-  type?: "number" | "percent" | "permille" | "scientific"; // 默认 'number'
-  ratio?: number; // 比例系数，默认 1
-  symbol?: string; // 符号，如 "万"、"K"、"%"
-  thousandSeparator?: boolean; // 千分位分隔符，默认 true
-  suffix?: string; // 后缀
-  prefix?: string; // 前缀
-  fractionDigits?: number; // 小数位数，默认 2
-  significantDigits?: number; // 有效位数（优先级高于 fractionDigits）
+  type?: 'number' | 'percent' | 'permille' | 'scientific' // 默认 'number'
+  ratio?: number // 比例系数，默认 1
+  symbol?: string // 符号，如 "万"、"K"、"%"
+  thousandSeparator?: boolean // 千分位分隔符，默认 true
+  suffix?: string // 后缀
+  prefix?: string // 前缀
+  fractionDigits?: number // 小数位数，默认 2
+  significantDigits?: number // 有效位数（优先级高于 fractionDigits）
 }
 ```
 

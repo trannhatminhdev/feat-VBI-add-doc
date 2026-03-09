@@ -1,5 +1,7 @@
 ### HierarchyDimension
+
 维度配置，用于定义数据的层级结构
+
 ```typescript
 export type HierarchyDimension = BaseDimension & {
   /**
@@ -22,6 +24,4 @@ export type BaseDimension = {
    */
   alias?: string
 }
-
-
 ```

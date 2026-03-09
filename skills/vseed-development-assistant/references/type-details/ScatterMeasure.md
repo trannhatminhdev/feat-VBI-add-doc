@@ -1,4 +1,5 @@
 ### ScatterMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

@@ -8,18 +8,18 @@
 
 ```javascript
 const schema = {
-  chartType: "line",
+  chartType: 'line',
   dataset: [
-    { month: "1月", value: 120 },
-    { month: "2月", value: 150 },
-    { month: "3月", value: 180 },
-    { month: "4月", value: 160 },
-    { month: "5月", value: 200 },
-    { month: "6月", value: 220 },
+    { month: '1月', value: 120 },
+    { month: '2月', value: 150 },
+    { month: '3月', value: 180 },
+    { month: '4月', value: 160 },
+    { month: '5月', value: 200 },
+    { month: '6月', value: 220 },
   ],
-  dimensions: [{ id: "month", encoding: "xAxis" }],
-  measures: [{ id: "value", alias: "数值", encoding: "yAxis" }],
-};
+  dimensions: [{ id: 'month', encoding: 'xAxis' }],
+  measures: [{ id: 'value', alias: '数值', encoding: 'yAxis' }],
+}
 ```
 
 ## 配置说明
@@ -40,27 +40,27 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "line",
+  chartType: 'line',
   dataset: [
-    { month: "1月", category: "产品A", value: 120 },
-    { month: "1月", category: "产品B", value: 100 },
-    { month: "2月", category: "产品A", value: 150 },
-    { month: "2月", category: "产品B", value: 130 },
-    { month: "3月", category: "产品A", value: 180 },
-    { month: "3月", category: "产品B", value: 160 },
-    { month: "4月", category: "产品A", value: 160 },
-    { month: "4月", category: "产品B", value: 180 },
-    { month: "5月", category: "产品A", value: 200 },
-    { month: "5月", category: "产品B", value: 190 },
-    { month: "6月", category: "产品A", value: 220 },
-    { month: "6月", category: "产品B", value: 210 },
+    { month: '1月', category: '产品A', value: 120 },
+    { month: '1月', category: '产品B', value: 100 },
+    { month: '2月', category: '产品A', value: 150 },
+    { month: '2月', category: '产品B', value: 130 },
+    { month: '3月', category: '产品A', value: 180 },
+    { month: '3月', category: '产品B', value: 160 },
+    { month: '4月', category: '产品A', value: 160 },
+    { month: '4月', category: '产品B', value: 180 },
+    { month: '5月', category: '产品A', value: 200 },
+    { month: '5月', category: '产品B', value: 190 },
+    { month: '6月', category: '产品A', value: 220 },
+    { month: '6月', category: '产品B', value: 210 },
   ],
   dimensions: [
-    { id: "month", encoding: "xAxis" },
-    { id: "category", encoding: "color" },
+    { id: 'month', encoding: 'xAxis' },
+    { id: 'category', encoding: 'color' },
   ],
-  measures: [{ id: "value", alias: "数值", encoding: "yAxis" }],
-};
+  measures: [{ id: 'value', alias: '数值', encoding: 'yAxis' }],
+}
 ```
 
 ## 配置说明
@@ -81,28 +81,28 @@ const schema = {
 
 ```javascript
 const schema = {
-  chartType: "line",
+  chartType: 'line',
   dataset: [
-    { month: "1月", value: 120 },
-    { month: "2月", value: 150 },
-    { month: "3月", value: 180 },
-    { month: "4月", value: 160 },
-    { month: "5月", value: 200 },
-    { month: "6月", value: 220 },
+    { month: '1月', value: 120 },
+    { month: '2月', value: 150 },
+    { month: '3月', value: 180 },
+    { month: '4月', value: 160 },
+    { month: '5月', value: 200 },
+    { month: '6月', value: 220 },
   ],
-  dimensions: [{ id: "month", encoding: "xAxis" }],
-  measures: [{ id: "value", alias: "数值", encoding: "yAxis" }],
+  dimensions: [{ id: 'month', encoding: 'xAxis' }],
+  measures: [{ id: 'value', alias: '数值', encoding: 'yAxis' }],
   pointStyle: {
     size: 6,
-    fill: "#fff",
-    stroke: "#1890ff",
+    fill: '#fff',
+    stroke: '#1890ff',
     lineWidth: 2,
   },
   label: {
     visible: true,
-    position: "top",
+    position: 'top',
   },
-};
+}
 ```
 
 ## 配置说明

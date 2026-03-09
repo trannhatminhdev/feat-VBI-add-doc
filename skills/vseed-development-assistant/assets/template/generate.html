@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>VSeed Demo</title>
 
-     <script src="https://cdn.jsdelivr.net/npm/@visactor/vseed/dist/umd/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@visactor/vseed/dist/umd/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@visactor/vchart/build/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@visactor/vtable/dist/vtable.min.js"></script>
 
@@ -16,8 +16,8 @@
         box-sizing: border-box;
       }
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
         background-color: #f8fafc;
         min-height: 100vh;
         padding: 24px;
@@ -313,7 +313,7 @@
               <button class="btn btn-secondary" id="toggle-code-btn" onclick="toggleCodePanel()">显示代码</button>
             </div>
           </div>
-          <div id="validation-result" class="validation-result" style="display: none;"></div>
+          <div id="validation-result" class="validation-result" style="display: none"></div>
           <div class="chart-container">
             <div id="chart"></div>
           </div>
@@ -331,98 +331,106 @@
 
     <script>
       // ====== SCHEMA_START ======
-       {{schema}}
+      {
+        {
+          schema
+        }
+      }
 
       // ====== SCHEMA_END ======
 
       // ===== CUSTOM_THEME_CONFIG_START ======
-      {{custom_theme_config}}
+      {
+        {
+          custom_theme_config
+        }
+      }
       // ===== CUSTOM_THEME_CONFIG_END ======
 
-      let chartInstance = null;
-      let isCodePanelVisible = false;
-      const validateThemeNames = [];
+      let chartInstance = null
+      let isCodePanelVisible = false
+      const validateThemeNames = []
 
       // 初始化代码编辑器
-      document.getElementById('code-input').value = JSON.stringify(schema, null, 2);
+      document.getElementById('code-input').value = JSON.stringify(schema, null, 2)
 
       function setCodePanelVisibility(visible) {
-        const editorContainer = document.querySelector('.editor-container');
-        const codePanel = document.querySelector('.code-panel');
-        const toggleButton = document.getElementById('toggle-code-btn');
+        const editorContainer = document.querySelector('.editor-container')
+        const codePanel = document.querySelector('.code-panel')
+        const toggleButton = document.getElementById('toggle-code-btn')
         if (!editorContainer || !codePanel || !toggleButton) {
-          return;
+          return
         }
-        isCodePanelVisible = visible;
-        codePanel.classList.toggle('is-hidden', !visible);
-        editorContainer.classList.toggle('is-code-hidden', !visible);
-        toggleButton.textContent = visible ? '隐藏代码' : '显示代码';
+        isCodePanelVisible = visible
+        codePanel.classList.toggle('is-hidden', !visible)
+        editorContainer.classList.toggle('is-code-hidden', !visible)
+        toggleButton.textContent = visible ? '隐藏代码' : '显示代码'
       }
 
       // 初始化时设置代码面板默认隐藏状态标志
-      document.addEventListener('DOMContentLoaded', function() {
-        const editorContainer = document.querySelector('.editor-container');
+      document.addEventListener('DOMContentLoaded', function () {
+        const editorContainer = document.querySelector('.editor-container')
         if (editorContainer) {
-          editorContainer.classList.add('is-code-hidden');
+          editorContainer.classList.add('is-code-hidden')
         }
-      });
+      })
 
       function toggleCodePanel() {
-        setCodePanelVisibility(!isCodePanelVisible);
+        setCodePanelVisibility(!isCodePanelVisible)
       }
 
       function showDownloadError(message) {
-        const resultEl = document.getElementById('validation-result');
-        resultEl.className = 'validation-result validation-error';
-        resultEl.textContent = message;
-        resultEl.style.display = 'block';
+        const resultEl = document.getElementById('validation-result')
+        resultEl.className = 'validation-result validation-error'
+        resultEl.textContent = message
+        resultEl.style.display = 'block'
       }
 
       function downloadImage() {
-        const container = document.getElementById('chart');
+        const container = document.getElementById('chart')
         if (!container) {
-          showDownloadError('✗ 未找到图表容器');
-          return;
+          showDownloadError('✗ 未找到图表容器')
+          return
         }
 
-        const canvas = container.querySelector('canvas');
+        const canvas = container.querySelector('canvas')
 
         if (canvas && canvas.toDataURL) {
-          const dataUrl = canvas.toDataURL('image/png');
-          const link = document.createElement('a');
-          link.href = dataUrl;
-          const title = document.getElementById('chart-title').textContent || 'chart';
-          link.download = title.replace('📊 ', '') + '.png';
-          link.click();
-          return;
+          const dataUrl = canvas.toDataURL('image/png')
+          const link = document.createElement('a')
+          link.href = dataUrl
+          const title = document.getElementById('chart-title').textContent || 'chart'
+          link.download = title.replace('📊 ', '') + '.png'
+          link.click()
+          return
         }
 
-        showDownloadError('✗ 当前图表无法导出图片');
+        showDownloadError('✗ 当前图表无法导出图片')
       }
 
       function validateSchema(schemaToValidate) {
-        const resultEl = document.getElementById('validation-result');
-        
+        const resultEl = document.getElementById('validation-result')
+
         try {
           // 使用 zVSeed 进行验证
-          const result = VSeed.zVSeed.safeParse(schemaToValidate);
-          
+          const result = VSeed.zVSeed.safeParse(schemaToValidate)
+
           if (result.success) {
-            resultEl.className = 'validation-result validation-success';
-            resultEl.textContent = '✓ Schema 验证通过';
-            resultEl.style.display = 'none';
-            return true;
+            resultEl.className = 'validation-result validation-success'
+            resultEl.textContent = '✓ Schema 验证通过'
+            resultEl.style.display = 'none'
+            return true
           } else {
-            resultEl.className = 'validation-result validation-error';
-            resultEl.textContent = '✗ 验证失败: ' + JSON.stringify(result.error?.issues || result.error, null, 2);
-            resultEl.style.display = 'block';
-            return false;
+            resultEl.className = 'validation-result validation-error'
+            resultEl.textContent = '✗ 验证失败: ' + JSON.stringify(result.error?.issues || result.error, null, 2)
+            resultEl.style.display = 'block'
+            return false
           }
         } catch (e) {
-          resultEl.className = 'validation-result validation-error';
-          resultEl.textContent = '✗ 验证异常: ' + e.message;
-          resultEl.style.display = 'block';
-          return false;
+          resultEl.className = 'validation-result validation-error'
+          resultEl.textContent = '✗ 验证异常: ' + e.message
+          resultEl.style.display = 'block'
+          return false
         }
       }
 
@@ -430,21 +438,29 @@
         VSeed.registerCustomTheme(name, () => {
           const customTheme = {
             config: {},
-          };
+          }
 
           const colorScheme = themeConfig?.colorScheme || [
-            "#3370eb", "#1bcebf", "#ffc60a", "#ed6d0c", "#dca1e4",
-            "#25b2e5", "#6dcdeb", "#288fcb", "#94b5f5", "#8f61d1"
-          ];
-          
-          const linearColorScheme = themeConfig?.linearColorScheme || ["#f7fbff", "#08519c"];
-          const positiveColor = themeConfig?.positiveColor || '#ff5f1a';
-          const negativeColor = themeConfig?.negativeColor || '#2dbeab';
-          const barMaxWidth = 52;
-          const barLikeChartTypes = ['bar', 'column', 'columnPercent', 'columnParallel', 'barPercent', 'barParallel'];
+            '#3370eb',
+            '#1bcebf',
+            '#ffc60a',
+            '#ed6d0c',
+            '#dca1e4',
+            '#25b2e5',
+            '#6dcdeb',
+            '#288fcb',
+            '#94b5f5',
+            '#8f61d1',
+          ]
 
-          const baseConfig = baseTheme.config || {};
-          Object.keys(baseConfig).forEach(key => {
+          const linearColorScheme = themeConfig?.linearColorScheme || ['#f7fbff', '#08519c']
+          const positiveColor = themeConfig?.positiveColor || '#ff5f1a'
+          const negativeColor = themeConfig?.negativeColor || '#2dbeab'
+          const barMaxWidth = 52
+          const barLikeChartTypes = ['bar', 'column', 'columnPercent', 'columnParallel', 'barPercent', 'barParallel']
+
+          const baseConfig = baseTheme.config || {}
+          Object.keys(baseConfig).forEach((key) => {
             customTheme.config[key] = {
               ...baseConfig[key],
               color: {
@@ -452,126 +468,145 @@
                 colorScheme: colorScheme,
                 linearColorScheme: linearColorScheme,
                 positiveColor: positiveColor,
-                negativeColor: negativeColor
-              }
-            };
+                negativeColor: negativeColor,
+              },
+            }
 
             if (customTheme.config[key].player) {
-              const playerColor = colorScheme[0];
-              customTheme.config[key].player.trackColor = playerColor;
-              customTheme.config[key].player.sliderHandleBorderColor = playerColor;
-              customTheme.config[key].player.startButtonColor = playerColor; 
-              customTheme.config[key].player.pauseButtonColor = playerColor; 
-              customTheme.config[key].player.backwardButtonColor = playerColor; 
-              customTheme.config[key].player.forwardButtonColor = playerColor; 
+              const playerColor = colorScheme[0]
+              customTheme.config[key].player.trackColor = playerColor
+              customTheme.config[key].player.sliderHandleBorderColor = playerColor
+              customTheme.config[key].player.startButtonColor = playerColor
+              customTheme.config[key].player.pauseButtonColor = playerColor
+              customTheme.config[key].player.backwardButtonColor = playerColor
+              customTheme.config[key].player.forwardButtonColor = playerColor
             }
 
             if (barLikeChartTypes.includes(key) || key === 'dualAxis') {
-              customTheme.config[key].barMaxWidth = barMaxWidth;
+              customTheme.config[key].barMaxWidth = barMaxWidth
             }
 
             if (key === 'boxPlot') {
-              customTheme.config[key].boxMaxWidth = barMaxWidth;
+              customTheme.config[key].boxMaxWidth = barMaxWidth
             }
-          });
+          })
 
           if (themeConfig?.backgroundColor) {
-            customTheme.background = themeConfig.backgroundColor;
+            customTheme.background = themeConfig.backgroundColor
           }
-          
-          return customTheme;
-        });
+
+          return customTheme
+        })
       }
 
       function registerDefaultTheme() {
         // 注册内置主题
         registerThemeByType('dark', VSeed.darkTheme(), {
-          colorScheme: ["#3370eb", "#1bcebf", "#ffc60a", "#ed6d0c", "#dca1e4", "#25b2e5", "#52c41a", "#f14e5a", "#8e5cf7", "#ff9c6e"]
-        });
+          colorScheme: [
+            '#3370eb',
+            '#1bcebf',
+            '#ffc60a',
+            '#ed6d0c',
+            '#dca1e4',
+            '#25b2e5',
+            '#52c41a',
+            '#f14e5a',
+            '#8e5cf7',
+            '#ff9c6e',
+          ],
+        })
         registerThemeByType('light', VSeed.lightTheme(), {
           colorScheme: [
-            '#1dadff', '#45e171', '#b284f0', '#6380e8', '#f7bb55', 
-            '#f17853', '#29e9d1', '#ff6ad5', '#f95d6a', '#aef432'
-          ]
-        });
+            '#1dadff',
+            '#45e171',
+            '#b284f0',
+            '#6380e8',
+            '#f7bb55',
+            '#f17853',
+            '#29e9d1',
+            '#ff6ad5',
+            '#f95d6a',
+            '#aef432',
+          ],
+        })
 
-        validateThemeNames.push('dark');
-        validateThemeNames.push('light');
+        validateThemeNames.push('dark')
+        validateThemeNames.push('light')
 
         // 注册自定义主题（从 custom_theme_config 占位符读取）
         if (customThemeConfig && typeof customThemeConfig === 'object') {
-          Object.keys(customThemeConfig).forEach(themeName => {
-            const themeConfig = customThemeConfig[themeName];
-            if (!themeConfig) return;
+          Object.keys(customThemeConfig).forEach((themeName) => {
+            const themeConfig = customThemeConfig[themeName]
+            if (!themeConfig) return
 
-            validateThemeNames.push(themeName);
-            
+            validateThemeNames.push(themeName)
+
             // 根据 isDark 选择基础主题
-            const baseTheme = themeConfig.isDark ? VSeed.darkTheme() : VSeed.lightTheme();
-            
+            const baseTheme = themeConfig.isDark ? VSeed.darkTheme() : VSeed.lightTheme()
+
             // 注册自定义主题，传入除 isDark 外的其他配置
-            const { isDark, ...themeSettings } = themeConfig;
-            registerThemeByType(themeName, baseTheme, themeSettings);
-          });
+            const { isDark, ...themeSettings } = themeConfig
+            registerThemeByType(themeName, baseTheme, themeSettings)
+          })
         }
       }
 
       // 获取当前系统主题（light 或 dark）
       function getSystemTheme() {
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          return 'dark';
+          return 'dark'
         }
-        return 'light';
+        return 'light'
       }
 
       function resolveThemeMode(schemaConfig) {
         if (schemaConfig?.theme && customThemeConfig?.[schemaConfig.theme]) {
-          const isDark = customThemeConfig[schemaConfig.theme]?.isDark;
-          if (isDark === true) return 'dark';
-          if (isDark === false) return 'light';
+          const isDark = customThemeConfig[schemaConfig.theme]?.isDark
+          if (isDark === true) return 'dark'
+          if (isDark === false) return 'light'
         }
 
         if (schemaConfig?.theme === 'dark' || schemaConfig?.theme === 'light') {
-          return schemaConfig.theme;
+          return schemaConfig.theme
         }
 
-        return getSystemTheme();
+        return getSystemTheme()
       }
 
       function applyPageTheme(mode) {
-        document.body.classList.toggle('is-dark', mode === 'dark');
-        document.body.classList.toggle('is-light', mode === 'light');
+        document.body.classList.toggle('is-dark', mode === 'dark')
+        document.body.classList.toggle('is-light', mode === 'light')
       }
 
       function renderChart() {
-        const codeInput = document.getElementById('code-input').value;
-        
-        let parsedSchema;
+        const codeInput = document.getElementById('code-input').value
+
+        let parsedSchema
         try {
-          parsedSchema = JSON.parse(codeInput);
+          parsedSchema = JSON.parse(codeInput)
         } catch (e) {
-          const resultEl = document.getElementById('validation-result');
-          resultEl.className = 'validation-result validation-error';
-          resultEl.textContent = '✗ JSON 解析错误: ' + e.message;
-          resultEl.style.display = 'block';
-          return;
+          const resultEl = document.getElementById('validation-result')
+          resultEl.className = 'validation-result validation-error'
+          resultEl.textContent = '✗ JSON 解析错误: ' + e.message
+          resultEl.style.display = 'block'
+          return
         }
 
         // 验证 schema
-        const isValid = validateSchema(parsedSchema);
-        
+        const isValid = validateSchema(parsedSchema)
+
         if (!isValid) {
-          return;
+          return
         }
 
         // 销毁旧图表
         if (chartInstance) {
-          chartInstance.release();
-          chartInstance = null;
+          chartInstance.release()
+          chartInstance = null
         }
 
         // 清空容器
-        document.getElementById('chart').innerHTML = '';
+        document.getElementById('chart').innerHTML = ''
 
         // 渲染新图表
         const {
@@ -585,15 +620,15 @@
           ColorIdEncoding,
           DATUM_HIDE_KEY,
         } = window.VSeed
-        const { ListTable, PivotTable, PivotChart } = window.VTable;
-        const { VChart } = window.VChart;
+        const { ListTable, PivotTable, PivotChart } = window.VTable
+        const { VChart } = window.VChart
 
-        const preferredTheme = resolveThemeMode(parsedSchema);
-        applyPageTheme(preferredTheme);
+        const preferredTheme = resolveThemeMode(parsedSchema)
+        applyPageTheme(preferredTheme)
 
         // 如果用户未指定主题，则根据系统主题自动设置
         if (!parsedSchema.theme || !validateThemeNames.includes(parsedSchema.theme)) {
-          parsedSchema.theme = preferredTheme;
+          parsedSchema.theme = preferredTheme
         }
 
         const container = document.getElementById('chart')
@@ -611,7 +646,7 @@
                 filteredValues: args.value,
               },
             ])
-          })   
+          })
 
           chartInstance.on('legend_change', (args) => {
             const maxValue = args.value[1]
@@ -646,7 +681,7 @@
           })
           window.pivotChart = chartInstance
         } else if (isVChart(parsedSchema)) {
-          chartInstance = new VChart(spec, { dom: container})
+          chartInstance = new VChart(spec, { dom: container })
           chartInstance.renderSync()
 
           chartInstance.on('brushEnd', (e) => {
@@ -665,48 +700,46 @@
       }
 
       // 页面加载时自动渲染
-      window.onload = function() {
+      window.onload = function () {
         // 渲染新图表
-        const {
-          registerAll,
-        } = window.VSeed
-        const { register } = window.VTable;
-        const { VChart } = window.VChart;
+        const { registerAll } = window.VSeed
+        const { register } = window.VTable
+        const { VChart } = window.VChart
 
-        registerAll();
-        registerDefaultTheme(); // 覆盖默认的两套主题
+        registerAll()
+        registerDefaultTheme() // 覆盖默认的两套主题
         register.chartModule('vchart', VChart)
 
-        renderChart();
-        
+        renderChart()
+
         // 添加编辑器实时更新监听
-        const codeInput = document.getElementById('code-input');
-        let debounceTimer = null;
-        
+        const codeInput = document.getElementById('code-input')
+        let debounceTimer = null
+
         // 使用防抖处理，避免频繁重新渲染
-        codeInput.addEventListener('input', function() {
-          clearTimeout(debounceTimer);
+        codeInput.addEventListener('input', function () {
+          clearTimeout(debounceTimer)
           debounceTimer = setTimeout(() => {
-            renderChart();
-          }, 500); // 500ms 延迟
-        });
-        
+            renderChart()
+          }, 500) // 500ms 延迟
+        })
+
         // 也可以监听键盘事件，提供更好的响应
-        codeInput.addEventListener('keyup', function(e) {
+        codeInput.addEventListener('keyup', function (e) {
           // Ctrl+Enter 立即渲染
           if (e.ctrlKey && e.key === 'Enter') {
-            clearTimeout(debounceTimer);
-            renderChart();
+            clearTimeout(debounceTimer)
+            renderChart()
           }
-        });
+        })
 
         // 监听系统主题变化，自动重新渲染图表
         if (window.matchMedia) {
-          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
-            renderChart();
-          });
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+            renderChart()
+          })
         }
-      };
+      }
     </script>
   </body>
 </html>

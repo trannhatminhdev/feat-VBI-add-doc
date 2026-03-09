@@ -1,5 +1,7 @@
 ### KdeRegressionLine
+
 核密度回归线配置, 用于展示数据的趋势和分布情况
+
 ```typescript
 export type KdeRegressionLine = {
   /**

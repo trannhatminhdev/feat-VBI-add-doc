@@ -1,5 +1,7 @@
 ### Label
+
 标签配置, 用于定义图表的数据标签, 包括数据标签的位置, 格式, 样式等.
+
 ```typescript
 export interface NumFormat {
   /**
@@ -184,49 +186,48 @@ export type Label = {
 ```
 
 ### Selector
+
 ```typescript
 export type Selector =
   | string
   | number
   | {
-      field: string;
-      operator?: ("=" | "==" | "!=" | ">" | "<" | ">=" | "<=" | "between") | null;
-      op?: ("=" | "==" | "!=" | ">" | "<" | ">=" | "<=" | "between") | null;
-      value: string | number | (string | number)[];
+      field: string
+      operator?: ('=' | '==' | '!=' | '>' | '<' | '>=' | '<=' | 'between') | null
+      op?: ('=' | '==' | '!=' | '>' | '<' | '>=' | '<=' | 'between') | null
+      value: string | number | (string | number)[]
     }
   | {
-      field: string;
-      operator?: ("in" | "not in") | null;
-      op?: ("in" | "not in") | null;
-      value: string | number | (string | number)[];
+      field: string
+      operator?: ('in' | 'not in') | null
+      op?: ('in' | 'not in') | null
+      value: string | number | (string | number)[]
     }
   | {
-      [k: string]: unknown;
-    };
-
+      [k: string]: unknown
+    }
 ```
 
 ### Selectors
+
 ```typescript
 export type Selectors = (
   | string
   | number
   | {
-      field: string;
-      operator?: ("=" | "==" | "!=" | ">" | "<" | ">=" | "<=" | "between") | null;
-      op?: ("=" | "==" | "!=" | ">" | "<" | ">=" | "<=" | "between") | null;
-      value: string | number | (string | number)[];
+      field: string
+      operator?: ('=' | '==' | '!=' | '>' | '<' | '>=' | '<=' | 'between') | null
+      op?: ('=' | '==' | '!=' | '>' | '<' | '>=' | '<=' | 'between') | null
+      value: string | number | (string | number)[]
     }
   | {
-      field: string;
-      operator?: ("in" | "not in") | null;
-      op?: ("in" | "not in") | null;
-      value: string | number | (string | number)[];
+      field: string
+      operator?: ('in' | 'not in') | null
+      op?: ('in' | 'not in') | null
+      value: string | number | (string | number)[]
     }
   | {
-      [k: string]: unknown;
+      [k: string]: unknown
     }
-)[];
-
+)[]
 ```
-  

@@ -1,4 +1,5 @@
 ### HistogramDimension
+
 ```typescript
 export type BaseDimension = {
   /**

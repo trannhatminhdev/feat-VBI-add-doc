@@ -1,4 +1,5 @@
 ### ColumnDimension
+
 ```typescript
 export type BaseDimension = {
   /**

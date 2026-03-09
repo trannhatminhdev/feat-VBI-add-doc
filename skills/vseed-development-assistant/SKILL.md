@@ -22,15 +22,15 @@ After the first chart is generated, stay in **continuous editing mode** — incr
 
 ## Knowledge Base
 
-| Resource           | Path                                   | When to Read                                            |
-| ------------------ | -------------------------------------- | ------------------------------------------------------- |
-| **Top-Key Index**  | `references/top-keys/{chartType}.json` | Every generate / edit / diagnose — find `componentName` |
-| **Type Details**   | `references/type-details/*.md`         | Before generating any config — field structure           |
-| **Rules**          | `references/rules/*.md`                | Before generating any config — value constraints         |
-| **Common Workflow**| `references/common-workflow.md`        | 3-step lookup, schema constraints, HTML output flow     |
-| **Chart Guide**    | `references/chart-type-guide.md`       | Chart type selection                                    |
-| **Theme Guide**    | `references/theme-config-guide.md`     | Color / theme customization                             |
-| **Examples**       | `references/examples/*.md`             | Full schema examples                                    |
+| Resource            | Path                                   | When to Read                                            |
+| ------------------- | -------------------------------------- | ------------------------------------------------------- |
+| **Top-Key Index**   | `references/top-keys/{chartType}.json` | Every generate / edit / diagnose — find `componentName` |
+| **Type Details**    | `references/type-details/*.md`         | Before generating any config — field structure          |
+| **Rules**           | `references/rules/*.md`                | Before generating any config — value constraints        |
+| **Common Workflow** | `references/common-workflow.md`        | 3-step lookup, schema constraints, HTML output flow     |
+| **Chart Guide**     | `references/chart-type-guide.md`       | Chart type selection                                    |
+| **Theme Guide**     | `references/theme-config-guide.md`     | Color / theme customization                             |
+| **Examples**        | `references/examples/*.md`             | Full schema examples                                    |
 
 ### Config Lookup (3 Steps)
 
@@ -52,11 +52,11 @@ Identify the user's scenario, then follow the corresponding workflow document.
 
 Once a chart exists in conversation, default to Scenario 2 for subsequent requests. Return to Scenario 1 only on explicit "regenerate" or a fundamentally different chart intent.
 
-| Scenario       | Trigger                                                          | Workflow                                        |
-| -------------- | ---------------------------------------------------------------- | ----------------------------------------------- |
-| **1 Generate** | From scratch ("create …" / "draw …" / "帮我画…" / "生成…")       | `references/workflows/scenario-1-generation.md` |
+| Scenario       | Trigger                                                                     | Workflow                                        |
+| -------------- | --------------------------------------------------------------------------- | ----------------------------------------------- |
+| **1 Generate** | From scratch ("create …" / "draw …" / "帮我画…" / "生成…")                  | `references/workflows/scenario-1-generation.md` |
 | **2 Edit**     | Modify existing config (add / change / remove / switch / 加 / 改 / 换 / 删) | `references/workflows/scenario-2-editing.md`    |
-| **3 Diagnose** | Problem report ("not shown" / "error" / "不显示" / "报错")        | `references/workflows/scenario-3-diagnosis.md`  |
+| **3 Diagnose** | Problem report ("not shown" / "error" / "不显示" / "报错")                  | `references/workflows/scenario-3-diagnosis.md`  |
 
 In Scenario 2, never edit generated HTML directly — always update the schema first, then regenerate HTML through the schema → HTML flow.
 
@@ -88,17 +88,17 @@ In Scenario 2, never edit generated HTML directly — always update the schema f
 
 ### Encoding Quick Reference
 
-| Chart Type       | Dimension Encoding             | Measure Encoding                 |
-| ---------------- | ------------------------------ | -------------------------------- |
-| column/area/line | xAxis, color, row, column      | yAxis                            |
-| bar              | yAxis, color, row, column      | xAxis                            |
-| pie/donut        | color                          | angle                            |
-| scatter          | color                          | xAxis, yAxis, size               |
-| radar/rose       | angle, color                   | radius                           |
-| heatmap          | xAxis, yAxis                   | color                            |
-| funnel           | color                          | size                             |
-| dualAxis         | xAxis, color                   | primaryYAxis, secondaryYAxis     |
-| race* series     | player + base-chart encoding   | same as base chart               |
+| Chart Type       | Dimension Encoding           | Measure Encoding             |
+| ---------------- | ---------------------------- | ---------------------------- |
+| column/area/line | xAxis, color, row, column    | yAxis                        |
+| bar              | yAxis, color, row, column    | xAxis                        |
+| pie/donut        | color                        | angle                        |
+| scatter          | color                        | xAxis, yAxis, size           |
+| radar/rose       | angle, color                 | radius                       |
+| heatmap          | xAxis, yAxis                 | color                        |
+| funnel           | color                        | size                         |
+| dualAxis         | xAxis, color                 | primaryYAxis, secondaryYAxis |
+| race\* series    | player + base-chart encoding | same as base chart           |
 
 When comparing **multiple independent metrics** (e.g. "income vs expense"), prefer `columnParallel` over `column` — `column` stacks, `columnParallel` places side by side. See `references/chart-type-guide.md`.
 

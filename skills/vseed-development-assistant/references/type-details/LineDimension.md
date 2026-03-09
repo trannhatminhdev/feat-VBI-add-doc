@@ -1,4 +1,5 @@
 ### LineDimension
+
 ```typescript
 export type BaseDimension = {
   /**

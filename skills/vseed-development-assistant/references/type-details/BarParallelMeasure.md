@@ -1,4 +1,5 @@
 ### BarParallelMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

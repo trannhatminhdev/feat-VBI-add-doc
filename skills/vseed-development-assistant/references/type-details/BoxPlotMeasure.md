@@ -1,4 +1,5 @@
 ### BoxPlotMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

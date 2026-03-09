@@ -1,4 +1,5 @@
 ### RoseParallelDimension
+
 ```typescript
 export type BaseDimension = {
   /**

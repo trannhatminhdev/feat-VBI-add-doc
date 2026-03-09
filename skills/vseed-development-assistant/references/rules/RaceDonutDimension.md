@@ -39,15 +39,15 @@
 ```javascript
 // ✅ 正确：年份作为 player 维度
 dimensions: [
-  { id: "year", encoding: "player" }, // 有序时间数据
-  { id: "category", encoding: "color" }, // 环形扇区分类
-];
+  { id: 'year', encoding: 'player' }, // 有序时间数据
+  { id: 'category', encoding: 'color' }, // 环形扇区分类
+]
 
 // ❌ 错误：无序分类作为 player 维度
 dimensions: [
-  { id: "product", encoding: "player" }, // 错误！产品名称无序
-  { id: "region", encoding: "color" },
-];
+  { id: 'product', encoding: 'player' }, // 错误！产品名称无序
+  { id: 'region', encoding: 'color' },
+]
 ```
 
 ---
@@ -65,15 +65,15 @@ dimensions: [
 ```javascript
 // ✅ 正确：分类维度映射到 color
 dimensions: [
-  { id: "year", encoding: "player" },
-  { id: "category", encoding: "color" }, // 环形扇区分类
-];
+  { id: 'year', encoding: 'player' },
+  { id: 'category', encoding: 'color' }, // 环形扇区分类
+]
 
 // ❌ 错误：缺少 color 维度
 dimensions: [
-  { id: "year", encoding: "player" },
+  { id: 'year', encoding: 'player' },
   // 缺少分类维度！环形图无法显示扇区
-];
+]
 ```
 
 ---
@@ -87,9 +87,9 @@ dimensions: [
 ```javascript
 // ✅ 正确：多个维度可以映射到 player
 dimensions: [
-  { id: "year", encoding: "player" },
-  { id: "quarter", encoding: "player" }, // 支持多个 player 维度
-];
+  { id: 'year', encoding: 'player' },
+  { id: 'quarter', encoding: 'player' }, // 支持多个 player 维度
+]
 ```
 
 ---

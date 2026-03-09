@@ -1,5 +1,7 @@
 ### LogisticRegressionLine
+
 逻辑回归线配置, 包括逻辑回归线的样式等.
+
 ```typescript
 export type LogisticRegressionLine = {
   /**

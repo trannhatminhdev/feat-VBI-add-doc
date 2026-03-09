@@ -1,4 +1,5 @@
 ### DimensionTree
+
 ```typescript
 /**
  * @description 维度映射的通道
@@ -57,7 +58,6 @@ export type Dimension = BaseDimension & {
 
 export type Dimensions = Dimension[]
 
-
 export type TableDimension = BaseDimension & {
   /**
    * @description 维度映射的通道
@@ -77,5 +77,4 @@ export type DimensionGroup = {
 }
 
 export type DimensionTree = (TableDimension | DimensionGroup)[]
-
 ```

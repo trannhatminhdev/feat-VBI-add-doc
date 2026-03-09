@@ -1,4 +1,5 @@
 ### TableMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

@@ -1,5 +1,7 @@
 ### SortLegend
+
 图例排序配置
+
 ```typescript
 export type SortLegend = {
   /**

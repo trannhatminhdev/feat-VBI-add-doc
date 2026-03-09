@@ -1,5 +1,7 @@
 ### RaceBarDimension
+
 维度
+
 ```typescript
 export type RaceBarDimension = BaseDimension & {
   /**
@@ -26,6 +28,4 @@ export type BaseDimension = {
    */
   alias?: string
 }
-
-
 ```

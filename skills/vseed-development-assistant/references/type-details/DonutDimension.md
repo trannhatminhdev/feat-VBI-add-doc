@@ -1,4 +1,5 @@
 ### DonutDimension
+
 ```typescript
 export type BaseDimension = {
   /**

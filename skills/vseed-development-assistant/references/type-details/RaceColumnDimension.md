@@ -1,5 +1,7 @@
 ### RaceColumnDimension
+
 第一个维度映射到player，第二个维度映射到X轴
+
 ```typescript
 export type RaceColumnDimension = BaseDimension & {
   /**
@@ -26,6 +28,4 @@ export type BaseDimension = {
    */
   alias?: string
 }
-
-
 ```

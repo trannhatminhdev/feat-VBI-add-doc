@@ -1,4 +1,5 @@
 ### LineMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

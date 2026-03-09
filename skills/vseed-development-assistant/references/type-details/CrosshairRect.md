@@ -1,5 +1,7 @@
 ### CrosshairRect
+
 十字线配置，用于展示数据的精确值
+
 ```typescript
 export type CrosshairRect = {
   /**

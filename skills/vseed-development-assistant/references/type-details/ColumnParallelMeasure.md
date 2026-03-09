@@ -1,4 +1,5 @@
 ### ColumnParallelMeasure
+
 ```typescript
 export type BaseMeasure = {
   /**

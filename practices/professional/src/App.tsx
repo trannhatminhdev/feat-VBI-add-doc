@@ -448,6 +448,7 @@ export function APP() {
     }
   };
 
+<<<<<<< HEAD
   const handleAddMeasureFromDimension = (field: string) => {
     if (!builderRef.current?.measures || !builderRef.current.doc) {
       return;
@@ -475,6 +476,8 @@ export function APP() {
     }
   };
 
+=======
+>>>>>>> a8e1b6dcf (docs: add skill)
   const handleDropMeasureToEncoding = (
     field: string,
     encoding: EncodingChannel,

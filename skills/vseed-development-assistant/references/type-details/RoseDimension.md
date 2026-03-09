@@ -1,4 +1,5 @@
 ### RoseDimension
+
 ```typescript
 export type BaseDimension = {
   /**

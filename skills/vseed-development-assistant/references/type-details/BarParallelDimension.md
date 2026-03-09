@@ -1,4 +1,5 @@
 ### BarParallelDimension
+
 ```typescript
 export type BaseDimension = {
   /**

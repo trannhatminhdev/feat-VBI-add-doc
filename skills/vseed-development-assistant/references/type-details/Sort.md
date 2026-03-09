@@ -1,5 +1,7 @@
 ### Sort
+
 排序配置，用于控制维度值的排序方式
+
 ```typescript
 export type Sort = {
   /**
