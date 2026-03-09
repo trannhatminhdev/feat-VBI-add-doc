@@ -68,6 +68,7 @@
     "typescript": "5.9.3",
     "typescript-eslint": "8.48.0",
     "vi-canvas-mock": "^1.0.0",
+    "ts-morph": "26.0.0",
     "vitest": "3.2.4"
   },
   "sideEffects": false,

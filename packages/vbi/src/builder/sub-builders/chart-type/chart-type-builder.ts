@@ -3,11 +3,15 @@ import { ObserveCallback } from 'src/types'
 import * as Y from 'yjs'
 
 /**
- * @description 图表类型构建器 - 用于切换图表显示形式, 支持：表格、柱状图、折线图、饼图、散点图等
+ * @description 图表类型构建器，用于切换和获取图表类型。支持表格、柱状图、折线图、饼图、散点图等多种图表类型
  */
 export class ChartTypeBuilder {
   private dsl: Y.Map<any>
-  constructor(doc: Y.Doc, dsl: Y.Map<any>) {
+
+  /**
+   * @description 构造函数
+   */
+  constructor(_doc: Y.Doc, dsl: Y.Map<any>) {
     this.dsl = dsl
   }
 
@@ -15,26 +19,21 @@ export class ChartTypeBuilder {
    * @description 监听图表类型变化
    * @param callback - 回调函数
    */
-  observe(callback: ObserveCallback) {
+  /**
+   * @description 监听图表类型变化，返回取消监听的函数
+   * @param callback - 回调函数
+   * @returns 取消监听的函数
+   */
+  observe(callback: ObserveCallback): () => void {
     const wrapper: ObserveCallback = (e, trans) => {
       if (e.keysChanged.has('chartType')) {
         callback(e, trans)
       }
     }
     this.dsl.observe(wrapper)
-  }
-
-  /**
-   * @description 取消监听图表类型变化
-   * @param callback - 回调函数
-   */
-  unobserve(callback: ObserveCallback) {
-    const wrapper: ObserveCallback = (e, trans) => {
-      if (e.keysChanged.has('chartType')) {
-        callback(e, trans)
-      }
+    return () => {
+      this.dsl.unobserve(wrapper)
     }
-    this.dsl.unobserve(wrapper)
   }
 
   /**
@@ -47,15 +46,13 @@ export class ChartTypeBuilder {
 
   /**
    * @description 获取当前图表类型
-   * @returns 图表类型
    */
   getChartType(): string {
     return this.dsl.get('chartType') || 'table'
   }
 
   /**
-   * @description 获取当前图表类型
-   * @returns 图表类型
+   * @description 导出为 JSON
    */
   toJson(): string {
     return this.dsl.get('chartType') || 'table'
@@ -63,14 +60,11 @@ export class ChartTypeBuilder {
 
   /**
    * @description 获取所有支持的图表类型
-   * @returns 图表类型数组
    */
   getAvailableChartTypes(): string[] {
     return [
-      // Table
       ChartTypeEnum.Table,
       ChartTypeEnum.PivotTable,
-      // cartesian
       ChartTypeEnum.Line,
       ChartTypeEnum.Column,
       ChartTypeEnum.ColumnPercent,
@@ -81,13 +75,11 @@ export class ChartTypeBuilder {
       ChartTypeEnum.AreaPercent,
       ChartTypeEnum.DualAxis,
       ChartTypeEnum.Scatter,
-      // Polar
       ChartTypeEnum.Rose,
       ChartTypeEnum.RoseParallel,
       ChartTypeEnum.Pie,
       ChartTypeEnum.Donut,
       ChartTypeEnum.Radar,
-      // Other
       ChartTypeEnum.Funnel,
       ChartTypeEnum.Heatmap,
       ChartTypeEnum.Boxplot,

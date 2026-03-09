@@ -2,26 +2,31 @@
   {
     "type": "file",
     "name": "chart-type",
-    "label": "chartType"
+    "label": "chartType",
+    "collapsed": true
   },
   {
-    "type": "file",
+    "type": "dir",
     "name": "measures",
-    "label": "measures"
+    "label": "measures",
+    "collapsed": true
   },
   {
-    "type": "file",
+    "type": "dir",
     "name": "dimensions",
-    "label": "dimensions"
+    "label": "dimensions",
+    "collapsed": true
   },
   {
-    "type": "file",
+    "type": "dir",
     "name": "where-filters",
-    "label": "whereFilters"
+    "label": "whereFilters",
+    "collapsed": true
   },
   {
-    "type": "file",
+    "type": "dir",
     "name": "having-filters",
-    "label": "havingFilters"
+    "label": "havingFilters",
+    "collapsed": true
   }
 ]

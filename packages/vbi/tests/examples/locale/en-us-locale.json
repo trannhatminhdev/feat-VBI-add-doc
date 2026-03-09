@@ -15,5 +15,5 @@
     "version": 1,
     "limit": 50
   },
-  "code": "const applyBuilder = (builder) => { builder.setLocale('en-US'); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setLocale('en-US'); }"
 }

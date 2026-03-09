@@ -1,34 +1,51 @@
 # measures
 
-度量构建器，用于添加、修改、删除度量配置
-
-## 构造函数
-
-```typescript
-new measures(doc: Y.Doc)
-```
+度量构建器，用于添加、修改、删除度量配置。度量是数据的数值字段，如：销售额、利润、数量
 
 ## 属性
 
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| **dsl** | `Y.Map<any>` | - |
 ## 方法
 
-### add
-
-度量构建器 - 用于构建和管理图表度量
+### constructor
 
 **定义**:
 
 ```typescript
-add(field: string): MeasureNodeBuilder
+constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 ```
-
-**返回**: `MeasureNodeBuilder`
 
 **参数**:
 
-| 参数 | 类型 |
-| --- | --- |
-| `field` | string |
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `_doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+
+
+### add
+
+添加一个度量
+
+**定义**:
+
+```typescript
+add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
+```
+
+**返回**: `MeasuresBuilder`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `field` | string | - 字段名 |
+| `callback` | (node: MeasureNodeBuilder) => void | - 回调函数 |
+
+
 
 ### remove
 
@@ -37,20 +54,43 @@ add(field: string): MeasureNodeBuilder
 **定义**:
 
 ```typescript
-remove(field: VBIMeasure['field']): any
+remove(field: VBIMeasure['field']): MeasuresBuilder
 ```
 
-**返回**: `any`
+**返回**: `MeasuresBuilder`
 
 **参数**:
 
-| 参数 | 类型 |
-| --- | --- |
-| `field` | VBIMeasure['field'] |
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `field` | VBIMeasure['field'] | - 字段名 |
+
+
+
+### update
+
+更新度量配置
+
+**定义**:
+
+```typescript
+update(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
+```
+
+**返回**: `MeasuresBuilder`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `field` | string | - 字段名 |
+| `callback` | (node: MeasureNodeBuilder) => void | - 回调函数 |
+
+
 
 ### find
 
-更新度量配置
+根据字段名查找度量
 
 **定义**:
 
@@ -62,9 +102,11 @@ find(field: VBIMeasure['field']): MeasureNodeBuilder | undefined
 
 **参数**:
 
-| 参数 | 类型 |
-| --- | --- |
-| `field` | VBIMeasure['field'] |
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `field` | VBIMeasure['field'] | - 字段名 |
+
+
 
 ### findAll
 
@@ -78,6 +120,8 @@ findAll(): MeasureNodeBuilder[]
 
 **返回**: `MeasureNodeBuilder[]`
 
+
+
 ### toJson
 
 导出所有度量为 JSON 数组
@@ -90,6 +134,8 @@ toJson(): VBIMeasure[]
 
 **返回**: `VBIMeasure[]`
 
+
+
 ### observe
 
 监听度量变化
@@ -97,34 +143,18 @@ toJson(): VBIMeasure[]
 **定义**:
 
 ```typescript
-observe(callback: ObserveCallback): any
+observe(callback: ObserveCallback): () => void
 ```
 
-**返回**: `any`
+**返回**: `() => void`
 
 **参数**:
 
-| 参数 | 类型 |
-| --- | --- |
-| `callback` | ObserveCallback |
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `callback` | ObserveCallback | - 回调函数 |
 
-### unobserve
 
-取消监听度量变化
-
-**定义**:
-
-```typescript
-unobserve(callback: ObserveCallback): any
-```
-
-**返回**: `any`
-
-**参数**:
-
-| 参数 | 类型 |
-| --- | --- |
-| `callback` | ObserveCallback |
 
 ### isMeasureNode
 
@@ -138,9 +168,11 @@ isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
 
 **参数**:
 
-| 参数 | 类型 |
-| --- | --- |
-| `node` | VBIMeasureTree[0] |
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `node` | VBIMeasureTree[0] | - |
+
+
 
 ### isMeasureGroup
 
@@ -154,7 +186,7 @@ isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
 
 **参数**:
 
-| 参数 | 类型 |
-| --- | --- |
-| `node` | VBIMeasureTree[0] |
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `node` | VBIMeasureTree[0] | - |
 

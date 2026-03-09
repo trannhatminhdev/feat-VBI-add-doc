@@ -1,24 +1,20 @@
 import * as Y from 'yjs'
 import type { ObserveCallback, VBIDimension, VBIDimensionGroup, VBIDimensionTree } from 'src/types'
-import { DimensionNodeBuilder } from './dimension-node-builder'
+import { DimensionNodeBuilder } from './dim-node-builder'
 
 /**
- * @description 维度构建器 - 用于构建和管理图表维度
- * 维度是数据的分类字段，如：时间、地区、产品类别
+ * @description 维度构建器，用于添加、修改、删除维度配置。维度是数据的分类字段，如：时间、地区、产品类别
  */
 export class DimensionsBuilder {
   private dsl: Y.Map<any>
-  private doc: Y.Doc
-  constructor(doc: Y.Doc, dsl: Y.Map<any>) {
-    this.doc = doc
+  constructor(_doc: Y.Doc, dsl: Y.Map<any>) {
     this.dsl = dsl
   }
 
   /**
    * @description 添加一个维度
-   * @param field - 字段名，如 "category"、"region"
-   * @param callback - 回调，用于进一步配置维度节点
-   * @returns 维度节点或自身（支持链式调用）
+   * @param field - 字段名
+   * @param callback - 回调函数
    */
   add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder {
     const dimension: VBIDimension = {
@@ -54,7 +50,7 @@ export class DimensionsBuilder {
   /**
    * @description 更新指定维度字段的配置
    * @param field - 字段名
-   * @param callback - 回调函数，用于进一步配置维度节点
+   * @param callback - 回调函数
    */
   update(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder {
     const dimensions = this.dsl.get('dimensions') as Y.Array<any>
@@ -73,7 +69,6 @@ export class DimensionsBuilder {
   /**
    * @description 根据字段名查找维度
    * @param field - 字段名
-   * @returns 维度节点构建器
    */
   find(field: VBIDimension['field']): DimensionNodeBuilder | undefined {
     const dimensions = this.dsl.get('dimensions') as Y.Array<any>
@@ -88,7 +83,6 @@ export class DimensionsBuilder {
 
   /**
    * @description 获取所有维度
-   * @returns 维度节点构建器数组
    */
   findAll(): DimensionNodeBuilder[] {
     const dimensions = this.dsl.get('dimensions') as Y.Array<any>
@@ -97,26 +91,21 @@ export class DimensionsBuilder {
 
   /**
    * @description 导出所有维度为 JSON 数组
-   * @returns 维度配置 JSON 数组
    */
   toJson(): VBIDimension[] {
     return this.dsl.get('dimensions').toJSON() as VBIDimension[]
   }
 
   /**
-   * @description 监听维度变化
+   * @description 监听维度变化，返回取消监听的函数
    * @param callback - 回调函数
+   * @returns 取消监听的函数
    */
-  observe(callback: ObserveCallback) {
+  observe(callback: ObserveCallback): () => void {
     this.dsl.get('dimensions').observe(callback)
-  }
-
-  /**
-   * @description 取消监听维度变化
-   * @param callback - 回调函数
-   */
-  unobserve(callback: ObserveCallback) {
-    this.dsl.get('dimensions').unobserve(callback)
+    return () => {
+      this.dsl.get('dimensions').unobserve(callback)
+    }
   }
 
   static isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension {

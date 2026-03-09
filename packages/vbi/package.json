@@ -28,7 +28,7 @@
     "build:test": "node scripts/build-tests.mjs",
     "build:examples": "node scripts/build-examples.mjs",
     "build:api": "node scripts/build-api.mjs",
-    "g": "pnpm run build:test && pnpm run build:examples && pnpm run build:api"
+    "g": "pnpm run build:test && pnpm run build:examples && pnpm run build:api && pnpm run format"
   },
   "dependencies": {
     "zod": "4.0.17",
@@ -41,15 +41,16 @@
     "@visactor/vseed": "workspace:*"
   },
   "devDependencies": {
+    "@visactor/vquery": "workspace:*",
     "@eslint/js": "9.39.0",
     "@rslib/core": "0.16.1",
     "@rstest/core": "0.8.3",
     "@types/node": "24.10.1",
     "eslint": "9.39.0",
     "globals": "16.4.0",
-    "prettier": "^3.6.2",
+    "prettier": "3.6.2",
     "typescript": "5.9.3",
     "typescript-eslint": "8.48.0",
-    "@visactor/vquery": "workspace:*"
+    "ts-morph": "26.0.0"
   }
 }

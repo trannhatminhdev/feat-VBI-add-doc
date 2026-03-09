@@ -1,11 +1,9 @@
 import * as Y from 'yjs'
 import type { VBIFilter, ObserveCallback } from 'src/types'
-import { WhereFilterNodeBuilder } from './where-filter-node-builder'
+import { WhereFilterNodeBuilder } from './where-node-builder'
 
 /**
- * @description Where 过滤构建器 - 用于构建 SQL WHERE 条件
- * 这些过滤在数据查询前生效，用于筛选原始数据
- * 例如：只显示 2024 年的数据、排除某些地区
+ * @description Where 过滤构建器，用于添加、修改、删除行级过滤条件。Where 过滤在数据查询前生效，用于筛选原始数据
  */
 export class WhereFiltersBuilder {
   private dsl: Y.Map<any>
@@ -25,8 +23,7 @@ export class WhereFiltersBuilder {
   /**
    * @description 添加一个 Where 过滤条件
    * @param field - 字段名
-   * @param callback - 可选回调，用于进一步配置过滤节点
-   * @returns 自身或节点构建器（支持链式调用）
+   * @param callback - 回调函数
    */
   add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
     const filter: VBIFilter = {
@@ -48,8 +45,7 @@ export class WhereFiltersBuilder {
   /**
    * @description 更新指定字段的过滤条件
    * @param field - 字段名
-   * @param callback - 回调函数，用于进一步配置节点
-   * @returns 是否成功更新
+   * @param callback - 回调函数
    */
   update(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
@@ -68,7 +64,6 @@ export class WhereFiltersBuilder {
   /**
    * @description 删除指定字段的过滤条件
    * @param field - 字段名
-   * @returns 是否成功删除
    */
   remove(field: string): WhereFiltersBuilder {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
@@ -85,7 +80,6 @@ export class WhereFiltersBuilder {
   /**
    * @description 根据字段名查找过滤条件
    * @param field - 字段名
-   * @returns 过滤条件节点构建器
    */
   find(field: string): WhereFilterNodeBuilder | undefined {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
@@ -100,7 +94,6 @@ export class WhereFiltersBuilder {
 
   /**
    * @description 获取所有 Where 过滤条件
-   * @returns 过滤条件节点构建器数组
    */
   findAll(): WhereFilterNodeBuilder[] {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
@@ -109,7 +102,6 @@ export class WhereFiltersBuilder {
 
   /**
    * @description 清空所有 Where 过滤条件
-   * @returns 自身（支持链式调用）
    */
   clear() {
     const whereFilters = this.dsl.get('whereFilters')
@@ -119,7 +111,6 @@ export class WhereFiltersBuilder {
 
   /**
    * @description 导出所有 Where 过滤条件为 JSON 数组
-   * @returns 过滤条件 JSON 数组
    */
   toJson(): VBIFilter[] {
     return this.dsl.get('whereFilters').toJSON() as VBIFilter[]
@@ -129,15 +120,15 @@ export class WhereFiltersBuilder {
    * @description 监听过滤条件变化
    * @param callback - 回调函数
    */
-  observe(callback: ObserveCallback) {
-    this.dsl.get('whereFilters').observe(callback)
-  }
-
   /**
-   * @description 取消监听过滤条件变化
+   * @description 监听过滤条件变化，返回取消监听的函数
    * @param callback - 回调函数
+   * @returns 取消监听的函数
    */
-  unobserve(callback: ObserveCallback) {
-    this.dsl.get('whereFilters').unobserve(callback)
+  observe(callback: ObserveCallback): () => void {
+    this.dsl.get('whereFilters').observe(callback)
+    return () => {
+      this.dsl.get('whereFilters').unobserve(callback)
+    }
   }
 }

@@ -1,52 +1,52 @@
 # chartType
 
-图表类型构建器，用于切换和获取图表类型
-
-## 构造函数
-
-```typescript
-new chartType(doc: Y.Doc)
-```
+图表类型构建器，用于切换和获取图表类型。支持表格、柱状图、折线图、饼图、散点图等多种图表类型
 
 ## 属性
 
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| **dsl** | `Y.Map<any>` | - |
 ## 方法
+
+### constructor
+
+构造函数
+
+**定义**:
+
+```typescript
+constructor(_doc: Y.Doc, dsl: Y.Map<any>)
+```
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `_doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+
 
 ### observe
 
-图表类型构建器 - 用于切换图表显示形式, 支持：表格、柱状图、折线图、饼图、散点图等
+监听图表类型变化
 
 **定义**:
 
 ```typescript
-observe(callback: ObserveCallback): const wrapper: ObserveCallback = (e, trans)
+observe(callback: ObserveCallback): () => void
 ```
 
-**返回**: `const wrapper: ObserveCallback = (e, trans)`
+**返回**: `() => void`
 
 **参数**:
 
-| 参数 | 类型 |
-| --- | --- |
-| `callback` | ObserveCallback |
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `callback` | ObserveCallback | - 回调函数 |
 
-### unobserve
 
-取消监听图表类型变化
-
-**定义**:
-
-```typescript
-unobserve(callback: ObserveCallback): const wrapper: ObserveCallback = (e, trans)
-```
-
-**返回**: `const wrapper: ObserveCallback = (e, trans)`
-
-**参数**:
-
-| 参数 | 类型 |
-| --- | --- |
-| `callback` | ObserveCallback |
 
 ### changeChartType
 
@@ -55,16 +55,16 @@ unobserve(callback: ObserveCallback): const wrapper: ObserveCallback = (e, trans
 **定义**:
 
 ```typescript
-changeChartType(chartType: string): any
+changeChartType(chartType: string)
 ```
-
-**返回**: `any`
 
 **参数**:
 
-| 参数 | 类型 |
-| --- | --- |
-| `chartType` | string |
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `chartType` | string | - 图表类型 |
+
+
 
 ### getChartType
 
@@ -78,9 +78,11 @@ getChartType(): string
 
 **返回**: `string`
 
+
+
 ### toJson
 
-获取当前图表类型
+导出为 JSON
 
 **定义**:
 
@@ -89,6 +91,8 @@ toJson(): string
 ```
 
 **返回**: `string`
+
+
 
 ### getAvailableChartTypes
 

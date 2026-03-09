@@ -1,38 +1,96 @@
 # havingFilters
 
-Having 过滤构建器，用于添加、修改、删除分组后过滤条件
-
-## 构造函数
-
-```typescript
-new havingFilters(doc: Y.Doc)
-```
+Having 过滤构建器，用于添加、修改、删除分组后过滤条件。Having 过滤在数据聚合后生效，用于筛选分组结果
 
 ## 属性
 
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| **dsl** | `Y.Map<any>` | - |
 ## 方法
 
-### remove
-
-Having 过滤构建器 - 用于构建 SQL HAVING 条件
+### constructor
 
 **定义**:
 
 ```typescript
-remove(field: string): boolean
+constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 ```
-
-**返回**: `boolean`
 
 **参数**:
 
-| 参数 | 类型 |
-| --- | --- |
-| `field` | string |
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `_doc` | Y.Doc | - |
+| `dsl` | Y.Map<any> | - |
+
+
+
+### add
+
+添加一个 Having 过滤条件
+
+**定义**:
+
+```typescript
+add(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder
+```
+
+**返回**: `HavingFiltersBuilder`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `field` | string | - 字段名 |
+| `callback` | (node: HavingFiltersNodeBuilder) => void | - 回调函数 |
+
+
+
+### update
+
+更新指定字段的过滤条件
+
+**定义**:
+
+```typescript
+update(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder
+```
+
+**返回**: `HavingFiltersBuilder`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `field` | string | - 字段名 |
+| `callback` | (node: HavingFiltersNodeBuilder) => void | - 回调函数 |
+
+
+
+### remove
+
+根据字段名删除 Having 过滤条件
+
+**定义**:
+
+```typescript
+remove(field: string): HavingFiltersBuilder
+```
+
+**返回**: `HavingFiltersBuilder`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `field` | string | - 字段名 |
+
+
 
 ### find
 
-更新指定字段的过滤条件
+根据字段名查找 Having 过滤条件
 
 **定义**:
 
@@ -44,9 +102,11 @@ find(field: string): HavingFiltersNodeBuilder | undefined
 
 **参数**:
 
-| 参数 | 类型 |
-| --- | --- |
-| `field` | string |
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `field` | string | - 字段名 |
+
+
 
 ### findAll
 
@@ -60,17 +120,7 @@ findAll(): HavingFiltersNodeBuilder[]
 
 **返回**: `HavingFiltersNodeBuilder[]`
 
-### toJson
 
-导出所有 Having 过滤条件为 JSON 数组
-
-**定义**:
-
-```typescript
-toJson(): VBIHavingFilter[]
-```
-
-**返回**: `VBIHavingFilter[]`
 
 ### clear
 
@@ -84,27 +134,37 @@ clear(): void
 
 **返回**: `void`
 
-### getCount
+
+
+### toJson
+
+导出所有 Having 过滤条件为 JSON 数组
+
+**定义**:
+
+```typescript
+toJson(): VBIHavingFilter[]
+```
+
+**返回**: `VBIHavingFilter[]`
+
+
+
+### observe
 
 监听过滤条件变化
 
 **定义**:
 
 ```typescript
-getCount(): number
+observe(callback: (e: YArrayEvent<any>, trans: Transaction | null) => void): () => void
 ```
 
-**返回**: `number`
+**返回**: `() => void`
 
-### isEmpty
+**参数**:
 
-检查是否没有过滤条件
-
-**定义**:
-
-```typescript
-isEmpty(): boolean
-```
-
-**返回**: `boolean`
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `callback` | (e: YArrayEvent<any>, trans: Transaction | null) => void | - 回调函数 |
 

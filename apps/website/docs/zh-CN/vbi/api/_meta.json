@@ -2,6 +2,7 @@
   {
     "type": "dir",
     "name": "builder",
-    "label": "builder"
+    "label": "builder",
+    "collapsed": true
   }
 ]
