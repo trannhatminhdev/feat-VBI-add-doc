@@ -1,0 +1,18 @@
+{
+  "name": "scatter-sales-profit",
+  "description": "散点图 - 销售额与利润关系",
+  "schema": [
+    { "name": "sales", "type": "number" },
+    { "name": "profit", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "scatter",
+    "dimensions": [],
+    "measures": [
+      { "field": "sales", "alias": "销售额", "encoding": "x", "aggregate": { "func": "sum" } },
+      { "field": "profit", "alias": "利润", "encoding": "y", "aggregate": { "func": "sum" } }
+    ],
+    "limit": 50
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.chartType.changeChartType('bar'); }"
+}

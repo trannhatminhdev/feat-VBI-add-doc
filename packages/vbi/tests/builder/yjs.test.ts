@@ -16,56 +16,52 @@ describe('VBI YJS Integration', () => {
     const update = b1.encodeStateAsUpdate()
     b2.applyUpdate(update)
 
-    expect(b2.build()).toMatchInlineSnapshot(`
-      {
-        "dimensions": [],
-        "filters": [],
-        "measures": [
-          {
-            "aggregate": {
-              "func": "sum",
-            },
-            "alias": "Sales",
-            "encoding": "yAxis",
-            "field": "sales",
+    expect(b2.build()).toEqual({
+      dimensions: [],
+      filters: [],
+      measures: [
+        {
+          aggregate: {
+            func: 'sum',
           },
-        ],
-      }
-    `)
+          alias: 'Sales',
+          encoding: 'yAxis',
+          field: 'sales',
+        },
+      ],
+    })
+  })
+})
+
+test('encodeStateAsUpdate', () => {
+  const b1 = VBI.from({} as VBIDSL)
+  const b2 = VBI.from({} as VBIDSL)
+
+  b1.applyUpdate(b2.encodeStateAsUpdate())
+  b2.applyUpdate(b1.encodeStateAsUpdate())
+
+  b1.measures.addMeasure('sales', (node) => {
+    node.setAlias('Max Sales').setAggregate({ func: 'max' }).setEncoding('yAxis')
   })
 
-  test('encodeStateAsUpdate', () => {
-    const b1 = VBI.from({} as VBIDSL)
-    const b2 = VBI.from({} as VBIDSL)
+  const update = b1.encodeStateAsUpdate()
+  b2.applyUpdate(update)
 
-    b1.applyUpdate(b2.encodeStateAsUpdate())
-    b2.applyUpdate(b1.encodeStateAsUpdate())
+  expect(update).toBeInstanceOf(Uint8Array)
+  expect(update.length).toBeGreaterThan(0)
 
-    b1.measures.addMeasure('sales', (node) => {
-      node.setAlias('Max Sales').setAggregate({ func: 'max' }).setEncoding('yAxis')
-    })
-
-    const update = b1.encodeStateAsUpdate()
-    b2.applyUpdate(update)
-
-    expect(update).toBeInstanceOf(Uint8Array)
-    expect(update.length).toBeGreaterThan(0)
-
-    expect(b2.build()).toMatchInlineSnapshot(`
+  expect(b2.build()).toEqual({
+    dimensions: [],
+    filters: [],
+    measures: [
       {
-        "dimensions": [],
-        "filters": [],
-        "measures": [
-          {
-            "aggregate": {
-              "func": "max",
-            },
-            "alias": "Max Sales",
-            "encoding": "yAxis",
-            "field": "sales",
-          },
-        ],
-      }
-    `)
+        aggregate: {
+          func: 'max',
+        },
+        alias: 'Max Sales',
+        encoding: 'yAxis',
+        field: 'sales',
+      },
+    ],
   })
 })

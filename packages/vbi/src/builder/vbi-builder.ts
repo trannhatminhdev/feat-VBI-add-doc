@@ -58,6 +58,8 @@ export class VBIBuilder implements VBIBuilderInterface {
     return {
       chartType: vbiDSL.chartType,
       dataset: queryResult.dataset,
+      theme: vbiDSL.theme,
+      locale: vbiDSL.locale,
     } as VSeedDSL
   }
 
@@ -75,6 +77,21 @@ export class VBIBuilder implements VBIBuilderInterface {
     const con = await getConnector(connectorId)
     const result = await con.discoverSchema()
     return result
+  }
+
+  public setLimit(limit: number): this {
+    this.dsl.set('limit', limit)
+    return this
+  }
+
+  public setLocale(locale: string): this {
+    this.dsl.set('locale', locale)
+    return this
+  }
+
+  public setTheme(theme: string): this {
+    this.dsl.set('theme', theme)
+    return this
   }
 
   /**

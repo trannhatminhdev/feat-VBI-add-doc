@@ -23,7 +23,11 @@
     "lint": "eslint .",
     "test": "rstest",
     "test:update": "rstest --update",
-    "typecheck": "tsc --noEmit"
+    "test:coverage": "rstest --coverage && open coverage/index.html",
+    "typecheck": "tsc --noEmit",
+    "build:test": "node scripts/build-tests.mjs",
+    "build:examples": "node scripts/build-examples.mjs",
+    "g": "pnpm run build:test && pnpm run build:examples"
   },
   "dependencies": {
     "zod": "4.0.17",

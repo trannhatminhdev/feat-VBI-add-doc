@@ -127,16 +127,32 @@ pnpm --filter=@visactor/vbi run test          # 运行测试
 pnpm --filter=@visactor/vbi run test:update   # 更新快照
 pnpm --filter=@visactor/vbi run test:coverage # 生成测试覆盖率报告
 
+# 生成器
+pnpm --filter=@visactor/vbi run g          # 从 JSON 生成文档、测试文件
+
 # 代码质量
 pnpm --filter=@visactor/vbi run lint
 pnpm --filter=@visactor/vbi run format
 pnpm --filter=@visactor/vbi run typecheck
 ```
 
-### 测试结构
+### 测试
 
 - 使用 Rstest 框架
 - 依赖 @visactor/vseed 和 @visactor/vquery
+- 集成测试 必须写json测试用例, 由 `scripts/build-tests.mjs` 脚本生成 xx.test.ts
+- 编写 VBI 集成测试时，必须在 JSON 测试用例中增加 `code` 字段, 实现 `applyBuilder` 函数，用于测试 VBIBuilder 的接口。
+
+```typescript
+{
+  "code": `
+    export const applyBuilder = async () => {
+      const builder = new VBIBuilder()
+      // 测试 VBIBuilder 的接口
+    }
+  `
+}
+```
 
 ### 目录结构
 
@@ -149,9 +165,26 @@ packages/
 apps/
 └── website/    # 文档站点
 
-packages/vseed/tests/
-├── unit/        # 单元测试
-└── integrations/ # 集成测试 (JSON Spec)
+packages/vbi/
+├── src/
+│   ├── builder/       # 核心构建器
+│   ├── pipeline/     # 转换管道
+│   ├── types/        # 类型定义
+│   ├── insight/      # 数据洞察
+│   └── connector/    # 数据源连接器
+├── scripts/          # 构建脚本
+│   ├── build-tests.mjs
+│   └── build-examples.mjs
+└── tests/
+    ├── builder/      # 单元测试
+    ├── query/        # 查询集成测试
+    ├── examples/     # 集成测试 (JSON Spec)
+    │   ├── chartType/
+    │   ├── locale/
+    │   └── theme/
+    ├── mocks/        # Mock 文件
+    ├── demoConnector.ts
+    └── supermarket.json
 ```
 
 ---

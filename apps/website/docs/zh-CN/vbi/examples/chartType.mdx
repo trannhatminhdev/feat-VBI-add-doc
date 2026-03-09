@@ -1,0 +1,596 @@
+# chartType
+
+## area-by-order-date
+
+面积图 - 按日期销售额趋势
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'order_date', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { order_date: 'order_date0', sales: 100 },
+        { order_date: 'order_date1', sales: 200 },
+        { order_date: 'order_date2', sales: 300 },
+        { order_date: 'order_date3', sales: 400 },
+        { order_date: 'order_date4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'area',
+        dimensions: [{ field: 'order_date', alias: '订单日期' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        filters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('line')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## bar-by-product-type
+
+柱状图 - 按产品类型销售额
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'product_type', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { product_type: 'product_type0', sales: 100 },
+        { product_type: 'product_type1', sales: 200 },
+        { product_type: 'product_type2', sales: 300 },
+        { product_type: 'product_type3', sales: 400 },
+        { product_type: 'product_type4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'bar',
+        dimensions: [{ field: 'product_type', alias: '产品类型' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'xAxis', aggregate: { func: 'sum' } }],
+        filters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('column')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## chart-type-switching
+
+Switch between line and bar chart types
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'province', type: 'string' },
+        { name: 'sales', type: 'number' },
+        { name: 'profit', type: 'number' },
+      ]
+      const dataset = [
+        { province: 'province0', sales: 100, profit: 100 },
+        { province: 'province1', sales: 200, profit: 200 },
+        { province: 'province2', sales: 300, profit: 300 },
+        { province: 'province3', sales: 400, profit: 400 },
+        { province: 'province4', sales: 500, profit: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'line',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        filters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('columnParallel')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## column-by-area
+
+柱形图 - 按区域销售额
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'area', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { area: 'area0', sales: 100 },
+        { area: 'area1', sales: 200 },
+        { area: 'area2', sales: 300 },
+        { area: 'area3', sales: 400 },
+        { area: 'area4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'column',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        filters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('bar')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## donut-by-customer-type
+
+环形图 - 按客户类型销售占比
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'customer_type', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { customer_type: 'customer_type0', sales: 100 },
+        { customer_type: 'customer_type1', sales: 200 },
+        { customer_type: 'customer_type2', sales: 300 },
+        { customer_type: 'customer_type3', sales: 400 },
+        { customer_type: 'customer_type4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'donut',
+        dimensions: [{ field: 'customer_type', alias: '客户类型' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'angle', aggregate: { func: 'sum' } }],
+        filters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('pie')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## line-by-province
+
+折线图 - 按省份销售额趋势
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'province', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { province: 'province0', sales: 100 },
+        { province: 'province1', sales: 200 },
+        { province: 'province2', sales: 300 },
+        { province: 'province3', sales: 400 },
+        { province: 'province4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'line',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        filters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('area')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## line-chart
+
+折线图 - 按省份销售额趋势
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'province', type: 'string' },
+        { name: 'sales', type: 'number' },
+        { name: 'profit', type: 'number' },
+      ]
+      const dataset = [
+        { province: 'province0', sales: 100, profit: 100 },
+        { province: 'province1', sales: 200, profit: 200 },
+        { province: 'province2', sales: 300, profit: 300 },
+        { province: 'province3', sales: 400, profit: 400 },
+        { province: 'province4', sales: 500, profit: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'line',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        filters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('area')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## pie-by-area
+
+饼图 - 按区域销售占比
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'area', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { area: 'area0', sales: 100 },
+        { area: 'area1', sales: 200 },
+        { area: 'area2', sales: 300 },
+        { area: 'area3', sales: 400 },
+        { area: 'area4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'pie',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'angle', aggregate: { func: 'sum' } }],
+        filters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('donut')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## rose-by-city
+
+玫瑰图 - 按城市销售额
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'city', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { city: 'city0', sales: 100 },
+        { city: 'city1', sales: 200 },
+        { city: 'city2', sales: 300 },
+        { city: 'city3', sales: 400 },
+        { city: 'city4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'rose',
+        dimensions: [{ field: 'city', alias: '城市' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'radius', aggregate: { func: 'sum' } }],
+        filters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('pie')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## scatter-sales-profit
+
+散点图 - 销售额与利润关系
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'sales', type: 'number' },
+        { name: 'profit', type: 'number' },
+      ]
+      const dataset = [
+        { sales: 100, profit: 100 },
+        { sales: 200, profit: 200 },
+        { sales: 300, profit: 300 },
+        { sales: 400, profit: 400 },
+        { sales: 500, profit: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'scatter',
+        dimensions: [],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'x', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'y', aggregate: { func: 'sum' } },
+        ],
+        filters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('bar')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```

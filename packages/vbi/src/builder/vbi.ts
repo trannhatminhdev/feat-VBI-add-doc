@@ -30,26 +30,14 @@ const createVBI = () => {
         if (vbi.connectorId) dsl.set('connectorId', vbi.connectorId)
         if (vbi.chartType) dsl.set('chartType', vbi.chartType)
         if (vbi.theme) dsl.set('theme', vbi.theme)
+        if (vbi.limit) dsl.set('limit', vbi.limit)
         if (vbi.locale) dsl.set('locale', vbi.locale)
         if (vbi.version) dsl.set('version', vbi.version)
 
-        if (!dsl.get('filters')) {
-          dsl.set('filters', new Y.Array<any>())
-        } else if (vbi.filters) {
-          dsl.set('filters', vbi.filters)
-        }
-
-        if (!dsl.get('measures')) {
-          dsl.set('measures', new Y.Array<any>())
-        } else {
-          dsl.set('measures', vbi.measures)
-        }
-
-        if (!dsl.get('dimensions')) {
-          dsl.set('dimensions', new Y.Array<any>())
-        } else {
-          dsl.set('dimensions', vbi.dimensions)
-        }
+        // Initialize arrays
+        dsl.set('filters', vbi.filters ?? new Y.Array())
+        dsl.set('measures', vbi.measures ?? new Y.Array())
+        dsl.set('dimensions', vbi.dimensions ?? new Y.Array())
       })
 
       return new VBIBuilder(doc)

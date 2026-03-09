@@ -12,26 +12,24 @@ describe('VBI', () => {
       node.setAlias('Area')
     })
 
-    expect(builder.build()).toMatchInlineSnapshot(`
-      {
-        "dimensions": [
-          {
-            "alias": "Area",
-            "field": "area",
+    expect(builder.build()).toEqual({
+      dimensions: [
+        {
+          alias: 'Area',
+          field: 'area',
+        },
+      ],
+      filters: [],
+      measures: [
+        {
+          aggregate: {
+            func: 'max',
           },
-        ],
-        "filters": [],
-        "measures": [
-          {
-            "aggregate": {
-              "func": "max",
-            },
-            "alias": "Max Sales",
-            "encoding": "yAxis",
-            "field": "sales",
-          },
-        ],
-      }
-    `)
+          alias: 'Max Sales',
+          encoding: 'yAxis',
+          field: 'sales',
+        },
+      ],
+    })
   })
 })

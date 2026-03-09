@@ -1,0 +1,17 @@
+[
+  {
+    "type": "file",
+    "name": "chartType",
+    "label": "ChartType"
+  },
+  {
+    "type": "file",
+    "name": "locale",
+    "label": "Locale"
+  },
+  {
+    "type": "file",
+    "name": "theme",
+    "label": "Theme"
+  }
+]

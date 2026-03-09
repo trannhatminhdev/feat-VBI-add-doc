@@ -13,6 +13,7 @@ export const zVBIDSL = z.object({
   filters: z.array(zVBIFilter).optional().default([]),
   theme: zVBIDSLTheme,
   locale: zVBIDSLLocale,
+  limit: z.number().int().min(1).optional(),
   version: z.number().int().min(0),
 })
 

@@ -1,0 +1,16 @@
+{
+  "name": "dark-theme",
+  "description": "深色主题图表",
+  "schema": [
+    { "name": "province", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [{ "field": "province", "alias": "省份" }],
+    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
+    "limit": 50,
+    "theme": "light"
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setTheme('dark'); }"
+}
