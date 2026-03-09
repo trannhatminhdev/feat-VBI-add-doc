@@ -28,9 +28,7 @@ export class WhereFiltersBuilder {
    * @param callback - 可选回调，用于进一步配置过滤节点
    * @returns 自身或节点构建器（支持链式调用）
    */
-  add(field: string): WhereFilterNodeBuilder
-  add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder
-  add(field: string, callback?: (node: WhereFilterNodeBuilder) => void): WhereFilterNodeBuilder | WhereFiltersBuilder {
+  add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
     const filter: VBIFilter = {
       field,
     }
@@ -43,10 +41,7 @@ export class WhereFiltersBuilder {
 
     const node = new WhereFilterNodeBuilder(yMap)
 
-    if (callback) {
-      callback(node)
-      return this
-    }
+    callback(node)
     return node
   }
 

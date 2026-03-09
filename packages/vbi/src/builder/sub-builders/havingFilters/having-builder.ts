@@ -21,10 +21,10 @@ export class HavingFiltersBuilder {
   /**
    * @description 添加一个 Having 过滤条件
    * @param field - 字段名
-   * @param callback - 可选回调，用于进一步配置节点
+   * @param callback - 回调，用于进一步配置节点
    * @returns 自身（支持链式调用）
    */
-  add(field: string, callback?: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder {
+  add(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder {
     if (!field || typeof field !== 'string') {
       throw new Error('Field is required and must be a string')
     }
@@ -40,9 +40,7 @@ export class HavingFiltersBuilder {
 
     const filterNode = new HavingFiltersNodeBuilder(yMap)
 
-    if (callback) {
-      callback(filterNode)
-    }
+    callback(filterNode)
     return this
   }
 

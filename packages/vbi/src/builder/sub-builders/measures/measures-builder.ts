@@ -18,12 +18,10 @@ export class MeasuresBuilder {
   /**
    * @description 添加一个度量
    * @param field - 字段名，如 "sales"、"profit"
-   * @param callback - 可选回调，用于进一步配置度量节点
+   * @param callback - 回调，用于进一步配置度量节点
    * @returns 度量节点或自身（支持链式调用）
    */
-  add(field: string): MeasureNodeBuilder
-  add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
-  add(field: string, callback?: (node: MeasureNodeBuilder) => void): MeasureNodeBuilder | MeasuresBuilder {
+  add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder {
     const measure: VBIMeasure = {
       alias: field,
       field,
@@ -40,11 +38,8 @@ export class MeasuresBuilder {
 
     const node = new MeasureNodeBuilder(yMap)
 
-    if (callback) {
-      callback(node)
-      return this
-    }
-    return node
+    callback(node)
+    return this
   }
 
   /**

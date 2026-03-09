@@ -17,7 +17,7 @@ export class DimensionsBuilder {
   /**
    * @description 添加一个维度
    * @param field - 字段名，如 "category"、"region"
-   * @param callback - 可选回调，用于进一步配置维度节点
+   * @param callback - 回调，用于进一步配置维度节点
    * @returns 维度节点或自身（支持链式调用）
    */
   add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder {
@@ -34,9 +34,7 @@ export class DimensionsBuilder {
     this.dsl.get('dimensions').push([yMap])
     const node = new DimensionNodeBuilder(yMap)
 
-    if (callback) {
-      callback(node)
-    }
+    callback(node)
     return this
   }
 
