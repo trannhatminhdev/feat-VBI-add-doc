@@ -1,14 +1,7 @@
 /**
  * Build tests from JSON files
- * Scans tests/examples/ directory and generates .test.ts files
- * JSON format:
- * {
- *   "name": "test-name",
- *   "description": "Test description",
- *   "schema": [{ "name": "field1", "type": "string" }, ...],
- *   "dsl": { chartType, dimensions, measures },
- *   "code": "const applyBuilder = (builder) => { ... }"
- * }
+ * Generates .test.ts files organized by directory
+ * Each directory becomes one test file with multiple test cases
  */
 import fs from 'fs'
 import path from 'path'
@@ -19,15 +12,32 @@ const __dirname = path.dirname(__filename)
 
 const EXAMPLES_DIR = path.resolve(__dirname, '../tests/examples')
 
-function findJsonFiles(dir) {
+/**
+ * Find all subdirectories in examples
+ */
+function findSubDirs(dir) {
+  const subDirs = []
+  const items = fs.readdirSync(dir, { withFileTypes: true })
+
+  for (const item of items) {
+    if (item.isDirectory()) {
+      subDirs.push(item.name)
+    }
+  }
+
+  return subDirs
+}
+
+/**
+ * Find JSON files in a specific directory
+ */
+function findJsonFilesInDir(dir) {
   const files = []
   const items = fs.readdirSync(dir, { withFileTypes: true })
 
   for (const item of items) {
     const fullPath = path.join(dir, item.name)
-    if (item.isDirectory()) {
-      files.push(...findJsonFiles(fullPath))
-    } else if (item.name.endsWith('.json')) {
+    if (item.isFile() && item.name.endsWith('.json')) {
       files.push(fullPath)
     }
   }
@@ -36,139 +46,116 @@ function findJsonFiles(dir) {
 }
 
 /**
- * Generate mock data from schema
+ * Generate test case for a single JSON example
  */
-function generateMockData(schema) {
-  const lines = ['const mockData = [']
-  const dataCount = 5
-
-  for (let i = 0; i < dataCount; i++) {
-    const row = schema
-      .map((field) => {
-        if (field.type === 'string') {
-          return `${field.name}: '${field.name}${i}'`
-        } else if (field.type === 'number') {
-          return `${field.name}: ${(i + 1) * 100}`
-        }
-        return `${field.name}: null`
-      })
-      .join(', ')
-    lines.push(`  { ${row} },`)
-  }
-
-  lines.push(']')
-  return lines.join('\n')
-}
-
-/**
- * Generate connector setup from schema
- */
-function generateConnectorSetup(connectorId, schema) {
-  const schemaLines = schema.map((f) => `      { name: '${f.name}', type: '${f.type}' }`).join(',\n')
-
-  return `VBI.registerConnector('${connectorId}', async () => {
-    return {
-      discoverSchema: async () => [
-${schemaLines}
-      ],
-      query: async () => ({ dataset: mockData })
-    }
-  })`
-}
-
-/**
- * Generate test file from JSON
- */
-function generateTestFile(jsonPath) {
-  const content = fs.readFileSync(jsonPath, 'utf-8')
-  const json = JSON.parse(content)
-
+function generateTestCase(json, jsonPath) {
   const name = json.name || path.basename(jsonPath, '.json')
-  const description = json.description || name
-  const schema = json.schema || []
-
-  // Generate mock data and connector setup
-  const mockData = generateMockData(schema)
-  const connectorSetup = generateConnectorSetup('test-connector', schema)
 
   // Generate initial DSL
   const dsl = {
-    connectorId: 'test-connector',
+    connectorId: 'demoSupermarket',
     chartType: json.chartType || 'line',
-    dimensions: json.dimensions || [],
-    measures: json.measures || [],
+    dimensions: json.dsl?.dimensions || [],
+    measures: json.dsl?.measures || [],
     filters: [],
-    theme: 'light',
+    theme: json.dsl?.theme || 'light',
     locale: 'zh-CN',
     version: 1,
     ...json.dsl,
   }
 
   const dslLines = JSON.stringify(dsl, null, 2).split('\n')
-  const dslCode = dslLines.map((line, i) => (i === 0 ? line : '    ' + line)).join('\n')
+  const dslCode = dslLines.map((line, i) => (i === 0 ? line : '      ' + line)).join('\n')
 
-  // Generate applyBuilder code
-  const applyBuilderCode = json.code || ''
+  // Generate applyBuilder code - use JSON code directly or empty function
+  const hasCode = !!json.code
+  const applyBuilderCode = hasCode ? json.code : 'const applyBuilder = (builder: any) => {}'
+  const applyBuilderCall = hasCode ? 'applyBuilder(builder)' : ''
 
-  const template = `import { VBI, VBIBuilder } from '@visactor/vbi'
-
-${mockData}
-
-describe('${description}', () => {
-  beforeAll(async () => {
-    ${connectorSetup}
-  })
-
+  return `
   it('${name}', async () => {
     const builder = VBI.from(${dslCode})
 
     // Apply custom builder code
     ${applyBuilderCode}
-    applyBuilder(builder)
+    ${applyBuilderCall}
 
     // Build VBI DSL
     const vbiDSL = builder.build()
-    expect(vbiDSL).toMatchInlineSnapshot('vbi-dsl')
+    expect(vbiDSL).toMatchInlineSnapshot()
 
     // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
-    expect(vQueryDSL).toMatchInlineSnapshot('vquery-dsl')
+    expect(vQueryDSL).toMatchInlineSnapshot()
 
     // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
-    expect(vSeedDSL).toMatchInlineSnapshot('vseed-dsl')
+    expect(vSeedDSL).toMatchInlineSnapshot()
+  })`
+}
+
+/**
+ * Generate test file for a directory
+ */
+function generateTestFile(dirName, testsDir) {
+  const dirPath = path.join(EXAMPLES_DIR, dirName)
+  const jsonFiles = findJsonFilesInDir(dirPath)
+
+  if (jsonFiles.length === 0) return null
+
+  // Generate test cases
+  const testCases = jsonFiles
+    .map((jsonPath) => {
+      const content = fs.readFileSync(jsonPath, 'utf-8')
+      const json = JSON.parse(content)
+      return generateTestCase(json, jsonPath, testsDir)
+    })
+    .join('\n')
+
+  // Calculate relative path to demoConnector for the main describe block
+  const relativePath = path.relative(dirPath, testsDir)
+  const connectorImport = relativePath === '' ? "'./demoConnector'" : `'${relativePath}/demoConnector'`
+
+  // Convert directory name to label (e.g., chartType -> Chart Type)
+  const label = dirName.charAt(0).toUpperCase() + dirName.slice(1).replace(/-/g, ' ')
+
+  const template = `import { VBI, VBIBuilder } from '@visactor/vbi'
+import { registerDemoConnector } from ${connectorImport}
+
+describe('${label}', () => {
+  beforeAll(async () => {
+    registerDemoConnector()
   })
+${testCases}
 })
 `
 
-  const dirPath = path.dirname(jsonPath)
-  const testFileName = path.basename(jsonPath).replace('.json', '.test.ts')
+  const testFileName = `${dirName}.test.ts`
   const testPath = path.join(dirPath, testFileName)
 
   fs.writeFileSync(testPath, template, 'utf-8')
   console.log(`Generated: ${testPath}`)
+
+  return testPath
 }
 
 function buildTests() {
   console.log('Building tests from JSON files...')
 
-  // Clean old test files
-  const items = fs.readdirSync(EXAMPLES_DIR, { withFileTypes: true })
-  for (const item of items) {
-    if (item.isFile() && item.name.endsWith('.test.ts')) {
-      const testPath = path.join(EXAMPLES_DIR, item.name)
-      fs.unlinkSync(testPath)
-      console.log(`Removed: ${testPath}`)
+  const testsDir = path.resolve(__dirname, '../tests')
+  const subDirs = findSubDirs(EXAMPLES_DIR)
+
+  // Generate test files for each directory
+  let totalTests = 0
+  for (const dir of subDirs) {
+    const testPath = generateTestFile(dir, testsDir)
+    if (testPath) {
+      const jsonFiles = findJsonFilesInDir(path.join(EXAMPLES_DIR, dir))
+      totalTests += jsonFiles.length
     }
   }
 
-  // Generate new test files
-  const jsonFiles = findJsonFiles(EXAMPLES_DIR)
-  for (const jsonFile of jsonFiles) {
-    generateTestFile(jsonFile)
-  }
-
-  console.log(`Generated ${jsonFiles.length} test files`)
+  console.log(`Generated test files for ${totalTests} examples in ${subDirs.length} categories`)
 }
 
 buildTests()

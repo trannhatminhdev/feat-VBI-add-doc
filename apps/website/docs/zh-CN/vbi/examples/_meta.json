@@ -1,7 +1,12 @@
 [
   {
     "type": "file",
-    "name": "index",
-    "label": "Examples"
+    "name": "chartType",
+    "label": "ChartType"
+  },
+  {
+    "type": "file",
+    "name": "theme",
+    "label": "Theme"
   }
 ]

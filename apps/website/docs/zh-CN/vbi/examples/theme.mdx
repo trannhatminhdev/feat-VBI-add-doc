@@ -1,0 +1,60 @@
+# theme
+
+## dark-theme
+
+深色主题图表
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const schema = [
+        { name: 'province', type: 'string' },
+        { name: 'sales', type: 'number' },
+      ]
+      const dataset = [
+        { province: 'province0', sales: 100 },
+        { province: 'province1', sales: 200 },
+        { province: 'province2', sales: 300 },
+        { province: 'province3', sales: 400 },
+        { province: 'province4', sales: 500 },
+      ]
+
+      VBI.registerConnector('demo', async () => ({
+        discoverSchema: async () => schema,
+        query: async () => ({ dataset }),
+      }))
+
+      const builder = VBI.from({
+        connectorId: 'demo',
+        chartType: 'bar',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        filters: [],
+        theme: 'dark',
+        locale: 'zh-CN',
+        version: 1,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.chartType.changeChartType('line')
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```

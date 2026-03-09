@@ -1,0 +1,14 @@
+{
+  "name": "column-by-area",
+  "description": "柱形图 - 按区域销售额",
+  "schema": [
+    { "name": "area", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "column",
+    "dimensions": [{ "field": "area", "alias": "区域" }],
+    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }]
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.chartType.changeChartType('bar'); }"
+}
