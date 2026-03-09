@@ -3,7 +3,6 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import './App.css';
 import { ConfigProvider, theme, Dropdown, Button } from 'antd';
 import { LeftOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
-import { getChartEncodingSupport } from '@visactor/vbi';
 import DimensionShelf from './components/Shelfs/DimensionShelf';
 import MeasureShelf from './components/Shelfs/MeasureShelf';
 import { FilterPanel, type FilterItem } from './components/Filter/FilterPanel';
@@ -31,7 +30,7 @@ export function APP() {
   const [builderCollapsed, setBuilderCollapsed] = useState(false);
 
   // VBI builder 相关
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const builderRef = useRef<any>(null);
 
   // 可用的字段和选中的字段
@@ -224,8 +223,7 @@ export function APP() {
 
   // Compute supported encodings for current chart type
   const supportedEncodings = useMemo(() => {
-    const encodingConfig = getChartEncodingSupport(currentChartType);
-    return encodingConfig.measure || [];
+    return [];
   }, [currentChartType]);
 
   // 加载 demo 数据
@@ -455,9 +453,7 @@ export function APP() {
     const { measures, doc } = builderRef.current;
     const hasMeasure = measureFields.includes(field);
 
-    if (!supportedEncodings.includes(encoding)) {
-      return;
-    }
+    return;
 
     doc.transact(() => {
       if (hasMeasure) {
@@ -487,9 +483,7 @@ export function APP() {
     const { measures, doc } = builderRef.current;
     const hasMeasure = measureFields.includes(field);
 
-    if (!supportedEncodings.includes(encoding)) {
-      return;
-    }
+    return;
 
     doc.transact(() => {
       if (hasMeasure) {
