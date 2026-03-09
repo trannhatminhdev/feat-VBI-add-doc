@@ -1,13 +1,13 @@
 import * as Y from 'yjs'
 import { VBIHavingFilter, FilterOperator, LogicalOperator } from '../../../types'
-import { zVBIHavingFilter } from '../../../types/dsl/having/having'
+import { zVBIHavingFilter } from '../../../types/dsl/havingFilters/having'
 import type { ZodIssue } from 'zod'
 
 /**
- * HavingFilterNodeBuilder - 用于构建和修改单个筛选条件
+ * HavingFiltersNodeBuilder - 用于构建和修改单个筛选条件
  * 提供链式 API 并包含错误处理和验证
  */
-export class HavingFilterNodeBuilder {
+export class HavingFiltersNodeBuilder {
   private validationErrors: string[] = []
 
   constructor(private yMap: Y.Map<any>) {}

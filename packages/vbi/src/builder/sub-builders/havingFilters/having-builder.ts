@@ -1,14 +1,14 @@
 import * as Y from 'yjs'
 import type { VBIHavingFilter } from 'src/types'
 import { materialize } from '../../../utils'
-import { HavingFilterNodeBuilder } from './having-filter-node-builder'
+import { HavingFiltersNodeBuilder } from './having-filters-node-builder'
 import type { YArrayEvent, Transaction } from 'yjs'
 
 /**
- * HavingBuilder - 用于构建和管理筛选条件
+ * HavingFiltersBuilder - 用于构建和管理筛选条件
  * 支持添加、删除、修改筛选条件
  */
-export class HavingBuilder {
+export class HavingFiltersBuilder {
   private dsl: Y.Map<any>
   private doc: Y.Doc
 
@@ -22,21 +22,21 @@ export class HavingBuilder {
    * @param field - 字段名
    * @param operator - 操作符
    * @param value - 筛选值
-   * @returns HavingFilterNodeBuilder 或 HavingBuilder（链式调用）
+   * @returns HavingFiltersNodeBuilder 或 HavingFiltersBuilder（链式调用）
    */
-  addFilter(field: string, operator: string, value: unknown): HavingFilterNodeBuilder
+  addFilter(field: string, operator: string, value: unknown): HavingFiltersNodeBuilder
   addFilter(
     field: string,
     operator: string,
     value: unknown,
-    callback: (node: HavingFilterNodeBuilder) => void,
-  ): HavingBuilder
+    callback: (node: HavingFiltersNodeBuilder) => void,
+  ): HavingFiltersBuilder
   addFilter(
     field: string,
     operator: string,
     value: unknown,
-    callback?: (node: HavingFilterNodeBuilder) => void,
-  ): HavingFilterNodeBuilder | HavingBuilder {
+    callback?: (node: HavingFiltersNodeBuilder) => void,
+  ): HavingFiltersNodeBuilder | HavingFiltersBuilder {
     if (!field || typeof field !== 'string') {
       throw new Error('Field is required and must be a string')
     }
@@ -48,9 +48,9 @@ export class HavingBuilder {
     }
 
     const yMap = materialize(defaultFilter) as Y.Map<any>
-    this.dsl.get('having').push([yMap])
+    this.dsl.get('havingFilters').push([yMap])
 
-    const filterNode = new HavingFilterNodeBuilder(yMap)
+    const filterNode = new HavingFiltersNodeBuilder(yMap)
 
     if (callback) {
       callback(filterNode)
@@ -67,15 +67,15 @@ export class HavingBuilder {
    */
   removeFilter(field: string): boolean {
     if (!field || typeof field !== 'string') {
-      console.error('[HavingBuilder] Invalid field name:', field)
+      console.error('[HavingFiltersBuilder] Invalid field name:', field)
       return false
     }
 
-    const having = this.dsl.get('having') as Y.Array<any>
-    const index = having.toArray().findIndex((item: any) => item.get('field') === field)
+    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
+    const index = havingFilters.toArray().findIndex((item: any) => item.get('field') === field)
 
     if (index !== -1) {
-      this.dsl.get('having').delete(index, 1)
+      this.dsl.get('havingFilters').delete(index, 1)
       return true
     }
     return false
@@ -86,16 +86,16 @@ export class HavingBuilder {
    * @returns 筛选条件数组
    */
   getFilters(): VBIHavingFilter[] {
-    return (this.dsl.get('having') as Y.Array<any>).toJSON() as VBIHavingFilter[]
+    return (this.dsl.get('havingFilters') as Y.Array<any>).toJSON() as VBIHavingFilter[]
   }
 
   /**
    * 清空所有筛选条件
    */
   clear(): void {
-    const having = this.dsl.get('having') as Y.Array<any>
-    if (having.length > 0) {
-      having.delete(0, having.length)
+    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
+    if (havingFilters.length > 0) {
+      havingFilters.delete(0, havingFilters.length)
     }
   }
 
@@ -104,7 +104,7 @@ export class HavingBuilder {
    * @param callback - 回调函数
    */
   observe(callback: (e: YArrayEvent<any>, trans: Transaction | null) => void): void {
-    ;(this.dsl.get('having') as Y.Array<any>).observe(callback)
+    ;(this.dsl.get('havingFilters') as Y.Array<any>).observe(callback)
   }
 
   /**
@@ -112,14 +112,14 @@ export class HavingBuilder {
    * @param callback - 回调函数
    */
   unobserve(callback: (e: YArrayEvent<any>, trans: Transaction | null) => void): void {
-    ;(this.dsl.get('having') as Y.Array<any>).unobserve(callback)
+    ;(this.dsl.get('havingFilters') as Y.Array<any>).unobserve(callback)
   }
 
   /**
    * 获取筛选条件数量
    */
   getCount(): number {
-    return (this.dsl.get('having') as Y.Array<any>).length
+    return (this.dsl.get('havingFilters') as Y.Array<any>).length
   }
 
   /**

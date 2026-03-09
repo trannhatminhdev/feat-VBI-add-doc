@@ -5,7 +5,7 @@ import type {
   MeasuresBuilder,
   DimensionsBuilder,
   ChartTypeBuilder,
-  HavingBuilder,
+  HavingFiltersBuilder,
   WhereFiltersBuilder,
 } from 'src/builder/sub-builders'
 import type { EncodingBuilder } from 'src/builder/encoding-builder'
@@ -19,7 +19,7 @@ export interface VBIBuilderInterface {
   chartType: ChartTypeBuilder
   measures: MeasuresBuilder
   dimensions: DimensionsBuilder
-  having: HavingBuilder
+  havingFilters: HavingFiltersBuilder
   whereFilters: WhereFiltersBuilder
   encoding: EncodingBuilder
 
