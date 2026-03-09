@@ -122,10 +122,9 @@ export function APP() {
       builder.doc.transact(() => {
         builder.whereFilters.clear();
         newFilters.forEach((f) => {
-          builder.whereFilters.add({
-            field: f.field,
-            operator: f.operator,
-            value: f.value,
+          builder.whereFilters.add(f.field, (node) => {
+            node.setOperator(f.operator);
+            node.setValue(f.value);
           });
         });
       });
@@ -167,8 +166,8 @@ export function APP() {
     loadSchema();
 
     // 初始化度量字段详情
-    if (builder?.measures?.findAll) {
-      const measures = builder.measures.findAll();
+    if (builder?.measures?.toJson) {
+      const measures = builder.measures.toJson();
       const detail: Record<
         string,
         {
@@ -329,7 +328,7 @@ export function APP() {
   // 同步度量字段详情
   const syncMeasuresDetail = () => {
     if (builderRef.current?.measures) {
-      const measures = builderRef.current.measures.findAll();
+      const measures = builderRef.current.measures.toJson();
       const detail: Record<
         string,
         {
