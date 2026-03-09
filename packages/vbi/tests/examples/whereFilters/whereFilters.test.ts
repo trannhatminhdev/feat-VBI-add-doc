@@ -1,26 +1,26 @@
 import { VBI } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
-describe('Locale', () => {
+describe('WhereFilters', () => {
   beforeAll(async () => {
     registerDemoConnector()
   })
 
-  it('en-US-locale', async () => {
+  it('bar-by-province-with-filter', async () => {
     const builder = VBI.from({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
         {
           field: 'province',
-          alias: 'Province',
+          alias: '省份',
         },
       ],
       measures: [
         {
           field: 'sales',
-          alias: 'Sales',
-          encoding: 'yAxis',
+          alias: '销售额',
+          encoding: 'xAxis',
           aggregate: {
             func: 'sum',
           },
@@ -28,15 +28,13 @@ describe('Locale', () => {
       ],
       filters: [],
       theme: 'light',
-      locale: 'en-US',
+      locale: 'zh-CN',
       version: 1,
-      whereFilters: [],
-      limit: 50,
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder) => {
-      builder.setLocale('en-US')
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.whereFilters.addWhereFilter({ field: 'sales', operator: 'gt', value: 100000 })
     }
     applyBuilder(builder)
 
@@ -53,14 +51,14 @@ describe('Locale', () => {
     expect(vSeedDSL).toMatchInlineSnapshot()
   })
 
-  it('zh-CN-locale', async () => {
+  it('column-by-area-multiple-filters', async () => {
     const builder = VBI.from({
       connectorId: 'demoSupermarket',
-      chartType: 'bar',
+      chartType: 'column',
       dimensions: [
         {
-          field: 'province',
-          alias: '省份',
+          field: 'area',
+          alias: '区域',
         },
       ],
       measures: [
@@ -77,13 +75,13 @@ describe('Locale', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
-      whereFilters: [],
-      limit: 50,
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder) => {
-      builder.setLocale('zh-CN')
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.whereFilters
+        .addWhereFilter({ field: 'sales', operator: 'gt', value: 500000 })
+        .addWhereFilter({ field: 'area', operator: 'in', value: ['华东', '华北'] })
     }
     applyBuilder(builder)
 

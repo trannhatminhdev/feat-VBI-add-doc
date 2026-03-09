@@ -10,6 +10,7 @@ describe('MeasuresBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [],
       whereFilters: [],
+      havingFilters: [],
       measures: [
         {
           aggregate: {
@@ -37,6 +38,7 @@ describe('MeasuresBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [],
       whereFilters: [],
+      havingFilters: [],
       measures: [
         {
           aggregate: {

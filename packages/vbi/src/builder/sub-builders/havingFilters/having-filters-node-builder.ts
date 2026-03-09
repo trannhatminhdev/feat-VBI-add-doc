@@ -4,27 +4,21 @@ import { zVBIHavingFilter } from '../../../types/dsl/havingFilters/having'
 import type { ZodIssue } from 'zod'
 
 /**
- * HavingFiltersNodeBuilder - 用于构建和修改单个筛选条件
- * 提供链式 API 并包含错误处理和验证
+ * Having 过滤节点构建器 - 用于配置单个 Having 过滤条件
+ * 提供链式 API（如：setValue().setOperator().toJson()）
  */
 export class HavingFiltersNodeBuilder {
   private validationErrors: string[] = []
 
   constructor(private yMap: Y.Map<any>) {}
 
-  /**
-   * 设置筛选值
-   * @param value - 筛选值
-   */
+  /** 设置过滤条件的值 */
   setValue(value: unknown): this {
     this.yMap.set('value', value)
     return this
   }
 
-  /**
-   * 设置筛选操作符
-   * @param operator - 操作符
-   */
+  /** 设置过滤操作符（eq/neq/gt/gte/lt/lte/contains 等） */
   setOperator(operator: FilterOperator): this {
     const validOperators = ['eq', 'neq', 'gt', 'gte', 'lt', 'lte', 'contains', 'startsWith', 'endsWith', 'between']
     if (!validOperators.includes(operator)) {
@@ -35,10 +29,7 @@ export class HavingFiltersNodeBuilder {
     return this
   }
 
-  /**
-   * 设置逻辑运算符
-   * @param logical - 逻辑运算符 (and/or)
-   */
+  /** 设置多条件组合逻辑（and/or） */
   setLogical(logical: LogicalOperator): this {
     if (logical !== 'and' && logical !== 'or') {
       this.validationErrors.push('Logical must be either "and" or "or"')
@@ -48,11 +39,7 @@ export class HavingFiltersNodeBuilder {
     return this
   }
 
-  /**
-   * 将当前配置转换为 JSON 对象（带验证）
-   * @returns 验证后的筛选条件对象
-   * @throws 如果验证失败
-   */
+  /** 导出为 JSON（自动验证） */
   toJson(): VBIHavingFilter {
     const data = this.yMap.toJSON() as VBIHavingFilter
     const result = zVBIHavingFilter.safeParse(data)
@@ -67,30 +54,22 @@ export class HavingFiltersNodeBuilder {
     return result.data
   }
 
-  /**
-   * @deprecated 请使用 toJson() 方法
-   */
+  /** @deprecated 请使用 toJson() 方法 */
   build(): VBIHavingFilter {
     return this.toJson()
   }
 
-  /**
-   * 获取验证错误列表
-   */
+  /** 获取验证错误列表 */
   getValidationErrors(): string[] {
     return [...this.validationErrors]
   }
 
-  /**
-   * 检查是否有验证错误
-   */
+  /** 检查是否有验证错误 */
   hasValidationErrors(): boolean {
     return this.validationErrors.length > 0
   }
 
-  /**
-   * 清除验证错误
-   */
+  /** 清除验证错误 */
   clearValidationErrors(): void {
     this.validationErrors = []
   }

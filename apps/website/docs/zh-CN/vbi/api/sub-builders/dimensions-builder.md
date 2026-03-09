@@ -12,23 +12,63 @@ new DimensionsBuilder(doc: Y.Doc)
 
 ## 方法
 
-### ~~getDimensions~~
+### removeDimension
 
-> ⚠️ 已废弃
-
-获取所有维度配置
+维度构建器 - 用于构建和管理图表维度
 
 **签名**:
 
 ```typescript
-getDimensions(): VBIDimension[]
+removeDimension(field: VBIDimension['field']): const dimensions = this.dsl.get('dimensions')
+```
+
+**参数**:
+
+- `field`: VBIDimension['field']
+
+**返回**: `const dimensions = this.dsl.get('dimensions')`
+
+### updateDimension
+
+**签名**:
+
+```typescript
+updateDimension(field: string, updates: Partial<Omit<VBIDimension, 'field'>>): void
+```
+
+**参数**:
+
+- `field`: string
+- `updates`: Partial<Omit<VBIDimension
+- `'field'>>`
+
+**返回**: `void`
+
+### find
+
+**签名**:
+
+```typescript
+find(field: VBIDimension['field']): VBIDimension | undefined
+```
+
+**参数**:
+
+- `field`: VBIDimension['field']
+
+**返回**: `VBIDimension | undefined`
+
+### findAllDimensions
+
+**签名**:
+
+```typescript
+findAllDimensions(): VBIDimension[]
 ```
 
 **返回**: `VBIDimension[]`
 
 ### toJson
-
-将当前所有维度配置转换为 JSON 数组
 
 **签名**:
 
@@ -38,41 +78,33 @@ toJson(): VBIDimension[]
 
 **返回**: `VBIDimension[]`
 
-### removeDimension
-
-**签名**:
-
-```typescript
-removeDimension(field: VBIDimension['field'])
-```
-
-**参数**:
-
-- `field`: VBIDimension['field']
-
 ### observe
 
 **签名**:
 
 ```typescript
-observe(callback: ObserveCallback)
+observe(callback: ObserveCallback): this.dsl.get('dimensions').observe(callback)
 ```
 
 **参数**:
 
 - `callback`: ObserveCallback
+
+**返回**: `this.dsl.get('dimensions').observe(callback)`
 
 ### unobserve
 
 **签名**:
 
 ```typescript
-unobserve(callback: ObserveCallback)
+unobserve(callback: ObserveCallback): this.dsl.get('dimensions').unobserve(callback)
 ```
 
 **参数**:
 
 - `callback`: ObserveCallback
+
+**返回**: `this.dsl.get('dimensions').unobserve(callback)`
 
 ### isDimensionNode
 

@@ -20,6 +20,7 @@ describe('VBI', () => {
         },
       ],
       whereFilters: [],
+      havingFilters: [],
       measures: [
         {
           aggregate: {

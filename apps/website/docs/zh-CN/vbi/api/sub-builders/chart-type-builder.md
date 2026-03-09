@@ -12,11 +12,53 @@ new ChartTypeBuilder(doc: Y.Doc)
 
 ## 方法
 
+### observe
+
+图表类型构建器 - 用于切换图表显示形式
+
+**签名**:
+
+```typescript
+observe(callback: ObserveCallback): const wrapper: ObserveCallback = (e, trans) =>
+```
+
+**参数**:
+
+- `callback`: ObserveCallback
+
+**返回**: `const wrapper: ObserveCallback = (e, trans) =>`
+
+### unobserve
+
+**签名**:
+
+```typescript
+unobserve(callback: ObserveCallback): const wrapper: ObserveCallback = (e, trans) =>
+```
+
+**参数**:
+
+- `callback`: ObserveCallback
+
+**返回**: `const wrapper: ObserveCallback = (e, trans) =>`
+
+### changeChartType
+
+**签名**:
+
+```typescript
+changeChartType(chartType: string): this.dsl.set('chartType', chartType)
+```
+
+**参数**:
+
+- `chartType`: string
+
+**返回**: `this.dsl.set('chartType', chartType)`
+
 ### ~~getChartType~~
 
 > ⚠️ 已废弃
-
-获取当前图表类型
 
 **签名**:
 
@@ -28,8 +70,6 @@ getChartType(): return this.dsl.get('chartType') || 'table'
 
 ### toJson
 
-将当前图表类型配置转换为 JSON 对象
-
 **签名**:
 
 ```typescript
@@ -37,42 +77,6 @@ toJson(): string
 ```
 
 **返回**: `string`
-
-### observe
-
-**签名**:
-
-```typescript
-observe(callback: ObserveCallback)
-```
-
-**参数**:
-
-- `callback`: ObserveCallback
-
-### unobserve
-
-**签名**:
-
-```typescript
-unobserve(callback: ObserveCallback)
-```
-
-**参数**:
-
-- `callback`: ObserveCallback
-
-### changeChartType
-
-**签名**:
-
-```typescript
-changeChartType(chartType: string)
-```
-
-**参数**:
-
-- `chartType`: string
 
 ### getAvailableChartTypes
 

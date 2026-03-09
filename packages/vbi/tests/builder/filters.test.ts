@@ -20,6 +20,7 @@ describe('WhereFiltersBuilder', () => {
           value: 1000,
         },
       ],
+      havingFilters: [],
       measures: [],
     })
   })
@@ -74,6 +75,7 @@ describe('WhereFiltersBuilder', () => {
           value: 'Beijing',
         },
       ],
+      havingFilters: [],
       measures: [],
     })
   })
@@ -115,11 +117,12 @@ describe('WhereFiltersBuilder', () => {
           value: 'Electronics',
         },
       ],
+      havingFilters: [],
       measures: [],
     })
   })
 
-  test('clearWhereFilters', () => {
+  test('clear', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
     builder.whereFilters
@@ -135,16 +138,17 @@ describe('WhereFiltersBuilder', () => {
       })
 
     // Clear all filters
-    builder.whereFilters.clearWhereFilters()
+    builder.whereFilters.clear()
 
     expect(builder.build()).toEqual({
       dimensions: [],
       whereFilters: [],
+      havingFilters: [],
       measures: [],
     })
   })
 
-  test('getWhereFilters', () => {
+  test('findAllWhereFilters', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
     builder.whereFilters.addWhereFilter({
@@ -158,7 +162,7 @@ describe('WhereFiltersBuilder', () => {
       value: 'Beijing',
     })
 
-    const whereFilters = builder.whereFilters.getWhereFilters()
+    const whereFilters = builder.whereFilters.findAllWhereFilters()
     expect(whereFilters).toHaveLength(2)
     expect(whereFilters[0].field).toBe('sales')
     expect(whereFilters[1].field).toBe('region')
@@ -203,6 +207,7 @@ describe('WhereFiltersBuilder', () => {
           value: ['Electronics', 'Furniture'],
         },
       ],
+      havingFilters: [],
       measures: [],
     })
   })
@@ -224,6 +229,7 @@ describe('WhereFiltersBuilder', () => {
           value: 1000,
         },
       ],
+      havingFilters: [],
       measures: [],
     })
   })

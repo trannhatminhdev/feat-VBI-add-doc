@@ -12,43 +12,21 @@ new MeasuresBuilder(doc: Y.Doc)
 
 ## 方法
 
-### ~~getMeasures~~
-
-> ⚠️ 已废弃
-
-获取所有度量配置
-
-**签名**:
-
-```typescript
-getMeasures(): VBIMeasure[]
-```
-
-**返回**: `VBIMeasure[]`
-
-### toJson
-
-将当前所有度量配置转换为 JSON 数组
-
-**签名**:
-
-```typescript
-toJson(): VBIMeasure[]
-```
-
-**返回**: `VBIMeasure[]`
-
 ### removeMeasure
 
+度量构建器 - 用于构建和管理图表度量
+
 **签名**:
 
 ```typescript
-removeMeasure(field: VBIMeasure['field'])
+removeMeasure(field: VBIMeasure['field']): const measures = this.dsl.get('measures')
 ```
 
 **参数**:
 
 - `field`: VBIMeasure['field']
+
+**返回**: `const measures = this.dsl.get('measures')`
 
 ### renameMeasure
 
@@ -65,12 +43,12 @@ renameMeasure(field: string, newAlias: string): void
 
 **返回**: `void`
 
-### modifyAggregate
+### updateAggregate
 
 **签名**:
 
 ```typescript
-modifyAggregate(field: string, func: string, quantile?: number): void
+updateAggregate(field: string, func: string, quantile?: number): void
 ```
 
 **参数**:
@@ -81,12 +59,12 @@ modifyAggregate(field: string, func: string, quantile?: number): void
 
 **返回**: `void`
 
-### modifyEncoding
+### updateEncoding
 
 **签名**:
 
 ```typescript
-modifyEncoding(field: string, encoding: VBIMeasure['encoding']): void
+updateEncoding(field: string, encoding: VBIMeasure['encoding']): void
 ```
 
 **参数**:
@@ -96,12 +74,76 @@ modifyEncoding(field: string, encoding: VBIMeasure['encoding']): void
 
 **返回**: `void`
 
-### modifyMeasure
+### find
+
+更新度量的图表编码位置（modifyEncoding 的别名） */
 
 **签名**:
 
 ```typescript
-modifyMeasure(field: string, updates: Partial<Omit<VBIMeasure, 'field'>>): void
+find(field: VBIMeasure['field']): VBIMeasure | undefined
+```
+
+**参数**:
+
+- `field`: VBIMeasure['field']
+
+**返回**: `VBIMeasure | undefined`
+
+### findAllMeasures
+
+**签名**:
+
+```typescript
+findAllMeasures(): VBIMeasure[]
+```
+
+**返回**: `VBIMeasure[]`
+
+### toJson
+
+**签名**:
+
+```typescript
+toJson(): VBIMeasure[]
+```
+
+**返回**: `VBIMeasure[]`
+
+### observe
+
+**签名**:
+
+```typescript
+observe(callback: ObserveCallback): this.dsl.get('measures').observe(callback)
+```
+
+**参数**:
+
+- `callback`: ObserveCallback
+
+**返回**: `this.dsl.get('measures').observe(callback)`
+
+### unobserve
+
+**签名**:
+
+```typescript
+unobserve(callback: ObserveCallback): this.dsl.get('measures').unobserve(callback)
+```
+
+**参数**:
+
+- `callback`: ObserveCallback
+
+**返回**: `this.dsl.get('measures').unobserve(callback)`
+
+### updateMeasure
+
+**签名**:
+
+```typescript
+updateMeasure(field: string, updates: Partial<Omit<VBIMeasure, 'field'>>): void
 ```
 
 **参数**:
@@ -111,30 +153,6 @@ modifyMeasure(field: string, updates: Partial<Omit<VBIMeasure, 'field'>>): void
 - `'field'>>`
 
 **返回**: `void`
-
-### observe
-
-**签名**:
-
-```typescript
-observe(callback: ObserveCallback)
-```
-
-**参数**:
-
-- `callback`: ObserveCallback
-
-### unobserve
-
-**签名**:
-
-```typescript
-unobserve(callback: ObserveCallback)
-```
-
-**参数**:
-
-- `callback`: ObserveCallback
 
 ### isMeasureNode
 

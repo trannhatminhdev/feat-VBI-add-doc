@@ -213,7 +213,10 @@ function generateBuilderDocs(builder) {
       md += `**参数**:\n\n`
       const params = method.params.split(',').filter((p) => p.trim())
       for (const param of params) {
-        const [name, type] = param.trim().split(':').map((s) => s.trim())
+        const [name, type] = param
+          .trim()
+          .split(':')
+          .map((s) => s.trim())
         md += `- \`${name}\`${type ? `: ${type}` : ''}\n`
       }
       md += '\n'
@@ -312,17 +315,26 @@ function generateDocs() {
   fs.writeFileSync(path.join(OUTPUT_DIR, 'index.md'), indexMd, 'utf-8')
   console.log('Generated: index.md')
 
-  // Write main _meta.json
-  fs.writeFileSync(path.join(OUTPUT_DIR, '_meta.json'), JSON.stringify(mainMeta, null, 2), 'utf-8')
+  // Write main _meta.json (include sub-builders directory entry)
+  const mainMetaWithSubDir = [
+    ...mainMeta,
+    {
+      type: 'dir',
+      name: 'sub-builders',
+      label: 'Sub Builders',
+    },
+  ]
+  fs.writeFileSync(path.join(OUTPUT_DIR, '_meta.json'), JSON.stringify(mainMetaWithSubDir, null, 2), 'utf-8')
   console.log('Generated: api/_meta.json')
 
   // Write sub-builders _meta.json
-  fs.writeFileSync(
-    path.join(subBuildersDir, '_meta.json'),
-    JSON.stringify(subBuildersMeta, null, 2),
-    'utf-8'
-  )
+  fs.writeFileSync(path.join(subBuildersDir, '_meta.json'), JSON.stringify(subBuildersMeta, null, 2), 'utf-8')
   console.log('Generated: api/sub-builders/_meta.json')
+
+  // Generate index.md with overview: true
+  const indexPath = path.join(OUTPUT_DIR, 'index.md')
+  fs.writeFileSync(indexPath, '---\noverview: true\n---\n', 'utf-8')
+  console.log('Generated: index.md')
 
   // Update parent _meta.json
   const parentMetaPath = path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vbi/_meta.json')

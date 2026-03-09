@@ -2,6 +2,10 @@ import * as Y from 'yjs'
 import type { ObserveCallback, VBIDimension, VBIDimensionGroup, VBIDimensionTree } from 'src/types'
 import { DimensionNodeBuilder } from './dimension-node-builder'
 
+/**
+ * 维度构建器 - 用于构建和管理图表维度
+ * 维度是数据的分类字段，如：时间、地区、产品类别
+ */
 export class DimensionsBuilder {
   private dsl: Y.Map<any>
   private doc: Y.Doc
@@ -10,6 +14,12 @@ export class DimensionsBuilder {
     this.dsl = dsl
   }
 
+  /**
+   * 添加一个维度
+   * @param field - 字段名，如 "category"、"region"
+   * @param callback - 可选回调，用于进一步配置维度节点
+   * @returns 维度节点或自身（支持链式调用）
+   */
   addDimension(
     field: string,
     callback?: (node: DimensionNodeBuilder) => void,
@@ -34,6 +44,7 @@ export class DimensionsBuilder {
     return node
   }
 
+  /** 删除指定字段的维度 */
   removeDimension(field: VBIDimension['field']) {
     const dimensions = this.dsl.get('dimensions')
     const index = dimensions.toArray().findIndex((item: any) => item.get('field') === field)
@@ -42,27 +53,43 @@ export class DimensionsBuilder {
     }
   }
 
-  /**
-   * 获取所有维度配置
-   * @returns 维度配置数组
-   * @deprecated 请使用 toJson() 方法
-   */
-  getDimensions(): VBIDimension[] {
-    return this.dsl.get('dimensions').toJSON()
+  /** 更新指定维度字段的配置 */
+  updateDimension(field: string, updates: Partial<Omit<VBIDimension, 'field'>>): void {
+    const dimensions = this.dsl.get('dimensions') as Y.Array<any>
+    const index = dimensions.toArray().findIndex((item: any) => item.get('field') === field)
+
+    if (index === -1) {
+      throw new Error(`Dimension with field "${field}" not found`)
+    }
+
+    const dimensionYMap = dimensions.get(index)
+    for (const [key, value] of Object.entries(updates)) {
+      dimensionYMap.set(key, value)
+    }
   }
 
-  /**
-   * 将当前所有维度配置转换为 JSON 数组
-   * @returns 维度配置 JSON 数组
-   */
+  /** 根据字段名查找维度 */
+  find(field: VBIDimension['field']): VBIDimension | undefined {
+    const dimensions = this.dsl.get('dimensions').toJSON() as VBIDimension[]
+    return dimensions.find((d) => d.field === field)
+  }
+
+  /** 获取所有维度 */
+  findAllDimensions(): VBIDimension[] {
+    return this.dsl.get('dimensions').toJSON() as VBIDimension[]
+  }
+
+  /** 导出所有维度为 JSON 数组 */
   toJson(): VBIDimension[] {
     return this.dsl.get('dimensions').toJSON() as VBIDimension[]
   }
 
+  /** 监听维度变化 */
   observe(callback: ObserveCallback) {
     this.dsl.get('dimensions').observe(callback)
   }
 
+  /** 取消监听维度变化 */
   unobserve(callback: ObserveCallback) {
     this.dsl.get('dimensions').unobserve(callback)
   }

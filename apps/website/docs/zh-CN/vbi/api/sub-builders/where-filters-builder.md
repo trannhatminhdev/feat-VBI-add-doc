@@ -12,23 +12,86 @@ new WhereFiltersBuilder(doc: Y.Doc)
 
 ## 方法
 
-### ~~getWhereFilters~~
+### addWhereFilter
 
-> ⚠️ 已废弃
-
-获取所有筛选条件
+Where 过滤构建器 - 用于构建 SQL WHERE 条件
 
 **签名**:
 
 ```typescript
-getWhereFilters(): VBIFilter[]
+addWhereFilter(filter: VBIFilter): const yMap = new Y.Map<any>()
+```
+
+**参数**:
+
+- `filter`: VBIFilter
+
+**返回**: `const yMap = new Y.Map<any>()`
+
+### updateWhereFilter
+
+**签名**:
+
+```typescript
+updateWhereFilter(index: number, filter: Partial<VBIFilter>): const whereFilters = this.dsl.get('whereFilters')
+```
+
+**参数**:
+
+- `index`: number
+- `filter`: Partial<VBIFilter>
+
+**返回**: `const whereFilters = this.dsl.get('whereFilters')`
+
+### removeWhereFilter
+
+**签名**:
+
+```typescript
+removeWhereFilter(index: number): const whereFilters = this.dsl.get('whereFilters')
+```
+
+**参数**:
+
+- `index`: number
+
+**返回**: `const whereFilters = this.dsl.get('whereFilters')`
+
+### find
+
+**签名**:
+
+```typescript
+find(index: number): VBIFilter | undefined
+```
+
+**参数**:
+
+- `index`: number
+
+**返回**: `VBIFilter | undefined`
+
+### findAllWhereFilters
+
+**签名**:
+
+```typescript
+findAllWhereFilters(): VBIFilter[]
 ```
 
 **返回**: `VBIFilter[]`
 
-### toJson
+### clear
 
-将当前所有筛选条件转换为 JSON 数组
+**签名**:
+
+```typescript
+clear(): const whereFilters = this.dsl.get('whereFilters')
+```
+
+**返回**: `const whereFilters = this.dsl.get('whereFilters')`
+
+### toJson
 
 **签名**:
 
@@ -38,72 +101,31 @@ toJson(): VBIFilter[]
 
 **返回**: `VBIFilter[]`
 
-### addWhereFilter
-
-**签名**:
-
-```typescript
-addWhereFilter(filter: VBIFilter)
-```
-
-**参数**:
-
-- `filter`: VBIFilter
-
-### updateWhereFilter
-
-**签名**:
-
-```typescript
-updateWhereFilter(index: number, filter: Partial<VBIFilter>)
-```
-
-**参数**:
-
-- `index`: number
-- `filter`: Partial<VBIFilter>
-
-### removeWhereFilter
-
-**签名**:
-
-```typescript
-removeWhereFilter(index: number)
-```
-
-**参数**:
-
-- `index`: number
-
-### clearWhereFilters
-
-**签名**:
-
-```typescript
-clearWhereFilters()
-```
-
 ### observe
 
 **签名**:
 
 ```typescript
-observe(callback: ObserveCallback)
+observe(callback: ObserveCallback): this.dsl.get('whereFilters').observe(callback)
 ```
 
 **参数**:
 
 - `callback`: ObserveCallback
+
+**返回**: `this.dsl.get('whereFilters').observe(callback)`
 
 ### unobserve
 
 **签名**:
 
 ```typescript
-unobserve(callback: ObserveCallback)
+unobserve(callback: ObserveCallback): this.dsl.get('whereFilters').unobserve(callback)
 ```
 
 **参数**:
 
 - `callback`: ObserveCallback
+
+**返回**: `this.dsl.get('whereFilters').unobserve(callback)`
 

@@ -15,6 +15,7 @@ describe('DimensionsBuilder', () => {
         },
       ],
       whereFilters: [],
+      havingFilters: [],
       measures: [],
     })
   })
@@ -42,6 +43,7 @@ describe('DimensionsBuilder', () => {
         },
       ],
       whereFilters: [],
+      havingFilters: [],
       measures: [],
     })
   })

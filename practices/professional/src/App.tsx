@@ -42,7 +42,7 @@ export function APP() {
       renameMeasure: (alias: string, newAlias: string) => void;
       modifyAggregate: (alias: string, func: string, quantile?: number) => void;
       modifyEncoding: (field: string, encoding: EncodingChannel) => void;
-      getMeasures: () => any[];
+      findAllMeasures: () => any[];
     };
     chartType?: {
       changeChartType: (type: string) => void;
@@ -143,7 +143,7 @@ export function APP() {
     setFilters(newFilters);
     if (builder) {
       builder.doc.transact(() => {
-        builder.whereFilters.clearWhereFilters();
+        builder.whereFilters.clear();
         newFilters.forEach((f) => {
           builder.whereFilters.addWhereFilter({
             field: f.field,
@@ -190,8 +190,8 @@ export function APP() {
     loadSchema();
 
     // 初始化度量字段详情
-    if (builder?.measures?.getMeasures) {
-      const measures = builder.measures.getMeasures();
+    if (builder?.measures?.findAllMeasures) {
+      const measures = builder.measures.findAllMeasures();
       const detail: Record<
         string,
         {
@@ -352,7 +352,7 @@ export function APP() {
   // 同步度量字段详情
   const syncMeasuresDetail = () => {
     if (builderRef.current?.measures) {
-      const measures = builderRef.current.measures.getMeasures();
+      const measures = builderRef.current.measures.findAllMeasures();
       const detail: Record<
         string,
         {

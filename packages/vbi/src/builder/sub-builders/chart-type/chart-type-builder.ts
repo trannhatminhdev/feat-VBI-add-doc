@@ -2,12 +2,17 @@ import { ChartTypeEnum } from '@visactor/vseed'
 import { ObserveCallback } from 'src/types'
 import * as Y from 'yjs'
 
+/**
+ * 图表类型构建器 - 用于切换图表显示形式
+ * 支持：表格、柱状图、折线图、饼图、散点图等
+ */
 export class ChartTypeBuilder {
   private dsl: Y.Map<any>
   constructor(doc: Y.Doc, dsl: Y.Map<any>) {
     this.dsl = dsl
   }
 
+  /** 监听图表类型变化 */
   observe(callback: ObserveCallback) {
     const wrapper: ObserveCallback = (e, trans) => {
       if (e.keysChanged.has('chartType')) {
@@ -17,6 +22,7 @@ export class ChartTypeBuilder {
     this.dsl.observe(wrapper)
   }
 
+  /** 取消监听图表类型变化 */
   unobserve(callback: ObserveCallback) {
     const wrapper: ObserveCallback = (e, trans) => {
       if (e.keysChanged.has('chartType')) {
@@ -26,27 +32,22 @@ export class ChartTypeBuilder {
     this.dsl.unobserve(wrapper)
   }
 
+  /** 切换图表类型 */
   changeChartType(chartType: string) {
     this.dsl.set('chartType', chartType)
   }
 
-  /**
-   * 获取当前图表类型
-   * @returns 图表类型字符串
-   * @deprecated 请使用 toJson() 方法
-   */
+  /** @deprecated 请使用 toJson() 方法 */
   getChartType() {
     return this.dsl.get('chartType') || 'table'
   }
 
-  /**
-   * 将当前图表类型配置转换为 JSON 对象
-   * @returns 图表类型字符串
-   */
+  /** 获取当前图表类型 */
   toJson(): string {
     return this.dsl.get('chartType') || 'table'
   }
 
+  /** 获取所有支持的图表类型 */
   getAvailableChartTypes(): string[] {
     return [
       // Table

@@ -12,27 +12,9 @@ new HavingFiltersBuilder(doc: Y.Doc)
 
 ## 方法
 
-### addFilter
-
-HavingFiltersBuilder - 用于构建和管理筛选条件
-
-**签名**:
-
-```typescript
-addFilter(field: string, operator: string, value: unknown): HavingFiltersNodeBuilder
-```
-
-**参数**:
-
-- `field`: string
-- `operator`: string
-- `value`: unknown
-
-**返回**: `HavingFiltersNodeBuilder`
-
 ### removeFilter
 
-移除筛选条件
+Having 过滤构建器 - 用于构建 SQL HAVING 条件
 
 **签名**:
 
@@ -46,23 +28,47 @@ removeFilter(field: string): boolean
 
 **返回**: `boolean`
 
-### ~~getFilters~~
-
-> ⚠️ 已废弃
-
-获取所有筛选条件
+### updateFilter
 
 **签名**:
 
 ```typescript
-getFilters(): VBIHavingFilter[]
+updateFilter(field: string, updates: Partial<Omit<VBIHavingFilter, 'field'>>): boolean
+```
+
+**参数**:
+
+- `field`: string
+- `updates`: Partial<Omit<VBIHavingFilter
+- `'field'>>`
+
+**返回**: `boolean`
+
+### find
+
+**签名**:
+
+```typescript
+find(field: string): VBIHavingFilter | undefined
+```
+
+**参数**:
+
+- `field`: string
+
+**返回**: `VBIHavingFilter | undefined`
+
+### findAllHavingFilters
+
+**签名**:
+
+```typescript
+findAllHavingFilters(): VBIHavingFilter[]
 ```
 
 **返回**: `VBIHavingFilter[]`
 
 ### toJson
-
-将当前所有筛选条件转换为 JSON 数组
 
 **签名**:
 
@@ -74,8 +80,6 @@ toJson(): VBIHavingFilter[]
 
 ### clear
 
-清空所有筛选条件
-
 **签名**:
 
 ```typescript
@@ -86,7 +90,7 @@ clear(): void
 
 ### getCount
 
-观察筛选条件变化
+取消监听过滤条件变化 */
 
 **签名**:
 
@@ -97,8 +101,6 @@ getCount(): number
 **返回**: `number`
 
 ### isEmpty
-
-检查是否为空
 
 **签名**:
 

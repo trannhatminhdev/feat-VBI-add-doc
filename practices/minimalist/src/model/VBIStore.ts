@@ -63,7 +63,7 @@ export const useVBIStore = create<BearState>((set, get) => ({
           );
         });
 
-        const filters = builder.whereFilters.getWhereFilters();
+        const filters = builder.whereFilters.findAllWhereFilters();
         if (filters && filters.length > 0) {
           const lastFilter = filters[filters.length - 1];
           builder.doc.transact(() => {
