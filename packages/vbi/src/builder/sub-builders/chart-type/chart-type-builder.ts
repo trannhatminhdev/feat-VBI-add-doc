@@ -30,7 +30,20 @@ export class ChartTypeBuilder {
     this.dsl.set('chartType', chartType)
   }
 
+  /**
+   * 获取当前图表类型
+   * @returns 图表类型字符串
+   * @deprecated 请使用 toJson() 方法
+   */
   getChartType() {
+    return this.dsl.get('chartType') || 'table'
+  }
+
+  /**
+   * 将当前图表类型配置转换为 JSON 对象
+   * @returns 图表类型字符串
+   */
+  toJson(): string {
     return this.dsl.get('chartType') || 'table'
   }
 

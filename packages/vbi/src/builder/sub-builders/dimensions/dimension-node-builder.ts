@@ -9,7 +9,18 @@ export class DimensionNodeBuilder {
     return this
   }
 
-  build(): VBIDimension {
+  /**
+   * 将当前配置转换为 JSON 对象
+   * @returns VBIDimension JSON 对象
+   */
+  toJson(): VBIDimension {
     return this.yMap.toJSON() as VBIDimension
+  }
+
+  /**
+   * @deprecated 请使用 toJson() 方法
+   */
+  build(): VBIDimension {
+    return this.toJson()
   }
 }

@@ -98,8 +98,21 @@ export class MeasuresBuilder {
     }
   }
 
+  /**
+   * 获取所有度量配置
+   * @returns 度量配置数组
+   * @deprecated 请使用 toJson() 方法
+   */
   getMeasures(): VBIMeasure[] {
     return this.dsl.get('measures').toJSON()
+  }
+
+  /**
+   * 将当前所有度量配置转换为 JSON 数组
+   * @returns 度量配置 JSON 数组
+   */
+  toJson(): VBIMeasure[] {
+    return this.dsl.get('measures').toJSON() as VBIMeasure[]
   }
 
   observe(callback: ObserveCallback) {

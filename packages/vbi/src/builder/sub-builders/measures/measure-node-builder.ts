@@ -19,7 +19,18 @@ export class MeasureNodeBuilder {
     return this
   }
 
-  build(): VBIMeasure {
+  /**
+   * 将当前配置转换为 JSON 对象
+   * @returns VBIMeasure JSON 对象
+   */
+  toJson(): VBIMeasure {
     return this.yMap.toJSON() as VBIMeasure
+  }
+
+  /**
+   * @deprecated 请使用 toJson() 方法
+   */
+  build(): VBIMeasure {
+    return this.toJson()
   }
 }

@@ -55,8 +55,21 @@ export class WhereFiltersBuilder {
     return this
   }
 
+  /**
+   * 获取所有筛选条件
+   * @returns 筛选条件数组
+   * @deprecated 请使用 toJson() 方法
+   */
   getWhereFilters(): VBIFilter[] {
     return this.dsl.get('whereFilters').toJSON()
+  }
+
+  /**
+   * 将当前所有筛选条件转换为 JSON 数组
+   * @returns 筛选条件 JSON 数组
+   */
+  toJson(): VBIFilter[] {
+    return this.dsl.get('whereFilters').toJSON() as VBIFilter[]
   }
 
   observe(callback: ObserveCallback) {

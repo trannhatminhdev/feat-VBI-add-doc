@@ -52,8 +52,21 @@ export class DimensionsBuilder {
     }
   }
 
+  /**
+   * 获取所有维度配置
+   * @returns 维度配置数组
+   * @deprecated 请使用 toJson() 方法
+   */
   getDimensions(): VBIDimension[] {
     return this.dsl.get('dimensions').toJSON()
+  }
+
+  /**
+   * 将当前所有维度配置转换为 JSON 数组
+   * @returns 维度配置 JSON 数组
+   */
+  toJson(): VBIDimension[] {
+    return this.dsl.get('dimensions').toJSON() as VBIDimension[]
   }
 
   observe(callback: ObserveCallback) {

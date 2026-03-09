@@ -49,11 +49,11 @@ export class HavingFiltersNodeBuilder {
   }
 
   /**
-   * 构建最终的 VBIHavingFilter 对象
+   * 将当前配置转换为 JSON 对象（带验证）
    * @returns 验证后的筛选条件对象
    * @throws 如果验证失败
    */
-  build(): VBIHavingFilter {
+  toJson(): VBIHavingFilter {
     const data = this.yMap.toJSON() as VBIHavingFilter
     const result = zVBIHavingFilter.safeParse(data)
 
@@ -65,6 +65,13 @@ export class HavingFiltersNodeBuilder {
     }
 
     return result.data
+  }
+
+  /**
+   * @deprecated 请使用 toJson() 方法
+   */
+  build(): VBIHavingFilter {
+    return this.toJson()
   }
 
   /**
