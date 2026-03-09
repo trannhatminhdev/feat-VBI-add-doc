@@ -15,6 +15,7 @@ export const buildVQuery = (vbiDSL: VBIDSL, builder: VBIBuilder) => {
     wrapper(buildSelect),
     wrapper(buildGroupBy),
     wrapper(buildWhere),
+    wrapper(buildHaving),
     wrapper(buildOrderBy),
     wrapper(buildLimit),
   )
@@ -125,6 +126,37 @@ const buildLimit: buildPipe = (queryDSL, context) => {
   const result = { ...queryDSL }
   const limit = context.vbiDSL.limit ?? 1000
   result.limit = limit
+
+  return result as VQueryDSL
+}
+
+const buildHaving: buildPipe = (queryDSL, context) => {
+  const { vbiDSL } = context
+  const havingFilters = vbiDSL.havingFilters || []
+
+  if (havingFilters.length === 0) {
+    return queryDSL
+  }
+
+  // Only add having clause if there is a groupBy clause
+  const groupBy = queryDSL.groupBy
+  if (!groupBy || groupBy.length === 0) {
+    return queryDSL
+  }
+
+  const result = { ...queryDSL }
+  result.having = {
+    op: 'and',
+    conditions: havingFilters.map((filter) => {
+      const mappedOp = filter.operator ?? '='
+
+      return {
+        field: filter.field,
+        op: mappedOp,
+        value: filter.value,
+      } as any
+    }),
+  }
 
   return result as VQueryDSL
 }

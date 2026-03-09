@@ -104,11 +104,12 @@ export class HavingFiltersBuilder {
   /**
    * @description 清空所有 Having 过滤条件
    */
-  clear(): void {
+  clear(): this {
     const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
     if (havingFilters.length > 0) {
       havingFilters.delete(0, havingFilters.length)
     }
+    return this
   }
 
   /**
