@@ -4,6 +4,11 @@ import { VBIMeasure } from '../../../types'
 export class MeasureNodeBuilder {
   constructor(private yMap: Y.Map<any>) {}
 
+  /** 获取字段名 */
+  getField(): string {
+    return this.yMap.get('field')
+  }
+
   /** 设置度量显示名称 */
   setAlias(alias: string): this {
     this.yMap.set('alias', alias)

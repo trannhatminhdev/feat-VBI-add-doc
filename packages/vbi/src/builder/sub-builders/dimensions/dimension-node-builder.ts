@@ -4,6 +4,11 @@ import { VBIDimension } from '../../../types'
 export class DimensionNodeBuilder {
   constructor(private yMap: Y.Map<any>) {}
 
+  /** 获取字段名 */
+  getField(): string {
+    return this.yMap.get('field')
+  }
+
   /** 设置维度显示名称 */
   setAlias(alias: string): this {
     this.yMap.set('alias', alias)

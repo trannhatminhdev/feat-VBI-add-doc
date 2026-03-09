@@ -42,7 +42,7 @@ export class WhereFiltersBuilder {
     const node = new WhereFilterNodeBuilder(yMap)
 
     callback(node)
-    return node
+    return this
   }
 
   /**

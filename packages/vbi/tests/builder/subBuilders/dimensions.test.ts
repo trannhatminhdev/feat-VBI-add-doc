@@ -5,7 +5,9 @@ describe('DimensionsBuilder', () => {
   test('addDimension', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
-    builder.dimensions.add('category').setAlias('类别')
+    builder.dimensions.add('category', (node) => {
+      node.setAlias('类别')
+    })
 
     expect(builder.build()).toEqual({
       dimensions: [

@@ -5,7 +5,9 @@ describe('MeasuresBuilder', () => {
   test('addMeasure', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
-    builder.measures.add('sales').setAlias('Max(sales)').setAggregate({ func: 'max' })
+    builder.measures.add('sales', (node) => {
+      node.setAlias('Max(sales)').setAggregate({ func: 'max' })
+    })
 
     expect(builder.build()).toEqual({
       dimensions: [],

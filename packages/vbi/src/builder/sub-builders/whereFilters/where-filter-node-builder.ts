@@ -3,19 +3,14 @@ import { VBIFilter } from '../../../types'
 
 /**
  * @description Where 过滤节点构建器 - 用于配置单个 Where 过滤条件
- * 提供链式 API（如：setField().setOperator().setValue()）
+ * 提供链式 API（如：setOperator().setValue().toJson()）
  */
 export class WhereFilterNodeBuilder {
   constructor(private yMap: Y.Map<any>) {}
 
-  /**
-   * @description 设置过滤字段
-   * @param field - 字段名
-   * @returns 自身
-   */
-  setField(field: string): this {
-    this.yMap.set('field', field)
-    return this
+  /** 获取字段名 */
+  getField(): string {
+    return this.yMap.get('field')
   }
 
   /**
