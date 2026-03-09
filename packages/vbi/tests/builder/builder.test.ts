@@ -5,10 +5,10 @@ describe('VBI', () => {
   test('build', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
-    builder.measures.addMeasure('sales', (node) => {
+    builder.measures.add('sales', (node) => {
       node.setAlias('Max Sales').setAggregate({ func: 'max' }).setEncoding('yAxis')
     })
-    builder.dimensions.addDimension('area', (node) => {
+    builder.dimensions.add('area', (node) => {
       node.setAlias('Area')
     })
 

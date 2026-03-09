@@ -2,10 +2,10 @@ import { VBI } from '@visactor/vbi'
 import { VBIDSL } from 'src/types/dsl'
 
 describe('WhereFiltersBuilder', () => {
-  test('addWhereFilter', () => {
+  test('add', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
-    builder.whereFilters.addWhereFilter({
+    builder.whereFilters.add({
       field: 'sales',
       operator: 'gt',
       value: 1000,
@@ -25,10 +25,10 @@ describe('WhereFiltersBuilder', () => {
     })
   })
 
-  test('addWhereFilter with all fields', () => {
+  test('add with all fields', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
-    builder.whereFilters.addWhereFilter({
+    builder.whereFilters.add({
       field: 'region',
       operator: 'eq',
       value: 'Beijing',
@@ -40,23 +40,23 @@ describe('WhereFiltersBuilder', () => {
     expect(result.whereFilters[0].value).toBe('Beijing')
   })
 
-  test('updateWhereFilter', () => {
+  test('update', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
     builder.whereFilters
-      .addWhereFilter({
+      .add({
         field: 'sales',
         operator: 'gt',
         value: 1000,
       })
-      .addWhereFilter({
+      .add({
         field: 'region',
         operator: 'eq',
         value: 'Beijing',
       })
 
     // Update the first filter
-    builder.whereFilters.updateWhereFilter(0, {
+    builder.whereFilters.update(0, {
       operator: 'lt',
       value: 500,
     })
@@ -80,28 +80,28 @@ describe('WhereFiltersBuilder', () => {
     })
   })
 
-  test('removeWhereFilter', () => {
+  test('remove', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
     builder.whereFilters
-      .addWhereFilter({
+      .add({
         field: 'sales',
         operator: 'gt',
         value: 1000,
       })
-      .addWhereFilter({
+      .add({
         field: 'region',
         operator: 'eq',
         value: 'Beijing',
       })
-      .addWhereFilter({
+      .add({
         field: 'category',
         operator: 'eq',
         value: 'Electronics',
       })
 
     // Remove the second filter (index 1)
-    builder.whereFilters.removeWhereFilter(1)
+    builder.whereFilters.remove(1)
 
     expect(builder.build()).toEqual({
       dimensions: [],
@@ -126,12 +126,12 @@ describe('WhereFiltersBuilder', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
     builder.whereFilters
-      .addWhereFilter({
+      .add({
         field: 'sales',
         operator: 'gt',
         value: 1000,
       })
-      .addWhereFilter({
+      .add({
         field: 'region',
         operator: 'eq',
         value: 'Beijing',
@@ -148,21 +148,21 @@ describe('WhereFiltersBuilder', () => {
     })
   })
 
-  test('findAllWhereFilters', () => {
+  test('all', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
-    builder.whereFilters.addWhereFilter({
+    builder.whereFilters.add({
       field: 'sales',
       operator: 'gt',
       value: 1000,
     })
-    builder.whereFilters.addWhereFilter({
+    builder.whereFilters.add({
       field: 'region',
       operator: 'eq',
       value: 'Beijing',
     })
 
-    const whereFilters = builder.whereFilters.findAllWhereFilters()
+    const whereFilters = builder.whereFilters.findAll()
     expect(whereFilters).toHaveLength(2)
     expect(whereFilters[0].field).toBe('sales')
     expect(whereFilters[1].field).toBe('region')
@@ -172,17 +172,17 @@ describe('WhereFiltersBuilder', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
     builder.whereFilters
-      .addWhereFilter({
+      .add({
         field: 'sales',
         operator: 'gt',
         value: 1000,
       })
-      .addWhereFilter({
+      .add({
         field: 'region',
         operator: 'eq',
         value: 'Beijing',
       })
-      .addWhereFilter({
+      .add({
         field: 'category',
         operator: 'in',
         value: ['Electronics', 'Furniture'],
@@ -215,7 +215,7 @@ describe('WhereFiltersBuilder', () => {
   test('filter with optional operator', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
-    builder.whereFilters.addWhereFilter({
+    builder.whereFilters.add({
       field: 'sales',
       // operator is optional
       value: 1000,

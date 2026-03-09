@@ -7,13 +7,13 @@ import { useVBIStore } from 'src/model';
 export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
   const [measures, setMeasures] = useState<VBIMeasure[]>(
-    builder.measures.findAllMeasures(),
+    builder.measures.findAll(),
   );
 
   useEffect(() => {
     const updateMeasures: ObserveCallback = (event, transaction) => {
       console.info('[observe] measures', event, transaction);
-      setMeasures(builder.measures.findAllMeasures());
+      setMeasures(builder.measures.findAll());
     };
 
     builder.measures.observe(updateMeasures);
@@ -23,7 +23,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   }, [builder]);
 
   const deleteMeasure = (field: VBIMeasure['field']) => {
-    builder.measures.removeMeasure(field);
+    builder.measures.remove(field);
   };
 
   return (

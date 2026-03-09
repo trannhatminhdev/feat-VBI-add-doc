@@ -5,7 +5,7 @@ describe('MeasuresBuilder', () => {
   test('addMeasure', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
-    builder.measures.addMeasure('sales').setAlias('Max(sales)').setAggregate({ func: 'max' })
+    builder.measures.add('sales').setAlias('Max(sales)').setAggregate({ func: 'max' })
 
     expect(builder.build()).toEqual({
       dimensions: [],
@@ -28,10 +28,10 @@ describe('MeasuresBuilder', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
     builder.measures
-      .addMeasure('sales', (node) => {
+      .add('sales', (node) => {
         node.setAlias('sum(sales)')
       })
-      .addMeasure('orders', (node) => {
+      .add('orders', (node) => {
         node.setAlias('Min(orders)').setAggregate({ func: 'min' })
       })
 

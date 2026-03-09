@@ -3,8 +3,7 @@ import { ObserveCallback } from 'src/types'
 import * as Y from 'yjs'
 
 /**
- * 图表类型构建器 - 用于切换图表显示形式
- * 支持：表格、柱状图、折线图、饼图、散点图等
+ * @description 图表类型构建器 - 用于切换图表显示形式, 支持：表格、柱状图、折线图、饼图、散点图等
  */
 export class ChartTypeBuilder {
   private dsl: Y.Map<any>
@@ -12,7 +11,10 @@ export class ChartTypeBuilder {
     this.dsl = dsl
   }
 
-  /** 监听图表类型变化 */
+  /**
+   * @description 监听图表类型变化
+   * @param callback - 回调函数
+   */
   observe(callback: ObserveCallback) {
     const wrapper: ObserveCallback = (e, trans) => {
       if (e.keysChanged.has('chartType')) {
@@ -22,7 +24,10 @@ export class ChartTypeBuilder {
     this.dsl.observe(wrapper)
   }
 
-  /** 取消监听图表类型变化 */
+  /**
+   * @description 取消监听图表类型变化
+   * @param callback - 回调函数
+   */
   unobserve(callback: ObserveCallback) {
     const wrapper: ObserveCallback = (e, trans) => {
       if (e.keysChanged.has('chartType')) {
@@ -32,22 +37,34 @@ export class ChartTypeBuilder {
     this.dsl.unobserve(wrapper)
   }
 
-  /** 切换图表类型 */
+  /**
+   * @description 设置图表类型
+   * @param chartType - 图表类型
+   */
   changeChartType(chartType: string) {
     this.dsl.set('chartType', chartType)
   }
 
-  /** @deprecated 请使用 toJson() 方法 */
-  getChartType() {
+  /**
+   * @description 获取当前图表类型
+   * @returns 图表类型
+   */
+  getChartType(): string {
     return this.dsl.get('chartType') || 'table'
   }
 
-  /** 获取当前图表类型 */
+  /**
+   * @description 获取当前图表类型
+   * @returns 图表类型
+   */
   toJson(): string {
     return this.dsl.get('chartType') || 'table'
   }
 
-  /** 获取所有支持的图表类型 */
+  /**
+   * @description 获取所有支持的图表类型
+   * @returns 图表类型数组
+   */
   getAvailableChartTypes(): string[] {
     return [
       // Table

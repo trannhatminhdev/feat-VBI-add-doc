@@ -91,7 +91,7 @@ export const APP = (props: APPProps) => {
       builder.doc.transact(() => {
         builder.whereFilters.clear();
         newFilters.forEach((f) => {
-          builder.whereFilters.addWhereFilter({
+          builder.whereFilters.add({
             field: f.field,
             operator: f.operator,
             value: f.value,

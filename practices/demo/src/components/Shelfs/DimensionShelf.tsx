@@ -8,17 +8,17 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
 
   const deleteDimension = (field: VBIDimension['field']) => {
-    builder.dimensions.removeDimension(field);
+    builder.dimensions.remove(field);
   };
 
   const [dimensions, setDimensions] = useState<VBIDimension[]>(
-    builder.dimensions.findAllDimensions(),
+    builder.dimensions.findAll(),
   );
 
   useEffect(() => {
     const updateDimensions: ObserveCallback = (event, transaction) => {
       console.info('[observe] dimensions', event, transaction);
-      setDimensions(builder.dimensions.findAllDimensions());
+      setDimensions(builder.dimensions.findAll());
     };
 
     builder.dimensions.observe(updateDimensions);

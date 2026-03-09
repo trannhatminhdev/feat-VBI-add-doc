@@ -2,6 +2,22 @@ import { Where, WhereClause } from 'src/types'
 import { sql } from 'kysely'
 import type { RawBuilder, SelectQueryBuilder } from 'kysely'
 
+/**
+ * SQL operator mapping from VBI DSL operators to SQL operators
+ */
+const operatorMap: Record<string, string> = {
+  gt: '>',
+  gte: '>=',
+  lt: '<',
+  lte: '<=',
+  eq: '=',
+  neq: '!=',
+}
+
+const toSqlOperator = (op: string): string => {
+  return operatorMap[op] ?? op
+}
+
 export const applyWhere = <DB, TB extends keyof DB & string, O, T>(
   qb: SelectQueryBuilder<DB, TB, O>,
   where?: Where<T> | WhereClause<T>,
@@ -19,6 +35,7 @@ export const applyWhere = <DB, TB extends keyof DB & string, O, T>(
     const leaf = w as unknown as { field: Extract<keyof T, string>; op: string; value?: unknown }
     const field = leaf.field
     const value = leaf.value
+    const sqlOp = toSqlOperator(leaf.op)
     switch (leaf.op) {
       case 'is null':
         return sql<boolean>`${sql.ref(field)} is null`
@@ -41,7 +58,7 @@ export const applyWhere = <DB, TB extends keyof DB & string, O, T>(
         return sql<boolean>`${sql.ref(field)} not between ${sql.val(a)} and ${sql.val(b)}`
       }
       default:
-        return sql<boolean>`${sql.ref(field)} ${sql.raw(leaf.op)} ${sql.val(value)}`
+        return sql<boolean>`${sql.ref(field)} ${sql.raw(sqlOp)} ${sql.val(value)}`
     }
   }
   return qb.where(toRaw(where))

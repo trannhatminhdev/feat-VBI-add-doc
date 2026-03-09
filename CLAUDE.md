@@ -134,7 +134,7 @@ pnpm --filter=@visactor/vbi run build:api  # 生成 API 文档
 # 代码质量
 pnpm --filter=@visactor/vbi run lint
 pnpm --filter=@visactor/vbi run format
-pnpm --filter=@visactor/vbi run typecheck
+pnpm run typecheck
 ```
 
 ### 测试
@@ -240,7 +240,7 @@ pnpm --filter=@visactor/vquery run g
 # 代码质量
 pnpm --filter=@visactor/vquery run lint
 pnpm --filter=@visactor/vquery run format
-pnpm --filter=@visactor/vquery run typecheck
+pnpm run typecheck
 ```
 
 ### 测试结构
@@ -306,7 +306,7 @@ pnpm --filter=@visactor/vseed run g
 # 代码质量
 pnpm --filter=@visactor/vseed run lint
 pnpm --filter=@visactor/vseed run format
-pnpm --filter=@visactor/vseed run typecheck
+pnpm run typecheck
 ```
 
 ### 测试结构
@@ -323,9 +323,9 @@ pnpm --filter=@visactor/vseed run typecheck
 仅验证改动的包，适用于大多数情况：
 
 ```bash
-pnpm --filter=@visactor/vbi run typecheck  # 类型检查
-pnpm --filter=@visactor/vbi run lint       # 代码规范
-pnpm --filter=@visactor/vbi run test       # 运行测试
+pnpm --filter=@visactor/vbi run test       # 仅运行子包测试
+pnpm run lint       # 全量 Lint（禁止对子包单独 lint）
+pnpm run typecheck  # 全量类型检查（禁止对子包单独 typecheck）
 ```
 
 ### 场景 2: 多包修改或破坏性变更
@@ -340,21 +340,19 @@ pnpm run typecheck # 全量类型检查
 
 ### 场景 3: 快速验证（修复 typo 或文档）
 
-仅运行 lint 即可：
+仅运行全量 lint：
 
 ```bash
-pnpm --filter=@visactor/vbi run lint
+pnpm run lint
 ```
 
 ## 持续改良 Claude.md
 
-每一个任务完成后，需要执行以下验证（仅针对改动的包）：
+每一个任务完成后，需要执行以下验证：
 
-- 运行 `typecheck` 检查类型
-- 运行 `lint` 检查代码规范
-- 运行 `test` 确保测试通过
-
-然后阅读 Claude.md，检查是否有新的建议或改进，持续改良 CLAUDE.md
+- 运行 `pnpm run lint` 检查代码规范（全量）
+- 运行 `pnpm run typecheck` 检查类型（全量）
+- 运行 `pnpm --filter=@visactor/[package] run test` 确保测试通过（仅子包）
 
 ### 技能文档语言策略（新增）
 

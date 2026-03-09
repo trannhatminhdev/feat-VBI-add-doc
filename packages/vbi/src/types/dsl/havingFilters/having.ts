@@ -1,59 +1,13 @@
 import { z } from 'zod'
 
-// 筛选操作符
-export const zFilterOperator = z.enum([
-  'eq',
-  'neq',
-  'gt',
-  'gte',
-  'lt',
-  'lte',
-  'contains',
-  'startsWith',
-  'endsWith',
-  'between',
-])
-
-export type FilterOperator = z.infer<typeof zFilterOperator>
-
-// 逻辑运算符
-export const zLogicalOperator = z.enum(['and', 'or'])
-
-export type LogicalOperator = z.infer<typeof zLogicalOperator>
-
-// 向前声明类型
-export type VBIHavingFilter = {
-  field: string
-  operator: FilterOperator
-  value: unknown
-  logical?: LogicalOperator
-}
-
-export type VBIHavingFilterGroup = {
-  logical: LogicalOperator
-  conditions: (VBIHavingFilter | VBIHavingFilterGroup)[]
-}
-
-// 单个筛选条件
-export const zVBIHavingFilter: z.ZodType<VBIHavingFilter> = z.object({
+export const zVBIHavingFilter = z.object({
   field: z.string(),
-  operator: zFilterOperator,
-  value: z.unknown(),
-  logical: zLogicalOperator.optional(),
+  operator: z.string().optional(),
+  value: z.any().optional(),
 })
 
-// 筛选组（支持嵌套）
-export const zVBIHavingFilterGroup: z.ZodType<VBIHavingFilterGroup> = z.object({
-  logical: zLogicalOperator,
-  conditions: z.array(z.union([zVBIHavingFilter, z.lazy(() => zVBIHavingFilterGroup)])),
-})
+export type VBIHavingFilter = z.infer<typeof zVBIHavingFilter>
 
-// 联合类型
-export const zVBIHaving = z.union([zVBIHavingFilter, zVBIHavingFilterGroup])
-
-export type VBIHaving = z.infer<typeof zVBIHaving>
-
-// 筛选数组
-export const zVBIHavingArray = z.array(zVBIHaving)
+export const zVBIHavingArray = z.array(zVBIHavingFilter)
 
 export type VBIHavingArray = z.infer<typeof zVBIHavingArray>

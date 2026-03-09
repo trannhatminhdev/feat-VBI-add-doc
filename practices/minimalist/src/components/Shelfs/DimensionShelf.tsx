@@ -8,19 +8,19 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
 
   const [dimensions, setDimensions] = useState<VBIDimension[]>(
-    builder.dimensions.findAllDimensions(),
+    builder.dimensions.findAll(),
   );
 
   useEffect(() => {
     const updateDimensions: ObserveCallback = () => {
-      setDimensions(builder.dimensions.findAllDimensions());
+      setDimensions(builder.dimensions.findAll());
     };
     builder.dimensions.observe(updateDimensions);
     return () => builder.dimensions.unobserve(updateDimensions);
   }, [builder]);
 
   const deleteDimension = (field: VBIDimension['field']) => {
-    builder.dimensions.removeDimension(field);
+    builder.dimensions.remove(field);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -29,7 +29,7 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       const data = JSON.parse(e.dataTransfer.getData('application/json'));
       if (data.type === 'dimension') {
         builder.doc.transact(() => {
-          builder.dimensions.addDimension(data.name, (node) => {
+          builder.dimensions.add(data.name, (node) => {
             node.setAlias(data.alias || data.name);
           });
         });

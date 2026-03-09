@@ -9,7 +9,7 @@ describe('VBI YJS Integration', () => {
     b2.applyUpdate(b1.encodeStateAsUpdate())
     b1.applyUpdate(b2.encodeStateAsUpdate())
 
-    b1.measures.addMeasure('sales', (node) => {
+    b1.measures.add('sales', (node) => {
       node.setAlias('Sales')
     })
 
@@ -41,7 +41,7 @@ test('encodeStateAsUpdate', () => {
   b1.applyUpdate(b2.encodeStateAsUpdate())
   b2.applyUpdate(b1.encodeStateAsUpdate())
 
-  b1.measures.addMeasure('sales', (node) => {
+  b1.measures.add('sales', (node) => {
     node.setAlias('Max Sales').setAggregate({ func: 'max' }).setEncoding('yAxis')
   })
 

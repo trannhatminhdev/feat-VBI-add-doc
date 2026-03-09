@@ -5,7 +5,7 @@ describe('DimensionsBuilder', () => {
   test('addDimension', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
-    builder.dimensions.addDimension('category').setAlias('类别')
+    builder.dimensions.add('category').setAlias('类别')
 
     expect(builder.build()).toEqual({
       dimensions: [
@@ -24,10 +24,10 @@ describe('DimensionsBuilder', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
     builder.dimensions
-      .addDimension('region', (node) => {
+      .add('region', (node) => {
         node.setAlias('地区')
       })
-      .addDimension('city', (node) => {
+      .add('city', (node) => {
         node.setAlias('城市')
       })
 

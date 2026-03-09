@@ -58,18 +58,18 @@ describe('select', () => {
     const builder = VBI.from(VBI.generateEmptyDSL(connectorId))
 
     builder.measures
-      .addMeasure('sales', (node) => {
+      .add('sales', (node) => {
         node.setAlias('Sum(sales)').setAggregate({ func: 'sum' })
       })
-      .addMeasure('profit', (node) => {
+      .add('profit', (node) => {
         node.setAlias('Sum(profit)').setAggregate({ func: 'sum' })
       })
 
     builder.dimensions
-      .addDimension('area', (node) => {
+      .add('area', (node) => {
         node.setAlias('区域')
       })
-      .addDimension('province', (node) => {
+      .add('province', (node) => {
         node.setAlias('省份')
       })
     builder.setLimit(20)

@@ -16,38 +16,43 @@ const OUTPUT_DIR = path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vbi
 const BUILDERS = [
   // Main builder - goes to root of api/
   {
-    name: 'VBIBuilder',
+    name: 'Builder',
     file: 'vbi-builder.ts',
     description: 'VBI 主构建器，管理所有子构建器',
     category: 'main',
   },
-  // Sub-builders - go to sub-builders/ directory
+  // Sub-builders - go to builder/ directory
   {
-    name: 'MeasuresBuilder',
-    file: 'sub-builders/measures/measures-builder.ts',
-    description: '度量构建器，用于添加、修改、删除度量配置',
-    category: 'sub-builders',
-  },
-  {
-    name: 'DimensionsBuilder',
-    file: 'sub-builders/dimensions/dimensions-builder.ts',
-    description: '维度构建器，用于添加、修改、删除维度配置',
-    category: 'sub-builders',
-  },
-  {
-    name: 'ChartTypeBuilder',
+    name: 'chartType',
+    label: 'chartType',
     file: 'sub-builders/chart-type/chart-type-builder.ts',
     description: '图表类型构建器，用于切换和获取图表类型',
     category: 'sub-builders',
   },
   {
-    name: 'WhereFiltersBuilder',
+    name: 'measures',
+    label: 'measures',
+    file: 'sub-builders/measures/measures-builder.ts',
+    description: '度量构建器，用于添加、修改、删除度量配置',
+    category: 'sub-builders',
+  },
+  {
+    name: 'dimensions',
+    label: 'dimensions',
+    file: 'sub-builders/dimensions/dimensions-builder.ts',
+    description: '维度构建器，用于添加、修改、删除维度配置',
+    category: 'sub-builders',
+  },
+  {
+    name: 'whereFilters',
+    label: 'whereFilters',
     file: 'sub-builders/whereFilters/filters-builder.ts',
     description: 'Where 过滤构建器，用于添加、修改、删除行级过滤条件',
     category: 'sub-builders',
   },
   {
-    name: 'HavingFiltersBuilder',
+    name: 'havingFilters',
+    label: 'havingFilters',
     file: 'sub-builders/havingFilters/having-builder.ts',
     description: 'Having 过滤构建器，用于添加、修改、删除分组后过滤条件',
     category: 'sub-builders',
@@ -73,9 +78,14 @@ function parseClassMethods(filePath) {
     const params = match[3]
     const returnType = match[4] ? match[4].trim() : ''
 
-    // Extract description from JSDoc
+    // Extract description from JSDoc - handle both simple * description and @description
+    let description = ''
     const descMatch = jsdoc.match(/\* ([^\n]+)/)
-    const description = descMatch ? descMatch[1].trim() : ''
+    if (descMatch) {
+      description = descMatch[1].trim()
+      // Remove @description prefix if present
+      description = description.replace(/^@description\s+/, '')
+    }
 
     // Check for @deprecated
     const deprecated = jsdoc.includes('@deprecated')
@@ -164,26 +174,31 @@ function generateBuilderDocs(builder) {
   const filePath = path.join(BUILDER_DIR, builder.file)
   const methods = parseClassMethods(filePath)
 
-  let md = `# ${builder.name}\n\n`
+  // Use displayName: main builder uses 'VBIBuilder', sub-builders use label
+  const displayName = builder.category === 'main' ? 'VBIBuilder' : builder.label || builder.name
+
+  let md = `# ${displayName}\n\n`
   md += `${builder.description}\n\n`
 
   // Constructor section
   md += `## 构造函数\n\n`
   md += `\`\`\`typescript\n`
-  md += `new ${builder.name}(doc: Y.Doc)\n`
+  md += `new ${displayName}(doc: Y.Doc)\n`
   md += `\`\`\`\n\n`
 
   // Properties section
   md += `## 属性\n\n`
-  const builderInstances = getBuilderProperties(builder.name)
+  const builderInstances = getBuilderProperties(displayName)
   if (builderInstances.length > 0) {
+    md += `| 属性 | 类型 | 说明 |\n`
+    md += `| --- | --- | --- |\n`
     for (const prop of builderInstances) {
-      md += `- **${prop.name}**: ${prop.type} - ${prop.description}\n`
+      md += `| **${prop.name}** | \`${prop.type}\` | ${prop.description} |\n`
     }
     md += '\n'
   }
 
-  // Methods section
+  // Methods section - each method with its own table
   md += `## 方法\n\n`
 
   for (const method of methods) {
@@ -198,50 +213,105 @@ function generateBuilderDocs(builder) {
       md += `${method.description}\n\n`
     }
 
-    // Method signature
-    md += `**签名**:\n\n`
+    // Method definition in code block - simplify return type
+    md += `**定义**:\n\n`
     md += '```typescript\n'
-    if (method.returnType) {
-      md += `${method.name}(${method.params}): ${method.returnType}\n`
+    let params = method.params || ''
+    let returnType = method.returnType || ''
+
+    // Simplify return type: remove implementation details
+    if (returnType) {
+      // Handle patterns like "return this.encoding.getMeasureEncodings(...)"
+      if (returnType.includes('this.')) {
+        returnType = 'any'
+      } else if (returnType.startsWith('const ') || returnType.startsWith('let ')) {
+        // Handle "const measures = ..." pattern
+        const match = returnType.match(/^(const|let)\s+\w+\s+=\s+/)
+        if (match) {
+          returnType = returnType.slice(match[0].length)
+          // If it's a getter like "this.dsl.get('measures')", simplify
+          if (returnType.includes('.get(')) {
+            returnType = 'any'
+          }
+        }
+      }
+      // Clean up arrow functions
+      returnType = returnType.replace(/\s*=>.*$/, '').trim()
+      md += `${method.name}(${params}): ${returnType}\n`
     } else {
-      md += `${method.name}(${method.params})\n`
+      md += `${method.name}(${params})\n`
     }
     md += '```\n\n'
 
-    // Parameters
-    if (method.params) {
-      md += `**参数**:\n\n`
-      const params = method.params.split(',').filter((p) => p.trim())
-      for (const param of params) {
-        const [name, type] = param
-          .trim()
-          .split(':')
-          .map((s) => s.trim())
-        md += `- \`${name}\`${type ? `: ${type}` : ''}\n`
-      }
-      md += '\n'
-    }
-
-    // Return value
+    // Return value - simplified
     if (method.returnType) {
-      md += `**返回**: \`${method.returnType}\`\n\n`
+      let returnType = method.returnType
+      // Simplify return type
+      if (returnType.includes('this.')) {
+        returnType = 'any'
+      } else if (returnType.startsWith('const ') || returnType.startsWith('let ')) {
+        const match = returnType.match(/^(const|let)\s+\w+\s+=\s+/)
+        if (match) {
+          returnType = returnType.slice(match[0].length)
+          if (returnType.includes('.get(')) {
+            returnType = 'any'
+          }
+        }
+      }
+      returnType = returnType.replace(/\s*=>.*$/, '').trim()
+      md += `**返回**: \`${returnType}\`\n\n`
     }
-  }
 
-  return md
-}
+    // Parameters table - better parsing for complex types
+    if (method.params) {
+      // Split by comma but respect brackets
+      const paramsList = []
+      let current = ''
+      let bracketDepth = 0
+      for (const char of method.params) {
+        if (char === '(' || char === '<' || char === '{' || char === '[') {
+          bracketDepth++
+          current += char
+        } else if (char === ')' || char === '>' || char === '}' || char === ']') {
+          bracketDepth--
+          current += char
+        } else if (char === ',' && bracketDepth === 0) {
+          paramsList.push(current.trim())
+          current = ''
+        } else {
+          current += char
+        }
+      }
+      if (current.trim()) {
+        paramsList.push(current.trim())
+      }
 
-/**
- * Generate main API index page
- */
-function generateIndexPage() {
-  let md = `# API 参考\n\n`
-  md += `VBI 提供了多个构建器用于配置图表，每个构建器负责特定的功能领域。\n\n`
-  md += `## 构建器概览\n\n`
-
-  for (const builder of BUILDERS) {
-    md += `### [${builder.name}](./api/${kebabCase(builder.name)})\n\n`
-    md += `${builder.description}\n\n`
+      if (paramsList.length > 0) {
+        md += `**参数**:\n\n`
+        md += `| 参数 | 类型 |\n`
+        md += `| --- | --- |\n`
+        for (const param of paramsList) {
+          // Split on last colon for type
+          const colonIdx = param.lastIndexOf(':')
+          let name = param
+          let type = ''
+          if (colonIdx > 0) {
+            name = param.slice(0, colonIdx).trim()
+            type = param.slice(colonIdx + 1).trim()
+          }
+          // Check for default value
+          const defaultMatch = name.match(/^(\w+)\s*=\s*(.+)$/)
+          let paramName = name
+          let defaultVal = ''
+          if (defaultMatch) {
+            paramName = defaultMatch[1]
+            defaultVal = defaultMatch[2]
+          }
+          md += `| \`${paramName}\`${defaultVal ? ` = ${defaultVal}` : ''} | ${type || '-'} |\n`
+        }
+        md += '\n'
+      }
+    }
   }
 
   return md
@@ -265,73 +335,56 @@ function generateDocs() {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true })
   }
 
-  // Create sub-builders directory
-  const subBuildersDir = path.join(OUTPUT_DIR, 'sub-builders')
-  if (!fs.existsSync(subBuildersDir)) {
-    fs.mkdirSync(subBuildersDir, { recursive: true })
+  // Create builder directory for sub-builders
+  const builderDir = path.join(OUTPUT_DIR, 'builder')
+  if (!fs.existsSync(builderDir)) {
+    fs.mkdirSync(builderDir, { recursive: true })
   }
 
-  // Group builders by category
-  const mainBuilders = BUILDERS.filter((b) => b.category === 'main')
-  const subBuilders = BUILDERS.filter((b) => b.category === 'sub-builders')
+  const mainMeta = [] // For root _meta.json (VBIBuilder file + builder dir)
+  const subMeta = [] // For builder/_meta.json
 
-  const mainMeta = []
-  const subBuildersMeta = []
-
-  // Generate main builder docs (VBIBuilder)
-  for (const builder of mainBuilders) {
+  // Generate builder docs
+  for (const builder of BUILDERS) {
     const fileName = kebabCase(builder.name)
     const md = generateBuilderDocs(builder)
-    const outputPath = path.join(OUTPUT_DIR, `${fileName}.md`)
 
-    fs.writeFileSync(outputPath, md, 'utf-8')
-    console.log(`Generated: ${fileName}.md`)
+    if (builder.category === 'main') {
+      // Builder goes to root as builder.md
+      const outputPath = path.join(OUTPUT_DIR, 'builder.md')
+      fs.writeFileSync(outputPath, md, 'utf-8')
+      console.log('Generated: builder.md')
 
-    mainMeta.push({
-      type: 'file',
-      name: fileName,
-      label: builder.name,
-    })
+      // Skip adding to mainMeta - only keep dir in _meta.json
+      // rspress handles same-name file + dir automatically
+    } else {
+      // Sub-builders go to builder directory
+      const outputPath = path.join(builderDir, `${fileName}.md`)
+      fs.writeFileSync(outputPath, md, 'utf-8')
+      console.log(`Generated: builder/${fileName}.md`)
+
+      subMeta.push({
+        type: 'file',
+        name: fileName,
+        label: builder.label || builder.name,
+      })
+    }
   }
 
-  // Generate sub-builders docs
-  for (const builder of subBuilders) {
-    const fileName = kebabCase(builder.name)
-    const md = generateBuilderDocs(builder)
-    const outputPath = path.join(subBuildersDir, `${fileName}.md`)
+  // Write _meta.json for builder directory
+  fs.writeFileSync(path.join(builderDir, '_meta.json'), JSON.stringify(subMeta, null, 2), 'utf-8')
+  console.log('Generated: api/builder/_meta.json')
 
-    fs.writeFileSync(outputPath, md, 'utf-8')
-    console.log(`Generated: sub-builders/${fileName}.md`)
-
-    subBuildersMeta.push({
-      type: 'file',
-      name: fileName,
-      label: builder.name,
-    })
-  }
-
-  // Generate index page
-  const indexMd = generateIndexPage()
-  fs.writeFileSync(path.join(OUTPUT_DIR, 'index.md'), indexMd, 'utf-8')
-  console.log('Generated: index.md')
-
-  // Write main _meta.json (include sub-builders directory entry)
-  const mainMetaWithSubDir = [
-    ...mainMeta,
-    {
-      type: 'dir',
-      name: 'sub-builders',
-      label: 'Sub Builders',
-    },
-  ]
-  fs.writeFileSync(path.join(OUTPUT_DIR, '_meta.json'), JSON.stringify(mainMetaWithSubDir, null, 2), 'utf-8')
+  // Write main _meta.json (VBIBuilder file + builder directory)
+  mainMeta.push({
+    type: 'dir',
+    name: 'builder',
+    label: 'builder',
+  })
+  fs.writeFileSync(path.join(OUTPUT_DIR, '_meta.json'), JSON.stringify(mainMeta, null, 2), 'utf-8')
   console.log('Generated: api/_meta.json')
 
-  // Write sub-builders _meta.json
-  fs.writeFileSync(path.join(subBuildersDir, '_meta.json'), JSON.stringify(subBuildersMeta, null, 2), 'utf-8')
-  console.log('Generated: api/sub-builders/_meta.json')
-
-  // Generate index.md with overview: true
+  // Generate index page with overview: true
   const indexPath = path.join(OUTPUT_DIR, 'index.md')
   fs.writeFileSync(indexPath, '---\noverview: true\n---\n', 'utf-8')
   console.log('Generated: index.md')

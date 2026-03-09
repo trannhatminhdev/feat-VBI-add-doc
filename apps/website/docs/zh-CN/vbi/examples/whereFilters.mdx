@@ -43,7 +43,7 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.whereFilters.addWhereFilter({ field: 'sales', operator: 'gt', value: 100000 })
+        builder.whereFilters.add({ field: 'sales', operator: 'gt', value: 100000 })
       }
       applyBuilder(builder)
 
@@ -103,8 +103,8 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.whereFilters
-          .addWhereFilter({ field: 'sales', operator: 'gt', value: 500000 })
-          .addWhereFilter({ field: 'area', operator: 'in', value: ['华东', '华北'] })
+          .add({ field: 'sales', operator: 'gt', value: 500000 })
+          .add({ field: 'area', operator: 'in', value: ['华东', '华北'] })
       }
       applyBuilder(builder)
 

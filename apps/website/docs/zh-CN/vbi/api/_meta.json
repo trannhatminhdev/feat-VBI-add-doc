@@ -1,12 +1,7 @@
 [
   {
-    "type": "file",
-    "name": "vbibuilder",
-    "label": "VBIBuilder"
-  },
-  {
     "type": "dir",
-    "name": "sub-builders",
-    "label": "Sub Builders"
+    "name": "builder",
+    "label": "builder"
   }
 ]
