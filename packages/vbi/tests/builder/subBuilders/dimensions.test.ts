@@ -201,7 +201,7 @@ describe('DimensionsBuilder', () => {
     const group = { field: 'group1', children: [] }
 
     expect(DimensionsBuilder.isDimensionNode(node)).toBe(true)
-    expect(DimensionsBuilder.isDimensionNode(group)).toBe(false)
+    expect(DimensionsBuilder.isDimensionNode(group as unknown as any)).toBe(false)
   })
 
   test('isDimensionGroup', () => {
@@ -209,7 +209,7 @@ describe('DimensionsBuilder', () => {
     const group = { field: 'group1', children: [] }
 
     expect(DimensionsBuilder.isDimensionGroup(node)).toBe(false)
-    expect(DimensionsBuilder.isDimensionGroup(group)).toBe(true)
+    expect(DimensionsBuilder.isDimensionGroup(group as unknown as any)).toBe(true)
   })
 
   test('DimensionNodeBuilder getField', () => {

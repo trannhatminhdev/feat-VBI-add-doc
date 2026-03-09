@@ -212,7 +212,7 @@ describe('MeasuresBuilder', () => {
     const node = { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }
     const group = { field: 'group1', children: [], alias: 'group' }
 
-    expect(MeasuresBuilder.isMeasureNode(node)).toBe(true)
+    expect(MeasuresBuilder.isMeasureNode(node as unknown as any)).toBe(true)
     expect(MeasuresBuilder.isMeasureNode(group)).toBe(false)
   })
 
@@ -220,7 +220,7 @@ describe('MeasuresBuilder', () => {
     const node = { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }
     const group = { field: 'group1', children: [], alias: 'group' }
 
-    expect(MeasuresBuilder.isMeasureGroup(node)).toBe(false)
+    expect(MeasuresBuilder.isMeasureGroup(node as unknown as any)).toBe(false)
     expect(MeasuresBuilder.isMeasureGroup(group)).toBe(true)
   })
 
