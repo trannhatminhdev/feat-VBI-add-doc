@@ -12,11 +12,26 @@
     }
   ],
   "dsl": {
-    "chartType": "table",
-    "dimensions": [],
-    "measures": [],
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [],
     "havingFilters": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.add('sales', node => { node.setOperator('gt').setValue(100000); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.add('销售额', node => { node.setOperator('gt').setValue(1000000); }); }"
 }

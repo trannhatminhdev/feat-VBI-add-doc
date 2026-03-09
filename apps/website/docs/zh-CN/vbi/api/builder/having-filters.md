@@ -129,10 +129,10 @@ findAll(): HavingFiltersNodeBuilder[]
 **定义**:
 
 ```typescript
-clear(): void
+clear(): this
 ```
 
-**返回**: `void`
+**返回**: `this`
 
 
 

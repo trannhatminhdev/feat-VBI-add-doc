@@ -15,16 +15,16 @@ export default () => {
   useEffect(() => {
     const run = async () => {
       const schema = [
-        { name: 'product_type', type: 'string' },
         { name: 'province', type: 'string' },
+        { name: 'product_type', type: 'string' },
         { name: 'sales', type: 'number' },
       ]
       const dataset = [
-        { product_type: 'product_type0', province: 'province0', sales: 100 },
-        { product_type: 'product_type1', province: 'province1', sales: 200 },
-        { product_type: 'product_type2', province: 'province2', sales: 300 },
-        { product_type: 'product_type3', province: 'province3', sales: 400 },
-        { product_type: 'product_type4', province: 'province4', sales: 500 },
+        { province: 'province0', product_type: 'product_type0', sales: 100 },
+        { province: 'province1', product_type: 'product_type1', sales: 200 },
+        { province: 'province2', product_type: 'product_type2', sales: 300 },
+        { province: 'province3', product_type: 'product_type3', sales: 400 },
+        { province: 'province4', product_type: 'product_type4', sales: 500 },
       ]
 
       VBI.registerConnector('demo', async () => ({
@@ -34,9 +34,9 @@ export default () => {
 
       const builder = VBI.from({
         connectorId: 'demo',
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
+        chartType: 'bar',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [],
         havingFilters: [],
         theme: 'light',
@@ -46,7 +46,9 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.whereFilters.add('product_type', (n) => n.setOperator('eq')).add('province', (n) => n.setOperator('in'))
+        builder.whereFilters
+          .add('product_type', (n) => n.setOperator('eq').setValue('办公用品'))
+          .add('province', (n) => n.setOperator('in').setValue(['浙江', '江苏']))
       }
       applyBuilder(builder)
 
@@ -77,15 +79,16 @@ export default () => {
   useEffect(() => {
     const run = async () => {
       const schema = [
+        { name: 'area', type: 'string' },
         { name: 'product_type', type: 'string' },
         { name: 'sales', type: 'number' },
       ]
       const dataset = [
-        { product_type: 'product_type0', sales: 100 },
-        { product_type: 'product_type1', sales: 200 },
-        { product_type: 'product_type2', sales: 300 },
-        { product_type: 'product_type3', sales: 400 },
-        { product_type: 'product_type4', sales: 500 },
+        { area: 'area0', product_type: 'product_type0', sales: 100 },
+        { area: 'area1', product_type: 'product_type1', sales: 200 },
+        { area: 'area2', product_type: 'product_type2', sales: 300 },
+        { area: 'area3', product_type: 'product_type3', sales: 400 },
+        { area: 'area4', product_type: 'product_type4', sales: 500 },
       ]
 
       VBI.registerConnector('demo', async () => ({
@@ -95,9 +98,9 @@ export default () => {
 
       const builder = VBI.from({
         connectorId: 'demo',
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [],
         havingFilters: [],
         theme: 'light',
@@ -108,7 +111,7 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.whereFilters.add('product_type', (node) => {
-          node.setOperator('eq').setValue('Office Supplies')
+          node.setOperator('eq').setValue('办公用品')
         })
       }
       applyBuilder(builder)
@@ -170,8 +173,8 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.whereFilters.add('sales', (node) => {
-          node.setOperator('gt').setValue(100000)
+        builder.whereFilters.add('product_type', (node) => {
+          node.setOperator('eq').setValue('办公用品')
         })
       }
       applyBuilder(builder)
@@ -203,16 +206,16 @@ export default () => {
   useEffect(() => {
     const run = async () => {
       const schema = [
-        { name: 'product_type', type: 'string' },
         { name: 'province', type: 'string' },
+        { name: 'product_type', type: 'string' },
         { name: 'sales', type: 'number' },
       ]
       const dataset = [
-        { product_type: 'product_type0', province: 'province0', sales: 100 },
-        { product_type: 'product_type1', province: 'province1', sales: 200 },
-        { product_type: 'product_type2', province: 'province2', sales: 300 },
-        { product_type: 'product_type3', province: 'province3', sales: 400 },
-        { product_type: 'product_type4', province: 'province4', sales: 500 },
+        { province: 'province0', product_type: 'product_type0', sales: 100 },
+        { province: 'province1', product_type: 'product_type1', sales: 200 },
+        { province: 'province2', product_type: 'product_type2', sales: 300 },
+        { province: 'province3', product_type: 'product_type3', sales: 400 },
+        { province: 'province4', product_type: 'product_type4', sales: 500 },
       ]
 
       VBI.registerConnector('demo', async () => ({
@@ -222,12 +225,12 @@ export default () => {
 
       const builder = VBI.from({
         connectorId: 'demo',
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
+        chartType: 'bar',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [
-          { field: 'product_type', operator: 'eq', value: 'Office Supplies' },
-          { field: 'province', operator: 'eq', value: 'Beijing' },
+          { field: 'product_type', operator: 'eq', value: '办公用品' },
+          { field: 'province', operator: 'eq', value: '浙江' },
         ],
         havingFilters: [],
         theme: 'light',
@@ -299,7 +302,7 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.whereFilters
-          .add('sales', (node) => node.setOperator('gt').setValue(500000))
+          .add('product_type', (node) => node.setOperator('eq').setValue('办公用品'))
           .add('area', (node) => node.setOperator('in').setValue(['华东', '华北']))
       }
       applyBuilder(builder)
@@ -331,16 +334,16 @@ export default () => {
   useEffect(() => {
     const run = async () => {
       const schema = [
-        { name: 'product_type', type: 'string' },
         { name: 'province', type: 'string' },
+        { name: 'product_type', type: 'string' },
         { name: 'sales', type: 'number' },
       ]
       const dataset = [
-        { product_type: 'product_type0', province: 'province0', sales: 100 },
-        { product_type: 'product_type1', province: 'province1', sales: 200 },
-        { product_type: 'product_type2', province: 'province2', sales: 300 },
-        { product_type: 'product_type3', province: 'province3', sales: 400 },
-        { product_type: 'product_type4', province: 'province4', sales: 500 },
+        { province: 'province0', product_type: 'product_type0', sales: 100 },
+        { province: 'province1', product_type: 'product_type1', sales: 200 },
+        { province: 'province2', product_type: 'product_type2', sales: 300 },
+        { province: 'province3', product_type: 'product_type3', sales: 400 },
+        { province: 'province4', product_type: 'product_type4', sales: 500 },
       ]
 
       VBI.registerConnector('demo', async () => ({
@@ -350,12 +353,12 @@ export default () => {
 
       const builder = VBI.from({
         connectorId: 'demo',
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
+        chartType: 'bar',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [
-          { field: 'product_type', operator: 'eq', value: 'Office Supplies' },
-          { field: 'province', operator: 'eq', value: 'Beijing' },
+          { field: 'product_type', operator: 'eq', value: '办公用品' },
+          { field: 'province', operator: 'eq', value: '浙江' },
         ],
         havingFilters: [],
         theme: 'light',

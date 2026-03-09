@@ -117,22 +117,3 @@ setTheme(theme: string): this
 | --- | --- | --- |
 | `theme` | string | - |
 
-
-
-### getEncodings
-
-/**
-
-**定义**:
-
-```typescript
-getEncodings(spec: any, measureNames: string[])
-```
-
-**参数**:
-
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `spec` | any | VChart spec to analyze |
-| `measureNames` = [] | string[] | List of measure names |
-

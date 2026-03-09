@@ -33,9 +33,9 @@ export default () => {
 
       const builder = VBI.from({
         connectorId: 'demo',
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [],
         havingFilters: [],
         theme: 'light',
@@ -46,7 +46,7 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.havingFilters.add('sales', (node) => {
-          node.setOperator('gt').setValue(100000)
+          node.setOperator('gt').setValue(1000000)
         })
       }
       applyBuilder(builder)
@@ -97,9 +97,12 @@ export default () => {
 
       const builder = VBI.from({
         connectorId: 'demo',
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
         whereFilters: [],
         havingFilters: [],
         theme: 'light',
@@ -109,7 +112,9 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.havingFilters.add('sales', (n) => n.setOperator('gt')).add('profit', (n) => n.setOperator('gte'))
+        builder.havingFilters
+          .add('sales', (n) => n.setOperator('gt').setValue(1000000))
+          .add('profit', (n) => n.setOperator('gt').setValue(200000))
       }
       applyBuilder(builder)
 
@@ -159,13 +164,16 @@ export default () => {
 
       const builder = VBI.from({
         connectorId: 'demo',
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
         whereFilters: [],
         havingFilters: [
-          { field: 'sales', operator: 'gt', value: 100000 },
-          { field: 'profit', operator: 'gt', value: 50000 },
+          { field: 'sales', operator: 'gt', value: 1000000 },
+          { field: 'profit', operator: 'gt', value: 200000 },
         ],
         theme: 'light',
         locale: 'zh-CN',
@@ -224,13 +232,16 @@ export default () => {
 
       const builder = VBI.from({
         connectorId: 'demo',
-        chartType: 'table',
-        dimensions: [],
-        measures: [],
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
         whereFilters: [],
         havingFilters: [
-          { field: 'sales', operator: 'gt', value: 100000 },
-          { field: 'profit', operator: 'gt', value: 50000 },
+          { field: 'sales', operator: 'gt', value: 1000000 },
+          { field: 'profit', operator: 'gt', value: 200000 },
         ],
         theme: 'light',
         locale: 'zh-CN',

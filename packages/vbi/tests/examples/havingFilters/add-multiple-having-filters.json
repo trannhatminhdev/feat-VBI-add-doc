@@ -16,11 +16,34 @@
     }
   ],
   "dsl": {
-    "chartType": "table",
-    "dimensions": [],
-    "measures": [],
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [],
     "havingFilters": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.add('sales', n => n.setOperator('gt')).add('profit', n => n.setOperator('gte')); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.add('销售额', n => n.setOperator('gt').setValue(1000000)).add('利润', n => n.setOperator('gt').setValue(200000)); }"
 }

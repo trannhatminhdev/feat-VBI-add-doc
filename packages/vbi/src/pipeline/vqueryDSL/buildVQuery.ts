@@ -138,12 +138,6 @@ const buildHaving: buildPipe = (queryDSL, context) => {
     return queryDSL
   }
 
-  // Only add having clause if there is a groupBy clause
-  const groupBy = queryDSL.groupBy
-  if (!groupBy || groupBy.length === 0) {
-    return queryDSL
-  }
-
   const result = { ...queryDSL }
   result.having = {
     op: 'and',
