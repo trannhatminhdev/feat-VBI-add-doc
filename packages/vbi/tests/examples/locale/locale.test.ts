@@ -41,15 +41,193 @@ describe('Locale', () => {
 
     // Build VBI DSL
     const vbiDSL = builder.build()
-    expect(vbiDSL).toMatchInlineSnapshot()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "bar",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "Province",
+            "field": "province",
+          },
+        ],
+        "filters": [],
+        "limit": 50,
+        "locale": "en-US",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "Sales",
+            "encoding": "yAxis",
+            "field": "sales",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+      }
+    `)
 
     // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
-    expect(vQueryDSL).toMatchInlineSnapshot()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "province",
+        ],
+        "limit": 50,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "Sales",
+            "field": "sales",
+          },
+          {
+            "alias": "Province",
+            "field": "province",
+          },
+        ],
+      }
+    `)
 
     // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
-    expect(vSeedDSL).toMatchInlineSnapshot()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "bar",
+        "dataset": [
+          {
+            "Province": "浙江",
+            "Sales": 452108.2440000001,
+          },
+          {
+            "Province": "四川",
+            "Sales": 400877.5960000003,
+          },
+          {
+            "Province": "江苏",
+            "Sales": 649967.2200000006,
+          },
+          {
+            "Province": "广东",
+            "Sales": 1452929.5129999993,
+          },
+          {
+            "Province": "江西",
+            "Sales": 237328.70000000013,
+          },
+          {
+            "Province": "陕西",
+            "Sales": 457688.16800000006,
+          },
+          {
+            "Province": "黑龙江",
+            "Sales": 1178801.1620000016,
+          },
+          {
+            "Province": "山东",
+            "Sales": 1586782.9879999978,
+          },
+          {
+            "Province": "上海",
+            "Sales": 582450.5679999999,
+          },
+          {
+            "Province": "河北",
+            "Sales": 790915.405,
+          },
+          {
+            "Province": "福建",
+            "Sales": 546903.5320000001,
+          },
+          {
+            "Province": "安徽",
+            "Sales": 628965.1899999997,
+          },
+          {
+            "Province": "甘肃",
+            "Sales": 179270.02800000008,
+          },
+          {
+            "Province": "吉林",
+            "Sales": 640196.5709999998,
+          },
+          {
+            "Province": "辽宁",
+            "Sales": 862569.7359999995,
+          },
+          {
+            "Province": "湖北",
+            "Sales": 621960.3320000009,
+          },
+          {
+            "Province": "河南",
+            "Sales": 853574.798999999,
+          },
+          {
+            "Province": "湖南",
+            "Sales": 723442.2090000004,
+          },
+          {
+            "Province": "北京",
+            "Sales": 409147.2,
+          },
+          {
+            "Province": "重庆",
+            "Sales": 361761.9320000001,
+          },
+          {
+            "Province": "青海",
+            "Sales": 49863.38,
+          },
+          {
+            "Province": "广西",
+            "Sales": 377653.82899999997,
+          },
+          {
+            "Province": "天津",
+            "Sales": 549906.6300000001,
+          },
+          {
+            "Province": "云南",
+            "Sales": 360925.76800000016,
+          },
+          {
+            "Province": "海南",
+            "Sales": 169256.84300000002,
+          },
+          {
+            "Province": "贵州",
+            "Sales": 108141.59999999999,
+          },
+          {
+            "Province": "山西",
+            "Sales": 423878.76999999967,
+          },
+          {
+            "Province": "内蒙古",
+            "Sales": 273453.01199999993,
+          },
+          {
+            "Province": "宁夏",
+            "Sales": 58121,
+          },
+          {
+            "Province": "新疆",
+            "Sales": 70097.02,
+          },
+          {
+            "Province": "西藏自治区",
+            "Sales": 10015.18,
+          },
+        ],
+        "locale": "en-US",
+        "theme": "light",
+      }
+    `)
   })
 
   it('zh-CN-locale', async () => {
@@ -87,14 +265,192 @@ describe('Locale', () => {
 
     // Build VBI DSL
     const vbiDSL = builder.build()
-    expect(vbiDSL).toMatchInlineSnapshot()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "bar",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "省份",
+            "field": "province",
+          },
+        ],
+        "filters": [],
+        "limit": 50,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "field": "sales",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+      }
+    `)
 
     // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
-    expect(vQueryDSL).toMatchInlineSnapshot()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "province",
+        ],
+        "limit": 50,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "销售额",
+            "field": "sales",
+          },
+          {
+            "alias": "省份",
+            "field": "province",
+          },
+        ],
+      }
+    `)
 
     // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
-    expect(vSeedDSL).toMatchInlineSnapshot()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "bar",
+        "dataset": [
+          {
+            "省份": "浙江",
+            "销售额": 452108.2440000001,
+          },
+          {
+            "省份": "四川",
+            "销售额": 400877.5960000003,
+          },
+          {
+            "省份": "江苏",
+            "销售额": 649967.2200000006,
+          },
+          {
+            "省份": "广东",
+            "销售额": 1452929.5129999993,
+          },
+          {
+            "省份": "江西",
+            "销售额": 237328.70000000013,
+          },
+          {
+            "省份": "陕西",
+            "销售额": 457688.16800000006,
+          },
+          {
+            "省份": "黑龙江",
+            "销售额": 1178801.1620000016,
+          },
+          {
+            "省份": "山东",
+            "销售额": 1586782.9879999978,
+          },
+          {
+            "省份": "上海",
+            "销售额": 582450.5679999999,
+          },
+          {
+            "省份": "河北",
+            "销售额": 790915.405,
+          },
+          {
+            "省份": "福建",
+            "销售额": 546903.5320000001,
+          },
+          {
+            "省份": "安徽",
+            "销售额": 628965.1899999997,
+          },
+          {
+            "省份": "甘肃",
+            "销售额": 179270.02800000008,
+          },
+          {
+            "省份": "吉林",
+            "销售额": 640196.5709999998,
+          },
+          {
+            "省份": "辽宁",
+            "销售额": 862569.7359999995,
+          },
+          {
+            "省份": "湖北",
+            "销售额": 621960.3320000009,
+          },
+          {
+            "省份": "河南",
+            "销售额": 853574.798999999,
+          },
+          {
+            "省份": "湖南",
+            "销售额": 723442.2090000004,
+          },
+          {
+            "省份": "北京",
+            "销售额": 409147.2,
+          },
+          {
+            "省份": "重庆",
+            "销售额": 361761.9320000001,
+          },
+          {
+            "省份": "青海",
+            "销售额": 49863.38,
+          },
+          {
+            "省份": "广西",
+            "销售额": 377653.82899999997,
+          },
+          {
+            "省份": "天津",
+            "销售额": 549906.6300000001,
+          },
+          {
+            "省份": "云南",
+            "销售额": 360925.76800000016,
+          },
+          {
+            "省份": "海南",
+            "销售额": 169256.84300000002,
+          },
+          {
+            "省份": "贵州",
+            "销售额": 108141.59999999999,
+          },
+          {
+            "省份": "山西",
+            "销售额": 423878.76999999967,
+          },
+          {
+            "省份": "内蒙古",
+            "销售额": 273453.01199999993,
+          },
+          {
+            "省份": "宁夏",
+            "销售额": 58121,
+          },
+          {
+            "省份": "新疆",
+            "销售额": 70097.02,
+          },
+          {
+            "省份": "西藏自治区",
+            "销售额": 10015.18,
+          },
+        ],
+        "locale": "zh-CN",
+        "theme": "light",
+      }
+    `)
   })
 })

@@ -35,9 +35,9 @@ const createVBI = () => {
         if (vbi.version) dsl.set('version', vbi.version)
 
         // Initialize arrays
-        dsl.set('filters', vbi.filters ?? [])
-        dsl.set('measures', vbi.measures ?? [])
-        dsl.set('dimensions', vbi.dimensions ?? [])
+        dsl.set('filters', vbi.filters ?? new Y.Array())
+        dsl.set('measures', vbi.measures ?? new Y.Array())
+        dsl.set('dimensions', vbi.dimensions ?? new Y.Array())
       })
 
       return new VBIBuilder(doc)

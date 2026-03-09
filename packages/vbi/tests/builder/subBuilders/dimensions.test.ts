@@ -7,17 +7,16 @@ describe('DimensionsBuilder', () => {
     const builder = VBI.from(dsl)
     builder.dimensions.addDimension('category').setAlias('类别')
 
-    expect(builder.build()).toMatchInlineSnapshot(`
-      {
-        "dimensions": [
-          [
-            {},
-          ],
-        ],
-        "filters": [],
-        "measures": [],
-      }
-    `)
+    expect(builder.build()).toEqual({
+      dimensions: [
+        {
+          alias: '类别',
+          field: 'category',
+        },
+      ],
+      filters: [],
+      measures: [],
+    })
   })
 
   test('addDimension callback', () => {
@@ -31,19 +30,19 @@ describe('DimensionsBuilder', () => {
         node.setAlias('城市')
       })
 
-    expect(builder.build()).toMatchInlineSnapshot(`
-      {
-        "dimensions": [
-          [
-            {},
-          ],
-          [
-            {},
-          ],
-        ],
-        "filters": [],
-        "measures": [],
-      }
-    `)
+    expect(builder.build()).toEqual({
+      dimensions: [
+        {
+          alias: '地区',
+          field: 'region',
+        },
+        {
+          alias: '城市',
+          field: 'city',
+        },
+      ],
+      filters: [],
+      measures: [],
+    })
   })
 })

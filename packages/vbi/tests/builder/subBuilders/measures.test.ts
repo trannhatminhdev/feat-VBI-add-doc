@@ -7,17 +7,20 @@ describe('MeasuresBuilder', () => {
     const builder = VBI.from(dsl)
     builder.measures.addMeasure('sales').setAlias('Max(sales)').setAggregate({ func: 'max' })
 
-    expect(builder.build()).toMatchInlineSnapshot(`
-      {
-        "dimensions": [],
-        "filters": [],
-        "measures": [
-          [
-            {},
-          ],
-        ],
-      }
-    `)
+    expect(builder.build()).toEqual({
+      dimensions: [],
+      filters: [],
+      measures: [
+        {
+          aggregate: {
+            func: 'max',
+          },
+          alias: 'Max(sales)',
+          encoding: 'yAxis',
+          field: 'sales',
+        },
+      ],
+    })
   })
 
   test('addMeasure callback', () => {
@@ -31,19 +34,27 @@ describe('MeasuresBuilder', () => {
         node.setAlias('Min(orders)').setAggregate({ func: 'min' })
       })
 
-    expect(builder.build()).toMatchInlineSnapshot(`
-      {
-        "dimensions": [],
-        "filters": [],
-        "measures": [
-          [
-            {},
-          ],
-          [
-            {},
-          ],
-        ],
-      }
-    `)
+    expect(builder.build()).toEqual({
+      dimensions: [],
+      filters: [],
+      measures: [
+        {
+          aggregate: {
+            func: 'sum',
+          },
+          alias: 'sum(sales)',
+          encoding: 'yAxis',
+          field: 'sales',
+        },
+        {
+          aggregate: {
+            func: 'min',
+          },
+          alias: 'Min(orders)',
+          encoding: 'yAxis',
+          field: 'orders',
+        },
+      ],
+    })
   })
 })

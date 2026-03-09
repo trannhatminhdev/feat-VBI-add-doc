@@ -165,19 +165,26 @@ packages/
 apps/
 └── website/    # 文档站点
 
-packages/vbi/tests/
-├── builder/        # 单元测试
-├── query/          # 查询集成测试
-├── examples/       # 集成测试 (JSON Spec)
-│   ├── line/       # 按图表类型分类
-│   ├── bar/
-│   ├── column/
-│   ├── pie/
-│   └── table/
-├── mocks/          # Mock 文件
-└── scripts/        # 构建脚本
-    ├── build-tests.mjs
-    └── build-docs.mjs
+packages/vbi/
+├── src/
+│   ├── builder/       # 核心构建器
+│   ├── pipeline/     # 转换管道
+│   ├── types/        # 类型定义
+│   ├── insight/      # 数据洞察
+│   └── connector/    # 数据源连接器
+├── scripts/          # 构建脚本
+│   ├── build-tests.mjs
+│   └── build-examples.mjs
+└── tests/
+    ├── builder/      # 单元测试
+    ├── query/        # 查询集成测试
+    ├── examples/     # 集成测试 (JSON Spec)
+    │   ├── chartType/
+    │   ├── locale/
+    │   └── theme/
+    ├── mocks/        # Mock 文件
+    ├── demoConnector.ts
+    └── supermarket.json
 ```
 
 ---
