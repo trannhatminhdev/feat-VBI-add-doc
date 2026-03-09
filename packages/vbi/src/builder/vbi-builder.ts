@@ -1,15 +1,16 @@
 import * as Y from 'yjs'
 
 import { VSeedDSL } from '@visactor/vseed'
+import { VQueryDSL } from '@visactor/vquery'
 import { DimensionsBuilder } from './sub-builders/dimensions'
 import { MeasuresBuilder } from './sub-builders/measures'
 import { HavingBuilder } from './sub-builders/having'
-import { FiltersBuilder } from './sub-builders/filters'
+import { FiltersBuilder } from './sub-builders'
+import { ChartTypeBuilder } from './sub-builders'
+
 import { VBIDSL, VBIBuilderInterface } from 'src/types'
 import { buildVQuery } from 'src/pipeline'
-import { ChartTypeBuilder } from './sub-builders/chart-type'
 import { getConnector } from './connector'
-import { VQueryDSL } from '@visactor/vquery'
 import { EncodingBuilder } from './encoding-builder'
 
 export class VBIBuilder implements VBIBuilderInterface {

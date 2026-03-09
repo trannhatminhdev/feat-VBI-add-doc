@@ -92,7 +92,6 @@ export function APP() {
     if (!dsl) return [];
     const fields = new Set<string>();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const extractFields = (items: any[]) => {
       items?.forEach((item) => {
         if (item && typeof item === 'object') {
