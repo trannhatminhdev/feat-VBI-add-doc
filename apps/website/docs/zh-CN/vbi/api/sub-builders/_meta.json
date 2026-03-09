@@ -1,0 +1,27 @@
+[
+  {
+    "type": "file",
+    "name": "measures-builder",
+    "label": "MeasuresBuilder"
+  },
+  {
+    "type": "file",
+    "name": "dimensions-builder",
+    "label": "DimensionsBuilder"
+  },
+  {
+    "type": "file",
+    "name": "chart-type-builder",
+    "label": "ChartTypeBuilder"
+  },
+  {
+    "type": "file",
+    "name": "where-filters-builder",
+    "label": "WhereFiltersBuilder"
+  },
+  {
+    "type": "file",
+    "name": "having-filters-builder",
+    "label": "HavingFiltersBuilder"
+  }
+]

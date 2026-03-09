@@ -128,7 +128,8 @@ pnpm --filter=@visactor/vbi run test:update   # 更新快照
 pnpm --filter=@visactor/vbi run test:coverage # 生成测试覆盖率报告
 
 # 生成器
-pnpm --filter=@visactor/vbi run g          # 从 JSON 生成文档、测试文件
+pnpm --filter=@visactor/vbi run g          # 从 JSON 生成文档、测试文件、API
+pnpm --filter=@visactor/vbi run build:api  # 生成 API 文档
 
 # 代码质量
 pnpm --filter=@visactor/vbi run lint

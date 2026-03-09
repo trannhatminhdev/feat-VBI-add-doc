@@ -27,7 +27,8 @@
     "typecheck": "tsc --noEmit",
     "build:test": "node scripts/build-tests.mjs",
     "build:examples": "node scripts/build-examples.mjs",
-    "g": "pnpm run build:test && pnpm run build:examples"
+    "build:api": "node scripts/build-api.mjs",
+    "g": "pnpm run build:test && pnpm run build:examples && pnpm run build:api"
   },
   "dependencies": {
     "zod": "4.0.17",

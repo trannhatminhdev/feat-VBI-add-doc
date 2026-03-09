@@ -1,5 +1,5 @@
 export { MeasuresBuilder } from './measures'
 export { DimensionsBuilder } from './dimensions'
 export { ChartTypeBuilder } from './chart-type'
-export { WhereFiltersBuilder } from './filters'
+export { WhereFiltersBuilder } from './whereFilters'
 export { HavingFiltersBuilder } from './havingFilters'

@@ -10,38 +10,28 @@ export class DimensionsBuilder {
     this.dsl = dsl
   }
 
-  addDimension(fieldOrDimension: VBIDimension['field'] | VBIDimension): DimensionNodeBuilder
   addDimension(
-    fieldOrDimension: VBIDimension['field'] | VBIDimension,
-    callback: (dimensionNode: DimensionNodeBuilder) => void,
-  ): DimensionsBuilder
-  addDimension(
-    fieldOrDimension: VBIDimension['field'] | VBIDimension,
-    callback?: (dimensionNode: DimensionNodeBuilder) => void,
+    field: string,
+    callback?: (node: DimensionNodeBuilder) => void,
   ): DimensionNodeBuilder | DimensionsBuilder {
-    const defaultDimension: VBIDimension = {} as VBIDimension
-    if (typeof fieldOrDimension === 'string') {
-      defaultDimension.alias = fieldOrDimension
-      defaultDimension.field = fieldOrDimension
-    } else {
-      defaultDimension.alias = fieldOrDimension.alias
-      defaultDimension.field = fieldOrDimension.field || fieldOrDimension.alias
+    const dimension: VBIDimension = {
+      alias: field,
+      field,
     }
 
     const yMap = new Y.Map<any>()
-    for (const [key, value] of Object.entries(defaultDimension)) {
+    for (const [key, value] of Object.entries(dimension)) {
       yMap.set(key, value)
     }
 
     this.dsl.get('dimensions').push([yMap])
-    const dimensionNode = new DimensionNodeBuilder(yMap)
+    const node = new DimensionNodeBuilder(yMap)
 
     if (callback) {
-      callback(dimensionNode)
+      callback(node)
       return this
-    } else {
-      return dimensionNode
     }
+    return node
   }
 
   removeDimension(field: VBIDimension['field']) {

@@ -3,7 +3,7 @@ import { zVBIDimensionTree } from '../dimensions/dimensions'
 import { zVBIMeasureTree } from '../measures/measures'
 import { zVBIDSLTheme } from '../theme/theme'
 import { zVBIDSLLocale } from '../locale/locale'
-import { zVBIFilter } from '../filters/filters'
+import { zVBIFilter } from '../whereFilters/filters'
 import { zVBIHavingFilter } from '../havingFilters/having'
 
 export const zVBIDSL = z.object({

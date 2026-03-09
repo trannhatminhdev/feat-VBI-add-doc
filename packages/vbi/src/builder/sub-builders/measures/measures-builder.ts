@@ -10,43 +10,28 @@ export class MeasuresBuilder {
     this.dsl = dsl
   }
 
-  addMeasure(fieldOrMeasure: VBIMeasure['field'] | VBIMeasure): MeasureNodeBuilder
-  addMeasure(
-    fieldOrMeasure: VBIMeasure['field'] | VBIMeasure,
-    callback: (measureNode: MeasureNodeBuilder) => void,
-  ): MeasuresBuilder
-  addMeasure(
-    fieldOrMeasure: VBIMeasure['field'] | VBIMeasure,
-    callback?: (measureNode: MeasureNodeBuilder) => void,
-  ): MeasureNodeBuilder | MeasuresBuilder {
-    const defaultMeasure: VBIMeasure = {} as VBIMeasure
-    if (typeof fieldOrMeasure === 'string') {
-      defaultMeasure.alias = fieldOrMeasure
-      defaultMeasure.field = fieldOrMeasure
-      defaultMeasure.encoding = 'yAxis'
-      defaultMeasure.aggregate = { func: 'sum' }
-    } else {
-      defaultMeasure.alias = fieldOrMeasure.alias
-      defaultMeasure.field = fieldOrMeasure.field
-      defaultMeasure.encoding = fieldOrMeasure.encoding
-      defaultMeasure.aggregate = fieldOrMeasure.aggregate
+  addMeasure(field: string, callback?: (node: MeasureNodeBuilder) => void): MeasureNodeBuilder | MeasuresBuilder {
+    const measure: VBIMeasure = {
+      alias: field,
+      field,
+      encoding: 'yAxis',
+      aggregate: { func: 'sum' },
     }
 
     const yMap = new Y.Map<any>()
 
-    for (const [key, value] of Object.entries(defaultMeasure)) {
+    for (const [key, value] of Object.entries(measure)) {
       yMap.set(key, value)
     }
     this.dsl.get('measures').push([yMap])
 
-    const measureNode = new MeasureNodeBuilder(yMap)
+    const node = new MeasureNodeBuilder(yMap)
 
     if (callback) {
-      callback(measureNode)
+      callback(node)
       return this
-    } else {
-      return measureNode
     }
+    return node
   }
 
   removeMeasure(field: VBIMeasure['field']) {
@@ -58,10 +43,10 @@ export class MeasuresBuilder {
   }
 
   renameMeasure(field: string, newAlias: string): void {
-    this.modifyMeasure(field, { alias: newAlias })
+    this.updateMeasure(field, { alias: newAlias })
   }
 
-  modifyAggregate(field: string, func: string, quantile?: number): void {
+  updateAggregate(field: string, func: string, quantile?: number): void {
     const measures = this.dsl.get('measures') as Y.Array<any>
     const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
 
@@ -80,11 +65,11 @@ export class MeasuresBuilder {
     measureYMap.set('aggregate', newAggregate)
   }
 
-  modifyEncoding(field: string, encoding: VBIMeasure['encoding']): void {
-    this.modifyMeasure(field, { encoding })
+  updateEncoding(field: string, encoding: VBIMeasure['encoding']): void {
+    this.updateMeasure(field, { encoding })
   }
 
-  modifyMeasure(field: string, updates: Partial<Omit<VBIMeasure, 'field'>>): void {
+  updateMeasure(field: string, updates: Partial<Omit<VBIMeasure, 'field'>>): void {
     const measures = this.dsl.get('measures') as Y.Array<any>
     const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
 
