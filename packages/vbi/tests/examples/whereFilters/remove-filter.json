@@ -3,11 +3,11 @@
   "description": "删除Where过滤条件",
   "schema": [
     {
-      "name": "product_type",
+      "name": "province",
       "type": "string"
     },
     {
-      "name": "province",
+      "name": "product_type",
       "type": "string"
     },
     {
@@ -16,19 +16,33 @@
     }
   ],
   "dsl": {
-    "chartType": "table",
-    "dimensions": [],
-    "measures": [],
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "province",
+        "alias": "省份"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
     "whereFilters": [
       {
         "field": "product_type",
         "operator": "eq",
-        "value": "Office Supplies"
+        "value": "办公用品"
       },
       {
         "field": "province",
         "operator": "eq",
-        "value": "Beijing"
+        "value": "浙江"
       }
     ],
     "limit": 20

@@ -29,8 +29,7 @@
         }
       }
     ],
-    "filters": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilters.add('sales', node => { node.setOperator('gt').setValue(100000); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilters.add('product_type', node => { node.setOperator('eq').setValue('办公用品'); }); }"
 }
