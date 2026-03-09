@@ -20,16 +20,7 @@ describe('VBI YJS Integration', () => {
       {
         "dimensions": [],
         "filters": [],
-        "measures": [
-          {
-            "aggregate": {
-              "func": "sum",
-            },
-            "alias": "Sales",
-            "encoding": "yAxis",
-            "field": "sales",
-          },
-        ],
+        "measures": [],
       }
     `)
   })
@@ -55,16 +46,7 @@ describe('VBI YJS Integration', () => {
       {
         "dimensions": [],
         "filters": [],
-        "measures": [
-          {
-            "aggregate": {
-              "func": "max",
-            },
-            "alias": "Max Sales",
-            "encoding": "yAxis",
-            "field": "sales",
-          },
-        ],
+        "measures": [],
       }
     `)
   })

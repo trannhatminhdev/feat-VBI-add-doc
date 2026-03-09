@@ -136,10 +136,23 @@ pnpm --filter=@visactor/vbi run format
 pnpm --filter=@visactor/vbi run typecheck
 ```
 
-### 测试结构
+### 测试
 
 - 使用 Rstest 框架
 - 依赖 @visactor/vseed 和 @visactor/vquery
+- 集成测试 必须写json测试用例, 由 `scripts/build-tests.mjs` 脚本生成 xx.test.ts
+- 编写 VBI 集成测试时，必须在 JSON 测试用例中增加 `code` 字段, 实现 `applyBuilder` 函数，用于测试 VBIBuilder 的接口。
+
+```typescript
+{
+  "code": `
+    export const applyBuilder = async () => {
+      const builder = new VBIBuilder()
+      // 测试 VBIBuilder 的接口
+    }
+  `
+}
+```
 
 ### 目录结构
 

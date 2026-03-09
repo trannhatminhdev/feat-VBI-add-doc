@@ -1,16 +1,19 @@
 {
-  "name": "dark-theme",
-  "description": "深色主题图表",
+  "name": "zh-CN-locale",
+  "description": "中文 locale 测试",
   "schema": [
     { "name": "province", "type": "string" },
     { "name": "sales", "type": "number" }
   ],
   "dsl": {
-    "chartType": "table",
+    "chartType": "bar",
     "dimensions": [{ "field": "province", "alias": "省份" }],
     "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
-    "limit": 50,
-    "theme": "light"
+    "filters": [],
+    "theme": "light",
+    "locale": "zh-CN",
+    "version": 1,
+    "limit": 50
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setTheme('dark'); }"
+  "code": "const applyBuilder = (builder) => { builder.setLocale('zh-CN'); }"
 }

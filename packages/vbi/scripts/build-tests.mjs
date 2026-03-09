@@ -119,7 +119,7 @@ function generateTestFile(dirName, testsDir) {
   // Convert directory name to label (e.g., chartType -> Chart Type)
   const label = dirName.charAt(0).toUpperCase() + dirName.slice(1).replace(/-/g, ' ')
 
-  const template = `import { VBI, VBIBuilder } from '@visactor/vbi'
+  const template = `import { VBI } from '@visactor/vbi'
 import { registerDemoConnector } from ${connectorImport}
 
 describe('${label}', () => {

@@ -8,7 +8,8 @@
   "dsl": {
     "chartType": "rose",
     "dimensions": [{ "field": "city", "alias": "城市" }],
-    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "radius", "aggregate": { "func": "sum" } }]
+    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "radius", "aggregate": { "func": "sum" } }],
+    "limit": 50
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.chartType.changeChartType('pie'); }"
 }

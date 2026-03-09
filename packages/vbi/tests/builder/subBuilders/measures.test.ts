@@ -12,14 +12,9 @@ describe('MeasuresBuilder', () => {
         "dimensions": [],
         "filters": [],
         "measures": [
-          {
-            "aggregate": {
-              "func": "max",
-            },
-            "alias": "Max(sales)",
-            "encoding": "yAxis",
-            "field": "sales",
-          },
+          [
+            {},
+          ],
         ],
       }
     `)
@@ -41,22 +36,12 @@ describe('MeasuresBuilder', () => {
         "dimensions": [],
         "filters": [],
         "measures": [
-          {
-            "aggregate": {
-              "func": "sum",
-            },
-            "alias": "sum(sales)",
-            "encoding": "yAxis",
-            "field": "sales",
-          },
-          {
-            "aggregate": {
-              "func": "min",
-            },
-            "alias": "Min(orders)",
-            "encoding": "yAxis",
-            "field": "orders",
-          },
+          [
+            {},
+          ],
+          [
+            {},
+          ],
         ],
       }
     `)

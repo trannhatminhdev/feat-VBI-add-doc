@@ -1,8 +1,8 @@
-# theme
+# locale
 
-## dark-theme
+## en-US-locale
 
-深色主题图表
+英文 locale 测试
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
@@ -33,17 +33,17 @@ export default () => {
 
       const builder = VBI.from({
         connectorId: 'demo',
-        chartType: 'table',
-        dimensions: [{ field: 'province', alias: '省份' }],
-        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        chartType: 'bar',
+        dimensions: [{ field: 'province', alias: 'Province' }],
+        measures: [{ field: 'sales', alias: 'Sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         filters: [],
         theme: 'light',
         locale: 'zh-CN',
         version: 1,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
-        builder.setTheme('dark')
+      const applyBuilder = (builder) => {
+        builder.setLocale('en-US')
       }
       applyBuilder(builder)
 
@@ -59,9 +59,9 @@ export default () => {
 }
 ```
 
-## light-theme
+## zh-CN-locale
 
-浅色主题图表
+中文 locale 测试
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
@@ -92,17 +92,17 @@ export default () => {
 
       const builder = VBI.from({
         connectorId: 'demo',
-        chartType: 'table',
+        chartType: 'bar',
         dimensions: [{ field: 'province', alias: '省份' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         filters: [],
-        theme: 'dark',
+        theme: 'light',
         locale: 'zh-CN',
         version: 1,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
-        builder.setTheme('light')
+      const applyBuilder = (builder) => {
+        builder.setLocale('zh-CN')
       }
       applyBuilder(builder)
 

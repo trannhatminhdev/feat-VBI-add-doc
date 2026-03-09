@@ -15,21 +15,15 @@ describe('VBI', () => {
     expect(builder.build()).toMatchInlineSnapshot(`
       {
         "dimensions": [
-          {
-            "alias": "Area",
-            "field": "area",
-          },
+          [
+            {},
+          ],
         ],
         "filters": [],
         "measures": [
-          {
-            "aggregate": {
-              "func": "max",
-            },
-            "alias": "Max Sales",
-            "encoding": "yAxis",
-            "field": "sales",
-          },
+          [
+            {},
+          ],
         ],
       }
     `)

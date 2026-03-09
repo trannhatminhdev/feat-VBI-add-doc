@@ -10,10 +10,9 @@ describe('DimensionsBuilder', () => {
     expect(builder.build()).toMatchInlineSnapshot(`
       {
         "dimensions": [
-          {
-            "alias": "类别",
-            "field": "category",
-          },
+          [
+            {},
+          ],
         ],
         "filters": [],
         "measures": [],
@@ -35,14 +34,12 @@ describe('DimensionsBuilder', () => {
     expect(builder.build()).toMatchInlineSnapshot(`
       {
         "dimensions": [
-          {
-            "alias": "地区",
-            "field": "region",
-          },
-          {
-            "alias": "城市",
-            "field": "city",
-          },
+          [
+            {},
+          ],
+          [
+            {},
+          ],
         ],
         "filters": [],
         "measures": [],

@@ -6,6 +6,11 @@
   },
   {
     "type": "file",
+    "name": "locale",
+    "label": "Locale"
+  },
+  {
+    "type": "file",
     "name": "theme",
     "label": "Theme"
   }

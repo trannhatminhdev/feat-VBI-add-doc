@@ -156,21 +156,12 @@ function generateDocs() {
 
   const subDirs = findSubDirs(EXAMPLES_DIR)
 
-  // Generate index page with links to all categories
-  let indexMd = '# VBI Examples\n\n'
-  indexMd += 'Categories:\n\n'
-
   const meta = []
 
   for (const dir of subDirs) {
     const label = dir.charAt(0).toUpperCase() + dir.slice(1).replace(/-/g, ' ')
-    indexMd += `- [${label}](./${dir})\n`
     meta.push({ type: 'file', name: dir, label })
   }
-
-  // Write index.mdx
-  fs.writeFileSync(path.join(OUTPUT_DIR, 'index.mdx'), indexMd, 'utf-8')
-  console.log('Generated: index.mdx')
 
   // Write _meta.json
   fs.writeFileSync(path.join(OUTPUT_DIR, '_meta.json'), JSON.stringify(meta, null, 2), 'utf-8')

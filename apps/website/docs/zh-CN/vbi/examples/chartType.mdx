@@ -133,16 +133,16 @@ export default () => {
   useEffect(() => {
     const run = async () => {
       const schema = [
-        { name: 'year', type: 'string' },
+        { name: 'province', type: 'string' },
         { name: 'sales', type: 'number' },
         { name: 'profit', type: 'number' },
       ]
       const dataset = [
-        { year: 'year0', sales: 100, profit: 100 },
-        { year: 'year1', sales: 200, profit: 200 },
-        { year: 'year2', sales: 300, profit: 300 },
-        { year: 'year3', sales: 400, profit: 400 },
-        { year: 'year4', sales: 500, profit: 500 },
+        { province: 'province0', sales: 100, profit: 100 },
+        { province: 'province1', sales: 200, profit: 200 },
+        { province: 'province2', sales: 300, profit: 300 },
+        { province: 'province3', sales: 400, profit: 400 },
+        { province: 'province4', sales: 500, profit: 500 },
       ]
 
       VBI.registerConnector('demo', async () => ({
@@ -153,7 +153,7 @@ export default () => {
       const builder = VBI.from({
         connectorId: 'demo',
         chartType: 'line',
-        dimensions: [{ field: 'year', alias: '年份' }],
+        dimensions: [{ field: 'province', alias: '省份' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         filters: [],
         theme: 'light',

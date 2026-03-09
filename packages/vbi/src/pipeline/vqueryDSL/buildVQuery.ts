@@ -139,19 +139,8 @@ const buildGroupBy: buildPipe = (queryDSL, context) => {
 
 const buildLimit: buildPipe = (queryDSL, context) => {
   const result = { ...queryDSL }
-  const { vbiDSL } = context
-  const filters = vbiDSL.filters || []
-
-  // Extract sort items to check for limit
-  const sortItems = filters.filter((f) => f.enabled !== false && f.actionType === 'sort')
-  const validLimitItem = sortItems.find((f) => f.limit !== undefined && f.limit !== null)
-
-  if (validLimitItem && typeof validLimitItem.limit === 'number') {
-    result.limit = validLimitItem.limit
-  } else {
-    // Default limit
-    result.limit = 1000
-  }
+  const limit = context.vbiDSL.limit ?? 1000
+  result.limit = limit
 
   return result as VQueryDSL
 }

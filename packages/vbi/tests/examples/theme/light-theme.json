@@ -1,6 +1,6 @@
 {
-  "name": "dark-theme",
-  "description": "深色主题图表",
+  "name": "light-theme",
+  "description": "浅色主题图表",
   "schema": [
     { "name": "province", "type": "string" },
     { "name": "sales", "type": "number" }
@@ -10,7 +10,7 @@
     "dimensions": [{ "field": "province", "alias": "省份" }],
     "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
     "limit": 50,
-    "theme": "light"
+    "theme": "dark"
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setTheme('dark'); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setTheme('light'); }"
 }

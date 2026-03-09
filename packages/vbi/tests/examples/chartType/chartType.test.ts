@@ -1,4 +1,4 @@
-import { VBI, VBIBuilder } from '@visactor/vbi'
+import { VBI } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('ChartType', () => {
@@ -30,6 +30,7 @@ describe('ChartType', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      limit: 50,
     })
 
     // Apply custom builder code
@@ -75,6 +76,7 @@ describe('ChartType', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      limit: 50,
     })
 
     // Apply custom builder code
@@ -102,8 +104,8 @@ describe('ChartType', () => {
       chartType: 'line',
       dimensions: [
         {
-          field: 'year',
-          alias: '年份',
+          field: 'province',
+          alias: '省份',
         },
       ],
       measures: [
@@ -120,6 +122,7 @@ describe('ChartType', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      limit: 50,
     })
 
     // Apply custom builder code
@@ -165,6 +168,7 @@ describe('ChartType', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      limit: 50,
     })
 
     // Apply custom builder code
@@ -210,6 +214,7 @@ describe('ChartType', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      limit: 50,
     })
 
     // Apply custom builder code
@@ -255,6 +260,7 @@ describe('ChartType', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      limit: 50,
     })
 
     // Apply custom builder code
@@ -300,6 +306,7 @@ describe('ChartType', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      limit: 50,
     })
 
     // Apply custom builder code
@@ -345,6 +352,7 @@ describe('ChartType', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      limit: 50,
     })
 
     // Apply custom builder code
@@ -390,6 +398,7 @@ describe('ChartType', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      limit: 50,
     })
 
     // Apply custom builder code
@@ -438,6 +447,7 @@ describe('ChartType', () => {
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
+      limit: 50,
     })
 
     // Apply custom builder code

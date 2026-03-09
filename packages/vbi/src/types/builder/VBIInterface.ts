@@ -30,4 +30,6 @@ export interface VBIBuilderInterface {
   buildVQuery: () => VQueryDSL
   build: () => VBIDSL
   getEncodings: (spec: any, measureNames?: string[]) => any[]
+
+  setLimit: (limit: number) => this
 }
