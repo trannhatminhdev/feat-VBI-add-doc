@@ -1,16 +1,17 @@
 import * as Y from 'yjs'
 
 import { VSeedDSL } from '@visactor/vseed'
+import { VQueryDSL } from '@visactor/vquery'
 import { DimensionsBuilder } from './sub-builders/dimensions'
 import { MeasuresBuilder } from './sub-builders/measures'
 import { HavingBuilder } from './sub-builders/having'
+import { FiltersBuilder } from './sub-builders'
+import { ChartTypeBuilder } from './sub-builders'
+
 import { VBIDSL, VBIBuilderInterface } from 'src/types'
 import { buildVQuery } from 'src/pipeline'
-import { ChartTypeBuilder } from './sub-builders/chart-type'
 import { getConnector } from './connector'
-import { VQueryDSL } from '@visactor/vquery'
 import { EncodingBuilder } from './encoding-builder'
-import { FiltersBuilder } from './sub-builders/filters/filters-builder'
 
 export class VBIBuilder implements VBIBuilderInterface {
   public doc: Y.Doc
@@ -53,42 +54,6 @@ export class VBIBuilder implements VBIBuilderInterface {
     const queryDSL = this.buildVQuery()
     const schema = await connector.discoverSchema()
     const queryResult = await connector.query({ queryDSL, schema, connectorId })
-
-    // 将 VBI DSL 的 measures/dimensions 转换为 VSeed 格式
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const mapMeasures = (tree: any[]): any[] => {
-      return tree.map((node) => {
-        if (MeasuresBuilder.isMeasureNode(node)) {
-          return {
-            id: node.field, // field → id
-            alias: node.alias,
-            encoding: node.encoding,
-          }
-        } else {
-          return {
-            alias: node.alias,
-            children: mapMeasures(node.children),
-          }
-        }
-      })
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const mapDimensions = (tree: any[]): any[] => {
-      return tree.map((node) => {
-        if (DimensionsBuilder.isDimensionNode(node)) {
-          return {
-            id: node.field, // field → id
-            alias: node.alias,
-          }
-        } else {
-          return {
-            alias: node.alias,
-            children: mapDimensions(node.children),
-          }
-        }
-      })
-    }
 
     return {
       chartType: vbiDSL.chartType,
