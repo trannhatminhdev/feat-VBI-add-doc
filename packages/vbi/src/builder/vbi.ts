@@ -40,7 +40,20 @@ const createVBI = () => {
           if (!arr) return new Y.Array()
           if (arr instanceof Y.Array) return arr
           const yArr = new Y.Array()
-          yArr.push(arr)
+          // Convert plain objects to Y.Map
+          arr.forEach((item: any) => {
+            if (item instanceof Y.Map) {
+              yArr.push([item])
+            } else if (typeof item === 'object' && item !== null) {
+              const yMap = new Y.Map<any>()
+              for (const [key, value] of Object.entries(item)) {
+                yMap.set(key, value)
+              }
+              yArr.push([yMap])
+            } else {
+              yArr.push([item])
+            }
+          })
           return yArr
         }
         dsl.set('whereFilters', ensureYArray(vbi.whereFilters))
