@@ -1,6 +1,6 @@
 import * as Y from 'yjs'
 import type { VBIWhereClause, ObserveCallback } from 'src/types'
-import { idGenerator } from 'src/utils'
+import { id } from 'src/utils'
 import { WhereFilterNodeBuilder } from './where-node-builder'
 import { WhereGroupBuilder } from './where-group-builder'
 
@@ -29,7 +29,7 @@ export class WhereFiltersBuilder {
    */
   add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
     const yMap = new Y.Map<any>()
-    yMap.set('id', idGenerator.generate())
+    yMap.set('id', id.uuid())
     yMap.set('field', field)
 
     this.dsl.get('whereFilters').push([yMap])
@@ -46,7 +46,7 @@ export class WhereFiltersBuilder {
    */
   addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder {
     const yMap = new Y.Map<any>()
-    yMap.set('id', idGenerator.generate())
+    yMap.set('id', id.uuid())
     yMap.set('op', op)
     yMap.set('conditions', new Y.Array<any>())
 

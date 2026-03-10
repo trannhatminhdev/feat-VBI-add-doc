@@ -1,13 +1,13 @@
-import { idGenerator } from 'src/utils'
+import { id } from 'src/utils'
 
 let idCounter = 0
-const originalGenerate = idGenerator.generate
+const originalUuid = id.uuid
 
 beforeEach(() => {
   idCounter = 0
-  idGenerator.generate = () => `id-${++idCounter}`
+  id.uuid = () => `id-${++idCounter}`
 })
 
 afterEach(() => {
-  idGenerator.generate = originalGenerate
+  id.uuid = originalUuid
 })

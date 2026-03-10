@@ -2,7 +2,7 @@ import { VBIConnectorId } from 'src/types/connector/connector'
 import { VBIDSL } from 'src/types'
 import { VBIBuilder } from './vbi-builder'
 import { connectorMap, getConnector, registerConnector } from './connector'
-import { idGenerator } from 'src/utils'
+import { id } from 'src/utils'
 
 import * as Y from 'yjs'
 
@@ -40,7 +40,7 @@ const createVBI = () => {
         const toYMap = (obj: any, ensureId = false): Y.Map<any> => {
           const yMap = new Y.Map<any>()
           if (ensureId && !obj.id) {
-            yMap.set('id', idGenerator.generate())
+            yMap.set('id', id.uuid())
           }
           for (const [key, value] of Object.entries(obj)) {
             if (key === 'conditions' && Array.isArray(value)) {

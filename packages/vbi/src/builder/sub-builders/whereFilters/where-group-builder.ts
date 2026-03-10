@@ -1,6 +1,6 @@
 import * as Y from 'yjs'
 import type { VBIWhereGroup } from 'src/types'
-import { idGenerator } from 'src/utils'
+import { id } from 'src/utils'
 import { WhereFilterNodeBuilder } from './where-node-builder'
 
 /**
@@ -39,7 +39,7 @@ export class WhereGroupBuilder {
    */
   add(field: string, callback: (node: WhereFilterNodeBuilder) => void): this {
     const yMap = new Y.Map<any>()
-    yMap.set('id', idGenerator.generate())
+    yMap.set('id', id.uuid())
     yMap.set('field', field)
 
     const conditions = this.yMap.get('conditions') as Y.Array<any>
@@ -57,7 +57,7 @@ export class WhereGroupBuilder {
    */
   addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): this {
     const yMap = new Y.Map<any>()
-    yMap.set('id', idGenerator.generate())
+    yMap.set('id', id.uuid())
     yMap.set('op', op)
     yMap.set('conditions', new Y.Array<any>())
 

@@ -1,2 +1,2 @@
 export * from './tree'
-export { idGenerator } from './id'
+export { id } from './id'

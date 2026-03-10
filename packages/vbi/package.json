@@ -39,7 +39,7 @@
     "build:test": "node scripts/build-tests.mjs",
     "build:examples": "node scripts/build-examples.mjs",
     "build:api": "node scripts/build-api.mjs",
-    "g": "pnpm run build:test && pnpm run build:examples && pnpm run build:api && pnpm run format"
+    "g": "pnpm build:test && pnpm build:examples && pnpm build:api && pnpm test:update && pnpm format"
   },
   "dependencies": {
     "@visactor/vseed": "workspace:*",
