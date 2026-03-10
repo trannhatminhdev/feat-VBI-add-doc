@@ -30,4 +30,6 @@ tools/llm_test/new-type
 .claude
 
 # Trae
-.trae.worktrees
+.trae
+
+.worktrees
