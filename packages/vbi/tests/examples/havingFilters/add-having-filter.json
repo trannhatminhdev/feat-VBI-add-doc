@@ -1,9 +1,9 @@
 {
   "name": "add-having-filter",
-  "description": "添加Having过滤条件",
+  "description": "按区域分组后筛选销售额超过百万的高业绩区域",
   "schema": [
     {
-      "name": "product_type",
+      "name": "area",
       "type": "string"
     },
     {

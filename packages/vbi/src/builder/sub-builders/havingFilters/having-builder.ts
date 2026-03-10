@@ -1,16 +1,25 @@
 import * as Y from 'yjs'
-import type { VBIHavingFilter } from 'src/types'
+import type { VBIHavingClause, ObserveCallback } from 'src/types'
+import { id } from 'src/utils'
 import { HavingFiltersNodeBuilder } from './having-node-builder'
-import type { YArrayEvent, Transaction } from 'yjs'
+import { HavingGroupBuilder } from './having-group-builder'
 
 /**
  * @description Having 过滤构建器，用于添加、修改、删除分组后过滤条件。Having 过滤在数据聚合后生效，用于筛选分组结果
  */
 export class HavingFiltersBuilder {
   private dsl: Y.Map<any>
+  private doc: Y.Doc
 
-  constructor(_doc: Y.Doc, dsl: Y.Map<any>) {
+  constructor(doc: Y.Doc, dsl: Y.Map<any>) {
+    this.doc = doc
     this.dsl = dsl
+
+    if (!this.dsl.get('havingFilters')) {
+      this.doc.transact(() => {
+        this.dsl.set('havingFilters', new Y.Array<any>())
+      })
+    }
   }
 
   /**
@@ -19,39 +28,46 @@ export class HavingFiltersBuilder {
    * @param callback - 回调函数
    */
   add(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder {
-    if (!field || typeof field !== 'string') {
-      throw new Error('Field is required and must be a string')
-    }
-
-    const defaultFilter: VBIHavingFilter = {
-      field,
-      operator: 'eq',
-      value: null,
-    }
-
     const yMap = new Y.Map<any>()
-    for (const [key, value] of Object.entries(defaultFilter)) {
-      yMap.set(key, value)
-    }
+    yMap.set('id', id.uuid())
+    yMap.set('field', field)
+
     this.dsl.get('havingFilters').push([yMap])
 
-    const filterNode = new HavingFiltersNodeBuilder(yMap)
-
-    callback(filterNode)
+    const node = new HavingFiltersNodeBuilder(yMap)
+    callback(node)
     return this
   }
 
   /**
-   * @description 更新指定字段的过滤条件
-   * @param field - 字段名
+   * @description 添加一个 Having 分组
+   * @param op - 逻辑操作符
    * @param callback - 回调函数
    */
-  update(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder {
+  addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFiltersBuilder {
+    const yMap = new Y.Map<any>()
+    yMap.set('id', id.uuid())
+    yMap.set('op', op)
+    yMap.set('conditions', new Y.Array<any>())
+
+    this.dsl.get('havingFilters').push([yMap])
+
+    const group = new HavingGroupBuilder(yMap)
+    callback(group)
+    return this
+  }
+
+  /**
+   * @description 更新指定 ID 的过滤条件
+   * @param id - 过滤条件 ID
+   * @param callback - 回调函数
+   */
+  update(id: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder {
     const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
-    const index = havingFilters.toArray().findIndex((item: any) => item.get('field') === field)
+    const index = havingFilters.toArray().findIndex((item: any) => item.get('id') === id)
 
     if (index === -1) {
-      throw new Error(`Having filter with field "${field}" not found`)
+      throw new Error(`Having filter with id ${id} not found`)
     }
 
     const filterYMap = havingFilters.get(index)
@@ -61,77 +77,105 @@ export class HavingFiltersBuilder {
   }
 
   /**
-   * @description 根据字段名删除 Having 过滤条件
-   * @param field - 字段名
+   * @description 更新指定 ID 的分组
+   * @param id - 分组 ID
+   * @param callback - 回调函数
    */
-  remove(field: string): HavingFiltersBuilder {
-    if (!field || typeof field !== 'string') {
-      console.error('[HavingFiltersBuilder] Invalid field name:', field)
+  updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFiltersBuilder {
+    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
+    const index = havingFilters.toArray().findIndex((item: any) => item.get('id') === id)
+
+    if (index === -1) {
+      throw new Error(`Having group with id ${id} not found`)
     }
 
-    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
-    const index = havingFilters.toArray().findIndex((item: any) => item.get('field') === field)
+    const yMap = havingFilters.get(index)
+    if (!HavingFiltersBuilder.isGroup(yMap)) {
+      throw new Error(`Item with id ${id} is not a group`)
+    }
 
-    if (index !== -1) {
-      this.dsl.get('havingFilters').delete(index, 1)
+    const group = new HavingGroupBuilder(yMap)
+    callback(group)
+    return this
+  }
+
+  /**
+   * @description 删除指定 ID 的条件或指定索引的项
+   * @param idOrIndex - ID 或索引
+   */
+  remove(idOrIndex: string | number): HavingFiltersBuilder {
+    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
+
+    if (typeof idOrIndex === 'number') {
+      if (idOrIndex >= 0 && idOrIndex < havingFilters.length) {
+        havingFilters.delete(idOrIndex, 1)
+      }
+    } else {
+      const index = havingFilters.toArray().findIndex((item: any) => item.get('id') === idOrIndex)
+      if (index !== -1) {
+        havingFilters.delete(index, 1)
+      }
     }
     return this
   }
 
   /**
-   * @description 根据字段名查找 Having 过滤条件
-   * @param field - 字段名
+   * @description 根据 ID 查找条件（过滤或分组）
+   * @param id - ID
    */
-  find(field: string): HavingFiltersNodeBuilder | undefined {
+  find(id: string): HavingFiltersNodeBuilder | HavingGroupBuilder | undefined {
     const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
-    const index = havingFilters.toArray().findIndex((item: any) => item.get('field') === field)
+    const yMap = havingFilters.toArray().find((item: any) => item.get('id') === id)
 
-    if (index === -1) {
+    if (!yMap) {
       return undefined
     }
 
-    return new HavingFiltersNodeBuilder(havingFilters.get(index))
-  }
-
-  /**
-   * @description 获取所有 Having 过滤条件
-   */
-  findAll(): HavingFiltersNodeBuilder[] {
-    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
-    return havingFilters.toArray().map((yMap: any) => new HavingFiltersNodeBuilder(yMap))
+    if (HavingFiltersBuilder.isGroup(yMap)) {
+      return new HavingGroupBuilder(yMap)
+    }
+    return new HavingFiltersNodeBuilder(yMap)
   }
 
   /**
    * @description 清空所有 Having 过滤条件
    */
-  clear(): this {
-    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
-    if (havingFilters.length > 0) {
-      havingFilters.delete(0, havingFilters.length)
-    }
+  clear() {
+    const havingFilters = this.dsl.get('havingFilters')
+    havingFilters.delete(0, havingFilters.length)
     return this
   }
 
   /**
    * @description 导出所有 Having 过滤条件为 JSON 数组
    */
-  toJson(): VBIHavingFilter[] {
-    return (this.dsl.get('havingFilters') as Y.Array<any>).toJSON() as VBIHavingFilter[]
+  toJson(): VBIHavingClause[] {
+    return this.dsl.get('havingFilters').toJSON() as VBIHavingClause[]
   }
 
-  /**
-   * @description 监听过滤条件变化
-   * @param callback - 回调函数
-   */
   /**
    * @description 监听过滤条件变化，返回取消监听的函数
    * @param callback - 回调函数
    * @returns 取消监听的函数
    */
-  observe(callback: (e: YArrayEvent<any>, trans: Transaction | null) => void): () => void {
+  observe(callback: ObserveCallback): () => void {
     this.dsl.get('havingFilters').observe(callback)
     return () => {
       this.dsl.get('havingFilters').unobserve(callback)
     }
+  }
+
+  /**
+   * @description 判断是否为分组节点
+   */
+  static isGroup(yMap: Y.Map<any>): boolean {
+    return yMap.get('op') !== undefined && yMap.get('conditions') !== undefined
+  }
+
+  /**
+   * @description 判断是否为叶子节点
+   */
+  static isNode(yMap: Y.Map<any>): boolean {
+    return yMap.get('field') !== undefined
   }
 }

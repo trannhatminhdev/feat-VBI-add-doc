@@ -28,12 +28,16 @@
 
 ## havingFilters
 
-| 示例                                                                       | 描述                               | 标签 |
-| -------------------------------------------------------------------------- | ---------------------------------- | ---- |
-| [add-having-filter](./havingFilters#add-having-filter)                     | 添加Having过滤条件                 | -    |
-| [add-multiple-having-filters](./havingFilters#add-multiple-having-filters) | 添加多个Having过滤条件（链式调用） | -    |
-| [clear-having-filters](./havingFilters#clear-having-filters)               | 清空所有Having过滤条件             | -    |
-| [remove-having-filter](./havingFilters#remove-having-filter)               | 删除Having过滤条件                 | -    |
+| 示例                                                                           | 描述                                                                  | 标签 |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------- | ---- |
+| [add-having-filter](./havingFilters#add-having-filter)                         | 按区域分组后筛选销售额超过百万的高业绩区域                            | -    |
+| [add-multiple-having-filters](./havingFilters#add-multiple-having-filters)     | 链式添加多个Having条件筛选高销售额且高利润的区域                      | -    |
+| [clear-having-filters](./havingFilters#clear-having-filters)                   | 清空所有Having过滤条件，展示全量分组聚合结果                          | -    |
+| [having-mix-filters-and-groups](./havingFilters#having-mix-filters-and-groups) | 混合使用独立过滤条件和OR分组：销售额>50万 AND (利润>10万 OR 数量>=30) | -    |
+| [having-nested-groups](./havingFilters#having-nested-groups)                   | 嵌套分组：AND(销售额>100万, OR(利润>20万, 数量>=50))                  | -    |
+| [having-or-group](./havingFilters#having-or-group)                             | 使用OR分组筛选高销售额或高利润的区域                                  | -    |
+| [having-update-group-operator](./havingFilters#having-update-group-operator)   | 更新已有Having分组的逻辑操作符从AND改为OR                             | -    |
+| [remove-having-filter](./havingFilters#remove-having-filter)                   | 移除多余的Having过滤条件，只保留利润筛选                              | -    |
 
 ## locale
 

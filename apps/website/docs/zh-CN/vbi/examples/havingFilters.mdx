@@ -6,7 +6,7 @@ import { registerDemoConnector } from '@components'
 
 ## add-having-filter
 
-添加Having过滤条件
+按区域分组后筛选销售额超过百万的高业绩区域
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
@@ -52,7 +52,7 @@ export default () => {
 
 ## add-multiple-having-filters
 
-添加多个Having过滤条件（链式调用）
+链式添加多个Having条件筛选高销售额且高利润的区域
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
@@ -101,7 +101,7 @@ export default () => {
 
 ## clear-having-filters
 
-清空所有Having过滤条件
+清空所有Having过滤条件，展示全量分组聚合结果
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
@@ -123,8 +123,8 @@ export default () => {
         ],
         whereFilters: [],
         havingFilters: [
-          { field: '销售额', operator: 'gt', value: 1000000 },
-          { field: '利润', operator: 'gt', value: 200000 },
+          { id: 'having-1', field: '销售额', operator: 'gt', value: 1000000 },
+          { id: 'having-2', field: '利润', operator: 'gt', value: 200000 },
         ],
         theme: 'light',
         locale: 'zh-CN',
@@ -149,9 +149,166 @@ export default () => {
 }
 ```
 
-## remove-having-filter
+## having-mix-filters-and-groups
 
-删除Having过滤条件
+混合使用独立过滤条件和OR分组：销售额>50万 AND (利润>10万 OR 数量>=30)
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'amount', alias: '数量', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters
+          .add('销售额', (n) => n.setOperator('gt').setValue(500000))
+          .addGroup('or', (group) => {
+            group.add('利润', (n) => n.setOperator('gt').setValue(100000))
+            group.add('数量', (n) => n.setOperator('gte').setValue(30))
+          })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## having-nested-groups
+
+嵌套分组：AND(销售额>100万, OR(利润>20万, 数量>=50))
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'amount', alias: '数量', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters.addGroup('and', (outer) => {
+          outer.add('销售额', (n) => n.setOperator('gt').setValue(1000000))
+          outer.addGroup('or', (inner) => {
+            inner.add('利润', (n) => n.setOperator('gt').setValue(200000))
+            inner.add('数量', (n) => n.setOperator('gte').setValue(50))
+          })
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## having-or-group
+
+使用OR分组筛选高销售额或高利润的区域
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters.addGroup('or', (group) => {
+          group.add('销售额', (n) => n.setOperator('gt').setValue(1000000))
+          group.add('利润', (n) => n.setOperator('gt').setValue(200000))
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## having-update-group-operator
+
+更新已有Having分组的逻辑操作符从AND改为OR
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
@@ -173,8 +330,14 @@ export default () => {
         ],
         whereFilters: [],
         havingFilters: [
-          { field: '销售额', operator: 'gt', value: 1000000 },
-          { field: '利润', operator: 'gt', value: 200000 },
+          {
+            id: 'group-1',
+            op: 'and',
+            conditions: [
+              { id: 'cond-1', field: '销售额', operator: 'gt', value: 1000000 },
+              { id: 'cond-2', field: '利润', operator: 'gt', value: 200000 },
+            ],
+          },
         ],
         theme: 'light',
         locale: 'zh-CN',
@@ -183,7 +346,59 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.havingFilters.remove('销售额')
+        builder.havingFilters.updateGroup('group-1', (group) => {
+          group.setOperator('or')
+        })
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```
+
+## remove-having-filter
+
+移除多余的Having过滤条件，只保留利润筛选
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [{ field: 'area', alias: '区域' }],
+        measures: [
+          { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+          { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        ],
+        whereFilters: [],
+        havingFilters: [
+          { id: 'having-1', field: '销售额', operator: 'gt', value: 1000000 },
+          { id: 'having-2', field: '利润', operator: 'gt', value: 200000 },
+        ],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.havingFilters.remove('having-1')
       }
       applyBuilder(builder)
 

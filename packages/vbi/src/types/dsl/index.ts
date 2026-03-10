@@ -2,6 +2,7 @@ export type { VBIDimensionTree, VBIDimensionGroup, VBIDimension } from './dimens
 export type { VBIMeasureTree, VBIMeasureGroup, VBIMeasure } from './measures/measures'
 export type { VBIFilter, VBIWhereGroup, VBIWhereClause } from './whereFilters/filters'
 export { isVBIFilter, isVBIWhereGroup } from './whereFilters/filters'
-export type { VBIHavingFilter, VBIHavingArray } from './havingFilters/having'
+export type { VBIHavingFilter, VBIHavingGroup, VBIHavingClause } from './havingFilters/having'
+export { isVBIHavingFilter, isVBIHavingGroup } from './havingFilters/having'
 export type { VBIDSLTheme } from './theme/theme'
 export type { VBIDSL } from './vbi/vbi'

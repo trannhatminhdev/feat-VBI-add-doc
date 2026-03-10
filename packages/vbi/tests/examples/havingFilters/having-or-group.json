@@ -1,6 +1,6 @@
 {
-  "name": "add-multiple-having-filters",
-  "description": "链式添加多个Having条件筛选高销售额且高利润的区域",
+  "name": "having-or-group",
+  "description": "使用OR分组筛选高销售额或高利润的区域",
   "schema": [
     {
       "name": "area",
@@ -45,5 +45,5 @@
     "havingFilters": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.add('销售额', n => n.setOperator('gt').setValue(1000000)).add('利润', n => n.setOperator('gt').setValue(200000)); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.addGroup('or', group => { group.add('销售额', n => n.setOperator('gt').setValue(1000000)); group.add('利润', n => n.setOperator('gt').setValue(200000)); }); }"
 }

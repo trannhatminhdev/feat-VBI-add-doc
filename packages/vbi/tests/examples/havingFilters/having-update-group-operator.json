@@ -1,6 +1,6 @@
 {
-  "name": "add-multiple-having-filters",
-  "description": "链式添加多个Having条件筛选高销售额且高利润的区域",
+  "name": "having-update-group-operator",
+  "description": "更新已有Having分组的逻辑操作符从AND改为OR",
   "schema": [
     {
       "name": "area",
@@ -42,8 +42,27 @@
       }
     ],
     "whereFilters": [],
-    "havingFilters": [],
+    "havingFilters": [
+      {
+        "id": "group-1",
+        "op": "and",
+        "conditions": [
+          {
+            "id": "cond-1",
+            "field": "销售额",
+            "operator": "gt",
+            "value": 1000000
+          },
+          {
+            "id": "cond-2",
+            "field": "利润",
+            "operator": "gt",
+            "value": 200000
+          }
+        ]
+      }
+    ],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.add('销售额', n => n.setOperator('gt').setValue(1000000)).add('利润', n => n.setOperator('gt').setValue(200000)); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.updateGroup('group-1', group => { group.setOperator('or'); }); }"
 }

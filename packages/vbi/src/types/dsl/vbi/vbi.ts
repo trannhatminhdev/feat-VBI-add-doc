@@ -4,14 +4,14 @@ import { zVBIMeasureTree } from '../measures/measures'
 import { zVBIDSLTheme } from '../theme/theme'
 import { zVBIDSLLocale } from '../locale/locale'
 import { zVBIWhereClause } from '../whereFilters/filters'
-import { zVBIHavingFilter } from '../havingFilters/having'
+import { zVBIHavingClause } from '../havingFilters/having'
 
 export const zVBIDSL = z.object({
   connectorId: z.string(),
   chartType: z.custom<any>(), // Use any to avoid circular dependency or simplify for now
   dimensions: zVBIDimensionTree,
   measures: zVBIMeasureTree,
-  havingFilters: z.array(zVBIHavingFilter).optional().default([]),
+  havingFilters: z.array(zVBIHavingClause).optional().default([]),
   whereFilters: z.array(zVBIWhereClause).optional().default([]),
   theme: zVBIDSLTheme,
   locale: zVBIDSLLocale,
