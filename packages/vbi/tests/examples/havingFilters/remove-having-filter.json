@@ -1,9 +1,9 @@
 {
   "name": "remove-having-filter",
-  "description": "删除Having过滤条件",
+  "description": "移除多余的Having过滤条件，只保留利润筛选",
   "schema": [
     {
-      "name": "product_type",
+      "name": "area",
       "type": "string"
     },
     {
@@ -44,17 +44,19 @@
     "whereFilters": [],
     "havingFilters": [
       {
+        "id": "having-1",
         "field": "销售额",
-        "operator": "gt",
+        "op": "gt",
         "value": 1000000
       },
       {
+        "id": "having-2",
         "field": "利润",
-        "operator": "gt",
+        "op": "gt",
         "value": 200000
       }
     ],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.remove('销售额'); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.remove('having-1'); }"
 }

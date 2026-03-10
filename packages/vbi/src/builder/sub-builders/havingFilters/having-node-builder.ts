@@ -8,10 +8,24 @@ export class HavingFiltersNodeBuilder {
   constructor(private yMap: Y.Map<any>) {}
 
   /**
+   * @description 获取节点 ID
+   */
+  getId(): string {
+    return this.yMap.get('id')
+  }
+
+  /**
    * @description 获取字段名
    */
   getField(): string {
     return this.yMap.get('field')
+  }
+
+  /**
+   * @description 获取过滤操作符
+   */
+  getOperator(): string | undefined {
+    return this.yMap.get('op')
   }
 
   /**
@@ -28,7 +42,7 @@ export class HavingFiltersNodeBuilder {
    * @param operator - 操作符
    */
   setOperator(operator: string): this {
-    this.yMap.set('operator', operator)
+    this.yMap.set('op', operator)
     return this
   }
 

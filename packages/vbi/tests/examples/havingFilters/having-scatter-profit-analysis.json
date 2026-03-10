@@ -1,0 +1,61 @@
+{
+  "name": "having-scatter-profit-analysis",
+  "description": "散点图分析：按品类分组筛选高利润率且交易量超20笔的品类，定位优质业务",
+  "schema": [
+    {
+      "name": "product_sub_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    },
+    {
+      "name": "amount",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "scatter",
+    "dimensions": [
+      {
+        "field": "product_sub_type",
+        "alias": "子品类"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "xAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "amount",
+        "alias": "数量",
+        "encoding": "size",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [],
+    "havingFilters": [],
+    "limit": 10
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.addGroup('and', g => { g.add('利润', n => n.setOperator('gt').setValue(0)); g.add('数量', n => n.setOperator('gt').setValue(20)); g.add('销售额', n => n.setOperator('gt').setValue(10000)); }); }"
+}

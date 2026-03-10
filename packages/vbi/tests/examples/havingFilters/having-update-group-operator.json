@@ -1,6 +1,6 @@
 {
-  "name": "clear-having-filters",
-  "description": "清空所有Having过滤条件，展示全量分组聚合结果",
+  "name": "having-update-group-operator",
+  "description": "更新已有Having分组的逻辑操作符从AND改为OR",
   "schema": [
     {
       "name": "area",
@@ -44,19 +44,25 @@
     "whereFilters": [],
     "havingFilters": [
       {
-        "id": "having-1",
-        "field": "销售额",
-        "op": "gt",
-        "value": 1000000
-      },
-      {
-        "id": "having-2",
-        "field": "利润",
-        "op": "gt",
-        "value": 200000
+        "id": "group-1",
+        "op": "and",
+        "conditions": [
+          {
+            "id": "cond-1",
+            "field": "销售额",
+            "op": "gt",
+            "value": 1000000
+          },
+          {
+            "id": "cond-2",
+            "field": "利润",
+            "op": "gt",
+            "value": 200000
+          }
+        ]
       }
     ],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.clear(); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.updateGroup('group-1', group => { group.setOperator('or'); }); }"
 }

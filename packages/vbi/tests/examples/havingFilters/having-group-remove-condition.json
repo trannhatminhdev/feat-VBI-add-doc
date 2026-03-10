@@ -1,0 +1,68 @@
+{
+  "name": "having-group-remove-condition",
+  "description": "从已有的having分组中移除特定条件，模拟用户取消某个筛选项",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "column",
+    "dimensions": [
+      {
+        "field": "product_type",
+        "alias": "品类"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [],
+    "havingFilters": [
+      {
+        "id": "group-1",
+        "op": "and",
+        "conditions": [
+          {
+            "id": "cond-1",
+            "field": "销售额",
+            "op": "gt",
+            "value": 100000
+          },
+          {
+            "id": "cond-2",
+            "field": "利润",
+            "op": "gt",
+            "value": 10000
+          }
+        ]
+      }
+    ],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.updateGroup('group-1', group => { group.remove('cond-1'); }); }"
+}

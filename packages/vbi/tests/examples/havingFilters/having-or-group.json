@@ -1,6 +1,6 @@
 {
-  "name": "clear-having-filters",
-  "description": "清空所有Having过滤条件，展示全量分组聚合结果",
+  "name": "having-or-group",
+  "description": "使用OR分组筛选高销售额或高利润的区域",
   "schema": [
     {
       "name": "area",
@@ -42,21 +42,8 @@
       }
     ],
     "whereFilters": [],
-    "havingFilters": [
-      {
-        "id": "having-1",
-        "field": "销售额",
-        "op": "gt",
-        "value": 1000000
-      },
-      {
-        "id": "having-2",
-        "field": "利润",
-        "op": "gt",
-        "value": 200000
-      }
-    ],
+    "havingFilters": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.clear(); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.addGroup('or', group => { group.add('销售额', n => n.setOperator('gt').setValue(1000000)); group.add('利润', n => n.setOperator('gt').setValue(200000)); }); }"
 }

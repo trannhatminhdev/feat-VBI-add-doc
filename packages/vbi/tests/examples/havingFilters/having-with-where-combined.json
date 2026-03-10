@@ -1,0 +1,53 @@
+{
+  "name": "having-with-where-combined",
+  "description": "where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份",
+  "schema": [
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "column",
+    "dimensions": [
+      {
+        "field": "province",
+        "alias": "省份"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [],
+    "havingFilters": [],
+    "limit": 10
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilters.add('product_type', n => n.setOperator('=').setValue('办公用品')); builder.havingFilters.addGroup('or', g => { g.add('销售额', n => n.setOperator('gt').setValue(50000)); g.add('利润', n => n.setOperator('gt').setValue(10000)); }); }"
+}

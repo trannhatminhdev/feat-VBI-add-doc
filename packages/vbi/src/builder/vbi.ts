@@ -79,7 +79,7 @@ const createVBI = () => {
           return yArr
         }
         dsl.set('whereFilters', ensureYArray(vbi.whereFilters, true))
-        dsl.set('havingFilters', ensureYArray(vbi.havingFilters))
+        dsl.set('havingFilters', ensureYArray(vbi.havingFilters, true))
         dsl.set('measures', ensureYArray(vbi.measures))
         dsl.set('dimensions', ensureYArray(vbi.dimensions))
       })

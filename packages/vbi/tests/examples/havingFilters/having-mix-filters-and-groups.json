@@ -1,6 +1,6 @@
 {
-  "name": "add-multiple-having-filters",
-  "description": "链式添加多个Having条件筛选高销售额且高利润的区域",
+  "name": "having-mix-filters-and-groups",
+  "description": "混合使用独立过滤条件和OR分组：销售额超50万 AND (利润超10万 OR 数量不少于30)",
   "schema": [
     {
       "name": "area",
@@ -12,6 +12,10 @@
     },
     {
       "name": "profit",
+      "type": "number"
+    },
+    {
+      "name": "amount",
       "type": "number"
     }
   ],
@@ -39,11 +43,19 @@
         "aggregate": {
           "func": "sum"
         }
+      },
+      {
+        "field": "amount",
+        "alias": "数量",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
       }
     ],
     "whereFilters": [],
     "havingFilters": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.add('销售额', n => n.setOperator('gt').setValue(1000000)).add('利润', n => n.setOperator('gt').setValue(200000)); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.add('销售额', n => n.setOperator('gt').setValue(500000)).addGroup('or', group => { group.add('利润', n => n.setOperator('gt').setValue(100000)); group.add('数量', n => n.setOperator('gte').setValue(30)); }); }"
 }

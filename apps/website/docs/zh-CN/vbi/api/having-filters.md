@@ -11,14 +11,14 @@ Having 过滤构建器，用于添加、修改、删除分组后过滤条件。H
 **定义**:
 
 ```typescript
-constructor(_doc: Y.Doc, dsl: Y.Map<any>)
+constructor(doc: Y.Doc, dsl: Y.Map<any>)
 ```
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `_doc` | Y.Doc | - |
+| `doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
 
 ### add
@@ -40,14 +40,14 @@ add(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFi
 | `field` | string | - 字段名 |
 | `callback` | (node: HavingFiltersNodeBuilder) => void | - 回调函数 |
 
-### update
+### addGroup
 
-更新指定字段的过滤条件
+添加一个 Having 分组
 
 **定义**:
 
 ```typescript
-update(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder
+addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFiltersBuilder
 ```
 
 **返回**: `HavingFiltersBuilder`
@@ -56,17 +56,55 @@ update(field: string, callback: (node: HavingFiltersNodeBuilder) => void): Havin
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | string | - 字段名 |
+| `op` | 'and' \| 'or' | - 逻辑操作符 |
+| `callback` | (group: HavingGroupBuilder) => void | - 回调函数 |
+
+### update
+
+更新指定 ID 的过滤条件
+
+**定义**:
+
+```typescript
+update(id: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder
+```
+
+**返回**: `HavingFiltersBuilder`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | string | - 过滤条件 ID |
 | `callback` | (node: HavingFiltersNodeBuilder) => void | - 回调函数 |
+
+### updateGroup
+
+更新指定 ID 的分组
+
+**定义**:
+
+```typescript
+updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFiltersBuilder
+```
+
+**返回**: `HavingFiltersBuilder`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `id` | string | - 分组 ID |
+| `callback` | (group: HavingGroupBuilder) => void | - 回调函数 |
 
 ### remove
 
-根据字段名删除 Having 过滤条件
+删除指定 ID 的条件或指定索引的项
 
 **定义**:
 
 ```typescript
-remove(field: string): HavingFiltersBuilder
+remove(idOrIndex: string | number): HavingFiltersBuilder
 ```
 
 **返回**: `HavingFiltersBuilder`
@@ -75,37 +113,25 @@ remove(field: string): HavingFiltersBuilder
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | string | - 字段名 |
+| `idOrIndex` | string \| number | - ID 或索引 |
 
 ### find
 
-根据字段名查找 Having 过滤条件
+根据 ID 查找条件（过滤或分组）
 
 **定义**:
 
 ```typescript
-find(field: string): HavingFiltersNodeBuilder | undefined
+find(id: string): HavingFiltersNodeBuilder | HavingGroupBuilder | undefined
 ```
 
-**返回**: `HavingFiltersNodeBuilder \| undefined`
+**返回**: `HavingFiltersNodeBuilder \| HavingGroupBuilder \| undefined`
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | string | - 字段名 |
-
-### findAll
-
-获取所有 Having 过滤条件
-
-**定义**:
-
-```typescript
-findAll(): HavingFiltersNodeBuilder[]
-```
-
-**返回**: `HavingFiltersNodeBuilder[]`
+| `id` | string | - ID |
 
 ### clear
 
@@ -114,10 +140,8 @@ findAll(): HavingFiltersNodeBuilder[]
 **定义**:
 
 ```typescript
-clear(): this
+clear()
 ```
-
-**返回**: `this`
 
 ### toJson
 
@@ -126,19 +150,19 @@ clear(): this
 **定义**:
 
 ```typescript
-toJson(): VBIHavingFilter[]
+toJson(): VBIHavingClause[]
 ```
 
-**返回**: `VBIHavingFilter[]`
+**返回**: `VBIHavingClause[]`
 
 ### observe
 
-监听过滤条件变化
+监听过滤条件变化，返回取消监听的函数
 
 **定义**:
 
 ```typescript
-observe(callback: (e: YArrayEvent<any>, trans: Transaction | null) => void): () => void
+observe(callback: ObserveCallback): () => void
 ```
 
 **返回**: `() => void`
@@ -147,4 +171,40 @@ observe(callback: (e: YArrayEvent<any>, trans: Transaction | null) => void): () 
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `callback` | (e: YArrayEvent<any>, trans: Transaction \| null) => void | - 回调函数 |
+| `callback` | ObserveCallback | - 回调函数 |
+
+### static isGroup
+
+判断是否为分组节点
+
+**定义**:
+
+```typescript
+static isGroup(yMap: Y.Map<any>): boolean
+```
+
+**返回**: `boolean`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+### static isNode
+
+判断是否为叶子节点
+
+**定义**:
+
+```typescript
+static isNode(yMap: Y.Map<any>): boolean
+```
+
+**返回**: `boolean`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |

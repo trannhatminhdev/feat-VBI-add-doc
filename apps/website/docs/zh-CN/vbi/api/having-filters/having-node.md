@@ -18,6 +18,18 @@ constructor(yMap: Y.Map<any>)
 | --- | --- | --- |
 | `yMap` | Y.Map<any> | - |
 
+### getId
+
+获取节点 ID
+
+**定义**:
+
+```typescript
+getId(): string
+```
+
+**返回**: `string`
+
 ### getField
 
 获取字段名
@@ -29,6 +41,18 @@ getField(): string
 ```
 
 **返回**: `string`
+
+### getOperator
+
+获取过滤操作符
+
+**定义**:
+
+```typescript
+getOperator(): string | undefined
+```
+
+**返回**: `string \| undefined`
 
 ### setValue
 

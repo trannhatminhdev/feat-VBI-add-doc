@@ -81,6 +81,12 @@ const NODE_BUILDER_CONFIG = [
     label: 'having-node',
     file: 'sub-builders/havingFilters/having-node-builder.ts',
   },
+  {
+    parent: 'havingFilters',
+    name: 'HavingGroupBuilder',
+    label: 'having-group',
+    file: 'sub-builders/havingFilters/having-group-builder.ts',
+  },
 ]
 
 // ============================================================================
