@@ -1,6 +1,18 @@
 {
   "name": "@visactor/vbi",
-  "version": "0.4.11",
+  "version": "0.4.12",
+  "license": "MIT",
+  "homepage": "https://visactor.github.io/VBI",
+  "bugs": "https://github.com/VisActor/VBI/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VisActor/VBI",
+    "directory": "packages/vquery"
+  },
+  "author": {
+    "name": "VisActor",
+    "url": "https://www.visactor.io/"
+  },
   "type": "module",
   "exports": {
     ".": {
@@ -36,8 +48,9 @@
     "simple-statistics": "7.8.8",
     "@visactor/vseed": "workspace:*"
   },
-  "peerDependencies": {
-    "@visactor/vseed": "workspace:*"
+  "optionalDependencies": {
+    "@visactor/vseed": "workspace:*",
+    "@visactor/vquery": "workspace:*"
   },
   "devDependencies": {
     "@visactor/vquery": "workspace:*",
