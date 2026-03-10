@@ -8,6 +8,13 @@ export class WhereFilterNodeBuilder {
   constructor(private yMap: Y.Map<any>) {}
 
   /**
+   * @description 获取节点 ID
+   */
+  getId(): string {
+    return this.yMap.get('id')
+  }
+
+  /**
    * @description 获取字段名
    */
   getField(): string {

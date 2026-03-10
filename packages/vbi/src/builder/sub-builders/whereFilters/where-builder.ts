@@ -1,5 +1,6 @@
 import * as Y from 'yjs'
 import type { VBIWhereClause, ObserveCallback } from 'src/types'
+import { idGenerator } from 'src/utils'
 import { WhereFilterNodeBuilder } from './where-node-builder'
 import { WhereGroupBuilder } from './where-group-builder'
 
@@ -28,6 +29,7 @@ export class WhereFiltersBuilder {
    */
   add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
     const yMap = new Y.Map<any>()
+    yMap.set('id', idGenerator.generate())
     yMap.set('field', field)
 
     this.dsl.get('whereFilters').push([yMap])
@@ -44,6 +46,7 @@ export class WhereFiltersBuilder {
    */
   addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder {
     const yMap = new Y.Map<any>()
+    yMap.set('id', idGenerator.generate())
     yMap.set('op', op)
     yMap.set('conditions', new Y.Array<any>())
 
@@ -55,16 +58,16 @@ export class WhereFiltersBuilder {
   }
 
   /**
-   * @description 更新指定字段的过滤条件
-   * @param field - 字段名
+   * @description 更新指定 ID 的过滤条件
+   * @param id - 过滤条件 ID
    * @param callback - 回调函数
    */
-  update(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
+  update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    const index = whereFilters.toArray().findIndex((item: any) => item.get('field') === field)
+    const index = whereFilters.toArray().findIndex((item: any) => item.get('id') === id)
 
     if (index === -1) {
-      throw new Error(`Where filter with field ${field} not found`)
+      throw new Error(`Where filter with id ${id} not found`)
     }
 
     const filterYMap = whereFilters.get(index)
@@ -74,20 +77,21 @@ export class WhereFiltersBuilder {
   }
 
   /**
-   * @description 更新指定索引的分组
-   * @param index - 索引
+   * @description 更新指定 ID 的分组
+   * @param id - 分组 ID
    * @param callback - 回调函数
    */
-  updateGroup(index: number, callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder {
+  updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
+    const index = whereFilters.toArray().findIndex((item: any) => item.get('id') === id)
 
-    if (index < 0 || index >= whereFilters.length) {
-      throw new Error(`Where group at index ${index} not found`)
+    if (index === -1) {
+      throw new Error(`Where group with id ${id} not found`)
     }
 
     const yMap = whereFilters.get(index)
     if (!WhereFiltersBuilder.isGroup(yMap)) {
-      throw new Error(`Item at index ${index} is not a group`)
+      throw new Error(`Item with id ${id} is not a group`)
     }
 
     const group = new WhereGroupBuilder(yMap)
@@ -96,18 +100,18 @@ export class WhereFiltersBuilder {
   }
 
   /**
-   * @description 删除指定字段的过滤条件或指定索引的项
-   * @param fieldOrIndex - 字段名或索引
+   * @description 删除指定 ID 的条件或指定索引的项
+   * @param idOrIndex - ID 或索引
    */
-  remove(fieldOrIndex: string | number): WhereFiltersBuilder {
+  remove(idOrIndex: string | number): WhereFiltersBuilder {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
 
-    if (typeof fieldOrIndex === 'number') {
-      if (fieldOrIndex >= 0 && fieldOrIndex < whereFilters.length) {
-        whereFilters.delete(fieldOrIndex, 1)
+    if (typeof idOrIndex === 'number') {
+      if (idOrIndex >= 0 && idOrIndex < whereFilters.length) {
+        whereFilters.delete(idOrIndex, 1)
       }
     } else {
-      const index = whereFilters.toArray().findIndex((item: any) => item.get('field') === fieldOrIndex)
+      const index = whereFilters.toArray().findIndex((item: any) => item.get('id') === idOrIndex)
       if (index !== -1) {
         whereFilters.delete(index, 1)
       }
@@ -116,18 +120,21 @@ export class WhereFiltersBuilder {
   }
 
   /**
-   * @description 根据字段名查找过滤条件
-   * @param field - 字段名
+   * @description 根据 ID 查找条件（过滤或分组）
+   * @param id - ID
    */
-  find(field: string): WhereFilterNodeBuilder | undefined {
+  find(id: string): WhereFilterNodeBuilder | WhereGroupBuilder | undefined {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    const index = whereFilters.toArray().findIndex((item: any) => item.get('field') === field)
+    const yMap = whereFilters.toArray().find((item: any) => item.get('id') === id)
 
-    if (index === -1) {
+    if (!yMap) {
       return undefined
     }
 
-    return new WhereFilterNodeBuilder(whereFilters.get(index))
+    if (WhereFiltersBuilder.isGroup(yMap)) {
+      return new WhereGroupBuilder(yMap)
+    }
+    return new WhereFilterNodeBuilder(yMap)
   }
 
   /**

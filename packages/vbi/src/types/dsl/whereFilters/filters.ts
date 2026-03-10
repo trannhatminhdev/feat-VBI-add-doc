@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const zVBIFilter = z.object({
+  id: z.string(),
   field: z.string(),
   op: z.string().optional(),
   value: z.any().optional(),
@@ -10,6 +11,7 @@ export type VBIFilter = z.infer<typeof zVBIFilter>
 
 export const zVBIWhereGroup: z.ZodType<VBIWhereGroup> = z.lazy(() =>
   z.object({
+    id: z.string(),
     op: z.enum(['and', 'or']),
     conditions: z.array(zVBIWhereClause),
   }),
@@ -18,6 +20,7 @@ export const zVBIWhereGroup: z.ZodType<VBIWhereGroup> = z.lazy(() =>
 export const zVBIWhereClause: z.ZodType<VBIWhereClause> = z.lazy(() => z.union([zVBIFilter, zVBIWhereGroup]))
 
 export type VBIWhereGroup = {
+  id: string
   op: 'and' | 'or'
   conditions: VBIWhereClause[]
 }

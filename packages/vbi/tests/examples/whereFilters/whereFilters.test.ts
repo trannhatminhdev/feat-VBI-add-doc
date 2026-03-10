@@ -72,6 +72,7 @@ describe('WhereFilters', () => {
         "whereFilters": [
           {
             "field": "product_type",
+            "id": "id-1",
             "op": "eq",
             "value": "办公用品",
           },
@@ -216,11 +217,13 @@ describe('WhereFilters', () => {
         "whereFilters": [
           {
             "field": "product_type",
+            "id": "id-1",
             "op": "eq",
             "value": "办公用品",
           },
           {
             "field": "province",
+            "id": "id-2",
             "op": "in",
             "value": [
               "浙江",
@@ -360,6 +363,7 @@ describe('WhereFilters', () => {
         "whereFilters": [
           {
             "field": "product_type",
+            "id": "id-1",
             "op": "eq",
             "value": "办公用品",
           },
@@ -753,11 +757,13 @@ describe('WhereFilters', () => {
         "whereFilters": [
           {
             "field": "product_type",
+            "id": "id-1",
             "op": "eq",
             "value": "办公用品",
           },
           {
             "field": "area",
+            "id": "id-2",
             "op": "in",
             "value": [
               "华东",
@@ -905,7 +911,14 @@ describe('WhereFilters', () => {
         "version": 1,
         "whereFilters": [
           {
+            "field": "product_type",
+            "id": "id-1",
+            "op": "eq",
+            "value": "办公用品",
+          },
+          {
             "field": "province",
+            "id": "id-2",
             "op": "eq",
             "value": "浙江",
           },
@@ -937,6 +950,11 @@ describe('WhereFilters', () => {
         "where": {
           "conditions": [
             {
+              "field": "product_type",
+              "op": "eq",
+              "value": "办公用品",
+            },
+            {
               "field": "province",
               "op": "eq",
               "value": "浙江",
@@ -955,7 +973,7 @@ describe('WhereFilters', () => {
         "dataset": [
           {
             "省份": "浙江",
-            "销售额": 452108.2440000001,
+            "销售额": 145678.31599999996,
           },
         ],
         "locale": "zh-CN",

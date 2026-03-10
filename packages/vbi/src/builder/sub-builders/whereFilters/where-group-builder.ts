@@ -1,5 +1,6 @@
 import * as Y from 'yjs'
 import type { VBIWhereGroup } from 'src/types'
+import { idGenerator } from 'src/utils'
 import { WhereFilterNodeBuilder } from './where-node-builder'
 
 /**
@@ -7,6 +8,13 @@ import { WhereFilterNodeBuilder } from './where-node-builder'
  */
 export class WhereGroupBuilder {
   constructor(private yMap: Y.Map<any>) {}
+
+  /**
+   * @description 获取分组 ID
+   */
+  getId(): string {
+    return this.yMap.get('id')
+  }
 
   /**
    * @description 获取逻辑操作符
@@ -31,6 +39,7 @@ export class WhereGroupBuilder {
    */
   add(field: string, callback: (node: WhereFilterNodeBuilder) => void): this {
     const yMap = new Y.Map<any>()
+    yMap.set('id', idGenerator.generate())
     yMap.set('field', field)
 
     const conditions = this.yMap.get('conditions') as Y.Array<any>
@@ -48,6 +57,7 @@ export class WhereGroupBuilder {
    */
   addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): this {
     const yMap = new Y.Map<any>()
+    yMap.set('id', idGenerator.generate())
     yMap.set('op', op)
     yMap.set('conditions', new Y.Array<any>())
 
@@ -60,18 +70,18 @@ export class WhereGroupBuilder {
   }
 
   /**
-   * @description 删除指定字段的过滤条件或指定索引的项
-   * @param fieldOrIndex - 字段名或索引
+   * @description 删除指定 ID 的条件或指定索引的项
+   * @param idOrIndex - ID 或索引
    */
-  remove(fieldOrIndex: string | number): this {
+  remove(idOrIndex: string | number): this {
     const conditions = this.yMap.get('conditions') as Y.Array<any>
 
-    if (typeof fieldOrIndex === 'number') {
-      if (fieldOrIndex >= 0 && fieldOrIndex < conditions.length) {
-        conditions.delete(fieldOrIndex, 1)
+    if (typeof idOrIndex === 'number') {
+      if (idOrIndex >= 0 && idOrIndex < conditions.length) {
+        conditions.delete(idOrIndex, 1)
       }
     } else {
-      const index = conditions.toArray().findIndex((item: any) => item.get('field') === fieldOrIndex)
+      const index = conditions.toArray().findIndex((item: any) => item.get('id') === idOrIndex)
       if (index !== -1) {
         conditions.delete(index, 1)
       }
