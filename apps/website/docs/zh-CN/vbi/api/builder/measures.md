@@ -4,9 +4,6 @@
 
 ## 属性
 
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **dsl** | `Y.Map<any>` | - |
 ## 方法
 
 ### constructor
@@ -23,8 +20,6 @@ constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 | --- | --- | --- |
 | `_doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
-
-
 
 ### add
 
@@ -45,8 +40,6 @@ add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilde
 | `field` | string | - 字段名 |
 | `callback` | (node: MeasureNodeBuilder) => void | - 回调函数 |
 
-
-
 ### remove
 
 删除指定字段的度量
@@ -64,8 +57,6 @@ remove(field: VBIMeasure['field']): MeasuresBuilder
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `field` | VBIMeasure['field'] | - 字段名 |
-
-
 
 ### update
 
@@ -86,8 +77,6 @@ update(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBui
 | `field` | string | - 字段名 |
 | `callback` | (node: MeasureNodeBuilder) => void | - 回调函数 |
 
-
-
 ### find
 
 根据字段名查找度量
@@ -98,15 +87,13 @@ update(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBui
 find(field: VBIMeasure['field']): MeasureNodeBuilder | undefined
 ```
 
-**返回**: `MeasureNodeBuilder | undefined`
+**返回**: `MeasureNodeBuilder \| undefined`
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `field` | VBIMeasure['field'] | - 字段名 |
-
-
 
 ### findAll
 
@@ -120,8 +107,6 @@ findAll(): MeasureNodeBuilder[]
 
 **返回**: `MeasureNodeBuilder[]`
 
-
-
 ### toJson
 
 导出所有度量为 JSON 数组
@@ -133,8 +118,6 @@ toJson(): VBIMeasure[]
 ```
 
 **返回**: `VBIMeasure[]`
-
-
 
 ### observe
 
@@ -154,14 +137,12 @@ observe(callback: ObserveCallback): () => void
 | --- | --- | --- |
 | `callback` | ObserveCallback | - 回调函数 |
 
-
-
-### isMeasureNode
+### static isMeasureNode
 
 **定义**:
 
 ```typescript
-isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
+static isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
 ```
 
 **返回**: `node is VBIMeasure`
@@ -172,14 +153,12 @@ isMeasureNode(node: VBIMeasureTree[0]): node is VBIMeasure
 | --- | --- | --- |
 | `node` | VBIMeasureTree[0] | - |
 
-
-
-### isMeasureGroup
+### static isMeasureGroup
 
 **定义**:
 
 ```typescript
-isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
+static isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
 ```
 
 **返回**: `node is VBIMeasureGroup`
@@ -189,4 +168,3 @@ isMeasureGroup(node: VBIMeasureTree[0]): node is VBIMeasureGroup
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `node` | VBIMeasureTree[0] | - |
-

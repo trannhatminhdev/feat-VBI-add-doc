@@ -4,9 +4,6 @@
 
 ## 属性
 
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **dsl** | `Y.Map<any>` | - |
 ## 方法
 
 ### constructor
@@ -23,8 +20,6 @@ constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 | --- | --- | --- |
 | `_doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
-
-
 
 ### add
 
@@ -45,8 +40,6 @@ add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBu
 | `field` | string | - 字段名 |
 | `callback` | (node: DimensionNodeBuilder) => void | - 回调函数 |
 
-
-
 ### remove
 
 删除指定字段的维度
@@ -64,8 +57,6 @@ remove(field: VBIDimension['field']): DimensionsBuilder
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `field` | VBIDimension['field'] | - 字段名 |
-
-
 
 ### update
 
@@ -86,8 +77,6 @@ update(field: string, callback: (node: DimensionNodeBuilder) => void): Dimension
 | `field` | string | - 字段名 |
 | `callback` | (node: DimensionNodeBuilder) => void | - 回调函数 |
 
-
-
 ### find
 
 根据字段名查找维度
@@ -98,15 +87,13 @@ update(field: string, callback: (node: DimensionNodeBuilder) => void): Dimension
 find(field: VBIDimension['field']): DimensionNodeBuilder | undefined
 ```
 
-**返回**: `DimensionNodeBuilder | undefined`
+**返回**: `DimensionNodeBuilder \| undefined`
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `field` | VBIDimension['field'] | - 字段名 |
-
-
 
 ### findAll
 
@@ -120,8 +107,6 @@ findAll(): DimensionNodeBuilder[]
 
 **返回**: `DimensionNodeBuilder[]`
 
-
-
 ### toJson
 
 导出所有维度为 JSON 数组
@@ -133,8 +118,6 @@ toJson(): VBIDimension[]
 ```
 
 **返回**: `VBIDimension[]`
-
-
 
 ### observe
 
@@ -154,14 +137,12 @@ observe(callback: ObserveCallback): () => void
 | --- | --- | --- |
 | `callback` | ObserveCallback | - 回调函数 |
 
-
-
-### isDimensionNode
+### static isDimensionNode
 
 **定义**:
 
 ```typescript
-isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension
+static isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension
 ```
 
 **返回**: `node is VBIDimension`
@@ -172,14 +153,12 @@ isDimensionNode(node: VBIDimensionTree[0]): node is VBIDimension
 | --- | --- | --- |
 | `node` | VBIDimensionTree[0] | - |
 
-
-
-### isDimensionGroup
+### static isDimensionGroup
 
 **定义**:
 
 ```typescript
-isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup
+static isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup
 ```
 
 **返回**: `node is VBIDimensionGroup`
@@ -189,4 +168,3 @@ isDimensionGroup(node: VBIDimensionTree[0]): node is VBIDimensionGroup
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `node` | VBIDimensionTree[0] | - |
-

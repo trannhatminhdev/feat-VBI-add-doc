@@ -2,11 +2,6 @@
 
 Having 过滤节点构建器，用于配置单个 Having 过滤条件
 
-## 属性
-
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **yMap** | `Y.Map<any>` | Yjs Map 实例 |
 ## 方法
 
 ### constructor
@@ -23,8 +18,6 @@ constructor(yMap: Y.Map<any>)
 | --- | --- | --- |
 | `yMap` | Y.Map<any> | - |
 
-
-
 ### getField
 
 获取字段名
@@ -36,8 +29,6 @@ getField(): string
 ```
 
 **返回**: `string`
-
-
 
 ### setValue
 
@@ -57,8 +48,6 @@ setValue(value: unknown): this
 | --- | --- | --- |
 | `value` | unknown | - 过滤值 |
 
-
-
 ### setOperator
 
 设置过滤操作符
@@ -77,8 +66,6 @@ setOperator(operator: string): this
 | --- | --- | --- |
 | `operator` | string | - 操作符 |
 
-
-
 ### toJson
 
 导出为 JSON
@@ -90,4 +77,3 @@ toJson(): VBIHavingFilter
 ```
 
 **返回**: `VBIHavingFilter`
-

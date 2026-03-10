@@ -4,10 +4,6 @@ Where 过滤构建器，用于添加、修改、删除行级过滤条件。Where
 
 ## 属性
 
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **dsl** | `Y.Map<any>` | - |
-| **doc** | `Y.Doc` | - |
 ## 方法
 
 ### constructor
@@ -24,8 +20,6 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
-
-
 
 ### add
 
@@ -46,8 +40,6 @@ add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilte
 | `field` | string | - 字段名 |
 | `callback` | (node: WhereFilterNodeBuilder) => void | - 回调函数 |
 
-
-
 ### addGroup
 
 添加一个 Where 分组
@@ -64,10 +56,8 @@ addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereF
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `op` | 'and' | 'or' | - 逻辑操作符 |
+| `op` | 'and' \| 'or' | - 逻辑操作符 |
 | `callback` | (group: WhereGroupBuilder) => void | - 回调函数 |
-
-
 
 ### update
 
@@ -88,8 +78,6 @@ update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilte
 | `id` | string | - 过滤条件 ID |
 | `callback` | (node: WhereFilterNodeBuilder) => void | - 回调函数 |
 
-
-
 ### updateGroup
 
 更新指定 ID 的分组
@@ -109,8 +97,6 @@ updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFilt
 | `id` | string | - 分组 ID |
 | `callback` | (group: WhereGroupBuilder) => void | - 回调函数 |
 
-
-
 ### remove
 
 删除指定 ID 的条件或指定索引的项
@@ -127,9 +113,7 @@ remove(idOrIndex: string | number): WhereFiltersBuilder
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `idOrIndex` | string | number | - ID 或索引 |
-
-
+| `idOrIndex` | string \| number | - ID 或索引 |
 
 ### find
 
@@ -141,15 +125,13 @@ remove(idOrIndex: string | number): WhereFiltersBuilder
 find(id: string): WhereFilterNodeBuilder | WhereGroupBuilder | undefined
 ```
 
-**返回**: `WhereFilterNodeBuilder | WhereGroupBuilder | undefined`
+**返回**: `WhereFilterNodeBuilder \| WhereGroupBuilder \| undefined`
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `id` | string | - ID |
-
-
 
 ### clear
 
@@ -160,8 +142,6 @@ find(id: string): WhereFilterNodeBuilder | WhereGroupBuilder | undefined
 ```typescript
 clear()
 ```
-
-
 
 ### toJson
 
@@ -174,8 +154,6 @@ toJson(): VBIWhereClause[]
 ```
 
 **返回**: `VBIWhereClause[]`
-
-
 
 ### observe
 
@@ -195,16 +173,14 @@ observe(callback: ObserveCallback): () => void
 | --- | --- | --- |
 | `callback` | ObserveCallback | - 回调函数 |
 
-
-
-### isGroup
+### static isGroup
 
 判断是否为分组节点
 
 **定义**:
 
 ```typescript
-isGroup(yMap: Y.Map<any>): boolean
+static isGroup(yMap: Y.Map<any>): boolean
 ```
 
 **返回**: `boolean`
@@ -215,16 +191,14 @@ isGroup(yMap: Y.Map<any>): boolean
 | --- | --- | --- |
 | `yMap` | Y.Map<any> | - |
 
-
-
-### isNode
+### static isNode
 
 判断是否为叶子节点
 
 **定义**:
 
 ```typescript
-isNode(yMap: Y.Map<any>): boolean
+static isNode(yMap: Y.Map<any>): boolean
 ```
 
 **返回**: `boolean`
@@ -234,4 +208,3 @@ isNode(yMap: Y.Map<any>): boolean
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `yMap` | Y.Map<any> | - |
-

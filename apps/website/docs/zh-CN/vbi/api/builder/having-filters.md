@@ -4,9 +4,6 @@ Having 过滤构建器，用于添加、修改、删除分组后过滤条件。H
 
 ## 属性
 
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **dsl** | `Y.Map<any>` | - |
 ## 方法
 
 ### constructor
@@ -23,8 +20,6 @@ constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 | --- | --- | --- |
 | `_doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
-
-
 
 ### add
 
@@ -45,8 +40,6 @@ add(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFi
 | `field` | string | - 字段名 |
 | `callback` | (node: HavingFiltersNodeBuilder) => void | - 回调函数 |
 
-
-
 ### update
 
 更新指定字段的过滤条件
@@ -66,8 +59,6 @@ update(field: string, callback: (node: HavingFiltersNodeBuilder) => void): Havin
 | `field` | string | - 字段名 |
 | `callback` | (node: HavingFiltersNodeBuilder) => void | - 回调函数 |
 
-
-
 ### remove
 
 根据字段名删除 Having 过滤条件
@@ -86,8 +77,6 @@ remove(field: string): HavingFiltersBuilder
 | --- | --- | --- |
 | `field` | string | - 字段名 |
 
-
-
 ### find
 
 根据字段名查找 Having 过滤条件
@@ -98,15 +87,13 @@ remove(field: string): HavingFiltersBuilder
 find(field: string): HavingFiltersNodeBuilder | undefined
 ```
 
-**返回**: `HavingFiltersNodeBuilder | undefined`
+**返回**: `HavingFiltersNodeBuilder \| undefined`
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `field` | string | - 字段名 |
-
-
 
 ### findAll
 
@@ -120,8 +107,6 @@ findAll(): HavingFiltersNodeBuilder[]
 
 **返回**: `HavingFiltersNodeBuilder[]`
 
-
-
 ### clear
 
 清空所有 Having 过滤条件
@@ -134,8 +119,6 @@ clear(): this
 
 **返回**: `this`
 
-
-
 ### toJson
 
 导出所有 Having 过滤条件为 JSON 数组
@@ -147,8 +130,6 @@ toJson(): VBIHavingFilter[]
 ```
 
 **返回**: `VBIHavingFilter[]`
-
-
 
 ### observe
 
@@ -166,5 +147,4 @@ observe(callback: (e: YArrayEvent<any>, trans: Transaction | null) => void): () 
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `callback` | (e: YArrayEvent<any>, trans: Transaction | null) => void | - 回调函数 |
-
+| `callback` | (e: YArrayEvent<any>, trans: Transaction \| null) => void | - 回调函数 |
