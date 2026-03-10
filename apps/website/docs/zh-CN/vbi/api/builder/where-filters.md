@@ -48,6 +48,27 @@ add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilte
 
 
 
+### addGroup
+
+添加一个 Where 分组
+
+**定义**:
+
+```typescript
+addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder
+```
+
+**返回**: `WhereFiltersBuilder`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `op` | 'and' | 'or' | - 逻辑操作符 |
+| `callback` | (group: WhereGroupBuilder) => void | - 回调函数 |
+
+
+
 ### update
 
 更新指定字段的过滤条件
@@ -69,14 +90,14 @@ update(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFi
 
 
 
-### remove
+### updateGroup
 
-删除指定字段的过滤条件
+更新指定索引的分组
 
 **定义**:
 
 ```typescript
-remove(field: string): WhereFiltersBuilder
+updateGroup(index: number, callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder
 ```
 
 **返回**: `WhereFiltersBuilder`
@@ -85,7 +106,28 @@ remove(field: string): WhereFiltersBuilder
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | string | - 字段名 |
+| `index` | number | - 索引 |
+| `callback` | (group: WhereGroupBuilder) => void | - 回调函数 |
+
+
+
+### remove
+
+删除指定字段的过滤条件或指定索引的项
+
+**定义**:
+
+```typescript
+remove(fieldOrIndex: string | number): WhereFiltersBuilder
+```
+
+**返回**: `WhereFiltersBuilder`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `fieldOrIndex` | string | number | - 字段名或索引 |
 
 
 
@@ -109,20 +151,6 @@ find(field: string): WhereFilterNodeBuilder | undefined
 
 
 
-### findAll
-
-获取所有 Where 过滤条件
-
-**定义**:
-
-```typescript
-findAll(): WhereFilterNodeBuilder[]
-```
-
-**返回**: `WhereFilterNodeBuilder[]`
-
-
-
 ### clear
 
 清空所有 Where 过滤条件
@@ -142,16 +170,16 @@ clear()
 **定义**:
 
 ```typescript
-toJson(): VBIFilter[]
+toJson(): VBIWhereClause[]
 ```
 
-**返回**: `VBIFilter[]`
+**返回**: `VBIWhereClause[]`
 
 
 
 ### observe
 
-监听过滤条件变化
+监听过滤条件变化，返回取消监听的函数
 
 **定义**:
 
@@ -166,4 +194,44 @@ observe(callback: ObserveCallback): () => void
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `callback` | ObserveCallback | - 回调函数 |
+
+
+
+### isGroup
+
+判断是否为分组节点
+
+**定义**:
+
+```typescript
+isGroup(yMap: Y.Map<any>): boolean
+```
+
+**返回**: `boolean`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
+
+
+
+### isNode
+
+判断是否为叶子节点
+
+**定义**:
+
+```typescript
+isNode(yMap: Y.Map<any>): boolean
+```
+
+**返回**: `boolean`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `yMap` | Y.Map<any> | - |
 

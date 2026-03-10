@@ -15,11 +15,18 @@ export class WhereFilterNodeBuilder {
   }
 
   /**
+   * @description 获取过滤操作符
+   */
+  getOperator(): string | undefined {
+    return this.yMap.get('op')
+  }
+
+  /**
    * @description 设置过滤操作符
    * @param operator - 操作符
    */
   setOperator(operator: string): this {
-    this.yMap.set('operator', operator)
+    this.yMap.set('op', operator)
     return this
   }
 

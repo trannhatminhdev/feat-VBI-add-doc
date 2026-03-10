@@ -72,7 +72,7 @@ describe('WhereFilters', () => {
         "whereFilters": [
           {
             "field": "product_type",
-            "operator": "eq",
+            "op": "eq",
             "value": "办公用品",
           },
         ],
@@ -216,12 +216,12 @@ describe('WhereFilters', () => {
         "whereFilters": [
           {
             "field": "product_type",
-            "operator": "eq",
+            "op": "eq",
             "value": "办公用品",
           },
           {
             "field": "province",
-            "operator": "in",
+            "op": "in",
             "value": [
               "浙江",
               "江苏",
@@ -360,7 +360,7 @@ describe('WhereFilters', () => {
         "whereFilters": [
           {
             "field": "product_type",
-            "operator": "eq",
+            "op": "eq",
             "value": "办公用品",
           },
         ],
@@ -517,12 +517,12 @@ describe('WhereFilters', () => {
       whereFilters: [
         {
           field: 'product_type',
-          operator: 'eq',
+          op: 'eq',
           value: '办公用品',
         },
         {
           field: 'province',
-          operator: 'eq',
+          op: 'eq',
           value: '浙江',
         },
       ],
@@ -753,12 +753,12 @@ describe('WhereFilters', () => {
         "whereFilters": [
           {
             "field": "product_type",
-            "operator": "eq",
+            "op": "eq",
             "value": "办公用品",
           },
           {
             "field": "area",
-            "operator": "in",
+            "op": "in",
             "value": [
               "华东",
               "华北",
@@ -854,12 +854,12 @@ describe('WhereFilters', () => {
       whereFilters: [
         {
           field: 'product_type',
-          operator: 'eq',
+          op: 'eq',
           value: '办公用品',
         },
         {
           field: 'province',
-          operator: 'eq',
+          op: 'eq',
           value: '浙江',
         },
       ],
@@ -906,7 +906,7 @@ describe('WhereFilters', () => {
         "whereFilters": [
           {
             "field": "province",
-            "operator": "eq",
+            "op": "eq",
             "value": "浙江",
           },
         ],

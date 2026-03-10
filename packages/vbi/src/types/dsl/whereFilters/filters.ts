@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const zVBIFilter = z.object({
   field: z.string(),
-  operator: z.string().optional(),
+  op: z.string().optional(),
   value: z.any().optional(),
 })
 
@@ -29,5 +29,5 @@ export function isVBIFilter(clause: VBIWhereClause): clause is VBIFilter {
 }
 
 export function isVBIWhereGroup(clause: VBIWhereClause): clause is VBIWhereGroup {
-  return 'op' in clause && 'conditions' in clause
+  return 'conditions' in clause
 }

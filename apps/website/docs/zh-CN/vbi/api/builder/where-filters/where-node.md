@@ -39,6 +39,20 @@ getField(): string
 
 
 
+### getOperator
+
+获取过滤操作符
+
+**定义**:
+
+```typescript
+getOperator(): string | undefined
+```
+
+**返回**: `string | undefined`
+
+
+
 ### setOperator
 
 设置过滤操作符

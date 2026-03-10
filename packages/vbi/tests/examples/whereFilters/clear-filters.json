@@ -36,12 +36,12 @@
     "whereFilters": [
       {
         "field": "product_type",
-        "operator": "eq",
+        "op": "eq",
         "value": "办公用品"
       },
       {
         "field": "province",
-        "operator": "eq",
+        "op": "eq",
         "value": "浙江"
       }
     ],

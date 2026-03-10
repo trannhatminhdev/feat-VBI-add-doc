@@ -1,5 +1,5 @@
 import { VBI } from '@visactor/vbi'
-import { VBIDSL } from 'src/types/dsl'
+import type { VBIDSL, VBIFilter } from 'src/types/dsl'
 
 describe('WhereFiltersBuilder', () => {
   test('add', () => {
@@ -14,7 +14,7 @@ describe('WhereFiltersBuilder', () => {
       whereFilters: [
         {
           field: 'sales',
-          operator: 'gt',
+          op: 'gt',
           value: 1000,
         },
       ],
@@ -31,9 +31,10 @@ describe('WhereFiltersBuilder', () => {
     })
 
     const result = builder.build()
-    expect(result.whereFilters[0].field).toBe('region')
-    expect(result.whereFilters[0].operator).toBe('eq')
-    expect(result.whereFilters[0].value).toBe('Beijing')
+    const filter = result.whereFilters[0] as VBIFilter
+    expect(filter.field).toBe('region')
+    expect(filter.op).toBe('eq')
+    expect(filter.value).toBe('Beijing')
   })
 
   test('update', () => {
@@ -56,12 +57,12 @@ describe('WhereFiltersBuilder', () => {
       whereFilters: [
         {
           field: 'sales',
-          operator: 'lt',
+          op: 'lt',
           value: 500,
         },
         {
           field: 'region',
-          operator: 'eq',
+          op: 'eq',
           value: 'Beijing',
         },
       ],
@@ -91,12 +92,12 @@ describe('WhereFiltersBuilder', () => {
       whereFilters: [
         {
           field: 'sales',
-          operator: 'gt',
+          op: 'gt',
           value: 1000,
         },
         {
           field: 'category',
-          operator: 'eq',
+          op: 'eq',
           value: 'Electronics',
         },
       ],
@@ -136,10 +137,10 @@ describe('WhereFiltersBuilder', () => {
       node.setOperator('eq').setValue('Beijing')
     })
 
-    const whereFilters = builder.whereFilters.findAll()
+    const whereFilters = builder.whereFilters.toJson()
     expect(whereFilters).toHaveLength(2)
-    expect(whereFilters[0].toJson().field).toBe('sales')
-    expect(whereFilters[1].toJson().field).toBe('region')
+    expect(builder.whereFilters.find('sales')?.toJson().field).toBe('sales')
+    expect(builder.whereFilters.find('region')?.toJson().field).toBe('region')
   })
 
   test('multiple filters with chaining', () => {
@@ -155,17 +156,17 @@ describe('WhereFiltersBuilder', () => {
       whereFilters: [
         {
           field: 'sales',
-          operator: 'gt',
+          op: 'gt',
           value: 1000,
         },
         {
           field: 'region',
-          operator: 'eq',
+          op: 'eq',
           value: 'Beijing',
         },
         {
           field: 'category',
-          operator: 'in',
+          op: 'in',
           value: ['Electronics', 'Furniture'],
         },
       ],
@@ -174,11 +175,11 @@ describe('WhereFiltersBuilder', () => {
     })
   })
 
-  test('filter with optional operator', () => {
+  test('filter with optional op', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
     builder.whereFilters.add('sales', (node) => {
-      // operator is optional
+      // op is optional
       node.setValue(1000)
     })
 
@@ -208,7 +209,7 @@ describe('WhereFiltersBuilder', () => {
     const found = builder.whereFilters.find('region')
     expect(found?.toJson()).toEqual({
       field: 'region',
-      operator: 'eq',
+      op: 'eq',
       value: 'Beijing',
     })
 

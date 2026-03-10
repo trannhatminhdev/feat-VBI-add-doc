@@ -11,7 +11,7 @@ export class WhereGroupBuilder {
   /**
    * @description 获取逻辑操作符
    */
-  getOp(): 'and' | 'or' {
+  getOperator(): 'and' | 'or' {
     return this.yMap.get('op')
   }
 
@@ -19,7 +19,7 @@ export class WhereGroupBuilder {
    * @description 设置逻辑操作符
    * @param op - 逻辑操作符
    */
-  setOp(op: 'and' | 'or'): this {
+  setOperator(op: 'and' | 'or'): this {
     this.yMap.set('op', op)
     return this
   }
@@ -60,27 +60,21 @@ export class WhereGroupBuilder {
   }
 
   /**
-   * @description 删除指定字段的过滤条件（仅在当前层级）
-   * @param field - 字段名
+   * @description 删除指定字段的过滤条件或指定索引的项
+   * @param fieldOrIndex - 字段名或索引
    */
-  remove(field: string): this {
+  remove(fieldOrIndex: string | number): this {
     const conditions = this.yMap.get('conditions') as Y.Array<any>
-    const index = conditions.toArray().findIndex((item: any) => item.get('field') === field)
 
-    if (index !== -1) {
-      conditions.delete(index, 1)
-    }
-    return this
-  }
-
-  /**
-   * @description 删除指定索引的分组
-   * @param index - 索引
-   */
-  removeAt(index: number): this {
-    const conditions = this.yMap.get('conditions') as Y.Array<any>
-    if (index >= 0 && index < conditions.length) {
-      conditions.delete(index, 1)
+    if (typeof fieldOrIndex === 'number') {
+      if (fieldOrIndex >= 0 && fieldOrIndex < conditions.length) {
+        conditions.delete(fieldOrIndex, 1)
+      }
+    } else {
+      const index = conditions.toArray().findIndex((item: any) => item.get('field') === fieldOrIndex)
+      if (index !== -1) {
+        conditions.delete(index, 1)
+      }
     }
     return this
   }

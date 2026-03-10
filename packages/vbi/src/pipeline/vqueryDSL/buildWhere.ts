@@ -38,7 +38,7 @@ function mapGroupToCondition(group: VBIWhereGroup): any {
 }
 
 function mapFilterToCondition(filter: VBIFilter): any[] {
-  if (filter.operator === 'between') {
+  if (filter.op === 'between') {
     return handleBetweenFilter(filter)
   }
   return handleSimpleFilter(filter)
@@ -66,7 +66,7 @@ function handleBetweenFilter(filter: VBIFilter): any[] {
 }
 
 function handleSimpleFilter(filter: VBIFilter): any[] {
-  let mappedOp = filter.operator ?? '='
+  let mappedOp = filter.op ?? '='
   const value = filter.value
 
   if (Array.isArray(value)) {

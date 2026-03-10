@@ -96,29 +96,21 @@ export class WhereFiltersBuilder {
   }
 
   /**
-   * @description 删除指定字段的过滤条件
-   * @param field - 字段名
+   * @description 删除指定字段的过滤条件或指定索引的项
+   * @param fieldOrIndex - 字段名或索引
    */
-  remove(field: string): WhereFiltersBuilder {
+  remove(fieldOrIndex: string | number): WhereFiltersBuilder {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    const index = whereFilters.toArray().findIndex((item: any) => item.get('field') === field)
 
-    if (index === -1) {
-      return this
-    }
-
-    whereFilters.delete(index, 1)
-    return this
-  }
-
-  /**
-   * @description 删除指定索引的项（条件或分组）
-   * @param index - 索引
-   */
-  removeAt(index: number): WhereFiltersBuilder {
-    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    if (index >= 0 && index < whereFilters.length) {
-      whereFilters.delete(index, 1)
+    if (typeof fieldOrIndex === 'number') {
+      if (fieldOrIndex >= 0 && fieldOrIndex < whereFilters.length) {
+        whereFilters.delete(fieldOrIndex, 1)
+      }
+    } else {
+      const index = whereFilters.toArray().findIndex((item: any) => item.get('field') === fieldOrIndex)
+      if (index !== -1) {
+        whereFilters.delete(index, 1)
+      }
     }
     return this
   }
@@ -136,28 +128,6 @@ export class WhereFiltersBuilder {
     }
 
     return new WhereFilterNodeBuilder(whereFilters.get(index))
-  }
-
-  /**
-   * @description 获取所有 Where 过滤条件（不包含分组）
-   */
-  findAll(): WhereFilterNodeBuilder[] {
-    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    return whereFilters
-      .toArray()
-      .filter((yMap: any) => WhereFiltersBuilder.isNode(yMap))
-      .map((yMap: any) => new WhereFilterNodeBuilder(yMap))
-  }
-
-  /**
-   * @description 获取所有 Where 分组
-   */
-  findAllGroups(): WhereGroupBuilder[] {
-    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    return whereFilters
-      .toArray()
-      .filter((yMap: any) => WhereFiltersBuilder.isGroup(yMap))
-      .map((yMap: any) => new WhereGroupBuilder(yMap))
   }
 
   /**
