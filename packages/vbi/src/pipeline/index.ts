@@ -1,1 +1,1 @@
-export { buildVQuery } from './vqueryDSL'
+export { buildVQuery } from './vqueryDSL/index'
