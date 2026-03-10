@@ -1,5 +1,11 @@
 # @visactor/vquery
 
+## 0.4.11
+
+### Patch Changes
+
+- release packages/vbi
+
 ## 0.4.10
 
 ### Patch Changes
