@@ -18,7 +18,7 @@ export const buildHaving: buildPipe = (queryDSL, context) => {
         field: filter.field,
         op: mappedOp,
         value: filter.value,
-      }
+      } as any
     }),
   }
 
