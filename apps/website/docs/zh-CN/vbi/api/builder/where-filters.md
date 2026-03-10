@@ -71,12 +71,12 @@ addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereF
 
 ### update
 
-更新指定字段的过滤条件
+更新指定 ID 的过滤条件
 
 **定义**:
 
 ```typescript
-update(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder
+update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder
 ```
 
 **返回**: `WhereFiltersBuilder`
@@ -85,19 +85,19 @@ update(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFi
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | string | - 字段名 |
+| `id` | string | - 过滤条件 ID |
 | `callback` | (node: WhereFilterNodeBuilder) => void | - 回调函数 |
 
 
 
 ### updateGroup
 
-更新指定索引的分组
+更新指定 ID 的分组
 
 **定义**:
 
 ```typescript
-updateGroup(index: number, callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder
+updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder
 ```
 
 **返回**: `WhereFiltersBuilder`
@@ -106,19 +106,19 @@ updateGroup(index: number, callback: (group: WhereGroupBuilder) => void): WhereF
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `index` | number | - 索引 |
+| `id` | string | - 分组 ID |
 | `callback` | (group: WhereGroupBuilder) => void | - 回调函数 |
 
 
 
 ### remove
 
-删除指定字段的过滤条件或指定索引的项
+删除指定 ID 的条件或指定索引的项
 
 **定义**:
 
 ```typescript
-remove(fieldOrIndex: string | number): WhereFiltersBuilder
+remove(idOrIndex: string | number): WhereFiltersBuilder
 ```
 
 **返回**: `WhereFiltersBuilder`
@@ -127,27 +127,27 @@ remove(fieldOrIndex: string | number): WhereFiltersBuilder
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `fieldOrIndex` | string | number | - 字段名或索引 |
+| `idOrIndex` | string | number | - ID 或索引 |
 
 
 
 ### find
 
-根据字段名查找过滤条件
+根据 ID 查找条件（过滤或分组）
 
 **定义**:
 
 ```typescript
-find(field: string): WhereFilterNodeBuilder | undefined
+find(id: string): WhereFilterNodeBuilder | WhereGroupBuilder | undefined
 ```
 
-**返回**: `WhereFilterNodeBuilder | undefined`
+**返回**: `WhereFilterNodeBuilder | WhereGroupBuilder | undefined`
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | string | - 字段名 |
+| `id` | string | - ID |
 
 
 

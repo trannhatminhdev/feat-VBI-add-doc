@@ -35,7 +35,7 @@
     "test": "rstest",
     "test:update": "rstest --update",
     "test:coverage": "rstest --coverage && node scripts/build-coverage-badge.mjs && open coverage/index.html",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
     "build:test": "node scripts/build-tests.mjs",
     "build:examples": "node scripts/build-examples.mjs",
     "build:api": "node scripts/build-api.mjs",

@@ -162,8 +162,8 @@ export default () => {
         dimensions: [{ field: 'province', alias: '省份' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [
-          { field: 'product_type', op: 'eq', value: '办公用品' },
-          { field: 'province', op: 'eq', value: '浙江' },
+          { id: 'product_type', field: 'product_type', op: 'eq', value: '办公用品' },
+          { id: 'province', field: 'province', op: 'eq', value: '浙江' },
         ],
         havingFilters: [],
         theme: 'light',
@@ -255,8 +255,8 @@ export default () => {
         dimensions: [{ field: 'province', alias: '省份' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [
-          { field: 'product_type', op: 'eq', value: '办公用品' },
-          { field: 'province', op: 'eq', value: '浙江' },
+          { id: 'product_type', field: 'product_type', op: 'eq', value: '办公用品' },
+          { id: 'province', field: 'province', op: 'eq', value: '浙江' },
         ],
         havingFilters: [],
         theme: 'light',

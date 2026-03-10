@@ -520,11 +520,13 @@ describe('WhereFilters', () => {
       ],
       whereFilters: [
         {
+          id: 'product_type',
           field: 'product_type',
           op: 'eq',
           value: '办公用品',
         },
         {
+          id: 'province',
           field: 'province',
           op: 'eq',
           value: '浙江',
@@ -859,11 +861,13 @@ describe('WhereFilters', () => {
       ],
       whereFilters: [
         {
+          id: 'product_type',
           field: 'product_type',
           op: 'eq',
           value: '办公用品',
         },
         {
+          id: 'province',
           field: 'province',
           op: 'eq',
           value: '浙江',
@@ -911,14 +915,8 @@ describe('WhereFilters', () => {
         "version": 1,
         "whereFilters": [
           {
-            "field": "product_type",
-            "id": "id-1",
-            "op": "eq",
-            "value": "办公用品",
-          },
-          {
             "field": "province",
-            "id": "id-2",
+            "id": "province",
             "op": "eq",
             "value": "浙江",
           },
@@ -950,11 +948,6 @@ describe('WhereFilters', () => {
         "where": {
           "conditions": [
             {
-              "field": "product_type",
-              "op": "eq",
-              "value": "办公用品",
-            },
-            {
               "field": "province",
               "op": "eq",
               "value": "浙江",
@@ -973,7 +966,7 @@ describe('WhereFilters', () => {
         "dataset": [
           {
             "省份": "浙江",
-            "销售额": 145678.31599999996,
+            "销售额": 452108.2440000001,
           },
         ],
         "locale": "zh-CN",
