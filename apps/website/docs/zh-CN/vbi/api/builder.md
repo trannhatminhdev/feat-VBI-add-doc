@@ -1,20 +1,19 @@
 # VBIBuilder
 
-
-
 ## 属性
 
 | 属性 | 类型 | 说明 |
 | --- | --- | --- |
-| **chartType** | `ChartTypeBuilder` | 图表类型构建器 |
-| **measures** | `MeasuresBuilder` | 度量构建器 |
-| **dimensions** | `DimensionsBuilder` | 维度构建器 |
-| **whereFilters** | `WhereFiltersBuilder` | Where 过滤构建器 |
-| **havingFilters** | `HavingFiltersBuilder` | Having 过滤构建器 |
-| **encoding** | `EncodingBuilder` | 编码构建器 |
-| **dsl** | `Y.Map<any>` | Yjs 文档映射 |
-| **doc** | `Y.Doc` | Yjs 文档实例 |
-| **undoManager** | `Y.UndoManager` | 撤销管理器 |
+| **doc** | `Y.Doc` | - |
+| **dsl** | `Y.Map<any>` | - |
+| **undoManager** | `Y.UndoManager` | - |
+| **chartType** | `ChartTypeBuilder` | - |
+| **measures** | `MeasuresBuilder` | - |
+| **dimensions** | `DimensionsBuilder` | - |
+| **havingFilters** | `HavingFiltersBuilder` | - |
+| **whereFilters** | `WhereFiltersBuilder` | - |
+
+
 ## 方法
 
 ### constructor
@@ -31,8 +30,6 @@ constructor(doc: Y.Doc)
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
 
-
-
 ### applyUpdate
 
 **定义**:
@@ -47,8 +44,6 @@ applyUpdate(update: Uint8Array)
 | --- | --- | --- |
 | `update` | Uint8Array | - |
 
-
-
 ### encodeStateAsUpdate
 
 **定义**:
@@ -62,8 +57,6 @@ encodeStateAsUpdate(targetStateVector: Uint8Array)
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `targetStateVector` | Uint8Array | - |
-
-
 
 ### setLimit
 
@@ -81,8 +74,6 @@ setLimit(limit: number): this
 | --- | --- | --- |
 | `limit` | number | - |
 
-
-
 ### setLocale
 
 **定义**:
@@ -98,8 +89,6 @@ setLocale(locale: string): this
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `locale` | string | - |
-
-
 
 ### setTheme
 
@@ -117,3 +106,42 @@ setTheme(theme: string): this
 | --- | --- | --- |
 | `theme` | string | - |
 
+### buildVSeed
+
+**定义**:
+
+```typescript
+buildVSeed(): Promise<VSeedDSL>
+```
+
+**返回**: `Promise<VSeedDSL>`
+
+### buildVQuery
+
+**定义**:
+
+```typescript
+buildVQuery(): VQueryDSL
+```
+
+**返回**: `VQueryDSL`
+
+### build
+
+**定义**:
+
+```typescript
+build(): VBIDSL
+```
+
+**返回**: `VBIDSL`
+
+### getSchema
+
+**定义**:
+
+```typescript
+getSchema(): Promise<any>
+```
+
+**返回**: `Promise<any>`

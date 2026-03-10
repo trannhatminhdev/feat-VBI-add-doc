@@ -1,12 +1,7 @@
-# WhereNodeBuilder
+# HavingNodeBuilder
 
-Where 过滤节点构建器，用于配置单个 Where 过滤条件
+Having 过滤节点构建器，用于配置单个 Having 过滤条件
 
-## 属性
-
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **yMap** | `Y.Map<any>` | Yjs Map 实例 |
 ## 方法
 
 ### constructor
@@ -23,8 +18,6 @@ constructor(yMap: Y.Map<any>)
 | --- | --- | --- |
 | `yMap` | Y.Map<any> | - |
 
-
-
 ### getField
 
 获取字段名
@@ -37,7 +30,23 @@ getField(): string
 
 **返回**: `string`
 
+### setValue
 
+设置过滤条件的值
+
+**定义**:
+
+```typescript
+setValue(value: unknown): this
+```
+
+**返回**: `this`
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `value` | unknown | - 过滤值 |
 
 ### setOperator
 
@@ -57,28 +66,6 @@ setOperator(operator: string): this
 | --- | --- | --- |
 | `operator` | string | - 操作符 |
 
-
-
-### setValue
-
-设置过滤值
-
-**定义**:
-
-```typescript
-setValue(value: unknown): this
-```
-
-**返回**: `this`
-
-**参数**:
-
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `value` | unknown | - 过滤值 |
-
-
-
 ### toJson
 
 导出为 JSON
@@ -86,8 +73,7 @@ setValue(value: unknown): this
 **定义**:
 
 ```typescript
-toJson(): VBIFilter
+toJson(): VBIHavingFilter
 ```
 
-**返回**: `VBIFilter`
-
+**返回**: `VBIHavingFilter`

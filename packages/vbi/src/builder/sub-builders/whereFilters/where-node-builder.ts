@@ -8,6 +8,13 @@ export class WhereFilterNodeBuilder {
   constructor(private yMap: Y.Map<any>) {}
 
   /**
+   * @description 获取节点 ID
+   */
+  getId(): string {
+    return this.yMap.get('id')
+  }
+
+  /**
    * @description 获取字段名
    */
   getField(): string {
@@ -15,11 +22,18 @@ export class WhereFilterNodeBuilder {
   }
 
   /**
+   * @description 获取过滤操作符
+   */
+  getOperator(): string | undefined {
+    return this.yMap.get('op')
+  }
+
+  /**
    * @description 设置过滤操作符
    * @param operator - 操作符
    */
   setOperator(operator: string): this {
-    this.yMap.set('operator', operator)
+    this.yMap.set('op', operator)
     return this
   }
 

@@ -4,9 +4,6 @@
 
 ## 属性
 
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **dsl** | `Y.Map<any>` | - |
 ## 方法
 
 ### constructor
@@ -26,8 +23,6 @@ constructor(_doc: Y.Doc, dsl: Y.Map<any>)
 | `_doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
 
-
-
 ### observe
 
 监听图表类型变化
@@ -46,8 +41,6 @@ observe(callback: ObserveCallback): () => void
 | --- | --- | --- |
 | `callback` | ObserveCallback | - 回调函数 |
 
-
-
 ### changeChartType
 
 设置图表类型
@@ -64,8 +57,6 @@ changeChartType(chartType: string)
 | --- | --- | --- |
 | `chartType` | string | - 图表类型 |
 
-
-
 ### getChartType
 
 获取当前图表类型
@@ -77,8 +68,6 @@ getChartType(): string
 ```
 
 **返回**: `string`
-
-
 
 ### toJson
 
@@ -92,8 +81,6 @@ toJson(): string
 
 **返回**: `string`
 
-
-
 ### getAvailableChartTypes
 
 获取所有支持的图表类型
@@ -105,4 +92,3 @@ getAvailableChartTypes(): string[]
 ```
 
 **返回**: `string[]`
-

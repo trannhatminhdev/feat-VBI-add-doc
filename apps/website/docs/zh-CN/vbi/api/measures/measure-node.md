@@ -2,11 +2,6 @@
 
 度量节点构建器，用于配置单个度量
 
-## 属性
-
-| 属性 | 类型 | 说明 |
-| --- | --- | --- |
-| **yMap** | `Y.Map<any>` | Yjs Map 实例 |
 ## 方法
 
 ### constructor
@@ -23,8 +18,6 @@ constructor(yMap: Y.Map<any>)
 | --- | --- | --- |
 | `yMap` | Y.Map<any> | - |
 
-
-
 ### getField
 
 获取字段名
@@ -36,8 +29,6 @@ getField(): string
 ```
 
 **返回**: `string`
-
-
 
 ### setAlias
 
@@ -57,8 +48,6 @@ setAlias(alias: string): this
 | --- | --- | --- |
 | `alias` | string | - 显示名称 |
 
-
-
 ### setEncoding
 
 设置图表编码位置
@@ -76,8 +65,6 @@ setEncoding(encoding: VBIMeasure['encoding']): this
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `encoding` | VBIMeasure['encoding'] | - 编码位置（yAxis/xAxis/color/size） |
-
-
 
 ### setAggregate
 
@@ -97,8 +84,6 @@ setAggregate(aggregate: VBIMeasure['aggregate']): this
 | --- | --- | --- |
 | `aggregate` | VBIMeasure['aggregate'] | - 聚合配置 |
 
-
-
 ### toJson
 
 导出为 JSON
@@ -110,4 +95,3 @@ toJson(): VBIMeasure
 ```
 
 **返回**: `VBIMeasure`
-

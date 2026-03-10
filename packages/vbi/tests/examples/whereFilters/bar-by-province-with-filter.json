@@ -1,35 +1,24 @@
 {
-  "name": "bar-by-province-with-filter",
-  "description": "柱状图 - 按省份销售额（带过滤条件）",
+  "name": "or-group-product-category-comparison",
+  "description": "办公用品与技术类品类对比：使用 OR 分组筛选两个品类，按区域对比销售额",
   "schema": [
-    {
-      "name": "province",
-      "type": "string"
-    },
-    {
-      "name": "sales",
-      "type": "number"
-    }
+    { "name": "area", "type": "string" },
+    { "name": "product_type", "type": "string" },
+    { "name": "sales", "type": "number" }
   ],
   "dsl": {
-    "chartType": "bar",
-    "dimensions": [
-      {
-        "field": "province",
-        "alias": "省份"
-      }
-    ],
+    "chartType": "column",
+    "dimensions": [{ "field": "area", "alias": "区域" }],
     "measures": [
       {
         "field": "sales",
         "alias": "销售额",
-        "encoding": "xAxis",
-        "aggregate": {
-          "func": "sum"
-        }
+        "encoding": "yAxis",
+        "aggregate": { "func": "sum" }
       }
     ],
+    "whereFilters": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilters.add('product_type', node => { node.setOperator('eq').setValue('办公用品'); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilters.addGroup('or', group => {\n    group\n      .add('product_type', node => node.setOperator('eq').setValue('办公用品'))\n      .add('product_type', node => node.setOperator('eq').setValue('技术'));\n  });\n}"
 }

@@ -1,6 +1,6 @@
 import type { VQueryDSL } from '@visactor/vquery'
 import type { buildPipe } from './types'
-import type { VBIFilter } from '../../types'
+import type { VBIFilter, VBIWhereClause, VBIWhereGroup } from '../../types'
 
 export const buildWhere: buildPipe = (queryDSL, context) => {
   const { vbiDSL } = context
@@ -13,14 +13,32 @@ export const buildWhere: buildPipe = (queryDSL, context) => {
   const result = { ...queryDSL }
   result.where = {
     op: 'and',
-    conditions: whereFilters.flatMap(mapFilterToCondition),
+    conditions: whereFilters.flatMap(mapClauseToCondition),
   }
 
   return result as VQueryDSL
 }
 
+function isWhereGroup(clause: VBIWhereClause): clause is VBIWhereGroup {
+  return 'op' in clause && 'conditions' in clause
+}
+
+function mapClauseToCondition(clause: VBIWhereClause): any[] {
+  if (isWhereGroup(clause)) {
+    return [mapGroupToCondition(clause)]
+  }
+  return mapFilterToCondition(clause)
+}
+
+function mapGroupToCondition(group: VBIWhereGroup): any {
+  return {
+    op: group.op,
+    conditions: group.conditions.flatMap(mapClauseToCondition),
+  }
+}
+
 function mapFilterToCondition(filter: VBIFilter): any[] {
-  if (filter.operator === 'between') {
+  if (filter.op === 'between') {
     return handleBetweenFilter(filter)
   }
   return handleSimpleFilter(filter)
@@ -48,7 +66,7 @@ function handleBetweenFilter(filter: VBIFilter): any[] {
 }
 
 function handleSimpleFilter(filter: VBIFilter): any[] {
-  let mappedOp = filter.operator ?? '='
+  let mappedOp = filter.op ?? '='
   const value = filter.value
 
   if (Array.isArray(value)) {
