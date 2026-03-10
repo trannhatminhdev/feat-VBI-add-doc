@@ -47,6 +47,7 @@
     "dev": "rslib build --watch --no-clean",
     "lint": "eslint .",
     "test": "rstest",
+    "format": "prettier --write .",
     "test:update": "rstest --update",
     "test:coverage": "rstest --coverage && node scripts/build-coverage-badge.mjs && open ./coverage/index.html",
     "typecheck": "tsc --noEmit"

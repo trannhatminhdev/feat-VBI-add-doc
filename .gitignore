@@ -31,3 +31,5 @@ tools/llm_test/new-type
 
 # Trae
 .trae
+
+.worktrees

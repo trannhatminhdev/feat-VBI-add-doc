@@ -30,14 +30,12 @@ export class VQuery {
     await this.checkInitialized()
 
     const datasetSource = rawDatasetSource ? await DatasetSourceBuilder.from(rawDatasetSource).build() : undefined
+
     if (await this.hasDataset(datasetId)) {
       throw new Error(`dataset ${datasetId} already exists`)
     }
-    const datasetSchema = {
-      datasetId,
-      datasetAlias: datasetId,
-      columns: columns,
-    }
+
+    const datasetSchema = { datasetId, datasetAlias: datasetId, columns }
     await this.storageAdapter.writeDataset(datasetId, datasetSchema, datasetSource)
   }
 
@@ -50,18 +48,14 @@ export class VQuery {
     await this.checkDatasetExists(datasetId)
 
     const datasetSource = rawDatasetSource ? await DatasetSourceBuilder.from(rawDatasetSource).build() : undefined
-    const datasetSchema = {
-      datasetId,
-      datasetAlias: datasetId,
-      columns: columns,
-    }
+
+    const datasetSchema = { datasetId, datasetAlias: datasetId, columns }
     await this.storageAdapter.writeDataset(datasetId, datasetSchema, datasetSource)
   }
 
   public async dropDataset(datasetId: string) {
     await this.checkInitialized()
     await this.checkDatasetExists(datasetId)
-
     await this.storageAdapter.deleteDataset(datasetId)
   }
 
@@ -84,14 +78,12 @@ export class VQuery {
 
   public async hasDataset(datasetId: string) {
     await this.checkInitialized()
-
     const datasets = await this.storageAdapter.listDatasets()
     return datasets.some((item) => item.datasetId === datasetId)
   }
 
   public async listDatasets() {
     await this.checkInitialized()
-
     return this.storageAdapter.listDatasets()
   }
 

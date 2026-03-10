@@ -2,22 +2,7 @@ import type { SelectQueryBuilder } from 'kysely'
 import { Having, HavingClause } from 'src/types'
 import { sql } from 'kysely'
 import type { RawBuilder } from 'kysely'
-
-/**
- * SQL operator mapping from VBI DSL operators to SQL operators
- */
-const operatorMap: Record<string, string> = {
-  gt: '>',
-  gte: '>=',
-  lt: '<',
-  lte: '<=',
-  eq: '=',
-  neq: '!=',
-}
-
-const toSqlOperator = (op: string): string => {
-  return operatorMap[op] ?? op
-}
+import { toSqlOperator } from '../utils'
 
 export const applyHaving = <DB, TB extends keyof DB & string, O, T>(
   qb: SelectQueryBuilder<DB, TB, O>,
