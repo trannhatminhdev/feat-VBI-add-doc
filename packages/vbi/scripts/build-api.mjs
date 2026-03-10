@@ -333,14 +333,12 @@ function generateDocs() {
   console.log('Building API docs from builder classes...\n')
 
   ensureDir(OUTPUT_DIR)
-  const builderDir = path.join(OUTPUT_DIR, 'builder')
-  ensureDir(builderDir)
 
   // 收集哪些 parent 拥有子文档
   const parentsWithChildren = new Set(NODE_BUILDER_CONFIG.map((n) => kebabCase(n.parent)))
 
-  // 1. 生成 Builder 文档
-  const subMeta = []
+  // 1. 生成 Builder 文档（主 builder + 子 builder 均输出到 OUTPUT_DIR）
+  const apiMeta = []
   for (const builder of BUILDER_CONFIG) {
     const fileName = kebabCase(builder.name)
     const md = renderBuilderDoc(builder)
@@ -348,28 +346,29 @@ function generateDocs() {
     if (builder.category === 'main') {
       writeFile(path.join(OUTPUT_DIR, 'builder.md'), md)
       console.log(`Generated: builder.md`)
+      apiMeta.push({ type: 'file', name: 'builder', label: 'builder' })
     } else {
-      writeFile(path.join(builderDir, `${fileName}.md`), md)
-      console.log(`Generated: builder/${fileName}.md`)
+      writeFile(path.join(OUTPUT_DIR, `${fileName}.md`), md)
+      console.log(`Generated: ${fileName}.md`)
 
-      subMeta.push({
+      apiMeta.push({
         type: parentsWithChildren.has(fileName) ? 'dir' : 'file',
         name: fileName,
-        label: builder.label || builder.name,
+        label: `builder.${builder.label || builder.name}`,
         collapsed: true,
       })
     }
   }
 
-  // 2. 生成 NodeBuilder 文档 + _meta.json（按 parent 分组）
+  // 2. 生成 NodeBuilder 文档 + _meta.json（按 parent 分组，输出到 OUTPUT_DIR/<parent>）
   const nodeMetaByParent = {}
   for (const nodeBuilder of NODE_BUILDER_CONFIG) {
     const parentName = kebabCase(nodeBuilder.parent)
-    ensureDir(path.join(builderDir, parentName))
+    ensureDir(path.join(OUTPUT_DIR, parentName))
 
     const md = renderNodeBuilderDoc(nodeBuilder)
-    writeFile(path.join(builderDir, parentName, `${nodeBuilder.label}.md`), md)
-    console.log(`Generated: builder/${parentName}/${nodeBuilder.label}.md`)
+    writeFile(path.join(OUTPUT_DIR, parentName, `${nodeBuilder.label}.md`), md)
+    console.log(`Generated: ${parentName}/${nodeBuilder.label}.md`)
 
     if (!nodeMetaByParent[parentName]) nodeMetaByParent[parentName] = []
     nodeMetaByParent[parentName].push({
@@ -381,15 +380,12 @@ function generateDocs() {
   }
 
   // 3. 生成 _meta.json 文件
-  writeJson(path.join(builderDir, '_meta.json'), subMeta)
-  console.log('Generated: api/builder/_meta.json')
-
   for (const [parentName, items] of Object.entries(nodeMetaByParent)) {
-    writeJson(path.join(builderDir, parentName, '_meta.json'), items)
-    console.log(`Generated: api/builder/${parentName}/_meta.json`)
+    writeJson(path.join(OUTPUT_DIR, parentName, '_meta.json'), items)
+    console.log(`Generated: api/${parentName}/_meta.json`)
   }
 
-  writeJson(path.join(OUTPUT_DIR, '_meta.json'), [{ type: 'dir', name: 'builder', label: 'builder', collapsed: true }])
+  writeJson(path.join(OUTPUT_DIR, '_meta.json'), apiMeta)
   console.log('Generated: api/_meta.json')
 
   writeFile(path.join(OUTPUT_DIR, 'index.md'), '---\noverview: true\n---\n')

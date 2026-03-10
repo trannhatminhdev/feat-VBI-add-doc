@@ -1,0 +1,24 @@
+{
+  "name": "between-sales-range-analysis",
+  "description": "销售额区间分析：使用 between 筛选单笔 1000~10000 元的订单，按品类汇总利润",
+  "schema": [
+    { "name": "product_type", "type": "string" },
+    { "name": "sales", "type": "number" },
+    { "name": "profit", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "column",
+    "dimensions": [{ "field": "product_type", "alias": "品类" }],
+    "measures": [
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": { "func": "sum" }
+      }
+    ],
+    "whereFilters": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilters.add('sales', node => {\n    node.setOperator('between').setValue({ min: 1000, max: 10000 });\n  });\n}"
+}
