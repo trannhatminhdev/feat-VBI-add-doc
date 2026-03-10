@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { message } from 'antd';
+import { isVBIFilter } from '@visactor/vbi';
 import { useVBIStore } from 'src/model';
 import VChart, { ISpec } from '@visactor/vchart';
 import {
@@ -104,10 +105,12 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
           if (filters && filters.length > 0) {
             // Remove the last filter added since it's most likely the offending one
             const lastFilter = filters[filters.length - 1];
-            storeBuilder.whereFilters.remove(lastFilter.field);
-            window.dispatchEvent(
-              new CustomEvent('vbi-filter-error', { detail: lastFilter }),
-            );
+            if (isVBIFilter(lastFilter)) {
+              storeBuilder.whereFilters.remove(lastFilter.field);
+              window.dispatchEvent(
+                new CustomEvent('vbi-filter-error', { detail: lastFilter }),
+              );
+            }
           }
         });
       }

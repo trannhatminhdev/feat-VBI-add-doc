@@ -1,4 +1,4 @@
-import { VBIBuilder, VBIDSL } from '@visactor/vbi';
+import { VBIBuilder, VBIDSL, isVBIFilter } from '@visactor/vbi';
 import { VSeed } from '@visactor/vseed';
 import { defaultBuilder } from 'src/utils/demoConnector';
 import { create } from 'zustand';
@@ -66,13 +66,15 @@ export const useVBIStore = create<BearState>((set, get) => ({
         const filters = builder.whereFilters.toJson();
         if (filters && filters.length > 0) {
           const lastFilter = filters[filters.length - 1];
-          builder.doc.transact(() => {
-            builder.whereFilters.remove(lastFilter.field);
-          });
-          // Avoid triggering immediately if possible, or let it trigger again and succeed
-          window.dispatchEvent(
-            new CustomEvent('vbi-filter-error', { detail: lastFilter }),
-          );
+          if (isVBIFilter(lastFilter)) {
+            builder.doc.transact(() => {
+              builder.whereFilters.remove(lastFilter.field);
+            });
+            // Avoid triggering immediately if possible, or let it trigger again and succeed
+            window.dispatchEvent(
+              new CustomEvent('vbi-filter-error', { detail: lastFilter }),
+            );
+          }
         }
       } finally {
         setLoading(false);
