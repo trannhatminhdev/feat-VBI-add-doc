@@ -1,6 +1,6 @@
-import type { VQueryDSL, Condition } from '@visactor/vquery'
+import type { VQueryDSL } from '@visactor/vquery'
 import type { buildPipe } from './types'
-import type { VBIFilter } from '../../../types'
+import type { VBIFilter } from '../../types'
 
 export const buildWhere: buildPipe = (queryDSL, context) => {
   const { vbiDSL } = context
@@ -19,15 +19,15 @@ export const buildWhere: buildPipe = (queryDSL, context) => {
   return result as VQueryDSL
 }
 
-function mapFilterToCondition(filter: VBIFilter): Condition[] {
+function mapFilterToCondition(filter: VBIFilter): any[] {
   if (filter.operator === 'between') {
     return handleBetweenFilter(filter)
   }
   return handleSimpleFilter(filter)
 }
 
-function handleBetweenFilter(filter: VBIFilter): Condition[] {
-  const conditions: Condition[] = []
+function handleBetweenFilter(filter: VBIFilter): any[] {
+  const conditions: any[] = []
   const value = filter.value as { min?: unknown; max?: unknown; leftOp?: string; rightOp?: string }
 
   if (value.min !== undefined && value.min !== null && value.min !== '') {
@@ -47,7 +47,7 @@ function handleBetweenFilter(filter: VBIFilter): Condition[] {
   return conditions
 }
 
-function handleSimpleFilter(filter: VBIFilter): Condition[] {
+function handleSimpleFilter(filter: VBIFilter): any[] {
   let mappedOp = filter.operator ?? '='
   const value = filter.value
 
@@ -62,5 +62,5 @@ function handleSimpleFilter(filter: VBIFilter): Condition[] {
       op: mappedOp,
       value,
     },
-  ] as Condition[]
+  ] as any[]
 }
