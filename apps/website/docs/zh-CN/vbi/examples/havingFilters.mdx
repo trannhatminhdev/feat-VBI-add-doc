@@ -206,7 +206,7 @@ export default () => {
 
 ## having-deeply-nested-groups
 
-三层嵌套分组：OR(AND(销售额>50万, 利润>5万), AND(数量>100, 折扣均值<0.3))，模拟复杂业务筛选
+三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
@@ -433,7 +433,7 @@ export default () => {
 
 ## having-mix-filters-and-groups
 
-混合使用独立过滤条件和OR分组：销售额>50万 AND (利润>10万 OR 数量>=30)
+混合使用独立过滤条件和OR分组：销售额超50万 AND (利润超10万 OR 数量不少于30)
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
@@ -539,7 +539,7 @@ export default () => {
 
 ## having-nested-groups
 
-嵌套分组：AND(销售额>100万, OR(利润>20万, 数量>=50))
+嵌套分组：AND(销售额超100万, OR(利润超20万, 数量不少于50))
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
@@ -643,7 +643,7 @@ export default () => {
 
 ## having-scatter-profit-analysis
 
-散点图分析：按品类分组筛选高利润率(利润>销售额5%)且交易量>20笔的品类，定位优质业务
+散点图分析：按品类分组筛选高利润率且交易量超20笔的品类，定位优质业务
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'
@@ -753,7 +753,7 @@ export default () => {
 
 ## having-with-where-combined
 
-where+having联合筛选：先按where筛选办公用品品类，再按having筛选销售额>5万或利润>1万的省份
+where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份
 
 ```tsx preview
 import { VBI } from '@visactor/vbi'

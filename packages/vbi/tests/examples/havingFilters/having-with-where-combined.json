@@ -1,6 +1,6 @@
 {
   "name": "having-with-where-combined",
-  "description": "where+having联合筛选：先按where筛选办公用品品类，再按having筛选销售额>5万或利润>1万的省份",
+  "description": "where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份",
   "schema": [
     {
       "name": "province",

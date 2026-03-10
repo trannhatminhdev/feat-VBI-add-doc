@@ -1,6 +1,6 @@
 {
   "name": "having-nested-groups",
-  "description": "嵌套分组：AND(销售额>100万, OR(利润>20万, 数量>=50))",
+  "description": "嵌套分组：AND(销售额超100万, OR(利润超20万, 数量不少于50))",
   "schema": [
     {
       "name": "area",

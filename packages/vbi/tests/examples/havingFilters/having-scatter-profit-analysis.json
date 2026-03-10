@@ -1,6 +1,6 @@
 {
   "name": "having-scatter-profit-analysis",
-  "description": "散点图分析：按品类分组筛选高利润率(利润>销售额5%)且交易量>20笔的品类，定位优质业务",
+  "description": "散点图分析：按品类分组筛选高利润率且交易量超20笔的品类，定位优质业务",
   "schema": [
     {
       "name": "product_sub_type",

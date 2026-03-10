@@ -1,6 +1,6 @@
 {
   "name": "having-deeply-nested-groups",
-  "description": "三层嵌套分组：OR(AND(销售额>50万, 利润>5万), AND(数量>100, 折扣均值<0.3))，模拟复杂业务筛选",
+  "description": "三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选",
   "schema": [
     {
       "name": "province",
