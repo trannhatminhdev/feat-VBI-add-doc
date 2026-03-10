@@ -16,7 +16,7 @@ describe('HavingFiltersBuilder', () => {
     expect(result.havingFilters.length).toBe(1)
     expect(result.havingFilters[0]).toMatchObject({
       field: 'sales',
-      operator: 'gt',
+      op: 'gt',
       value: 1000,
     })
     expect(result.havingFilters[0].id).toBeDefined()
@@ -83,7 +83,7 @@ describe('HavingFiltersBuilder', () => {
     const json = builder.havingFilters.toJson()
     expect(json[0]).toMatchObject({
       field: 'sales',
-      operator: 'gte',
+      op: 'gte',
       value: 2000,
     })
   })
@@ -185,8 +185,8 @@ describe('HavingFiltersBuilder', () => {
   test('from DSL with pre-existing filters gets ids', () => {
     const dsl = {
       havingFilters: [
-        { field: 'sales', operator: 'gt', value: 1000 },
-        { field: 'profit', operator: 'gt', value: 500 },
+        { field: 'sales', op: 'gt', value: 1000 },
+        { field: 'profit', op: 'gt', value: 500 },
       ],
     } as VBIDSL
     const builder = VBI.from(dsl)
@@ -408,8 +408,8 @@ describe('HavingGroupBuilder', () => {
         {
           op: 'and',
           conditions: [
-            { field: 'sales', operator: 'gt', value: 1000 },
-            { field: 'profit', operator: 'gt', value: 500 },
+            { field: 'sales', op: 'gt', value: 1000 },
+            { field: 'profit', op: 'gt', value: 500 },
           ],
         },
       ],

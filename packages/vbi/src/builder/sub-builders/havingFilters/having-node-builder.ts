@@ -25,7 +25,7 @@ export class HavingFiltersNodeBuilder {
    * @description 获取过滤操作符
    */
   getOperator(): string | undefined {
-    return this.yMap.get('operator')
+    return this.yMap.get('op')
   }
 
   /**
@@ -42,7 +42,7 @@ export class HavingFiltersNodeBuilder {
    * @param operator - 操作符
    */
   setOperator(operator: string): this {
-    this.yMap.set('operator', operator)
+    this.yMap.set('op', operator)
     return this
   }
 

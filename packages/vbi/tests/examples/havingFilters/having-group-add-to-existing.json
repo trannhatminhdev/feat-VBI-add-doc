@@ -1,6 +1,6 @@
 {
-  "name": "having-update-group-operator",
-  "description": "更新已有Having分组的逻辑操作符从AND改为OR",
+  "name": "having-group-add-to-existing",
+  "description": "向已有的having分组中追加新条件，模拟用户逐步细化筛选规则",
   "schema": [
     {
       "name": "area",
@@ -12,6 +12,10 @@
     },
     {
       "name": "profit",
+      "type": "number"
+    },
+    {
+      "name": "amount",
       "type": "number"
     }
   ],
@@ -39,30 +43,32 @@
         "aggregate": {
           "func": "sum"
         }
+      },
+      {
+        "field": "amount",
+        "alias": "数量",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
       }
     ],
     "whereFilters": [],
     "havingFilters": [
       {
         "id": "group-1",
-        "op": "and",
+        "op": "or",
         "conditions": [
           {
             "id": "cond-1",
             "field": "销售额",
             "op": "gt",
-            "value": 1000000
-          },
-          {
-            "id": "cond-2",
-            "field": "利润",
-            "op": "gt",
-            "value": 200000
+            "value": 500000
           }
         ]
       }
     ],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.updateGroup('group-1', group => { group.setOperator('or'); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.updateGroup('group-1', group => { group.add('利润', n => n.setOperator('gt').setValue(100000)); group.add('数量', n => n.setOperator('gte').setValue(200)); }); }"
 }

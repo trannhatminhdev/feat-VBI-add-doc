@@ -13,7 +13,7 @@
     "theme": "light",
     "locale": "zh-CN",
     "version": 1,
-    "limit": 50
+    "limit": 10
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setLocale('zh-CN'); }"
 }

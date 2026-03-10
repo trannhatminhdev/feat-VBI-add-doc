@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const zVBIHavingFilter = z.object({
   id: z.string(),
   field: z.string(),
-  operator: z.string().optional(),
+  op: z.string().optional(),
   value: z.any().optional(),
 })
 

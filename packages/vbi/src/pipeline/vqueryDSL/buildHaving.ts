@@ -38,7 +38,7 @@ function mapGroupToCondition(group: VBIHavingGroup): any {
 }
 
 function mapFilterToCondition(filter: VBIHavingFilter): any[] {
-  const mappedOp = filter.operator ?? '='
+  const mappedOp = filter.op ?? '='
   return [
     {
       field: filter.field,

@@ -1,9 +1,9 @@
 {
-  "name": "having-update-group-operator",
-  "description": "更新已有Having分组的逻辑操作符从AND改为OR",
+  "name": "having-group-remove-condition",
+  "description": "从已有的having分组中移除特定条件，模拟用户取消某个筛选项",
   "schema": [
     {
-      "name": "area",
+      "name": "product_type",
       "type": "string"
     },
     {
@@ -16,11 +16,11 @@
     }
   ],
   "dsl": {
-    "chartType": "bar",
+    "chartType": "column",
     "dimensions": [
       {
-        "field": "area",
-        "alias": "区域"
+        "field": "product_type",
+        "alias": "品类"
       }
     ],
     "measures": [
@@ -51,18 +51,18 @@
             "id": "cond-1",
             "field": "销售额",
             "op": "gt",
-            "value": 1000000
+            "value": 100000
           },
           {
             "id": "cond-2",
             "field": "利润",
             "op": "gt",
-            "value": 200000
+            "value": 10000
           }
         ]
       }
     ],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.updateGroup('group-1', group => { group.setOperator('or'); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.updateGroup('group-1', group => { group.remove('cond-1'); }); }"
 }
