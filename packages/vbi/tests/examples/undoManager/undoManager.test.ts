@@ -31,7 +31,16 @@ describe('UndoManager', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
+      // 添加一个新度量 profit
+      builder.measures.add('profit', (node) => {
+        node.setAlias('利润').setEncoding('yAxis')
+      })
+
+      // 撤销添加操作
       builder.undoManager.undo()
+
+      // 重做操作
+      builder.undoManager.redo()
     }
     applyBuilder(builder)
 
@@ -54,6 +63,14 @@ describe('UndoManager', () => {
             "encoding": "yAxis",
             "field": "sales",
           },
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "利润",
+            "encoding": "yAxis",
+            "field": "profit",
+          },
         ],
         "theme": "light",
         "version": 1,
@@ -75,6 +92,13 @@ describe('UndoManager', () => {
             "alias": "销售额",
             "field": "sales",
           },
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "利润",
+            "field": "profit",
+          },
         ],
       }
     `)
@@ -86,6 +110,7 @@ describe('UndoManager', () => {
         "chartType": "bar",
         "dataset": [
           {
+            "利润": 2147538.9250000017,
             "销售额": 16068954.12500003,
           },
         ],

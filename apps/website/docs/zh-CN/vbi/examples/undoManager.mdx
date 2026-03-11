@@ -32,7 +32,16 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
+        // 添加一个新度量 profit
+        builder.measures.add('profit', (node) => {
+          node.setAlias('利润').setEncoding('yAxis')
+        })
+
+        // 撤销添加操作
         builder.undoManager.undo()
+
+        // 重做操作
+        builder.undoManager.redo()
       }
       applyBuilder(builder)
 
