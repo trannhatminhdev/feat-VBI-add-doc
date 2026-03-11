@@ -28,12 +28,13 @@ export const unfoldDimensions = (
     foldMeasureId: string
     separator: string
     colorItemAsId: boolean
+    formatDimensionValue?: (dimension: Dimension, value: unknown) => string
   },
 ): {
   dataset: Dataset
   unfoldInfo: UnfoldInfo
 } => {
-  const { separator } = options
+  const { separator, formatDimensionValue } = options
 
   const unfoldInfo: UnfoldInfo = {
     encodingAngle: AngleEncoding,
@@ -95,7 +96,7 @@ export const unfoldDimensions = (
 
     colorIdMap[colorId] = {
       id: colorId,
-      alias: getColorAliasItem(ColorEncoding, colorDimensions, datum, separator),
+      alias: getColorAliasItem(ColorEncoding, colorDimensions, datum, separator, formatDimensionValue),
     }
     colorItems.add(colorId)
   }
@@ -123,7 +124,13 @@ const applyEncoding = (encoding: string, dimensions: Dimension[], datum: Datum, 
   }
 }
 
-const getColorAliasItem = (encoding: string, dimensions: Dimension[], datum: Datum, separator: string) => {
+const getColorAliasItem = (
+  encoding: string,
+  dimensions: Dimension[],
+  datum: Datum,
+  separator: string,
+  formatDimensionValue?: (dimension: Dimension, value: unknown) => string,
+) => {
   if (encoding && dimensions.length) {
     return dimensions
       .map((dim) => {
@@ -131,7 +138,8 @@ const getColorAliasItem = (encoding: string, dimensions: Dimension[], datum: Dat
           return String(datum[MeasureName])
         }
 
-        return String(datum[dim.id])
+        const rawValue = datum[dim.id]
+        return formatDimensionValue ? formatDimensionValue(dim, rawValue) : String(rawValue)
       })
       .join(separator)
   }

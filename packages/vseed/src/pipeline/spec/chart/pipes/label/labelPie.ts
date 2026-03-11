@@ -20,6 +20,7 @@ export const labelPie: VChartSpecPipe = (spec, context) => {
     advancedVSeed.measures!,
     encoding as Encoding,
     [foldInfo],
+    advancedVSeed?.locale,
   ) as unknown as IPieChartSpec['label']
   if (label.labelLayout) {
     ;(result.label as any)!.layout = {

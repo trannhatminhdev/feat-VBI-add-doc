@@ -1,6 +1,6 @@
 import type { ListTableConstructorOptions } from '@visactor/vtable'
-import { isMeasure } from 'src/pipeline/utils'
-import type { Dimension, DimensionGroup, DimensionTree, ListTableSpecPipe } from 'src/types'
+import { createFormatterByDimension, isMeasure } from 'src/pipeline/utils'
+import type { Datum, Dimension, DimensionGroup, DimensionTree, ListTableSpecPipe } from 'src/types'
 import { treeTreeToColumns } from './utils'
 
 export const dimensionTreeToColumns: ListTableSpecPipe = (spec, context) => {
@@ -11,6 +11,10 @@ export const dimensionTreeToColumns: ListTableSpecPipe = (spec, context) => {
     if (isMeasure(node)) {
       return {
         width: 'auto',
+        fieldFormat: (datum: Datum) => {
+          const formatter = createFormatterByDimension(node as Dimension, advancedVSeed.locale)
+          return formatter(datum[node.id] as string | number)
+        },
       }
     }
 

@@ -1,4 +1,4 @@
-import type { PivotChartSpecPipeline, VChartSpecPipeline } from 'src/types'
+import { type PivotChartSpecPipeline, type VChartSpecPipeline } from 'src/types'
 import {
   xBand,
   yLinear,
@@ -54,7 +54,7 @@ const area: VChartSpecPipeline = [
   yLinear,
   label,
   brush,
-  tooltip,
+  tooltip({ titleEncoding: 'x' }),
   colorAdapter(discreteLegend, colorLegend),
   verticalCrosshairLine,
   colorPointStyleFill(pointStyle),
@@ -84,7 +84,7 @@ const pivotArea: PivotChartSpecPipeline = [
     pivotAxisStyle(yLinear),
     label,
     brush,
-    tooltip,
+    tooltip({ titleEncoding: 'x' as const }),
     verticalCrosshairLine,
     colorPointStyleFill(pointStyle),
     pointStateDimensionHover,

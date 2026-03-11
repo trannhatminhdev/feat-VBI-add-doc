@@ -1,7 +1,8 @@
-import type { Dataset, Dimension, Encoding, FoldInfo, Measure, Measures, UnfoldInfo } from 'src/types'
+import type { Dataset, Dimension, Encoding, FoldInfo, Measure, Measures, UnfoldInfo, Locale } from 'src/types'
 import { foldMeasures } from './foldMeasures'
 import { FoldMeasureId, FoldMeasureName, FoldMeasureValue, Separator } from './constant'
 import { unfoldDimensions } from './unfoldDimensions'
+import { createFormatterByDimension } from 'src/pipeline/utils'
 
 export const dataReshapeByEncoding = (
   dataset: Dataset,
@@ -15,6 +16,7 @@ export const dataReshapeByEncoding = (
     colorItemAsId?: boolean
     colorMeasureId?: string
     omitIds: string[]
+    locale?: Locale
   },
 ): {
   dataset: Dataset
@@ -27,6 +29,7 @@ export const dataReshapeByEncoding = (
     foldMeasureValue = FoldMeasureValue,
     colorItemAsId = false,
     colorMeasureId,
+    locale,
     omitIds,
   } = options || {}
 
@@ -44,6 +47,10 @@ export const dataReshapeByEncoding = (
     foldMeasureId,
     separator: Separator,
     colorItemAsId,
+    formatDimensionValue: (dimension, value) => {
+      const formatter = createFormatterByDimension(dimension, locale)
+      return formatter(value as string | number)
+    },
   })
   return { dataset: finalDataset, foldInfo, unfoldInfo }
 }

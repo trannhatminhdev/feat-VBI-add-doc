@@ -18,7 +18,7 @@ export type BodyCellStyle = {
    *
    * 注意: selector 和 dynamicFilter 不能同时使用，dynamicFilter 优先级更高
    *
-   * @type {Selector | Selectors}
+   * @type {Selector | Selectors | FieldSelector}
    * @example 数值选择器
    * selector = "tool"
    * selector = ["tool", "book"]

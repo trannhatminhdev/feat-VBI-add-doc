@@ -1,5 +1,5 @@
 import type { ILineChartSpec } from '@visactor/vchart'
-import { createFormatter, findMeasureById } from '../../../../utils'
+import { createFormatter, createFormatterByDimension, findMeasureById } from '../../../../utils'
 import type { Datum, Dimension, FoldInfo, Label, Measure, NumFormat, VChartSpecPipe } from 'src/types'
 import { isNumber, merge, uniqueBy } from 'remeda'
 import { MeasureId } from 'src/dataReshape/constant'
@@ -87,9 +87,9 @@ export const labelTreeMapLeaf: VChartSpecPipe = (spec, context) => {
       const dimLabels = labelDims
         .map((item: Dimension) => {
           const id = item.id
-          // Try to get from realDatum (it has fields attached in datasetHierarchy.ts)
-          // or fallback to __OriginalData__
-          return (realDatum[id] ?? realDatum.__OriginalData__?.[id]) as number | string
+          const rawValue = (realDatum[id] ?? realDatum.__OriginalData__?.[id]) as number | string
+          const formatter = createFormatterByDimension(item, advancedVSeed.locale)
+          return formatter(rawValue)
         })
         .filter((v) => v !== undefined && v !== null && v !== '')
 

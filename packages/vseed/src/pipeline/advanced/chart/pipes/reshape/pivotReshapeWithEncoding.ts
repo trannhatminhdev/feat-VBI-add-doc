@@ -45,6 +45,7 @@ export const pivotReshapeWithEncoding: AdvancedPipe = (advancedVSeed, context) =
         foldMeasureValue: `${FoldMeasureValue}${groupId}`,
         colorMeasureId: getColorMeasureId(advancedVSeed as AdvancedVSeed, vseed),
         omitIds: allMeasuresIds,
+        locale: advancedVSeed.locale,
       },
     )
 

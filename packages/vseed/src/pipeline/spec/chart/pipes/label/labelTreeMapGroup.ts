@@ -1,10 +1,11 @@
 import type { ITreemapChartSpec } from '@visactor/vchart'
 import type { Label, VChartSpecPipe } from 'src/types'
+import { createFormatterByDimension } from 'src/pipeline/utils'
 
 export const labelTreeMapGroup: VChartSpecPipe = (spec, context) => {
   const result = { ...spec } as ITreemapChartSpec
   const { advancedVSeed } = context
-  const { chartType } = advancedVSeed
+  const { chartType, dimensions = [], encoding } = advancedVSeed
   const baseConfig = advancedVSeed.config[chartType] as { label: Label }
   const { label } = baseConfig
 
@@ -14,6 +15,18 @@ export const labelTreeMapGroup: VChartSpecPipe = (spec, context) => {
 
   result.nonLeaf = {
     visible: true,
+  }
+
+  const dimIds = encoding.hierarchy || []
+  const dimFormatters = dimIds.map((id) => {
+    const dim = dimensions.find((item) => item.id === id)
+    return createFormatterByDimension(dim, advancedVSeed.locale)
+  })
+  const formatHierarchyName = (name: string, depth: number) => {
+    if (!dimFormatters?.[depth]) {
+      return name
+    }
+    return dimFormatters[depth](name)
   }
 
   result.nonLeafLabel = {
@@ -26,7 +39,7 @@ export const labelTreeMapGroup: VChartSpecPipe = (spec, context) => {
       },
       textAlign: 'left',
       text: (data: any) => {
-        return [data.name]
+        return formatHierarchyName(String(data.name ?? ''), data.depth)
       },
       fontSize: 12,
       fill: '#000',

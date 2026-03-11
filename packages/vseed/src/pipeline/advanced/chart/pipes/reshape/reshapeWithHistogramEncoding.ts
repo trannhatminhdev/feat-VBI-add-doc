@@ -23,6 +23,7 @@ import type {
 } from 'src/types'
 import { bin } from '@visactor/vdataset'
 import { uniqueBy } from 'remeda'
+import { createFormatterByDimension } from 'src/pipeline/utils'
 import { getColorMeasureId } from 'src/pipeline/spec/chart/pipes/color/colorAdapter'
 
 export const reshapeWithHistogramEncoding: AdvancedPipe = (advancedVSeed, context) => {
@@ -91,6 +92,10 @@ export const reshapeWithHistogramEncoding: AdvancedPipe = (advancedVSeed, contex
       foldMeasureId: FoldMeasureId,
       separator: Separator,
       colorItemAsId: false,
+      formatDimensionValue: (dimension, value) => {
+        const formatter = createFormatterByDimension(dimension, advancedVSeed.locale)
+        return formatter(value as string | number)
+      },
     })
 
     res.dataset.forEach((d: Datum) => {
@@ -107,6 +112,7 @@ export const reshapeWithHistogramEncoding: AdvancedPipe = (advancedVSeed, contex
         colorItemAsId: false,
         colorMeasureId,
         omitIds: [],
+        locale: advancedVSeed.locale,
       },
     )
 

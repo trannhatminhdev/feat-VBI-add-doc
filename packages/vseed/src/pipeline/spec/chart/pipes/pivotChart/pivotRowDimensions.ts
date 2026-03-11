@@ -1,5 +1,6 @@
 import type { PivotChartConstructorOptions } from '@visactor/vtable'
 import { FoldYMeasureId } from 'src/dataReshape/constant'
+import { createFormatterByDimension } from 'src/pipeline/utils'
 import type { Dimensions, PivotChartSpecPipe } from 'src/types'
 
 export const pivotRowDimensions: PivotChartSpecPipe = (spec, context) => {
@@ -23,6 +24,9 @@ export const pivotRowDimensions: PivotChartSpecPipe = (spec, context) => {
 
         return measure ? (measure.alias ?? measure.id) : title
       }
+    } else if (dim.timeFormat) {
+      const formatter = createFormatterByDimension(dim, advancedVSeed.locale)
+      baseConfig.headerFormat = (value: string | number) => formatter(value)
     }
 
     return baseConfig

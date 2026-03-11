@@ -2,6 +2,8 @@ import { createDimensionContent, createMarkContent } from './tooltip'
 import type { VChartSpecPipe, Tooltip, Measures, DualAxisOptions } from 'src/types'
 import { getTooltipStyle } from './tooltipStyle'
 import { updateTooltipElement } from './tooltipElement'
+import { createFormatterByDimension } from 'src/pipeline/utils'
+import { Separator } from 'src/dataReshape'
 
 export const tooltipOfDualAxisSeries = (options: DualAxisOptions): VChartSpecPipe => {
   return (spec, context) => {
@@ -33,11 +35,27 @@ export const tooltipOfDualAxisSeries = (options: DualAxisOptions): VChartSpecPip
           vseed.measures as Measures,
           options.foldInfo,
           unfoldInfo,
+          advancedVSeed.locale,
         ),
       },
       dimension: {
         title: {
           visible: true,
+          value: (datum?: Record<string, unknown>) => {
+            if (!datum) {
+              return ''
+            }
+            const dimIds = encoding.x || []
+            const formatted = dimIds.map((id) => {
+              const dim = dimensions.find((item) => item.id === id)
+              if (!dim) {
+                return datum?.[id] as string
+              }
+              const formatter = createFormatterByDimension(dim, advancedVSeed.locale)
+              return formatter(datum?.[id] as string | number)
+            })
+            return formatted.join(Separator)
+          },
         },
         content: createDimensionContent(
           encoding.tooltip || [],

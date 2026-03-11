@@ -1,5 +1,7 @@
 # @visactor/vquery
 
+## 0.4.13
+
 ## 0.4.12
 
 ### Patch Changes

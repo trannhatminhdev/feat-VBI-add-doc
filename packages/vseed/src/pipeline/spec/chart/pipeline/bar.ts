@@ -51,7 +51,7 @@ const bar: VChartSpecPipeline = [
 
   label,
   brush,
-  tooltip,
+  tooltip({ titleEncoding: 'y' }),
   colorAdapter(discreteLegend, colorLegend),
   horizontalCrosshairRect,
   colorBarStyleFill(barStyle),
@@ -78,7 +78,7 @@ const pivotBar: PivotChartSpecPipeline = [
     pivotAxisStyle(yBand),
     label,
     brush,
-    tooltip,
+    tooltip({ titleEncoding: 'y' }),
     colorBarStyleFill(barStyle),
     horizontalCrosshairRect,
     annotationPoint,

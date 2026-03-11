@@ -32,7 +32,7 @@ const raceDonut: VChartSpecPipeline = [
   labelPie,
   colorPieStyleFill(pieStyle),
   colorAdapter(discreteLegend, colorLegend),
-  tooltip,
+  tooltip({ titleEncoding: 'color' }),
   annotationPoint,
   annotationVerticalLine,
   annotationHorizontalLine,

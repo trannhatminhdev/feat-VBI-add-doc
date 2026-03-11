@@ -19,6 +19,7 @@ export const labelDualAxis = (options: DualAxisOptions): VChartSpecPipe => {
       advancedVSeed.measures!,
       encoding as Encoding,
       [options.foldInfo],
+      advancedVSeed?.locale,
     ) as unknown as ILineChartSpec['label']
     ;(result.label as any)!.zIndex = DUAL_AXIS_LABEL_Z_INDEX
     return result

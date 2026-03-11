@@ -46,6 +46,7 @@ export const reshapeWithScatterEncoding: AdvancedPipe = (advancedVSeed, context)
       colorItemAsId: true,
       colorMeasureId: getColorMeasureId(advancedVSeed as AdvancedVSeed, vseed),
       omitIds: xMeasures.map((m: Measure) => m.id).filter((id: string) => !sizeEncodingIds.includes(id)),
+      locale: advancedVSeed.locale,
     },
   )
 
@@ -64,6 +65,7 @@ export const reshapeWithScatterEncoding: AdvancedPipe = (advancedVSeed, context)
       colorItemAsId: true,
       colorMeasureId: getColorMeasureId(advancedVSeed as AdvancedVSeed, vseed),
       omitIds: yMeasures.map((m: Measure) => m.id).filter((id: string) => !sizeEncodingIds.includes(id)),
+      locale: advancedVSeed.locale,
     },
   )
 

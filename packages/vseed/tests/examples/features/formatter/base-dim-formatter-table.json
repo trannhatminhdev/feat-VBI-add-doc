@@ -1,0 +1,50 @@
+{
+  "name": "table dimensions formatter",
+  "description": "",
+  "vseed": {
+    "measures": [
+      {
+        "id": "co_20260310203200_9649",
+        "alias": "amount",
+        "encoding": "column",
+        "format": {
+          "auto": false,
+          "thousandSeparator": true,
+          "type": "percent"
+        },
+        "autoFormat": false
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "co_20260310203204_e99a",
+        "alias": "order_date",
+        "encoding": "column",
+        "timeFormat": {
+          "type": "year"
+        }
+      }
+    ],
+    "dataset": [
+      {
+        "co_20260310203200_9649": "6710",
+        "co_20260310203204_e99a": "2016-01-01"
+      },
+      {
+        "co_20260310203200_9649": "8012",
+        "co_20260310203204_e99a": "2017-01-01"
+      },
+      {
+        "co_20260310203200_9649": "9901",
+        "co_20260310203204_e99a": "2018-01-01"
+      },
+      {
+        "co_20260310203200_9649": "12911",
+        "co_20260310203204_e99a": "2019-01-01"
+      }
+    ],
+    "chartType": "table",
+    "theme": "light",
+    "locale": "zh-CN"
+  }
+}

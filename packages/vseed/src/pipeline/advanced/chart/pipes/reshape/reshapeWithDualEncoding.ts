@@ -56,6 +56,7 @@ export const reshapeWithDualEncoding: AdvancedPipe = (advancedVSeed, context) =>
         foldMeasureValue: FoldPrimaryMeasureValue,
         colorMeasureId: getColorMeasureId(advancedVSeed as AdvancedVSeed, vseed),
         omitIds: allMeasuresIds,
+        locale: advancedVSeed.locale,
       },
     )
 
@@ -82,6 +83,7 @@ export const reshapeWithDualEncoding: AdvancedPipe = (advancedVSeed, context) =>
         foldMeasureValue: FoldSecondaryMeasureValue,
         colorMeasureId: getColorMeasureId(advancedVSeed as AdvancedVSeed, vseed),
         omitIds: allMeasuresIds,
+        locale: advancedVSeed.locale,
       },
     )
 

@@ -1,0 +1,58 @@
+{
+  "name": "radar dimensions formatter",
+  "description": "",
+  "vseed": {
+    "label": {
+      "enable": true,
+      "showValue": false,
+      "showValuePercent": true,
+      "labelColor": "#89909D",
+      "labelFontSize": 12,
+      "wrap": false
+    },
+    "measures": [
+      {
+        "id": "an_20260311110616_ee93",
+        "alias": "amount",
+        "encoding": "angle",
+        "format": {
+          "auto": true,
+          "thousandSeparator": true,
+          "type": "number"
+        },
+        "autoFormat": true
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "co_20260311110702_cbff",
+        "alias": "order_date",
+        "encoding": "angle",
+        "timeFormat": {
+          "type": "quarter"
+        }
+      }
+    ],
+    "dataset": [
+      {
+        "an_20260311110616_ee93": "6710",
+        "co_20260311110702_cbff": "2016-01-01"
+      },
+      {
+        "an_20260311110616_ee93": "8012",
+        "co_20260311110702_cbff": "2017-01-01"
+      },
+      {
+        "an_20260311110616_ee93": "9901",
+        "co_20260311110702_cbff": "2018-01-01"
+      },
+      {
+        "an_20260311110616_ee93": "12911",
+        "co_20260311110702_cbff": "2019-01-01"
+      }
+    ],
+    "chartType": "radar",
+    "theme": "light",
+    "locale": "zh-CN"
+  }
+}

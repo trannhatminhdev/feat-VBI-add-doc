@@ -32,7 +32,7 @@ const racePie: VChartSpecPipeline = [
   colorPieStyleFill(pieStyle),
   colorAdapter(discreteLegend, colorLegend),
   labelPie,
-  tooltip,
+  tooltip({ titleEncoding: 'color' }),
   annotationPoint,
   annotationVerticalLine,
   annotationHorizontalLine,

@@ -1,0 +1,113 @@
+{
+  "name": "treemap dimensions formatter",
+  "description": "",
+  "vseed": {
+    "chartType": "treeMap",
+    "dataset": [
+      {
+        "category": "2026-01-01",
+        "subCategory": "2027-01-01",
+        "product": "Laptop",
+        "sales": 5000
+      },
+      {
+        "category": "2026-01-01",
+        "subCategory": "2027-01-01",
+        "product": "Tablet",
+        "sales": 3000
+      },
+      {
+        "category": "2026-01-01",
+        "subCategory": "2027-01-01",
+        "product": "Desktop",
+        "sales": 4000
+      },
+      {
+        "category": "2026-01-01",
+        "subCategory": "2027-02-01",
+        "product": "Smartphone",
+        "sales": 8000
+      },
+      {
+        "category": "2026-01-01",
+        "subCategory": "2027-02-01",
+        "product": "Landline",
+        "sales": 1000
+      },
+      {
+        "category": "1996-01-01",
+        "subCategory": "1996-02-01",
+        "product": "Office Chair",
+        "sales": 2000
+      },
+      {
+        "category": "1996-01-01",
+        "subCategory": "1996-02-01",
+        "product": "Sofa",
+        "sales": 3500
+      },
+      {
+        "category": "1996-01-01",
+        "subCategory": "1996-03-01",
+        "product": "Desk",
+        "sales": 1500
+      },
+      {
+        "category": "1996-01-01",
+        "subCategory": "1996-03-01",
+        "product": "Coffee Table",
+        "sales": 1200
+      },
+      {
+        "category": "2020-01-01",
+        "subCategory": "2020-02-01",
+        "product": "Printer 2020-02-01",
+        "sales": 800
+      },
+      {
+        "category": "2020-01-01",
+        "subCategory": "2020-02-01",
+        "product": "Notebook",
+        "sales": 500
+      },
+      {
+        "category": "2020-01-01",
+        "subCategory": "2020-03-01",
+        "product": "Pen",
+        "sales": 300
+      },
+      {
+        "category": "2020-01-01",
+        "subCategory": "2020-03-01",
+        "product": "Stapler",
+        "sales": 200
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "category",
+        "alias": "Category",
+        "timeFormat": {
+          "type": "year"
+        }
+      },
+      {
+        "id": "subCategory",
+        "alias": "SubCategory",
+        "timeFormat": {
+          "type": "month"
+        }
+      },
+      {
+        "id": "product",
+        "alias": "Product"
+      }
+    ],
+    "measures": [
+      {
+        "id": "sales",
+        "alias": "Sales"
+      }
+    ]
+  }
+}

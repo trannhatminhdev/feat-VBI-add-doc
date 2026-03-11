@@ -24,6 +24,7 @@ export const reshapeWithEncoding: AdvancedPipe = (advancedVSeed, context) => {
       colorItemAsId: false,
       colorMeasureId,
       omitIds: allMeasuresIds,
+      locale: advancedVSeed.locale,
     },
   )
 

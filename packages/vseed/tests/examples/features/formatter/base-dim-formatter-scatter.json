@@ -1,0 +1,74 @@
+{
+  "name": "scatter dimensions formatter with en-us",
+  "description": "",
+  "vseed": {
+    "label": {
+      "enable": true,
+      "labelColor": "#212121",
+      "labelFontSize": 12,
+      "showDimension": true,
+      "showValue": false,
+      "showValuePercent": false
+    },
+    "measures": [
+      {
+        "id": "yA_20260310202446_4598",
+        "alias": "sales",
+        "encoding": "yAxis",
+        "format": {
+          "auto": true,
+          "fractionDigits": 2,
+          "thousandSeparator": true,
+          "type": "number"
+        },
+        "autoFormat": true
+      },
+      {
+        "id": "xA_20260310202447_d691",
+        "alias": "amount",
+        "encoding": "xAxis",
+        "format": {
+          "auto": true,
+          "thousandSeparator": true,
+          "type": "number"
+        },
+        "autoFormat": true
+      }
+    ],
+    "dimensions": [
+      {
+        "id": "co_20260310202451_14d1",
+        "alias": "order_date",
+        "encoding": "color",
+        "timeFormat": {
+          "type": "quarter"
+        }
+      }
+    ],
+    "dataset": [
+      {
+        "co_20260310202451_14d1": "2016-01-01",
+        "xA_20260310202447_d691": "6710",
+        "yA_20260310202446_4598": "2931056.4149999986"
+      },
+      {
+        "co_20260310202451_14d1": "2017-01-01",
+        "xA_20260310202447_d691": "8012",
+        "yA_20260310202446_4598": "3431919.4629999986"
+      },
+      {
+        "co_20260310202451_14d1": "2018-01-01",
+        "xA_20260310202447_d691": "9901",
+        "yA_20260310202446_4598": "4243539.8599999985"
+      },
+      {
+        "co_20260310202451_14d1": "2019-01-01",
+        "xA_20260310202447_d691": "12911",
+        "yA_20260310202446_4598": "5462438.386999988"
+      }
+    ],
+    "chartType": "scatter",
+    "theme": "light",
+    "locale": "en-us"
+  }
+}

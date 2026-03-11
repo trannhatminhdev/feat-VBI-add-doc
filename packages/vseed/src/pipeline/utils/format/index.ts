@@ -1,3 +1,5 @@
 export * from './createNumFormatter'
 export * from './createFormatter'
 export * from './createFormatterByMeasure'
+export * from './createTimeFormatter'
+export * from './createFormatterByDimension'

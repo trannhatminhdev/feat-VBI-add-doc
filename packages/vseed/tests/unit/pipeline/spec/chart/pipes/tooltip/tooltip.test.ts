@@ -20,7 +20,7 @@ describe('tooltip pipe', () => {
       vseed: { measures: [] } as unknown as VSeed
     } as any
 
-    const result = tooltip(spec, context)
+    const result = tooltip()(spec, context)
     expect(result.tooltip).toBeDefined()
     expect(result.tooltip!.visible).toBe(true)
   })

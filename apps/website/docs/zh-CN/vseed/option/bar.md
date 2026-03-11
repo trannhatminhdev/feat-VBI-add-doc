@@ -116,6 +116,25 @@
 
 :::
 
+### timeFormat
+
+**Type:** `TimeFormat | undefined`
+
+:::note{title=描述}
+维度时间格式化配置
+
+:::
+
+
+#### type
+
+**Type:** `"year" | "quarter" | "month" | "week" | "day" | "hour" | "minute" | "second"`
+
+:::note{title=描述}
+时间粒度，决定日期展示精度
+
+:::
+
 ### encoding
 
 **Type:** `"color" | "detail" | "tooltip" | "label" | "row" | "column" | "yAxis" | undefined`
