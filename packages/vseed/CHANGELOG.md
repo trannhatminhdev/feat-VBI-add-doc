@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.13
+
+### Patch Changes
+
+- Support timeFormat feature in dimesnions
+
 ## 0.4.12
 
 ### Patch Changes
