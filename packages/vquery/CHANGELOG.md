@@ -1,5 +1,11 @@
 # @visactor/vquery
 
+## 0.4.15
+
+### Patch Changes
+
+- fix: ci not working
+
 ## 0.4.14
 
 ## 0.4.13
