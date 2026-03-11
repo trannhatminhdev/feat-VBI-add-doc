@@ -1,5 +1,12 @@
 # @visactor/vbi
 
+## 0.4.14
+
+### Patch Changes
+
+- 0179551: feat: vbi add undoManager
+  - @visactor/vseed@0.4.14
+
 ## 0.4.13
 
 ### Patch Changes
