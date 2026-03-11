@@ -7,6 +7,7 @@ import { MeasuresBuilder } from './sub-builders/measures'
 import { HavingFiltersBuilder } from './sub-builders/havingFilters'
 import { WhereFiltersBuilder } from './sub-builders'
 import { ChartTypeBuilder } from './sub-builders'
+import { UndoManager } from './undo-manager'
 
 import { VBIDSL, VBIBuilderInterface } from 'src/types'
 import { buildVQuery } from 'src/pipeline'
@@ -15,7 +16,7 @@ import { getConnector } from './connector'
 export class VBIBuilder implements VBIBuilderInterface {
   public doc: Y.Doc
   public dsl: Y.Map<any>
-  public undoManager: Y.UndoManager
+  public undoManager: UndoManager
 
   public chartType: ChartTypeBuilder
   public measures: MeasuresBuilder
@@ -27,7 +28,7 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.doc = doc
     this.dsl = doc.getMap('dsl') as Y.Map<any>
 
-    this.undoManager = new Y.UndoManager(this.dsl)
+    this.undoManager = new UndoManager(this.dsl)
     this.chartType = new ChartTypeBuilder(doc, this.dsl)
     this.measures = new MeasuresBuilder(doc, this.dsl)
     this.dimensions = new DimensionsBuilder(doc, this.dsl)

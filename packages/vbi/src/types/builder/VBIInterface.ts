@@ -8,7 +8,8 @@ import type {
   HavingFiltersBuilder,
   WhereFiltersBuilder,
 } from 'src/builder/sub-builders'
-import type { Map, Doc, UndoManager } from 'yjs'
+import type { Map, Doc } from 'yjs'
+import type { UndoManager } from 'src/builder/undo-manager'
 
 export interface VBIBuilderInterface {
   doc: Doc
