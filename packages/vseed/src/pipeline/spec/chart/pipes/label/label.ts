@@ -1,5 +1,11 @@
 import type { ILineChartSpec } from '@visactor/vchart'
-import { createFormatter, createFormatterByMeasure, DATUM_HIDE_KEY, findMeasureById } from '../../../../utils'
+import {
+  createFormatter,
+  createFormatterByDimension,
+  createFormatterByMeasure,
+  DATUM_HIDE_KEY,
+  findMeasureById,
+} from '../../../../utils'
 import type {
   Datum,
   Dimension,
@@ -8,6 +14,7 @@ import type {
   FoldInfo,
   Formatter,
   Label,
+  Locale,
   Measure,
   Measures,
   NumFormat,
@@ -69,6 +76,7 @@ export const buildLabel = (
   advancedVSeedMeasures: Measures,
   encoding: Encoding,
   foldInfoList: (Pick<FoldInfo, 'measureId' | 'measureValue'> & Partial<Pick<FoldInfo, 'statistics'>>)[],
+  locale: Locale = 'zh-CN',
 ) => {
   const {
     enable,
@@ -128,7 +136,8 @@ export const buildLabel = (
 
       const dimLabels = labelDims.map((item: Dimension) => {
         const id = item.id
-        return datum[id] as number | string
+        const formatter = createFormatterByDimension(item, locale)
+        return formatter(datum[id] as number | string)
       })
 
       const meaLabels = labelMeas.map((item: Measure) =>

@@ -21,6 +21,7 @@ export const labelScatter: VChartSpecPipe = (spec, context) => {
     advancedVSeed.measures!,
     encoding as Encoding,
     foldInfoList,
+    advancedVSeed?.locale,
   ) as unknown as IScatterChartSpec['label']
 
   return result

@@ -12,7 +12,7 @@ import {
   unfoldDimensions,
   UpperWhisker,
 } from 'src/dataReshape'
-import { DEFAULT_PARENT_ID, revisedBoxPlotFieldKey } from 'src/pipeline/utils'
+import { DEFAULT_PARENT_ID, revisedBoxPlotFieldKey, createFormatterByDimension } from 'src/pipeline/utils'
 import type {
   AdvancedPipe,
   ColumnParallel,
@@ -90,6 +90,10 @@ export const pivotReshapeWithBoxplotEncoding: AdvancedPipe = (advancedVSeed, con
         foldMeasureId: FoldMeasureId,
         separator: Separator,
         colorItemAsId: false,
+        formatDimensionValue: (dimension, value) => {
+          const formatter = createFormatterByDimension(dimension, advancedVSeed.locale)
+          return formatter(value as string | number)
+        },
       })
 
       res.dataset.forEach((d: Datum) => {
@@ -107,6 +111,10 @@ export const pivotReshapeWithBoxplotEncoding: AdvancedPipe = (advancedVSeed, con
         foldMeasureId: FoldMeasureId,
         separator: Separator,
         colorItemAsId: false,
+        formatDimensionValue: (dimension, value) => {
+          const formatter = createFormatterByDimension(dimension, advancedVSeed.locale)
+          return formatter(value as string | number)
+        },
       })
 
       res.dataset.forEach((datum: Datum) => {

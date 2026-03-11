@@ -1,5 +1,6 @@
 import { pipe, unique, uniqueBy } from 'remeda'
-import { createFormatterByMeasure, findMeasureById } from '../../../../utils'
+import { Separator } from 'src/dataReshape'
+import { createFormatterByDimension, createFormatterByMeasure, findMeasureById } from '../../../../utils'
 import type {
   Datum,
   Dimensions,
@@ -10,57 +11,94 @@ import type {
   UnfoldInfo,
   Dimension,
   Measure,
+  Locale,
+  Encoding,
 } from 'src/types'
 import { MeasureId, MeasureName, ORIGINAL_DATA } from 'src/dataReshape'
 import { getTooltipStyle } from './tooltipStyle'
 import { updateTooltipElement } from './tooltipElement'
 
-export const tooltip: VChartSpecPipe = (spec, context) => {
-  const result = { ...spec }
-  const { advancedVSeed, vseed } = context
-  const {
-    measures = [],
-    datasetReshapeInfo,
-    chartType,
-    dimensions = [],
-    encoding,
-    reshapeMeasures = [],
-  } = advancedVSeed
-  const baseConfig = advancedVSeed.config[chartType as 'line'] as { tooltip: TooltipConfig }
-  const { tooltip = { enable: true } } = baseConfig
-  const { enable = true } = tooltip
-  const { foldInfo, unfoldInfo } = datasetReshapeInfo[0] as unknown as {
-    foldInfo: FoldInfo
-    unfoldInfo: UnfoldInfo
-  }
+export const tooltip =
+  (tooltipOptions?: { titleEncoding?: keyof Encoding }): VChartSpecPipe =>
+  (spec, context) => {
+    const result = { ...spec }
+    if (!context) {
+      return result
+    }
+    const { advancedVSeed, vseed } = context
+    const {
+      measures = [],
+      datasetReshapeInfo,
+      chartType,
+      dimensions = [],
+      encoding,
+      reshapeMeasures = [],
+    } = advancedVSeed
+    const baseConfig = advancedVSeed.config?.[chartType as 'line'] as { tooltip: TooltipConfig }
+    const { tooltip = { enable: true } } = baseConfig ?? {}
+    const { enable = true } = tooltip
+    const { foldInfo, unfoldInfo } = datasetReshapeInfo[0] as unknown as {
+      foldInfo: FoldInfo
+      unfoldInfo: UnfoldInfo
+    }
+    const { titleEncoding } = tooltipOptions || {}
 
-  result.tooltip = {
-    style: getTooltipStyle(tooltip),
-    visible: !!enable,
-    mark: {
-      title: {
-        visible: false,
+    result.tooltip = {
+      style: getTooltipStyle(tooltip),
+      visible: !!enable,
+      group: {
+        title: {
+          visible: false,
+        },
       },
-      content: createMarkContent(encoding.tooltip || [], dimensions, vseed.measures as Measures, foldInfo, unfoldInfo),
-    },
-    dimension: {
-      title: {
-        visible: true,
+      mark: {
+        title: {
+          visible: false,
+        },
+        content: createMarkContent(
+          encoding.tooltip || [],
+          dimensions,
+          vseed.measures as Measures,
+          foldInfo,
+          unfoldInfo,
+          advancedVSeed.locale,
+        ),
       },
-      content: createDimensionContent(
-        encoding.tooltip || [],
-        encoding.color || [],
-        measures,
-        foldInfo,
-        unfoldInfo,
-        reshapeMeasures.length > 1,
-      ),
-    },
+      dimension: {
+        title: {
+          visible: true,
+          value: titleEncoding
+            ? (datum?: Datum) => {
+                if (!datum) {
+                  return ''
+                }
+                const dimIds = encoding[titleEncoding] || []
+                const formatted = dimIds.map((id) => {
+                  const dim = dimensions.find((item) => item.id === id)
+                  if (!dim) {
+                    return datum?.[id] as string
+                  }
+                  const formatter = createFormatterByDimension(dim, advancedVSeed.locale)
+                  return formatter(datum?.[id] as string | number)
+                })
+                return formatted.join(Separator)
+              }
+            : undefined,
+        },
+        content: createDimensionContent(
+          encoding.tooltip || [],
+          encoding.color || [],
+          measures,
+          foldInfo,
+          unfoldInfo,
+          reshapeMeasures.length > 1,
+        ),
+      },
 
-    updateElement: updateTooltipElement,
+      updateElement: updateTooltipElement,
+    }
+    return result
   }
-  return result
-}
 
 export const createDimensionContent = (
   tooltips: string[],
@@ -127,6 +165,7 @@ export const createMarkContent = (
   measures: Measures = [],
   foldInfo: FoldInfo,
   unfoldInfo: UnfoldInfo,
+  locale?: Locale,
 ) => {
   const dims = pipe(
     dimensions.filter((item) => tooltip.includes(item.id)),
@@ -152,7 +191,8 @@ export const createMarkContent = (
     },
     value: (v: unknown) => {
       const datum = v as Datum
-      return datum && (datum[item.id] as string)
+      const formatter = createFormatterByDimension(item, locale)
+      return datum ? formatter(datum[item.id] as string | number) : ''
     },
   }))
 

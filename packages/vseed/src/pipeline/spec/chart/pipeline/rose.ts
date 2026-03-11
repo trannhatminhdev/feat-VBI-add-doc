@@ -46,7 +46,7 @@ const rose: VChartSpecPipeline = [
   colorRoseStyleFill(roseStyle),
   colorAdapter(discreteLegend, colorLegend),
   labelPie,
-  tooltip,
+  tooltip({ titleEncoding: 'angle' }),
 ]
 
 const pivotRose: PivotChartSpecPipeline = [
@@ -68,7 +68,7 @@ const pivotRose: PivotChartSpecPipeline = [
     verticalCrosshairRect,
     colorRoseStyleFill(roseStyle),
     labelPie,
-    tooltip,
+    tooltip({ titleEncoding: 'angle' }),
   ]),
   pivotRowDimensions,
   pivotColumnDimensions,

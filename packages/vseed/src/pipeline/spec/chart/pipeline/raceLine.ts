@@ -39,7 +39,7 @@ const raceLine: VChartSpecPipeline = [
   colorAdapter(discreteLegend, colorLegend),
   colorLineStyleFill(lineStyle),
   label,
-  tooltip,
+  tooltip({ titleEncoding: 'x' }),
   annotationPoint,
   annotationVerticalLine,
   annotationHorizontalLine,

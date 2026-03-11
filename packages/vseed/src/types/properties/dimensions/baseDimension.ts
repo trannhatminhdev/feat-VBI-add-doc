@@ -1,4 +1,5 @@
 import type { DimensionEncoding } from '../encoding'
+import type { TimeFormat } from '../format'
 
 export type BaseDimension = {
   /**
@@ -9,6 +10,10 @@ export type BaseDimension = {
    * 维度别名
    */
   alias?: string
+  /**
+   * @description 维度时间格式化配置
+   */
+  timeFormat?: TimeFormat
 }
 
 /**

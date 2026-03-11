@@ -40,7 +40,7 @@ const raceBar: VChartSpecPipeline = [
 
   label,
   brush,
-  tooltip,
+  tooltip({ titleEncoding: 'y' }),
   colorAdapter(discreteLegend, colorLegend),
   horizontalCrosshairRect,
   colorBarStyleFill(barStyle),

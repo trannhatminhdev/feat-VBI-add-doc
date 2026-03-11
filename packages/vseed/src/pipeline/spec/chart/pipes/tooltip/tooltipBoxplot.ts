@@ -1,5 +1,5 @@
 import { pipe, uniqueBy, isNullish } from 'remeda'
-import { createFormatterByMeasure, findMeasureById } from '../../../../utils'
+import { createFormatterByDimension, createFormatterByMeasure, findMeasureById } from '../../../../utils'
 import type {
   Dimension,
   Dimensions,
@@ -9,6 +9,7 @@ import type {
   Measures,
   FoldInfo,
   UnfoldInfo,
+  Locale,
 } from 'src/types'
 import type { Datum, ISpec, ITooltipLinePattern, ITooltipLineActual, TooltipData } from '@visactor/vchart'
 import {
@@ -33,7 +34,7 @@ const VCHART_OUTLIER_KEY = '__VCHART_BOX_PLOT_OUTLIER_VALUE'
 export const tooltipBoxplot: VChartSpecPipe = (spec, context) => {
   const result = { ...spec }
   const { advancedVSeed, vseed } = context
-  const { chartType, dimensions = [], encoding, datasetReshapeInfo } = advancedVSeed
+  const { chartType, dimensions = [], encoding, datasetReshapeInfo, locale } = advancedVSeed
   const baseConfig = advancedVSeed.config[chartType as 'boxPlot'] as { tooltip: Tooltip }
   const { tooltip = { enable: true } } = baseConfig
   const { enable } = tooltip
@@ -60,7 +61,7 @@ export const tooltipBoxplot: VChartSpecPipe = (spec, context) => {
       title: {
         visible: false,
       },
-      content: createMarkContent(encoding.tooltip || [], dimensions, encoding as Encoding),
+      content: createMarkContent(encoding.tooltip || [], dimensions, encoding as Encoding, locale),
       updateContent: (prev: ITooltipLineActual[] | undefined, data: TooltipData | undefined) => {
         const datum = (data as any)?.[0]?.datum?.[0]
 
@@ -100,14 +101,14 @@ export const tooltipBoxplot: VChartSpecPipe = (spec, context) => {
       title: {
         visible: true,
       },
-      content: createDimensionContent(dimensions, meas, unfoldInfo, measureAliasMapping[MedianMeasureId]),
+      content: createDimensionContent(dimensions, meas, unfoldInfo, measureAliasMapping[MedianMeasureId], locale),
     },
     updateElement: updateTooltipElement,
   }
   return result as unknown as ISpec
 }
 
-const createMarkContent = (tooltip: string[], dimensions: Dimensions, encoding: Encoding) => {
+const createMarkContent = (tooltip: string[], dimensions: Dimensions, encoding: Encoding, locale?: Locale) => {
   const dims = pipe(
     dimensions.filter((item) => tooltip.includes(item.id)),
     uniqueBy((item: Dimension) => item.id),
@@ -129,7 +130,8 @@ const createMarkContent = (tooltip: string[], dimensions: Dimensions, encoding: 
         }
       }
 
-      return datum?.[item.id] as string
+      const formatter = createFormatterByDimension(item, locale)
+      return formatter(datum?.[item.id] as string | number)
     },
   }))
 
@@ -156,6 +158,7 @@ const createDimensionContent = (
   measures: Measures,
   unfoldInfo: UnfoldInfo,
   medianAlias: string,
+  locale?: Locale,
   hasMultiMeasureGroup?: boolean,
 ) => {
   const { encodingColor } = unfoldInfo

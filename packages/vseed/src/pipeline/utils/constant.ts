@@ -28,6 +28,7 @@ export const ChartTypeEnum = {
   RaceBar: 'raceBar',
   RaceColumn: 'raceColumn',
   RaceScatter: 'raceScatter',
+  RaceLine: 'raceLine',
   BarPercent: 'barPercent',
   BarParallel: 'barParallel',
   Area: 'area',

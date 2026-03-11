@@ -51,6 +51,7 @@ export const pivotReshapeWithScatterEncoding: AdvancedPipe = (advancedVSeed, con
       colorItemAsId: true,
       colorMeasureId: getColorMeasureId(advancedVSeed as AdvancedVSeed, vseed),
       omitIds: allMeasuresIds,
+      locale: advancedVSeed.locale,
     })
 
     datasets.push(xResult.dataset)
@@ -63,6 +64,7 @@ export const pivotReshapeWithScatterEncoding: AdvancedPipe = (advancedVSeed, con
       colorItemAsId: true,
       colorMeasureId: getColorMeasureId(advancedVSeed as AdvancedVSeed, vseed),
       omitIds: allMeasuresIds,
+      locale: advancedVSeed.locale,
     })
 
     datasets.push(yResult.dataset)

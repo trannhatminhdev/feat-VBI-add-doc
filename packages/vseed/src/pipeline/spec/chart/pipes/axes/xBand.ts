@@ -4,6 +4,7 @@ import { defaultTitleText } from './title/defaultTitleText'
 import { MeasureId } from 'src/dataReshape'
 import { isArray, isNil } from '@visactor/vutils'
 import { bandAxisStyle } from './bandAxisStyle'
+import { createFormatterByDimension } from 'src/pipeline/utils'
 
 export const xBand: VChartSpecPipe = (spec, context) => {
   const result = { ...spec } as ISpec
@@ -30,14 +31,31 @@ export const xBand: VChartSpecPipe = (spec, context) => {
     bandAxis.title!.text = defaultTitleText(measures, dimensions, encoding.x as string[])
   }
 
-  if (onlyMeasureId && bandAxis.label) {
+  if (bandAxis.label) {
     const allDatasetReshapeInfo = pivotAllDatasetReshapeInfo || datasetReshapeInfo
     const colorIdMap = allDatasetReshapeInfo.reduce<Record<string, { id: string; alias: string }>>((prev, cur) => {
       return { ...prev, ...cur.unfoldInfo.colorIdMap }
     }, {})
 
+    const dimensionMap = new Map(dimensions.map((item) => [item.id, item]))
+    const dimIds = (encoding.x || []).filter((v) => v !== MeasureId)
+    // 目前只考虑单个xEncoding的场景
+    const dimFormatter = dimIds.length
+      ? createFormatterByDimension(dimensionMap.get(dimIds[0]), advancedVSeed.locale)
+      : null
+
     bandAxis.label.formatMethod = (text: string | string[]) => {
-      return isArray(text) ? text : (colorIdMap[String(text)]?.alias ?? text)
+      if (isArray(text)) {
+        return text
+      }
+      if (onlyMeasureId) {
+        return colorIdMap[String(text)]?.alias ?? text
+      }
+      const rawText = String(text ?? '')
+      if (!dimFormatter) {
+        return rawText
+      }
+      return dimFormatter(rawText)
     }
   }
 

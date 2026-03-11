@@ -1,5 +1,5 @@
 import { uniqueBy } from 'remeda'
-import { createFormatterByMeasure, findMeasureById } from '../../../../utils'
+import { createFormatterByDimension, createFormatterByMeasure, findMeasureById } from '../../../../utils'
 import type { Datum, Dimensions, FoldInfo, Locale, Measures, VChartSpecPipe, Tooltip, UnfoldInfo } from 'src/types'
 import { ORIGINAL_DATA } from 'src/dataReshape'
 import { getTooltipStyle } from './tooltipStyle'
@@ -64,7 +64,8 @@ export const createMarkContent = (
     },
     value: (v: unknown) => {
       const datum = v as Datum
-      return datum && (datum[item.id] as string)
+      const formatter = createFormatterByDimension(item, locale)
+      return datum ? formatter(datum[item.id] as string | number) : ''
     },
   }))
 

@@ -13,6 +13,7 @@ import {
 import type { AdvancedPipe, ColumnParallel, Dataset, Datum, Dimension, Encoding } from 'src/types'
 import { boxplot } from '@visactor/vdataset'
 import { uniqueBy } from 'remeda'
+import { createFormatterByDimension } from 'src/pipeline/utils'
 
 export const reshapeWithBoxplotEncoding: AdvancedPipe = (advancedVSeed, context) => {
   const result = { ...advancedVSeed }
@@ -56,6 +57,10 @@ export const reshapeWithBoxplotEncoding: AdvancedPipe = (advancedVSeed, context)
       foldMeasureId: FoldMeasureId,
       separator: Separator,
       colorItemAsId: false,
+      formatDimensionValue: (dimension, value) => {
+        const formatter = createFormatterByDimension(dimension, advancedVSeed.locale)
+        return formatter(value as string | number)
+      },
     })
 
     res.dataset.forEach((d: Datum) => {
@@ -73,6 +78,10 @@ export const reshapeWithBoxplotEncoding: AdvancedPipe = (advancedVSeed, context)
       foldMeasureId: FoldMeasureId,
       separator: Separator,
       colorItemAsId: false,
+      formatDimensionValue: (dimension, value) => {
+        const formatter = createFormatterByDimension(dimension, advancedVSeed.locale)
+        return formatter(value as string | number)
+      },
     })
 
     res.dataset.forEach((datum: Datum) => {

@@ -1,11 +1,19 @@
-import type { Datum, FoldInfo, HierarchyDimension, HierarchyMeasure, UnfoldInfo, VChartSpecPipe } from 'src/types'
+import type {
+  Datum,
+  FoldInfo,
+  HierarchyDimension,
+  HierarchyMeasure,
+  Locale,
+  UnfoldInfo,
+  VChartSpecPipe,
+} from 'src/types'
 import { tooltip as commonTooltip } from './tooltip'
 import { pipe, uniqueBy } from 'remeda'
-import { createFormatterByMeasure, findMeasureById } from 'src/pipeline/utils'
+import { createFormatterByDimension, createFormatterByMeasure, findMeasureById } from 'src/pipeline/utils'
 
 export const tooltipTreeMap: VChartSpecPipe = (spec, context) => {
   // Reuse common tooltip logic
-  const result = commonTooltip(spec, context)
+  const result = commonTooltip()(spec, context)
   const { advancedVSeed, vseed } = context
   const { datasetReshapeInfo, dimensions = [], encoding } = advancedVSeed
   const { foldInfo, unfoldInfo } = datasetReshapeInfo[0]
@@ -14,12 +22,23 @@ export const tooltipTreeMap: VChartSpecPipe = (spec, context) => {
     if (!result.tooltip.mark) {
       result.tooltip.mark = {}
     }
+    const formatterList = (encoding.hierarchy || []).map((id) => {
+      const dim = dimensions.find((item) => item.id === id)
+      return createFormatterByDimension(dim, advancedVSeed.locale)
+    })
 
     result.tooltip.mark = {
       title: {
         visible: true,
         value: (val: any) => {
-          return val?.datum?.map((data: any) => data.name).join(' / ')
+          return val?.datum
+            ?.map((data: any, index: number) => {
+              if (formatterList[index]) {
+                return formatterList[index](data.name)
+              }
+              return data.name
+            })
+            .join(' / ')
         },
       },
       content: createMarkContent(
@@ -28,6 +47,7 @@ export const tooltipTreeMap: VChartSpecPipe = (spec, context) => {
         vseed.measures as HierarchyMeasure[],
         foldInfo,
         unfoldInfo,
+        advancedVSeed.locale,
       ),
     }
   }
@@ -41,6 +61,7 @@ const createMarkContent = (
   measures: HierarchyMeasure[] = [],
   foldInfo: FoldInfo,
   unfoldInfo: UnfoldInfo,
+  locale?: Locale,
 ) => {
   const dims = pipe(
     dimensions.filter((item) => tooltip.includes(item.id)),
@@ -73,8 +94,8 @@ const createMarkContent = (
     value: (v: Datum) => {
       const { depth } = v
       const datum = v?.datum[depth] as Datum
-
-      return datum && (datum[item.id] as string)
+      const formatter = createFormatterByDimension(item, locale)
+      return datum ? formatter(datum[item.id] as string | number) : ''
     },
   }))
 

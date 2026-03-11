@@ -24,6 +24,7 @@ export const labelBoxPlot: VChartSpecPipe = (spec, context) => {
         measureValue: MedianMeasureId,
       },
     ],
+    advancedVSeed?.locale,
   ) as unknown as IPieChartSpec['label']
 
   return result

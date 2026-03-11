@@ -1,5 +1,6 @@
 import type { PivotChartConstructorOptions } from '@visactor/vtable'
 import { FoldXMeasureId } from 'src/dataReshape'
+import { createFormatterByDimension } from 'src/pipeline/utils'
 import type { Dimensions, PivotChartSpecPipe } from 'src/types'
 
 export const pivotColumnDimensions: PivotChartSpecPipe = (spec, context): Partial<PivotChartConstructorOptions> => {
@@ -24,6 +25,9 @@ export const pivotColumnDimensions: PivotChartSpecPipe = (spec, context): Partia
 
         return measure ? (measure.alias ?? measure.id) : title
       }
+    } else if (dim.timeFormat) {
+      const formatter = createFormatterByDimension(dim, advancedVSeed.locale)
+      baseConfig.headerFormat = (value: string | number) => formatter(value)
     }
 
     return baseConfig
