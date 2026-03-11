@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.10
+
+### Patch Changes
+
+- Support timeFormatter in dimensions
+
 ## 0.4.9
 
 ### Patch Changes
