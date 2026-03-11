@@ -20,7 +20,7 @@
     "test": "pnpm -r test",
     "test:update": "pnpm -r test:update",
     "test:coverage": "pnpm -r test:coverage",
-    "publish:ci": "pnpm run build && pnpm changeset publish --filter=@visactor/vseed,@visactor/vquery,@visactor/vbi --access=public",
+    "publish:ci": "turbo run build --filter=@visactor/vseed --filter=@visactor/vquery --filter=@visactor/vbi && pnpm changeset publish --filter=@visactor/vseed,@visactor/vquery,@visactor/vbi --access=public",
     "prepare": "husky",
     "vbi:down": "docker-compose -f ./docker/docker-compose.dev.yml down",
     "vbi:up": "docker-compose -f ./docker/docker-compose.dev.yml up",
