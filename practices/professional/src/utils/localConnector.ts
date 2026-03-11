@@ -22,42 +22,17 @@ export const createLocalConnector = (connectorId: string) => {
           return [];
         }
 
-        // 从数据推断字段类型 - 检查多行来更准确地识别数字字段
+        // 从数据的第一行推断字段类型
         const firstRow = localData[0];
         if (typeof firstRow !== 'object' || firstRow === null) {
           return [];
         }
-
-        const fieldNames = Object.keys(firstRow as Record<string, unknown>);
-        const schema = fieldNames.map((name) => {
-          // 检查该字段在前100行（或全部行）中是否主要是数字
-          const sampleSize = Math.min(localData.length, 100);
-          let numberCount = 0;
-
-          for (let i = 0; i < sampleSize; i++) {
-            const row = localData[i];
-            if (typeof row === 'object' && row !== null) {
-              const value = (row as Record<string, unknown>)[name];
-              // 尝试将值转换为数字
-              if (value !== null && value !== undefined && value !== '') {
-                const num = Number(value);
-                if (!isNaN(num) && isFinite(num)) {
-                  numberCount++;
-                }
-              }
-            }
-          }
-
-          // 如果超过70%的非空值都是数字，则认为该字段是 number 类型
-          const nonEmptyCount = sampleSize;
-          const isNumberField = numberCount / nonEmptyCount > 0.7;
-
-          return {
+        const schema = Object.entries(firstRow as Record<string, unknown>).map(
+          ([name, value]) => ({
             name,
-            type: isNumberField ? 'number' : 'string',
-          };
-        });
-
+            type: typeof value === 'number' ? 'number' : 'string',
+          }),
+        );
         console.log('Schema discovered:', schema);
         return schema;
       },
@@ -88,30 +63,46 @@ export const createLocalConnector = (connectorId: string) => {
         // 度量感知的类型转换：将度量结果从字符串转换为数字
         let normalizedDataset = queryResult.dataset;
         if (queryDSL.select && Array.isArray(queryDSL.select)) {
-          // 识别度量列（那些有 func 属性的列）
-          const measureAliases: string[] = [];
+          // 识别度量列和维度列，查询结果列名优先 alias，否则 field
+          const measureFields: { field: string; alias: string }[] = [];
+          const dimensionFields: { field: string; alias: string }[] = [];
+
           for (const item of queryDSL.select) {
-            if (
-              typeof item === 'object' &&
-              item !== null &&
-              'func' in item &&
-              item.func
-            ) {
-              const alias = (item as any).alias || (item as any).field;
-              if (alias) {
-                measureAliases.push(alias);
+            if (typeof item === 'string') {
+              dimensionFields.push({ field: item, alias: item });
+              continue;
+            }
+
+            if (typeof item === 'object' && item !== null) {
+              const field = (item as any).field as string | undefined;
+              const alias = ((item as any).alias ?? field) as
+                | string
+                | undefined;
+
+              if (!field || !alias) {
+                continue;
+              }
+
+              if ((item as any).aggr?.func) {
+                measureFields.push({ field, alias });
+              } else {
+                dimensionFields.push({ field, alias });
               }
             }
           }
-          console.log('Identified measure aliases:', measureAliases);
+          console.log('Identified measure fields:', measureFields);
 
-          if (measureAliases.length > 0) {
-            // 将度量列的字符串值转换为数字
+          if (measureFields.length > 0 || dimensionFields.length > 0) {
+            // SQL 列名优先是 alias（如果提供），否则是 field
             normalizedDataset = queryResult.dataset.map((row) => {
-              const next = { ...row };
-              for (const alias of measureAliases) {
-                const raw = next[alias];
-                console.log(`Before: ${alias} = ${raw} (type: ${typeof raw})`);
+              const next: Record<string, any> = {};
+
+              for (const { field, alias } of measureFields) {
+                const sourceKey = alias || field;
+                const raw = (row as any)[sourceKey];
+                console.log(
+                  `Before: ${sourceKey} = ${raw} (type: ${typeof raw})`,
+                );
 
                 if (raw != null) {
                   let num: number;
@@ -125,16 +116,25 @@ export const createLocalConnector = (connectorId: string) => {
                     num = NaN;
                   }
 
-                  // 仅在有效时赋值
+                  // 仅在有效时赋值，使用 alias 作为列名
                   if (!Number.isNaN(num)) {
-                    next[alias] = num;
+                    next[field] = num;
                   }
                 }
 
                 console.log(
-                  `After: ${alias} = ${next[alias]} (type: ${typeof next[alias]})`,
+                  `After: ${field} = ${next[field]} (type: ${typeof next[field]})`,
                 );
               }
+
+              for (const { field, alias } of dimensionFields) {
+                const sourceKey = alias || field;
+                const raw = (row as any)[sourceKey];
+                if (raw != null) {
+                  next[field] = raw;
+                }
+              }
+
               return next;
             });
 
@@ -143,7 +143,7 @@ export const createLocalConnector = (connectorId: string) => {
         }
 
         return {
-          dataset: normalizedDataset,
+          dataset: queryResult.dataset,
         };
       },
     };

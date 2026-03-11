@@ -1,0 +1,25 @@
+{
+  "name": "high-discount-tech-profit-analysis",
+  "description": "高折扣技术类产品利润分析：筛选技术品类且折扣大于0.5的订单，按区域对比利润",
+  "schema": [
+    { "name": "area", "type": "string" },
+    { "name": "product_type", "type": "string" },
+    { "name": "discount", "type": "number" },
+    { "name": "profit", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "column",
+    "dimensions": [{ "field": "area", "alias": "区域" }],
+    "measures": [
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": { "func": "sum" }
+      }
+    ],
+    "whereFilters": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilters\n    .add('product_type', node => node.setOperator('eq').setValue('技术'))\n    .add('discount', node => node.setOperator('>').setValue(0.5));\n}"
+}

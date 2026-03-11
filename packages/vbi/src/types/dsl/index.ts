@@ -1,11 +1,8 @@
-export type { VBIDSL } from './vbi/vbi'
 export type { VBIDimensionTree, VBIDimensionGroup, VBIDimension } from './dimensions/dimensions'
 export type { VBIMeasureTree, VBIMeasureGroup, VBIMeasure } from './measures/measures'
-export type {
-  VBIHavingArray,
-  VBIHavingFilter,
-  VBIHavingFilterGroup,
-  FilterOperator,
-  LogicalOperator,
-} from './having/having'
+export type { VBIFilter, VBIWhereGroup, VBIWhereClause } from './whereFilters/filters'
+export { isVBIFilter, isVBIWhereGroup } from './whereFilters/filters'
+export type { VBIHavingFilter, VBIHavingGroup, VBIHavingClause } from './havingFilters/having'
+export { isVBIHavingFilter, isVBIHavingGroup } from './havingFilters/having'
 export type { VBIDSLTheme } from './theme/theme'
+export type { VBIDSL } from './vbi/vbi'

@@ -7,8 +7,12 @@ import { ChartTypeSelector } from 'src/components/ChartType';
 
 import { MeasureShelf } from 'src/components/Shelfs/MeasureShelf';
 import { DimensionShelf } from 'src/components/Shelfs/DimensionShelf';
+import {
+  FilterPanel,
+  type FilterItem,
+} from 'src/components/Filter/FilterPanel';
 import { useVBIStore } from 'src/model';
-import { useEffect } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 interface APPProps {
@@ -16,16 +20,85 @@ interface APPProps {
 }
 
 export const APP = (props: APPProps) => {
-  const { initialize, initialized } = useVBIStore(
+  const { initialize, initialized, builder, dsl } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
       initialized: state.initialized,
+      builder: state.builder,
+      dsl: state.dsl,
     })),
   );
+
+  const activeFields = useMemo(() => {
+    if (!dsl) return [];
+    const fields = new Set<string>();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const extractFields = (items: any[]) => {
+      items?.forEach((item) => {
+        if (item && typeof item === 'object') {
+          if ('field' in item && typeof item.field === 'string') {
+            fields.add(item.field);
+          }
+          if ('children' in item && Array.isArray(item.children)) {
+            extractFields(item.children);
+          }
+        }
+      });
+    };
+
+    extractFields(dsl.dimensions || []);
+    extractFields(dsl.measures || []);
+    return Array.from(fields);
+  }, [dsl]);
+
+  const [allFields, setAllFields] = useState<
+    { name: string; role: 'dimension' | 'measure' }[]
+  >([]);
+  const [filters, setFilters] = useState<FilterItem[]>([]);
+
+  useEffect(() => {
+    const handleFilterError = () => {
+      setFilters((prev) => prev.slice(0, -1));
+    };
+    window.addEventListener('vbi-filter-error', handleFilterError);
+    return () =>
+      window.removeEventListener('vbi-filter-error', handleFilterError);
+  }, []);
+
+  useEffect(() => {
+    if (initialized && builder) {
+      const fetchSchema = async () => {
+        const schema = await builder.getSchema();
+        setAllFields(
+          schema.map((s: { name: string; type: string }) => ({
+            name: s.name,
+            role: s.type === 'number' ? 'measure' : 'dimension',
+          })),
+        );
+      };
+      fetchSchema();
+    }
+  }, [initialized, builder]);
 
   useEffect(() => {
     return initialize(props.builder);
   }, []);
+
+  const handleFilterChange = (newFilters: FilterItem[]) => {
+    setFilters(newFilters);
+    if (builder) {
+      builder.doc.transact(() => {
+        builder.whereFilters.clear();
+        newFilters.forEach((f) => {
+          builder.whereFilters.add(f.field, (node) => {
+            node.setOperator(f.operator);
+            node.setValue(f.value);
+          });
+        });
+      });
+    }
+  };
 
   if (!initialized) {
     return <Spin tip="Initializing..." fullscreen />;
@@ -266,100 +339,14 @@ export const APP = (props: APPProps) => {
               </div>
             </div>
 
-            {/* X AXIS 配置 */}
-            <div>
-              <div
-                style={{
-                  fontSize: 12,
-                  color: '#595959',
-                  marginBottom: 8,
-                  fontWeight: 500,
-                }}
-              >
-                X AXIS
-              </div>
-              <div
-                style={{
-                  background: '#fafafa',
-                  padding: '12px',
-                  borderRadius: 6,
-                  border: '1px dashed #d9d9d9',
-                  color: '#8c8c8c',
-                  fontSize: '12px',
-                  minHeight: '60px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                Drag a measure here
-              </div>
-            </div>
-
-            {/* Y AXIS 配置 */}
-            <div>
-              <div
-                style={{
-                  fontSize: 12,
-                  color: '#595959',
-                  marginBottom: 8,
-                  fontWeight: 500,
-                }}
-              >
-                Y AXIS
-              </div>
-              <div
-                style={{
-                  background: '#fafafa',
-                  padding: '12px',
-                  borderRadius: 6,
-                  border: '1px dashed #d9d9d9',
-                  color: '#8c8c8c',
-                  fontSize: '12px',
-                  minHeight: '60px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                Drag a measure here
-              </div>
-            </div>
-
             {/* 筛选器区域 */}
             <div>
-              <div
-                style={{
-                  fontSize: 12,
-                  color: '#595959',
-                  marginBottom: 8,
-                  fontWeight: 500,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <span>FILTERS</span>
-                <span style={{ color: '#1890ff', cursor: 'pointer' }}>
-                  + Add filter
-                </span>
-              </div>
-              <div
-                style={{
-                  background: '#fafafa',
-                  padding: '12px',
-                  borderRadius: 6,
-                  border: '1px dashed #d9d9d9',
-                  color: '#8c8c8c',
-                  fontSize: '12px',
-                  minHeight: '60px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                No filters applied
-              </div>
+              <FilterPanel
+                fields={allFields}
+                activeFields={activeFields}
+                filters={filters}
+                onChange={handleFilterChange}
+              />
             </div>
 
             {/* 更新按钮 */}

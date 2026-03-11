@@ -1,8 +1,8 @@
 import { GroupBy } from './GroupBy'
+import { Having } from './Having'
 import { OrderBy } from './OrderBy'
 import { Select } from './Select'
 import { Where } from './Where'
-import { Having } from './Having'
 
 export interface QueryDSL<Table> {
   select: Select<Table>

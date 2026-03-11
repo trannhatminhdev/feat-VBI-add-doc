@@ -1,7 +1,13 @@
 import type { VQueryDSL } from '@visactor/vquery'
 import type { VBIDSL } from '../dsl'
 import type { VSeedDSL } from '@visactor/vseed'
-import type { MeasuresBuilder, DimensionsBuilder, ChartTypeBuilder, HavingBuilder } from 'src/builder/sub-builders'
+import type {
+  MeasuresBuilder,
+  DimensionsBuilder,
+  ChartTypeBuilder,
+  HavingFiltersBuilder,
+  WhereFiltersBuilder,
+} from 'src/builder/sub-builders'
 import type { Map, Doc, UndoManager } from 'yjs'
 
 export interface VBIBuilderInterface {
@@ -12,7 +18,8 @@ export interface VBIBuilderInterface {
   chartType: ChartTypeBuilder
   measures: MeasuresBuilder
   dimensions: DimensionsBuilder
-  having: HavingBuilder
+  havingFilters: HavingFiltersBuilder
+  whereFilters: WhereFiltersBuilder
 
   applyUpdate: (update: Uint8Array, origin?: any) => void
   encodeStateAsUpdate: (targetStateVector?: Uint8Array) => Uint8Array
@@ -20,4 +27,6 @@ export interface VBIBuilderInterface {
   buildVSeed: () => Promise<VSeedDSL>
   buildVQuery: () => VQueryDSL
   build: () => VBIDSL
+
+  setLimit: (limit: number) => this
 }

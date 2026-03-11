@@ -25,7 +25,7 @@ export const DimensionsList = memo(
 
     const addDimension = (dimensionName: string) => () => {
       builder.doc.transact(() => {
-        builder.dimensions.addDimension(dimensionName, (node) => {
+        builder.dimensions.add(dimensionName, (node) => {
           node.setAlias(dimensionName);
         });
       });

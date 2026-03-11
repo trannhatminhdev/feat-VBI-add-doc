@@ -24,10 +24,11 @@ export const applySelect = <DB, TB extends keyof DB & string, O, T>(
           const field = item.field as Extract<keyof T, string>
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const expression = eb.ref(field as any)
+          // 优先使用用户提供的 alias，其次使用 field，保证唯一性
+          const alias = item.alias ?? field
 
           if (item.aggr) {
             const { func } = item.aggr
-            const alias = item.alias ?? (field as string)
             if (['avg', 'sum', 'min', 'max', 'variance', 'variancePop', 'stddev', 'median'].includes(func)) {
               if (func === 'variance') {
                 return sql`var_samp(${expression})`.as(alias)
@@ -56,7 +57,7 @@ export const applySelect = <DB, TB extends keyof DB & string, O, T>(
               }
             }
           }
-          const alias = item.alias ?? (field as string)
+          // 优先使用用户提供的 alias，其次使用 field
           return expression.as(alias)
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

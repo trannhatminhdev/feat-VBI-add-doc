@@ -1,4 +1,7 @@
 import { useRef, useEffect } from 'react';
+import { message } from 'antd';
+import { isVBIFilter } from '@visactor/vbi';
+import { useVBIStore } from 'src/model';
 import VChart, { ISpec } from '@visactor/vchart';
 import {
   ListTable,
@@ -32,60 +35,85 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
     if (!ref.current) {
       return;
     }
-    const theme = 'light';
-    const builder = VSeedBuilder.from({ ...vseed, theme });
-    const spec = builder.build();
+    try {
+      const theme = 'light';
+      const builder = VSeedBuilder.from({ ...vseed, theme });
+      const spec = builder.build();
 
-    vseedBuilderRef.current = builder;
-    if (isPivotChart(vseed)) {
-      const tableInstance = new PivotChart(
-        ref.current,
-        spec as PivotChartConstructorOptions,
-      );
+      vseedBuilderRef.current = builder;
+      if (isPivotChart(vseed)) {
+        const tableInstance = new PivotChart(
+          ref.current,
+          spec as PivotChartConstructorOptions,
+        );
 
-      tableInstance.on('legend_item_click', (args) => {
-        console.log('LEGEND_ITEM_CLICK', args);
-        tableInstance.updateFilterRules([
-          {
-            filterKey: ColorIdEncoding,
-            filteredValues: args.value,
-          },
-        ]);
-      });
-
-      tableInstance.on('legend_change', (args) => {
-        const maxValue = args.value[1];
-        const minValue = args.value[0];
-        tableInstance.updateFilterRules([
-          {
-            filterFunc: (record) => {
-              const value = record[record[ColorIdEncoding]];
-              if (value >= minValue && value <= maxValue) {
-                return true;
-              }
-              return false;
+        tableInstance.on('legend_item_click', (args) => {
+          console.log('LEGEND_ITEM_CLICK', args);
+          tableInstance.updateFilterRules([
+            {
+              filterKey: ColorIdEncoding,
+              filteredValues: args.value,
             },
-          },
-        ]);
-      });
+          ]);
+        });
 
-      return () => tableInstance.release();
-    } else if (isVChart(vseed)) {
-      const vchart = new VChart(spec as ISpec, { dom: ref.current });
-      vchart.renderSync();
-      return () => vchart.release();
-    } else if (isTable(vseed)) {
-      const tableInstance = new ListTable(
-        ref.current,
-        spec as ListTableConstructorOptions,
+        tableInstance.on('legend_change', (args) => {
+          const maxValue = args.value[1];
+          const minValue = args.value[0];
+          tableInstance.updateFilterRules([
+            {
+              filterFunc: (record) => {
+                const value = record[record[ColorIdEncoding]];
+                if (value >= minValue && value <= maxValue) {
+                  return true;
+                }
+                return false;
+              },
+            },
+          ]);
+        });
+
+        return () => tableInstance.release();
+      } else if (isVChart(vseed)) {
+        const vchart = new VChart(spec as ISpec, { dom: ref.current });
+        vchart.renderSync();
+        return () => vchart.release();
+      } else if (isTable(vseed)) {
+        const tableInstance = new ListTable(
+          ref.current,
+          spec as ListTableConstructorOptions,
+        );
+        return () => tableInstance.release();
+      } else if (isPivotTable(vseed)) {
+        const tableInstance = new PivotTable(
+          ref.current,
+          spec as PivotTableConstructorOptions,
+        );
+        return () => tableInstance.release();
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error(error);
+      message.error(
+        '筛选器配置有误导致数据构建失败，已为您自动移除无效筛选器，请重新配置。',
       );
-      return () => tableInstance.release();
-    } else if (isPivotTable(vseed)) {
-      const tableInstance = new PivotTable(
-        ref.current,
-        spec as PivotTableConstructorOptions,
-      );
-      return () => tableInstance.release();
+
+      const storeBuilder = useVBIStore.getState().builder;
+      if (storeBuilder) {
+        storeBuilder.doc.transact(() => {
+          const filters = storeBuilder.whereFilters.toJson();
+          if (filters && filters.length > 0) {
+            // Remove the last filter added since it's most likely the offending one
+            const lastFilter = filters[filters.length - 1];
+            if (isVBIFilter(lastFilter)) {
+              storeBuilder.whereFilters.remove(lastFilter.id);
+              window.dispatchEvent(
+                new CustomEvent('vbi-filter-error', { detail: lastFilter }),
+              );
+            }
+          }
+        });
+      }
     }
   }, [vseed]);
 

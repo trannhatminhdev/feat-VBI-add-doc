@@ -1,0 +1,44 @@
+[
+  {
+    "type": "file",
+    "name": "chartType",
+    "label": "ChartType",
+    "count": 10
+  },
+  {
+    "type": "file",
+    "name": "dimensions",
+    "label": "Dimensions",
+    "count": 4
+  },
+  {
+    "type": "file",
+    "name": "havingFilters",
+    "label": "HavingFilters",
+    "count": 16
+  },
+  {
+    "type": "file",
+    "name": "locale",
+    "label": "Locale",
+    "count": 2
+  },
+  {
+    "type": "file",
+    "name": "measures",
+    "label": "Measures",
+    "count": 4
+  },
+  {
+    "type": "file",
+    "name": "theme",
+    "label": "Theme",
+    "count": 2
+  },
+  {
+    "type": "file",
+    "name": "whereFilters",
+    "label": "WhereFilters",
+    "count": 12
+  }
+]

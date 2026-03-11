@@ -1,10 +1,22 @@
 # @visactor/vseed
 
+## 0.4.12
+
+### Patch Changes
+
+- release vbi
+
+## 0.4.11
+
+### Patch Changes
+
+- release packages/vbi
+
 ## 0.4.10
 
 ### Patch Changes
 
-- Support timeFormatter in dimensions
+- d42ef8e: feat: release @visactor/vbi
 
 ## 0.4.9
 
@@ -25,6 +37,8 @@
 - Support totals in table/pivotTable, support **MeaId** column encoding in pivotTable
 
 ## 0.4.6
+
+### Patch Changes
 
 - a266c74: fix: jsdelivr application/node err
 

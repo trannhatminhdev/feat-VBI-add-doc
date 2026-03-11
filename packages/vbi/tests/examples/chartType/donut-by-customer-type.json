@@ -1,0 +1,15 @@
+{
+  "name": "donut-by-customer-type",
+  "description": "环形图 - 按客户类型销售占比",
+  "schema": [
+    { "name": "customer_type", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "donut",
+    "dimensions": [{ "field": "customer_type", "alias": "客户类型" }],
+    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "size", "aggregate": { "func": "sum" } }],
+    "limit": 10
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.chartType.changeChartType('pie'); }"
+}

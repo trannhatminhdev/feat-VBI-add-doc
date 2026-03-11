@@ -2,6 +2,7 @@ import { VBIConnectorId } from 'src/types/connector/connector'
 import { VBIDSL } from 'src/types'
 import { VBIBuilder } from './vbi-builder'
 import { connectorMap, getConnector, registerConnector } from './connector'
+import { id } from 'src/utils'
 
 import * as Y from 'yjs'
 
@@ -16,7 +17,8 @@ const createVBI = () => {
         chartType: 'table',
         measures: [],
         dimensions: [],
-        having: [],
+        whereFilters: [],
+        havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
         version: 0,
@@ -30,26 +32,56 @@ const createVBI = () => {
         if (vbi.connectorId) dsl.set('connectorId', vbi.connectorId)
         if (vbi.chartType) dsl.set('chartType', vbi.chartType)
         if (vbi.theme) dsl.set('theme', vbi.theme)
+        if (vbi.limit) dsl.set('limit', vbi.limit)
         if (vbi.locale) dsl.set('locale', vbi.locale)
         if (vbi.version) dsl.set('version', vbi.version)
 
-        if (!dsl.get('measures')) {
-          dsl.set('measures', new Y.Array<any>())
-        } else {
-          dsl.set('measures', vbi.measures)
+        // Initialize arrays - convert plain arrays to Y.Array if needed
+        const toYMap = (obj: any, ensureId = false): Y.Map<any> => {
+          const yMap = new Y.Map<any>()
+          if (ensureId && !obj.id) {
+            yMap.set('id', id.uuid())
+          }
+          for (const [key, value] of Object.entries(obj)) {
+            if (key === 'conditions' && Array.isArray(value)) {
+              const yArr = new Y.Array()
+              ;(value as any[]).forEach((child: any) => {
+                if (child instanceof Y.Map) {
+                  yArr.push([child])
+                } else if (typeof child === 'object' && child !== null) {
+                  yArr.push([toYMap(child, true)])
+                } else {
+                  yArr.push([child])
+                }
+              })
+              yMap.set(key, yArr)
+            } else {
+              yMap.set(key, value)
+            }
+          }
+          return yMap
         }
 
-        if (!dsl.get('dimensions')) {
-          dsl.set('dimensions', new Y.Array<any>())
-        } else {
-          dsl.set('dimensions', vbi.dimensions)
+        const ensureYArray = (arr: any, ensureId = false) => {
+          if (!arr) return new Y.Array()
+          if (arr instanceof Y.Array) return arr
+          const yArr = new Y.Array()
+          // Convert plain objects to Y.Map
+          arr.forEach((item: any) => {
+            if (item instanceof Y.Map) {
+              yArr.push([item])
+            } else if (typeof item === 'object' && item !== null) {
+              yArr.push([toYMap(item, ensureId)])
+            } else {
+              yArr.push([item])
+            }
+          })
+          return yArr
         }
-
-        if (!dsl.get('having')) {
-          dsl.set('having', new Y.Array<any>())
-        } else {
-          dsl.set('having', vbi.having)
-        }
+        dsl.set('whereFilters', ensureYArray(vbi.whereFilters, true))
+        dsl.set('havingFilters', ensureYArray(vbi.havingFilters, true))
+        dsl.set('measures', ensureYArray(vbi.measures))
+        dsl.set('dimensions', ensureYArray(vbi.dimensions))
       })
 
       return new VBIBuilder(doc)

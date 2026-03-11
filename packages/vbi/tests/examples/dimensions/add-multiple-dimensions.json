@@ -1,0 +1,25 @@
+{
+  "name": "add-multiple-dimensions",
+  "description": "添加多个维度（链式调用）",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [],
+    "measures": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.dimensions.add('product_type', n => n.setAlias('产品类型')).add('province', n => n.setAlias('省份')); }"
+}

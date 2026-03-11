@@ -3,7 +3,20 @@
   "playground",
   {
     "type": "dir",
+    "name": "examples",
+    "label": "示例",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
     "name": "practices",
-    "label": "Practices"
+    "label": "Practices",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "api",
+    "label": "API",
+    "collapsed": true
   }
 ]

@@ -1,8 +1,19 @@
 {
   "name": "@visactor/vbi",
-  "version": "0.0.0",
+  "version": "0.4.12",
+  "license": "MIT",
+  "homepage": "https://visactor.github.io/VBI",
+  "bugs": "https://github.com/VisActor/VBI/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VisActor/VBI",
+    "directory": "packages/vquery"
+  },
+  "author": {
+    "name": "VisActor",
+    "url": "https://www.visactor.io/"
+  },
   "type": "module",
-  "private": true,
   "exports": {
     ".": {
       "source": "./src/index.ts",
@@ -22,16 +33,24 @@
     "format": "prettier --write .",
     "lint": "eslint .",
     "test": "rstest",
-    "typecheck": "tsc --noEmit"
+    "test:update": "rstest --update",
+    "test:coverage": "rstest --coverage && node scripts/build-coverage-badge.mjs && open coverage/index.html",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.test.json",
+    "build:test": "node scripts/build-tests.mjs",
+    "build:examples": "node scripts/build-examples.mjs",
+    "build:api": "node scripts/build-api.mjs",
+    "g": "pnpm build:test && pnpm build:examples && pnpm build:api && pnpm test:update && pnpm format"
   },
   "dependencies": {
-    "zod": "4.0.17",
+    "@visactor/vseed": "workspace:*",
     "remeda": "2.28.0",
-    "yjs": "13.6.28",
     "simple-statistics": "7.8.8",
-    "@visactor/vseed": "workspace:*"
+    "uuid": "13.0.0",
+    "yjs": "13.6.28",
+    "zod": "4.0.17"
   },
-  "peerDependencies": {
+  "optionalDependencies": {
+    "@visactor/vquery": "workspace:*",
     "@visactor/vseed": "workspace:*"
   },
   "devDependencies": {
@@ -39,11 +58,13 @@
     "@rslib/core": "0.16.1",
     "@rstest/core": "0.8.3",
     "@types/node": "24.10.1",
+    "@types/uuid": "11.0.0",
+    "@visactor/vquery": "workspace:*",
     "eslint": "9.39.0",
     "globals": "16.4.0",
-    "prettier": "^3.6.2",
+    "prettier": "3.6.2",
+    "ts-morph": "26.0.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.48.0",
-    "@visactor/vquery": "workspace:*"
+    "typescript-eslint": "8.48.0"
   }
 }

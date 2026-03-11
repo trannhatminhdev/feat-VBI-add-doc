@@ -1,2 +1,2 @@
-export * from './dimensions-builder'
-export * from './dimension-node-builder'
+export * from './dim-builder'
+export * from './dim-node-builder'

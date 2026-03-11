@@ -1,5 +1,12 @@
 import { DatasetSource, StorageAdapter } from 'src/types'
 import { DatasetSchema } from '../../types/DataSet'
+import { idbPut, idbGet, idbDelete, idbGetAll } from './idb-helpers'
+
+type StoredDataset = {
+  datasetId: string
+  datasetSchema: DatasetSchema
+  datasetSource?: DatasetSource
+}
 
 export class IndexedDBAdapter implements StorageAdapter {
   private db: IDBDatabase | null = null
@@ -16,7 +23,6 @@ export class IndexedDBAdapter implements StorageAdapter {
 
       request.onupgradeneeded = (event) => {
         const db = (event.target as IDBOpenDBRequest).result
-        // 创建数据集存储
         if (!db.objectStoreNames.contains(this.datasetStoreName)) {
           db.createObjectStore(this.datasetStoreName, { keyPath: 'datasetId' })
         }
@@ -45,90 +51,36 @@ export class IndexedDBAdapter implements StorageAdapter {
     datasetSchema: DatasetSchema,
     datasetSource?: DatasetSource,
   ): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      if (!this.db) {
-        return reject('DB is not open')
-      }
-      const transaction = this.db.transaction([this.datasetStoreName], 'readwrite')
-      const store = transaction.objectStore(this.datasetStoreName)
-      const request = store.put({ datasetId, datasetSchema, datasetSource })
-
-      request.onsuccess = () => {
-        resolve()
-      }
-
-      request.onerror = (event) => {
-        reject((event.target as IDBRequest).error)
-      }
-    })
+    if (!this.db) {
+      return Promise.reject('DB is not open')
+    }
+    const record: StoredDataset = { datasetId, datasetSchema, datasetSource }
+    return idbPut(this.db, this.datasetStoreName, record).then(() => undefined)
   }
 
-  public readDataset = (
+  public readDataset = async (
     datasetId: string,
   ): Promise<{ datasetSource?: DatasetSource; datasetSchema: DatasetSchema } | null> => {
-    return new Promise((resolve, reject) => {
-      if (!this.db) {
-        return reject('DB is not open')
-      }
-      const transaction = this.db.transaction([this.datasetStoreName], 'readonly')
-      const store = transaction.objectStore(this.datasetStoreName)
-      const request = store.get(datasetId)
-
-      request.onsuccess = (event) => {
-        const result = (event.target as IDBRequest).result as
-          | { dataSource?: DatasetSource; datasetSchema: DatasetSchema }
-          | undefined
-        resolve(result || null)
-      }
-
-      request.onerror = (event) => {
-        reject((event.target as IDBRequest).error)
-      }
-    })
+    if (!this.db) {
+      return Promise.reject('DB is not open')
+    }
+    const result = await idbGet<StoredDataset>(this.db, this.datasetStoreName, datasetId)
+    return result ?? null
   }
 
   public deleteDataset = (datasetId: string): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      if (!this.db) {
-        return reject('DB is not open')
-      }
-      const transaction = this.db.transaction([this.datasetStoreName], 'readwrite')
-      const store = transaction.objectStore(this.datasetStoreName)
-      const request = store.delete(datasetId)
-
-      request.onsuccess = () => {
-        resolve()
-      }
-
-      request.onerror = (event) => {
-        reject((event.target as IDBRequest).error)
-      }
-    })
+    if (!this.db) {
+      return Promise.reject('DB is not open')
+    }
+    return idbDelete(this.db, this.datasetStoreName, datasetId).then(() => undefined)
   }
 
-  public listDatasets = (): Promise<
+  public listDatasets = async (): Promise<
     { datasetId: string; dataSource?: DatasetSource; datasetSchema: DatasetSchema }[]
   > => {
-    return new Promise((resolve, reject) => {
-      if (!this.db) {
-        return reject('DB is not open')
-      }
-      const transaction = this.db.transaction([this.datasetStoreName], 'readonly')
-      const store = transaction.objectStore(this.datasetStoreName)
-      const request = store.getAll()
-
-      request.onsuccess = (event) => {
-        const result = (event.target as IDBRequest).result as {
-          datasetId: string
-          dataSource?: DatasetSource
-          datasetSchema: DatasetSchema
-        }[]
-        resolve(result)
-      }
-
-      request.onerror = (event) => {
-        reject((event.target as IDBRequest).error)
-      }
-    })
+    if (!this.db) {
+      return Promise.reject('DB is not open')
+    }
+    return idbGetAll<StoredDataset>(this.db, this.datasetStoreName)
   }
 }

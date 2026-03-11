@@ -1,0 +1,19 @@
+{
+  "name": "zh-CN-locale",
+  "description": "中文 locale 测试",
+  "schema": [
+    { "name": "province", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [{ "field": "province", "alias": "省份" }],
+    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
+    "whereFilters": [],
+    "theme": "light",
+    "locale": "zh-CN",
+    "version": 1,
+    "limit": 10
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setLocale('zh-CN'); }"
+}

@@ -1,0 +1,26 @@
+{
+  "name": "update-dimension",
+  "description": "更新维度",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [
+      {
+        "field": "product_type",
+        "alias": "原产品类型"
+      }
+    ],
+    "measures": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.dimensions.update('product_type', n => n.setAlias('新产品类型')); }"
+}

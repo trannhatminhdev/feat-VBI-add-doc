@@ -1,0 +1,68 @@
+{
+  "name": "having-clear-and-rebuild",
+  "description": "清除已有having条件后重新构建全新的分组筛选，模拟用户重置筛选面板后重新配置",
+  "schema": [
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    },
+    {
+      "name": "amount",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "amount",
+        "alias": "数量",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [],
+    "havingFilters": [
+      {
+        "id": "old-1",
+        "field": "销售额",
+        "op": "gt",
+        "value": 999999
+      }
+    ],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.clear(); builder.havingFilters.addGroup('and', g => { g.add('销售额', n => n.setOperator('gte').setValue(100000)); g.addGroup('or', sub => { sub.add('利润', n => n.setOperator('gt').setValue(20000)); sub.add('数量', n => n.setOperator('gte').setValue(50)); }); }); }"
+}

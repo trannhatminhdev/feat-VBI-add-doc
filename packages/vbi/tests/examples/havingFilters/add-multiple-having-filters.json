@@ -1,0 +1,49 @@
+{
+  "name": "add-multiple-having-filters",
+  "description": "链式添加多个Having条件筛选高销售额且高利润的区域",
+  "schema": [
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [],
+    "havingFilters": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.add('销售额', n => n.setOperator('gt').setValue(1000000)).add('利润', n => n.setOperator('gt').setValue(200000)); }"
+}

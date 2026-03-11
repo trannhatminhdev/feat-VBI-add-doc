@@ -20,11 +20,11 @@
     "test": "pnpm -r test",
     "test:update": "pnpm -r test:update",
     "test:coverage": "pnpm -r test:coverage",
-    "publish:ci": "pnpm run build && pnpm changeset publish --filter=@visactor/vseed,@visactor/vquery --access=public",
+    "publish:ci": "pnpm run build && pnpm changeset publish --filter=@visactor/vseed,@visactor/vquery,@visactor/vbi --access=public",
     "prepare": "husky",
     "vbi:down": "docker-compose -f ./docker/docker-compose.dev.yml down",
     "vbi:up": "docker-compose -f ./docker/docker-compose.dev.yml up",
-    "postinstall": "test -e .env || cp .env.example .env"
+    "postinstall": "shx test -e .env || shx cp .env.example .env"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,md,mdx}": [
@@ -47,7 +47,7 @@
     "lint-staged": "^16.1.6",
     "node-fetch": "2.6.7",
     "prettier": "^3.6.2",
-    "ts-morph": "26.0.0",
+    "shx": "^0.4.0",
     "turbo": "^2.6.1"
   },
   "packageManager": "pnpm@10.26.1",

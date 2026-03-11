@@ -1,0 +1,139 @@
+### AnnotationHorizontalLine
+
+数值标注线(包括均值线、最大值线、最小值线等)，竖直方向展示，能够设置标注线的位置, 样式等，如需绘制y轴度量均值线等数值对应的标注线请使用该配置
+
+```typescript
+export type AnnotationHorizontalLine = {
+  /**
+   * @description  固定的y值, 用于标注水平线, 类目轴在y方向, 则可输入维值, 数值轴在y方向, 则可输入具体的数值
+   */
+  yValue?: (number | string) | (number | string)[]
+
+  /**
+   * 动态筛选器（AI生成代码执行）
+   * @description
+   * 通过 AI 生成的 JavaScript 代码动态计算标注线的值
+   * 适用于需要根据数据动态确定标注线位置，如平均值、最大值、分位数，业务线等
+   *
+   * 仅支持浏览器环境（需要 Web Worker）
+   *
+   * @type {ValueDynamicFilter}
+   */
+  dynamicFilter?: ValueDynamicFilter
+
+  /**
+   * @description 标注的文本
+   * @default ''
+   * @example '标注文本'
+   */
+  text?: string | string[]
+  /**
+   * 文本位置
+   * @description 标注线的标签位置（标签相对线的相对位置）。
+   * @example 'outsideEnd'
+   */
+  textPosition?: 'outsideStart' | 'outsideEnd' | 'outsideMiddle' | 'insideStart' | 'insideMiddle' | 'insideEnd'
+  /**
+   * @description 文本颜色
+   * @example 'red'
+   */
+  textColor?: string
+  /**
+   * @description 文本字体大小
+   * @example 12
+   */
+  textFontSize?: number
+  /**
+   * @description 文本字体重量
+   * @example 400
+   */
+  textFontWeight?: number
+  /**
+   * @description 文本对齐方式, 一般情况下, 无需设置
+   * 建议设置为'right', 这样可以确保文本在标注线的左侧
+   * right: 文本在参考线的左侧, 文本的右侧边缘对齐(水平)标注线的终点
+   * left: 文本在参考线的右侧, 文本的左侧边缘对齐(水平)标注线的终点
+   * center: 文本在参考线的中心, 文本的中心对齐(水平)标注线的终点
+   * @example 'right'
+   */
+  textAlign?: 'left' | 'right' | 'center'
+  /**
+   * @description 文本垂直对齐方式, 一般情况下, 无需设置
+   * 建议设置为'top', 这样可以确保文本完整的显示在图表的可见区域
+   * top: 文本在参考线的底部, 文本的顶部边缘对齐(水平)标注线
+   * middle: 文本在参考线的中心, 文本的中心对齐(水平)标注线
+   * bottom: 文本在参考线的顶部, 文本的底部边缘对齐(水平)标注线
+   * @example 'top'
+   */
+  textBaseline?: 'top' | 'middle' | 'bottom'
+  /**
+   * @description 背景可见
+   * @example true
+   */
+  textBackgroundVisible?: boolean
+  /**
+   * @description 背景颜色
+   * @example 'red'
+   */
+  textBackgroundColor?: string
+  /**
+   * @description 背景边框颜色
+   * @example 'red'
+   */
+  textBackgroundBorderColor?: string
+  /**
+   * 背景边框宽度
+   * @description 背景边框宽度
+   * @example 2
+   */
+  textBackgroundBorderWidth?: number
+  /**
+   * @description 背景边框圆角
+   * @example 4
+   */
+  textBackgroundBorderRadius?: number
+  /**
+   * @description 背景内边距
+   * @example 4
+   */
+  textBackgroundPadding?: number
+
+  /**
+   * 线可见
+   * @description 线可见
+   * @example true
+   */
+  lineVisible?: boolean
+  /**
+   * @description 线颜色
+   * @example 'red'
+   */
+  lineColor?: string
+  /**
+   * @description 线宽度
+   * @example 2
+   */
+  lineWidth?: number
+  /**
+   * @description 线样式
+   * @example 'solid'
+   */
+  lineStyle?: 'solid' | 'dashed' | 'dotted'
+
+  /**
+   * 是否开启将主线分隔成两段的功能
+   */
+  splitLine?:
+    | boolean
+    | {
+        /**
+         * 大于标注值的部分，对应的主色
+         */
+        positiveColor?: string
+        /**
+         * 小于标注值的部分，对应的主色
+         */
+        negativeColor?: string
+      }
+}
+```

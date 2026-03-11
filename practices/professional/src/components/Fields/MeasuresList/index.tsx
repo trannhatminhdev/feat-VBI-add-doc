@@ -24,7 +24,7 @@ export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
 
   const addMeasure = (measureName: string) => () => {
     builder.doc.transact(() => {
-      builder.measures.addMeasure(measureName, (node) => {
+      builder.measures.add(measureName, (node) => {
         node.setAlias(measureName);
         node.setAggregate({
           func: 'sum',

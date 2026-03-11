@@ -1,0 +1,158 @@
+[
+  {
+    "name": "dataset",
+    "componentName": "Dataset",
+    "type": "Dataset",
+    "description": "数据源"
+  },
+  {
+    "name": "dimensions",
+    "componentName": "RaceBarDimension",
+    "type": "RaceBarDimension[]",
+    "description": "维度"
+  },
+  {
+    "name": "measures",
+    "componentName": "RaceBarMeasure",
+    "type": "RaceBarMeasure[]",
+    "description": "指标"
+  },
+  {
+    "name": "player",
+    "componentName": "Player",
+    "type": "Player",
+    "description": "播放器配置, 用于指定时间维度, 动态条形图的核心配置"
+  },
+  {
+    "name": "sort",
+    "componentName": "Sort",
+    "type": "Sort",
+    "description": "排序配置, 动态条形图通常需要根据数值动态排序"
+  },
+  {
+    "name": "page",
+    "componentName": "Page",
+    "type": "Page",
+    "description": "分页配置"
+  },
+  {
+    "name": "backgroundColor",
+    "componentName": "BackgroundColor",
+    "type": "BackgroundColor",
+    "description": "背景颜色"
+  },
+  {
+    "name": "color",
+    "componentName": "Color",
+    "type": "Color",
+    "description": "颜色配置"
+  },
+  {
+    "name": "label",
+    "componentName": "Label",
+    "type": "Label",
+    "description": "标签配置"
+  },
+  {
+    "name": "legend",
+    "componentName": "Legend",
+    "type": "Legend",
+    "description": "图例配置"
+  },
+  {
+    "name": "tooltip",
+    "componentName": "Tooltip",
+    "type": "Tooltip",
+    "description": "提示信息配置"
+  },
+  {
+    "name": "brush",
+    "componentName": "Brush",
+    "type": "Brush",
+    "description": "框选配置"
+  },
+  {
+    "name": "xAxis",
+    "componentName": "XLinearAxis",
+    "type": "XLinearAxis",
+    "description": "x轴配置，为数值轴，展示指标值"
+  },
+  {
+    "name": "yAxis",
+    "componentName": "YBandAxis",
+    "type": "YBandAxis",
+    "description": "y轴配置，为类目轴，展示维度值，柱子竖向排列"
+  },
+  {
+    "name": "crosshairRect",
+    "componentName": "CrosshairRect",
+    "type": "CrosshairRect",
+    "description": "水平提示框配置"
+  },
+  {
+    "name": "stackCornerRadius",
+    "componentName": "StackCornerRadius",
+    "type": "StackCornerRadius",
+    "description": "堆叠圆角"
+  },
+  {
+    "name": "barMaxWidth",
+    "componentName": "BarMaxWidth",
+    "type": "BarMaxWidth",
+    "description": "矩形的最大高度"
+  },
+  {
+    "name": "sortLegend",
+    "componentName": "SortLegend",
+    "type": "SortLegend",
+    "description": "图例排序配置"
+  },
+  {
+    "name": "theme",
+    "componentName": "Theme",
+    "type": "Theme",
+    "description": "主题"
+  },
+  {
+    "name": "barStyle",
+    "componentName": "BarStyle",
+    "type": "BarStyle | BarStyle[]",
+    "description": "条形图样式配置"
+  },
+  {
+    "name": "annotationPoint",
+    "componentName": "AnnotationPoint",
+    "type": "AnnotationPoint | AnnotationPoint[]",
+    "description": "标注点配置"
+  },
+  {
+    "name": "annotationVerticalLine",
+    "componentName": "AnnotationVerticalLine",
+    "type": "AnnotationVerticalLine | AnnotationVerticalLine[]",
+    "description": "数值标注线"
+  },
+  {
+    "name": "annotationHorizontalLine",
+    "componentName": "AnnotationHorizontalLine",
+    "type": "AnnotationHorizontalLine | AnnotationHorizontalLine[]",
+    "description": "维度值标注线"
+  },
+  {
+    "name": "annotationArea",
+    "componentName": "AnnotationArea",
+    "type": "AnnotationArea | AnnotationArea[]",
+    "description": "标注区域配置"
+  },
+  {
+    "name": "dimensionLinkage",
+    "componentName": "DimensionLinkage",
+    "type": "DimensionLinkage",
+    "description": "维度联动配置"
+  },
+  {
+    "name": "locale",
+    "componentName": "Locale",
+    "type": "Locale",
+    "description": "语言配置"
+  }
+]

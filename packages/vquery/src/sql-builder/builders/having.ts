@@ -1,8 +1,17 @@
+import type { SelectQueryBuilder } from 'kysely'
 import { Having, HavingClause } from 'src/types'
 import { sql } from 'kysely'
 import type { RawBuilder } from 'kysely'
+import { toSqlOperator } from '../utils'
 
-export const applyHaving = <T>(having: Having<T> | HavingClause<T>): RawBuilder<boolean> => {
+export const applyHaving = <DB, TB extends keyof DB & string, O, T>(
+  qb: SelectQueryBuilder<DB, TB, O>,
+  having?: Having<T> | HavingClause<T>,
+): SelectQueryBuilder<DB, TB, O> => {
+  if (!having) {
+    return qb
+  }
+
   const toRaw = (h: Having<T> | HavingClause<T>): RawBuilder<boolean> => {
     if ('op' in h && 'conditions' in h) {
       const parts: RawBuilder<boolean>[] = (h.conditions as Array<HavingClause<T>>).map((c) => toRaw(c))
@@ -12,7 +21,7 @@ export const applyHaving = <T>(having: Having<T> | HavingClause<T>): RawBuilder<
     const leaf = h as unknown as { field: Extract<keyof T, string>; op: string; value?: unknown }
     const field = leaf.field
     const value = leaf.value
-    const op = leaf.op
+    const op = toSqlOperator(leaf.op)
 
     // Handle aggregation function operators: sum(), avg(), count(), min(), max()
     if (['sum', 'avg', 'count', 'min', 'max'].includes(op)) {
@@ -21,7 +30,7 @@ export const applyHaving = <T>(having: Having<T> | HavingClause<T>): RawBuilder<
     }
 
     // Handle comparison operators
-    switch (op) {
+    switch (leaf.op) {
       case 'is null':
         return sql<boolean>`${sql.ref(field)} is null`
       case 'is not null':
@@ -46,5 +55,5 @@ export const applyHaving = <T>(having: Having<T> | HavingClause<T>): RawBuilder<
         return sql<boolean>`${sql.ref(field)} ${sql.raw(op)} ${sql.val(value)}`
     }
   }
-  return toRaw(having)
+  return qb.having(toRaw(having))
 }

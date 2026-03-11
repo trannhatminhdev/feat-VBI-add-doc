@@ -1,0 +1,19 @@
+{
+  "name": "en-US-locale",
+  "description": "英文 locale 测试",
+  "schema": [
+    { "name": "province", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [{ "field": "province", "alias": "Province" }],
+    "measures": [{ "field": "sales", "alias": "Sales", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
+    "whereFilters": [],
+    "theme": "light",
+    "locale": "en-US",
+    "version": 1,
+    "limit": 10
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setLocale('en-US'); }"
+}

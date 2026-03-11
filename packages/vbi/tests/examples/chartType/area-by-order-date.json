@@ -1,0 +1,15 @@
+{
+  "name": "area-by-order-date",
+  "description": "面积图 - 按日期销售额趋势",
+  "schema": [
+    { "name": "order_date", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "area",
+    "dimensions": [{ "field": "order_date", "alias": "订单日期" }],
+    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
+    "limit": 10
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.chartType.changeChartType('line'); }"
+}

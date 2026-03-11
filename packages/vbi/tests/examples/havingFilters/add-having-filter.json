@@ -1,0 +1,37 @@
+{
+  "name": "add-having-filter",
+  "description": "按区域分组后筛选销售额超过百万的高业绩区域",
+  "schema": [
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "whereFilters": [],
+    "havingFilters": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.add('销售额', node => { node.setOperator('gt').setValue(1000000); }); }"
+}

@@ -1,14 +1,16 @@
 import * as Y from 'yjs'
 
 import { VSeedDSL } from '@visactor/vseed'
+import { VQueryDSL } from '@visactor/vquery'
 import { DimensionsBuilder } from './sub-builders/dimensions'
 import { MeasuresBuilder } from './sub-builders/measures'
+import { HavingFiltersBuilder } from './sub-builders/havingFilters'
+import { WhereFiltersBuilder } from './sub-builders'
+import { ChartTypeBuilder } from './sub-builders'
+
 import { VBIDSL, VBIBuilderInterface } from 'src/types'
 import { buildVQuery } from 'src/pipeline'
-import { ChartTypeBuilder } from './sub-builders/chart-type'
-import { HavingBuilder } from './sub-builders/having'
 import { getConnector } from './connector'
-import { VQueryDSL } from '@visactor/vquery'
 
 export class VBIBuilder implements VBIBuilderInterface {
   public doc: Y.Doc
@@ -18,7 +20,8 @@ export class VBIBuilder implements VBIBuilderInterface {
   public chartType: ChartTypeBuilder
   public measures: MeasuresBuilder
   public dimensions: DimensionsBuilder
-  public having: HavingBuilder
+  public havingFilters: HavingFiltersBuilder
+  public whereFilters: WhereFiltersBuilder
 
   constructor(doc: Y.Doc) {
     this.doc = doc
@@ -28,7 +31,8 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.chartType = new ChartTypeBuilder(doc, this.dsl)
     this.measures = new MeasuresBuilder(doc, this.dsl)
     this.dimensions = new DimensionsBuilder(doc, this.dsl)
-    this.having = new HavingBuilder(doc, this.dsl)
+    this.havingFilters = new HavingFiltersBuilder(doc, this.dsl)
+    this.whereFilters = new WhereFiltersBuilder(doc, this.dsl)
   }
 
   public applyUpdate(update: Uint8Array) {
@@ -48,45 +52,11 @@ export class VBIBuilder implements VBIBuilderInterface {
     const schema = await connector.discoverSchema()
     const queryResult = await connector.query({ queryDSL, schema, connectorId })
 
-    // 将 VBI DSL 的 measures/dimensions 转换为 VSeed 格式
-    const mapMeasures = (tree: any[]): any[] => {
-      return tree.map((node) => {
-        if (MeasuresBuilder.isMeasureNode(node)) {
-          return {
-            id: node.field, // field → id
-            alias: node.alias,
-            encoding: node.encoding,
-          }
-        } else {
-          return {
-            alias: node.alias,
-            children: mapMeasures(node.children),
-          }
-        }
-      })
-    }
-
-    const mapDimensions = (tree: any[]): any[] => {
-      return tree.map((node) => {
-        if (DimensionsBuilder.isDimensionNode(node)) {
-          return {
-            id: node.field, // field → id
-            alias: node.alias,
-          }
-        } else {
-          return {
-            alias: node.alias,
-            children: mapDimensions(node.children),
-          }
-        }
-      })
-    }
-
     return {
       chartType: vbiDSL.chartType,
       dataset: queryResult.dataset,
-      measures: vbiDSL.measures.length > 0 ? mapMeasures(vbiDSL.measures) : undefined,
-      dimensions: vbiDSL.dimensions.length > 0 ? mapDimensions(vbiDSL.dimensions) : undefined,
+      theme: vbiDSL.theme,
+      locale: vbiDSL.locale,
     } as VSeedDSL
   }
 
@@ -104,5 +74,20 @@ export class VBIBuilder implements VBIBuilderInterface {
     const con = await getConnector(connectorId)
     const result = await con.discoverSchema()
     return result
+  }
+
+  public setLimit(limit: number): this {
+    this.dsl.set('limit', limit)
+    return this
+  }
+
+  public setLocale(locale: string): this {
+    this.dsl.set('locale', locale)
+    return this
+  }
+
+  public setTheme(theme: string): this {
+    this.dsl.set('theme', theme)
+    return this
   }
 }

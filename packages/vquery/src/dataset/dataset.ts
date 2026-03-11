@@ -1,20 +1,7 @@
-import { DatasetColumn, DatasetSource, DatasetSourceType, DataType, QueryDSL, VQueryDSL } from 'src/types'
+import { DatasetColumn, DatasetSource, QueryDSL, VQueryDSL } from 'src/types'
 import { QueryAdapter, StorageAdapter } from 'src/types'
 import { convertDSLToSQL } from 'src/sql-builder'
-
-const READ_FUNCTION_MAP: Record<DatasetSourceType, string> = {
-  csv: 'read_csv_auto',
-  json: 'read_json_auto',
-  parquet: 'read_parquet',
-}
-
-const DATA_TYPE_MAP: Record<DataType, string> = {
-  number: 'DOUBLE',
-  string: 'VARCHAR',
-  date: 'DATE',
-  datetime: 'TIMESTAMP',
-  timestamp: 'TIMESTAMP',
-}
+import { READ_FUNCTION_MAP, buildColumnsStruct } from './constants'
 
 export class Dataset {
   private queryAdapter: QueryAdapter
@@ -27,11 +14,6 @@ export class Dataset {
     this._datasetId = datasetId
   }
 
-  /**
-   * Initialize the dataset by loading it into the query engine
-   * @param temporaryColumns Optional temporary columns to override storage schema
-   * @param temporaryDatasetSource Optional temporary data source to override storage source
-   */
   public async init(temporaryColumns?: DatasetColumn[], temporaryDatasetSource?: DatasetSource) {
     const datasetInfo = await this.storageAdapter.readDataset(this._datasetId)
     if (!datasetInfo) {
@@ -46,9 +28,6 @@ export class Dataset {
     }
   }
 
-  /**
-   * Register file and create a view in DuckDB
-   */
   public async createOrReplaceView(columns: DatasetColumn[], datasetSource: DatasetSource) {
     if (!datasetSource) {
       return
@@ -59,15 +38,12 @@ export class Dataset {
       throw new Error(`Unsupported dataSource type: ${datasetSource.type}`)
     }
 
-    // Register file blob to DuckDB
     await this.queryAdapter.writeFile(this._datasetId, datasetSource.blob)
 
-    const columnsStruct = this.buildColumnsStruct(columns)
+    const columnsStruct = buildColumnsStruct(columns)
     const columnNames = columns.map((c) => `"${c.name}"`).join(', ')
 
-    // Build read SQL based on source type
     let readSql = `${readFunction}('${this._datasetId}')`
-    // CSV and JSON support explicit column definition for better type inference
     if (datasetSource.type === 'csv' || datasetSource.type === 'json') {
       readSql = `${readFunction}('${this._datasetId}', columns=${columnsStruct})`
     }
@@ -76,17 +52,11 @@ export class Dataset {
     await this.queryAdapter.query(createViewSql)
   }
 
-  /**
-   * Execute query using VQuery DSL
-   */
   public async query<T extends Record<string, number | string>>(queryDSL: QueryDSL<T> | VQueryDSL<T>) {
     const sql = convertDSLToSQL(queryDSL, this.datasetId)
     return this.queryBySQL(sql)
   }
 
-  /**
-   * Execute raw SQL query
-   */
   public async queryBySQL(sql: string) {
     const start = performance?.now?.() ?? Date.now()
     const result = await this.queryAdapter.query(sql)
@@ -102,22 +72,11 @@ export class Dataset {
     }
   }
 
-  /**
-   * Clean up resources
-   */
   public async disconnect() {
     await this.queryAdapter.query(`DROP VIEW IF EXISTS "${this._datasetId}"`)
   }
 
   get datasetId() {
     return this._datasetId
-  }
-
-  private buildColumnsStruct(columns: DatasetColumn[]): string {
-    const columnDefs = columns.map((c) => {
-      const duckDBType = DATA_TYPE_MAP[c.type] || 'VARCHAR'
-      return `'${c.name}': '${duckDBType}'`
-    })
-    return `{${columnDefs.join(', ')}}`
   }
 }

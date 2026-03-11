@@ -1,6 +1,18 @@
 {
   "name": "@visactor/vseed",
-  "version": "0.4.10",
+  "version": "0.4.12",
+  "license": "MIT",
+  "homepage": "https://visactor.github.io/VBI",
+  "bugs": "https://github.com/VisActor/VBI/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VisActor/VBI",
+    "directory": "packages/vseed"
+  },
+  "author": {
+    "name": "VisActor",
+    "url": "https://www.visactor.io/"
+  },
   "type": "module",
   "exports": {
     ".": {
@@ -68,19 +80,8 @@
     "typescript": "5.9.3",
     "typescript-eslint": "8.48.0",
     "vi-canvas-mock": "^1.0.0",
+    "ts-morph": "26.0.0",
     "vitest": "3.2.4"
   },
-  "sideEffects": false,
-  "license": "MIT",
-  "homepage": "https://visactor.github.io/VSeed",
-  "bugs": "https://github.com/VisActor/VSeed/issues",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/VisActor/VBI",
-    "directory": "packages/vseed"
-  },
-  "author": {
-    "name": "VisActor",
-    "url": "https://www.visactor.io/"
-  }
+  "sideEffects": false
 }

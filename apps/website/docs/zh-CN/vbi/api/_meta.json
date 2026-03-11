@@ -1,0 +1,37 @@
+[
+  {
+    "type": "file",
+    "name": "builder",
+    "label": "builder"
+  },
+  {
+    "type": "file",
+    "name": "chart-type",
+    "label": "builder.chartType",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "measures",
+    "label": "builder.measures",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "dimensions",
+    "label": "builder.dimensions",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "where-filters",
+    "label": "builder.whereFilters",
+    "collapsed": true
+  },
+  {
+    "type": "dir",
+    "name": "having-filters",
+    "label": "builder.havingFilters",
+    "collapsed": true
+  }
+]

@@ -1,16 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import './App.css';
 import { ConfigProvider, theme, Dropdown, Button } from 'antd';
 import { LeftOutlined, RightOutlined, UploadOutlined } from '@ant-design/icons';
 import DimensionShelf from './components/Shelfs/DimensionShelf';
 import MeasureShelf from './components/Shelfs/MeasureShelf';
+import { FilterPanel, type FilterItem } from './components/Filter/FilterPanel';
+
 import { ChartTypeSelector } from './components/ChartType';
 import FieldsList from './components/Fields/FieldList';
 import MeasureFieldList from './components/Fields/MeasureFieldList';
+import EncodingPanel from './components/Fields/EncodingPanel';
 import { VSeedRender } from './components/Render';
 import { useVBIStore } from './model';
 import { useShallow } from 'zustand/shallow';
+import { setLocalData } from './utils/localConnector';
+
+type EncodingChannel =
+  | 'yAxis'
+  | 'xAxis'
+  | 'color'
+  | 'label'
+  | 'tooltip'
+  | 'size';
 
 export function APP() {
   const [leftWidth, setLeftWidth] = useState(220);
@@ -18,26 +30,8 @@ export function APP() {
   const [builderCollapsed, setBuilderCollapsed] = useState(false);
 
   // VBI builder 相关
-  const builderRef = useRef<{
-    dimensions?: {
-      addDimension: (field: string, callback?: (node: unknown) => void) => void;
-      removeDimension: (field: string) => void;
-    };
-    measures?: {
-      addMeasure: (field: string, callback?: (node: unknown) => void) => void;
-      removeMeasure: (field: string) => void;
-      renameMeasure: (alias: string, newAlias: string) => void;
-      modifyAggregate: (alias: string, func: string, quantile?: number) => void;
-      getMeasures: () => any[];
-    };
-    chartType?: {
-      changeChartType: (type: string) => void;
-      getAvailableChartTypes: () => string[];
-    };
-    doc?: {
-      transact: (callback: () => void) => void;
-    };
-  }>(null);
+
+  const builderRef = useRef<any>(null);
 
   // 可用的字段和选中的字段
   const [dimensions, setDimensions] = useState<string[]>([]);
@@ -47,24 +41,95 @@ export function APP() {
   const [measuresDetail, setMeasuresDetail] = useState<
     Record<
       string,
-      { alias?: string; aggregate?: { func: string; quantile?: number } }
+      {
+        alias?: string;
+        aggregate?: { func: string; quantile?: number };
+        encoding?: EncodingChannel;
+      }
     >
   >({});
+  const [dimensionMeasures, setDimensionMeasures] = useState<string[]>([]);
   const [chartTypeOptions, setChartTypeOptions] = useState<string[]>([]);
   const [currentChartType, setCurrentChartType] = useState<string>('table');
   const [renderKey, setRenderKey] = useState(0);
-  // Track which measures came from dimensions (to restrict their aggregates)
-  const [dimensionMeasures, setDimensionMeasures] = useState<string[]>([]);
 
   // 获取 vbi store 的状态
-  const { initialize, initialized, builder, vseed } = useVBIStore(
+  const { initialize, initialized, builder, vseed, dsl } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
       initialized: state.initialized,
       builder: state.builder,
       vseed: state.vseed,
+      dsl: state.dsl,
     })),
   );
+
+  const activeFields = useMemo(() => {
+    if (!dsl) return [];
+    const fields = new Set<string>();
+
+    const extractFields = (items: any[]) => {
+      items?.forEach((item) => {
+        if (item && typeof item === 'object') {
+          if ('field' in item && typeof item.field === 'string') {
+            fields.add(item.field);
+          }
+          if ('children' in item && Array.isArray(item.children)) {
+            extractFields(item.children);
+          }
+        }
+      });
+    };
+
+    extractFields(dsl.dimensions || []);
+    extractFields(dsl.measures || []);
+    return Array.from(fields);
+  }, [dsl]);
+
+  const [allFields, setAllFields] = useState<
+    { name: string; role: 'dimension' | 'measure' }[]
+  >([]);
+  const [filters, setFilters] = useState<FilterItem[]>([]);
+
+  useEffect(() => {
+    const handleFilterError = () => {
+      setFilters((prev) => prev.slice(0, -1));
+    };
+    window.addEventListener('vbi-filter-error', handleFilterError);
+    return () =>
+      window.removeEventListener('vbi-filter-error', handleFilterError);
+  }, []);
+
+  useEffect(() => {
+    if (initialized && builder) {
+      const fetchSchema = async () => {
+        const schema = await builder.getSchema();
+        setAllFields(
+          schema.map((s: { name: string; type: string }) => ({
+            name: s.name,
+            role: s.type === 'number' ? 'measure' : 'dimension',
+          })),
+        );
+      };
+      fetchSchema();
+    }
+  }, [initialized, builder]);
+
+  const handleFilterChange = (newFilters: FilterItem[]) => {
+    setFilters(newFilters);
+    if (builder) {
+      builder.doc.transact(() => {
+        builder.whereFilters.clear();
+        newFilters.forEach((f) => {
+          builder.whereFilters.add(f.field, (node) => {
+            node.setOperator(f.operator);
+            node.setValue(f.value);
+          });
+        });
+      });
+      setRenderKey((prev) => prev + 1);
+    }
+  };
 
   // 初始化
   useEffect(() => {
@@ -100,11 +165,15 @@ export function APP() {
     loadSchema();
 
     // 初始化度量字段详情
-    if (builder?.measures?.getMeasures) {
-      const measures = builder.measures.getMeasures();
+    if (builder?.measures?.toJson) {
+      const measures = builder.measures.toJson();
       const detail: Record<
         string,
-        { alias?: string; aggregate?: { func: string; quantile?: number } }
+        {
+          alias?: string;
+          aggregate?: { func: string; quantile?: number };
+          encoding?: EncodingChannel;
+        }
       > = {};
 
       if (Array.isArray(measures)) {
@@ -118,6 +187,7 @@ export function APP() {
             aggregate: aggregate
               ? { func: aggregate.func, quantile: aggregate.quantile }
               : undefined,
+            encoding: value.encoding,
           };
         });
       }
@@ -126,13 +196,82 @@ export function APP() {
     }
   }, []);
 
+  // Compute encoding information from DSL as the single source of truth
+  const encodingInfo = useMemo(() => {
+    if (!measureFields.length) {
+      return [];
+    }
+
+    const map: Record<string, string[]> = {};
+
+    for (const field of measureFields) {
+      const detail = measuresDetail[field];
+      const encoding = detail?.encoding ?? 'yAxis';
+      const displayName = detail?.alias || field;
+
+      if (!map[encoding]) {
+        map[encoding] = [];
+      }
+      map[encoding].push(displayName);
+    }
+
+    return Object.entries(map).map(([encoding, measures]) => ({
+      encoding,
+      measures,
+    }));
+  }, [measureFields, measuresDetail]);
+
+  // Compute supported encodings for current chart type
+  const supportedEncodings = useMemo(() => {
+    return [];
+  }, [currentChartType]);
+
   // 加载 demo 数据
   const handleLoadDemo = async () => {
-    // 数据已经通过 demoConnector 的 query 方法从云端加载
-    // 字段列表已经通过 getSchema 获得
+    try {
+      const url = 'https://visactor.github.io/VBI/dataset/supermarket.csv';
+      const response = await fetch(url);
+      const csv = await response.text();
+
+      const lines = csv.split('\n');
+      const headers = lines[0].split(',').map((h: string) => h.trim());
+      const data = lines
+        .slice(1)
+        .map((line: string) => {
+          const values = line.split(',').map((v: string) => v.trim());
+          const row: Record<string, unknown> = {};
+          headers.forEach((header: string, index: number) => {
+            const value = values[index];
+            row[header] = isNaN(Number(value)) ? value : Number(value);
+          });
+          return row;
+        })
+        .filter((row: Record<string, unknown>) =>
+          Object.values(row).some((v) => v !== ''),
+        );
+
+      // 设置本地数据
+      setLocalData(data);
+
+      // 识别维度和度量
+      if (data.length > 0) {
+        const dims = headers.filter((h: string) => isNaN(Number(data[0]?.[h])));
+        const meas = headers.filter(
+          (h: string) => !isNaN(Number(data[0]?.[h])),
+        );
+        setDimensions(dims.length > 0 ? dims : headers.slice(0, 3));
+        setMeasures(meas.length > 0 ? meas : headers.slice(3));
+        setDimensionFields([]);
+        setMeasureFields([]);
+      }
+
+      console.log('Demo 数据已加载');
+    } catch (err) {
+      console.error('加载 Demo 数据失败:', err);
+    }
   };
 
-  // 上传 CSV - 暂未实现，目前仅支持 demo 数据
+  // 上传 CSV
   const handleUploadCSV = () => {
     alert(
       'Function not yet implemented. Currently only demo data is supported.',
@@ -160,39 +299,13 @@ export function APP() {
       if (builderRef.current?.dimensions && builderRef.current.doc) {
         const { dimensions, doc } = builderRef.current;
         doc.transact(() => {
-          dimensions.addDimension(field, (node: unknown) => {
+          dimensions.add(field, (node: unknown) => {
             const nodeObj = node as Record<string, (field: string) => void>;
             if (nodeObj?.setAlias) {
               nodeObj.setAlias(field);
             }
           });
         });
-      }
-      setRenderKey((prev) => prev + 1);
-    }
-  };
-
-  // 从 dimension 添加 measure（默认使用 count 聚合）
-  const handleAddMeasureFromDimension = (field: string) => {
-    if (!measureFields.includes(field)) {
-      const newMeas = [...measureFields, field];
-      setMeasureFields(newMeas);
-      setDimensionMeasures((prev) => [...prev, field]);
-      if (builderRef.current?.measures && builderRef.current.doc) {
-        const { measures, doc } = builderRef.current;
-        doc.transact(() => {
-          measures.addMeasure(field, (node: unknown) => {
-            const nodeObj = node as any;
-            if (nodeObj?.setAlias) {
-              nodeObj.setAlias(field);
-            }
-            // Dimension 转为 measure 时默认使用 count 聚合
-            if (nodeObj?.setAggregate) {
-              nodeObj.setAggregate({ func: 'count' });
-            }
-          });
-        });
-        syncMeasuresDetail();
       }
       setRenderKey((prev) => prev + 1);
     }
@@ -213,10 +326,14 @@ export function APP() {
   // 同步度量字段详情
   const syncMeasuresDetail = () => {
     if (builderRef.current?.measures) {
-      const measures = builderRef.current.measures.getMeasures();
+      const measures = builderRef.current.measures.toJson();
       const detail: Record<
         string,
-        { alias?: string; aggregate?: { func: string; quantile?: number } }
+        {
+          alias?: string;
+          aggregate?: { func: string; quantile?: number };
+          encoding?: EncodingChannel;
+        }
       > = {};
 
       if (Array.isArray(measures)) {
@@ -230,6 +347,7 @@ export function APP() {
             aggregate: aggregate
               ? { func: aggregate.func, quantile: aggregate.quantile }
               : undefined,
+            encoding: value.encoding,
           };
         });
       }
@@ -246,14 +364,13 @@ export function APP() {
       if (builderRef.current?.measures && builderRef.current.doc) {
         const { measures, doc } = builderRef.current;
         doc.transact(() => {
-          measures.addMeasure(field, (node: unknown) => {
+          measures.add(field, (node: unknown) => {
             const nodeObj = node as Record<string, (field: string) => void>;
             if (nodeObj?.setAlias) {
               nodeObj.setAlias(field);
             }
           });
         });
-        syncMeasuresDetail();
       }
       setRenderKey((prev) => prev + 1);
     }
@@ -262,13 +379,11 @@ export function APP() {
   const handleRemoveMeasure = (field: string) => {
     const newMeas = measureFields.filter((m) => m !== field);
     setMeasureFields(newMeas);
-    setDimensionMeasures((prev) => prev.filter((m) => m !== field));
     if (builderRef.current?.measures && builderRef.current.doc) {
       const { measures, doc } = builderRef.current;
       doc.transact(() => {
         measures.removeMeasure(field);
       });
-      syncMeasuresDetail();
     }
     setRenderKey((prev) => prev + 1);
   };
@@ -300,6 +415,104 @@ export function APP() {
     }
   };
 
+  const handleAddMeasureFromDimension = (field: string) => {
+    if (!builderRef.current?.measures || !builderRef.current.doc) {
+      return;
+    }
+
+    const { measures, doc } = builderRef.current;
+    const hasMeasure = measureFields.includes(field);
+
+    if (!hasMeasure) {
+      doc.transact(() => {
+        measures.add(field, (node: unknown) => {
+          const nodeObj = node as any;
+          if (nodeObj?.setAlias) {
+            nodeObj.setAlias(field);
+          }
+          if (nodeObj?.setAggregate) {
+            nodeObj.setAggregate({ func: 'count' });
+          }
+        });
+      });
+      setMeasureFields((prev) => [...prev, field]);
+      setDimensionMeasures((prev) => [...prev, field]);
+      syncMeasuresDetail();
+      setRenderKey((prev) => prev + 1);
+    }
+  };
+
+  const handleDropMeasureToEncoding = (
+    field: string,
+    encoding: EncodingChannel,
+  ) => {
+    if (!builderRef.current?.measures || !builderRef.current.doc) {
+      return;
+    }
+
+    const { measures, doc } = builderRef.current;
+    const hasMeasure = measureFields.includes(field);
+
+    return;
+
+    doc.transact(() => {
+      if (hasMeasure) {
+        measures.modifyEncoding(field, encoding);
+      } else {
+        measures.add(field);
+        measures.modifyEncoding(field, encoding);
+      }
+    });
+
+    if (!hasMeasure) {
+      setMeasureFields((prev) => [...prev, field]);
+    }
+
+    syncMeasuresDetail();
+    setRenderKey((prev) => prev + 1);
+  };
+
+  const handleDropDimensionToEncoding = (
+    field: string,
+    encoding: EncodingChannel,
+  ) => {
+    if (!builderRef.current?.measures || !builderRef.current.doc) {
+      return;
+    }
+
+    const { measures, doc } = builderRef.current;
+    const hasMeasure = measureFields.includes(field);
+
+    return;
+
+    doc.transact(() => {
+      if (hasMeasure) {
+        // Already added as measure, just modify encoding
+        measures.modifyEncoding(field, encoding);
+      } else {
+        // Add dimension as measure with count aggregate
+        measures.add(field, (node: unknown) => {
+          const nodeObj = node as any;
+          if (nodeObj?.setAlias) {
+            nodeObj.setAlias(field);
+          }
+          if (nodeObj?.setAggregate) {
+            nodeObj.setAggregate({ func: 'count' });
+          }
+        });
+        measures.modifyEncoding(field, encoding);
+      }
+    });
+
+    if (!hasMeasure) {
+      setMeasureFields((prev) => [...prev, field]);
+      setDimensionMeasures((prev) => [...prev, field]);
+    }
+
+    syncMeasuresDetail();
+    setRenderKey((prev) => prev + 1);
+  };
+
   // 图表类型变化
   const handleChangeChartType = (type: string) => {
     setCurrentChartType(type);
@@ -308,6 +521,8 @@ export function APP() {
     }
     setRenderKey((prev) => prev + 1);
   };
+
+  // 数据筛选变化
 
   useEffect(() => {
     if (!dragging) return;
@@ -371,6 +586,29 @@ export function APP() {
                     />
                   </Dropdown>
                 </div>
+                {(dimensions.length > 0 || measures.length > 0) && (
+                  <div style={{ padding: '0 12px' }}>
+                    <FilterPanel
+                      fields={
+                        allFields.length > 0
+                          ? allFields
+                          : [
+                              ...dimensions.map((d) => ({
+                                name: d,
+                                role: 'dimension' as const,
+                              })),
+                              ...measures.map((m) => ({
+                                name: m,
+                                role: 'measure' as const,
+                              })),
+                            ]
+                      }
+                      activeFields={activeFields}
+                      filters={filters}
+                      onChange={handleFilterChange}
+                    />
+                  </div>
+                )}
                 {dimensions.length > 0 && (
                   <>
                     <div
@@ -385,8 +623,7 @@ export function APP() {
                     </div>
                     <DimensionShelf
                       items={dimensions}
-                      onAddDimension={handleAddDimension}
-                      onAddMeasure={handleAddMeasureFromDimension}
+                      onAdd={handleAddDimension}
                       existingFields={dimensionFields}
                     />
                   </>
@@ -452,22 +689,72 @@ export function APP() {
                     <LeftOutlined />
                   </button>
                 </div>
-                <FieldsList
-                  title="DIMENSIONS"
-                  items={dimensionFields}
-                  onAdd={handleAddDimension}
-                  onRemove={handleRemoveDimension}
-                  style={{ flex: 1, minHeight: 0 }}
-                />
-                <MeasureFieldList
-                  items={measureFields}
-                  measures={measuresDetail}
-                  dimensionMeasures={Array.from(dimensionMeasures)}
-                  onRename={handleRenameMeasure}
-                  onChangeAggregate={handleChangeAggregateFunc}
-                  onRemove={handleRemoveMeasure}
-                  style={{ flex: 1, minHeight: 0, marginTop: 12 }}
-                />
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr',
+                    gap: '12px',
+                    padding: '0 12px 12px 12px',
+                    flex: 1,
+                    minHeight: 0,
+                    overflow: 'hidden',
+                  }}
+                >
+                  {/* Top Panel: Configuration */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0',
+                      backgroundColor: '#1a1b33',
+                      borderRadius: '4px',
+                      border: '1px solid #2a2b4d',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <FieldsList
+                      title="DIMENSIONS"
+                      items={dimensionFields}
+                      onAdd={handleAddDimension}
+                      onRemove={handleRemoveDimension}
+                      onDropDimension={handleAddDimension}
+                      style={{ flex: 1, minHeight: 0 }}
+                    />
+                    <MeasureFieldList
+                      items={measureFields}
+                      measures={measuresDetail}
+                      dimensionMeasures={Array.from(dimensionMeasures)}
+                      onRename={handleRenameMeasure}
+                      onChangeAggregate={handleChangeAggregateFunc}
+                      onRemove={handleRemoveMeasure}
+                      onDropDimension={handleAddMeasureFromDimension}
+                      style={{
+                        flex: 1,
+                        minHeight: 0,
+                        borderTop: '1px solid #2a2b4d',
+                      }}
+                    />
+                  </div>
+
+                  {/* Bottom Panel: Encoding */}
+                  <div
+                    style={{
+                      backgroundColor: '#1a1b33',
+                      borderRadius: '4px',
+                      border: '1px solid #2a2b4d',
+                      overflow: 'auto',
+                      minHeight: '200px',
+                    }}
+                  >
+                    <EncodingPanel
+                      supportedEncodings={supportedEncodings}
+                      encodingInfo={encodingInfo}
+                      onDropMeasureToEncoding={handleDropMeasureToEncoding}
+                      onDropDimensionToEncoding={handleDropDimensionToEncoding}
+                      style={{ height: '100%' }}
+                    />
+                  </div>
+                </div>
               </div>
             </>
           )}

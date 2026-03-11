@@ -1,2 +1,2 @@
-export * from './measures-builder'
-export * from './measure-node-builder'
+export * from './mea-builder'
+export * from './mea-node-builder'
