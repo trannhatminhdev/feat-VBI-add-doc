@@ -43,12 +43,6 @@
   },
   {
     "type": "file",
-    "name": "undoRedo",
-    "label": "UndoRedo",
-    "count": 0
-  },
-  {
-    "type": "file",
     "name": "whereFilters",
     "label": "WhereFilters",
     "count": 12
