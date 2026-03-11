@@ -1,4 +1,4 @@
-# undo-manager
+# undoManager
 
 撤销/重做管理器，提供基于 YJS 的撤销和重做功能，支持栈管理和历史清除操作
 

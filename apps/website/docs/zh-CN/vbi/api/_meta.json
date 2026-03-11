@@ -37,7 +37,7 @@
   {
     "type": "file",
     "name": "undo-manager",
-    "label": "builder.undo-manager",
+    "label": "builder.undoManager",
     "collapsed": true
   }
 ]

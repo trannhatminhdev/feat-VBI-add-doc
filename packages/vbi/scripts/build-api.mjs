@@ -50,7 +50,7 @@ const BUILDER_CONFIG = [
   },
   {
     name: 'undoManager',
-    label: 'undo-manager',
+    label: 'undoManager',
     file: 'undo-manager.ts',
     category: 'utilities',
   },
