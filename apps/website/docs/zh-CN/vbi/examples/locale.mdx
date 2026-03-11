@@ -8,7 +8,6 @@ import { registerDemoConnector } from '@components'
 
 英文 locale 测试
 
-
 ```tsx preview
 import { VBI } from '@visactor/vbi'
 import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
@@ -21,18 +20,20 @@ export default () => {
     const run = async () => {
       const builder = VBI.from({
         connectorId: DEMO_CONNECTOR_ID,
-        chartType: "bar",
-        dimensions: [{"field":"province","alias":"Province"}],
-        measures: [{"field":"sales","alias":"Sales","encoding":"yAxis","aggregate":{"func":"sum"}}],
+        chartType: 'bar',
+        dimensions: [{ field: 'province', alias: 'Province' }],
+        measures: [{ field: 'sales', alias: 'Sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [],
         havingFilters: [],
-        theme: "light",
-        locale: "en-US",
+        theme: 'light',
+        locale: 'en-US',
         version: 1,
-        limit: 10
+        limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => { builder.setLocale('en-US'); }
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.setLocale('en-US')
+      }
       applyBuilder(builder)
 
       const result = await builder.buildVSeed()
@@ -51,7 +52,6 @@ export default () => {
 
 中文 locale 测试
 
-
 ```tsx preview
 import { VBI } from '@visactor/vbi'
 import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
@@ -64,18 +64,20 @@ export default () => {
     const run = async () => {
       const builder = VBI.from({
         connectorId: DEMO_CONNECTOR_ID,
-        chartType: "bar",
-        dimensions: [{"field":"province","alias":"省份"}],
-        measures: [{"field":"sales","alias":"销售额","encoding":"yAxis","aggregate":{"func":"sum"}}],
+        chartType: 'bar',
+        dimensions: [{ field: 'province', alias: '省份' }],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilters: [],
         havingFilters: [],
-        theme: "light",
-        locale: "zh-CN",
+        theme: 'light',
+        locale: 'zh-CN',
         version: 1,
-        limit: 10
+        limit: 10,
       })
 
-      const applyBuilder = (builder: VBIBuilder) => { builder.setLocale('zh-CN'); }
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.setLocale('zh-CN')
+      }
       applyBuilder(builder)
 
       const result = await builder.buildVSeed()
@@ -89,4 +91,3 @@ export default () => {
   return <VSeedRender vseed={vseed} />
 }
 ```
-
