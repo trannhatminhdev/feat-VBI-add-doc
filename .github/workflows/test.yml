@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: ['main', 'develop', 'dev/**']
 
+env:
+  CI: true
+  HUSKY: 0
+
 jobs:
   test:
     name: Tests

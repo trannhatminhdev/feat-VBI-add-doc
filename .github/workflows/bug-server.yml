@@ -12,6 +12,10 @@ on:
     paths:
       - 'packages/vseed/**'
 
+env:
+  CI: true
+  HUSKY: 0
+
 jobs:
   build:
     runs-on: ubuntu-latest

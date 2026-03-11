@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
 
+env:
+  CI: true
+  HUSKY: 0
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
