@@ -48,6 +48,12 @@ const BUILDER_CONFIG = [
     file: 'sub-builders/havingFilters/having-builder.ts',
     category: 'sub-builders',
   },
+  {
+    name: 'undoManager',
+    label: 'undo-manager',
+    file: 'undo-manager.ts',
+    category: 'utilities',
+  },
 ]
 
 const NODE_BUILDER_CONFIG = [

@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | **doc** | `Y.Doc` | - |
 | **dsl** | `Y.Map<any>` | - |
-| **undoManager** | `Y.UndoManager` | - |
+| **undoManager** | `UndoManager` | - |
 | **chartType** | `ChartTypeBuilder` | - |
 | **measures** | `MeasuresBuilder` | - |
 | **dimensions** | `DimensionsBuilder` | - |

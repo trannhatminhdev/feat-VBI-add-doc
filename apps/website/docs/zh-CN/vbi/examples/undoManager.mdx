@@ -1,0 +1,49 @@
+# undoManager
+
+import { registerDemoConnector } from '@components'
+
+{registerDemoConnector()}
+
+## undo-redo
+
+撤销重做功能测试
+
+```tsx preview
+import { VBI } from '@visactor/vbi'
+import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
+import { useEffect, useState } from 'react'
+
+export default () => {
+  const [vseed, setVSeed] = useState(null)
+
+  useEffect(() => {
+    const run = async () => {
+      const builder = VBI.from({
+        connectorId: DEMO_CONNECTOR_ID,
+        chartType: 'bar',
+        dimensions: [],
+        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        whereFilters: [],
+        havingFilters: [],
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 10,
+      })
+
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.undoManager.undo()
+      }
+      applyBuilder(builder)
+
+      const result = await builder.buildVSeed()
+      setVSeed(result)
+    }
+    run()
+  }, [])
+
+  if (!vseed) return <div>Loading...</div>
+
+  return <VSeedRender vseed={vseed} />
+}
+```

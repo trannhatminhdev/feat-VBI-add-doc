@@ -1,0 +1,12 @@
+{
+  "name": "undo-redo",
+  "description": "撤销重做功能测试",
+  "schema": [{ "name": "sales", "type": "number" }],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [],
+    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
+    "limit": 10
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.undoManager.undo(); }"
+}

@@ -8,6 +8,7 @@ import { registerDemoConnector } from '@components'
 
 深色主题图表
 
+
 ```tsx preview
 import { VBI } from '@visactor/vbi'
 import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
@@ -20,20 +21,18 @@ export default () => {
     const run = async () => {
       const builder = VBI.from({
         connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [{ field: 'province', alias: '省份' }],
-        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        chartType: "table",
+        dimensions: [{"field":"province","alias":"省份"}],
+        measures: [{"field":"sales","alias":"销售额","encoding":"yAxis","aggregate":{"func":"sum"}}],
         whereFilters: [],
         havingFilters: [],
-        theme: 'light',
-        locale: 'zh-CN',
+        theme: "light",
+        locale: "zh-CN",
         version: 1,
-        limit: 10,
+        limit: 10
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
-        builder.setTheme('dark')
-      }
+      const applyBuilder = (builder: VBIBuilder) => { builder.setTheme('dark'); }
       applyBuilder(builder)
 
       const result = await builder.buildVSeed()
@@ -52,6 +51,7 @@ export default () => {
 
 浅色主题图表
 
+
 ```tsx preview
 import { VBI } from '@visactor/vbi'
 import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
@@ -64,20 +64,18 @@ export default () => {
     const run = async () => {
       const builder = VBI.from({
         connectorId: DEMO_CONNECTOR_ID,
-        chartType: 'table',
-        dimensions: [{ field: 'province', alias: '省份' }],
-        measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+        chartType: "table",
+        dimensions: [{"field":"province","alias":"省份"}],
+        measures: [{"field":"sales","alias":"销售额","encoding":"yAxis","aggregate":{"func":"sum"}}],
         whereFilters: [],
         havingFilters: [],
-        theme: 'dark',
-        locale: 'zh-CN',
+        theme: "dark",
+        locale: "zh-CN",
         version: 1,
-        limit: 10,
+        limit: 10
       })
 
-      const applyBuilder = (builder: VBIBuilder) => {
-        builder.setTheme('light')
-      }
+      const applyBuilder = (builder: VBIBuilder) => { builder.setTheme('light'); }
       applyBuilder(builder)
 
       const result = await builder.buildVSeed()
@@ -91,3 +89,4 @@ export default () => {
   return <VSeedRender vseed={vseed} />
 }
 ```
+

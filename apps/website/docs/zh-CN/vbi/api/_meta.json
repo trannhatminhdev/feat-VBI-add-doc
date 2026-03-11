@@ -33,5 +33,11 @@
     "name": "having-filters",
     "label": "builder.havingFilters",
     "collapsed": true
+  },
+  {
+    "type": "file",
+    "name": "undo-manager",
+    "label": "builder.undo-manager",
+    "collapsed": true
   }
 ]
