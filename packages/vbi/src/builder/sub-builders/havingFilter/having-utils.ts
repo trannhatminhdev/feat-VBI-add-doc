@@ -7,21 +7,6 @@ export function createHavingRoot(op: 'and' | 'or' = 'and'): Y.Map<any> {
   return yMap
 }
 
-export function getHavingConditions(yMap: Y.Map<any>): Y.Array<any> {
-  return yMap.get('conditions') as Y.Array<any>
-}
-
-export function ensureHavingRoot(dsl: Y.Map<any>): Y.Map<any> {
-  const existingRoot = dsl.get('havingFilter') as Y.Map<any> | undefined
-  if (existingRoot instanceof Y.Map && existingRoot.get('conditions') instanceof Y.Array) {
-    return existingRoot
-  }
-
-  const root = createHavingRoot()
-  dsl.set('havingFilter', root)
-  return root
-}
-
 export type HavingEntryMatch = {
   collection: Y.Array<any>
   index: number

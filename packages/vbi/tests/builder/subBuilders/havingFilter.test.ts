@@ -33,6 +33,20 @@ describe('HavingFilterBuilder', () => {
     expect(typeof json[0].id).toBe('string')
   })
 
+  test('getConditions and toJSON expose the root state', () => {
+    const builder = VBI.from({} as VBIDSL)
+
+    builder.havingFilter.add('sales', (node) => {
+      node.setOperator('gt').setValue(1000)
+    })
+
+    expect(builder.havingFilter.getConditions()).toBeInstanceOf(Y.Array)
+    expect(builder.havingFilter.toJSON()).toEqual({
+      op: 'and',
+      conditions: [{ id: expect.any(String), field: 'sales', op: 'gt', value: 1000 }],
+    })
+  })
+
   test('remove by id', () => {
     const builder = VBI.from({} as VBIDSL)
     builder.havingFilter
@@ -373,6 +387,7 @@ describe('HavingGroupBuilder', () => {
 
     expect(groupFound.getId()).toBe(groupId)
     expect(groupFound.getOperator()).toBe('or')
+    expect(groupFound.getConditions()).toBeInstanceOf(Y.Array)
   })
 
   test('mix filters and groups at top level', () => {

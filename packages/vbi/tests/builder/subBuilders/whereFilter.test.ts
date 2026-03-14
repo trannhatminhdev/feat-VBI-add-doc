@@ -1,3 +1,4 @@
+import * as Y from 'yjs'
 import { VBI } from '@visactor/vbi'
 import type { VBIDSL, VBIFilter } from 'src/types/dsl'
 
@@ -65,6 +66,21 @@ describe('WhereFilterBuilder', () => {
         conditions: [],
       },
       measures: [],
+    })
+  })
+
+  test('getConditions and toJSON expose the root state', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter.add('category', (node) => {
+      node.setOperator('eq').setValue('Electronics')
+    })
+
+    expect(builder.whereFilter.getConditions()).toBeInstanceOf(Y.Array)
+    expect(builder.whereFilter.toJSON()).toEqual({
+      op: 'and',
+      conditions: [{ id: 'id-1', field: 'category', op: 'eq', value: 'Electronics' }],
     })
   })
 
@@ -544,6 +560,7 @@ describe('WhereGroupBuilder', () => {
 
     const group = builder.whereFilter.find('id-1')
     expect((group as any).getId()).toBe('id-1')
+    expect((group as any).getConditions()).toBeInstanceOf(Y.Array)
   })
 
   test('WhereGroupBuilder setOperator', () => {

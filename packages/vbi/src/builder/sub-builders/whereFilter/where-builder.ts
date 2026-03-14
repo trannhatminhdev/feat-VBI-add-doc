@@ -1,7 +1,7 @@
 import * as Y from 'yjs'
-import type { VBIWhereClause, ObserveCallback } from 'src/types'
+import type { VBIWhereClause, VBIWhereGroup, ObserveCallback } from 'src/types'
 import { id } from 'src/utils'
-import { createWhereRoot, ensureWhereRoot, findEntry, getWhereConditions, isWhereGroup } from './where-utils'
+import { createWhereRoot, findEntry, isWhereGroup } from './where-utils'
 import { WhereFilterNodeBuilder } from './where-node-builder'
 import { WhereGroupBuilder } from './where-group-builder'
 
@@ -9,29 +9,29 @@ import { WhereGroupBuilder } from './where-group-builder'
  * @description Where 过滤构建器，用于添加、修改、删除行级过滤条件。Where 过滤在数据查询前生效，用于筛选原始数据
  */
 export class WhereFilterBuilder {
-  private dsl: Y.Map<any>
-  private doc: Y.Doc
+  private whereFilter!: Y.Map<any>
 
   constructor(doc: Y.Doc, dsl: Y.Map<any>) {
-    this.doc = doc
-    this.dsl = dsl
-
-    this.doc.transact(() => {
-      if (!this.dsl.get('whereFilter')) {
-        this.dsl.set('whereFilter', createWhereRoot())
-        return
+    doc.transact(() => {
+      const existingWhereFilter = dsl.get('whereFilter')
+      if (existingWhereFilter instanceof Y.Map) {
+        this.whereFilter = existingWhereFilter
+      } else {
+        this.whereFilter = createWhereRoot()
+        dsl.set('whereFilter', this.whereFilter)
       }
 
-      ensureWhereRoot(this.dsl)
+      if (!(this.whereFilter.get('conditions') instanceof Y.Array)) {
+        this.whereFilter.set('conditions', new Y.Array<any>())
+      }
+      if (!this.whereFilter.get('op')) {
+        this.whereFilter.set('op', 'and')
+      }
     })
   }
 
-  private getRoot(): Y.Map<any> {
-    return ensureWhereRoot(this.dsl)
-  }
-
-  private getConditions(): Y.Array<any> {
-    return getWhereConditions(this.getRoot())
+  public getConditions(): Y.Array<any> {
+    return this.whereFilter.get('conditions') as Y.Array<any>
   }
 
   /**
@@ -167,7 +167,14 @@ export class WhereFilterBuilder {
    * @description 导出所有 Where 过滤条件为 JSON 数组
    */
   toJson(): VBIWhereClause[] {
-    return this.getConditions().toJSON() as VBIWhereClause[]
+    return this.toJSON().conditions
+  }
+
+  /**
+   * @description 导出完整的 Where 过滤配置
+   */
+  toJSON(): VBIWhereGroup {
+    return this.whereFilter.toJSON() as VBIWhereGroup
   }
 
   /**
@@ -176,10 +183,9 @@ export class WhereFilterBuilder {
    * @returns 取消监听的函数
    */
   observe(callback: ObserveCallback): () => void {
-    const whereFilter = this.getRoot()
-    whereFilter.observeDeep(callback as any)
+    this.whereFilter.observeDeep(callback as any)
     return () => {
-      whereFilter.unobserveDeep(callback as any)
+      this.whereFilter.unobserveDeep(callback as any)
     }
   }
 

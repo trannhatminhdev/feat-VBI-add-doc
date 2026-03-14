@@ -18,6 +18,16 @@ constructor(yMap: Y.Map<any>)
 | --- | --- | --- |
 | `yMap` | Y.Map<any> | - |
 
+### getConditions
+
+**定义**:
+
+```typescript
+getConditions(): Y.Array<any>
+```
+
+**返回**: `Y.Array<any>`
+
 ### getId
 
 获取分组 ID

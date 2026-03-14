@@ -9,6 +9,10 @@ import { HavingFilterNodeBuilder } from './having-node-builder'
 export class HavingGroupBuilder {
   constructor(private yMap: Y.Map<any>) {}
 
+  public getConditions(): Y.Array<any> {
+    return this.yMap.get('conditions') as Y.Array<any>
+  }
+
   /**
    * @description 获取分组 ID
    */
@@ -42,8 +46,7 @@ export class HavingGroupBuilder {
     yMap.set('id', id.uuid())
     yMap.set('field', field)
 
-    const conditions = this.yMap.get('conditions') as Y.Array<any>
-    conditions.push([yMap])
+    this.getConditions().push([yMap])
 
     const node = new HavingFilterNodeBuilder(yMap)
     callback(node)
@@ -61,8 +64,7 @@ export class HavingGroupBuilder {
     yMap.set('op', op)
     yMap.set('conditions', new Y.Array<any>())
 
-    const conditions = this.yMap.get('conditions') as Y.Array<any>
-    conditions.push([yMap])
+    this.getConditions().push([yMap])
 
     const group = new HavingGroupBuilder(yMap)
     callback(group)
@@ -74,7 +76,7 @@ export class HavingGroupBuilder {
    * @param idOrIndex - ID 或索引
    */
   remove(idOrIndex: string | number): this {
-    const conditions = this.yMap.get('conditions') as Y.Array<any>
+    const conditions = this.getConditions()
 
     if (typeof idOrIndex === 'number') {
       if (idOrIndex >= 0 && idOrIndex < conditions.length) {
@@ -93,7 +95,7 @@ export class HavingGroupBuilder {
    * @description 清空分组内所有条件
    */
   clear(): this {
-    const conditions = this.yMap.get('conditions') as Y.Array<any>
+    const conditions = this.getConditions()
     conditions.delete(0, conditions.length)
     return this
   }

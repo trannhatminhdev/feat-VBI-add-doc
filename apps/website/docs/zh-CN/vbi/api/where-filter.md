@@ -21,16 +21,6 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 | `doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
 
-### getRoot
-
-**定义**:
-
-```typescript
-getRoot(): Y.Map<any>
-```
-
-**返回**: `Y.Map<any>`
-
 ### getConditions
 
 **定义**:
@@ -174,6 +164,18 @@ toJson(): VBIWhereClause[]
 ```
 
 **返回**: `VBIWhereClause[]`
+
+### toJSON
+
+导出完整的 Where 过滤配置
+
+**定义**:
+
+```typescript
+toJSON(): VBIWhereGroup
+```
+
+**返回**: `VBIWhereGroup`
 
 ### observe
 

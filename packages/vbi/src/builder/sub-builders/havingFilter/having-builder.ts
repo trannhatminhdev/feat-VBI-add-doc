@@ -1,7 +1,7 @@
 import * as Y from 'yjs'
-import type { VBIHavingClause, ObserveCallback } from 'src/types'
+import type { VBIHavingClause, VBIHavingRoot, ObserveCallback } from 'src/types'
 import { id } from 'src/utils'
-import { createHavingRoot, ensureHavingRoot, findEntry, getHavingConditions, isHavingGroup } from './having-utils'
+import { createHavingRoot, findEntry, isHavingGroup } from './having-utils'
 import { HavingFilterNodeBuilder } from './having-node-builder'
 import { HavingGroupBuilder } from './having-group-builder'
 
@@ -9,29 +9,29 @@ import { HavingGroupBuilder } from './having-group-builder'
  * @description Having 过滤构建器，用于添加、修改、删除分组后过滤条件。Having 过滤在数据聚合后生效，用于筛选分组结果
  */
 export class HavingFilterBuilder {
-  private dsl: Y.Map<any>
-  private doc: Y.Doc
+  private havingFilter!: Y.Map<any>
 
   constructor(doc: Y.Doc, dsl: Y.Map<any>) {
-    this.doc = doc
-    this.dsl = dsl
-
-    this.doc.transact(() => {
-      if (!this.dsl.get('havingFilter')) {
-        this.dsl.set('havingFilter', createHavingRoot())
-        return
+    doc.transact(() => {
+      const existingHavingFilter = dsl.get('havingFilter')
+      if (existingHavingFilter instanceof Y.Map) {
+        this.havingFilter = existingHavingFilter
+      } else {
+        this.havingFilter = createHavingRoot()
+        dsl.set('havingFilter', this.havingFilter)
       }
 
-      ensureHavingRoot(this.dsl)
+      if (!(this.havingFilter.get('conditions') instanceof Y.Array)) {
+        this.havingFilter.set('conditions', new Y.Array<any>())
+      }
+      if (!this.havingFilter.get('op')) {
+        this.havingFilter.set('op', 'and')
+      }
     })
   }
 
-  private getRoot(): Y.Map<any> {
-    return ensureHavingRoot(this.dsl)
-  }
-
-  private getConditions(): Y.Array<any> {
-    return getHavingConditions(this.getRoot())
+  public getConditions(): Y.Array<any> {
+    return this.havingFilter.get('conditions') as Y.Array<any>
   }
 
   /**
@@ -167,7 +167,14 @@ export class HavingFilterBuilder {
    * @description 导出所有 Having 过滤条件为 JSON 数组
    */
   toJson(): VBIHavingClause[] {
-    return this.getConditions().toJSON() as VBIHavingClause[]
+    return this.toJSON().conditions
+  }
+
+  /**
+   * @description 导出完整的 Having 过滤配置
+   */
+  toJSON(): VBIHavingRoot {
+    return this.havingFilter.toJSON() as VBIHavingRoot
   }
 
   /**
@@ -176,10 +183,9 @@ export class HavingFilterBuilder {
    * @returns 取消监听的函数
    */
   observe(callback: ObserveCallback): () => void {
-    const havingFilter = this.getRoot()
-    havingFilter.observeDeep(callback as any)
+    this.havingFilter.observeDeep(callback as any)
     return () => {
-      havingFilter.unobserveDeep(callback as any)
+      this.havingFilter.unobserveDeep(callback as any)
     }
   }
 
