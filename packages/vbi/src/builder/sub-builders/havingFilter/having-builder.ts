@@ -2,13 +2,13 @@ import * as Y from 'yjs'
 import type { VBIHavingClause, ObserveCallback } from 'src/types'
 import { id } from 'src/utils'
 import { createHavingRoot, ensureHavingRoot, findEntry, getHavingConditions, isHavingGroup } from './having-utils'
-import { HavingFiltersNodeBuilder } from './having-node-builder'
+import { HavingFilterNodeBuilder } from './having-node-builder'
 import { HavingGroupBuilder } from './having-group-builder'
 
 /**
  * @description Having 过滤构建器，用于添加、修改、删除分组后过滤条件。Having 过滤在数据聚合后生效，用于筛选分组结果
  */
-export class HavingFiltersBuilder {
+export class HavingFilterBuilder {
   private dsl: Y.Map<any>
   private doc: Y.Doc
 
@@ -17,7 +17,7 @@ export class HavingFiltersBuilder {
     this.dsl = dsl
 
     this.doc.transact(() => {
-      if (!this.dsl.get('havingFilter') && !this.dsl.get('havingFilters')) {
+      if (!this.dsl.get('havingFilter')) {
         this.dsl.set('havingFilter', createHavingRoot())
         return
       }
@@ -39,14 +39,14 @@ export class HavingFiltersBuilder {
    * @param field - 字段名
    * @param callback - 回调函数
    */
-  add(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder {
+  add(field: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder {
     const yMap = new Y.Map<any>()
     yMap.set('id', id.uuid())
     yMap.set('field', field)
 
     this.getConditions().push([yMap])
 
-    const node = new HavingFiltersNodeBuilder(yMap)
+    const node = new HavingFilterNodeBuilder(yMap)
     callback(node)
     return this
   }
@@ -56,7 +56,7 @@ export class HavingFiltersBuilder {
    * @param op - 逻辑操作符
    * @param callback - 回调函数
    */
-  addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFiltersBuilder {
+  addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder {
     const yMap = new Y.Map<any>()
     yMap.set('id', id.uuid())
     yMap.set('op', op)
@@ -74,20 +74,20 @@ export class HavingFiltersBuilder {
    * @param id - 过滤条件 ID
    * @param callback - 回调函数
    */
-  update(id: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder {
-    const havingFilters = this.getConditions()
-    const match = findEntry(havingFilters, id)
+  update(id: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder {
+    const conditions = this.getConditions()
+    const match = findEntry(conditions, id)
 
     if (!match) {
       throw new Error(`Having filter with id ${id} not found`)
     }
 
-    if (!HavingFiltersBuilder.isNode(match.item)) {
+    if (!HavingFilterBuilder.isNode(match.item)) {
       throw new Error(`Item with id ${id} is not a filter`)
     }
 
     const filterYMap = match.item
-    const node = new HavingFiltersNodeBuilder(filterYMap)
+    const node = new HavingFilterNodeBuilder(filterYMap)
     callback(node)
     return this
   }
@@ -97,16 +97,16 @@ export class HavingFiltersBuilder {
    * @param id - 分组 ID
    * @param callback - 回调函数
    */
-  updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFiltersBuilder {
-    const havingFilters = this.getConditions()
-    const match = findEntry(havingFilters, id)
+  updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder {
+    const conditions = this.getConditions()
+    const match = findEntry(conditions, id)
 
     if (!match) {
       throw new Error(`Having group with id ${id} not found`)
     }
 
     const yMap = match.item
-    if (!HavingFiltersBuilder.isGroup(yMap)) {
+    if (!HavingFilterBuilder.isGroup(yMap)) {
       throw new Error(`Item with id ${id} is not a group`)
     }
 
@@ -119,15 +119,15 @@ export class HavingFiltersBuilder {
    * @description 删除指定 ID 的条件或指定索引的项
    * @param idOrIndex - ID 或索引
    */
-  remove(idOrIndex: string | number): HavingFiltersBuilder {
-    const havingFilters = this.getConditions()
+  remove(idOrIndex: string | number): HavingFilterBuilder {
+    const conditions = this.getConditions()
 
     if (typeof idOrIndex === 'number') {
-      if (idOrIndex >= 0 && idOrIndex < havingFilters.length) {
-        havingFilters.delete(idOrIndex, 1)
+      if (idOrIndex >= 0 && idOrIndex < conditions.length) {
+        conditions.delete(idOrIndex, 1)
       }
     } else {
-      const match = findEntry(havingFilters, idOrIndex)
+      const match = findEntry(conditions, idOrIndex)
       if (match) {
         match.collection.delete(match.index, 1)
       }
@@ -139,27 +139,27 @@ export class HavingFiltersBuilder {
    * @description 根据 ID 查找条件（过滤或分组）
    * @param id - ID
    */
-  find(id: string): HavingFiltersNodeBuilder | HavingGroupBuilder | undefined {
-    const havingFilters = this.getConditions()
-    const match = findEntry(havingFilters, id)
+  find(id: string): HavingFilterNodeBuilder | HavingGroupBuilder | undefined {
+    const conditions = this.getConditions()
+    const match = findEntry(conditions, id)
     const yMap = match?.item
 
     if (!yMap) {
       return undefined
     }
 
-    if (HavingFiltersBuilder.isGroup(yMap)) {
+    if (HavingFilterBuilder.isGroup(yMap)) {
       return new HavingGroupBuilder(yMap)
     }
-    return new HavingFiltersNodeBuilder(yMap)
+    return new HavingFilterNodeBuilder(yMap)
   }
 
   /**
    * @description 清空所有 Having 过滤条件
    */
   clear() {
-    const havingFilters = this.getConditions()
-    havingFilters.delete(0, havingFilters.length)
+    const conditions = this.getConditions()
+    conditions.delete(0, conditions.length)
     return this
   }
 

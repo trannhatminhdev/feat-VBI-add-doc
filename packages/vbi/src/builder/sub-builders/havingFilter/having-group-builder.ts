@@ -1,7 +1,7 @@
 import * as Y from 'yjs'
 import type { VBIHavingGroup } from 'src/types'
 import { id } from 'src/utils'
-import { HavingFiltersNodeBuilder } from './having-node-builder'
+import { HavingFilterNodeBuilder } from './having-node-builder'
 
 /**
  * @description Having 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
@@ -37,7 +37,7 @@ export class HavingGroupBuilder {
    * @param field - 字段名
    * @param callback - 回调函数
    */
-  add(field: string, callback: (node: HavingFiltersNodeBuilder) => void): this {
+  add(field: string, callback: (node: HavingFilterNodeBuilder) => void): this {
     const yMap = new Y.Map<any>()
     yMap.set('id', id.uuid())
     yMap.set('field', field)
@@ -45,7 +45,7 @@ export class HavingGroupBuilder {
     const conditions = this.yMap.get('conditions') as Y.Array<any>
     conditions.push([yMap])
 
-    const node = new HavingFiltersNodeBuilder(yMap)
+    const node = new HavingFilterNodeBuilder(yMap)
     callback(node)
     return this
   }

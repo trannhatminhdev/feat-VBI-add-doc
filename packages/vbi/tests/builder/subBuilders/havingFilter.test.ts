@@ -1,14 +1,14 @@
 import * as Y from 'yjs'
 import { VBI } from '@visactor/vbi'
 import { VBIDSL } from 'src/types/dsl'
-import { HavingFiltersNodeBuilder } from 'src/builder/sub-builders/havingFilters/having-node-builder'
-import { HavingGroupBuilder } from 'src/builder/sub-builders/havingFilters/having-group-builder'
-import { HavingFiltersBuilder } from 'src/builder/sub-builders/havingFilters/having-builder'
+import { HavingFilterNodeBuilder } from 'src/builder/sub-builders/havingFilter/having-node-builder'
+import { HavingGroupBuilder } from 'src/builder/sub-builders/havingFilter/having-group-builder'
+import { HavingFilterBuilder } from 'src/builder/sub-builders/havingFilter/having-builder'
 
-describe('HavingFiltersBuilder', () => {
+describe('HavingFilterBuilder', () => {
   test('add having filter', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.add('sales', (node) => {
+    builder.havingFilter.add('sales', (node) => {
       node.setOperator('gt').setValue(1000)
     })
 
@@ -24,63 +24,63 @@ describe('HavingFiltersBuilder', () => {
 
   test('add having filter auto-generates uuid', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.add('sales', (node) => {
+    builder.havingFilter.add('sales', (node) => {
       node.setValue(500)
     })
 
-    const json = builder.havingFilters.toJson()
+    const json = builder.havingFilter.toJson()
     expect(json[0].id).toBeDefined()
     expect(typeof json[0].id).toBe('string')
   })
 
   test('remove by id', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters
+    builder.havingFilter
       .add('sales', (node) => node.setOperator('gt').setValue(1000))
       .add('profit', (node) => node.setOperator('gt').setValue(500))
 
-    const json = builder.havingFilters.toJson()
+    const json = builder.havingFilter.toJson()
     const salesId = json[0].id
 
-    builder.havingFilters.remove(salesId)
+    builder.havingFilter.remove(salesId)
 
-    expect(builder.havingFilters.toJson().length).toBe(1)
-    expect((builder.havingFilters.toJson()[0] as any).field).toBe('profit')
+    expect(builder.havingFilter.toJson().length).toBe(1)
+    expect((builder.havingFilter.toJson()[0] as any).field).toBe('profit')
   })
 
   test('remove by index', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters
+    builder.havingFilter
       .add('sales', (node) => node.setOperator('gt').setValue(1000))
       .add('profit', (node) => node.setOperator('gt').setValue(500))
 
-    builder.havingFilters.remove(0)
+    builder.havingFilter.remove(0)
 
-    expect(builder.havingFilters.toJson().length).toBe(1)
-    expect((builder.havingFilters.toJson()[0] as any).field).toBe('profit')
+    expect(builder.havingFilter.toJson().length).toBe(1)
+    expect((builder.havingFilter.toJson()[0] as any).field).toBe('profit')
   })
 
   test('remove non-existent id is no-op', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.add('sales', (node) => node.setValue(1000))
+    builder.havingFilter.add('sales', (node) => node.setValue(1000))
 
-    builder.havingFilters.remove('non-existent-id')
+    builder.havingFilter.remove('non-existent-id')
 
-    expect(builder.havingFilters.toJson().length).toBe(1)
+    expect(builder.havingFilter.toJson().length).toBe(1)
   })
 
   test('update by id', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.add('sales', (node) => {
+    builder.havingFilter.add('sales', (node) => {
       node.setOperator('gt').setValue(1000)
     })
 
-    const filterId = builder.havingFilters.toJson()[0].id
-    builder.havingFilters.update(filterId, (node) => {
+    const filterId = builder.havingFilter.toJson()[0].id
+    builder.havingFilter.update(filterId, (node) => {
       node.setOperator('gte').setValue(2000)
     })
 
-    const json = builder.havingFilters.toJson()
+    const json = builder.havingFilter.toJson()
     expect(json[0]).toMatchObject({
       field: 'sales',
       op: 'gte',
@@ -92,7 +92,7 @@ describe('HavingFiltersBuilder', () => {
     const builder = VBI.from({} as VBIDSL)
 
     expect(() => {
-      builder.havingFilters.update('non-existent', (node) => {
+      builder.havingFilter.update('non-existent', (node) => {
         node.setValue(100)
       })
     }).toThrow('Having filter with id non-existent not found')
@@ -100,45 +100,45 @@ describe('HavingFiltersBuilder', () => {
 
   test('find by id returns node builder', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.add('sales', (node) => {
+    builder.havingFilter.add('sales', (node) => {
       node.setOperator('gt').setValue(1000)
     })
 
-    const filterId = builder.havingFilters.toJson()[0].id
-    const found = builder.havingFilters.find(filterId)
+    const filterId = builder.havingFilter.toJson()[0].id
+    const found = builder.havingFilter.find(filterId)
 
-    expect(found).toBeInstanceOf(HavingFiltersNodeBuilder)
-    expect((found as HavingFiltersNodeBuilder).getField()).toBe('sales')
+    expect(found).toBeInstanceOf(HavingFilterNodeBuilder)
+    expect((found as HavingFilterNodeBuilder).getField()).toBe('sales')
   })
 
   test('find returns undefined if not found', () => {
     const builder = VBI.from({} as VBIDSL)
 
-    expect(builder.havingFilters.find('non-existent')).toBeUndefined()
+    expect(builder.havingFilter.find('non-existent')).toBeUndefined()
   })
 
   test('clear removes all filters', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.add('sales', (node) => node.setValue(1000)).add('profit', (node) => node.setValue(500))
+    builder.havingFilter.add('sales', (node) => node.setValue(1000)).add('profit', (node) => node.setValue(500))
 
-    builder.havingFilters.clear()
+    builder.havingFilter.clear()
 
-    expect(builder.havingFilters.toJson()).toEqual([])
+    expect(builder.havingFilter.toJson()).toEqual([])
   })
 
   test('toJson returns empty array when no filters', () => {
     const builder = VBI.from({} as VBIDSL)
-    expect(builder.havingFilters.toJson()).toEqual([])
+    expect(builder.havingFilter.toJson()).toEqual([])
   })
 
   test('chained add operations', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters
+    builder.havingFilter
       .add('sales', (node) => node.setOperator('gt').setValue(1000))
       .add('profit', (node) => node.setOperator('gte').setValue(500))
       .add('orders', (node) => node.setOperator('eq').setValue(100))
 
-    const json = builder.havingFilters.toJson()
+    const json = builder.havingFilter.toJson()
     expect(json.length).toBe(3)
     expect((json[0] as any).field).toBe('sales')
     expect((json[1] as any).field).toBe('profit')
@@ -149,39 +149,39 @@ describe('HavingFiltersBuilder', () => {
     const builder = VBI.from({} as VBIDSL)
 
     let callCount = 0
-    const unobserve = builder.havingFilters.observe(() => {
+    const unobserve = builder.havingFilter.observe(() => {
       callCount++
     })
 
     builder.doc.transact(() => {
-      builder.havingFilters.add('sales', (node) => node.setValue(1000))
+      builder.havingFilter.add('sales', (node) => node.setValue(1000))
     })
     expect(callCount).toBe(1)
 
     unobserve()
 
     builder.doc.transact(() => {
-      builder.havingFilters.add('profit', (node) => node.setValue(500))
+      builder.havingFilter.add('profit', (node) => node.setValue(500))
     })
     expect(callCount).toBe(1)
   })
 
-  test('HavingFiltersNodeBuilder getId', () => {
+  test('HavingFilterNodeBuilder getId', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.add('sales', (node) => node.setOperator('gt').setValue(1000))
+    builder.havingFilter.add('sales', (node) => node.setOperator('gt').setValue(1000))
 
-    const filterId = builder.havingFilters.toJson()[0].id
-    const node = builder.havingFilters.find(filterId) as HavingFiltersNodeBuilder
+    const filterId = builder.havingFilter.toJson()[0].id
+    const node = builder.havingFilter.find(filterId) as HavingFilterNodeBuilder
 
     expect(node.getId()).toBe(filterId)
   })
 
-  test('HavingFiltersNodeBuilder getOperator', () => {
+  test('HavingFilterNodeBuilder getOperator', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.add('sales', (node) => node.setOperator('gt').setValue(1000))
+    builder.havingFilter.add('sales', (node) => node.setOperator('gt').setValue(1000))
 
-    const filterId = builder.havingFilters.toJson()[0].id
-    const node = builder.havingFilters.find(filterId) as HavingFiltersNodeBuilder
+    const filterId = builder.havingFilter.toJson()[0].id
+    const node = builder.havingFilter.find(filterId) as HavingFilterNodeBuilder
 
     expect(node.getOperator()).toBe('gt')
   })
@@ -198,7 +198,7 @@ describe('HavingFiltersBuilder', () => {
     } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const json = builder.havingFilters.toJson()
+    const json = builder.havingFilter.toJson()
     expect(json.length).toBe(2)
     expect(json[0].id).toBeDefined()
     expect(json[1].id).toBeDefined()
@@ -210,12 +210,12 @@ describe('HavingFiltersBuilder', () => {
 describe('HavingGroupBuilder', () => {
   test('addGroup creates a group', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.addGroup('and', (group) => {
+    builder.havingFilter.addGroup('and', (group) => {
       group.add('sales', (node) => node.setOperator('gt').setValue(1000))
       group.add('profit', (node) => node.setOperator('gt').setValue(500))
     })
 
-    const json = builder.havingFilters.toJson()
+    const json = builder.havingFilter.toJson()
     expect(json.length).toBe(1)
     expect(json[0]).toMatchObject({
       op: 'and',
@@ -229,39 +229,39 @@ describe('HavingGroupBuilder', () => {
 
   test('addGroup with OR operator', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.addGroup('or', (group) => {
+    builder.havingFilter.addGroup('or', (group) => {
       group.add('sales', (node) => node.setOperator('gt').setValue(1000))
       group.add('profit', (node) => node.setOperator('gt').setValue(500))
     })
 
-    const json = builder.havingFilters.toJson()
+    const json = builder.havingFilter.toJson()
     expect((json[0] as any).op).toBe('or')
   })
 
   test('find group by id returns HavingGroupBuilder', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.addGroup('and', (group) => {
+    builder.havingFilter.addGroup('and', (group) => {
       group.add('sales', (node) => node.setOperator('gt').setValue(1000))
     })
 
-    const groupId = builder.havingFilters.toJson()[0].id
-    const found = builder.havingFilters.find(groupId)
+    const groupId = builder.havingFilter.toJson()[0].id
+    const found = builder.havingFilter.find(groupId)
 
     expect(found).toBeInstanceOf(HavingGroupBuilder)
   })
 
   test('updateGroup changes group operator', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.addGroup('and', (group) => {
+    builder.havingFilter.addGroup('and', (group) => {
       group.add('sales', (node) => node.setOperator('gt').setValue(1000))
     })
 
-    const groupId = builder.havingFilters.toJson()[0].id
-    builder.havingFilters.updateGroup(groupId, (group) => {
+    const groupId = builder.havingFilter.toJson()[0].id
+    builder.havingFilter.updateGroup(groupId, (group) => {
       group.setOperator('or')
     })
 
-    const json = builder.havingFilters.toJson()
+    const json = builder.havingFilter.toJson()
     expect((json[0] as any).op).toBe('or')
   })
 
@@ -269,7 +269,7 @@ describe('HavingGroupBuilder', () => {
     const builder = VBI.from({} as VBIDSL)
 
     expect(() => {
-      builder.havingFilters.updateGroup('non-existent', (group) => {
+      builder.havingFilter.updateGroup('non-existent', (group) => {
         group.setOperator('or')
       })
     }).toThrow('Having group with id non-existent not found')
@@ -277,12 +277,12 @@ describe('HavingGroupBuilder', () => {
 
   test('updateGroup throws if item is not a group', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.add('sales', (node) => node.setOperator('gt').setValue(1000))
+    builder.havingFilter.add('sales', (node) => node.setOperator('gt').setValue(1000))
 
-    const filterId = builder.havingFilters.toJson()[0].id
+    const filterId = builder.havingFilter.toJson()[0].id
 
     expect(() => {
-      builder.havingFilters.updateGroup(filterId, (group) => {
+      builder.havingFilter.updateGroup(filterId, (group) => {
         group.setOperator('or')
       })
     }).toThrow(`Item with id ${filterId} is not a group`)
@@ -290,7 +290,7 @@ describe('HavingGroupBuilder', () => {
 
   test('nested groups', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.addGroup('and', (outerGroup) => {
+    builder.havingFilter.addGroup('and', (outerGroup) => {
       outerGroup.add('sales', (node) => node.setOperator('gt').setValue(1000))
       outerGroup.addGroup('or', (innerGroup) => {
         innerGroup.add('profit', (node) => node.setOperator('gt').setValue(500))
@@ -298,7 +298,7 @@ describe('HavingGroupBuilder', () => {
       })
     })
 
-    const json = builder.havingFilters.toJson()
+    const json = builder.havingFilter.toJson()
     const outerGroupJson = json[0] as any
     expect(outerGroupJson.op).toBe('and')
     expect(outerGroupJson.conditions.length).toBe(2)
@@ -313,63 +313,63 @@ describe('HavingGroupBuilder', () => {
 
   test('group remove condition by id', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.addGroup('and', (group) => {
+    builder.havingFilter.addGroup('and', (group) => {
       group.add('sales', (node) => node.setOperator('gt').setValue(1000))
       group.add('profit', (node) => node.setOperator('gt').setValue(500))
     })
 
-    const groupId = builder.havingFilters.toJson()[0].id
-    const groupFound = builder.havingFilters.find(groupId) as HavingGroupBuilder
+    const groupId = builder.havingFilter.toJson()[0].id
+    const groupFound = builder.havingFilter.find(groupId) as HavingGroupBuilder
     const conditions = groupFound.toJson().conditions
     const salesId = conditions[0].id
 
     groupFound.remove(salesId)
 
-    const updatedJson = builder.havingFilters.toJson()
+    const updatedJson = builder.havingFilter.toJson()
     expect((updatedJson[0] as any).conditions.length).toBe(1)
     expect((updatedJson[0] as any).conditions[0].field).toBe('profit')
   })
 
   test('group remove condition by index', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.addGroup('and', (group) => {
+    builder.havingFilter.addGroup('and', (group) => {
       group.add('sales', (node) => node.setOperator('gt').setValue(1000))
       group.add('profit', (node) => node.setOperator('gt').setValue(500))
     })
 
-    const groupId = builder.havingFilters.toJson()[0].id
-    const groupFound = builder.havingFilters.find(groupId) as HavingGroupBuilder
+    const groupId = builder.havingFilter.toJson()[0].id
+    const groupFound = builder.havingFilter.find(groupId) as HavingGroupBuilder
 
     groupFound.remove(0)
 
-    const updatedJson = builder.havingFilters.toJson()
+    const updatedJson = builder.havingFilter.toJson()
     expect((updatedJson[0] as any).conditions.length).toBe(1)
     expect((updatedJson[0] as any).conditions[0].field).toBe('profit')
   })
 
   test('group clear conditions', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.addGroup('and', (group) => {
+    builder.havingFilter.addGroup('and', (group) => {
       group.add('sales', (node) => node.setOperator('gt').setValue(1000))
       group.add('profit', (node) => node.setOperator('gt').setValue(500))
     })
 
-    const groupId = builder.havingFilters.toJson()[0].id
-    const groupFound = builder.havingFilters.find(groupId) as HavingGroupBuilder
+    const groupId = builder.havingFilter.toJson()[0].id
+    const groupFound = builder.havingFilter.find(groupId) as HavingGroupBuilder
 
     groupFound.clear()
 
-    expect((builder.havingFilters.toJson()[0] as any).conditions).toEqual([])
+    expect((builder.havingFilter.toJson()[0] as any).conditions).toEqual([])
   })
 
   test('group getId and getOperator', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters.addGroup('or', (group) => {
+    builder.havingFilter.addGroup('or', (group) => {
       group.add('sales', (node) => node.setOperator('gt').setValue(1000))
     })
 
-    const groupId = builder.havingFilters.toJson()[0].id
-    const groupFound = builder.havingFilters.find(groupId) as HavingGroupBuilder
+    const groupId = builder.havingFilter.toJson()[0].id
+    const groupFound = builder.havingFilter.find(groupId) as HavingGroupBuilder
 
     expect(groupFound.getId()).toBe(groupId)
     expect(groupFound.getOperator()).toBe('or')
@@ -377,14 +377,14 @@ describe('HavingGroupBuilder', () => {
 
   test('mix filters and groups at top level', () => {
     const builder = VBI.from({} as VBIDSL)
-    builder.havingFilters
+    builder.havingFilter
       .add('sales', (node) => node.setOperator('gt').setValue(1000))
       .addGroup('or', (group) => {
         group.add('profit', (node) => node.setOperator('gt').setValue(500))
         group.add('orders', (node) => node.setOperator('gte').setValue(10))
       })
 
-    const json = builder.havingFilters.toJson()
+    const json = builder.havingFilter.toJson()
     expect(json.length).toBe(2)
     expect((json[0] as any).field).toBe('sales')
     expect((json[1] as any).op).toBe('or')
@@ -398,15 +398,15 @@ describe('HavingGroupBuilder', () => {
     const filterMap = new Y.Map()
     root.set('filter', filterMap)
     filterMap.set('field', 'sales')
-    expect(HavingFiltersBuilder.isGroup(filterMap)).toBe(false)
-    expect(HavingFiltersBuilder.isNode(filterMap)).toBe(true)
+    expect(HavingFilterBuilder.isGroup(filterMap)).toBe(false)
+    expect(HavingFilterBuilder.isNode(filterMap)).toBe(true)
 
     const groupMap = new Y.Map()
     root.set('group', groupMap)
     groupMap.set('op', 'and')
     groupMap.set('conditions', new Y.Array())
-    expect(HavingFiltersBuilder.isGroup(groupMap)).toBe(true)
-    expect(HavingFiltersBuilder.isNode(groupMap)).toBe(false)
+    expect(HavingFilterBuilder.isGroup(groupMap)).toBe(true)
+    expect(HavingFilterBuilder.isNode(groupMap)).toBe(false)
   })
 
   test('from DSL with pre-existing group gets ids', () => {
@@ -426,7 +426,7 @@ describe('HavingGroupBuilder', () => {
     } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const json = builder.havingFilters.toJson()
+    const json = builder.havingFilter.toJson()
     expect(json[0].id).toBeDefined()
     const group = json[0] as any
     expect(group.op).toBe('and')

@@ -1,0 +1,63 @@
+{
+  "name": "having-multi-dimension-aggregate",
+  "description": "按品类和区域双维度分组，筛选平均折扣低于20%且总销售额超过10万的组合，分析高价值低折扣业务",
+  "schema": [
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "discount",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "product_type",
+        "alias": "品类"
+      },
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "discount",
+        "alias": "平均折扣",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "avg"
+        }
+      }
+    ],
+    "limit": 10,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    },
+    "havingFilter": {
+      "op": "and",
+      "conditions": []
+    }
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.addGroup('and', g => { g.add('平均折扣', n => n.setOperator('lt').setValue(0.2)); g.add('销售额', n => n.setOperator('gt').setValue(100000)); }); }"
+}

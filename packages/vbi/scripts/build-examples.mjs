@@ -83,7 +83,7 @@ function findJsonFilesInDir(dir) {
 
 // ============ Code Generation ============
 function generateDSLConfig(dsl) {
-  const { whereFilters, filters, whereFilter, havingFilters, havingFilter, ...restDSL } = dsl
+  const { whereFilters, filters, whereFilter, havingFilter, ...restDSL } = dsl
 
   return {
     ...DEFAULT_DSL,
@@ -94,7 +94,7 @@ function generateDSLConfig(dsl) {
     },
     havingFilter: havingFilter ?? {
       op: 'and',
-      conditions: havingFilters ?? [],
+      conditions: [],
     },
   }
 }

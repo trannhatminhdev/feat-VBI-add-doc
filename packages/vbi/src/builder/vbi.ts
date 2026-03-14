@@ -4,7 +4,7 @@ import { VBIBuilder } from './vbi-builder'
 import { connectorMap, getConnector, registerConnector } from './connector'
 import { id } from 'src/utils'
 import { createWhereRoot } from './sub-builders/whereFilters/where-utils'
-import { createHavingRoot } from './sub-builders/havingFilters/having-utils'
+import { createHavingRoot } from './sub-builders/havingFilter/having-utils'
 
 import * as Y from 'yjs'
 
@@ -107,7 +107,7 @@ const createVBI = () => {
         dsl.set('whereFilter', whereRoot)
         const havingFilter = (vbi.havingFilter ?? {
           op: 'and',
-          conditions: vbi.havingFilters ?? [],
+          conditions: [],
         }) as Y.Map<any> | { op?: 'and' | 'or'; conditions?: any }
         const havingRoot = havingFilter instanceof Y.Map ? havingFilter : createHavingRoot()
         if (havingFilter instanceof Y.Map) {

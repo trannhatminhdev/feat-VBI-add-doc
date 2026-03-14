@@ -1,11 +1,7 @@
 {
-  "name": "having-multi-dimension-aggregate",
-  "description": "按品类和区域双维度分组，筛选平均折扣低于20%且总销售额超过10万的组合，分析高价值低折扣业务",
+  "name": "having-or-group",
+  "description": "使用OR分组筛选高销售额或高利润的区域",
   "schema": [
-    {
-      "name": "product_type",
-      "type": "string"
-    },
     {
       "name": "area",
       "type": "string"
@@ -15,17 +11,13 @@
       "type": "number"
     },
     {
-      "name": "discount",
+      "name": "profit",
       "type": "number"
     }
   ],
   "dsl": {
     "chartType": "bar",
     "dimensions": [
-      {
-        "field": "product_type",
-        "alias": "品类"
-      },
       {
         "field": "area",
         "alias": "区域"
@@ -41,15 +33,15 @@
         }
       },
       {
-        "field": "discount",
-        "alias": "平均折扣",
+        "field": "profit",
+        "alias": "利润",
         "encoding": "yAxis",
         "aggregate": {
-          "func": "avg"
+          "func": "sum"
         }
       }
     ],
-    "limit": 10,
+    "limit": 20,
     "whereFilter": {
       "op": "and",
       "conditions": []
@@ -59,5 +51,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.addGroup('and', g => { g.add('平均折扣', n => n.setOperator('lt').setValue(0.2)); g.add('销售额', n => n.setOperator('gt').setValue(100000)); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.addGroup('or', group => { group.add('销售额', n => n.setOperator('gt').setValue(1000000)); group.add('利润', n => n.setOperator('gt').setValue(200000)); }); }"
 }

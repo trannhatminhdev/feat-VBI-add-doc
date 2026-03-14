@@ -43,9 +43,9 @@ const BUILDER_CONFIG = [
     category: 'sub-builders',
   },
   {
-    name: 'havingFilters',
-    label: 'havingFilters',
-    file: 'sub-builders/havingFilters/having-builder.ts',
+    name: 'havingFilter',
+    label: 'havingFilter',
+    file: 'sub-builders/havingFilter/having-builder.ts',
     category: 'sub-builders',
   },
   {
@@ -82,16 +82,16 @@ const NODE_BUILDER_CONFIG = [
     file: 'sub-builders/whereFilters/where-group-builder.ts',
   },
   {
-    parent: 'havingFilters',
-    name: 'HavingNodeBuilder',
+    parent: 'havingFilter',
+    name: 'HavingFilterNodeBuilder',
     label: 'having-node',
-    file: 'sub-builders/havingFilters/having-node-builder.ts',
+    file: 'sub-builders/havingFilter/having-node-builder.ts',
   },
   {
-    parent: 'havingFilters',
+    parent: 'havingFilter',
     name: 'HavingGroupBuilder',
     label: 'having-group',
-    file: 'sub-builders/havingFilters/having-group-builder.ts',
+    file: 'sub-builders/havingFilter/having-group-builder.ts',
   },
 ]
 

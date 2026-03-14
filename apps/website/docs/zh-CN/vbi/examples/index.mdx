@@ -26,26 +26,26 @@
 | [remove-dimension](./dimensions#remove-dimension)               | 删除维度                 | -    |
 | [update-dimension](./dimensions#update-dimension)               | 更新维度                 | -    |
 
-## havingFilters
+## havingFilter
 
-| 示例                                                                                 | 描述                                                                                              | 标签 |
-| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- | ---- |
-| [add-having-filter](./havingFilters#add-having-filter)                               | 按区域分组后筛选销售额超过百万的高业绩区域                                                        | -    |
-| [add-multiple-having-filters](./havingFilters#add-multiple-having-filters)           | 链式添加多个Having条件筛选高销售额且高利润的区域                                                  | -    |
-| [clear-having-filters](./havingFilters#clear-having-filters)                         | 清空所有Having过滤条件，展示全量分组聚合结果                                                      | -    |
-| [having-clear-and-rebuild](./havingFilters#having-clear-and-rebuild)                 | 清除已有having条件后重新构建全新的分组筛选，模拟用户重置筛选面板后重新配置                        | -    |
-| [having-deeply-nested-groups](./havingFilters#having-deeply-nested-groups)           | 三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选 | -    |
-| [having-find-and-update](./havingFilters#having-find-and-update)                     | 先添加having条件，然后通过find查找并动态更新阈值和操作符，模拟用户交互式调整筛选条件              | -    |
-| [having-group-add-to-existing](./havingFilters#having-group-add-to-existing)         | 向已有的having分组中追加新条件，模拟用户逐步细化筛选规则                                          | -    |
-| [having-group-remove-condition](./havingFilters#having-group-remove-condition)       | 从已有的having分组中移除特定条件，模拟用户取消某个筛选项                                          | -    |
-| [having-mix-filters-and-groups](./havingFilters#having-mix-filters-and-groups)       | 混合使用独立过滤条件和OR分组：销售额超50万 AND (利润超10万 OR 数量不少于30)                       | -    |
-| [having-multi-dimension-aggregate](./havingFilters#having-multi-dimension-aggregate) | 按品类和区域双维度分组，筛选平均折扣低于20%且总销售额超过10万的组合，分析高价值低折扣业务         | -    |
-| [having-nested-groups](./havingFilters#having-nested-groups)                         | 嵌套分组：AND(销售额超100万, OR(利润超20万, 数量不少于50))                                        | -    |
-| [having-or-group](./havingFilters#having-or-group)                                   | 使用OR分组筛选高销售额或高利润的区域                                                              | -    |
-| [having-scatter-profit-analysis](./havingFilters#having-scatter-profit-analysis)     | 散点图分析：按品类分组筛选高利润率且交易量超20笔的品类，定位优质业务                              | -    |
-| [having-update-group-operator](./havingFilters#having-update-group-operator)         | 更新已有Having分组的逻辑操作符从AND改为OR                                                         | -    |
-| [having-with-where-combined](./havingFilters#having-with-where-combined)             | where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份      | -    |
-| [remove-having-filter](./havingFilters#remove-having-filter)                         | 移除多余的Having过滤条件，只保留利润筛选                                                          | -    |
+| 示例                                                                                | 描述                                                                                              | 标签 |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ---- |
+| [add-having-filter](./havingFilter#add-having-filter)                               | 按区域分组后筛选销售额超过百万的高业绩区域                                                        | -    |
+| [add-multiple-having-filter](./havingFilter#add-multiple-having-filter)             | 链式添加多个Having条件筛选高销售额且高利润的区域                                                  | -    |
+| [clear-having-filter](./havingFilter#clear-having-filter)                           | 清空所有Having过滤条件，展示全量分组聚合结果                                                      | -    |
+| [having-clear-and-rebuild](./havingFilter#having-clear-and-rebuild)                 | 清除已有having条件后重新构建全新的分组筛选，模拟用户重置筛选面板后重新配置                        | -    |
+| [having-deeply-nested-groups](./havingFilter#having-deeply-nested-groups)           | 三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选 | -    |
+| [having-find-and-update](./havingFilter#having-find-and-update)                     | 先添加having条件，然后通过find查找并动态更新阈值和操作符，模拟用户交互式调整筛选条件              | -    |
+| [having-group-add-to-existing](./havingFilter#having-group-add-to-existing)         | 向已有的having分组中追加新条件，模拟用户逐步细化筛选规则                                          | -    |
+| [having-group-remove-condition](./havingFilter#having-group-remove-condition)       | 从已有的having分组中移除特定条件，模拟用户取消某个筛选项                                          | -    |
+| [having-mix-filters-and-groups](./havingFilter#having-mix-filters-and-groups)       | 混合使用独立过滤条件和OR分组：销售额超50万 AND (利润超10万 OR 数量不少于30)                       | -    |
+| [having-multi-dimension-aggregate](./havingFilter#having-multi-dimension-aggregate) | 按品类和区域双维度分组，筛选平均折扣低于20%且总销售额超过10万的组合，分析高价值低折扣业务         | -    |
+| [having-nested-groups](./havingFilter#having-nested-groups)                         | 嵌套分组：AND(销售额超100万, OR(利润超20万, 数量不少于50))                                        | -    |
+| [having-or-group](./havingFilter#having-or-group)                                   | 使用OR分组筛选高销售额或高利润的区域                                                              | -    |
+| [having-scatter-profit-analysis](./havingFilter#having-scatter-profit-analysis)     | 散点图分析：按品类分组筛选高利润率且交易量超20笔的品类，定位优质业务                              | -    |
+| [having-update-group-operator](./havingFilter#having-update-group-operator)         | 更新已有Having分组的逻辑操作符从AND改为OR                                                         | -    |
+| [having-with-where-combined](./havingFilter#having-with-where-combined)             | where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份      | -    |
+| [remove-having-filter](./havingFilter#remove-having-filter)                         | 移除多余的Having过滤条件，只保留利润筛选                                                          | -    |
 
 ## locale
 

@@ -1,6 +1,6 @@
 {
-  "name": "having-nested-groups",
-  "description": "嵌套分组：AND(销售额超100万, OR(利润超20万, 数量不少于50))",
+  "name": "remove-having-filter",
+  "description": "移除多余的Having过滤条件，只保留利润筛选",
   "schema": [
     {
       "name": "area",
@@ -12,10 +12,6 @@
     },
     {
       "name": "profit",
-      "type": "number"
-    },
-    {
-      "name": "amount",
       "type": "number"
     }
   ],
@@ -43,14 +39,6 @@
         "aggregate": {
           "func": "sum"
         }
-      },
-      {
-        "field": "amount",
-        "alias": "数量",
-        "encoding": "yAxis",
-        "aggregate": {
-          "func": "sum"
-        }
       }
     ],
     "limit": 20,
@@ -60,8 +48,21 @@
     },
     "havingFilter": {
       "op": "and",
-      "conditions": []
+      "conditions": [
+        {
+          "id": "having-1",
+          "field": "销售额",
+          "op": "gt",
+          "value": 1000000
+        },
+        {
+          "id": "having-2",
+          "field": "利润",
+          "op": "gt",
+          "value": 200000
+        }
+      ]
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.addGroup('and', outer => { outer.add('销售额', n => n.setOperator('gt').setValue(1000000)); outer.addGroup('or', inner => { inner.add('利润', n => n.setOperator('gt').setValue(200000)); inner.add('数量', n => n.setOperator('gte').setValue(50)); }); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.remove('having-1'); }"
 }

@@ -4,7 +4,7 @@ export {
   MeasuresBuilder,
   DimensionsBuilder,
   ChartTypeBuilder,
-  HavingFiltersBuilder,
+  HavingFilterBuilder,
   WhereFiltersBuilder,
 } from './sub-builders'
 export { UndoManager } from './undo-manager'

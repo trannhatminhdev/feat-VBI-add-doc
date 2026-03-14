@@ -1,7 +1,7 @@
 import { CloseOutlined, DownOutlined } from '@ant-design/icons';
 import { Flex, Popover } from 'antd';
 import { useVBIStore } from 'src/model';
-import { useVBIWhereFilters, useVBIHavingFilters } from 'src/hooks';
+import { useVBIWhereFilters, useVBIHavingFilter } from 'src/hooks';
 import {
   FilterPanel,
   HavingFilterPanel,
@@ -288,14 +288,14 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
 
 export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
-  const { filters: havingFilters } = useVBIHavingFilters(builder);
+  const { filters: havingFilter } = useVBIHavingFilter(builder);
 
   const [allFields, setAllFields] = useState<
     { name: string; role: 'dimension' | 'measure' }[]
   >([]);
   const [isDragOver, setIsDragOver] = useState(false);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
-  const prevHavingFiltersRef = useRef<string[]>([]);
+  const prevHavingFilterRef = useRef<string[]>([]);
 
   // 获取所有字段
   useEffect(() => {
@@ -340,14 +340,14 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
         }
       });
     };
-    traverse(havingFilters);
+    traverse(havingFilter);
     return result;
-  }, [havingFilters]);
+  }, [havingFilter]);
 
   // 检测新添加的item并自动打开编辑弹窗
   useEffect(() => {
     const currentIds = havingFilterItems.map((item) => item.id || '');
-    const prevIds = prevHavingFiltersRef.current;
+    const prevIds = prevHavingFilterRef.current;
 
     const newIds = currentIds.filter((id) => !prevIds.includes(id));
     if (newIds.length > 0) {
@@ -357,7 +357,7 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
       }
     }
 
-    prevHavingFiltersRef.current = currentIds;
+    prevHavingFilterRef.current = currentIds;
   }, [havingFilterItems]);
 
   // 增量添加 Having 过滤条件 (接收 HavingItem 格式)
@@ -377,7 +377,7 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
 
         builder.doc.transact(() => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          builder.havingFilters.add(item.field, (node: any) => {
+          builder.havingFilter.add(item.field, (node: any) => {
             node.setOperator(mappedOperator);
             node.setValue(item.value);
           });
@@ -392,7 +392,7 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
     (id: string) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.havingFilters.remove(id);
+          builder.havingFilter.remove(id);
         });
       }
     },
@@ -407,7 +407,7 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
       }
 
       // 查找现有过滤器以获取原始 field
-      const existingFilter = builder.havingFilters.find(updatedItem.id);
+      const existingFilter = builder.havingFilter.find(updatedItem.id);
 
       const existingField =
         existingFilter && 'getField' in existingFilter
@@ -430,14 +430,14 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
       builder.doc.transact(() => {
         // 如果 field 改变了，需要删除旧过滤器并添加新的
         if (existingField !== updatedItem.field) {
-          builder.havingFilters.remove(filterId);
-          builder.havingFilters.add(updatedItem.field, (node) => {
+          builder.havingFilter.remove(filterId);
+          builder.havingFilter.add(updatedItem.field, (node) => {
             node.setOperator(mappedOperator);
             node.setValue(updatedItem.value);
           });
         } else {
           // 使用 update 方法更新现有过滤器，保留 ID
-          builder.havingFilters.update(filterId, (node) => {
+          builder.havingFilter.update(filterId, (node) => {
             node.setOperator(mappedOperator);
             node.setValue(updatedItem.value);
           });

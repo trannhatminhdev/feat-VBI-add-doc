@@ -4,7 +4,7 @@ import { zVBIMeasureTree } from '../measures/measures'
 import { zVBIDSLTheme } from '../theme/theme'
 import { zVBIDSLLocale } from '../locale/locale'
 import { zVBIWhereGroup } from '../whereFilters/filters'
-import { zVBIHavingRoot, type VBIHavingClause } from '../havingFilters/having'
+import { zVBIHavingRoot } from '../havingFilter/having'
 
 export const zVBIDSL = z.object({
   connectorId: z.string(),
@@ -25,7 +25,5 @@ export const zVBIDSL = z.object({
   version: z.number().int().min(0),
 })
 
-export type VBIDSLInput = z.input<typeof zVBIDSL> & {
-  havingFilters?: VBIHavingClause[]
-}
+export type VBIDSLInput = z.input<typeof zVBIDSL>
 export type VBIDSL = z.output<typeof zVBIDSL>

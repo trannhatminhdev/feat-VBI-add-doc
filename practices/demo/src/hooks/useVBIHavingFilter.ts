@@ -2,11 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { VBIBuilder, VBIHavingClause } from '@visactor/vbi';
 
 /**
- * VBI Having Filters Hook
+ * VBI Having Filter Hook
  * 提供结果过滤（聚合后）管理
  * 支持响应式同步和增量操作
  */
-export const useVBIHavingFilters = (builder: VBIBuilder | undefined) => {
+export const useVBIHavingFilter = (builder: VBIBuilder | undefined) => {
   const [filters, setFilters] = useState<VBIHavingClause[]>([]);
 
   useEffect(() => {
@@ -15,14 +15,14 @@ export const useVBIHavingFilters = (builder: VBIBuilder | undefined) => {
     }
 
     // 初始化
-    setFilters(builder.havingFilters.toJson() as VBIHavingClause[]);
+    setFilters(builder.havingFilter.toJson() as VBIHavingClause[]);
 
     // 监听变化 - 响应式同步
     const updateHandler = () => {
-      setFilters(builder.havingFilters.toJson() as VBIHavingClause[]);
+      setFilters(builder.havingFilter.toJson() as VBIHavingClause[]);
     };
 
-    const unobserve = builder.havingFilters.observe(updateHandler);
+    const unobserve = builder.havingFilter.observe(updateHandler);
     return unobserve;
   }, [builder]);
 
@@ -31,7 +31,7 @@ export const useVBIHavingFilters = (builder: VBIBuilder | undefined) => {
     (field: string, aggregateFunc?: string, operator?: string, value?: any) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.havingFilters.add(field, (node) => {
+          builder.havingFilter.add(field, (node) => {
             // having 的 operator 格式为 "sum(>)"
             if (aggregateFunc && operator) {
               node.setOperator(`${aggregateFunc}(${operator})`);
@@ -49,7 +49,7 @@ export const useVBIHavingFilters = (builder: VBIBuilder | undefined) => {
     (op: 'and' | 'or', callback?: (group: any) => void) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.havingFilters.addGroup(op, callback ?? (() => {}));
+          builder.havingFilter.addGroup(op, callback ?? (() => {}));
         });
       }
     },
@@ -61,7 +61,7 @@ export const useVBIHavingFilters = (builder: VBIBuilder | undefined) => {
     (id: string) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.havingFilters.remove(id);
+          builder.havingFilter.remove(id);
         });
       }
     },
@@ -72,7 +72,7 @@ export const useVBIHavingFilters = (builder: VBIBuilder | undefined) => {
   const clearFilters = useCallback(() => {
     if (builder) {
       builder.doc.transact(() => {
-        builder.havingFilters.clear();
+        builder.havingFilter.clear();
       });
     }
   }, [builder]);
@@ -82,7 +82,7 @@ export const useVBIHavingFilters = (builder: VBIBuilder | undefined) => {
     (id: string, updates: { operator?: string; value?: any }) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.havingFilters.update(id, (node: any) => {
+          builder.havingFilter.update(id, (node: any) => {
             if (updates.operator) node.setOperator(updates.operator);
             if (updates.value !== undefined) node.setValue(updates.value);
           });
@@ -96,7 +96,7 @@ export const useVBIHavingFilters = (builder: VBIBuilder | undefined) => {
   const findFilter = useCallback(
     (id: string) => {
       if (builder) {
-        return builder.havingFilters.find(id);
+        return builder.havingFilter.find(id);
       }
       return undefined;
     },

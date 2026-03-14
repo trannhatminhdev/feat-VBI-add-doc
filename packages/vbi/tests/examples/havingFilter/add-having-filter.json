@@ -1,6 +1,6 @@
 {
-  "name": "having-or-group",
-  "description": "使用OR分组筛选高销售额或高利润的区域",
+  "name": "add-having-filter",
+  "description": "按区域分组后筛选销售额超过百万的高业绩区域",
   "schema": [
     {
       "name": "area",
@@ -8,10 +8,6 @@
     },
     {
       "name": "sales",
-      "type": "number"
-    },
-    {
-      "name": "profit",
       "type": "number"
     }
   ],
@@ -31,14 +27,6 @@
         "aggregate": {
           "func": "sum"
         }
-      },
-      {
-        "field": "profit",
-        "alias": "利润",
-        "encoding": "yAxis",
-        "aggregate": {
-          "func": "sum"
-        }
       }
     ],
     "limit": 20,
@@ -51,5 +39,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.addGroup('or', group => { group.add('销售额', n => n.setOperator('gt').setValue(1000000)); group.add('利润', n => n.setOperator('gt').setValue(200000)); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.add('销售额', node => { node.setOperator('gt').setValue(1000000); }); }"
 }

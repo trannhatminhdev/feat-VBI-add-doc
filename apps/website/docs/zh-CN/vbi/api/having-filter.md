@@ -1,4 +1,4 @@
-# havingFilters
+# havingFilter
 
 Having 过滤构建器，用于添加、修改、删除分组后过滤条件。Having 过滤在数据聚合后生效，用于筛选分组结果
 
@@ -48,17 +48,17 @@ getConditions(): Y.Array<any>
 **定义**:
 
 ```typescript
-add(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder
+add(field: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder
 ```
 
-**返回**: `HavingFiltersBuilder`
+**返回**: `HavingFilterBuilder`
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `field` | string | - 字段名 |
-| `callback` | (node: HavingFiltersNodeBuilder) => void | - 回调函数 |
+| `callback` | (node: HavingFilterNodeBuilder) => void | - 回调函数 |
 
 ### addGroup
 
@@ -67,10 +67,10 @@ add(field: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFi
 **定义**:
 
 ```typescript
-addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFiltersBuilder
+addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder
 ```
 
-**返回**: `HavingFiltersBuilder`
+**返回**: `HavingFilterBuilder`
 
 **参数**:
 
@@ -86,17 +86,17 @@ addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): Havin
 **定义**:
 
 ```typescript
-update(id: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder
+update(id: string, callback: (node: HavingFilterNodeBuilder) => void): HavingFilterBuilder
 ```
 
-**返回**: `HavingFiltersBuilder`
+**返回**: `HavingFilterBuilder`
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `id` | string | - 过滤条件 ID |
-| `callback` | (node: HavingFiltersNodeBuilder) => void | - 回调函数 |
+| `callback` | (node: HavingFilterNodeBuilder) => void | - 回调函数 |
 
 ### updateGroup
 
@@ -105,10 +105,10 @@ update(id: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFi
 **定义**:
 
 ```typescript
-updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFiltersBuilder
+updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder
 ```
 
-**返回**: `HavingFiltersBuilder`
+**返回**: `HavingFilterBuilder`
 
 **参数**:
 
@@ -124,10 +124,10 @@ updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFi
 **定义**:
 
 ```typescript
-remove(idOrIndex: string | number): HavingFiltersBuilder
+remove(idOrIndex: string | number): HavingFilterBuilder
 ```
 
-**返回**: `HavingFiltersBuilder`
+**返回**: `HavingFilterBuilder`
 
 **参数**:
 
@@ -142,10 +142,10 @@ remove(idOrIndex: string | number): HavingFiltersBuilder
 **定义**:
 
 ```typescript
-find(id: string): HavingFiltersNodeBuilder | HavingGroupBuilder | undefined
+find(id: string): HavingFilterNodeBuilder | HavingGroupBuilder | undefined
 ```
 
-**返回**: `HavingFiltersNodeBuilder \| HavingGroupBuilder \| undefined`
+**返回**: `HavingFilterNodeBuilder \| HavingGroupBuilder \| undefined`
 
 **参数**:
 

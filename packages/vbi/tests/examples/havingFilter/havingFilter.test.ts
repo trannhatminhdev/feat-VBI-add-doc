@@ -1,7 +1,7 @@
 import { VBI, VBIBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
-describe('HavingFilters', () => {
+describe('HavingFilter', () => {
   beforeAll(async () => {
     registerDemoConnector()
   })
@@ -42,7 +42,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.add('销售额', (node) => {
+      builder.havingFilter.add('销售额', (node) => {
         node.setOperator('gt').setValue(1000000)
       })
     }
@@ -159,7 +159,7 @@ describe('HavingFilters', () => {
     `)
   })
 
-  it('add-multiple-having-filters', async () => {
+  it('add-multiple-having-filter', async () => {
     const builder = VBI.from({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
@@ -203,7 +203,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters
+      builder.havingFilter
         .add('销售额', (n) => n.setOperator('gt').setValue(1000000))
         .add('利润', (n) => n.setOperator('gt').setValue(200000))
     }
@@ -346,7 +346,7 @@ describe('HavingFilters', () => {
     `)
   })
 
-  it('clear-having-filters', async () => {
+  it('clear-having-filter', async () => {
     const builder = VBI.from({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
@@ -403,7 +403,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.clear()
+      builder.havingFilter.clear()
     }
     applyBuilder(builder)
 
@@ -585,8 +585,8 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.clear()
-      builder.havingFilters.addGroup('and', (g) => {
+      builder.havingFilter.clear()
+      builder.havingFilter.addGroup('and', (g) => {
         g.add('销售额', (n) => n.setOperator('gte').setValue(100000))
         g.addGroup('or', (sub) => {
           sub.add('利润', (n) => n.setOperator('gt').setValue(20000))
@@ -857,7 +857,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.addGroup('or', (root) => {
+      builder.havingFilter.addGroup('or', (root) => {
         root.addGroup('and', (g1) => {
           g1.add('销售额', (n) => n.setOperator('gt').setValue(500000))
           g1.add('利润', (n) => n.setOperator('gt').setValue(50000))
@@ -1186,16 +1186,16 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters
+      builder.havingFilter
         .add('销售额', (n) => n.setOperator('gt').setValue(100000))
         .add('利润', (n) => n.setOperator('gt').setValue(10000))
-      const json = builder.havingFilters.toJson()
+      const json = builder.havingFilter.toJson()
       const salesId = json[0].id
       const profitId = json[1].id
-      builder.havingFilters.update(salesId, (n) => {
+      builder.havingFilter.update(salesId, (n) => {
         n.setOperator('gte').setValue(500000)
       })
-      builder.havingFilters.update(profitId, (n) => {
+      builder.havingFilter.update(profitId, (n) => {
         n.setOperator('gte').setValue(50000)
       })
     }
@@ -1398,7 +1398,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.updateGroup('group-1', (group) => {
+      builder.havingFilter.updateGroup('group-1', (group) => {
         group.add('利润', (n) => n.setOperator('gt').setValue(100000))
         group.add('数量', (n) => n.setOperator('gte').setValue(200))
       })
@@ -1658,7 +1658,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.updateGroup('group-1', (group) => {
+      builder.havingFilter.updateGroup('group-1', (group) => {
         group.remove('cond-1')
       })
     }
@@ -1848,7 +1848,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters
+      builder.havingFilter
         .add('销售额', (n) => n.setOperator('gt').setValue(500000))
         .addGroup('or', (group) => {
           group.add('利润', (n) => n.setOperator('gt').setValue(100000))
@@ -2095,7 +2095,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.addGroup('and', (g) => {
+      builder.havingFilter.addGroup('and', (g) => {
         g.add('平均折扣', (n) => n.setOperator('lt').setValue(0.2))
         g.add('销售额', (n) => n.setOperator('gt').setValue(100000))
       })
@@ -2351,7 +2351,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.addGroup('and', (outer) => {
+      builder.havingFilter.addGroup('and', (outer) => {
         outer.add('销售额', (n) => n.setOperator('gt').setValue(1000000))
         outer.addGroup('or', (inner) => {
           inner.add('利润', (n) => n.setOperator('gt').setValue(200000))
@@ -2600,7 +2600,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.addGroup('or', (group) => {
+      builder.havingFilter.addGroup('or', (group) => {
         group.add('销售额', (n) => n.setOperator('gt').setValue(1000000))
         group.add('利润', (n) => n.setOperator('gt').setValue(200000))
       })
@@ -2812,7 +2812,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.addGroup('and', (g) => {
+      builder.havingFilter.addGroup('and', (g) => {
         g.add('利润', (n) => n.setOperator('gt').setValue(0))
         g.add('数量', (n) => n.setOperator('gt').setValue(20))
         g.add('销售额', (n) => n.setOperator('gt').setValue(10000))
@@ -3097,7 +3097,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.updateGroup('group-1', (group) => {
+      builder.havingFilter.updateGroup('group-1', (group) => {
         group.setOperator('or')
       })
     }
@@ -3301,7 +3301,7 @@ describe('HavingFilters', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.whereFilter.add('product_type', (n) => n.setOperator('=').setValue('办公用品'))
-      builder.havingFilters.addGroup('or', (g) => {
+      builder.havingFilter.addGroup('or', (g) => {
         g.add('销售额', (n) => n.setOperator('gt').setValue(50000))
         g.add('利润', (n) => n.setOperator('gt').setValue(10000))
       })
@@ -3560,7 +3560,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilters.remove('having-1')
+      builder.havingFilter.remove('having-1')
     }
     applyBuilder(builder)
 

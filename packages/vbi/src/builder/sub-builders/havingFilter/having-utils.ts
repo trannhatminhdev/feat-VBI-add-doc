@@ -18,12 +18,6 @@ export function ensureHavingRoot(dsl: Y.Map<any>): Y.Map<any> {
   }
 
   const root = createHavingRoot()
-  const legacyHavingFilters = dsl.get('havingFilters')
-  if (legacyHavingFilters instanceof Y.Array) {
-    root.set('conditions', legacyHavingFilters)
-    dsl.delete('havingFilters')
-  }
-
   dsl.set('havingFilter', root)
   return root
 }

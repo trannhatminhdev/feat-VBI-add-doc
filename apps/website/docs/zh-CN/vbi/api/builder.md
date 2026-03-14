@@ -10,7 +10,7 @@
 | **chartType** | `ChartTypeBuilder` | - |
 | **measures** | `MeasuresBuilder` | - |
 | **dimensions** | `DimensionsBuilder` | - |
-| **havingFilters** | `HavingFiltersBuilder` | - |
+| **havingFilter** | `HavingFilterBuilder` | - |
 | **whereFilter** | `WhereFiltersBuilder` | - |
 
 

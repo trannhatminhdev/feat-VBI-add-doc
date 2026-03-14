@@ -5,7 +5,7 @@ import type {
   MeasuresBuilder,
   DimensionsBuilder,
   ChartTypeBuilder,
-  HavingFiltersBuilder,
+  HavingFilterBuilder,
   WhereFiltersBuilder,
 } from 'src/builder/sub-builders'
 import type { Map, Doc } from 'yjs'
@@ -19,7 +19,7 @@ export interface VBIBuilderInterface {
   chartType: ChartTypeBuilder
   measures: MeasuresBuilder
   dimensions: DimensionsBuilder
-  havingFilters: HavingFiltersBuilder
+  havingFilter: HavingFilterBuilder
   whereFilter: WhereFiltersBuilder
 
   applyUpdate: (update: Uint8Array, origin?: any) => void

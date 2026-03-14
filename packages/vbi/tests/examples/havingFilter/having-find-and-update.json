@@ -1,11 +1,7 @@
 {
-  "name": "having-with-where-combined",
-  "description": "where与having联合筛选：先按where筛选办公用品品类，再按having筛选销售额超5万或利润超1万的省份",
+  "name": "having-find-and-update",
+  "description": "先添加having条件，然后通过find查找并动态更新阈值和操作符，模拟用户交互式调整筛选条件",
   "schema": [
-    {
-      "name": "province",
-      "type": "string"
-    },
     {
       "name": "product_type",
       "type": "string"
@@ -23,8 +19,8 @@
     "chartType": "column",
     "dimensions": [
       {
-        "field": "province",
-        "alias": "省份"
+        "field": "product_type",
+        "alias": "品类"
       }
     ],
     "measures": [
@@ -45,7 +41,7 @@
         }
       }
     ],
-    "limit": 10,
+    "limit": 20,
     "whereFilter": {
       "op": "and",
       "conditions": []
@@ -55,5 +51,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilter.add('product_type', n => n.setOperator('=').setValue('办公用品')); builder.havingFilters.addGroup('or', g => { g.add('销售额', n => n.setOperator('gt').setValue(50000)); g.add('利润', n => n.setOperator('gt').setValue(10000)); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.add('销售额', n => n.setOperator('gt').setValue(100000)).add('利润', n => n.setOperator('gt').setValue(10000)); const json = builder.havingFilter.toJson(); const salesId = json[0].id; const profitId = json[1].id; builder.havingFilter.update(salesId, n => { n.setOperator('gte').setValue(500000); }); builder.havingFilter.update(profitId, n => { n.setOperator('gte').setValue(50000); }); }"
 }

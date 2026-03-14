@@ -30,8 +30,8 @@
   },
   {
     "type": "dir",
-    "name": "having-filters",
-    "label": "builder.havingFilters",
+    "name": "having-filter",
+    "label": "builder.havingFilter",
     "collapsed": true
   },
   {

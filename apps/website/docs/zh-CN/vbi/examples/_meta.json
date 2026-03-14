@@ -13,8 +13,8 @@
   },
   {
     "type": "file",
-    "name": "havingFilters",
-    "label": "HavingFilters",
+    "name": "havingFilter",
+    "label": "HavingFilter",
     "count": 16
   },
   {

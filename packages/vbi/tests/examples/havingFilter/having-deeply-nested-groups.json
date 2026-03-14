@@ -1,0 +1,79 @@
+{
+  "name": "having-deeply-nested-groups",
+  "description": "三层嵌套分组：OR(AND(销售额超50万, 利润超5万), AND(数量超100, 折扣均值低于0.3))，模拟复杂业务筛选",
+  "schema": [
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    },
+    {
+      "name": "amount",
+      "type": "number"
+    },
+    {
+      "name": "discount",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "province",
+        "alias": "省份"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "amount",
+        "alias": "数量",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "discount",
+        "alias": "平均折扣",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "avg"
+        }
+      }
+    ],
+    "limit": 10,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    },
+    "havingFilter": {
+      "op": "and",
+      "conditions": []
+    }
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.addGroup('or', root => { root.addGroup('and', g1 => { g1.add('销售额', n => n.setOperator('gt').setValue(500000)); g1.add('利润', n => n.setOperator('gt').setValue(50000)); }); root.addGroup('and', g2 => { g2.add('数量', n => n.setOperator('gt').setValue(100)); g2.add('平均折扣', n => n.setOperator('lt').setValue(0.3)); }); }); }"
+}

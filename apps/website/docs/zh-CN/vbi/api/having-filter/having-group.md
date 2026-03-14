@@ -67,7 +67,7 @@ setOperator(op: 'and' | 'or'): this
 **定义**:
 
 ```typescript
-add(field: string, callback: (node: HavingFiltersNodeBuilder) => void): this
+add(field: string, callback: (node: HavingFilterNodeBuilder) => void): this
 ```
 
 **返回**: `this`
@@ -77,7 +77,7 @@ add(field: string, callback: (node: HavingFiltersNodeBuilder) => void): this
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `field` | string | - 字段名 |
-| `callback` | (node: HavingFiltersNodeBuilder) => void | - 回调函数 |
+| `callback` | (node: HavingFilterNodeBuilder) => void | - 回调函数 |
 
 ### addGroup
 
