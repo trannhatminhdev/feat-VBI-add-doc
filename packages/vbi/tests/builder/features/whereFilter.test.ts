@@ -13,6 +13,7 @@ describe('WhereFilterBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [],
       whereFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -23,10 +24,7 @@ describe('WhereFilterBuilder', () => {
           },
         ],
       },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [],
     })
   })
@@ -45,6 +43,7 @@ describe('WhereFilterBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [],
       whereFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -61,10 +60,7 @@ describe('WhereFilterBuilder', () => {
           },
         ],
       },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [],
     })
   })
@@ -79,6 +75,7 @@ describe('WhereFilterBuilder', () => {
 
     expect(builder.whereFilter.getConditions()).toBeInstanceOf(Y.Array)
     expect(builder.whereFilter.toJSON()).toEqual({
+      id: 'root',
       op: 'and',
       conditions: [{ id: 'id-1', field: 'category', op: 'eq', value: 'Electronics' }],
     })
@@ -427,11 +424,8 @@ describe('WhereFilterBuilder', () => {
       chartType: 'column',
       dimensions: [{ field: 'category', alias: 'category' }],
       measures: [{ field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
-      whereFilter: { op: 'and', conditions: [] },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       version: 1,
     } as VBIDSL)
 
@@ -742,6 +736,7 @@ describe('WhereGroupBuilder', () => {
   test('from DSL with existing group gets id assigned', () => {
     const dsl = {
       whereFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           { field: 'category', op: 'eq', value: 'Electronics' },

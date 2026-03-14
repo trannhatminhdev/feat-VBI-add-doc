@@ -12,18 +12,17 @@ export const zVBIFilter = z.object({
 export type VBIFilter = z.infer<typeof zVBIFilter>
 
 type VBIWhereBranch = {
+  id: string
   op: z.infer<typeof zWhereLogicalOperator>
   conditions: VBIWhereClause[]
 }
 
-export type VBIWhereGroup = VBIWhereBranch & {
-  id?: string
-}
+export type VBIWhereGroup = VBIWhereBranch
 export type VBIWhereClause = VBIFilter | VBIWhereGroup
 
 export const zVBIWhereGroup: z.ZodType<VBIWhereGroup> = z.lazy(() =>
   z.object({
-    id: z.string().optional(),
+    id: z.string(),
     op: zWhereLogicalOperator,
     conditions: z.array(zVBIWhereClause),
   }),

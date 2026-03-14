@@ -12,6 +12,7 @@ describe('WhereFilterBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [],
       whereFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -22,10 +23,7 @@ describe('WhereFilterBuilder', () => {
           },
         ],
       },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [],
     })
   })
@@ -62,6 +60,7 @@ describe('WhereFilterBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [],
       whereFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -78,10 +77,7 @@ describe('WhereFilterBuilder', () => {
           },
         ],
       },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [],
     })
   })
@@ -104,6 +100,7 @@ describe('WhereFilterBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [],
       whereFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -120,10 +117,7 @@ describe('WhereFilterBuilder', () => {
           },
         ],
       },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [],
     })
   })
@@ -142,11 +136,8 @@ describe('WhereFilterBuilder', () => {
 
     expect(builder.build()).toEqual({
       dimensions: [],
-      whereFilter: { op: 'and', conditions: [] },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [],
     })
   })
@@ -181,6 +172,7 @@ describe('WhereFilterBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [],
       whereFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           { id: 'id-1', field: 'sales', op: 'gt', value: 1000 },
@@ -188,10 +180,7 @@ describe('WhereFilterBuilder', () => {
           { id: 'id-3', field: 'category', op: 'in', value: ['Electronics', 'Furniture'] },
         ],
       },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [],
     })
   })
@@ -206,6 +195,7 @@ describe('WhereFilterBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [],
       whereFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -215,10 +205,7 @@ describe('WhereFilterBuilder', () => {
           },
         ],
       },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [],
     })
   })

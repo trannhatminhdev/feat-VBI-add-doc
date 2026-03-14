@@ -26,14 +26,8 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -69,6 +63,7 @@ describe('HavingFilter', () => {
               "value": 1000000,
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -87,6 +82,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -187,14 +183,8 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -236,6 +226,7 @@ describe('HavingFilter', () => {
               "value": 200000,
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -262,6 +253,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -374,11 +366,9 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -421,6 +411,7 @@ describe('HavingFilter', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -447,6 +438,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -562,11 +554,9 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -641,6 +631,7 @@ describe('HavingFilter', () => {
               "op": "and",
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -675,6 +666,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -841,14 +833,8 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -927,6 +913,7 @@ describe('HavingFilter', () => {
               "op": "or",
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -969,6 +956,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -1170,14 +1158,8 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1190,8 +1172,8 @@ describe('HavingFilter', () => {
         .add('销售额', (n) => n.setOperator('gt').setValue(100000))
         .add('利润', (n) => n.setOperator('gt').setValue(10000))
       const json = builder.havingFilter.toJSON().conditions
-      const salesId = json[0].id!
-      const profitId = json[1].id!
+      const salesId = json[0].id
+      const profitId = json[1].id
       builder.havingFilter.update(salesId, (n) => {
         n.setOperator('gte').setValue(500000)
       })
@@ -1228,6 +1210,7 @@ describe('HavingFilter', () => {
               "value": 50000,
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -1254,6 +1237,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -1369,11 +1353,9 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -1444,6 +1426,7 @@ describe('HavingFilter', () => {
               "op": "or",
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -1478,6 +1461,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -1623,11 +1607,9 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -1691,6 +1673,7 @@ describe('HavingFilter', () => {
               "op": "and",
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -1717,6 +1700,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -1832,14 +1816,8 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1896,6 +1874,7 @@ describe('HavingFilter', () => {
               "op": "or",
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -1930,6 +1909,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -2079,14 +2059,8 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -2139,6 +2113,7 @@ describe('HavingFilter', () => {
               "op": "and",
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -2165,6 +2140,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -2335,14 +2311,8 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -2406,6 +2376,7 @@ describe('HavingFilter', () => {
               "op": "and",
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -2440,6 +2411,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -2584,14 +2556,8 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -2640,6 +2606,7 @@ describe('HavingFilter', () => {
               "op": "or",
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -2666,6 +2633,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -2796,14 +2764,8 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -2859,6 +2821,7 @@ describe('HavingFilter', () => {
               "op": "and",
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -2893,6 +2856,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -3062,11 +3026,9 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -3136,6 +3098,7 @@ describe('HavingFilter', () => {
               "op": "or",
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -3162,6 +3125,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -3284,14 +3248,8 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -3341,6 +3299,7 @@ describe('HavingFilter', () => {
               "op": "or",
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -3374,6 +3333,7 @@ describe('HavingFilter', () => {
               "value": "办公用品",
             },
           ],
+          "id": "root",
           "op": "and",
         },
       }
@@ -3531,11 +3491,9 @@ describe('HavingFilter', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {
@@ -3585,6 +3543,7 @@ describe('HavingFilter', () => {
               "value": 200000,
             },
           ],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -3611,6 +3570,7 @@ describe('HavingFilter', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }

@@ -26,14 +26,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -60,6 +54,7 @@ describe('ChartType', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -78,6 +73,7 @@ describe('ChartType', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -180,14 +176,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -214,6 +204,7 @@ describe('ChartType', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -232,6 +223,7 @@ describe('ChartType', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -306,14 +298,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -340,6 +326,7 @@ describe('ChartType', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -358,6 +345,7 @@ describe('ChartType', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -460,14 +448,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -494,6 +476,7 @@ describe('ChartType', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -512,6 +495,7 @@ describe('ChartType', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -598,14 +582,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -632,6 +610,7 @@ describe('ChartType', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -650,6 +629,7 @@ describe('ChartType', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -724,14 +704,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -758,6 +732,7 @@ describe('ChartType', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -776,6 +751,7 @@ describe('ChartType', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -878,14 +854,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -912,6 +882,7 @@ describe('ChartType', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -930,6 +901,7 @@ describe('ChartType', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -1032,14 +1004,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1066,6 +1032,7 @@ describe('ChartType', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -1084,6 +1051,7 @@ describe('ChartType', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -1170,14 +1138,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1204,6 +1166,7 @@ describe('ChartType', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -1222,6 +1185,7 @@ describe('ChartType', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -1327,14 +1291,8 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1356,6 +1314,7 @@ describe('ChartType', () => {
         "dimensions": [],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 10,
@@ -1382,6 +1341,7 @@ describe('ChartType', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }

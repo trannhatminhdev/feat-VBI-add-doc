@@ -1,6 +1,6 @@
 import { VBI } from '@visactor/vbi'
 import { VBIDSL } from 'src/types/dsl'
-import { MeasuresBuilder } from 'src/builder/sub-builders/measures/mea-builder'
+import { MeasuresBuilder } from 'src/builder/features/measures/mea-builder'
 
 describe('MeasuresBuilder', () => {
   test('addMeasure', () => {
@@ -12,11 +12,8 @@ describe('MeasuresBuilder', () => {
 
     expect(builder.build()).toEqual({
       dimensions: [],
-      whereFilter: { op: 'and', conditions: [] },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [
         {
           aggregate: {
@@ -43,11 +40,8 @@ describe('MeasuresBuilder', () => {
 
     expect(builder.build()).toEqual({
       dimensions: [],
-      whereFilter: { op: 'and', conditions: [] },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [
         {
           aggregate: {

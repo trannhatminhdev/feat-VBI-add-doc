@@ -24,6 +24,9 @@ export class HavingFilterBuilder {
       if (!(this.havingFilter.get('conditions') instanceof Y.Array)) {
         this.havingFilter.set('conditions', new Y.Array<any>())
       }
+      if (!this.havingFilter.get('id')) {
+        this.havingFilter.set('id', 'root')
+      }
       if (!this.havingFilter.get('op')) {
         this.havingFilter.set('op', 'and')
       }
@@ -57,8 +60,7 @@ export class HavingFilterBuilder {
    * @param callback - 回调函数
    */
   addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder {
-    const yMap = createHavingGroup(op)
-    yMap.set('id', id.uuid())
+    const yMap = createHavingGroup(op, id.uuid())
 
     this.getConditions().push([yMap])
 

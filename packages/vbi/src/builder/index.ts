@@ -6,5 +6,5 @@ export {
   ChartTypeBuilder,
   HavingFilterBuilder,
   WhereFilterBuilder,
-} from './sub-builders'
+} from './features'
 export { UndoManager } from './undo-manager'

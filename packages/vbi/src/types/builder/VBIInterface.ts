@@ -7,7 +7,7 @@ import type {
   ChartTypeBuilder,
   HavingFilterBuilder,
   WhereFilterBuilder,
-} from 'src/builder/sub-builders'
+} from 'src/builder/features'
 import type { Map, Doc } from 'yjs'
 import type { UndoManager } from 'src/builder/undo-manager'
 

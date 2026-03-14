@@ -1,13 +1,13 @@
 import * as Y from 'yjs'
-import type { VBIWhereGroup } from 'src/types'
+import type { VBIHavingGroup } from 'src/types'
 import { id } from 'src/utils'
-import { WhereFilterNodeBuilder } from './where-node-builder'
-import { createWhereGroup } from './where-utils'
+import { HavingFilterNodeBuilder } from './having-node-builder'
+import { createHavingGroup } from './having-utils'
 
 /**
- * @description Where 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
+ * @description Having 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
  */
-export class WhereGroupBuilder {
+export class HavingGroupBuilder {
   constructor(private yMap: Y.Map<any>) {}
 
   public getConditions(): Y.Array<any> {
@@ -38,18 +38,18 @@ export class WhereGroupBuilder {
   }
 
   /**
-   * @description 添加一个 Where 过滤条件到分组
+   * @description 添加一个 Having 过滤条件到分组
    * @param field - 字段名
    * @param callback - 回调函数
    */
-  add(field: string, callback: (node: WhereFilterNodeBuilder) => void): this {
+  add(field: string, callback: (node: HavingFilterNodeBuilder) => void): this {
     const yMap = new Y.Map<any>()
     yMap.set('id', id.uuid())
     yMap.set('field', field)
 
     this.getConditions().push([yMap])
 
-    const node = new WhereFilterNodeBuilder(yMap)
+    const node = new HavingFilterNodeBuilder(yMap)
     callback(node)
     return this
   }
@@ -59,13 +59,12 @@ export class WhereGroupBuilder {
    * @param op - 逻辑操作符
    * @param callback - 回调函数
    */
-  addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): this {
-    const yMap = createWhereGroup(op)
-    yMap.set('id', id.uuid())
+  addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): this {
+    const yMap = createHavingGroup(op, id.uuid())
 
     this.getConditions().push([yMap])
 
-    const group = new WhereGroupBuilder(yMap)
+    const group = new HavingGroupBuilder(yMap)
     callback(group)
     return this
   }
@@ -102,7 +101,7 @@ export class WhereGroupBuilder {
   /**
    * @description 导出为 JSON
    */
-  toJSON(): VBIWhereGroup {
-    return this.yMap.toJSON() as VBIWhereGroup
+  toJSON(): VBIHavingGroup {
+    return this.yMap.toJSON() as VBIHavingGroup
   }
 }

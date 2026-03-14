@@ -1,6 +1,6 @@
 import { VBI } from '@visactor/vbi'
 import { VBIDSL } from 'src/types/dsl'
-import { DimensionsBuilder } from 'src/builder/sub-builders/dimensions/dim-builder'
+import { DimensionsBuilder } from 'src/builder/features/dimensions/dim-builder'
 
 describe('DimensionsBuilder', () => {
   test('addDimension', () => {
@@ -17,11 +17,8 @@ describe('DimensionsBuilder', () => {
           field: 'category',
         },
       ],
-      whereFilter: { op: 'and', conditions: [] },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [],
     })
   })
@@ -48,11 +45,8 @@ describe('DimensionsBuilder', () => {
           field: 'city',
         },
       ],
-      whereFilter: { op: 'and', conditions: [] },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [],
     })
   })

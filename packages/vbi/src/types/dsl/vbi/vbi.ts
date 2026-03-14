@@ -12,10 +12,12 @@ export const zVBIDSL = z.object({
   dimensions: zVBIDimensionTree,
   measures: zVBIMeasureTree,
   havingFilter: zVBIHavingGroup.optional().default({
+    id: 'root',
     op: 'and',
     conditions: [],
   }),
   whereFilter: zVBIWhereGroup.optional().default({
+    id: 'root',
     op: 'and',
     conditions: [],
   }),

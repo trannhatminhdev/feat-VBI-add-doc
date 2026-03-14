@@ -32,14 +32,8 @@ const DEFAULT_DSL = {
   chartType: 'line',
   dimensions: [],
   measures: [],
-  whereFilter: {
-    op: 'and',
-    conditions: [],
-  },
-  havingFilter: {
-    op: 'and',
-    conditions: [],
-  },
+  whereFilter: { id: 'root', op: 'and', conditions: [] },
+  havingFilter: { id: 'root', op: 'and', conditions: [] },
   theme: 'light',
   locale: DEFAULT_LOCALE,
   version: 1,

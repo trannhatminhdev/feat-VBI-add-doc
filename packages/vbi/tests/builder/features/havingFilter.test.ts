@@ -1,9 +1,9 @@
 import * as Y from 'yjs'
 import { VBI } from '@visactor/vbi'
 import { VBIDSL } from 'src/types/dsl'
-import { HavingFilterNodeBuilder } from 'src/builder/sub-builders/havingFilter/having-node-builder'
-import { HavingGroupBuilder } from 'src/builder/sub-builders/havingFilter/having-group-builder'
-import { HavingFilterBuilder } from 'src/builder/sub-builders/havingFilter/having-builder'
+import { HavingFilterNodeBuilder } from 'src/builder/features/havingFilter/having-node-builder'
+import { HavingGroupBuilder } from 'src/builder/features/havingFilter/having-group-builder'
+import { HavingFilterBuilder } from 'src/builder/features/havingFilter/having-builder'
 
 describe('HavingFilterBuilder', () => {
   test('add having filter', () => {
@@ -42,6 +42,7 @@ describe('HavingFilterBuilder', () => {
 
     expect(builder.havingFilter.getConditions()).toBeInstanceOf(Y.Array)
     expect(builder.havingFilter.toJSON()).toEqual({
+      id: 'root',
       op: 'and',
       conditions: [{ id: expect.any(String), field: 'sales', op: 'gt', value: 1000 }],
     })
@@ -203,6 +204,7 @@ describe('HavingFilterBuilder', () => {
   test('from DSL with pre-existing filters gets ids', () => {
     const dsl = {
       havingFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           { field: 'sales', op: 'gt', value: 1000 },
@@ -427,6 +429,7 @@ describe('HavingGroupBuilder', () => {
   test('from DSL with pre-existing group gets ids', () => {
     const dsl = {
       havingFilter: {
+        id: 'root',
         op: 'and',
         conditions: [
           {

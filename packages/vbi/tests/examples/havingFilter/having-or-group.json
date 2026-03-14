@@ -43,10 +43,12 @@
     ],
     "limit": 20,
     "whereFilter": {
+      "id": "root",
       "op": "and",
       "conditions": []
     },
     "havingFilter": {
+      "id": "root",
       "op": "and",
       "conditions": []
     }

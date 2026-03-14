@@ -1,7 +1,8 @@
 import * as Y from 'yjs'
 
-export function createHavingGroup(op: 'and' | 'or' = 'and'): Y.Map<any> {
+export function createHavingGroup(op: 'and' | 'or' = 'and', groupId = 'root'): Y.Map<any> {
   const yMap = new Y.Map<any>()
+  yMap.set('id', groupId)
   yMap.set('op', op)
   yMap.set('conditions', new Y.Array<any>())
   return yMap

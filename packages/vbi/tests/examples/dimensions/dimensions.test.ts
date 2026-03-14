@@ -12,14 +12,8 @@ describe('Dimensions', () => {
       chartType: 'table',
       dimensions: [],
       measures: [],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -48,6 +42,7 @@ describe('Dimensions', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -57,6 +52,7 @@ describe('Dimensions', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -107,14 +103,8 @@ describe('Dimensions', () => {
       chartType: 'table',
       dimensions: [],
       measures: [],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -145,6 +135,7 @@ describe('Dimensions', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -154,6 +145,7 @@ describe('Dimensions', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -289,14 +281,8 @@ describe('Dimensions', () => {
         },
       ],
       measures: [],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -323,6 +309,7 @@ describe('Dimensions', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -332,6 +319,7 @@ describe('Dimensions', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }
@@ -438,14 +426,8 @@ describe('Dimensions', () => {
         },
       ],
       measures: [],
-      whereFilter: {
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        op: 'and',
-        conditions: [],
-      },
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -472,6 +454,7 @@ describe('Dimensions', () => {
         ],
         "havingFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
         "limit": 20,
@@ -481,6 +464,7 @@ describe('Dimensions', () => {
         "version": 1,
         "whereFilter": {
           "conditions": [],
+          "id": "root",
           "op": "and",
         },
       }

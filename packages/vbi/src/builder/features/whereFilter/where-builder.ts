@@ -24,6 +24,9 @@ export class WhereFilterBuilder {
       if (!(this.whereFilter.get('conditions') instanceof Y.Array)) {
         this.whereFilter.set('conditions', new Y.Array<any>())
       }
+      if (!this.whereFilter.get('id')) {
+        this.whereFilter.set('id', 'root')
+      }
       if (!this.whereFilter.get('op')) {
         this.whereFilter.set('op', 'and')
       }
@@ -57,8 +60,7 @@ export class WhereFilterBuilder {
    * @param callback - 回调函数
    */
   addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder {
-    const yMap = createWhereGroup(op)
-    yMap.set('id', id.uuid())
+    const yMap = createWhereGroup(op, id.uuid())
 
     this.getConditions().push([yMap])
 
