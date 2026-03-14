@@ -83,10 +83,12 @@ function generateDSLConfig(dsl) {
     ...DEFAULT_DSL,
     ...restDSL,
     whereFilter: whereFilter ?? {
+      id: 'root',
       op: 'and',
       conditions: [],
     },
     havingFilter: havingFilter ?? {
+      id: 'root',
       op: 'and',
       conditions: [],
     },

@@ -36,6 +36,24 @@
   },
   {
     "type": "file",
+    "name": "theme",
+    "label": "builder.theme",
+    "collapsed": true
+  },
+  {
+    "type": "file",
+    "name": "locale",
+    "label": "builder.locale",
+    "collapsed": true
+  },
+  {
+    "type": "file",
+    "name": "limit",
+    "label": "builder.limit",
+    "collapsed": true
+  },
+  {
+    "type": "file",
     "name": "undo-manager",
     "label": "builder.undoManager",
     "collapsed": true

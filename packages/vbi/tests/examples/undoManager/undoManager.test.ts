@@ -21,8 +21,16 @@ describe('UndoManager', () => {
           },
         },
       ],
-      whereFilter: { id: 'root', op: 'and', conditions: [] },
-      havingFilter: { id: 'root', op: 'and', conditions: [] },
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,

@@ -26,8 +26,16 @@ describe('Locale', () => {
           },
         },
       ],
-      whereFilter: { id: 'root', op: 'and', conditions: [] },
-      havingFilter: { id: 'root', op: 'and', conditions: [] },
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'en-US',
       version: 1,
@@ -36,7 +44,7 @@ describe('Locale', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.setLocale('en-US')
+      builder.locale.setLocale('en-US')
     }
     applyBuilder(builder)
 
@@ -176,8 +184,16 @@ describe('Locale', () => {
           },
         },
       ],
-      whereFilter: { id: 'root', op: 'and', conditions: [] },
-      havingFilter: { id: 'root', op: 'and', conditions: [] },
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -186,7 +202,7 @@ describe('Locale', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.setLocale('zh-CN')
+      builder.locale.setLocale('zh-CN')
     }
     applyBuilder(builder)
 

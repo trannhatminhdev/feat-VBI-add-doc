@@ -39,5 +39,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setLocale('zh-CN'); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.locale.setLocale('zh-CN'); }"
 }

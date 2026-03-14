@@ -55,7 +55,7 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
   const setLocale = useCallback(
     (locale: string) => {
       if (builder) {
-        builder.setLocale(locale);
+        builder.locale.setLocale(locale);
       }
     },
     [builder],
@@ -65,7 +65,7 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
   const setTheme = useCallback(
     (theme: string) => {
       if (builder) {
-        builder.setTheme(theme);
+        builder.theme.setTheme(theme);
       }
     },
     [builder],
@@ -75,7 +75,7 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
   const setLimit = useCallback(
     (limit: number) => {
       if (builder) {
-        builder.setLimit(limit);
+        builder.limit.setLimit(limit);
       }
     },
     [builder],

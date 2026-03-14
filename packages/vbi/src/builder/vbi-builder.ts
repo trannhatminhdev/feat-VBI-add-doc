@@ -2,12 +2,17 @@ import * as Y from 'yjs'
 
 import { VSeedDSL } from '@visactor/vseed'
 import { VQueryDSL } from '@visactor/vquery'
-import { DimensionsBuilder } from './features/dimensions'
-import { MeasuresBuilder } from './features/measures'
-import { HavingFilterBuilder } from './features/havingFilter'
-import { WhereFilterBuilder } from './features'
-import { ChartTypeBuilder } from './features'
-import { UndoManager } from './undo-manager'
+import {
+  DimensionsBuilder,
+  MeasuresBuilder,
+  HavingFilterBuilder,
+  WhereFilterBuilder,
+  ChartTypeBuilder,
+  ThemeBuilder,
+  LocaleBuilder,
+  LimitBuilder,
+  UndoManager,
+} from './features'
 
 import { VBIDSL, VBIBuilderInterface } from 'src/types'
 import { buildVQuery } from 'src/pipeline'
@@ -23,6 +28,9 @@ export class VBIBuilder implements VBIBuilderInterface {
   public dimensions: DimensionsBuilder
   public havingFilter: HavingFilterBuilder
   public whereFilter: WhereFilterBuilder
+  public theme: ThemeBuilder
+  public locale: LocaleBuilder
+  public limit: LimitBuilder
 
   constructor(doc: Y.Doc) {
     this.doc = doc
@@ -34,6 +42,9 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.dimensions = new DimensionsBuilder(doc, this.dsl)
     this.havingFilter = new HavingFilterBuilder(doc, this.dsl)
     this.whereFilter = new WhereFilterBuilder(doc, this.dsl)
+    this.theme = new ThemeBuilder(doc, this.dsl)
+    this.locale = new LocaleBuilder(doc, this.dsl)
+    this.limit = new LimitBuilder(doc, this.dsl)
   }
 
   public applyUpdate(update: Uint8Array) {
@@ -75,20 +86,5 @@ export class VBIBuilder implements VBIBuilderInterface {
     const con = await getConnector(connectorId)
     const result = await con.discoverSchema()
     return result
-  }
-
-  public setLimit(limit: number): this {
-    this.dsl.set('limit', limit)
-    return this
-  }
-
-  public setLocale(locale: string): this {
-    this.dsl.set('locale', locale)
-    return this
-  }
-
-  public setTheme(theme: string): this {
-    this.dsl.set('theme', theme)
-    return this
   }
 }

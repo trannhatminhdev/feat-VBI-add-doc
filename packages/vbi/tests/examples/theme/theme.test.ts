@@ -26,8 +26,16 @@ describe('Theme', () => {
           },
         },
       ],
-      whereFilter: { id: 'root', op: 'and', conditions: [] },
-      havingFilter: { id: 'root', op: 'and', conditions: [] },
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -36,7 +44,7 @@ describe('Theme', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.setTheme('dark')
+      builder.theme.setTheme('dark')
     }
     applyBuilder(builder)
 
@@ -176,8 +184,16 @@ describe('Theme', () => {
           },
         },
       ],
-      whereFilter: { id: 'root', op: 'and', conditions: [] },
-      havingFilter: { id: 'root', op: 'and', conditions: [] },
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'dark',
       locale: 'zh-CN',
       version: 1,
@@ -186,7 +202,7 @@ describe('Theme', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.setTheme('light')
+      builder.theme.setTheme('light')
     }
     applyBuilder(builder)
 

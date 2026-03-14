@@ -12,5 +12,5 @@
     "limit": 10,
     "theme": "light"
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setTheme('dark'); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.theme.setTheme('dark'); }"
 }

@@ -6,5 +6,8 @@ export {
   ChartTypeBuilder,
   HavingFilterBuilder,
   WhereFilterBuilder,
+  ThemeBuilder,
+  LocaleBuilder,
+  LimitBuilder,
+  UndoManager,
 } from './features'
-export { UndoManager } from './undo-manager'

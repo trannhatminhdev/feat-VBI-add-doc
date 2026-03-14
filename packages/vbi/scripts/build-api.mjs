@@ -49,10 +49,28 @@ const BUILDER_CONFIG = [
     category: 'features',
   },
   {
+    name: 'theme',
+    label: 'theme',
+    file: 'features/theme/theme-builder.ts',
+    category: 'features',
+  },
+  {
+    name: 'locale',
+    label: 'locale',
+    file: 'features/locale/locale-builder.ts',
+    category: 'features',
+  },
+  {
+    name: 'limit',
+    label: 'limit',
+    file: 'features/limit/limit-builder.ts',
+    category: 'features',
+  },
+  {
     name: 'undoManager',
     label: 'undoManager',
-    file: 'undo-manager.ts',
-    category: 'utilities',
+    file: 'features/undo-manager/undo-manager.ts',
+    category: 'features',
   },
 ]
 
