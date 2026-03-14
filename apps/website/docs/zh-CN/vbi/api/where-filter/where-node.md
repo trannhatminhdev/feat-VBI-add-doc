@@ -108,14 +108,14 @@ setValue(value: unknown): this
 | --- | --- | --- |
 | `value` | unknown | - 过滤值 |
 
-### toJson
+### toJSON
 
 导出为 JSON
 
 **定义**:
 
 ```typescript
-toJson(): VBIFilter
+toJSON(): VBIFilter
 ```
 
 **返回**: `VBIFilter`

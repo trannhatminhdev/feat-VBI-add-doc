@@ -1,7 +1,7 @@
 import * as Y from 'yjs'
-import type { VBIHavingClause, VBIHavingRoot, ObserveCallback } from 'src/types'
+import type { VBIHavingGroup, ObserveCallback } from 'src/types'
 import { id } from 'src/utils'
-import { createHavingRoot, findEntry, isHavingGroup } from './having-utils'
+import { createHavingGroup, findEntry, isHavingGroup } from './having-utils'
 import { HavingFilterNodeBuilder } from './having-node-builder'
 import { HavingGroupBuilder } from './having-group-builder'
 
@@ -17,7 +17,7 @@ export class HavingFilterBuilder {
       if (existingHavingFilter instanceof Y.Map) {
         this.havingFilter = existingHavingFilter
       } else {
-        this.havingFilter = createHavingRoot()
+        this.havingFilter = createHavingGroup()
         dsl.set('havingFilter', this.havingFilter)
       }
 
@@ -57,10 +57,8 @@ export class HavingFilterBuilder {
    * @param callback - 回调函数
    */
   addGroup(op: 'and' | 'or', callback: (group: HavingGroupBuilder) => void): HavingFilterBuilder {
-    const yMap = new Y.Map<any>()
+    const yMap = createHavingGroup(op)
     yMap.set('id', id.uuid())
-    yMap.set('op', op)
-    yMap.set('conditions', new Y.Array<any>())
 
     this.getConditions().push([yMap])
 
@@ -164,17 +162,10 @@ export class HavingFilterBuilder {
   }
 
   /**
-   * @description 导出所有 Having 过滤条件为 JSON 数组
-   */
-  toJson(): VBIHavingClause[] {
-    return this.toJSON().conditions
-  }
-
-  /**
    * @description 导出完整的 Having 过滤配置
    */
-  toJSON(): VBIHavingRoot {
-    return this.havingFilter.toJSON() as VBIHavingRoot
+  toJSON(): VBIHavingGroup {
+    return this.havingFilter.toJSON() as VBIHavingGroup
   }
 
   /**

@@ -122,7 +122,9 @@ describe('WhereFilterBuilder', () => {
 
     builder.whereFilter.remove(1)
 
-    expect(builder.whereFilter.toJson()).toEqual([{ id: 'id-1', field: 'category', op: 'eq', value: 'Electronics' }])
+    expect(builder.whereFilter.toJSON().conditions).toEqual([
+      { id: 'id-1', field: 'category', op: 'eq', value: 'Electronics' },
+    ])
   })
 
   test('remove by index out of range returns this', () => {
@@ -132,7 +134,7 @@ describe('WhereFilterBuilder', () => {
 
     const result = builder.whereFilter.remove(5)
     expect(result).toBe(builder.whereFilter)
-    expect(builder.whereFilter.toJson().length).toBe(1)
+    expect(builder.whereFilter.toJSON().conditions.length).toBe(1)
   })
 
   test('update by id', () => {
@@ -161,7 +163,7 @@ describe('WhereFilterBuilder', () => {
       node.setOperator('in').setValue(['Beijing', 'Shanghai'])
     })
 
-    expect(builder.whereFilter.toJson()).toEqual([
+    expect(builder.whereFilter.toJSON().conditions).toEqual([
       {
         id: 'id-1',
         op: 'or',
@@ -192,7 +194,7 @@ describe('WhereFilterBuilder', () => {
 
     expect(node).toBeDefined()
     expect((node as any).getField()).toBe('category')
-    expect((node as any).toJson()).toEqual({
+    expect((node as any).toJSON()).toEqual({
       id: 'id-1',
       field: 'category',
       op: 'eq',
@@ -212,7 +214,7 @@ describe('WhereFilterBuilder', () => {
 
     expect(node).toBeDefined()
     expect((node as any).getField()).toBe('region')
-    expect((node as any).toJson()).toEqual({
+    expect((node as any).toJSON()).toEqual({
       id: 'id-2',
       field: 'region',
       op: 'eq',
@@ -248,7 +250,7 @@ describe('WhereFilterBuilder', () => {
       .add('category', (node) => node.setOperator('eq').setValue('Electronics'))
       .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
 
-    const json = builder.whereFilter.toJson()
+    const json = builder.whereFilter.toJSON().conditions
 
     expect(json).toEqual([
       { id: 'id-1', field: 'category', op: 'eq', value: 'Electronics' },
@@ -259,7 +261,7 @@ describe('WhereFilterBuilder', () => {
   test('toJson returns empty array when no filters', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
-    expect(builder.whereFilter.toJson()).toEqual([])
+    expect(builder.whereFilter.toJSON().conditions).toEqual([])
   })
 
   test('observe and unobserve', () => {
@@ -349,7 +351,7 @@ describe('WhereFilterBuilder', () => {
     const node = builder.whereFilter.find('id-1')
     ;(node as any).setOperator('in')
 
-    expect((builder.whereFilter.toJson()[0] as VBIFilter).op).toBe('in')
+    expect((builder.whereFilter.toJSON().conditions[0] as VBIFilter).op).toBe('in')
   })
 
   test('WhereFilterNodeBuilder setValue', () => {
@@ -360,16 +362,16 @@ describe('WhereFilterBuilder', () => {
     const node = builder.whereFilter.find('id-1')
     ;(node as any).setValue(['Electronics', 'Books'])
 
-    expect((builder.whereFilter.toJson()[0] as VBIFilter).value).toEqual(['Electronics', 'Books'])
+    expect((builder.whereFilter.toJSON().conditions[0] as VBIFilter).value).toEqual(['Electronics', 'Books'])
   })
 
-  test('WhereFilterNodeBuilder toJson', () => {
+  test('WhereFilterNodeBuilder toJSON', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
     const node = builder.whereFilter.find('id-1')
-    expect((node as any).toJson()).toEqual({
+    expect((node as any).toJSON()).toEqual({
       id: 'id-1',
       field: 'category',
       op: 'eq',
@@ -385,7 +387,7 @@ describe('WhereFilterBuilder', () => {
       .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
       .add('sales', (node) => node.setOperator('gt').setValue(1000))
 
-    const json = builder.whereFilter.toJson() as VBIFilter[]
+    const json = builder.whereFilter.toJSON().conditions as VBIFilter[]
 
     expect(json.length).toBe(3)
     expect(json[0].field).toBe('category')
@@ -406,7 +408,7 @@ describe('WhereFilterBuilder', () => {
       .add('field7', (node) => node.setOperator('in').setValue([1, 2, 3]))
       .add('field8', (node) => node.setOperator('like').setValue('%test%'))
 
-    const json = builder.whereFilter.toJson() as VBIFilter[]
+    const json = builder.whereFilter.toJSON().conditions as VBIFilter[]
 
     expect(json.length).toBe(8)
     expect(json[0].op).toBe('eq')
@@ -471,7 +473,7 @@ describe('WhereGroupBuilder', () => {
         .add('region', (node) => node.setOperator('eq').setValue('Shanghai'))
     })
 
-    expect(builder.whereFilter.toJson()).toEqual([
+    expect(builder.whereFilter.toJSON().conditions).toEqual([
       {
         id: 'id-1',
         op: 'or',
@@ -495,7 +497,7 @@ describe('WhereGroupBuilder', () => {
           .add('region', (node) => node.setOperator('eq').setValue('Shanghai'))
       })
 
-    const json = builder.whereFilter.toJson()
+    const json = builder.whereFilter.toJSON().conditions
     expect(json.length).toBe(2)
     expect(json[0]).toEqual({ id: 'id-1', field: 'category', op: 'eq', value: 'Electronics' })
     expect(json[1]).toEqual({
@@ -522,7 +524,7 @@ describe('WhereGroupBuilder', () => {
         })
     })
 
-    expect(builder.whereFilter.toJson()).toEqual([
+    expect(builder.whereFilter.toJSON().conditions).toEqual([
       {
         id: 'id-1',
         op: 'and',
@@ -573,7 +575,7 @@ describe('WhereGroupBuilder', () => {
       group.setOperator('and')
     })
 
-    const json = builder.whereFilter.toJson()
+    const json = builder.whereFilter.toJSON().conditions
     expect(json[0]).toEqual({ id: 'id-1', op: 'and', conditions: [] })
   })
 
@@ -591,7 +593,7 @@ describe('WhereGroupBuilder', () => {
       group.remove('id-2')
     })
 
-    expect(builder.whereFilter.toJson()).toEqual([
+    expect(builder.whereFilter.toJSON().conditions).toEqual([
       {
         id: 'id-1',
         op: 'or',
@@ -612,7 +614,7 @@ describe('WhereGroupBuilder', () => {
 
     builder.whereFilter.remove('id-2')
 
-    expect(builder.whereFilter.toJson()).toEqual([
+    expect(builder.whereFilter.toJSON().conditions).toEqual([
       {
         id: 'id-1',
         op: 'or',
@@ -635,7 +637,7 @@ describe('WhereGroupBuilder', () => {
       group.remove(0)
     })
 
-    expect(builder.whereFilter.toJson()).toEqual([
+    expect(builder.whereFilter.toJSON().conditions).toEqual([
       {
         id: 'id-1',
         op: 'or',
@@ -658,7 +660,7 @@ describe('WhereGroupBuilder', () => {
       group.clear()
     })
 
-    expect(builder.whereFilter.toJson()).toEqual([{ id: 'id-1', op: 'or', conditions: [] }])
+    expect(builder.whereFilter.toJSON().conditions).toEqual([{ id: 'id-1', op: 'or', conditions: [] }])
   })
 
   test('updateGroup by id', () => {
@@ -673,7 +675,7 @@ describe('WhereGroupBuilder', () => {
       group.setOperator('and').add('city', (node) => node.setOperator('eq').setValue('Hangzhou'))
     })
 
-    expect(builder.whereFilter.toJson()).toEqual([
+    expect(builder.whereFilter.toJSON().conditions).toEqual([
       {
         id: 'id-1',
         op: 'and',
@@ -699,7 +701,7 @@ describe('WhereGroupBuilder', () => {
       group.setOperator('or').add('city', (node) => node.setOperator('eq').setValue('Shanghai'))
     })
 
-    expect(builder.whereFilter.toJson()).toEqual([
+    expect(builder.whereFilter.toJSON().conditions).toEqual([
       {
         id: 'id-1',
         op: 'or',
@@ -755,7 +757,7 @@ describe('WhereGroupBuilder', () => {
     } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const json = builder.whereFilter.toJson()
+    const json = builder.whereFilter.toJSON().conditions
     expect((json[0] as VBIFilter).field).toBe('category')
     expect(json[0].id).toBe('id-1')
     expect(json[1].id).toBe('id-2')
@@ -773,6 +775,6 @@ describe('WhereGroupBuilder', () => {
 
     builder.whereFilter.clear()
 
-    expect(builder.whereFilter.toJson()).toEqual([])
+    expect(builder.whereFilter.toJSON().conditions).toEqual([])
   })
 })

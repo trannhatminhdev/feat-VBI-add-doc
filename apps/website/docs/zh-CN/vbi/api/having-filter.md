@@ -153,18 +153,6 @@ find(id: string): HavingFilterNodeBuilder | HavingGroupBuilder | undefined
 clear()
 ```
 
-### toJson
-
-导出所有 Having 过滤条件为 JSON 数组
-
-**定义**:
-
-```typescript
-toJson(): VBIHavingClause[]
-```
-
-**返回**: `VBIHavingClause[]`
-
 ### toJSON
 
 导出完整的 Having 过滤配置
@@ -172,10 +160,10 @@ toJson(): VBIHavingClause[]
 **定义**:
 
 ```typescript
-toJSON(): VBIHavingRoot
+toJSON(): VBIHavingGroup
 ```
 
-**返回**: `VBIHavingRoot`
+**返回**: `VBIHavingGroup`
 
 ### observe
 

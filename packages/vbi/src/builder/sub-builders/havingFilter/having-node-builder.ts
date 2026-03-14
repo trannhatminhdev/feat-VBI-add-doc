@@ -49,7 +49,7 @@ export class HavingFilterNodeBuilder {
   /**
    * @description 导出为 JSON
    */
-  toJson(): VBIHavingFilter {
+  toJSON(): VBIHavingFilter {
     return this.yMap.toJSON() as VBIHavingFilter
   }
 }

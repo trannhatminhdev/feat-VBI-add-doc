@@ -1,7 +1,7 @@
 import * as Y from 'yjs'
-import type { VBIWhereClause, VBIWhereGroup, ObserveCallback } from 'src/types'
+import type { VBIWhereGroup, ObserveCallback } from 'src/types'
 import { id } from 'src/utils'
-import { createWhereRoot, findEntry, isWhereGroup } from './where-utils'
+import { createWhereGroup, findEntry, isWhereGroup } from './where-utils'
 import { WhereFilterNodeBuilder } from './where-node-builder'
 import { WhereGroupBuilder } from './where-group-builder'
 
@@ -17,7 +17,7 @@ export class WhereFilterBuilder {
       if (existingWhereFilter instanceof Y.Map) {
         this.whereFilter = existingWhereFilter
       } else {
-        this.whereFilter = createWhereRoot()
+        this.whereFilter = createWhereGroup()
         dsl.set('whereFilter', this.whereFilter)
       }
 
@@ -57,10 +57,8 @@ export class WhereFilterBuilder {
    * @param callback - 回调函数
    */
   addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder {
-    const yMap = new Y.Map<any>()
+    const yMap = createWhereGroup(op)
     yMap.set('id', id.uuid())
-    yMap.set('op', op)
-    yMap.set('conditions', new Y.Array<any>())
 
     this.getConditions().push([yMap])
 
@@ -161,13 +159,6 @@ export class WhereFilterBuilder {
     const conditions = this.getConditions()
     conditions.delete(0, conditions.length)
     return this
-  }
-
-  /**
-   * @description 导出所有 Where 过滤条件为 JSON 数组
-   */
-  toJson(): VBIWhereClause[] {
-    return this.toJSON().conditions
   }
 
   /**

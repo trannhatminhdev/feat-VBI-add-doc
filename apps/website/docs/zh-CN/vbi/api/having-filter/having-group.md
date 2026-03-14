@@ -138,14 +138,14 @@ clear(): this
 
 **返回**: `this`
 
-### toJson
+### toJSON
 
 导出为 JSON
 
 **定义**:
 
 ```typescript
-toJson(): VBIHavingGroup
+toJSON(): VBIHavingGroup
 ```
 
 **返回**: `VBIHavingGroup`

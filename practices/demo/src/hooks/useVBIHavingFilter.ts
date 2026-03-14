@@ -15,11 +15,11 @@ export const useVBIHavingFilter = (builder: VBIBuilder | undefined) => {
     }
 
     // 初始化
-    setFilters(builder.havingFilter.toJson() as VBIHavingClause[]);
+    setFilters(builder.havingFilter.toJSON().conditions as VBIHavingClause[]);
 
     // 监听变化 - 响应式同步
     const updateHandler = () => {
-      setFilters(builder.havingFilter.toJson() as VBIHavingClause[]);
+      setFilters(builder.havingFilter.toJSON().conditions as VBIHavingClause[]);
     };
 
     const unobserve = builder.havingFilter.observe(updateHandler);

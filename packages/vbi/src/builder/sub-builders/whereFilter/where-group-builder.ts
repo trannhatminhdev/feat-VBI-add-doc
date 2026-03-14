@@ -2,6 +2,7 @@ import * as Y from 'yjs'
 import type { VBIWhereGroup } from 'src/types'
 import { id } from 'src/utils'
 import { WhereFilterNodeBuilder } from './where-node-builder'
+import { createWhereGroup } from './where-utils'
 
 /**
  * @description Where 分组构建器，用于配置一组条件的逻辑关系（AND/OR）
@@ -59,10 +60,8 @@ export class WhereGroupBuilder {
    * @param callback - 回调函数
    */
   addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): this {
-    const yMap = new Y.Map<any>()
+    const yMap = createWhereGroup(op)
     yMap.set('id', id.uuid())
-    yMap.set('op', op)
-    yMap.set('conditions', new Y.Array<any>())
 
     this.getConditions().push([yMap])
 
@@ -103,7 +102,7 @@ export class WhereGroupBuilder {
   /**
    * @description 导出为 JSON
    */
-  toJson(): VBIWhereGroup {
+  toJSON(): VBIWhereGroup {
     return this.yMap.toJSON() as VBIWhereGroup
   }
 }

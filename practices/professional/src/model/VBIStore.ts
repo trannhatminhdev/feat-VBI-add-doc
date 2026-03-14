@@ -70,7 +70,7 @@ export const useVBIStore = create<BearState>((set, get) => ({
           );
         });
 
-        const filters = builder.whereFilter.toJson();
+        const filters = builder.whereFilter.toJSON().conditions;
         if (filters && filters.length > 0) {
           const lastFilter = filters[filters.length - 1];
           if (isVBIFilter(lastFilter)) {

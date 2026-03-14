@@ -58,7 +58,7 @@ export class WhereFilterNodeBuilder {
   /**
    * @description 导出为 JSON
    */
-  toJson(): VBIFilter {
+  toJSON(): VBIFilter {
     return this.yMap.toJSON() as VBIFilter
   }
 }

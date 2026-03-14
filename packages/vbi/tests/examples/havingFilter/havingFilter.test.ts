@@ -1189,9 +1189,9 @@ describe('HavingFilter', () => {
       builder.havingFilter
         .add('销售额', (n) => n.setOperator('gt').setValue(100000))
         .add('利润', (n) => n.setOperator('gt').setValue(10000))
-      const json = builder.havingFilter.toJson()
-      const salesId = json[0].id
-      const profitId = json[1].id
+      const json = builder.havingFilter.toJSON().conditions
+      const salesId = json[0].id!
+      const profitId = json[1].id!
       builder.havingFilter.update(salesId, (n) => {
         n.setOperator('gte').setValue(500000)
       })

@@ -3,8 +3,8 @@ import { VBIDSL, VBIDSLInput } from 'src/types'
 import { VBIBuilder } from './vbi-builder'
 import { connectorMap, getConnector, registerConnector } from './connector'
 import { id } from 'src/utils'
-import { createWhereRoot } from './sub-builders/whereFilter/where-utils'
-import { createHavingRoot } from './sub-builders/havingFilter/having-utils'
+import { createWhereGroup } from './sub-builders/whereFilter/where-utils'
+import { createHavingGroup } from './sub-builders/havingFilter/having-utils'
 
 import * as Y from 'yjs'
 
@@ -91,38 +91,38 @@ const createVBI = () => {
           op: 'and',
           conditions: [],
         }) as Y.Map<any> | { op?: 'and' | 'or'; conditions?: any }
-        const whereRoot = whereFilter instanceof Y.Map ? whereFilter : createWhereRoot()
+        const whereGroup = whereFilter instanceof Y.Map ? whereFilter : createWhereGroup()
         if (whereFilter instanceof Y.Map) {
-          if (!(whereRoot.get('conditions') instanceof Y.Array)) {
-            whereRoot.set('conditions', new Y.Array<any>())
+          if (!(whereGroup.get('conditions') instanceof Y.Array)) {
+            whereGroup.set('conditions', new Y.Array<any>())
           }
-          if (!whereRoot.get('op')) {
-            whereRoot.set('op', 'and')
+          if (!whereGroup.get('op')) {
+            whereGroup.set('op', 'and')
           }
         } else {
-          whereRoot.set('op', whereFilter.op ?? 'and')
-          whereRoot.set('conditions', ensureYArray(whereFilter.conditions, true))
+          whereGroup.set('op', whereFilter.op ?? 'and')
+          whereGroup.set('conditions', ensureYArray(whereFilter.conditions, true))
         }
 
-        dsl.set('whereFilter', whereRoot)
+        dsl.set('whereFilter', whereGroup)
         const havingFilter = (vbi.havingFilter ?? {
           op: 'and',
           conditions: [],
         }) as Y.Map<any> | { op?: 'and' | 'or'; conditions?: any }
-        const havingRoot = havingFilter instanceof Y.Map ? havingFilter : createHavingRoot()
+        const havingGroup = havingFilter instanceof Y.Map ? havingFilter : createHavingGroup()
         if (havingFilter instanceof Y.Map) {
-          if (!(havingRoot.get('conditions') instanceof Y.Array)) {
-            havingRoot.set('conditions', new Y.Array<any>())
+          if (!(havingGroup.get('conditions') instanceof Y.Array)) {
+            havingGroup.set('conditions', new Y.Array<any>())
           }
-          if (!havingRoot.get('op')) {
-            havingRoot.set('op', 'and')
+          if (!havingGroup.get('op')) {
+            havingGroup.set('op', 'and')
           }
         } else {
-          havingRoot.set('op', havingFilter.op ?? 'and')
-          havingRoot.set('conditions', ensureYArray(havingFilter.conditions, true))
+          havingGroup.set('op', havingFilter.op ?? 'and')
+          havingGroup.set('conditions', ensureYArray(havingFilter.conditions, true))
         }
 
-        dsl.set('havingFilter', havingRoot)
+        dsl.set('havingFilter', havingGroup)
         dsl.set('measures', ensureYArray(vbi.measures))
         dsl.set('dimensions', ensureYArray(vbi.dimensions))
       })

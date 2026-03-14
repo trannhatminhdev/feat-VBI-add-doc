@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+const zHavingLogicalOperator = z.enum(['and', 'or'])
+
 export const zVBIHavingFilter = z.object({
   id: z.string(),
   field: z.string(),
@@ -9,35 +11,25 @@ export const zVBIHavingFilter = z.object({
 
 export type VBIHavingFilter = z.infer<typeof zVBIHavingFilter>
 
+type VBIHavingBranch = {
+  op: z.infer<typeof zHavingLogicalOperator>
+  conditions: VBIHavingClause[]
+}
+
+export type VBIHavingGroup = VBIHavingBranch & {
+  id?: string
+}
+export type VBIHavingClause = VBIHavingFilter | VBIHavingGroup
+
 export const zVBIHavingGroup: z.ZodType<VBIHavingGroup> = z.lazy(() =>
   z.object({
-    id: z.string(),
-    op: z.enum(['and', 'or']),
-    conditions: z.array(zVBIHavingClause),
-  }),
-)
-
-export const zVBIHavingRoot: z.ZodType<VBIHavingRoot> = z.lazy(() =>
-  z.object({
-    op: z.enum(['and', 'or']),
+    id: z.string().optional(),
+    op: zHavingLogicalOperator,
     conditions: z.array(zVBIHavingClause),
   }),
 )
 
 export const zVBIHavingClause: z.ZodType<VBIHavingClause> = z.lazy(() => z.union([zVBIHavingFilter, zVBIHavingGroup]))
-
-export type VBIHavingGroup = {
-  id: string
-  op: 'and' | 'or'
-  conditions: VBIHavingClause[]
-}
-
-export type VBIHavingClause = VBIHavingFilter | VBIHavingGroup
-
-export type VBIHavingRoot = {
-  op: 'and' | 'or'
-  conditions: VBIHavingClause[]
-}
 
 export function isVBIHavingFilter(clause: VBIHavingClause): clause is VBIHavingFilter {
   return 'field' in clause

@@ -4,14 +4,14 @@ import { zVBIMeasureTree } from '../measures/measures'
 import { zVBIDSLTheme } from '../theme/theme'
 import { zVBIDSLLocale } from '../locale/locale'
 import { zVBIWhereGroup } from '../whereFilter/filters'
-import { zVBIHavingRoot } from '../havingFilter/having'
+import { zVBIHavingGroup } from '../havingFilter/having'
 
 export const zVBIDSL = z.object({
   connectorId: z.string(),
   chartType: z.custom<any>(), // Use any to avoid circular dependency or simplify for now
   dimensions: zVBIDimensionTree,
   measures: zVBIMeasureTree,
-  havingFilter: zVBIHavingRoot.optional().default({
+  havingFilter: zVBIHavingGroup.optional().default({
     op: 'and',
     conditions: [],
   }),

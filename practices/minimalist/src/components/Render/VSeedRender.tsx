@@ -101,7 +101,7 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
       const storeBuilder = useVBIStore.getState().builder;
       if (storeBuilder) {
         storeBuilder.doc.transact(() => {
-          const filters = storeBuilder.whereFilter.toJson();
+          const filters = storeBuilder.whereFilter.toJSON().conditions;
           if (filters && filters.length > 0) {
             // Remove the last filter added since it's most likely the offending one
             const lastFilter = filters[filters.length - 1];

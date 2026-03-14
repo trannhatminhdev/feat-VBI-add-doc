@@ -153,18 +153,6 @@ find(id: string): WhereFilterNodeBuilder | WhereGroupBuilder | undefined
 clear()
 ```
 
-### toJson
-
-导出所有 Where 过滤条件为 JSON 数组
-
-**定义**:
-
-```typescript
-toJson(): VBIWhereClause[]
-```
-
-**返回**: `VBIWhereClause[]`
-
 ### toJSON
 
 导出完整的 Where 过滤配置

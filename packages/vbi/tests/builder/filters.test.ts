@@ -161,13 +161,13 @@ describe('WhereFilterBuilder', () => {
       node.setOperator('eq').setValue('Beijing')
     })
 
-    const whereFilter = builder.whereFilter.toJson()
+    const whereFilter = builder.whereFilter.toJSON().conditions
     expect(whereFilter).toHaveLength(2)
 
     const node1 = builder.whereFilter.find('id-1')
     const node2 = builder.whereFilter.find('id-2')
-    expect((node1 as any).toJson().field).toBe('sales')
-    expect((node2 as any).toJson().field).toBe('region')
+    expect((node1 as any).toJSON().field).toBe('sales')
+    expect((node2 as any).toJSON().field).toBe('region')
   })
 
   test('multiple filters with chaining', () => {
@@ -234,7 +234,7 @@ describe('WhereFilterBuilder', () => {
     })
 
     const found = builder.whereFilter.find('id-2')
-    expect((found as any).toJson()).toEqual({
+    expect((found as any).toJSON()).toEqual({
       id: 'id-2',
       field: 'region',
       op: 'eq',
