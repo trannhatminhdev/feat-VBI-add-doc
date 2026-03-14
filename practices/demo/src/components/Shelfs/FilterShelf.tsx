@@ -1,7 +1,7 @@
 import { CloseOutlined, DownOutlined } from '@ant-design/icons';
 import { Flex, Popover } from 'antd';
 import { useVBIStore } from 'src/model';
-import { useVBIWhereFilters, useVBIHavingFilter } from 'src/hooks';
+import { useVBIWhereFilter, useVBIHavingFilter } from 'src/hooks';
 import {
   FilterPanel,
   HavingFilterPanel,
@@ -16,7 +16,7 @@ import { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 
 export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
-  const { flattenFilters } = useVBIWhereFilters(builder);
+  const { flattenFilters } = useVBIWhereFilter(builder);
 
   const [allFields, setAllFields] = useState<
     { name: string; role: 'dimension' | 'measure' }[]

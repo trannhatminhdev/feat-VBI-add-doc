@@ -48,10 +48,10 @@ getConditions(): Y.Array<any>
 **定义**:
 
 ```typescript
-add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder
+add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder
 ```
 
-**返回**: `WhereFiltersBuilder`
+**返回**: `WhereFilterBuilder`
 
 **参数**:
 
@@ -67,10 +67,10 @@ add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilte
 **定义**:
 
 ```typescript
-addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder
+addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder
 ```
 
-**返回**: `WhereFiltersBuilder`
+**返回**: `WhereFilterBuilder`
 
 **参数**:
 
@@ -86,10 +86,10 @@ addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereF
 **定义**:
 
 ```typescript
-update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder
+update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder
 ```
 
-**返回**: `WhereFiltersBuilder`
+**返回**: `WhereFilterBuilder`
 
 **参数**:
 
@@ -105,10 +105,10 @@ update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilte
 **定义**:
 
 ```typescript
-updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder
+updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder
 ```
 
-**返回**: `WhereFiltersBuilder`
+**返回**: `WhereFilterBuilder`
 
 **参数**:
 
@@ -124,10 +124,10 @@ updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFilt
 **定义**:
 
 ```typescript
-remove(idOrIndex: string | number): WhereFiltersBuilder
+remove(idOrIndex: string | number): WhereFilterBuilder
 ```
 
-**返回**: `WhereFiltersBuilder`
+**返回**: `WhereFilterBuilder`
 
 **参数**:
 

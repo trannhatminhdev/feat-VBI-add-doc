@@ -1,7 +1,7 @@
 import { VBI } from '@visactor/vbi'
 import type { VBIDSL, VBIFilter } from 'src/types/dsl'
 
-describe('WhereFiltersBuilder', () => {
+describe('WhereFilterBuilder', () => {
   test('add', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
@@ -161,8 +161,8 @@ describe('WhereFiltersBuilder', () => {
       node.setOperator('eq').setValue('Beijing')
     })
 
-    const whereFilters = builder.whereFilter.toJson()
-    expect(whereFilters).toHaveLength(2)
+    const whereFilter = builder.whereFilter.toJson()
+    expect(whereFilter).toHaveLength(2)
 
     const node1 = builder.whereFilter.find('id-1')
     const node2 = builder.whereFilter.find('id-2')

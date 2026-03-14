@@ -1,7 +1,7 @@
 import { VBI, VBIBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
-describe('WhereFilters', () => {
+describe('WhereFilter', () => {
   beforeAll(async () => {
     registerDemoConnector()
   })

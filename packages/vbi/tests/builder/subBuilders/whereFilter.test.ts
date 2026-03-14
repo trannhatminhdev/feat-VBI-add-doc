@@ -1,7 +1,7 @@
 import { VBI } from '@visactor/vbi'
 import type { VBIDSL, VBIFilter } from 'src/types/dsl'
 
-describe('WhereFiltersBuilder', () => {
+describe('WhereFilterBuilder', () => {
   test('addWhereFilter', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
@@ -213,7 +213,7 @@ describe('WhereFiltersBuilder', () => {
     expect(node).toBeUndefined()
   })
 
-  test('clearWhereFilters', () => {
+  test('clearWhereFilter', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
     builder.whereFilter

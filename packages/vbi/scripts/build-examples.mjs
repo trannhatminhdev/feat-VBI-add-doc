@@ -83,14 +83,14 @@ function findJsonFilesInDir(dir) {
 
 // ============ Code Generation ============
 function generateDSLConfig(dsl) {
-  const { whereFilters, filters, whereFilter, havingFilter, ...restDSL } = dsl
+  const { whereFilter, havingFilter, ...restDSL } = dsl
 
   return {
     ...DEFAULT_DSL,
     ...restDSL,
     whereFilter: whereFilter ?? {
       op: 'and',
-      conditions: whereFilters ?? filters ?? [],
+      conditions: [],
     },
     havingFilter: havingFilter ?? {
       op: 'and',

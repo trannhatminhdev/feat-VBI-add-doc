@@ -39,7 +39,7 @@ const BUILDER_CONFIG = [
   {
     name: 'whereFilter',
     label: 'whereFilter',
-    file: 'sub-builders/whereFilters/where-builder.ts',
+    file: 'sub-builders/whereFilter/where-builder.ts',
     category: 'sub-builders',
   },
   {
@@ -73,13 +73,13 @@ const NODE_BUILDER_CONFIG = [
     parent: 'whereFilter',
     name: 'WhereNodeBuilder',
     label: 'where-node',
-    file: 'sub-builders/whereFilters/where-node-builder.ts',
+    file: 'sub-builders/whereFilter/where-node-builder.ts',
   },
   {
     parent: 'whereFilter',
     name: 'WhereGroupBuilder',
     label: 'where-group',
-    file: 'sub-builders/whereFilters/where-group-builder.ts',
+    file: 'sub-builders/whereFilter/where-group-builder.ts',
   },
   {
     parent: 'havingFilter',

@@ -3,7 +3,7 @@ import { VBIDSL, VBIDSLInput } from 'src/types'
 import { VBIBuilder } from './vbi-builder'
 import { connectorMap, getConnector, registerConnector } from './connector'
 import { id } from 'src/utils'
-import { createWhereRoot } from './sub-builders/whereFilters/where-utils'
+import { createWhereRoot } from './sub-builders/whereFilter/where-utils'
 import { createHavingRoot } from './sub-builders/havingFilter/having-utils'
 
 import * as Y from 'yjs'

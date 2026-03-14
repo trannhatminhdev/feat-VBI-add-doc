@@ -8,7 +8,7 @@ import { WhereGroupBuilder } from './where-group-builder'
 /**
  * @description Where 过滤构建器，用于添加、修改、删除行级过滤条件。Where 过滤在数据查询前生效，用于筛选原始数据
  */
-export class WhereFiltersBuilder {
+export class WhereFilterBuilder {
   private dsl: Y.Map<any>
   private doc: Y.Doc
 
@@ -17,7 +17,7 @@ export class WhereFiltersBuilder {
     this.dsl = dsl
 
     this.doc.transact(() => {
-      if (!this.dsl.get('whereFilter') && !this.dsl.get('whereFilters')) {
+      if (!this.dsl.get('whereFilter')) {
         this.dsl.set('whereFilter', createWhereRoot())
         return
       }
@@ -39,7 +39,7 @@ export class WhereFiltersBuilder {
    * @param field - 字段名
    * @param callback - 回调函数
    */
-  add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
+  add(field: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder {
     const yMap = new Y.Map<any>()
     yMap.set('id', id.uuid())
     yMap.set('field', field)
@@ -56,7 +56,7 @@ export class WhereFiltersBuilder {
    * @param op - 逻辑操作符
    * @param callback - 回调函数
    */
-  addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder {
+  addGroup(op: 'and' | 'or', callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder {
     const yMap = new Y.Map<any>()
     yMap.set('id', id.uuid())
     yMap.set('op', op)
@@ -74,15 +74,15 @@ export class WhereFiltersBuilder {
    * @param id - 过滤条件 ID
    * @param callback - 回调函数
    */
-  update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
-    const whereFilters = this.getConditions()
-    const match = findEntry(whereFilters, id)
+  update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFilterBuilder {
+    const conditions = this.getConditions()
+    const match = findEntry(conditions, id)
 
     if (!match) {
       throw new Error(`Where filter with id ${id} not found`)
     }
 
-    if (!WhereFiltersBuilder.isNode(match.item)) {
+    if (!WhereFilterBuilder.isNode(match.item)) {
       throw new Error(`Item with id ${id} is not a filter`)
     }
 
@@ -97,16 +97,16 @@ export class WhereFiltersBuilder {
    * @param id - 分组 ID
    * @param callback - 回调函数
    */
-  updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder {
-    const whereFilters = this.getConditions()
-    const match = findEntry(whereFilters, id)
+  updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFilterBuilder {
+    const conditions = this.getConditions()
+    const match = findEntry(conditions, id)
 
     if (!match) {
       throw new Error(`Where group with id ${id} not found`)
     }
 
     const yMap = match.item
-    if (!WhereFiltersBuilder.isGroup(yMap)) {
+    if (!WhereFilterBuilder.isGroup(yMap)) {
       throw new Error(`Item with id ${id} is not a group`)
     }
 
@@ -119,15 +119,15 @@ export class WhereFiltersBuilder {
    * @description 删除指定 ID 的条件或指定索引的项
    * @param idOrIndex - ID 或索引
    */
-  remove(idOrIndex: string | number): WhereFiltersBuilder {
-    const whereFilters = this.getConditions()
+  remove(idOrIndex: string | number): WhereFilterBuilder {
+    const conditions = this.getConditions()
 
     if (typeof idOrIndex === 'number') {
-      if (idOrIndex >= 0 && idOrIndex < whereFilters.length) {
-        whereFilters.delete(idOrIndex, 1)
+      if (idOrIndex >= 0 && idOrIndex < conditions.length) {
+        conditions.delete(idOrIndex, 1)
       }
     } else {
-      const match = findEntry(whereFilters, idOrIndex)
+      const match = findEntry(conditions, idOrIndex)
       if (match) {
         match.collection.delete(match.index, 1)
       }
@@ -140,15 +140,15 @@ export class WhereFiltersBuilder {
    * @param id - ID
    */
   find(id: string): WhereFilterNodeBuilder | WhereGroupBuilder | undefined {
-    const whereFilters = this.getConditions()
-    const match = findEntry(whereFilters, id)
+    const conditions = this.getConditions()
+    const match = findEntry(conditions, id)
     const yMap = match?.item
 
     if (!yMap) {
       return undefined
     }
 
-    if (WhereFiltersBuilder.isGroup(yMap)) {
+    if (WhereFilterBuilder.isGroup(yMap)) {
       return new WhereGroupBuilder(yMap)
     }
     return new WhereFilterNodeBuilder(yMap)
@@ -158,8 +158,8 @@ export class WhereFiltersBuilder {
    * @description 清空所有 Where 过滤条件
    */
   clear() {
-    const whereFilters = this.getConditions()
-    whereFilters.delete(0, whereFilters.length)
+    const conditions = this.getConditions()
+    conditions.delete(0, conditions.length)
     return this
   }
 

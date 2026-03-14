@@ -50,7 +50,7 @@ function findJsonFilesInDir(dir) {
  */
 function generateTestCase(json, jsonPath) {
   const name = json.name || path.basename(jsonPath, '.json')
-  const { whereFilters, whereFilter, havingFilter, ...restDSL } = json.dsl || {}
+  const { whereFilter, havingFilter, ...restDSL } = json.dsl || {}
 
   // Generate initial DSL
   const dsl = {
@@ -60,7 +60,7 @@ function generateTestCase(json, jsonPath) {
     measures: restDSL.measures || [],
     whereFilter: whereFilter || {
       op: 'and',
-      conditions: whereFilters || [],
+      conditions: [],
     },
     havingFilter: havingFilter || {
       op: 'and',

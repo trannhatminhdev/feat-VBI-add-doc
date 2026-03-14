@@ -18,12 +18,6 @@ export function ensureWhereRoot(dsl: Y.Map<any>): Y.Map<any> {
   }
 
   const root = createWhereRoot()
-  const legacyWhereFilters = dsl.get('whereFilters')
-  if (legacyWhereFilters instanceof Y.Array) {
-    root.set('conditions', legacyWhereFilters)
-    dsl.delete('whereFilters')
-  }
-
   dsl.set('whereFilter', root)
   return root
 }

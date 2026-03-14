@@ -2,11 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import { VBIBuilder, VBIWhereClause, VBIFilter } from '@visactor/vbi';
 
 /**
- * VBI Where Filters Hook
+ * VBI Where Filter Hook
  * 提供明细过滤（聚合前）管理
  * 支持响应式同步和增量操作
  */
-export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
+export const useVBIWhereFilter = (builder: VBIBuilder | undefined) => {
   const [filters, setFilters] = useState<VBIWhereClause[]>([]);
 
   useEffect(() => {
