@@ -21,6 +21,26 @@ constructor(doc: Y.Doc, dsl: Y.Map<any>)
 | `doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
 
+### getRoot
+
+**定义**:
+
+```typescript
+getRoot(): Y.Map<any>
+```
+
+**返回**: `Y.Map<any>`
+
+### getConditions
+
+**定义**:
+
+```typescript
+getConditions(): Y.Array<any>
+```
+
+**返回**: `Y.Array<any>`
+
 ### add
 
 添加一个 Having 过滤条件

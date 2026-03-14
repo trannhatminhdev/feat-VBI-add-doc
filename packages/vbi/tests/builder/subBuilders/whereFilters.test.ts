@@ -22,7 +22,10 @@ describe('WhereFiltersBuilder', () => {
           },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       measures: [],
     })
   })
@@ -57,7 +60,10 @@ describe('WhereFiltersBuilder', () => {
           },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       measures: [],
     })
   })
@@ -404,7 +410,10 @@ describe('WhereFiltersBuilder', () => {
       dimensions: [{ field: 'category', alias: 'category' }],
       measures: [{ field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
       whereFilter: { op: 'and', conditions: [] },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       version: 1,
     } as VBIDSL)
 

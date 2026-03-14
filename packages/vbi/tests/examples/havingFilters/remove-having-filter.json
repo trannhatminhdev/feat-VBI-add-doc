@@ -41,24 +41,27 @@
         }
       }
     ],
-    "havingFilters": [
-      {
-        "id": "having-1",
-        "field": "销售额",
-        "op": "gt",
-        "value": 1000000
-      },
-      {
-        "id": "having-2",
-        "field": "利润",
-        "op": "gt",
-        "value": 200000
-      }
-    ],
     "limit": 20,
     "whereFilter": {
       "op": "and",
       "conditions": []
+    },
+    "havingFilter": {
+      "op": "and",
+      "conditions": [
+        {
+          "id": "having-1",
+          "field": "销售额",
+          "op": "gt",
+          "value": 1000000
+        },
+        {
+          "id": "having-2",
+          "field": "利润",
+          "op": "gt",
+          "value": 200000
+        }
+      ]
     }
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.remove('having-1'); }"

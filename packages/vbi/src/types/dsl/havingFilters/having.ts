@@ -17,6 +17,13 @@ export const zVBIHavingGroup: z.ZodType<VBIHavingGroup> = z.lazy(() =>
   }),
 )
 
+export const zVBIHavingRoot: z.ZodType<VBIHavingRoot> = z.lazy(() =>
+  z.object({
+    op: z.enum(['and', 'or']),
+    conditions: z.array(zVBIHavingClause),
+  }),
+)
+
 export const zVBIHavingClause: z.ZodType<VBIHavingClause> = z.lazy(() => z.union([zVBIHavingFilter, zVBIHavingGroup]))
 
 export type VBIHavingGroup = {
@@ -26,6 +33,11 @@ export type VBIHavingGroup = {
 }
 
 export type VBIHavingClause = VBIHavingFilter | VBIHavingGroup
+
+export type VBIHavingRoot = {
+  op: 'and' | 'or'
+  conditions: VBIHavingClause[]
+}
 
 export function isVBIHavingFilter(clause: VBIHavingClause): clause is VBIHavingFilter {
   return 'field' in clause

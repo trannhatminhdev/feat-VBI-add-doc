@@ -18,7 +18,10 @@ describe('DimensionsBuilder', () => {
         },
       ],
       whereFilter: { op: 'and', conditions: [] },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       measures: [],
     })
   })
@@ -46,7 +49,10 @@ describe('DimensionsBuilder', () => {
         },
       ],
       whereFilter: { op: 'and', conditions: [] },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       measures: [],
     })
   })

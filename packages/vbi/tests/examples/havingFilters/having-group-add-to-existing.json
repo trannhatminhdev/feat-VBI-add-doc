@@ -53,24 +53,27 @@
         }
       }
     ],
-    "havingFilters": [
-      {
-        "id": "group-1",
-        "op": "or",
-        "conditions": [
-          {
-            "id": "cond-1",
-            "field": "销售额",
-            "op": "gt",
-            "value": 500000
-          }
-        ]
-      }
-    ],
     "limit": 20,
     "whereFilter": {
       "op": "and",
       "conditions": []
+    },
+    "havingFilter": {
+      "op": "and",
+      "conditions": [
+        {
+          "id": "group-1",
+          "op": "or",
+          "conditions": [
+            {
+              "id": "cond-1",
+              "field": "销售额",
+              "op": "gt",
+              "value": 500000
+            }
+          ]
+        }
+      ]
     }
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.updateGroup('group-1', group => { group.add('利润', n => n.setOperator('gt').setValue(100000)); group.add('数量', n => n.setOperator('gte').setValue(200)); }); }"

@@ -30,7 +30,10 @@ describe('WhereFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -57,7 +60,10 @@ describe('WhereFilters', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -237,7 +243,10 @@ describe('WhereFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -264,7 +273,10 @@ describe('WhereFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -374,7 +386,10 @@ describe('WhereFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -403,7 +418,10 @@ describe('WhereFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -549,7 +567,10 @@ describe('WhereFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -576,7 +597,10 @@ describe('WhereFilters', () => {
             "field": "product_type",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -709,7 +733,10 @@ describe('WhereFilters', () => {
           },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -741,7 +768,10 @@ describe('WhereFilters', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -935,7 +965,10 @@ describe('WhereFilters', () => {
           },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -962,7 +995,10 @@ describe('WhereFilters', () => {
             "field": "city",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -1153,7 +1189,10 @@ describe('WhereFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1184,7 +1223,10 @@ describe('WhereFilters', () => {
             "field": "city",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -1357,7 +1399,10 @@ describe('WhereFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1397,7 +1442,10 @@ describe('WhereFilters', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -1685,7 +1733,10 @@ describe('WhereFilters', () => {
           },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1712,7 +1763,10 @@ describe('WhereFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -1858,7 +1912,10 @@ describe('WhereFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1885,7 +1942,10 @@ describe('WhereFilters', () => {
             "field": "delivery_method",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -2022,7 +2082,10 @@ describe('WhereFilters', () => {
           },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -2047,7 +2110,10 @@ describe('WhereFilters', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -2246,7 +2312,10 @@ describe('WhereFilters', () => {
           },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -2273,7 +2342,10 @@ describe('WhereFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [

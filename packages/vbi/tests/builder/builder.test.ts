@@ -20,7 +20,10 @@ describe('VBI', () => {
         },
       ],
       whereFilter: { op: 'and', conditions: [] },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       measures: [
         {
           aggregate: {

@@ -25,7 +25,10 @@ describe('UndoManager', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -54,7 +57,10 @@ describe('UndoManager', () => {
         "chartType": "bar",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [

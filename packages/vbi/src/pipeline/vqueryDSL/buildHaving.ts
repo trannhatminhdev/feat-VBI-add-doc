@@ -4,16 +4,16 @@ import type { VBIHavingFilter, VBIHavingClause, VBIHavingGroup } from '../../typ
 
 export const buildHaving: buildPipe = (queryDSL, context) => {
   const { vbiDSL } = context
-  const havingFilters = vbiDSL.havingFilters || []
+  const havingFilter = vbiDSL.havingFilter
 
-  if (havingFilters.length === 0) {
+  if (!havingFilter || havingFilter.conditions.length === 0) {
     return queryDSL
   }
 
   const result = { ...queryDSL }
   result.having = {
-    op: 'and',
-    conditions: havingFilters.flatMap(mapClauseToCondition),
+    op: havingFilter.op,
+    conditions: havingFilter.conditions.flatMap(mapClauseToCondition),
   }
 
   return result as VQueryDSL

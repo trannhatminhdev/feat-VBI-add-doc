@@ -16,7 +16,10 @@ describe('Measures', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -36,7 +39,10 @@ describe('Measures', () => {
         "chartType": "table",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -102,7 +108,10 @@ describe('Measures', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -124,7 +133,10 @@ describe('Measures', () => {
         "chartType": "table",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -207,7 +219,10 @@ describe('Measures', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -227,7 +242,10 @@ describe('Measures', () => {
         "chartType": "table",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -302,7 +320,10 @@ describe('Measures', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -322,7 +343,10 @@ describe('Measures', () => {
         "chartType": "table",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [

@@ -30,7 +30,10 @@ describe('Theme', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -55,7 +58,10 @@ describe('Theme', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -178,7 +184,10 @@ describe('Theme', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'dark',
       locale: 'zh-CN',
       version: 1,
@@ -203,7 +212,10 @@ describe('Theme', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [

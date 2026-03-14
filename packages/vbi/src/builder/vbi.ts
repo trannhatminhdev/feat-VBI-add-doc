@@ -4,6 +4,7 @@ import { VBIBuilder } from './vbi-builder'
 import { connectorMap, getConnector, registerConnector } from './connector'
 import { id } from 'src/utils'
 import { createWhereRoot } from './sub-builders/whereFilters/where-utils'
+import { createHavingRoot } from './sub-builders/havingFilters/having-utils'
 
 import * as Y from 'yjs'
 
@@ -22,7 +23,10 @@ const createVBI = () => {
           op: 'and',
           conditions: [],
         },
-        havingFilters: [],
+        havingFilter: {
+          op: 'and',
+          conditions: [],
+        },
         theme: 'light',
         locale: 'zh-CN',
         version: 0,
@@ -101,7 +105,24 @@ const createVBI = () => {
         }
 
         dsl.set('whereFilter', whereRoot)
-        dsl.set('havingFilters', ensureYArray(vbi.havingFilters, true))
+        const havingFilter = (vbi.havingFilter ?? {
+          op: 'and',
+          conditions: vbi.havingFilters ?? [],
+        }) as Y.Map<any> | { op?: 'and' | 'or'; conditions?: any }
+        const havingRoot = havingFilter instanceof Y.Map ? havingFilter : createHavingRoot()
+        if (havingFilter instanceof Y.Map) {
+          if (!(havingRoot.get('conditions') instanceof Y.Array)) {
+            havingRoot.set('conditions', new Y.Array<any>())
+          }
+          if (!havingRoot.get('op')) {
+            havingRoot.set('op', 'and')
+          }
+        } else {
+          havingRoot.set('op', havingFilter.op ?? 'and')
+          havingRoot.set('conditions', ensureYArray(havingFilter.conditions, true))
+        }
+
+        dsl.set('havingFilter', havingRoot)
         dsl.set('measures', ensureYArray(vbi.measures))
         dsl.set('dimensions', ensureYArray(vbi.dimensions))
       })

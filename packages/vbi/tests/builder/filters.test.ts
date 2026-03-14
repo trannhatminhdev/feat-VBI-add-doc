@@ -22,7 +22,10 @@ describe('WhereFiltersBuilder', () => {
           },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       measures: [],
     })
   })
@@ -75,7 +78,10 @@ describe('WhereFiltersBuilder', () => {
           },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       measures: [],
     })
   })
@@ -114,7 +120,10 @@ describe('WhereFiltersBuilder', () => {
           },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       measures: [],
     })
   })
@@ -134,7 +143,10 @@ describe('WhereFiltersBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [],
       whereFilter: { op: 'and', conditions: [] },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       measures: [],
     })
   })
@@ -176,7 +188,10 @@ describe('WhereFiltersBuilder', () => {
           { id: 'id-3', field: 'category', op: 'in', value: ['Electronics', 'Furniture'] },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       measures: [],
     })
   })
@@ -200,7 +215,10 @@ describe('WhereFiltersBuilder', () => {
           },
         ],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       measures: [],
     })
   })

@@ -30,7 +30,10 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -57,14 +60,17 @@ describe('HavingFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [
-          {
-            "field": "销售额",
-            "id": "id-1",
-            "op": "gt",
-            "value": 1000000,
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "field": "销售额",
+              "id": "id-1",
+              "op": "gt",
+              "value": 1000000,
+            },
+          ],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -185,7 +191,10 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -212,20 +221,23 @@ describe('HavingFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [
-          {
-            "field": "销售额",
-            "id": "id-1",
-            "op": "gt",
-            "value": 1000000,
-          },
-          {
-            "field": "利润",
-            "id": "id-2",
-            "op": "gt",
-            "value": 200000,
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "field": "销售额",
+              "id": "id-1",
+              "op": "gt",
+              "value": 1000000,
+            },
+            {
+              "field": "利润",
+              "id": "id-2",
+              "op": "gt",
+              "value": 200000,
+            },
+          ],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -366,20 +378,23 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [
-        {
-          id: 'having-1',
-          field: '销售额',
-          op: 'gt',
-          value: 1000000,
-        },
-        {
-          id: 'having-2',
-          field: '利润',
-          op: 'gt',
-          value: 200000,
-        },
-      ],
+      havingFilter: {
+        op: 'and',
+        conditions: [
+          {
+            id: 'having-1',
+            field: '销售额',
+            op: 'gt',
+            value: 1000000,
+          },
+          {
+            id: 'having-2',
+            field: '利润',
+            op: 'gt',
+            value: 200000,
+          },
+        ],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -404,7 +419,10 @@ describe('HavingFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -548,14 +566,17 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [
-        {
-          id: 'old-1',
-          field: '销售额',
-          op: 'gt',
-          value: 999999,
-        },
-      ],
+      havingFilter: {
+        op: 'and',
+        conditions: [
+          {
+            id: 'old-1',
+            field: '销售额',
+            op: 'gt',
+            value: 999999,
+          },
+        ],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -587,38 +608,41 @@ describe('HavingFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [
-          {
-            "conditions": [
-              {
-                "field": "销售额",
-                "id": "id-2",
-                "op": "gte",
-                "value": 100000,
-              },
-              {
-                "conditions": [
-                  {
-                    "field": "利润",
-                    "id": "id-4",
-                    "op": "gt",
-                    "value": 20000,
-                  },
-                  {
-                    "field": "数量",
-                    "id": "id-5",
-                    "op": "gte",
-                    "value": 50,
-                  },
-                ],
-                "id": "id-3",
-                "op": "or",
-              },
-            ],
-            "id": "id-1",
-            "op": "and",
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "销售额",
+                  "id": "id-2",
+                  "op": "gte",
+                  "value": 100000,
+                },
+                {
+                  "conditions": [
+                    {
+                      "field": "利润",
+                      "id": "id-4",
+                      "op": "gt",
+                      "value": 20000,
+                    },
+                    {
+                      "field": "数量",
+                      "id": "id-5",
+                      "op": "gte",
+                      "value": 50,
+                    },
+                  ],
+                  "id": "id-3",
+                  "op": "or",
+                },
+              ],
+              "id": "id-1",
+              "op": "and",
+            },
+          ],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -821,7 +845,10 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -855,50 +882,53 @@ describe('HavingFilters', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [
-          {
-            "conditions": [
-              {
-                "conditions": [
-                  {
-                    "field": "销售额",
-                    "id": "id-3",
-                    "op": "gt",
-                    "value": 500000,
-                  },
-                  {
-                    "field": "利润",
-                    "id": "id-4",
-                    "op": "gt",
-                    "value": 50000,
-                  },
-                ],
-                "id": "id-2",
-                "op": "and",
-              },
-              {
-                "conditions": [
-                  {
-                    "field": "数量",
-                    "id": "id-6",
-                    "op": "gt",
-                    "value": 100,
-                  },
-                  {
-                    "field": "平均折扣",
-                    "id": "id-7",
-                    "op": "lt",
-                    "value": 0.3,
-                  },
-                ],
-                "id": "id-5",
-                "op": "and",
-              },
-            ],
-            "id": "id-1",
-            "op": "or",
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "conditions": [
+                    {
+                      "field": "销售额",
+                      "id": "id-3",
+                      "op": "gt",
+                      "value": 500000,
+                    },
+                    {
+                      "field": "利润",
+                      "id": "id-4",
+                      "op": "gt",
+                      "value": 50000,
+                    },
+                  ],
+                  "id": "id-2",
+                  "op": "and",
+                },
+                {
+                  "conditions": [
+                    {
+                      "field": "数量",
+                      "id": "id-6",
+                      "op": "gt",
+                      "value": 100,
+                    },
+                    {
+                      "field": "平均折扣",
+                      "id": "id-7",
+                      "op": "lt",
+                      "value": 0.3,
+                    },
+                  ],
+                  "id": "id-5",
+                  "op": "and",
+                },
+              ],
+              "id": "id-1",
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -1144,7 +1174,10 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1180,20 +1213,23 @@ describe('HavingFilters', () => {
             "field": "product_type",
           },
         ],
-        "havingFilters": [
-          {
-            "field": "销售额",
-            "id": "id-1",
-            "op": "gte",
-            "value": 500000,
-          },
-          {
-            "field": "利润",
-            "id": "id-2",
-            "op": "gte",
-            "value": 50000,
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "field": "销售额",
+              "id": "id-1",
+              "op": "gte",
+              "value": 500000,
+            },
+            {
+              "field": "利润",
+              "id": "id-2",
+              "op": "gte",
+              "value": 50000,
+            },
+          ],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -1337,20 +1373,23 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [
-        {
-          id: 'group-1',
-          op: 'or',
-          conditions: [
-            {
-              id: 'cond-1',
-              field: '销售额',
-              op: 'gt',
-              value: 500000,
-            },
-          ],
-        },
-      ],
+      havingFilter: {
+        op: 'and',
+        conditions: [
+          {
+            id: 'group-1',
+            op: 'or',
+            conditions: [
+              {
+                id: 'cond-1',
+                field: '销售额',
+                op: 'gt',
+                value: 500000,
+              },
+            ],
+          },
+        ],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1378,32 +1417,35 @@ describe('HavingFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [
-          {
-            "conditions": [
-              {
-                "field": "销售额",
-                "id": "cond-1",
-                "op": "gt",
-                "value": 500000,
-              },
-              {
-                "field": "利润",
-                "id": "id-1",
-                "op": "gt",
-                "value": 100000,
-              },
-              {
-                "field": "数量",
-                "id": "id-2",
-                "op": "gte",
-                "value": 200,
-              },
-            ],
-            "id": "group-1",
-            "op": "or",
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "销售额",
+                  "id": "cond-1",
+                  "op": "gt",
+                  "value": 500000,
+                },
+                {
+                  "field": "利润",
+                  "id": "id-1",
+                  "op": "gt",
+                  "value": 100000,
+                },
+                {
+                  "field": "数量",
+                  "id": "id-2",
+                  "op": "gte",
+                  "value": 200,
+                },
+              ],
+              "id": "group-1",
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -1585,26 +1627,29 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [
-        {
-          id: 'group-1',
-          op: 'and',
-          conditions: [
-            {
-              id: 'cond-1',
-              field: '销售额',
-              op: 'gt',
-              value: 100000,
-            },
-            {
-              id: 'cond-2',
-              field: '利润',
-              op: 'gt',
-              value: 10000,
-            },
-          ],
-        },
-      ],
+      havingFilter: {
+        op: 'and',
+        conditions: [
+          {
+            id: 'group-1',
+            op: 'and',
+            conditions: [
+              {
+                id: 'cond-1',
+                field: '销售额',
+                op: 'gt',
+                value: 100000,
+              },
+              {
+                id: 'cond-2',
+                field: '利润',
+                op: 'gt',
+                value: 10000,
+              },
+            ],
+          },
+        ],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1631,20 +1676,23 @@ describe('HavingFilters', () => {
             "field": "product_type",
           },
         ],
-        "havingFilters": [
-          {
-            "conditions": [
-              {
-                "field": "利润",
-                "id": "cond-2",
-                "op": "gt",
-                "value": 10000,
-              },
-            ],
-            "id": "group-1",
-            "op": "and",
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "利润",
+                  "id": "cond-2",
+                  "op": "gt",
+                  "value": 10000,
+                },
+              ],
+              "id": "group-1",
+              "op": "and",
+            },
+          ],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -1788,7 +1836,10 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1818,32 +1869,35 @@ describe('HavingFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [
-          {
-            "field": "销售额",
-            "id": "id-1",
-            "op": "gt",
-            "value": 500000,
-          },
-          {
-            "conditions": [
-              {
-                "field": "利润",
-                "id": "id-3",
-                "op": "gt",
-                "value": 100000,
-              },
-              {
-                "field": "数量",
-                "id": "id-4",
-                "op": "gte",
-                "value": 30,
-              },
-            ],
-            "id": "id-2",
-            "op": "or",
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "field": "销售额",
+              "id": "id-1",
+              "op": "gt",
+              "value": 500000,
+            },
+            {
+              "conditions": [
+                {
+                  "field": "利润",
+                  "id": "id-3",
+                  "op": "gt",
+                  "value": 100000,
+                },
+                {
+                  "field": "数量",
+                  "id": "id-4",
+                  "op": "gte",
+                  "value": 30,
+                },
+              ],
+              "id": "id-2",
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -2029,7 +2083,10 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -2061,26 +2118,29 @@ describe('HavingFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [
-          {
-            "conditions": [
-              {
-                "field": "平均折扣",
-                "id": "id-2",
-                "op": "lt",
-                "value": 0.2,
-              },
-              {
-                "field": "销售额",
-                "id": "id-3",
-                "op": "gt",
-                "value": 100000,
-              },
-            ],
-            "id": "id-1",
-            "op": "and",
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "平均折扣",
+                  "id": "id-2",
+                  "op": "lt",
+                  "value": 0.2,
+                },
+                {
+                  "field": "销售额",
+                  "id": "id-3",
+                  "op": "gt",
+                  "value": 100000,
+                },
+              ],
+              "id": "id-1",
+              "op": "and",
+            },
+          ],
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -2279,7 +2339,10 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -2310,38 +2373,41 @@ describe('HavingFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [
-          {
-            "conditions": [
-              {
-                "field": "销售额",
-                "id": "id-2",
-                "op": "gt",
-                "value": 1000000,
-              },
-              {
-                "conditions": [
-                  {
-                    "field": "利润",
-                    "id": "id-4",
-                    "op": "gt",
-                    "value": 200000,
-                  },
-                  {
-                    "field": "数量",
-                    "id": "id-5",
-                    "op": "gte",
-                    "value": 50,
-                  },
-                ],
-                "id": "id-3",
-                "op": "or",
-              },
-            ],
-            "id": "id-1",
-            "op": "and",
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "销售额",
+                  "id": "id-2",
+                  "op": "gt",
+                  "value": 1000000,
+                },
+                {
+                  "conditions": [
+                    {
+                      "field": "利润",
+                      "id": "id-4",
+                      "op": "gt",
+                      "value": 200000,
+                    },
+                    {
+                      "field": "数量",
+                      "id": "id-5",
+                      "op": "gte",
+                      "value": 50,
+                    },
+                  ],
+                  "id": "id-3",
+                  "op": "or",
+                },
+              ],
+              "id": "id-1",
+              "op": "and",
+            },
+          ],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -2522,7 +2588,10 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -2550,26 +2619,29 @@ describe('HavingFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [
-          {
-            "conditions": [
-              {
-                "field": "销售额",
-                "id": "id-2",
-                "op": "gt",
-                "value": 1000000,
-              },
-              {
-                "field": "利润",
-                "id": "id-3",
-                "op": "gt",
-                "value": 200000,
-              },
-            ],
-            "id": "id-1",
-            "op": "or",
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "销售额",
+                  "id": "id-2",
+                  "op": "gt",
+                  "value": 1000000,
+                },
+                {
+                  "field": "利润",
+                  "id": "id-3",
+                  "op": "gt",
+                  "value": 200000,
+                },
+              ],
+              "id": "id-1",
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -2728,7 +2800,10 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -2757,32 +2832,35 @@ describe('HavingFilters', () => {
             "field": "product_sub_type",
           },
         ],
-        "havingFilters": [
-          {
-            "conditions": [
-              {
-                "field": "利润",
-                "id": "id-2",
-                "op": "gt",
-                "value": 0,
-              },
-              {
-                "field": "数量",
-                "id": "id-3",
-                "op": "gt",
-                "value": 20,
-              },
-              {
-                "field": "销售额",
-                "id": "id-4",
-                "op": "gt",
-                "value": 10000,
-              },
-            ],
-            "id": "id-1",
-            "op": "and",
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "利润",
+                  "id": "id-2",
+                  "op": "gt",
+                  "value": 0,
+                },
+                {
+                  "field": "数量",
+                  "id": "id-3",
+                  "op": "gt",
+                  "value": 20,
+                },
+                {
+                  "field": "销售额",
+                  "id": "id-4",
+                  "op": "gt",
+                  "value": 10000,
+                },
+              ],
+              "id": "id-1",
+              "op": "and",
+            },
+          ],
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -2988,26 +3066,29 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [
-        {
-          id: 'group-1',
-          op: 'and',
-          conditions: [
-            {
-              id: 'cond-1',
-              field: '销售额',
-              op: 'gt',
-              value: 1000000,
-            },
-            {
-              id: 'cond-2',
-              field: '利润',
-              op: 'gt',
-              value: 200000,
-            },
-          ],
-        },
-      ],
+      havingFilter: {
+        op: 'and',
+        conditions: [
+          {
+            id: 'group-1',
+            op: 'and',
+            conditions: [
+              {
+                id: 'cond-1',
+                field: '销售额',
+                op: 'gt',
+                value: 1000000,
+              },
+              {
+                id: 'cond-2',
+                field: '利润',
+                op: 'gt',
+                value: 200000,
+              },
+            ],
+          },
+        ],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -3034,26 +3115,29 @@ describe('HavingFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [
-          {
-            "conditions": [
-              {
-                "field": "销售额",
-                "id": "cond-1",
-                "op": "gt",
-                "value": 1000000,
-              },
-              {
-                "field": "利润",
-                "id": "cond-2",
-                "op": "gt",
-                "value": 200000,
-              },
-            ],
-            "id": "group-1",
-            "op": "or",
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "销售额",
+                  "id": "cond-1",
+                  "op": "gt",
+                  "value": 1000000,
+                },
+                {
+                  "field": "利润",
+                  "id": "cond-2",
+                  "op": "gt",
+                  "value": 200000,
+                },
+              ],
+              "id": "group-1",
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -3204,7 +3288,10 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -3233,26 +3320,29 @@ describe('HavingFilters', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [
-          {
-            "conditions": [
-              {
-                "field": "销售额",
-                "id": "id-3",
-                "op": "gt",
-                "value": 50000,
-              },
-              {
-                "field": "利润",
-                "id": "id-4",
-                "op": "gt",
-                "value": 10000,
-              },
-            ],
-            "id": "id-2",
-            "op": "or",
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "销售额",
+                  "id": "id-3",
+                  "op": "gt",
+                  "value": 50000,
+                },
+                {
+                  "field": "利润",
+                  "id": "id-4",
+                  "op": "gt",
+                  "value": 10000,
+                },
+              ],
+              "id": "id-2",
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -3445,20 +3535,23 @@ describe('HavingFilters', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [
-        {
-          id: 'having-1',
-          field: '销售额',
-          op: 'gt',
-          value: 1000000,
-        },
-        {
-          id: 'having-2',
-          field: '利润',
-          op: 'gt',
-          value: 200000,
-        },
-      ],
+      havingFilter: {
+        op: 'and',
+        conditions: [
+          {
+            id: 'having-1',
+            field: '销售额',
+            op: 'gt',
+            value: 1000000,
+          },
+          {
+            id: 'having-2',
+            field: '利润',
+            op: 'gt',
+            value: 200000,
+          },
+        ],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -3483,14 +3576,17 @@ describe('HavingFilters', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [
-          {
-            "field": "利润",
-            "id": "having-2",
-            "op": "gt",
-            "value": 200000,
-          },
-        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "field": "利润",
+              "id": "having-2",
+              "op": "gt",
+              "value": 200000,
+            },
+          ],
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [

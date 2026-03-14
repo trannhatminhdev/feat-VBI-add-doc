@@ -41,9 +41,12 @@
         }
       }
     ],
-    "havingFilters": [],
     "limit": 20,
     "whereFilter": {
+      "op": "and",
+      "conditions": []
+    },
+    "havingFilter": {
       "op": "and",
       "conditions": []
     }

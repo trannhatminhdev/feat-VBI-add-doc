@@ -1,6 +1,7 @@
 import * as Y from 'yjs'
 import type { VBIHavingClause, ObserveCallback } from 'src/types'
 import { id } from 'src/utils'
+import { createHavingRoot, ensureHavingRoot, findEntry, getHavingConditions, isHavingGroup } from './having-utils'
 import { HavingFiltersNodeBuilder } from './having-node-builder'
 import { HavingGroupBuilder } from './having-group-builder'
 
@@ -15,11 +16,22 @@ export class HavingFiltersBuilder {
     this.doc = doc
     this.dsl = dsl
 
-    if (!this.dsl.get('havingFilters')) {
-      this.doc.transact(() => {
-        this.dsl.set('havingFilters', new Y.Array<any>())
-      })
-    }
+    this.doc.transact(() => {
+      if (!this.dsl.get('havingFilter') && !this.dsl.get('havingFilters')) {
+        this.dsl.set('havingFilter', createHavingRoot())
+        return
+      }
+
+      ensureHavingRoot(this.dsl)
+    })
+  }
+
+  private getRoot(): Y.Map<any> {
+    return ensureHavingRoot(this.dsl)
+  }
+
+  private getConditions(): Y.Array<any> {
+    return getHavingConditions(this.getRoot())
   }
 
   /**
@@ -32,7 +44,7 @@ export class HavingFiltersBuilder {
     yMap.set('id', id.uuid())
     yMap.set('field', field)
 
-    this.dsl.get('havingFilters').push([yMap])
+    this.getConditions().push([yMap])
 
     const node = new HavingFiltersNodeBuilder(yMap)
     callback(node)
@@ -50,7 +62,7 @@ export class HavingFiltersBuilder {
     yMap.set('op', op)
     yMap.set('conditions', new Y.Array<any>())
 
-    this.dsl.get('havingFilters').push([yMap])
+    this.getConditions().push([yMap])
 
     const group = new HavingGroupBuilder(yMap)
     callback(group)
@@ -63,14 +75,18 @@ export class HavingFiltersBuilder {
    * @param callback - 回调函数
    */
   update(id: string, callback: (node: HavingFiltersNodeBuilder) => void): HavingFiltersBuilder {
-    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
-    const index = havingFilters.toArray().findIndex((item: any) => item.get('id') === id)
+    const havingFilters = this.getConditions()
+    const match = findEntry(havingFilters, id)
 
-    if (index === -1) {
+    if (!match) {
       throw new Error(`Having filter with id ${id} not found`)
     }
 
-    const filterYMap = havingFilters.get(index)
+    if (!HavingFiltersBuilder.isNode(match.item)) {
+      throw new Error(`Item with id ${id} is not a filter`)
+    }
+
+    const filterYMap = match.item
     const node = new HavingFiltersNodeBuilder(filterYMap)
     callback(node)
     return this
@@ -82,14 +98,14 @@ export class HavingFiltersBuilder {
    * @param callback - 回调函数
    */
   updateGroup(id: string, callback: (group: HavingGroupBuilder) => void): HavingFiltersBuilder {
-    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
-    const index = havingFilters.toArray().findIndex((item: any) => item.get('id') === id)
+    const havingFilters = this.getConditions()
+    const match = findEntry(havingFilters, id)
 
-    if (index === -1) {
+    if (!match) {
       throw new Error(`Having group with id ${id} not found`)
     }
 
-    const yMap = havingFilters.get(index)
+    const yMap = match.item
     if (!HavingFiltersBuilder.isGroup(yMap)) {
       throw new Error(`Item with id ${id} is not a group`)
     }
@@ -104,16 +120,16 @@ export class HavingFiltersBuilder {
    * @param idOrIndex - ID 或索引
    */
   remove(idOrIndex: string | number): HavingFiltersBuilder {
-    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
+    const havingFilters = this.getConditions()
 
     if (typeof idOrIndex === 'number') {
       if (idOrIndex >= 0 && idOrIndex < havingFilters.length) {
         havingFilters.delete(idOrIndex, 1)
       }
     } else {
-      const index = havingFilters.toArray().findIndex((item: any) => item.get('id') === idOrIndex)
-      if (index !== -1) {
-        havingFilters.delete(index, 1)
+      const match = findEntry(havingFilters, idOrIndex)
+      if (match) {
+        match.collection.delete(match.index, 1)
       }
     }
     return this
@@ -124,8 +140,9 @@ export class HavingFiltersBuilder {
    * @param id - ID
    */
   find(id: string): HavingFiltersNodeBuilder | HavingGroupBuilder | undefined {
-    const havingFilters = this.dsl.get('havingFilters') as Y.Array<any>
-    const yMap = havingFilters.toArray().find((item: any) => item.get('id') === id)
+    const havingFilters = this.getConditions()
+    const match = findEntry(havingFilters, id)
+    const yMap = match?.item
 
     if (!yMap) {
       return undefined
@@ -141,7 +158,7 @@ export class HavingFiltersBuilder {
    * @description 清空所有 Having 过滤条件
    */
   clear() {
-    const havingFilters = this.dsl.get('havingFilters')
+    const havingFilters = this.getConditions()
     havingFilters.delete(0, havingFilters.length)
     return this
   }
@@ -150,7 +167,7 @@ export class HavingFiltersBuilder {
    * @description 导出所有 Having 过滤条件为 JSON 数组
    */
   toJson(): VBIHavingClause[] {
-    return this.dsl.get('havingFilters').toJSON() as VBIHavingClause[]
+    return this.getConditions().toJSON() as VBIHavingClause[]
   }
 
   /**
@@ -159,9 +176,10 @@ export class HavingFiltersBuilder {
    * @returns 取消监听的函数
    */
   observe(callback: ObserveCallback): () => void {
-    this.dsl.get('havingFilters').observe(callback)
+    const havingFilter = this.getRoot()
+    havingFilter.observeDeep(callback as any)
     return () => {
-      this.dsl.get('havingFilters').unobserve(callback)
+      havingFilter.unobserveDeep(callback as any)
     }
   }
 
@@ -169,7 +187,7 @@ export class HavingFiltersBuilder {
    * @description 判断是否为分组节点
    */
   static isGroup(yMap: Y.Map<any>): boolean {
-    return yMap.get('op') !== undefined && yMap.get('conditions') !== undefined
+    return isHavingGroup(yMap)
   }
 
   /**

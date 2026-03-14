@@ -13,13 +13,13 @@ describe('HavingFiltersBuilder', () => {
     })
 
     const result = builder.build()
-    expect(result.havingFilters.length).toBe(1)
-    expect(result.havingFilters[0]).toMatchObject({
+    expect(result.havingFilter.conditions.length).toBe(1)
+    expect(result.havingFilter.conditions[0]).toMatchObject({
       field: 'sales',
       op: 'gt',
       value: 1000,
     })
-    expect(result.havingFilters[0].id).toBeDefined()
+    expect(result.havingFilter.conditions[0].id).toBeDefined()
   })
 
   test('add having filter auto-generates uuid', () => {
@@ -153,12 +153,16 @@ describe('HavingFiltersBuilder', () => {
       callCount++
     })
 
-    builder.havingFilters.add('sales', (node) => node.setValue(1000))
+    builder.doc.transact(() => {
+      builder.havingFilters.add('sales', (node) => node.setValue(1000))
+    })
     expect(callCount).toBe(1)
 
     unobserve()
 
-    builder.havingFilters.add('profit', (node) => node.setValue(500))
+    builder.doc.transact(() => {
+      builder.havingFilters.add('profit', (node) => node.setValue(500))
+    })
     expect(callCount).toBe(1)
   })
 
@@ -184,10 +188,13 @@ describe('HavingFiltersBuilder', () => {
 
   test('from DSL with pre-existing filters gets ids', () => {
     const dsl = {
-      havingFilters: [
-        { field: 'sales', op: 'gt', value: 1000 },
-        { field: 'profit', op: 'gt', value: 500 },
-      ],
+      havingFilter: {
+        op: 'and',
+        conditions: [
+          { field: 'sales', op: 'gt', value: 1000 },
+          { field: 'profit', op: 'gt', value: 500 },
+        ],
+      },
     } as VBIDSL
     const builder = VBI.from(dsl)
 
@@ -404,15 +411,18 @@ describe('HavingGroupBuilder', () => {
 
   test('from DSL with pre-existing group gets ids', () => {
     const dsl = {
-      havingFilters: [
-        {
-          op: 'and',
-          conditions: [
-            { field: 'sales', op: 'gt', value: 1000 },
-            { field: 'profit', op: 'gt', value: 500 },
-          ],
-        },
-      ],
+      havingFilter: {
+        op: 'and',
+        conditions: [
+          {
+            op: 'and',
+            conditions: [
+              { field: 'sales', op: 'gt', value: 1000 },
+              { field: 'profit', op: 'gt', value: 500 },
+            ],
+          },
+        ],
+      },
     } as VBIDSL
     const builder = VBI.from(dsl)
 

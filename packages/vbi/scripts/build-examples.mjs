@@ -36,7 +36,10 @@ const DEFAULT_DSL = {
     op: 'and',
     conditions: [],
   },
-  havingFilters: [],
+  havingFilter: {
+    op: 'and',
+    conditions: [],
+  },
   theme: 'light',
   locale: DEFAULT_LOCALE,
   version: 1,
@@ -80,7 +83,7 @@ function findJsonFilesInDir(dir) {
 
 // ============ Code Generation ============
 function generateDSLConfig(dsl) {
-  const { whereFilters, filters, whereFilter, ...restDSL } = dsl
+  const { whereFilters, filters, whereFilter, havingFilters, havingFilter, ...restDSL } = dsl
 
   return {
     ...DEFAULT_DSL,
@@ -88,6 +91,10 @@ function generateDSLConfig(dsl) {
     whereFilter: whereFilter ?? {
       op: 'and',
       conditions: whereFilters ?? filters ?? [],
+    },
+    havingFilter: havingFilter ?? {
+      op: 'and',
+      conditions: havingFilters ?? [],
     },
   }
 }
@@ -111,7 +118,7 @@ export default () => {
         dimensions: ${JSON.stringify(dsl.dimensions)},
         measures: ${JSON.stringify(dsl.measures)},
         whereFilter: ${JSON.stringify(dsl.whereFilter)},
-        havingFilters: ${JSON.stringify(dsl.havingFilters)},
+        havingFilter: ${JSON.stringify(dsl.havingFilter)},
         theme: ${JSON.stringify(dsl.theme)},
         locale: ${JSON.stringify(dsl.locale)},
         version: ${dsl.version}${dsl.limit !== undefined ? `,\n        limit: ${dsl.limit}` : ''}${dsl.orderBy ? `,\n        orderBy: ${JSON.stringify(dsl.orderBy)}` : ''}

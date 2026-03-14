@@ -24,7 +24,7 @@ export default () => {
         dimensions: [],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
         whereFilter: { op: 'and', conditions: [] },
-        havingFilters: [],
+        havingFilter: { op: 'and', conditions: [] },
         theme: 'light',
         locale: 'zh-CN',
         version: 1,

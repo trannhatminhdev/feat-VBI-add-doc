@@ -30,7 +30,10 @@ describe('Locale', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'en-US',
       version: 1,
@@ -55,7 +58,10 @@ describe('Locale', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 10,
         "locale": "en-US",
         "measures": [
@@ -178,7 +184,10 @@ describe('Locale', () => {
         op: 'and',
         conditions: [],
       },
-      havingFilters: [],
+      havingFilter: {
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -203,7 +212,10 @@ describe('Locale', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
