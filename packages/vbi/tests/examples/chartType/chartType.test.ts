@@ -26,8 +26,16 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -52,7 +60,11 @@ describe('ChartType', () => {
             "field": "order_date",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -67,7 +79,11 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -168,8 +184,16 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -194,7 +218,11 @@ describe('ChartType', () => {
             "field": "product_type",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -209,7 +237,11 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -282,8 +314,16 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -308,7 +348,11 @@ describe('ChartType', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -323,7 +367,11 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -424,8 +472,16 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -450,7 +506,11 @@ describe('ChartType', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -465,7 +525,11 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -550,8 +614,16 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -576,7 +648,11 @@ describe('ChartType', () => {
             "field": "customer_type",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -591,7 +667,11 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -664,8 +744,16 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -690,7 +778,11 @@ describe('ChartType', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -705,7 +797,11 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -806,8 +902,16 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -832,7 +936,11 @@ describe('ChartType', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -847,7 +955,11 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -948,8 +1060,16 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -974,7 +1094,11 @@ describe('ChartType', () => {
             "field": "area",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -989,7 +1113,11 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -1074,8 +1202,16 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1100,7 +1236,11 @@ describe('ChartType', () => {
             "field": "city",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -1115,7 +1255,11 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -1219,8 +1363,16 @@ describe('ChartType', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -1240,7 +1392,11 @@ describe('ChartType', () => {
         "chartType": "bar",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -1263,7 +1419,11 @@ describe('ChartType', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 

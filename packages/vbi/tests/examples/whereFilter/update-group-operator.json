@@ -1,0 +1,67 @@
+{
+  "name": "update-group-or-to-and",
+  "description": "修改分组逻辑：将预设的 OR 品类分组切换为 AND，收窄筛选范围",
+  "schema": [
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "customer_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "column",
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 20,
+    "whereFilter": {
+      "id": "root",
+      "op": "and",
+      "conditions": [
+        {
+          "id": "g-customer",
+          "op": "or",
+          "conditions": [
+            {
+              "id": "f-ct1",
+              "field": "customer_type",
+              "op": "eq",
+              "value": "公司"
+            },
+            {
+              "id": "f-ct2",
+              "field": "customer_type",
+              "op": "eq",
+              "value": "消费者"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter.updateGroup('g-customer', group => {\n    group.setOperator('and');\n  });\n}"
+}

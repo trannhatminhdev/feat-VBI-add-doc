@@ -12,8 +12,16 @@ describe('Measures', () => {
       chartType: 'table',
       dimensions: [],
       measures: [],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -22,7 +30,8 @@ describe('Measures', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.measures.add('sales', (n) => n.setAlias('销售额').setEncoding('yAxis'))
+      builder.measures.add('sales', (n) => n.setAlias('销售额'))
+      builder.measures.update('sales', (n) => n.setEncoding('yAxis').setAggregate({ func: 'sum' }))
     }
     applyBuilder(builder)
 
@@ -33,7 +42,11 @@ describe('Measures', () => {
         "chartType": "table",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -48,7 +61,11 @@ describe('Measures', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -92,8 +109,16 @@ describe('Measures', () => {
       chartType: 'table',
       dimensions: [],
       measures: [],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -103,6 +128,9 @@ describe('Measures', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.measures.add('sales', (node) => {
+        node.setAlias('原销售额')
+      })
+      builder.measures.update('sales', (node) => {
         node.setAlias('销售额').setAggregate({ func: 'sum' })
       })
     }
@@ -115,7 +143,11 @@ describe('Measures', () => {
         "chartType": "table",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -130,7 +162,11 @@ describe('Measures', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -191,8 +227,16 @@ describe('Measures', () => {
           encoding: 'yAxis',
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -201,6 +245,7 @@ describe('Measures', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
+      builder.measures.update('sales', (n) => n.setAlias('待移除的销售额'))
       builder.measures.remove('sales')
     }
     applyBuilder(builder)
@@ -212,7 +257,11 @@ describe('Measures', () => {
         "chartType": "table",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -227,7 +276,11 @@ describe('Measures', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -280,8 +333,16 @@ describe('Measures', () => {
           encoding: 'yAxis',
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -290,6 +351,10 @@ describe('Measures', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
+      const measure = builder.measures.find('sales')
+      if (measure) {
+        measure.setAlias('待调整销售额').setEncoding('yAxis')
+      }
       builder.measures.update('sales', (n) => n.setAlias('新销售额').setAggregate({ func: 'avg' }))
     }
     applyBuilder(builder)
@@ -301,7 +366,11 @@ describe('Measures', () => {
         "chartType": "table",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [
@@ -316,7 +385,11 @@ describe('Measures', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 

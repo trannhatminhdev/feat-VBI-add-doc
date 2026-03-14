@@ -1,0 +1,44 @@
+{
+  "name": "office-supplies-sales-by-province",
+  "description": "各省份办公用品销售额排名：筛选办公用品品类，按省份汇总销售额",
+  "schema": [
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "province",
+        "alias": "省份"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "xAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 20,
+    "whereFilter": {
+      "id": "root",
+      "op": "and",
+      "conditions": []
+    }
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter.add('product_type', node => {\n    node.setOperator('eq').setValue('办公用品');\n  });\n}"
+}

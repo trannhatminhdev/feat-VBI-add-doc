@@ -1,8 +1,10 @@
 import { VBIConnectorId } from 'src/types/connector/connector'
-import { VBIDSL } from 'src/types'
+import { VBIDSL, VBIDSLInput } from 'src/types'
 import { VBIBuilder } from './vbi-builder'
 import { connectorMap, getConnector, registerConnector } from './connector'
 import { id } from 'src/utils'
+import { createWhereGroup } from './features/whereFilter/where-utils'
+import { createHavingGroup } from './features/havingFilter/having-utils'
 
 import * as Y from 'yjs'
 
@@ -17,14 +19,22 @@ const createVBI = () => {
         chartType: 'table',
         measures: [],
         dimensions: [],
-        whereFilters: [],
-        havingFilters: [],
+        whereFilter: {
+          id: 'root',
+          op: 'and',
+          conditions: [],
+        },
+        havingFilter: {
+          id: 'root',
+          op: 'and',
+          conditions: [],
+        },
         theme: 'light',
         locale: 'zh-CN',
         version: 0,
       }
     },
-    from: (vbi: VBIDSL) => {
+    from: (vbi: VBIDSLInput) => {
       const doc = new Y.Doc()
       const dsl = doc.getMap('dsl')
 
@@ -34,7 +44,7 @@ const createVBI = () => {
         if (vbi.theme) dsl.set('theme', vbi.theme)
         if (vbi.limit) dsl.set('limit', vbi.limit)
         if (vbi.locale) dsl.set('locale', vbi.locale)
-        if (vbi.version) dsl.set('version', vbi.version)
+        if (vbi.version !== undefined) dsl.set('version', vbi.version)
 
         // Initialize arrays - convert plain arrays to Y.Array if needed
         const toYMap = (obj: any, ensureId = false): Y.Map<any> => {
@@ -78,8 +88,53 @@ const createVBI = () => {
           })
           return yArr
         }
-        dsl.set('whereFilters', ensureYArray(vbi.whereFilters, true))
-        dsl.set('havingFilters', ensureYArray(vbi.havingFilters, true))
+
+        const whereFilter = (vbi.whereFilter ?? {
+          id: 'root',
+          op: 'and',
+          conditions: [],
+        }) as Y.Map<any> | { id?: string; op?: 'and' | 'or'; conditions?: any }
+        const whereGroup = whereFilter instanceof Y.Map ? whereFilter : createWhereGroup()
+        if (whereFilter instanceof Y.Map) {
+          if (!(whereGroup.get('conditions') instanceof Y.Array)) {
+            whereGroup.set('conditions', new Y.Array<any>())
+          }
+          if (!whereGroup.get('id')) {
+            whereGroup.set('id', 'root')
+          }
+          if (!whereGroup.get('op')) {
+            whereGroup.set('op', 'and')
+          }
+        } else {
+          whereGroup.set('id', whereFilter.id ?? 'root')
+          whereGroup.set('op', whereFilter.op ?? 'and')
+          whereGroup.set('conditions', ensureYArray(whereFilter.conditions, true))
+        }
+
+        dsl.set('whereFilter', whereGroup)
+        const havingFilter = (vbi.havingFilter ?? {
+          id: 'root',
+          op: 'and',
+          conditions: [],
+        }) as Y.Map<any> | { id?: string; op?: 'and' | 'or'; conditions?: any }
+        const havingGroup = havingFilter instanceof Y.Map ? havingFilter : createHavingGroup()
+        if (havingFilter instanceof Y.Map) {
+          if (!(havingGroup.get('conditions') instanceof Y.Array)) {
+            havingGroup.set('conditions', new Y.Array<any>())
+          }
+          if (!havingGroup.get('id')) {
+            havingGroup.set('id', 'root')
+          }
+          if (!havingGroup.get('op')) {
+            havingGroup.set('op', 'and')
+          }
+        } else {
+          havingGroup.set('id', havingFilter.id ?? 'root')
+          havingGroup.set('op', havingFilter.op ?? 'and')
+          havingGroup.set('conditions', ensureYArray(havingFilter.conditions, true))
+        }
+
+        dsl.set('havingFilter', havingGroup)
         dsl.set('measures', ensureYArray(vbi.measures))
         dsl.set('dimensions', ensureYArray(vbi.dimensions))
       })

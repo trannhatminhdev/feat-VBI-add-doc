@@ -1,0 +1,70 @@
+{
+  "name": "remove-having-filter",
+  "description": "移除多余的Having过滤条件，只保留利润筛选",
+  "schema": [
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 20,
+    "whereFilter": {
+      "id": "root",
+      "op": "and",
+      "conditions": []
+    },
+    "havingFilter": {
+      "id": "root",
+      "op": "and",
+      "conditions": [
+        {
+          "id": "having-1",
+          "field": "销售额",
+          "op": "gt",
+          "value": 1000000
+        },
+        {
+          "id": "having-2",
+          "field": "利润",
+          "op": "gt",
+          "value": 200000
+        }
+      ]
+    }
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.remove('having-1'); }"
+}

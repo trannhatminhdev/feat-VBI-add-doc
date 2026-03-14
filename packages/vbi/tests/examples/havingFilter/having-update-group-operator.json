@@ -1,0 +1,76 @@
+{
+  "name": "having-update-group-operator",
+  "description": "更新已有Having分组的逻辑操作符从AND改为OR",
+  "schema": [
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 20,
+    "whereFilter": {
+      "id": "root",
+      "op": "and",
+      "conditions": []
+    },
+    "havingFilter": {
+      "id": "root",
+      "op": "and",
+      "conditions": [
+        {
+          "id": "group-1",
+          "op": "and",
+          "conditions": [
+            {
+              "id": "cond-1",
+              "field": "销售额",
+              "op": "gt",
+              "value": 1000000
+            },
+            {
+              "id": "cond-2",
+              "field": "利润",
+              "op": "gt",
+              "value": 200000
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.updateGroup('group-1', group => { group.setOperator('or'); }); }"
+}

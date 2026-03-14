@@ -23,8 +23,8 @@ export default () => {
         chartType: 'table',
         dimensions: [{ field: 'province', alias: '省份' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
-        whereFilters: [],
-        havingFilters: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
         theme: 'light',
         locale: 'zh-CN',
         version: 1,
@@ -32,7 +32,10 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.setTheme('dark')
+        const nextTheme = 'dark'
+        if (builder.theme.getTheme() !== nextTheme) {
+          builder.theme.setTheme(nextTheme)
+        }
       }
       applyBuilder(builder)
 
@@ -67,8 +70,8 @@ export default () => {
         chartType: 'table',
         dimensions: [{ field: 'province', alias: '省份' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
-        whereFilters: [],
-        havingFilters: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
         theme: 'dark',
         locale: 'zh-CN',
         version: 1,
@@ -76,7 +79,10 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.setTheme('light')
+        const nextTheme = 'light'
+        if (builder.theme.getTheme() !== nextTheme) {
+          builder.theme.setTheme(nextTheme)
+        }
       }
       applyBuilder(builder)
 

@@ -8,12 +8,12 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
 
   const [dimensions, setDimensions] = useState<VBIDimension[]>(
-    builder.dimensions.toJson(),
+    builder.dimensions.toJSON(),
   );
 
   useEffect(() => {
     const updateDimensions: ObserveCallback = () => {
-      setDimensions(builder.dimensions.toJson());
+      setDimensions(builder.dimensions.toJSON());
     };
     const unobserve = builder.dimensions.observe(updateDimensions);
     return unobserve;

@@ -11,5 +11,5 @@
     "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
     "limit": 10
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  // 添加一个新度量 profit\n  builder.measures.add('profit', (node) => {\n    node.setAlias('利润').setEncoding('yAxis')\n  })\n  \n  // 撤销添加操作\n  builder.undoManager.undo()\n  \n  // 重做操作\n  builder.undoManager.redo()\n}"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.measures.add('profit', (node) => {\n    node.setAlias('利润').setEncoding('yAxis').setAggregate({ func: 'sum' })\n  })\n\n  if (builder.undoManager.canUndo()) {\n    builder.undoManager.undo()\n  }\n\n  if (builder.undoManager.canRedo()) {\n    builder.undoManager.redo()\n  }\n}"
 }

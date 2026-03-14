@@ -1,0 +1,65 @@
+{
+  "name": "clear-and-rebuild-filters",
+  "description": "清空并重建过滤条件：清除旧的简单筛选，重建为包含分组的复杂条件",
+  "schema": [
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "column",
+    "dimensions": [
+      {
+        "field": "province",
+        "alias": "省份"
+      }
+    ],
+    "measures": [
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 20,
+    "whereFilter": {
+      "id": "root",
+      "op": "and",
+      "conditions": [
+        {
+          "id": "f-old1",
+          "field": "product_type",
+          "op": "eq",
+          "value": "办公用品"
+        },
+        {
+          "id": "f-old2",
+          "field": "area",
+          "op": "eq",
+          "value": "华东"
+        }
+      ]
+    }
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter\n    .clear()\n    .add('profit', node => node.setOperator('>').setValue(0))\n    .addGroup('or', group => {\n      group\n        .add('area', n => n.setOperator('eq').setValue('华东'))\n        .add('area', n => n.setOperator('eq').setValue('华北'));\n    });\n}"
+}

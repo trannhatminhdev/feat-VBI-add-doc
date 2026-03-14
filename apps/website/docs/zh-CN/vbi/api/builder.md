@@ -10,8 +10,11 @@
 | **chartType** | `ChartTypeBuilder` | - |
 | **measures** | `MeasuresBuilder` | - |
 | **dimensions** | `DimensionsBuilder` | - |
-| **havingFilters** | `HavingFiltersBuilder` | - |
-| **whereFilters** | `WhereFiltersBuilder` | - |
+| **havingFilter** | `HavingFilterBuilder` | - |
+| **whereFilter** | `WhereFilterBuilder` | - |
+| **theme** | `ThemeBuilder` | - |
+| **locale** | `LocaleBuilder` | - |
+| **limit** | `LimitBuilder` | - |
 
 
 ## 方法
@@ -57,54 +60,6 @@ encodeStateAsUpdate(targetStateVector: Uint8Array)
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `targetStateVector` | Uint8Array | - |
-
-### setLimit
-
-**定义**:
-
-```typescript
-setLimit(limit: number): this
-```
-
-**返回**: `this`
-
-**参数**:
-
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `limit` | number | - |
-
-### setLocale
-
-**定义**:
-
-```typescript
-setLocale(locale: string): this
-```
-
-**返回**: `this`
-
-**参数**:
-
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `locale` | string | - |
-
-### setTheme
-
-**定义**:
-
-```typescript
-setTheme(theme: string): this
-```
-
-**返回**: `this`
-
-**参数**:
-
-| 参数 | 类型 | 说明 |
-| --- | --- | --- |
-| `theme` | string | - |
 
 ### buildVSeed
 

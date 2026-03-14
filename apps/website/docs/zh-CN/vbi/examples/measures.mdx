@@ -23,8 +23,8 @@ export default () => {
         chartType: 'table',
         dimensions: [],
         measures: [],
-        whereFilters: [],
-        havingFilters: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
         theme: 'light',
         locale: 'zh-CN',
         version: 1,
@@ -33,6 +33,9 @@ export default () => {
 
       const applyBuilder = (builder: VBIBuilder) => {
         builder.measures.add('sales', (node) => {
+          node.setAlias('原销售额')
+        })
+        builder.measures.update('sales', (node) => {
           node.setAlias('销售额').setAggregate({ func: 'sum' })
         })
       }
@@ -69,8 +72,8 @@ export default () => {
         chartType: 'table',
         dimensions: [],
         measures: [],
-        whereFilters: [],
-        havingFilters: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
         theme: 'light',
         locale: 'zh-CN',
         version: 1,
@@ -78,7 +81,8 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.measures.add('sales', (n) => n.setAlias('销售额').setEncoding('yAxis'))
+        builder.measures.add('sales', (n) => n.setAlias('销售额'))
+        builder.measures.update('sales', (n) => n.setEncoding('yAxis').setAggregate({ func: 'sum' }))
       }
       applyBuilder(builder)
 
@@ -116,8 +120,8 @@ export default () => {
           { field: 'sales', alias: '销售额', aggregate: { func: 'sum' }, encoding: 'yAxis' },
           { field: 'profit', alias: '利润', aggregate: { func: 'sum' }, encoding: 'yAxis' },
         ],
-        whereFilters: [],
-        havingFilters: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
         theme: 'light',
         locale: 'zh-CN',
         version: 1,
@@ -125,6 +129,7 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
+        builder.measures.update('sales', (n) => n.setAlias('待移除的销售额'))
         builder.measures.remove('sales')
       }
       applyBuilder(builder)
@@ -160,8 +165,8 @@ export default () => {
         chartType: 'table',
         dimensions: [],
         measures: [{ field: 'sales', alias: '原销售额', aggregate: { func: 'sum' }, encoding: 'yAxis' }],
-        whereFilters: [],
-        havingFilters: [],
+        whereFilter: { id: 'root', op: 'and', conditions: [] },
+        havingFilter: { id: 'root', op: 'and', conditions: [] },
         theme: 'light',
         locale: 'zh-CN',
         version: 1,
@@ -169,6 +174,10 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
+        const measure = builder.measures.find('sales')
+        if (measure) {
+          measure.setAlias('待调整销售额').setEncoding('yAxis')
+        }
         builder.measures.update('sales', (n) => n.setAlias('新销售额').setAggregate({ func: 'avg' }))
       }
       applyBuilder(builder)

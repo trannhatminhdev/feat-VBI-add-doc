@@ -21,8 +21,16 @@ describe('UndoManager', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -31,16 +39,17 @@ describe('UndoManager', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      // 添加一个新度量 profit
       builder.measures.add('profit', (node) => {
-        node.setAlias('利润').setEncoding('yAxis')
+        node.setAlias('利润').setEncoding('yAxis').setAggregate({ func: 'sum' })
       })
 
-      // 撤销添加操作
-      builder.undoManager.undo()
+      if (builder.undoManager.canUndo()) {
+        builder.undoManager.undo()
+      }
 
-      // 重做操作
-      builder.undoManager.redo()
+      if (builder.undoManager.canRedo()) {
+        builder.undoManager.redo()
+      }
     }
     applyBuilder(builder)
 
@@ -51,7 +60,11 @@ describe('UndoManager', () => {
         "chartType": "bar",
         "connectorId": "demoSupermarket",
         "dimensions": [],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -74,7 +87,11 @@ describe('UndoManager', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 

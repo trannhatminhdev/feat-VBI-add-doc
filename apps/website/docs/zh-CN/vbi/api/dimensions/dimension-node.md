@@ -48,14 +48,14 @@ setAlias(alias: string): this
 | --- | --- | --- |
 | `alias` | string | - 显示名称 |
 
-### toJson
+### toJSON
 
 导出为 JSON
 
 **定义**:
 
 ```typescript
-toJson(): VBIDimension
+toJSON(): VBIDimension
 ```
 
 **返回**: `VBIDimension`

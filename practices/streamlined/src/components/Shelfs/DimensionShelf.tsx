@@ -12,13 +12,13 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   };
 
   const [dimensions, setDimensions] = useState<VBIDimension[]>(
-    builder.dimensions.toJson(),
+    builder.dimensions.toJSON(),
   );
 
   useEffect(() => {
     const updateDimensions: ObserveCallback = (event, transaction) => {
       console.info('[observe] dimensions', event, transaction);
-      setDimensions(builder.dimensions.toJson());
+      setDimensions(builder.dimensions.toJSON());
     };
 
     const unobserve = builder.dimensions.observe(updateDimensions);

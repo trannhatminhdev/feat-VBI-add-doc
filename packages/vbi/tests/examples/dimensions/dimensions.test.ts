@@ -12,8 +12,16 @@ describe('Dimensions', () => {
       chartType: 'table',
       dimensions: [],
       measures: [],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -23,6 +31,9 @@ describe('Dimensions', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.dimensions.add('product_type', (node) => {
+        node.setAlias('商品类型')
+      })
+      builder.dimensions.update('product_type', (node) => {
         node.setAlias('产品类型')
       })
     }
@@ -40,13 +51,21 @@ describe('Dimensions', () => {
             "field": "product_type",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -95,8 +114,16 @@ describe('Dimensions', () => {
       chartType: 'table',
       dimensions: [],
       measures: [],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -125,13 +152,21 @@ describe('Dimensions', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -265,8 +300,16 @@ describe('Dimensions', () => {
         },
       ],
       measures: [],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -275,6 +318,9 @@ describe('Dimensions', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
+      builder.dimensions.update('product_type', (node) => {
+        node.setAlias('待删除的产品类型')
+      })
       builder.dimensions.remove('product_type')
     }
     applyBuilder(builder)
@@ -291,13 +337,21 @@ describe('Dimensions', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -402,8 +456,16 @@ describe('Dimensions', () => {
         },
       ],
       measures: [],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -412,6 +474,10 @@ describe('Dimensions', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
+      const dimension = builder.dimensions.find('product_type')
+      if (dimension) {
+        dimension.setAlias('待调整的产品类型')
+      }
       builder.dimensions.update('product_type', (n) => n.setAlias('新产品类型'))
     }
     applyBuilder(builder)
@@ -428,13 +494,21 @@ describe('Dimensions', () => {
             "field": "product_type",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 20,
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 

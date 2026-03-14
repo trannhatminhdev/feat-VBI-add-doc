@@ -4,7 +4,7 @@ import { zAggregate } from './aggregate'
 export const zVBIMeasure = z.object({
   field: z.string(),
   alias: z.string(),
-  encoding: z.literal(['yAxis', 'xAxis', 'color', 'label', 'tooltip', 'size']),
+  encoding: z.enum(['yAxis', 'xAxis', 'color', 'label', 'tooltip', 'size']),
   aggregate: zAggregate,
 })
 export const zVBIMeasureGroup: z.ZodType<VBIMeasureGroup> = z.object({

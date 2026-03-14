@@ -24,7 +24,7 @@ describe('select', () => {
       .add('province', (node) => {
         node.setAlias('省份')
       })
-    builder.setLimit(20)
+    builder.limit.setLimit(20)
 
     const vseed = await builder.buildVSeed()
 

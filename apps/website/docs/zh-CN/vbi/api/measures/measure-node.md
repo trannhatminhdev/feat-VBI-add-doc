@@ -84,14 +84,14 @@ setAggregate(aggregate: VBIMeasure['aggregate']): this
 | --- | --- | --- |
 | `aggregate` | VBIMeasure['aggregate'] | - 聚合配置 |
 
-### toJson
+### toJSON
 
 导出为 JSON
 
 **定义**:
 
 ```typescript
-toJson(): VBIMeasure
+toJSON(): VBIMeasure
 ```
 
 **返回**: `VBIMeasure`

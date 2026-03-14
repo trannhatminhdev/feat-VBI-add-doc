@@ -13,8 +13,8 @@
   },
   {
     "type": "file",
-    "name": "havingFilters",
-    "label": "HavingFilters",
+    "name": "havingFilter",
+    "label": "HavingFilter",
     "count": 16
   },
   {
@@ -43,8 +43,8 @@
   },
   {
     "type": "file",
-    "name": "whereFilters",
-    "label": "WhereFilters",
+    "name": "whereFilter",
+    "label": "WhereFilter",
     "count": 12
   }
 ]

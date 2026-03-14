@@ -24,14 +24,32 @@
   },
   {
     "type": "dir",
-    "name": "where-filters",
-    "label": "builder.whereFilters",
+    "name": "where-filter",
+    "label": "builder.whereFilter",
     "collapsed": true
   },
   {
     "type": "dir",
-    "name": "having-filters",
-    "label": "builder.havingFilters",
+    "name": "having-filter",
+    "label": "builder.havingFilter",
+    "collapsed": true
+  },
+  {
+    "type": "file",
+    "name": "theme",
+    "label": "builder.theme",
+    "collapsed": true
+  },
+  {
+    "type": "file",
+    "name": "locale",
+    "label": "builder.locale",
+    "collapsed": true
+  },
+  {
+    "type": "file",
+    "name": "limit",
+    "label": "builder.limit",
     "collapsed": true
   },
   {

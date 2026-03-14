@@ -26,8 +26,16 @@ describe('Locale', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'en-US',
       version: 1,
@@ -36,7 +44,10 @@ describe('Locale', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.setLocale('en-US')
+      const nextLocale = 'en-US'
+      if (builder.locale.getLocale() !== nextLocale) {
+        builder.locale.setLocale(nextLocale)
+      }
     }
     applyBuilder(builder)
 
@@ -52,7 +63,11 @@ describe('Locale', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "en-US",
         "measures": [
@@ -67,7 +82,11 @@ describe('Locale', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -168,8 +187,16 @@ describe('Locale', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -178,7 +205,10 @@ describe('Locale', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.setLocale('zh-CN')
+      const nextLocale = 'zh-CN'
+      if (builder.locale.getLocale() !== nextLocale) {
+        builder.locale.setLocale(nextLocale)
+      }
     }
     applyBuilder(builder)
 
@@ -194,7 +224,11 @@ describe('Locale', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -209,7 +243,11 @@ describe('Locale', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 

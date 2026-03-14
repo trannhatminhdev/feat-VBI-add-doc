@@ -2,18 +2,42 @@
   "name": "zh-CN-locale",
   "description": "中文 locale 测试",
   "schema": [
-    { "name": "province", "type": "string" },
-    { "name": "sales", "type": "number" }
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
   ],
   "dsl": {
     "chartType": "bar",
-    "dimensions": [{ "field": "province", "alias": "省份" }],
-    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
-    "whereFilters": [],
+    "dimensions": [
+      {
+        "field": "province",
+        "alias": "省份"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
     "theme": "light",
     "locale": "zh-CN",
     "version": 1,
-    "limit": 10
+    "limit": 10,
+    "whereFilter": {
+      "id": "root",
+      "op": "and",
+      "conditions": []
+    }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setLocale('zh-CN'); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  const nextLocale = 'zh-CN'\n  if (builder.locale.getLocale() !== nextLocale) {\n    builder.locale.setLocale(nextLocale)\n  }\n}"
 }

@@ -1,7 +1,4 @@
 import { useRef, useEffect } from 'react';
-import { message } from 'antd';
-import { isVBIFilter } from '@visactor/vbi';
-import { useVBIStore } from 'src/model';
 import VChart, { ISpec } from '@visactor/vchart';
 import {
   ListTable,
@@ -47,7 +44,8 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
           spec as PivotChartConstructorOptions,
         );
 
-        tableInstance.on('legend_item_click', (args) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const handleLegendItemClick = (args: any) => {
           console.log('LEGEND_ITEM_CLICK', args);
           tableInstance.updateFilterRules([
             {
@@ -55,14 +53,16 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
               filteredValues: args.value,
             },
           ]);
-        });
+        };
 
-        tableInstance.on('legend_change', (args) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const handleLegendChange = (args: any) => {
           const maxValue = args.value[1];
           const minValue = args.value[0];
           tableInstance.updateFilterRules([
             {
-              filterFunc: (record) => {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              filterFunc: (record: any) => {
                 const value = record[record[ColorIdEncoding]];
                 if (value >= minValue && value <= maxValue) {
                   return true;
@@ -71,49 +71,37 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
               },
             },
           ]);
-        });
+        };
 
+        tableInstance.on('legend_item_click', handleLegendItemClick);
+        tableInstance.on('legend_change', handleLegendChange);
+
+        return () => {
+          tableInstance.off('legend_item_click', handleLegendItemClick);
+          tableInstance.off('legend_change', handleLegendChange);
+          tableInstance.release();
+        };
+      } else if (isPivotTable(vseed)) {
+        // Check PivotTable BEFORE Table since PivotTable is a type of table
+        const tableInstance = new PivotTable(
+          ref.current,
+          spec as PivotTableConstructorOptions,
+        );
         return () => tableInstance.release();
-      } else if (isVChart(vseed)) {
-        const vchart = new VChart(spec as ISpec, { dom: ref.current });
-        vchart.renderSync();
-        return () => vchart.release();
       } else if (isTable(vseed)) {
         const tableInstance = new ListTable(
           ref.current,
           spec as ListTableConstructorOptions,
         );
         return () => tableInstance.release();
-      } else if (isPivotTable(vseed)) {
-        const tableInstance = new PivotTable(
-          ref.current,
-          spec as PivotTableConstructorOptions,
-        );
-        return () => tableInstance.release();
+      } else if (isVChart(vseed)) {
+        const vchart = new VChart(spec as ISpec, { dom: ref.current });
+        vchart.renderSync();
+        return () => vchart.release();
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.error(error);
-      message.error(
-        '筛选器配置有误导致数据构建失败，已为您自动移除无效筛选器，请重新配置。',
-      );
-
-      const storeBuilder = useVBIStore.getState().builder;
-      if (storeBuilder) {
-        storeBuilder.doc.transact(() => {
-          const filters = storeBuilder.whereFilters.toJson();
-          if (filters && filters.length > 0) {
-            // Remove the last filter added since it's most likely the offending one
-            const lastFilter = filters[filters.length - 1];
-            if (isVBIFilter(lastFilter)) {
-              storeBuilder.whereFilters.remove(lastFilter.id);
-              window.dispatchEvent(
-                new CustomEvent('vbi-filter-error', { detail: lastFilter }),
-              );
-            }
-          }
-        });
-      }
+      console.error('VSeed Render Error:', error);
     }
   }, [vseed]);
 

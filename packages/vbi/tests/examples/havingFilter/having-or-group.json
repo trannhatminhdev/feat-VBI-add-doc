@@ -1,0 +1,57 @@
+{
+  "name": "having-or-group",
+  "description": "使用OR分组筛选高销售额或高利润的区域",
+  "schema": [
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      {
+        "field": "area",
+        "alias": "区域"
+      }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      },
+      {
+        "field": "profit",
+        "alias": "利润",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 20,
+    "whereFilter": {
+      "id": "root",
+      "op": "and",
+      "conditions": []
+    },
+    "havingFilter": {
+      "id": "root",
+      "op": "and",
+      "conditions": []
+    }
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.addGroup('or', group => { group.add('销售额', n => n.setOperator('gt').setValue(1000000)); group.add('利润', n => n.setOperator('gt').setValue(200000)); }); }"
+}

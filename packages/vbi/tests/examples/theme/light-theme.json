@@ -12,5 +12,5 @@
     "limit": 10,
     "theme": "dark"
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.setTheme('light'); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  const nextTheme = 'light'\n  if (builder.theme.getTheme() !== nextTheme) {\n    builder.theme.setTheme(nextTheme)\n  }\n}"
 }

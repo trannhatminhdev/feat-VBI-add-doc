@@ -5,11 +5,14 @@ import type {
   MeasuresBuilder,
   DimensionsBuilder,
   ChartTypeBuilder,
-  HavingFiltersBuilder,
-  WhereFiltersBuilder,
-} from 'src/builder/sub-builders'
+  HavingFilterBuilder,
+  WhereFilterBuilder,
+  ThemeBuilder,
+  LocaleBuilder,
+  LimitBuilder,
+  UndoManager,
+} from 'src/builder/features'
 import type { Map, Doc } from 'yjs'
-import type { UndoManager } from 'src/builder/undo-manager'
 
 export interface VBIBuilderInterface {
   doc: Doc
@@ -19,8 +22,11 @@ export interface VBIBuilderInterface {
   chartType: ChartTypeBuilder
   measures: MeasuresBuilder
   dimensions: DimensionsBuilder
-  havingFilters: HavingFiltersBuilder
-  whereFilters: WhereFiltersBuilder
+  havingFilter: HavingFilterBuilder
+  whereFilter: WhereFilterBuilder
+  theme: ThemeBuilder
+  locale: LocaleBuilder
+  limit: LimitBuilder
 
   applyUpdate: (update: Uint8Array, origin?: any) => void
   encodeStateAsUpdate: (targetStateVector?: Uint8Array) => Uint8Array
@@ -28,6 +34,4 @@ export interface VBIBuilderInterface {
   buildVSeed: () => Promise<VSeedDSL>
   buildVQuery: () => VQueryDSL
   build: () => VBIDSL
-
-  setLimit: (limit: number) => this
 }

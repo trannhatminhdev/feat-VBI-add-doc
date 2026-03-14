@@ -26,8 +26,16 @@ describe('Theme', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'light',
       locale: 'zh-CN',
       version: 1,
@@ -36,7 +44,10 @@ describe('Theme', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.setTheme('dark')
+      const nextTheme = 'dark'
+      if (builder.theme.getTheme() !== nextTheme) {
+        builder.theme.setTheme(nextTheme)
+      }
     }
     applyBuilder(builder)
 
@@ -52,7 +63,11 @@ describe('Theme', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -67,7 +82,11 @@ describe('Theme', () => {
         ],
         "theme": "dark",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 
@@ -168,8 +187,16 @@ describe('Theme', () => {
           },
         },
       ],
-      whereFilters: [],
-      havingFilters: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
       theme: 'dark',
       locale: 'zh-CN',
       version: 1,
@@ -178,7 +205,10 @@ describe('Theme', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.setTheme('light')
+      const nextTheme = 'light'
+      if (builder.theme.getTheme() !== nextTheme) {
+        builder.theme.setTheme(nextTheme)
+      }
     }
     applyBuilder(builder)
 
@@ -194,7 +224,11 @@ describe('Theme', () => {
             "field": "province",
           },
         ],
-        "havingFilters": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
         "limit": 10,
         "locale": "zh-CN",
         "measures": [
@@ -209,7 +243,11 @@ describe('Theme', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
       }
     `)
 

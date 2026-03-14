@@ -32,8 +32,8 @@ const DEFAULT_DSL = {
   chartType: 'line',
   dimensions: [],
   measures: [],
-  whereFilters: [],
-  havingFilters: [],
+  whereFilter: { id: 'root', op: 'and', conditions: [] },
+  havingFilter: { id: 'root', op: 'and', conditions: [] },
   theme: 'light',
   locale: DEFAULT_LOCALE,
   version: 1,
@@ -77,10 +77,21 @@ function findJsonFilesInDir(dir) {
 
 // ============ Code Generation ============
 function generateDSLConfig(dsl) {
+  const { whereFilter, havingFilter, ...restDSL } = dsl
+
   return {
     ...DEFAULT_DSL,
-    whereFilters: dsl.whereFilters || dsl.filters || [],
-    ...dsl,
+    ...restDSL,
+    whereFilter: whereFilter ?? {
+      id: 'root',
+      op: 'and',
+      conditions: [],
+    },
+    havingFilter: havingFilter ?? {
+      id: 'root',
+      op: 'and',
+      conditions: [],
+    },
   }
 }
 
@@ -102,8 +113,8 @@ export default () => {
         chartType: ${JSON.stringify(dsl.chartType)},
         dimensions: ${JSON.stringify(dsl.dimensions)},
         measures: ${JSON.stringify(dsl.measures)},
-        whereFilters: ${JSON.stringify(dsl.whereFilters)},
-        havingFilters: ${JSON.stringify(dsl.havingFilters)},
+        whereFilter: ${JSON.stringify(dsl.whereFilter)},
+        havingFilter: ${JSON.stringify(dsl.havingFilter)},
         theme: ${JSON.stringify(dsl.theme)},
         locale: ${JSON.stringify(dsl.locale)},
         version: ${dsl.version}${dsl.limit !== undefined ? `,\n        limit: ${dsl.limit}` : ''}${dsl.orderBy ? `,\n        orderBy: ${JSON.stringify(dsl.orderBy)}` : ''}
