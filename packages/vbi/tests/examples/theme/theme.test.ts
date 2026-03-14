@@ -44,7 +44,10 @@ describe('Theme', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.theme.setTheme('dark')
+      const nextTheme = 'dark'
+      if (builder.theme.getTheme() !== nextTheme) {
+        builder.theme.setTheme(nextTheme)
+      }
     }
     applyBuilder(builder)
 
@@ -202,7 +205,10 @@ describe('Theme', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.theme.setTheme('light')
+      const nextTheme = 'light'
+      if (builder.theme.getTheme() !== nextTheme) {
+        builder.theme.setTheme(nextTheme)
+      }
     }
     applyBuilder(builder)
 

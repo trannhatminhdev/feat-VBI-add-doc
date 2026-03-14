@@ -44,7 +44,10 @@ describe('Locale', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.locale.setLocale('en-US')
+      const nextLocale = 'en-US'
+      if (builder.locale.getLocale() !== nextLocale) {
+        builder.locale.setLocale(nextLocale)
+      }
     }
     applyBuilder(builder)
 
@@ -202,7 +205,10 @@ describe('Locale', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.locale.setLocale('zh-CN')
+      const nextLocale = 'zh-CN'
+      if (builder.locale.getLocale() !== nextLocale) {
+        builder.locale.setLocale(nextLocale)
+      }
     }
     applyBuilder(builder)
 

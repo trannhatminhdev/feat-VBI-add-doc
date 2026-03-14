@@ -31,6 +31,9 @@ describe('Dimensions', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.dimensions.add('product_type', (node) => {
+        node.setAlias('商品类型')
+      })
+      builder.dimensions.update('product_type', (node) => {
         node.setAlias('产品类型')
       })
     }
@@ -315,6 +318,9 @@ describe('Dimensions', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
+      builder.dimensions.update('product_type', (node) => {
+        node.setAlias('待删除的产品类型')
+      })
       builder.dimensions.remove('product_type')
     }
     applyBuilder(builder)
@@ -468,6 +474,10 @@ describe('Dimensions', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
+      const dimension = builder.dimensions.find('product_type')
+      if (dimension) {
+        dimension.setAlias('待调整的产品类型')
+      }
       builder.dimensions.update('product_type', (n) => n.setAlias('新产品类型'))
     }
     applyBuilder(builder)

@@ -22,5 +22,5 @@
     "measures": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.dimensions.update('product_type', n => n.setAlias('新产品类型')); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  const dimension = builder.dimensions.find('product_type')\n  if (dimension) {\n    dimension.setAlias('待调整的产品类型')\n  }\n  builder.dimensions.update('product_type', n => n.setAlias('新产品类型'))\n}"
 }

@@ -29,11 +29,3 @@ export const zVBIWhereGroup: z.ZodType<VBIWhereGroup> = z.lazy(() =>
 )
 
 export const zVBIWhereClause: z.ZodType<VBIWhereClause> = z.lazy(() => z.union([zVBIFilter, zVBIWhereGroup]))
-
-export function isVBIFilter(clause: VBIWhereClause): clause is VBIFilter {
-  return 'field' in clause
-}
-
-export function isVBIWhereGroup(clause: VBIWhereClause): clause is VBIWhereGroup {
-  return 'conditions' in clause
-}

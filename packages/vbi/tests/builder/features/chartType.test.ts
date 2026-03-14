@@ -86,6 +86,10 @@ describe('ChartTypeBuilder', () => {
 
     const unobserve = builder.chartType.observe(callback)
 
+    builder.theme.setTheme('dark')
+
+    expect(callCount).toBe(0)
+
     // Add a dimension - should not trigger callback
     builder.dimensions.add('category', (node) => {
       node.setAlias('类别')

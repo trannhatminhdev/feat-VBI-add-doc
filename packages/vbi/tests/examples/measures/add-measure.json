@@ -17,5 +17,5 @@
     "measures": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.measures.add('sales', node => { node.setAlias('销售额').setAggregate({ func: 'sum' }); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.measures.add('sales', node => {\n    node.setAlias('原销售额')\n  })\n  builder.measures.update('sales', node => {\n    node.setAlias('销售额').setAggregate({ func: 'sum' })\n  })\n}"
 }

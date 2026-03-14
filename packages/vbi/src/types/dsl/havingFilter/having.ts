@@ -29,11 +29,3 @@ export const zVBIHavingGroup: z.ZodType<VBIHavingGroup> = z.lazy(() =>
 )
 
 export const zVBIHavingClause: z.ZodType<VBIHavingClause> = z.lazy(() => z.union([zVBIHavingFilter, zVBIHavingGroup]))
-
-export function isVBIHavingFilter(clause: VBIHavingClause): clause is VBIHavingFilter {
-  return 'field' in clause
-}
-
-export function isVBIHavingGroup(clause: VBIHavingClause): clause is VBIHavingGroup {
-  return 'conditions' in clause
-}

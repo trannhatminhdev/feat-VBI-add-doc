@@ -84,6 +84,15 @@ describe('HavingFilterBuilder', () => {
     expect(builder.havingFilter.toJSON().conditions.length).toBe(1)
   })
 
+  test('remove out-of-range index is no-op', () => {
+    const builder = VBI.from({} as VBIDSL)
+    builder.havingFilter.add('sales', (node) => node.setValue(1000))
+
+    builder.havingFilter.remove(99)
+
+    expect(builder.havingFilter.toJSON().conditions).toEqual([{ id: expect.any(String), field: 'sales', value: 1000 }])
+  })
+
   test('update by id', () => {
     const builder = VBI.from({} as VBIDSL)
     builder.havingFilter.add('sales', (node) => {
@@ -361,6 +370,22 @@ describe('HavingGroupBuilder', () => {
     const updatedJson = builder.havingFilter.toJSON().conditions
     expect((updatedJson[0] as any).conditions.length).toBe(1)
     expect((updatedJson[0] as any).conditions[0].field).toBe('profit')
+  })
+
+  test('group remove missing id is no-op', () => {
+    const builder = VBI.from({} as VBIDSL)
+    builder.havingFilter.addGroup('and', (group) => {
+      group.add('sales', (node) => node.setOperator('gt').setValue(1000))
+    })
+
+    const groupId = builder.havingFilter.toJSON().conditions[0].id!
+    const groupFound = builder.havingFilter.find(groupId) as HavingGroupBuilder
+
+    groupFound.remove('missing-id')
+
+    expect((builder.havingFilter.toJSON().conditions[0] as any).conditions).toEqual([
+      { id: 'id-2', field: 'sales', op: 'gt', value: 1000 },
+    ])
   })
 
   test('group clear conditions', () => {

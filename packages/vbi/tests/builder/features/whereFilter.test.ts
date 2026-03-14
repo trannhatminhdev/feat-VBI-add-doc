@@ -640,6 +640,27 @@ describe('WhereGroupBuilder', () => {
     ])
   })
 
+  test('WhereGroupBuilder remove missing id is no-op', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter.addGroup('or', (group) => {
+      group.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
+    })
+
+    builder.whereFilter.updateGroup('id-1', (group) => {
+      group.remove('missing-id')
+    })
+
+    expect(builder.whereFilter.toJSON().conditions).toEqual([
+      {
+        id: 'id-1',
+        op: 'or',
+        conditions: [{ id: 'id-2', field: 'region', op: 'eq', value: 'Beijing' }],
+      },
+    ])
+  })
+
   test('WhereGroupBuilder clear', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
