@@ -1,7 +1,7 @@
 import * as Y from 'yjs'
 import type { VBIWhereClause, ObserveCallback } from 'src/types'
 import { id } from 'src/utils'
-import { findEntry, isWhereGroup } from '../../utils/where-utils'
+import { createWhereRoot, ensureWhereRoot, findEntry, getWhereConditions, isWhereGroup } from './where-utils'
 import { WhereFilterNodeBuilder } from './where-node-builder'
 import { WhereGroupBuilder } from './where-group-builder'
 
@@ -16,11 +16,22 @@ export class WhereFiltersBuilder {
     this.doc = doc
     this.dsl = dsl
 
-    if (!this.dsl.get('whereFilters')) {
-      this.doc.transact(() => {
-        this.dsl.set('whereFilters', new Y.Array<any>())
-      })
-    }
+    this.doc.transact(() => {
+      if (!this.dsl.get('whereFilter') && !this.dsl.get('whereFilters')) {
+        this.dsl.set('whereFilter', createWhereRoot())
+        return
+      }
+
+      ensureWhereRoot(this.dsl)
+    })
+  }
+
+  private getRoot(): Y.Map<any> {
+    return ensureWhereRoot(this.dsl)
+  }
+
+  private getConditions(): Y.Array<any> {
+    return getWhereConditions(this.getRoot())
   }
 
   /**
@@ -33,7 +44,7 @@ export class WhereFiltersBuilder {
     yMap.set('id', id.uuid())
     yMap.set('field', field)
 
-    this.dsl.get('whereFilters').push([yMap])
+    this.getConditions().push([yMap])
 
     const node = new WhereFilterNodeBuilder(yMap)
     callback(node)
@@ -51,7 +62,7 @@ export class WhereFiltersBuilder {
     yMap.set('op', op)
     yMap.set('conditions', new Y.Array<any>())
 
-    this.dsl.get('whereFilters').push([yMap])
+    this.getConditions().push([yMap])
 
     const group = new WhereGroupBuilder(yMap)
     callback(group)
@@ -64,7 +75,7 @@ export class WhereFiltersBuilder {
    * @param callback - 回调函数
    */
   update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
-    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
+    const whereFilters = this.getConditions()
     const match = findEntry(whereFilters, id)
 
     if (!match) {
@@ -87,7 +98,7 @@ export class WhereFiltersBuilder {
    * @param callback - 回调函数
    */
   updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder {
-    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
+    const whereFilters = this.getConditions()
     const match = findEntry(whereFilters, id)
 
     if (!match) {
@@ -109,7 +120,7 @@ export class WhereFiltersBuilder {
    * @param idOrIndex - ID 或索引
    */
   remove(idOrIndex: string | number): WhereFiltersBuilder {
-    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
+    const whereFilters = this.getConditions()
 
     if (typeof idOrIndex === 'number') {
       if (idOrIndex >= 0 && idOrIndex < whereFilters.length) {
@@ -129,7 +140,7 @@ export class WhereFiltersBuilder {
    * @param id - ID
    */
   find(id: string): WhereFilterNodeBuilder | WhereGroupBuilder | undefined {
-    const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
+    const whereFilters = this.getConditions()
     const match = findEntry(whereFilters, id)
     const yMap = match?.item
 
@@ -147,7 +158,7 @@ export class WhereFiltersBuilder {
    * @description 清空所有 Where 过滤条件
    */
   clear() {
-    const whereFilters = this.dsl.get('whereFilters')
+    const whereFilters = this.getConditions()
     whereFilters.delete(0, whereFilters.length)
     return this
   }
@@ -156,7 +167,7 @@ export class WhereFiltersBuilder {
    * @description 导出所有 Where 过滤条件为 JSON 数组
    */
   toJson(): VBIWhereClause[] {
-    return this.dsl.get('whereFilters').toJSON() as VBIWhereClause[]
+    return this.getConditions().toJSON() as VBIWhereClause[]
   }
 
   /**
@@ -165,10 +176,10 @@ export class WhereFiltersBuilder {
    * @returns 取消监听的函数
    */
   observe(callback: ObserveCallback): () => void {
-    const whereFilters = this.dsl.get('whereFilters')
-    whereFilters.observeDeep(callback as any)
+    const whereFilter = this.getRoot()
+    whereFilter.observeDeep(callback as any)
     return () => {
-      whereFilters.unobserveDeep(callback as any)
+      whereFilter.unobserveDeep(callback as any)
     }
   }
 

@@ -23,7 +23,7 @@ export default () => {
         chartType: 'bar',
         dimensions: [],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',

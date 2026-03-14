@@ -88,7 +88,7 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
       if (builder) {
         builder.doc.transact(() => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          builder.whereFilters.add(item.field, (node: any) => {
+          builder.whereFilter.add(item.field, (node: any) => {
             node.setOperator(item.operator);
             if (item.value !== undefined) {
               node.setValue(item.value);
@@ -105,7 +105,7 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
     (id: string) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.whereFilters.remove(id);
+          builder.whereFilter.remove(id);
         });
       }
     },
@@ -122,7 +122,7 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
       const filterId = updatedItem.id as string;
       builder.doc.transact(() => {
         // 直接使用 update 方法更新现有过滤器
-        builder.whereFilters.update(filterId, (node) => {
+        builder.whereFilter.update(filterId, (node) => {
           node.setField(updatedItem.field);
           node.setOperator(updatedItem.operator);
           node.setValue(updatedItem.value);

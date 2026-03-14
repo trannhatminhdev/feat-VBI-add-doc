@@ -53,7 +53,6 @@
         }
       }
     ],
-    "whereFilters": [],
     "havingFilters": [
       {
         "id": "old-1",
@@ -62,7 +61,11 @@
         "value": 999999
       }
     ],
-    "limit": 20
+    "limit": 20,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    }
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.clear(); builder.havingFilters.addGroup('and', g => { g.add('销售额', n => n.setOperator('gte').setValue(100000)); g.addGroup('or', sub => { sub.add('利润', n => n.setOperator('gt').setValue(20000)); sub.add('数量', n => n.setOperator('gte').setValue(50)); }); }); }"
 }

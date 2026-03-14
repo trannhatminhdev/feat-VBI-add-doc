@@ -26,7 +26,10 @@ describe('Locale', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'en-US',
@@ -67,7 +70,10 @@ describe('Locale', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -168,7 +174,10 @@ describe('Locale', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -209,7 +218,10 @@ describe('Locale', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 

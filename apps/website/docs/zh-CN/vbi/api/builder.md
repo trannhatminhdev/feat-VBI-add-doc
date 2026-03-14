@@ -11,7 +11,7 @@
 | **measures** | `MeasuresBuilder` | - |
 | **dimensions** | `DimensionsBuilder` | - |
 | **havingFilters** | `HavingFiltersBuilder` | - |
-| **whereFilters** | `WhereFiltersBuilder` | - |
+| **whereFilter** | `WhereFiltersBuilder` | - |
 
 
 ## 方法

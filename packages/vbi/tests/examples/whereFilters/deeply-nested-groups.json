@@ -2,24 +2,46 @@
   "name": "deeply-nested-or-and-groups",
   "description": "多层嵌套分组：消费者当日达或企业客户一级配送的高额订单，三层 AND/OR 嵌套",
   "schema": [
-    { "name": "customer_type", "type": "string" },
-    { "name": "delivery_method", "type": "string" },
-    { "name": "sales", "type": "number" },
-    { "name": "province", "type": "string" }
+    {
+      "name": "customer_type",
+      "type": "string"
+    },
+    {
+      "name": "delivery_method",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "province",
+      "type": "string"
+    }
   ],
   "dsl": {
     "chartType": "column",
-    "dimensions": [{ "field": "province", "alias": "省份" }],
+    "dimensions": [
+      {
+        "field": "province",
+        "alias": "省份"
+      }
+    ],
     "measures": [
       {
         "field": "sales",
         "alias": "销售额",
         "encoding": "yAxis",
-        "aggregate": { "func": "sum" }
+        "aggregate": {
+          "func": "sum"
+        }
       }
     ],
-    "whereFilters": [],
-    "limit": 20
+    "limit": 20,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilters\n    .add('sales', node => node.setOperator('>').setValue(500))\n    .addGroup('or', outerGroup => {\n      outerGroup\n        .addGroup('and', g1 => {\n          g1.add('customer_type', n => n.setOperator('eq').setValue('消费者'))\n            .add('delivery_method', n => n.setOperator('eq').setValue('当日'));\n        })\n        .addGroup('and', g2 => {\n          g2.add('customer_type', n => n.setOperator('in').setValue(['公司', '小型企业']))\n            .add('delivery_method', n => n.setOperator('eq').setValue('一级'));\n        });\n    });\n}"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter\n    .add('sales', node => node.setOperator('>').setValue(500))\n    .addGroup('or', outerGroup => {\n      outerGroup\n        .addGroup('and', g1 => {\n          g1.add('customer_type', n => n.setOperator('eq').setValue('消费者'))\n            .add('delivery_method', n => n.setOperator('eq').setValue('当日'));\n        })\n        .addGroup('and', g2 => {\n          g2.add('customer_type', n => n.setOperator('in').setValue(['公司', '小型企业']))\n            .add('delivery_method', n => n.setOperator('eq').setValue('一级'));\n        });\n    });\n}"
 }

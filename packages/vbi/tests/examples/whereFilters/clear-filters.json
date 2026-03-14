@@ -2,37 +2,59 @@
   "name": "update-filter-switch-province",
   "description": "动态修改过滤条件：将省份筛选从浙江更新为广东，观察销售额变化",
   "schema": [
-    { "name": "city", "type": "string" },
-    { "name": "province", "type": "string" },
-    { "name": "product_type", "type": "string" },
-    { "name": "sales", "type": "number" }
+    {
+      "name": "city",
+      "type": "string"
+    },
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
   ],
   "dsl": {
     "chartType": "bar",
-    "dimensions": [{ "field": "city", "alias": "城市" }],
+    "dimensions": [
+      {
+        "field": "city",
+        "alias": "城市"
+      }
+    ],
     "measures": [
       {
         "field": "sales",
         "alias": "销售额",
         "encoding": "xAxis",
-        "aggregate": { "func": "sum" }
+        "aggregate": {
+          "func": "sum"
+        }
       }
     ],
-    "whereFilters": [
-      {
-        "id": "f-province",
-        "field": "province",
-        "op": "eq",
-        "value": "浙江"
-      },
-      {
-        "id": "f-product",
-        "field": "product_type",
-        "op": "eq",
-        "value": "技术"
-      }
-    ],
-    "limit": 20
+    "limit": 20,
+    "whereFilter": {
+      "op": "and",
+      "conditions": [
+        {
+          "id": "f-province",
+          "field": "province",
+          "op": "eq",
+          "value": "浙江"
+        },
+        {
+          "id": "f-product",
+          "field": "product_type",
+          "op": "eq",
+          "value": "技术"
+        }
+      ]
+    }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilters.update('f-province', node => {\n    node.setValue('广东');\n  });\n}"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter.update('f-province', node => {\n    node.setValue('广东');\n  });\n}"
 }

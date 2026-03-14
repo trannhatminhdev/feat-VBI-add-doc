@@ -49,9 +49,12 @@
         }
       }
     ],
-    "whereFilters": [],
     "havingFilters": [],
-    "limit": 10
+    "limit": 10,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    }
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.addGroup('and', g => { g.add('平均折扣', n => n.setOperator('lt').setValue(0.2)); g.add('销售额', n => n.setOperator('gt').setValue(100000)); }); }"
 }

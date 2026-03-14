@@ -2,23 +2,42 @@
   "name": "in-operator-multi-area-delivery",
   "description": "多区域配送效率对比：使用 in 筛选华东、华北、中南三大区域，按配送方式统计订单量",
   "schema": [
-    { "name": "area", "type": "string" },
-    { "name": "delivery_method", "type": "string" },
-    { "name": "amount", "type": "number" }
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "delivery_method",
+      "type": "string"
+    },
+    {
+      "name": "amount",
+      "type": "number"
+    }
   ],
   "dsl": {
     "chartType": "bar",
-    "dimensions": [{ "field": "delivery_method", "alias": "配送方式" }],
+    "dimensions": [
+      {
+        "field": "delivery_method",
+        "alias": "配送方式"
+      }
+    ],
     "measures": [
       {
         "field": "amount",
         "alias": "订单量",
         "encoding": "xAxis",
-        "aggregate": { "func": "sum" }
+        "aggregate": {
+          "func": "sum"
+        }
       }
     ],
-    "whereFilters": [],
-    "limit": 20
+    "limit": 20,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilters.add('area', node => {\n    node.setOperator('in').setValue(['华东', '华北', '中南']);\n  });\n}"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter.add('area', node => {\n    node.setOperator('in').setValue(['华东', '华北', '中南']);\n  });\n}"
 }

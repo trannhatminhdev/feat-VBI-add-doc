@@ -53,7 +53,6 @@
         }
       }
     ],
-    "whereFilters": [],
     "havingFilters": [
       {
         "id": "group-1",
@@ -68,7 +67,11 @@
         ]
       }
     ],
-    "limit": 20
+    "limit": 20,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    }
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.updateGroup('group-1', group => { group.add('利润', n => n.setOperator('gt').setValue(100000)); group.add('数量', n => n.setOperator('gte').setValue(200)); }); }"
 }

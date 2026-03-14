@@ -1,8 +1,9 @@
 import { VBIConnectorId } from 'src/types/connector/connector'
-import { VBIDSL } from 'src/types'
+import { VBIDSL, VBIDSLInput } from 'src/types'
 import { VBIBuilder } from './vbi-builder'
 import { connectorMap, getConnector, registerConnector } from './connector'
 import { id } from 'src/utils'
+import { createWhereRoot } from './sub-builders/whereFilters/where-utils'
 
 import * as Y from 'yjs'
 
@@ -17,14 +18,17 @@ const createVBI = () => {
         chartType: 'table',
         measures: [],
         dimensions: [],
-        whereFilters: [],
+        whereFilter: {
+          op: 'and',
+          conditions: [],
+        },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
         version: 0,
       }
     },
-    from: (vbi: VBIDSL) => {
+    from: (vbi: VBIDSLInput) => {
       const doc = new Y.Doc()
       const dsl = doc.getMap('dsl')
 
@@ -34,7 +38,7 @@ const createVBI = () => {
         if (vbi.theme) dsl.set('theme', vbi.theme)
         if (vbi.limit) dsl.set('limit', vbi.limit)
         if (vbi.locale) dsl.set('locale', vbi.locale)
-        if (vbi.version) dsl.set('version', vbi.version)
+        if (vbi.version !== undefined) dsl.set('version', vbi.version)
 
         // Initialize arrays - convert plain arrays to Y.Array if needed
         const toYMap = (obj: any, ensureId = false): Y.Map<any> => {
@@ -78,7 +82,25 @@ const createVBI = () => {
           })
           return yArr
         }
-        dsl.set('whereFilters', ensureYArray(vbi.whereFilters, true))
+
+        const whereFilter = (vbi.whereFilter ?? {
+          op: 'and',
+          conditions: [],
+        }) as Y.Map<any> | { op?: 'and' | 'or'; conditions?: any }
+        const whereRoot = whereFilter instanceof Y.Map ? whereFilter : createWhereRoot()
+        if (whereFilter instanceof Y.Map) {
+          if (!(whereRoot.get('conditions') instanceof Y.Array)) {
+            whereRoot.set('conditions', new Y.Array<any>())
+          }
+          if (!whereRoot.get('op')) {
+            whereRoot.set('op', 'and')
+          }
+        } else {
+          whereRoot.set('op', whereFilter.op ?? 'and')
+          whereRoot.set('conditions', ensureYArray(whereFilter.conditions, true))
+        }
+
+        dsl.set('whereFilter', whereRoot)
         dsl.set('havingFilters', ensureYArray(vbi.havingFilters, true))
         dsl.set('measures', ensureYArray(vbi.measures))
         dsl.set('dimensions', ensureYArray(vbi.dimensions))

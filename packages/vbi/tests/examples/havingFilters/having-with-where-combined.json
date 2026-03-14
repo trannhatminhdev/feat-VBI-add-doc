@@ -45,9 +45,12 @@
         }
       }
     ],
-    "whereFilters": [],
     "havingFilters": [],
-    "limit": 10
+    "limit": 10,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilters.add('product_type', n => n.setOperator('=').setValue('办公用品')); builder.havingFilters.addGroup('or', g => { g.add('销售额', n => n.setOperator('gt').setValue(50000)); g.add('利润', n => n.setOperator('gt').setValue(10000)); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.whereFilter.add('product_type', n => n.setOperator('=').setValue('办公用品')); builder.havingFilters.addGroup('or', g => { g.add('销售额', n => n.setOperator('gt').setValue(50000)); g.add('利润', n => n.setOperator('gt').setValue(10000)); }); }"
 }

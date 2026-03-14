@@ -21,7 +21,10 @@ describe('UndoManager', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -74,7 +77,10 @@ describe('UndoManager', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 

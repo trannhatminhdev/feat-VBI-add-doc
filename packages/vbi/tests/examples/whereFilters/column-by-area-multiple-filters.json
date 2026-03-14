@@ -2,25 +2,50 @@
   "name": "nested-group-region-product-filter",
   "description": "华东区域办公用品或家具销售额：使用嵌套分组，AND 连接区域条件与 OR 品类条件",
   "schema": [
-    { "name": "city", "type": "string" },
-    { "name": "area", "type": "string" },
-    { "name": "product_type", "type": "string" },
-    { "name": "sales", "type": "number" },
-    { "name": "profit", "type": "number" }
+    {
+      "name": "city",
+      "type": "string"
+    },
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "product_type",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    }
   ],
   "dsl": {
     "chartType": "column",
-    "dimensions": [{ "field": "city", "alias": "城市" }],
+    "dimensions": [
+      {
+        "field": "city",
+        "alias": "城市"
+      }
+    ],
     "measures": [
       {
         "field": "sales",
         "alias": "销售额",
         "encoding": "yAxis",
-        "aggregate": { "func": "sum" }
+        "aggregate": {
+          "func": "sum"
+        }
       }
     ],
-    "whereFilters": [],
-    "limit": 10
+    "limit": 10,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilters\n    .add('area', node => node.setOperator('eq').setValue('华东'))\n    .addGroup('or', group => {\n      group\n        .add('product_type', node => node.setOperator('eq').setValue('办公用品'))\n        .add('product_type', node => node.setOperator('eq').setValue('家具'));\n    });\n}"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter\n    .add('area', node => node.setOperator('eq').setValue('华东'))\n    .addGroup('or', group => {\n      group\n        .add('product_type', node => node.setOperator('eq').setValue('办公用品'))\n        .add('product_type', node => node.setOperator('eq').setValue('家具'));\n    });\n}"
 }

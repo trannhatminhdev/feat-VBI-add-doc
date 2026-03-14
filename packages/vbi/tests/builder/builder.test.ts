@@ -19,7 +19,7 @@ describe('VBI', () => {
           field: 'area',
         },
       ],
-      whereFilters: [],
+      whereFilter: { op: 'and', conditions: [] },
       havingFilters: [],
       measures: [
         {

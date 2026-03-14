@@ -1,5 +1,33 @@
 import * as Y from 'yjs'
 
+export function createWhereRoot(op: 'and' | 'or' = 'and'): Y.Map<any> {
+  const yMap = new Y.Map<any>()
+  yMap.set('op', op)
+  yMap.set('conditions', new Y.Array<any>())
+  return yMap
+}
+
+export function getWhereConditions(yMap: Y.Map<any>): Y.Array<any> {
+  return yMap.get('conditions') as Y.Array<any>
+}
+
+export function ensureWhereRoot(dsl: Y.Map<any>): Y.Map<any> {
+  const existingRoot = dsl.get('whereFilter') as Y.Map<any> | undefined
+  if (existingRoot instanceof Y.Map && existingRoot.get('conditions') instanceof Y.Array) {
+    return existingRoot
+  }
+
+  const root = createWhereRoot()
+  const legacyWhereFilters = dsl.get('whereFilters')
+  if (legacyWhereFilters instanceof Y.Array) {
+    root.set('conditions', legacyWhereFilters)
+    dsl.delete('whereFilters')
+  }
+
+  dsl.set('whereFilter', root)
+  return root
+}
+
 export type WhereEntryMatch = {
   collection: Y.Array<any>
   index: number

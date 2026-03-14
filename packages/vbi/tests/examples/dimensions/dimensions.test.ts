@@ -12,7 +12,10 @@ describe('Dimensions', () => {
       chartType: 'table',
       dimensions: [],
       measures: [],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -46,7 +49,10 @@ describe('Dimensions', () => {
         "measures": [],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -95,7 +101,10 @@ describe('Dimensions', () => {
       chartType: 'table',
       dimensions: [],
       measures: [],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -131,7 +140,10 @@ describe('Dimensions', () => {
         "measures": [],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -265,7 +277,10 @@ describe('Dimensions', () => {
         },
       ],
       measures: [],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -297,7 +312,10 @@ describe('Dimensions', () => {
         "measures": [],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -402,7 +420,10 @@ describe('Dimensions', () => {
         },
       ],
       measures: [],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -434,7 +455,10 @@ describe('Dimensions', () => {
         "measures": [],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 

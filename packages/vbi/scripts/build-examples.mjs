@@ -32,7 +32,10 @@ const DEFAULT_DSL = {
   chartType: 'line',
   dimensions: [],
   measures: [],
-  whereFilters: [],
+  whereFilter: {
+    op: 'and',
+    conditions: [],
+  },
   havingFilters: [],
   theme: 'light',
   locale: DEFAULT_LOCALE,
@@ -77,10 +80,15 @@ function findJsonFilesInDir(dir) {
 
 // ============ Code Generation ============
 function generateDSLConfig(dsl) {
+  const { whereFilters, filters, whereFilter, ...restDSL } = dsl
+
   return {
     ...DEFAULT_DSL,
-    whereFilters: dsl.whereFilters || dsl.filters || [],
-    ...dsl,
+    ...restDSL,
+    whereFilter: whereFilter ?? {
+      op: 'and',
+      conditions: whereFilters ?? filters ?? [],
+    },
   }
 }
 
@@ -102,7 +110,7 @@ export default () => {
         chartType: ${JSON.stringify(dsl.chartType)},
         dimensions: ${JSON.stringify(dsl.dimensions)},
         measures: ${JSON.stringify(dsl.measures)},
-        whereFilters: ${JSON.stringify(dsl.whereFilters)},
+        whereFilter: ${JSON.stringify(dsl.whereFilter)},
         havingFilters: ${JSON.stringify(dsl.havingFilters)},
         theme: ${JSON.stringify(dsl.theme)},
         locale: ${JSON.stringify(dsl.locale)},

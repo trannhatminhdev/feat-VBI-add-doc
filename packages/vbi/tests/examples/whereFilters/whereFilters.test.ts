@@ -26,7 +26,10 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -36,7 +39,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters.add('product_type', (node) => {
+      builder.whereFilter.add('product_type', (node) => {
         node.setOperator('eq').setValue('办公用品')
       })
     }
@@ -69,14 +72,17 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "field": "product_type",
-            "id": "id-1",
-            "op": "eq",
-            "value": "办公用品",
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "product_type",
+              "id": "id-1",
+              "op": "eq",
+              "value": "办公用品",
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -227,7 +233,10 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -237,7 +246,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters
+      builder.whereFilter
         .add('product_type', (node) => node.setOperator('eq').setValue('技术'))
         .add('discount', (node) => node.setOperator('>').setValue(0.5))
     }
@@ -270,20 +279,23 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "field": "product_type",
-            "id": "id-1",
-            "op": "eq",
-            "value": "技术",
-          },
-          {
-            "field": "discount",
-            "id": "id-2",
-            "op": ">",
-            "value": 0.5,
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "product_type",
+              "id": "id-1",
+              "op": "eq",
+              "value": "技术",
+            },
+            {
+              "field": "discount",
+              "id": "id-2",
+              "op": ">",
+              "value": 0.5,
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -358,7 +370,10 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -368,7 +383,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters.addGroup('or', (group) => {
+      builder.whereFilter.addGroup('or', (group) => {
         group
           .add('product_type', (node) => node.setOperator('eq').setValue('办公用品'))
           .add('product_type', (node) => node.setOperator('eq').setValue('技术'))
@@ -403,26 +418,29 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "conditions": [
-              {
-                "field": "product_type",
-                "id": "id-2",
-                "op": "eq",
-                "value": "办公用品",
-              },
-              {
-                "field": "product_type",
-                "id": "id-3",
-                "op": "eq",
-                "value": "技术",
-              },
-            ],
-            "id": "id-1",
-            "op": "or",
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "product_type",
+                  "id": "id-2",
+                  "op": "eq",
+                  "value": "办公用品",
+                },
+                {
+                  "field": "product_type",
+                  "id": "id-3",
+                  "op": "eq",
+                  "value": "技术",
+                },
+              ],
+              "id": "id-1",
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -527,7 +545,10 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -537,7 +558,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters.add('sales', (node) => {
+      builder.whereFilter.add('sales', (node) => {
         node.setOperator('between').setValue({ min: 1000, max: 10000 })
       })
     }
@@ -570,17 +591,20 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "field": "sales",
-            "id": "id-1",
-            "op": "between",
-            "value": {
-              "max": 10000,
-              "min": 1000,
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "sales",
+              "id": "id-1",
+              "op": "between",
+              "value": {
+                "max": 10000,
+                "min": 1000,
+              },
             },
-          },
-        ],
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -668,20 +692,23 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [
-        {
-          id: 'f-old1',
-          field: 'product_type',
-          op: 'eq',
-          value: '办公用品',
-        },
-        {
-          id: 'f-old2',
-          field: 'area',
-          op: 'eq',
-          value: '华东',
-        },
-      ],
+      whereFilter: {
+        op: 'and',
+        conditions: [
+          {
+            id: 'f-old1',
+            field: 'product_type',
+            op: 'eq',
+            value: '办公用品',
+          },
+          {
+            id: 'f-old2',
+            field: 'area',
+            op: 'eq',
+            value: '华东',
+          },
+        ],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -691,7 +718,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters
+      builder.whereFilter
         .clear()
         .add('profit', (node) => node.setOperator('>').setValue(0))
         .addGroup('or', (group) => {
@@ -729,32 +756,35 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "field": "profit",
-            "id": "id-1",
-            "op": ">",
-            "value": 0,
-          },
-          {
-            "conditions": [
-              {
-                "field": "area",
-                "id": "id-3",
-                "op": "eq",
-                "value": "华东",
-              },
-              {
-                "field": "area",
-                "id": "id-4",
-                "op": "eq",
-                "value": "华北",
-              },
-            ],
-            "id": "id-2",
-            "op": "or",
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "profit",
+              "id": "id-1",
+              "op": ">",
+              "value": 0,
+            },
+            {
+              "conditions": [
+                {
+                  "field": "area",
+                  "id": "id-3",
+                  "op": "eq",
+                  "value": "华东",
+                },
+                {
+                  "field": "area",
+                  "id": "id-4",
+                  "op": "eq",
+                  "value": "华北",
+                },
+              ],
+              "id": "id-2",
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -888,20 +918,23 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [
-        {
-          id: 'f-province',
-          field: 'province',
-          op: 'eq',
-          value: '浙江',
-        },
-        {
-          id: 'f-product',
-          field: 'product_type',
-          op: 'eq',
-          value: '技术',
-        },
-      ],
+      whereFilter: {
+        op: 'and',
+        conditions: [
+          {
+            id: 'f-province',
+            field: 'province',
+            op: 'eq',
+            value: '浙江',
+          },
+          {
+            id: 'f-product',
+            field: 'product_type',
+            op: 'eq',
+            value: '技术',
+          },
+        ],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -911,7 +944,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters.update('f-province', (node) => {
+      builder.whereFilter.update('f-province', (node) => {
         node.setValue('广东')
       })
     }
@@ -944,20 +977,23 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "field": "province",
-            "id": "f-province",
-            "op": "eq",
-            "value": "广东",
-          },
-          {
-            "field": "product_type",
-            "id": "f-product",
-            "op": "eq",
-            "value": "技术",
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "province",
+              "id": "f-province",
+              "op": "eq",
+              "value": "广东",
+            },
+            {
+              "field": "product_type",
+              "id": "f-product",
+              "op": "eq",
+              "value": "技术",
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -1113,7 +1149,10 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -1123,7 +1162,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters
+      builder.whereFilter
         .add('area', (node) => node.setOperator('eq').setValue('华东'))
         .addGroup('or', (group) => {
           group
@@ -1160,32 +1199,35 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "field": "area",
-            "id": "id-1",
-            "op": "eq",
-            "value": "华东",
-          },
-          {
-            "conditions": [
-              {
-                "field": "product_type",
-                "id": "id-3",
-                "op": "eq",
-                "value": "办公用品",
-              },
-              {
-                "field": "product_type",
-                "id": "id-4",
-                "op": "eq",
-                "value": "家具",
-              },
-            ],
-            "id": "id-2",
-            "op": "or",
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "area",
+              "id": "id-1",
+              "op": "eq",
+              "value": "华东",
+            },
+            {
+              "conditions": [
+                {
+                  "field": "product_type",
+                  "id": "id-3",
+                  "op": "eq",
+                  "value": "办公用品",
+                },
+                {
+                  "field": "product_type",
+                  "id": "id-4",
+                  "op": "eq",
+                  "value": "家具",
+                },
+              ],
+              "id": "id-2",
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -1311,7 +1353,10 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -1321,7 +1366,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters
+      builder.whereFilter
         .add('sales', (node) => node.setOperator('>').setValue(500))
         .addGroup('or', (outerGroup) => {
           outerGroup
@@ -1367,59 +1412,62 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "field": "sales",
-            "id": "id-1",
-            "op": ">",
-            "value": 500,
-          },
-          {
-            "conditions": [
-              {
-                "conditions": [
-                  {
-                    "field": "customer_type",
-                    "id": "id-4",
-                    "op": "eq",
-                    "value": "消费者",
-                  },
-                  {
-                    "field": "delivery_method",
-                    "id": "id-5",
-                    "op": "eq",
-                    "value": "当日",
-                  },
-                ],
-                "id": "id-3",
-                "op": "and",
-              },
-              {
-                "conditions": [
-                  {
-                    "field": "customer_type",
-                    "id": "id-7",
-                    "op": "in",
-                    "value": [
-                      "公司",
-                      "小型企业",
-                    ],
-                  },
-                  {
-                    "field": "delivery_method",
-                    "id": "id-8",
-                    "op": "eq",
-                    "value": "一级",
-                  },
-                ],
-                "id": "id-6",
-                "op": "and",
-              },
-            ],
-            "id": "id-2",
-            "op": "or",
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "sales",
+              "id": "id-1",
+              "op": ">",
+              "value": 500,
+            },
+            {
+              "conditions": [
+                {
+                  "conditions": [
+                    {
+                      "field": "customer_type",
+                      "id": "id-4",
+                      "op": "eq",
+                      "value": "消费者",
+                    },
+                    {
+                      "field": "delivery_method",
+                      "id": "id-5",
+                      "op": "eq",
+                      "value": "当日",
+                    },
+                  ],
+                  "id": "id-3",
+                  "op": "and",
+                },
+                {
+                  "conditions": [
+                    {
+                      "field": "customer_type",
+                      "id": "id-7",
+                      "op": "in",
+                      "value": [
+                        "公司",
+                        "小型企业",
+                      ],
+                    },
+                    {
+                      "field": "delivery_method",
+                      "id": "id-8",
+                      "op": "eq",
+                      "value": "一级",
+                    },
+                  ],
+                  "id": "id-6",
+                  "op": "and",
+                },
+              ],
+              "id": "id-2",
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -1608,32 +1656,35 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [
-        {
-          id: 'g-products',
-          op: 'or',
-          conditions: [
-            {
-              id: 'f-office',
-              field: 'product_type',
-              op: 'eq',
-              value: '办公用品',
-            },
-            {
-              id: 'f-tech',
-              field: 'product_type',
-              op: 'eq',
-              value: '技术',
-            },
-            {
-              id: 'f-furniture',
-              field: 'product_type',
-              op: 'eq',
-              value: '家具',
-            },
-          ],
-        },
-      ],
+      whereFilter: {
+        op: 'and',
+        conditions: [
+          {
+            id: 'g-products',
+            op: 'or',
+            conditions: [
+              {
+                id: 'f-office',
+                field: 'product_type',
+                op: 'eq',
+                value: '办公用品',
+              },
+              {
+                id: 'f-tech',
+                field: 'product_type',
+                op: 'eq',
+                value: '技术',
+              },
+              {
+                id: 'f-furniture',
+                field: 'product_type',
+                op: 'eq',
+                value: '家具',
+              },
+            ],
+          },
+        ],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -1643,7 +1694,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters.updateGroup('g-products', (group) => {
+      builder.whereFilter.updateGroup('g-products', (group) => {
         group.remove('f-furniture')
       })
     }
@@ -1676,26 +1727,29 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "conditions": [
-              {
-                "field": "product_type",
-                "id": "f-office",
-                "op": "eq",
-                "value": "办公用品",
-              },
-              {
-                "field": "product_type",
-                "id": "f-tech",
-                "op": "eq",
-                "value": "技术",
-              },
-            ],
-            "id": "g-products",
-            "op": "or",
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "product_type",
+                  "id": "f-office",
+                  "op": "eq",
+                  "value": "办公用品",
+                },
+                {
+                  "field": "product_type",
+                  "id": "f-tech",
+                  "op": "eq",
+                  "value": "技术",
+                },
+              ],
+              "id": "g-products",
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -1800,7 +1854,10 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -1810,7 +1867,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters.add('area', (node) => {
+      builder.whereFilter.add('area', (node) => {
         node.setOperator('in').setValue(['华东', '华北', '中南'])
       })
     }
@@ -1843,18 +1900,21 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "field": "area",
-            "id": "id-1",
-            "op": "in",
-            "value": [
-              "华东",
-              "华北",
-              "中南",
-            ],
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "area",
+              "id": "id-1",
+              "op": "in",
+              "value": [
+                "华东",
+                "华北",
+                "中南",
+              ],
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -1945,20 +2005,23 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [
-        {
-          id: 'f-product',
-          field: 'product_type',
-          op: 'eq',
-          value: '办公用品',
-        },
-        {
-          id: 'f-area',
-          field: 'area',
-          op: 'in',
-          value: ['华东', '华北', '中南'],
-        },
-      ],
+      whereFilter: {
+        op: 'and',
+        conditions: [
+          {
+            id: 'f-product',
+            field: 'product_type',
+            op: 'eq',
+            value: '办公用品',
+          },
+          {
+            id: 'f-area',
+            field: 'area',
+            op: 'in',
+            value: ['华东', '华北', '中南'],
+          },
+        ],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -1968,7 +2031,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters.remove(0)
+      builder.whereFilter.remove(0)
     }
     applyBuilder(builder)
 
@@ -1999,18 +2062,21 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "field": "area",
-            "id": "f-area",
-            "op": "in",
-            "value": [
-              "华东",
-              "华北",
-              "中南",
-            ],
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "area",
+              "id": "f-area",
+              "op": "in",
+              "value": [
+                "华东",
+                "华北",
+                "中南",
+              ],
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -2157,26 +2223,29 @@ describe('WhereFilters', () => {
           },
         },
       ],
-      whereFilters: [
-        {
-          id: 'g-customer',
-          op: 'or',
-          conditions: [
-            {
-              id: 'f-ct1',
-              field: 'customer_type',
-              op: 'eq',
-              value: '公司',
-            },
-            {
-              id: 'f-ct2',
-              field: 'customer_type',
-              op: 'eq',
-              value: '消费者',
-            },
-          ],
-        },
-      ],
+      whereFilter: {
+        op: 'and',
+        conditions: [
+          {
+            id: 'g-customer',
+            op: 'or',
+            conditions: [
+              {
+                id: 'f-ct1',
+                field: 'customer_type',
+                op: 'eq',
+                value: '公司',
+              },
+              {
+                id: 'f-ct2',
+                field: 'customer_type',
+                op: 'eq',
+                value: '消费者',
+              },
+            ],
+          },
+        ],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -2186,7 +2255,7 @@ describe('WhereFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters.updateGroup('g-customer', (group) => {
+      builder.whereFilter.updateGroup('g-customer', (group) => {
         group.setOperator('and')
       })
     }
@@ -2219,26 +2288,29 @@ describe('WhereFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "conditions": [
-              {
-                "field": "customer_type",
-                "id": "f-ct1",
-                "op": "eq",
-                "value": "公司",
-              },
-              {
-                "field": "customer_type",
-                "id": "f-ct2",
-                "op": "eq",
-                "value": "消费者",
-              },
-            ],
-            "id": "g-customer",
-            "op": "and",
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "customer_type",
+                  "id": "f-ct1",
+                  "op": "eq",
+                  "value": "公司",
+                },
+                {
+                  "field": "customer_type",
+                  "id": "f-ct2",
+                  "op": "eq",
+                  "value": "消费者",
+                },
+              ],
+              "id": "g-customer",
+              "op": "and",
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 

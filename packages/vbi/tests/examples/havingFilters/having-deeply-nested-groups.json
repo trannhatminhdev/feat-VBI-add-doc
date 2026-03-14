@@ -65,9 +65,12 @@
         }
       }
     ],
-    "whereFilters": [],
     "havingFilters": [],
-    "limit": 10
+    "limit": 10,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    }
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.addGroup('or', root => { root.addGroup('and', g1 => { g1.add('销售额', n => n.setOperator('gt').setValue(500000)); g1.add('利润', n => n.setOperator('gt').setValue(50000)); }); root.addGroup('and', g2 => { g2.add('数量', n => n.setOperator('gt').setValue(100)); g2.add('平均折扣', n => n.setOperator('lt').setValue(0.3)); }); }); }"
 }

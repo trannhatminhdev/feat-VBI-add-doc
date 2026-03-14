@@ -4,17 +4,14 @@ import type { VBIFilter, VBIWhereClause, VBIWhereGroup } from '../../types'
 
 export const buildWhere: buildPipe = (queryDSL, context) => {
   const { vbiDSL } = context
-  const whereFilters = vbiDSL.whereFilters || []
+  const whereFilter = vbiDSL.whereFilter
 
-  if (whereFilters.length === 0) {
+  if (!whereFilter || whereFilter.conditions.length === 0) {
     return queryDSL
   }
 
   const result = { ...queryDSL }
-  result.where = {
-    op: 'and',
-    conditions: whereFilters.flatMap(mapClauseToCondition),
-  }
+  result.where = mapGroupToCondition(whereFilter)
 
   return result as VQueryDSL
 }

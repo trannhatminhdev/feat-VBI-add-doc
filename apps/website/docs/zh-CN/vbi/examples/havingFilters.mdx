@@ -23,7 +23,7 @@ export default () => {
         chartType: 'bar',
         dimensions: [{ field: 'area', alias: '区域' }],
         measures: [{ field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
@@ -72,7 +72,7 @@ export default () => {
           { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
@@ -121,7 +121,7 @@ export default () => {
           { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [
           { id: 'having-1', field: '销售额', op: 'gt', value: 1000000 },
           { id: 'having-2', field: '利润', op: 'gt', value: 200000 },
@@ -172,7 +172,7 @@ export default () => {
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'amount', alias: '数量', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [{ id: 'old-1', field: '销售额', op: 'gt', value: 999999 }],
         theme: 'light',
         locale: 'zh-CN',
@@ -228,7 +228,7 @@ export default () => {
           { field: 'amount', alias: '数量', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'discount', alias: '平均折扣', encoding: 'yAxis', aggregate: { func: 'avg' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
@@ -284,7 +284,7 @@ export default () => {
           { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
@@ -343,7 +343,7 @@ export default () => {
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'amount', alias: '数量', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [
           { id: 'group-1', op: 'or', conditions: [{ id: 'cond-1', field: '销售额', op: 'gt', value: 500000 }] },
         ],
@@ -395,7 +395,7 @@ export default () => {
           { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [
           {
             id: 'group-1',
@@ -454,7 +454,7 @@ export default () => {
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'amount', alias: '数量', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
@@ -509,7 +509,7 @@ export default () => {
           { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'discount', alias: '平均折扣', encoding: 'yAxis', aggregate: { func: 'avg' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
@@ -560,7 +560,7 @@ export default () => {
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'amount', alias: '数量', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
@@ -613,7 +613,7 @@ export default () => {
           { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
@@ -664,7 +664,7 @@ export default () => {
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'amount', alias: '数量', encoding: 'size', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
@@ -715,7 +715,7 @@ export default () => {
           { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [
           {
             id: 'group-1',
@@ -773,7 +773,7 @@ export default () => {
           { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [],
         theme: 'light',
         locale: 'zh-CN',
@@ -782,7 +782,7 @@ export default () => {
       })
 
       const applyBuilder = (builder: VBIBuilder) => {
-        builder.whereFilters.add('product_type', (n) => n.setOperator('=').setValue('办公用品'))
+        builder.whereFilter.add('product_type', (n) => n.setOperator('=').setValue('办公用品'))
         builder.havingFilters.addGroup('or', (g) => {
           g.add('销售额', (n) => n.setOperator('gt').setValue(50000))
           g.add('利润', (n) => n.setOperator('gt').setValue(10000))
@@ -824,7 +824,7 @@ export default () => {
           { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
           { field: 'profit', alias: '利润', encoding: 'yAxis', aggregate: { func: 'sum' } },
         ],
-        whereFilters: [],
+        whereFilter: { op: 'and', conditions: [] },
         havingFilters: [
           { id: 'having-1', field: '销售额', op: 'gt', value: 1000000 },
           { id: 'having-2', field: '利润', op: 'gt', value: 200000 },

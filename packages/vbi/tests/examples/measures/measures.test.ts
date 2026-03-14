@@ -12,7 +12,10 @@ describe('Measures', () => {
       chartType: 'table',
       dimensions: [],
       measures: [],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -48,7 +51,10 @@ describe('Measures', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -92,7 +98,10 @@ describe('Measures', () => {
       chartType: 'table',
       dimensions: [],
       measures: [],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -130,7 +139,10 @@ describe('Measures', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -191,7 +203,10 @@ describe('Measures', () => {
           encoding: 'yAxis',
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -227,7 +242,10 @@ describe('Measures', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -280,7 +298,10 @@ describe('Measures', () => {
           encoding: 'yAxis',
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -316,7 +337,10 @@ describe('Measures', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 

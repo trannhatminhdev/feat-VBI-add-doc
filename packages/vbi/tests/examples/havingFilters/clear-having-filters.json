@@ -41,7 +41,6 @@
         }
       }
     ],
-    "whereFilters": [],
     "havingFilters": [
       {
         "id": "having-1",
@@ -56,7 +55,11 @@
         "value": 200000
       }
     ],
-    "limit": 20
+    "limit": 20,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    }
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.clear(); }"
 }

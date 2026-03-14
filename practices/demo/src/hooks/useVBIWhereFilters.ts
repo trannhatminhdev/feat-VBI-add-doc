@@ -15,14 +15,14 @@ export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
     }
 
     // 初始化
-    setFilters(builder.whereFilters.toJson() as VBIWhereClause[]);
+    setFilters(builder.whereFilter.toJson() as VBIWhereClause[]);
 
     // 监听变化 - 响应式同步
     const updateHandler = () => {
-      setFilters(builder.whereFilters.toJson() as VBIWhereClause[]);
+      setFilters(builder.whereFilter.toJson() as VBIWhereClause[]);
     };
 
-    const unobserve = builder.whereFilters.observe(updateHandler);
+    const unobserve = builder.whereFilter.observe(updateHandler);
     return unobserve;
   }, [builder]);
 
@@ -31,7 +31,7 @@ export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
     (field: string, operator?: string, value?: any) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.whereFilters.add(field, (node) => {
+          builder.whereFilter.add(field, (node) => {
             if (operator) node.setOperator(operator);
             if (value !== undefined) node.setValue(value);
           });
@@ -46,7 +46,7 @@ export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
     (op: 'and' | 'or', callback?: (group: any) => void) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.whereFilters.addGroup(op, callback ?? (() => {}));
+          builder.whereFilter.addGroup(op, callback ?? (() => {}));
         });
       }
     },
@@ -58,7 +58,7 @@ export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
     (id: string) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.whereFilters.remove(id);
+          builder.whereFilter.remove(id);
         });
       }
     },
@@ -69,7 +69,7 @@ export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
   const clearFilters = useCallback(() => {
     if (builder) {
       builder.doc.transact(() => {
-        builder.whereFilters.clear();
+        builder.whereFilter.clear();
       });
     }
   }, [builder]);
@@ -79,7 +79,7 @@ export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
     (id: string, updates: { operator?: string; value?: any }) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.whereFilters.update(id, (node: any) => {
+          builder.whereFilter.update(id, (node: any) => {
             if (updates.operator) node.setOperator(updates.operator);
             if (updates.value !== undefined) node.setValue(updates.value);
           });
@@ -93,7 +93,7 @@ export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
   const findFilter = useCallback(
     (id: string) => {
       if (builder) {
-        return builder.whereFilters.find(id);
+        return builder.whereFilter.find(id);
       }
       return undefined;
     },
@@ -121,7 +121,7 @@ export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
     (id: string, updates: { operator?: 'and' | 'or' }) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.whereFilters.updateGroup(id, (group: any) => {
+          builder.whereFilter.updateGroup(id, (group: any) => {
             if (updates.operator) group.setOperator(updates.operator);
           });
         });
@@ -135,7 +135,7 @@ export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
     (groupId: string, field: string, operator?: string, value?: any) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.whereFilters.updateGroup(groupId, (group: any) => {
+          builder.whereFilter.updateGroup(groupId, (group: any) => {
             group.add(field, (node: any) => {
               if (operator) node.setOperator(operator);
               if (value !== undefined) node.setValue(value);
@@ -152,7 +152,7 @@ export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
     (groupId: string, idOrIndex: string | number) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.whereFilters.updateGroup(groupId, (group: any) => {
+          builder.whereFilter.updateGroup(groupId, (group: any) => {
             group.remove(idOrIndex);
           });
         });
@@ -165,7 +165,7 @@ export const useVBIWhereFilters = (builder: VBIBuilder | undefined) => {
   const findGroup = useCallback(
     (id: string) => {
       if (builder) {
-        const result = builder.whereFilters.find(id);
+        const result = builder.whereFilter.find(id);
         if (result && 'getOperator' in result) {
           return result;
         }

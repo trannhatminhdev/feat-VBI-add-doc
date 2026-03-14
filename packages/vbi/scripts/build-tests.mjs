@@ -50,19 +50,23 @@ function findJsonFilesInDir(dir) {
  */
 function generateTestCase(json, jsonPath) {
   const name = json.name || path.basename(jsonPath, '.json')
+  const { whereFilters, whereFilter, ...restDSL } = json.dsl || {}
 
   // Generate initial DSL
   const dsl = {
     connectorId: 'demoSupermarket',
     chartType: json.chartType || 'line',
-    dimensions: json.dsl?.dimensions || [],
-    measures: json.dsl?.measures || [],
-    whereFilters: [],
-    havingFilters: [],
-    theme: json.dsl?.theme || 'light',
+    dimensions: restDSL.dimensions || [],
+    measures: restDSL.measures || [],
+    whereFilter: whereFilter || {
+      op: 'and',
+      conditions: whereFilters || [],
+    },
+    havingFilters: restDSL.havingFilters || [],
+    theme: restDSL.theme || 'light',
     locale: 'zh-CN',
     version: 1,
-    ...json.dsl,
+    ...restDSL,
   }
 
   const dslLines = JSON.stringify(dsl, null, 2).split('\n')

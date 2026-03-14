@@ -12,7 +12,7 @@ describe('MeasuresBuilder', () => {
 
     expect(builder.build()).toEqual({
       dimensions: [],
-      whereFilters: [],
+      whereFilter: { op: 'and', conditions: [] },
       havingFilters: [],
       measures: [
         {
@@ -40,7 +40,7 @@ describe('MeasuresBuilder', () => {
 
     expect(builder.build()).toEqual({
       dimensions: [],
-      whereFilters: [],
+      whereFilter: { op: 'and', conditions: [] },
       havingFilters: [],
       measures: [
         {

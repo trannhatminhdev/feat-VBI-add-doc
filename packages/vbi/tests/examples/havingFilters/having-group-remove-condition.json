@@ -41,7 +41,6 @@
         }
       }
     ],
-    "whereFilters": [],
     "havingFilters": [
       {
         "id": "group-1",
@@ -62,7 +61,11 @@
         ]
       }
     ],
-    "limit": 20
+    "limit": 20,
+    "whereFilter": {
+      "op": "and",
+      "conditions": []
+    }
   },
   "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilters.updateGroup('group-1', group => { group.remove('cond-1'); }); }"
 }

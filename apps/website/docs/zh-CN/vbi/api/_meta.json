@@ -24,8 +24,8 @@
   },
   {
     "type": "dir",
-    "name": "where-filters",
-    "label": "builder.whereFilters",
+    "name": "where-filter",
+    "label": "builder.whereFilter",
     "collapsed": true
   },
   {

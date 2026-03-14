@@ -26,7 +26,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -76,7 +79,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -175,7 +181,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -239,7 +248,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -350,7 +362,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [
         {
           id: 'having-1',
@@ -412,7 +427,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -526,7 +544,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [
         {
           id: 'old-1',
@@ -628,7 +649,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -793,7 +817,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -910,7 +937,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -1110,7 +1140,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -1183,7 +1216,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -1297,7 +1333,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [
         {
           id: 'group-1',
@@ -1395,7 +1434,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -1539,7 +1581,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [
         {
           id: 'group-1',
@@ -1622,7 +1667,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -1736,7 +1784,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -1823,7 +1874,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -1971,7 +2025,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -2046,7 +2103,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -2215,7 +2275,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -2309,7 +2372,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -2452,7 +2518,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -2523,7 +2592,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -2652,7 +2724,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -2738,7 +2813,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -2906,7 +2984,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [
         {
           id: 'group-1',
@@ -2995,7 +3076,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
@@ -3116,7 +3200,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [],
       theme: 'light',
       locale: 'zh-CN',
@@ -3126,7 +3213,7 @@ describe('HavingFilters', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilters.add('product_type', (n) => n.setOperator('=').setValue('办公用品'))
+      builder.whereFilter.add('product_type', (n) => n.setOperator('=').setValue('办公用品'))
       builder.havingFilters.addGroup('or', (g) => {
         g.add('销售额', (n) => n.setOperator('gt').setValue(50000))
         g.add('利润', (n) => n.setOperator('gt').setValue(10000))
@@ -3188,14 +3275,17 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [
-          {
-            "field": "product_type",
-            "id": "id-1",
-            "op": "=",
-            "value": "办公用品",
-          },
-        ],
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "product_type",
+              "id": "id-1",
+              "op": "=",
+              "value": "办公用品",
+            },
+          ],
+          "op": "and",
+        },
       }
     `)
 
@@ -3351,7 +3441,10 @@ describe('HavingFilters', () => {
           },
         },
       ],
-      whereFilters: [],
+      whereFilter: {
+        op: 'and',
+        conditions: [],
+      },
       havingFilters: [
         {
           id: 'having-1',
@@ -3420,7 +3513,10 @@ describe('HavingFilters', () => {
         ],
         "theme": "light",
         "version": 1,
-        "whereFilters": [],
+        "whereFilter": {
+          "conditions": [],
+          "op": "and",
+        },
       }
     `)
 
