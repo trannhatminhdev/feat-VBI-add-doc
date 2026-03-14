@@ -69,14 +69,14 @@ getLocale(): string
 
 **返回**: `string`
 
-### toJson
+### toJSON
 
 导出为 JSON
 
 **定义**:
 
 ```typescript
-toJson(): string
+toJSON(): string
 ```
 
 **返回**: `string`

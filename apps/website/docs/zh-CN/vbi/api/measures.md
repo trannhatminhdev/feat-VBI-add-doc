@@ -107,14 +107,14 @@ findAll(): MeasureNodeBuilder[]
 
 **返回**: `MeasureNodeBuilder[]`
 
-### toJson
+### toJSON
 
 导出所有度量为 JSON 数组
 
 **定义**:
 
 ```typescript
-toJson(): VBIMeasure[]
+toJSON(): VBIMeasure[]
 ```
 
 **返回**: `VBIMeasure[]`

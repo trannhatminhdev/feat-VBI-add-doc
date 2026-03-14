@@ -165,8 +165,8 @@ export function APP() {
     loadSchema();
 
     // 初始化度量字段详情
-    if (builder?.measures?.toJson) {
-      const measures = builder.measures.toJson();
+    if (builder?.measures?.toJSON) {
+      const measures = builder.measures.toJSON();
       const detail: Record<
         string,
         {
@@ -326,7 +326,7 @@ export function APP() {
   // 同步度量字段详情
   const syncMeasuresDetail = () => {
     if (builderRef.current?.measures) {
-      const measures = builderRef.current.measures.toJson();
+      const measures = builderRef.current.measures.toJSON();
       const detail: Record<
         string,
         {

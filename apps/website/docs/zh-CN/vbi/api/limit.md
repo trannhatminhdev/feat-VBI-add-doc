@@ -69,14 +69,14 @@ getLimit(): number | undefined
 
 **返回**: `number \| undefined`
 
-### toJson
+### toJSON
 
 导出为 JSON
 
 **定义**:
 
 ```typescript
-toJson(): number | undefined
+toJSON(): number | undefined
 ```
 
 **返回**: `number \| undefined`

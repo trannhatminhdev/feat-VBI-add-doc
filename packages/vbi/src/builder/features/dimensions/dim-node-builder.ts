@@ -26,7 +26,7 @@ export class DimensionNodeBuilder {
   /**
    * @description 导出为 JSON
    */
-  toJson(): VBIDimension {
+  toJSON(): VBIDimension {
     return this.yMap.toJSON() as VBIDimension
   }
 }

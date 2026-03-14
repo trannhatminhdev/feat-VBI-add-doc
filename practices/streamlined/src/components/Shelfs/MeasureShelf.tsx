@@ -7,13 +7,13 @@ import { useVBIStore } from 'src/model';
 export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
   const [measures, setMeasures] = useState<VBIMeasure[]>(
-    builder.measures.toJson(),
+    builder.measures.toJSON(),
   );
 
   useEffect(() => {
     const updateMeasures: ObserveCallback = (event, transaction) => {
       console.info('[observe] measures', event, transaction);
-      setMeasures(builder.measures.toJson());
+      setMeasures(builder.measures.toJSON());
     };
 
     const unobserve = builder.measures.observe(updateMeasures);

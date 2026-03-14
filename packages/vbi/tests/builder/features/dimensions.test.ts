@@ -108,7 +108,7 @@ describe('DimensionsBuilder', () => {
     const node = builder.dimensions.find('category')
 
     expect(node?.getField()).toBe('category')
-    expect(node?.toJson()).toEqual({ field: 'category', alias: '类别' })
+    expect(node?.toJSON()).toEqual({ field: 'category', alias: '类别' })
   })
 
   test('findDimension returns undefined if not found', () => {
@@ -145,7 +145,7 @@ describe('DimensionsBuilder', () => {
     expect(nodes).toEqual([])
   })
 
-  test('toJson', () => {
+  test('toJSON', () => {
     const dsl = {
       dimensions: [
         { field: 'category', alias: '类别' },
@@ -154,7 +154,7 @@ describe('DimensionsBuilder', () => {
     } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const json = builder.dimensions.toJson()
+    const json = builder.dimensions.toJSON()
 
     expect(json).toEqual([
       { field: 'category', alias: '类别' },
@@ -162,11 +162,11 @@ describe('DimensionsBuilder', () => {
     ])
   })
 
-  test('toJson returns empty array when no dimensions', () => {
+  test('toJSON returns empty array when no dimensions', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
 
-    const json = builder.dimensions.toJson()
+    const json = builder.dimensions.toJSON()
 
     expect(json).toEqual([])
   })
@@ -228,15 +228,15 @@ describe('DimensionsBuilder', () => {
     const node = builder.dimensions.find('category')
     node?.setAlias('新类别')
 
-    expect(builder.dimensions.toJson()[0].alias).toBe('新类别')
+    expect(builder.dimensions.toJSON()[0].alias).toBe('新类别')
   })
 
-  test('DimensionNodeBuilder toJson', () => {
+  test('DimensionNodeBuilder toJSON', () => {
     const dsl = { dimensions: [{ field: 'category', alias: '类别' }] } as VBIDSL
     const builder = VBI.from(dsl)
 
     const node = builder.dimensions.find('category')
-    const json = node?.toJson()
+    const json = node?.toJSON()
 
     expect(json).toEqual({ field: 'category', alias: '类别' })
   })
@@ -250,7 +250,7 @@ describe('DimensionsBuilder', () => {
       .add('region', (node) => node.setAlias('地区'))
       .add('city', (node) => node.setAlias('城市'))
 
-    const json = builder.dimensions.toJson()
+    const json = builder.dimensions.toJSON()
 
     expect(json.length).toBe(3)
     expect(json[0].field).toBe('category')

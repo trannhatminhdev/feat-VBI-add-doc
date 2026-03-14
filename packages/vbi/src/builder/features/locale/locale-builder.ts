@@ -49,7 +49,7 @@ export class LocaleBuilder {
   /**
    * @description 导出为 JSON
    */
-  toJson(): string {
+  toJSON(): string {
     return this.getLocale()
   }
 }

@@ -49,7 +49,7 @@ export class LimitBuilder {
   /**
    * @description 导出为 JSON
    */
-  toJson(): number | undefined {
+  toJSON(): number | undefined {
     return this.getLimit()
   }
 }

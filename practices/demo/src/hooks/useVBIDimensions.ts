@@ -19,11 +19,11 @@ export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
     }
 
     // 初始化
-    setDimensions(builder.dimensions.toJson() as VBIDimension[]);
+    setDimensions(builder.dimensions.toJSON() as VBIDimension[]);
 
     // 监听变化
     const updateHandler = () => {
-      setDimensions(builder.dimensions.toJson() as VBIDimension[]);
+      setDimensions(builder.dimensions.toJSON() as VBIDimension[]);
     };
 
     const unobserve = builder.dimensions.observe(updateHandler);

@@ -44,7 +44,7 @@ export class MeasureNodeBuilder {
   /**
    * @description 导出为 JSON
    */
-  toJson(): VBIMeasure {
+  toJSON(): VBIMeasure {
     return this.yMap.toJSON() as VBIMeasure
   }
 }

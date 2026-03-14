@@ -24,18 +24,18 @@ describe('ChartTypeBuilder', () => {
     expect(builder.chartType.getChartType()).toBe('line')
   })
 
-  test('toJson default', () => {
+  test('toJSON default', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
 
-    expect(builder.chartType.toJson()).toBe('table')
+    expect(builder.chartType.toJSON()).toBe('table')
   })
 
-  test('toJson with value', () => {
+  test('toJSON with value', () => {
     const dsl = { chartType: 'pie' } as VBIDSL
     const builder = VBI.from(dsl)
 
-    expect(builder.chartType.toJson()).toBe('pie')
+    expect(builder.chartType.toJSON()).toBe('pie')
   })
 
   test('getAvailableChartTypes', () => {

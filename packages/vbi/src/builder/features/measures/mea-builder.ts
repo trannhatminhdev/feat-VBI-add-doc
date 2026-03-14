@@ -95,7 +95,7 @@ export class MeasuresBuilder {
   /**
    * @description 导出所有度量为 JSON 数组
    */
-  toJson(): VBIMeasure[] {
+  toJSON(): VBIMeasure[] {
     return this.dsl.get('measures').toJSON() as VBIMeasure[]
   }
 

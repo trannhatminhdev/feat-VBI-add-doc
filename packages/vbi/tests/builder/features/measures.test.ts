@@ -120,7 +120,7 @@ describe('MeasuresBuilder', () => {
     const node = builder.measures.find('sales')
 
     expect(node?.getField()).toBe('sales')
-    expect(node?.toJson()).toEqual({ field: 'sales', alias: '销售额' })
+    expect(node?.toJSON()).toEqual({ field: 'sales', alias: '销售额' })
   })
 
   test('findMeasure returns undefined if not found', () => {
@@ -157,7 +157,7 @@ describe('MeasuresBuilder', () => {
     expect(nodes).toEqual([])
   })
 
-  test('toJson', () => {
+  test('toJSON', () => {
     const dsl = {
       measures: [
         { field: 'sales', alias: '销售额' },
@@ -166,7 +166,7 @@ describe('MeasuresBuilder', () => {
     } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const json = builder.measures.toJson()
+    const json = builder.measures.toJSON()
 
     expect(json).toEqual([
       { field: 'sales', alias: '销售额' },
@@ -174,11 +174,11 @@ describe('MeasuresBuilder', () => {
     ])
   })
 
-  test('toJson returns empty array when no measures', () => {
+  test('toJSON returns empty array when no measures', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
 
-    const json = builder.measures.toJson()
+    const json = builder.measures.toJSON()
 
     expect(json).toEqual([])
   })
@@ -240,7 +240,7 @@ describe('MeasuresBuilder', () => {
     const node = builder.measures.find('sales')
     node?.setAlias('新销售额')
 
-    expect(builder.measures.toJson()[0].alias).toBe('新销售额')
+    expect(builder.measures.toJSON()[0].alias).toBe('新销售额')
   })
 
   test('MeasureNodeBuilder setEncoding', () => {
@@ -250,7 +250,7 @@ describe('MeasuresBuilder', () => {
     const node = builder.measures.find('sales')
     node?.setEncoding('xAxis')
 
-    expect(builder.measures.toJson()[0].encoding).toBe('xAxis')
+    expect(builder.measures.toJSON()[0].encoding).toBe('xAxis')
   })
 
   test('MeasureNodeBuilder setAggregate', () => {
@@ -260,15 +260,15 @@ describe('MeasuresBuilder', () => {
     const node = builder.measures.find('sales')
     node?.setAggregate({ func: 'avg' })
 
-    expect(builder.measures.toJson()[0].aggregate).toEqual({ func: 'avg' })
+    expect(builder.measures.toJSON()[0].aggregate).toEqual({ func: 'avg' })
   })
 
-  test('MeasureNodeBuilder toJson', () => {
+  test('MeasureNodeBuilder toJSON', () => {
     const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
     const builder = VBI.from(dsl)
 
     const node = builder.measures.find('sales')
-    const json = node?.toJson()
+    const json = node?.toJSON()
 
     expect(json).toEqual({ field: 'sales', alias: '销售额' })
   })
@@ -282,7 +282,7 @@ describe('MeasuresBuilder', () => {
       .add('orders', (node) => node.setAlias('订单数'))
       .add('profit', (node) => node.setAlias('利润'))
 
-    const json = builder.measures.toJson()
+    const json = builder.measures.toJSON()
 
     expect(json.length).toBe(3)
     expect(json[0].field).toBe('sales')

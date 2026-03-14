@@ -92,7 +92,7 @@ export class DimensionsBuilder {
   /**
    * @description 导出所有维度为 JSON 数组
    */
-  toJson(): VBIDimension[] {
+  toJSON(): VBIDimension[] {
     return this.dsl.get('dimensions').toJSON() as VBIDimension[]
   }
 

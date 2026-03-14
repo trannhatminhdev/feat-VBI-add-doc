@@ -107,14 +107,14 @@ findAll(): DimensionNodeBuilder[]
 
 **返回**: `DimensionNodeBuilder[]`
 
-### toJson
+### toJSON
 
 导出所有维度为 JSON 数组
 
 **定义**:
 
 ```typescript
-toJson(): VBIDimension[]
+toJSON(): VBIDimension[]
 ```
 
 **返回**: `VBIDimension[]`

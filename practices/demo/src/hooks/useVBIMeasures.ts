@@ -23,11 +23,11 @@ export const useVBIMeasures = (builder: VBIBuilder | undefined) => {
     }
 
     // 初始化
-    setMeasures(builder.measures.toJson() as VBIMeasure[]);
+    setMeasures(builder.measures.toJSON() as VBIMeasure[]);
 
     // 监听变化
     const updateHandler = () => {
-      setMeasures(builder.measures.toJson() as VBIMeasure[]);
+      setMeasures(builder.measures.toJSON() as VBIMeasure[]);
     };
 
     const unobserve = builder.measures.observe(updateHandler);
