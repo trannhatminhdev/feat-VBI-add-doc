@@ -117,6 +117,27 @@ describe('WhereFiltersBuilder', () => {
     ])
   })
 
+  test('update nested filter by id', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilters.addGroup('or', (group) => {
+      group.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
+    })
+
+    builder.whereFilters.update('id-2', (node) => {
+      node.setOperator('in').setValue(['Beijing', 'Shanghai'])
+    })
+
+    expect(builder.whereFilters.toJson()).toEqual([
+      {
+        id: 'id-1',
+        op: 'or',
+        conditions: [{ id: 'id-2', field: 'region', op: 'in', value: ['Beijing', 'Shanghai'] }],
+      },
+    ])
+  })
+
   test('update throws error if not found', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
@@ -144,6 +165,26 @@ describe('WhereFiltersBuilder', () => {
       field: 'category',
       op: 'eq',
       value: 'Electronics',
+    })
+  })
+
+  test('find nested filter by id', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilters.addGroup('or', (group) => {
+      group.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
+    })
+
+    const node = builder.whereFilters.find('id-2')
+
+    expect(node).toBeDefined()
+    expect((node as any).getField()).toBe('region')
+    expect((node as any).toJson()).toEqual({
+      id: 'id-2',
+      field: 'region',
+      op: 'eq',
+      value: 'Beijing',
     })
   })
 
@@ -198,12 +239,46 @@ describe('WhereFiltersBuilder', () => {
       callCount++
     })
 
-    builder.whereFilters.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
+    builder.doc.transact(() => {
+      builder.whereFilters.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
+    })
     expect(callCount).toBe(1)
 
     unobserve()
 
-    builder.whereFilters.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
+    builder.doc.transact(() => {
+      builder.whereFilters.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
+    })
+    expect(callCount).toBe(1)
+  })
+
+  test('observe reacts to nested filter updates', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilters.addGroup('or', (group) => {
+      group.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
+    })
+
+    let callCount = 0
+    const unobserve = builder.whereFilters.observe(() => {
+      callCount++
+    })
+
+    builder.doc.transact(() => {
+      builder.whereFilters.update('id-2', (node) => {
+        node.setValue('Shanghai')
+      })
+    })
+    expect(callCount).toBe(1)
+
+    unobserve()
+
+    builder.doc.transact(() => {
+      builder.whereFilters.update('id-2', (node) => {
+        node.setValue('Guangzhou')
+      })
+    })
     expect(callCount).toBe(1)
   })
 
@@ -310,6 +385,43 @@ describe('WhereFiltersBuilder', () => {
     expect(json[5].op).toBe('lte')
     expect(json[6].op).toBe('in')
     expect(json[7].op).toBe('like')
+  })
+
+  test('buildVQuery handles not between range objects', () => {
+    const builder = VBI.from({
+      ...VBI.generateEmptyDSL('demo'),
+      chartType: 'column',
+      dimensions: [{ field: 'category', alias: 'category' }],
+      measures: [{ field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+      whereFilters: [],
+      havingFilters: [],
+      version: 1,
+    } as VBIDSL)
+
+    builder.whereFilters.add('sales', (node) => {
+      node.setOperator('not between').setValue({ min: 100, max: 200, leftOp: '<=', rightOp: '<=' })
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        {
+          op: 'or',
+          conditions: [
+            {
+              field: 'sales',
+              op: '<',
+              value: 100,
+            },
+            {
+              field: 'sales',
+              op: '>',
+              value: 200,
+            },
+          ],
+        },
+      ],
+    })
   })
 })
 
@@ -452,6 +564,27 @@ describe('WhereGroupBuilder', () => {
     ])
   })
 
+  test('remove nested filter by id from root builder', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilters.addGroup('or', (group) => {
+      group
+        .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
+        .add('city', (node) => node.setOperator('eq').setValue('Hangzhou'))
+    })
+
+    builder.whereFilters.remove('id-2')
+
+    expect(builder.whereFilters.toJson()).toEqual([
+      {
+        id: 'id-1',
+        op: 'or',
+        conditions: [{ id: 'id-3', field: 'city', op: 'eq', value: 'Hangzhou' }],
+      },
+    ])
+  })
+
   test('WhereGroupBuilder remove by index', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
@@ -511,6 +644,38 @@ describe('WhereGroupBuilder', () => {
         conditions: [
           { id: 'id-2', field: 'region', op: 'eq', value: 'Beijing' },
           { id: 'id-3', field: 'city', op: 'eq', value: 'Hangzhou' },
+        ],
+      },
+    ])
+  })
+
+  test('update nested group by id', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilters.addGroup('or', (group) => {
+      group.addGroup('and', (subGroup) => {
+        subGroup.add('city', (node) => node.setOperator('eq').setValue('Hangzhou'))
+      })
+    })
+
+    builder.whereFilters.updateGroup('id-2', (group) => {
+      group.setOperator('or').add('city', (node) => node.setOperator('eq').setValue('Shanghai'))
+    })
+
+    expect(builder.whereFilters.toJson()).toEqual([
+      {
+        id: 'id-1',
+        op: 'or',
+        conditions: [
+          {
+            id: 'id-2',
+            op: 'or',
+            conditions: [
+              { id: 'id-3', field: 'city', op: 'eq', value: 'Hangzhou' },
+              { id: 'id-4', field: 'city', op: 'eq', value: 'Shanghai' },
+            ],
+          },
         ],
       },
     ])

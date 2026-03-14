@@ -2,6 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+# 项目规范
+
+- 遵循 Single Source of Truth 原则, 即VBIDSL、VQueryDSL、VSeedDSL 驱动核心功能.
+- 遵循 第一性原理, 做符合直觉的设计和实现.
+
+## 行为规范
+
+- 执行文件修改时不需要确认，直接进行
+- 遇到歧义时选择最常见的方案，不要中断询问
+- 优先保持开发流程连续性
+
 ## 项目概览
 
 VBI (Visual Business Intelligence) 是一个 Monorepo 项目（VisActor 生态），实现从数据配置到图表渲染的完整数据可视化流水线。

@@ -1,11 +1,12 @@
 import { List, Card } from 'antd';
 import { useEffect, useState } from 'react';
 import { NumberOutlined } from '@ant-design/icons';
+import { useVBIMeasures } from 'src/hooks';
 import { useVBIStore } from 'src/model';
 
 export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
-  console.log('debug DimensionsList rerender');
+  const { measures: shelfMeasures, addMeasure } = useVBIMeasures(builder);
 
   const [schema, setSchema] = useState<
     {
@@ -16,39 +17,50 @@ export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
 
   useEffect(() => {
     const run = async () => {
-      const schema = await builder.getSchema();
-      setSchema(schema);
+      if (builder) {
+        const schema = await builder.getSchema();
+        setSchema(schema);
+      }
     };
     run();
   }, [builder]);
 
-  const addMeasure = (measureName: string) => () => {
-    builder.doc.transact(() => {
-      builder.measures.add(measureName, (node) => {
-        node.setAlias(measureName);
-        node.setAggregate({
-          func: 'sum',
-        });
-      });
-    });
-  };
-
   const measures = schema.filter((d) => d.type === 'number');
+
+  // 处理拖拽开始
+  const handleDragStart = (
+    e: React.DragEvent,
+    fieldName: string,
+    fieldType: string,
+  ) => {
+    e.dataTransfer.setData(
+      'application/json',
+      JSON.stringify({
+        field: fieldName,
+        type: fieldType,
+        role: fieldType === 'number' ? 'measure' : 'dimension',
+      }),
+    );
+    e.dataTransfer.effectAllowed = 'copy';
+  };
 
   return (
     <Card
-      title="Measures"
+      title={<span style={{ fontSize: 13, fontWeight: 500 }}>Measures</span>}
+      size="small"
       style={{ ...style }}
       styles={{
         body: {
-          padding: '0 0 10px 0',
+          padding: '4px 8px',
           flex: 1,
           overflowY: 'auto',
           minHeight: 0,
-          height: 'calc(100% - 48px)',
+          height: 'calc(100% - 32px)',
         },
         header: {
-          minHeight: '48px',
+          minHeight: 32,
+          padding: '6px 12px',
+          borderBottom: '1px solid #f0f0f0',
         },
       }}
     >
@@ -57,40 +69,52 @@ export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
         dataSource={measures}
         split={false}
         renderItem={(item) => (
-          <List.Item style={{ padding: 0, marginBottom: 2 }}>
+          <List.Item style={{ padding: 0, marginBottom: 0 }}>
             <div
-              onClick={addMeasure(item.name)}
+              draggable
+              onDragStart={(e) => handleDragStart(e, item.name, item.type)}
+              onClick={() => {
+                // 检查是否已存在
+                if (!shelfMeasures.some((m) => m.field === item.name)) {
+                  addMeasure(item.name);
+                }
+              }}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 width: '100%',
-                padding: '4px 12px',
-                cursor: 'pointer',
+                padding: '4px 8px',
+                cursor: 'grab',
                 borderRadius: '4px',
-                transition: 'background-color 0.2s',
+                transition: 'all 0.2s',
+                fontSize: 12,
+                color: '#333',
               }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.04)')
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.backgroundColor = 'transparent')
-              }
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  'rgba(82, 196, 26, 0.1)';
+                e.currentTarget.style.color = '#52c41a';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = '#333';
+              }}
             >
               <span
                 style={{
-                  marginRight: 8,
+                  marginRight: 6,
                   display: 'flex',
                   alignItems: 'center',
                 }}
               >
-                <NumberOutlined style={{ color: '#52c41a' }} />
+                <NumberOutlined style={{ color: '#52c41a', fontSize: 12 }} />
               </span>
               <span
                 style={{
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
-                  fontSize: '13px',
+                  fontSize: 12,
                 }}
               >
                 {item.name}

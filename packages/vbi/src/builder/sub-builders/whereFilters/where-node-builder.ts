@@ -22,6 +22,15 @@ export class WhereFilterNodeBuilder {
   }
 
   /**
+   * @description 设置字段名
+   * @param field - 字段名
+   */
+  setField(field: string): this {
+    this.yMap.set('field', field)
+    return this
+  }
+
+  /**
    * @description 获取过滤操作符
    */
   getOperator(): string | undefined {

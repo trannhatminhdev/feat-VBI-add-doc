@@ -1,0 +1,87 @@
+import { useState, useEffect, useCallback } from 'react';
+import { VBIBuilder } from '@visactor/vbi';
+
+export interface VBIDimension {
+  field: string;
+  alias: string;
+}
+
+/**
+ * VBI Dimensions Hook
+ * 提供维度管理
+ */
+export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
+  const [dimensions, setDimensions] = useState<VBIDimension[]>([]);
+
+  useEffect(() => {
+    if (!builder) {
+      return;
+    }
+
+    // 初始化
+    setDimensions(builder.dimensions.toJson() as VBIDimension[]);
+
+    // 监听变化
+    const updateHandler = () => {
+      setDimensions(builder.dimensions.toJson() as VBIDimension[]);
+    };
+
+    const unobserve = builder.dimensions.observe(updateHandler);
+    return unobserve;
+  }, [builder]);
+
+  // 添加维度
+  const addDimension = useCallback(
+    (field: string) => {
+      if (builder) {
+        builder.doc.transact(() => {
+          builder.dimensions.add(field, () => {});
+        });
+      }
+    },
+    [builder],
+  );
+
+  // 删除维度
+  const removeDimension = useCallback(
+    (field: string) => {
+      if (builder) {
+        builder.doc.transact(() => {
+          builder.dimensions.remove(field);
+        });
+      }
+    },
+    [builder],
+  );
+
+  // 更新维度
+  const updateDimension = useCallback(
+    (field: string, callback: (node: any) => void) => {
+      if (builder) {
+        builder.doc.transact(() => {
+          builder.dimensions.update(field, callback);
+        });
+      }
+    },
+    [builder],
+  );
+
+  // 查找维度
+  const findDimension = useCallback(
+    (field: string) => {
+      if (builder) {
+        return builder.dimensions.find(field);
+      }
+      return undefined;
+    },
+    [builder],
+  );
+
+  return {
+    dimensions,
+    addDimension,
+    removeDimension,
+    updateDimension,
+    findDimension,
+  };
+};

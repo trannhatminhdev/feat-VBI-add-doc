@@ -38,31 +38,83 @@ function mapGroupToCondition(group: VBIWhereGroup): any {
 }
 
 function mapFilterToCondition(filter: VBIFilter): any[] {
-  if (filter.op === 'between') {
+  if (filter.op === 'between' || filter.op === 'not between') {
     return handleBetweenFilter(filter)
   }
   return handleSimpleFilter(filter)
 }
 
 function handleBetweenFilter(filter: VBIFilter): any[] {
-  const conditions: any[] = []
-  const value = filter.value as { min?: unknown; max?: unknown; leftOp?: string; rightOp?: string }
+  const value = normalizeBetweenValue(filter.value)
+  const lowerCondition =
+    value.min !== undefined && value.min !== null && value.min !== ''
+      ? {
+          field: filter.field,
+          op: value.leftOp === '<' ? '>' : '>=',
+          value: value.min,
+        }
+      : undefined
+  const upperCondition =
+    value.max !== undefined && value.max !== null && value.max !== ''
+      ? {
+          field: filter.field,
+          op: value.rightOp === '<' ? '<' : '<=',
+          value: value.max,
+        }
+      : undefined
 
-  if (value.min !== undefined && value.min !== null && value.min !== '') {
-    conditions.push({
-      field: filter.field,
-      op: value.leftOp === '<' ? '>' : '>=',
-      value: value.min,
-    })
+  if (filter.op === 'not between') {
+    const outsideConditions = [
+      lowerCondition && invertLowerBound(lowerCondition),
+      upperCondition && invertUpperBound(upperCondition),
+    ].filter(Boolean)
+
+    if (outsideConditions.length <= 1) {
+      return outsideConditions as any[]
+    }
+
+    return [
+      {
+        op: 'or',
+        conditions: outsideConditions,
+      },
+    ]
   }
-  if (value.max !== undefined && value.max !== null && value.max !== '') {
-    conditions.push({
-      field: filter.field,
-      op: value.rightOp === '<' ? '<' : '<=',
-      value: value.max,
-    })
+
+  return [lowerCondition, upperCondition].filter(Boolean) as any[]
+}
+
+function normalizeBetweenValue(value: unknown): { min?: unknown; max?: unknown; leftOp?: string; rightOp?: string } {
+  if (Array.isArray(value)) {
+    return {
+      min: value[0],
+      max: value[1],
+      leftOp: '<=',
+      rightOp: '<=',
+    }
   }
-  return conditions
+
+  if (typeof value === 'object' && value !== null) {
+    return value as { min?: unknown; max?: unknown; leftOp?: string; rightOp?: string }
+  }
+
+  return {}
+}
+
+function invertLowerBound(condition: { field: string; op: string; value: unknown }) {
+  return {
+    field: condition.field,
+    op: condition.op === '>' ? '<=' : '<',
+    value: condition.value,
+  }
+}
+
+function invertUpperBound(condition: { field: string; op: string; value: unknown }) {
+  return {
+    field: condition.field,
+    op: condition.op === '<' ? '>=' : '>',
+    value: condition.value,
+  }
 }
 
 function handleSimpleFilter(filter: VBIFilter): any[] {

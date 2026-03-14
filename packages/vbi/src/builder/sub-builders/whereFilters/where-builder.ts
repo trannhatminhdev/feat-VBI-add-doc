@@ -1,6 +1,7 @@
 import * as Y from 'yjs'
 import type { VBIWhereClause, ObserveCallback } from 'src/types'
 import { id } from 'src/utils'
+import { findEntry, isWhereGroup } from '../../utils/where-utils'
 import { WhereFilterNodeBuilder } from './where-node-builder'
 import { WhereGroupBuilder } from './where-group-builder'
 
@@ -64,13 +65,17 @@ export class WhereFiltersBuilder {
    */
   update(id: string, callback: (node: WhereFilterNodeBuilder) => void): WhereFiltersBuilder {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    const index = whereFilters.toArray().findIndex((item: any) => item.get('id') === id)
+    const match = findEntry(whereFilters, id)
 
-    if (index === -1) {
+    if (!match) {
       throw new Error(`Where filter with id ${id} not found`)
     }
 
-    const filterYMap = whereFilters.get(index)
+    if (!WhereFiltersBuilder.isNode(match.item)) {
+      throw new Error(`Item with id ${id} is not a filter`)
+    }
+
+    const filterYMap = match.item
     const node = new WhereFilterNodeBuilder(filterYMap)
     callback(node)
     return this
@@ -83,13 +88,13 @@ export class WhereFiltersBuilder {
    */
   updateGroup(id: string, callback: (group: WhereGroupBuilder) => void): WhereFiltersBuilder {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    const index = whereFilters.toArray().findIndex((item: any) => item.get('id') === id)
+    const match = findEntry(whereFilters, id)
 
-    if (index === -1) {
+    if (!match) {
       throw new Error(`Where group with id ${id} not found`)
     }
 
-    const yMap = whereFilters.get(index)
+    const yMap = match.item
     if (!WhereFiltersBuilder.isGroup(yMap)) {
       throw new Error(`Item with id ${id} is not a group`)
     }
@@ -111,9 +116,9 @@ export class WhereFiltersBuilder {
         whereFilters.delete(idOrIndex, 1)
       }
     } else {
-      const index = whereFilters.toArray().findIndex((item: any) => item.get('id') === idOrIndex)
-      if (index !== -1) {
-        whereFilters.delete(index, 1)
+      const match = findEntry(whereFilters, idOrIndex)
+      if (match) {
+        match.collection.delete(match.index, 1)
       }
     }
     return this
@@ -125,7 +130,8 @@ export class WhereFiltersBuilder {
    */
   find(id: string): WhereFilterNodeBuilder | WhereGroupBuilder | undefined {
     const whereFilters = this.dsl.get('whereFilters') as Y.Array<any>
-    const yMap = whereFilters.toArray().find((item: any) => item.get('id') === id)
+    const match = findEntry(whereFilters, id)
+    const yMap = match?.item
 
     if (!yMap) {
       return undefined
@@ -159,9 +165,10 @@ export class WhereFiltersBuilder {
    * @returns 取消监听的函数
    */
   observe(callback: ObserveCallback): () => void {
-    this.dsl.get('whereFilters').observe(callback)
+    const whereFilters = this.dsl.get('whereFilters')
+    whereFilters.observeDeep(callback as any)
     return () => {
-      this.dsl.get('whereFilters').unobserve(callback)
+      whereFilters.unobserveDeep(callback as any)
     }
   }
 
@@ -169,7 +176,7 @@ export class WhereFiltersBuilder {
    * @description 判断是否为分组节点
    */
   static isGroup(yMap: Y.Map<any>): boolean {
-    return yMap.get('op') !== undefined && yMap.get('conditions') !== undefined
+    return isWhereGroup(yMap)
   }
 
   /**
