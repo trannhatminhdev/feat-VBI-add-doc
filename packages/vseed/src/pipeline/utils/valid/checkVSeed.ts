@@ -1,13 +1,17 @@
-import { isEmpty } from 'remeda'
+import { isArray, isEmpty } from 'remeda'
 import type { VSeed } from 'src/types'
+import { isVTable } from '../chatType'
 
 export const checkVSeed = (vseed: VSeed) => {
   const { chartType, dataset, dimensions, measures } = vseed
   if (!chartType) {
     throw new Error('chartType is required')
   }
-  if (!dataset || isEmpty(dataset)) {
+  if (!dataset || !isArray(dataset)) {
     throw new Error('dataset is required, and must be an array')
+  }
+  if (isEmpty(dataset) && !isVTable(vseed)) {
+    throw new Error('dataset can not empty')
   }
   if (dimensions && !Array.isArray(dimensions)) {
     throw new Error('dimensions must be an array')

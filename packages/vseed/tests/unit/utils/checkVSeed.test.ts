@@ -26,9 +26,14 @@ describe('checkVSeed', () => {
     expect(call(bad)).toThrowError('dataset is required, and must be an array')
   })
 
-  it('throws when dataset is empty array', () => {
-    const bad = { chartType: 'table', dataset: [] }
+  it('throws when dataset is not an array', () => {
+    const bad = { chartType: 'table', dataset: {} }
     expect(call(bad)).toThrowError('dataset is required, and must be an array')
+  })
+
+  it('throws when dataset is empty', () => {
+    const bad = { chartType: 'bar', dataset: [] }
+    expect(call(bad)).toThrowError('dataset can not empty')
   })
 
   it('throws when dimensions is not array', () => {
