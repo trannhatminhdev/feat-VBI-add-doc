@@ -1,4 +1,4 @@
-import { isArray } from 'remeda'
+import { isArray, isEmpty } from 'remeda'
 import type { VSeed } from 'src/types'
 
 export const checkVSeed = (vseed: VSeed) => {
@@ -8,6 +8,9 @@ export const checkVSeed = (vseed: VSeed) => {
   }
   if (!dataset || !isArray(dataset)) {
     throw new Error('dataset is required, and must be an array')
+  }
+  if (isEmpty(dataset) && !['table', 'pivotTable'].includes(vseed.chartType)) {
+    throw new Error('dataset can not empty')
   }
   if (dimensions && !Array.isArray(dimensions)) {
     throw new Error('dimensions must be an array')
