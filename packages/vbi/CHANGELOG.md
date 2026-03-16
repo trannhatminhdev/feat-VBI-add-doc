@@ -1,5 +1,13 @@
 # @visactor/vbi
 
+## 0.4.16
+
+### Patch Changes
+
+- fba7871: feat: vtable allow empty dataset
+- Updated dependencies [fba7871]
+  - @visactor/vseed@0.4.16
+
 ## 0.4.15
 
 ### Patch Changes

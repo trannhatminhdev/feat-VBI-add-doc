@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.16
+
+### Patch Changes
+
+- fba7871: feat: vtable allow empty dataset
+
 ## 0.4.15
 
 ### Patch Changes
