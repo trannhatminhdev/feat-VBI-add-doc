@@ -10,7 +10,7 @@ export const checkVSeed = (vseed: VSeed) => {
   if (!dataset || !isArray(dataset)) {
     throw new Error('dataset is required, and must be an array')
   }
-  if (isEmpty(dataset) && isVTable(vseed)) {
+  if (isEmpty(dataset) && !isVTable(vseed)) {
     throw new Error('dataset can not empty')
   }
   if (dimensions && !Array.isArray(dimensions)) {
