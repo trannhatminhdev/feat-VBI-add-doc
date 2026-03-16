@@ -1,4 +1,4 @@
-import { isEmpty } from 'remeda'
+import { isArray } from 'remeda'
 import type { VSeed } from 'src/types'
 
 export const checkVSeed = (vseed: VSeed) => {
@@ -6,7 +6,7 @@ export const checkVSeed = (vseed: VSeed) => {
   if (!chartType) {
     throw new Error('chartType is required')
   }
-  if (!dataset || isEmpty(dataset)) {
+  if (!dataset || !isArray(dataset)) {
     throw new Error('dataset is required, and must be an array')
   }
   if (dimensions && !Array.isArray(dimensions)) {
