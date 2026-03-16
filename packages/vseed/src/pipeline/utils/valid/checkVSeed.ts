@@ -1,5 +1,6 @@
 import { isArray, isEmpty } from 'remeda'
 import type { VSeed } from 'src/types'
+import { isVTable } from '../chatType'
 
 export const checkVSeed = (vseed: VSeed) => {
   const { chartType, dataset, dimensions, measures } = vseed
@@ -9,7 +10,7 @@ export const checkVSeed = (vseed: VSeed) => {
   if (!dataset || !isArray(dataset)) {
     throw new Error('dataset is required, and must be an array')
   }
-  if (isEmpty(dataset) && !['table', 'pivotTable'].includes(vseed.chartType)) {
+  if (isEmpty(dataset) && isVTable(vseed)) {
     throw new Error('dataset can not empty')
   }
   if (dimensions && !Array.isArray(dimensions)) {
