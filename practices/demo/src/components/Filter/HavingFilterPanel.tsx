@@ -8,10 +8,10 @@ import {
   Form,
   Typography,
   Tooltip,
-  Radio,
   InputNumber,
   Empty,
   Badge,
+  Tag,
 } from 'antd';
 import {
   FilterOutlined,
@@ -21,18 +21,31 @@ import {
   ClearOutlined,
   CheckOutlined,
 } from '@ant-design/icons';
+import type { VBIHavingAggregate } from '@visactor/vbi';
 import {
-  HAVING_AGGREGATE_OPTIONS,
-  HAVING_OPERATOR_OPTIONS,
+  getDefaultHavingAggregateByFieldRole,
+  getDefaultHavingOperator,
+  getHavingAggregateOptionGroupsByFieldRole,
+  getHavingDisplayText,
+  getHavingFilterFormValue,
+  getHavingFilterInputStrategy,
+  getHavingOperatorOptions,
+  isHavingNumericAggregate,
+  normalizeHavingAggregate,
+  normalizeHavingOperator,
+  normalizeHavingRangeValue,
+  serializeHavingFilterValue,
+  toHavingAggregate,
+  type HavingFilterRangeValue,
 } from './havingFilterUtils';
 
 const { Option = Select.Option } = Select;
 const { Text } = Typography;
 
 export interface HavingItem {
-  id?: string; // 可选的 ID，用于增量操作
+  id?: string;
   field: string;
-  aggregateFunc: string;
+  aggregate: VBIHavingAggregate;
   operator: string;
   value: unknown;
 }
@@ -47,12 +60,37 @@ interface HavingFilterPanelProps {
   activeFields?: string[];
   filters: HavingItem[];
   onChange?: (filters: HavingItem[]) => void;
-  onAdd?: (filter: HavingItem) => void; // 增量添加回调
-  onRemove?: (id: string) => void; // 增量删除回调
+  onAdd?: (filter: HavingItem) => void;
+  onRemove?: (id: string) => void;
   onCancel?: () => void;
   embedded?: boolean;
   itemEdit?: boolean;
+  open?: boolean;
 }
+
+type HavingFormValues = {
+  field: string;
+  aggregateFunc: string;
+  operator: string;
+  value: HavingFormValue;
+};
+
+type HavingFormValue =
+  | string
+  | number
+  | Array<string | number>
+  | HavingFilterRangeValue
+  | undefined;
+
+const getFieldRole = (
+  fields: HavingField[],
+  fieldName: string | undefined,
+): 'dimension' | 'measure' => {
+  if (!fieldName) {
+    return 'measure';
+  }
+  return fields.find((field) => field.name === fieldName)?.role ?? 'measure';
+};
 
 export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   fields,
@@ -64,12 +102,20 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   onCancel,
   embedded = false,
   itemEdit = false,
+  open = false,
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<HavingFormValues>();
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const selectedField = Form.useWatch('field', form);
+  const selectedAggregateFunc = Form.useWatch('aggregateFunc', form);
+  const selectedOperator = normalizeHavingOperator(
+    Form.useWatch('operator', form),
+  );
+  const isSingleItemEdit = itemEdit && filters.length === 1;
 
   const sortedFields = React.useMemo(() => {
     const activeSet = new Set(activeFields);
@@ -82,106 +128,215 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
     });
   }, [fields, activeFields]);
 
-  const selectedField = Form.useWatch('field', form);
-  const operator = Form.useWatch('operator', form);
-  const aggregateFunc = Form.useWatch('aggregateFunc', form);
+  const selectedFieldRole = React.useMemo(() => {
+    if (selectedField) {
+      return getFieldRole(fields, selectedField);
+    }
 
-  // Reset form when opening/closing
+    if (isSingleItemEdit) {
+      return getFieldRole(fields, filters[0]?.field);
+    }
+
+    return 'measure';
+  }, [fields, selectedField, isSingleItemEdit, filters]);
+
+  const aggregateOptionGroups = React.useMemo(() => {
+    return getHavingAggregateOptionGroupsByFieldRole(selectedFieldRole);
+  }, [selectedFieldRole]);
+
+  const aggregateSelectOptions = React.useMemo(() => {
+    return aggregateOptionGroups.map((group) => ({
+      label: group.label,
+      options: group.options.map((item) => ({
+        label: item.label,
+        value: item.value,
+      })),
+    }));
+  }, [aggregateOptionGroups]);
+
+  const availableAggregateFuncs = React.useMemo(() => {
+    return aggregateOptionGroups.flatMap((group) =>
+      group.options.map((item) => item.value),
+    );
+  }, [aggregateOptionGroups]);
+
+  const recommendedAggregateOptions = React.useMemo(() => {
+    return (
+      aggregateOptionGroups.find((group) => group.label === '常用')?.options ??
+      []
+    );
+  }, [aggregateOptionGroups]);
+
+  const selectedAggregate = React.useMemo(() => {
+    const fallback = getDefaultHavingAggregateByFieldRole(selectedFieldRole);
+    const aggregate = selectedAggregateFunc
+      ? toHavingAggregate(selectedAggregateFunc)
+      : fallback;
+    return normalizeHavingAggregate(aggregate, selectedFieldRole);
+  }, [selectedAggregateFunc, selectedFieldRole]);
+
+  const isNumericValue = React.useMemo(() => {
+    return isHavingNumericAggregate(selectedFieldRole, selectedAggregate);
+  }, [selectedFieldRole, selectedAggregate]);
+
+  const operatorOptions = React.useMemo(() => {
+    return getHavingOperatorOptions(isNumericValue);
+  }, [isNumericValue]);
+
+  const inputStrategy = React.useMemo(() => {
+    return getHavingFilterInputStrategy(selectedOperator, isNumericValue);
+  }, [selectedOperator, isNumericValue]);
+
+  const isActive = embedded || popoverOpen || (isSingleItemEdit && open);
+
   useEffect(() => {
+    if (itemEdit) {
+      return;
+    }
     if (!popoverOpen) {
       setIsAdding(false);
       setEditingId(null);
       form.resetFields();
     }
-  }, [popoverOpen, form]);
+  }, [popoverOpen, form, itemEdit]);
 
-  React.useEffect(() => {
-    if (popoverOpen) {
-      const currentOperator = form.getFieldValue('operator');
-      if (
-        currentOperator &&
-        !HAVING_OPERATOR_OPTIONS.find((op) => op.value === currentOperator)
-      ) {
-        form.setFieldValue('operator', HAVING_OPERATOR_OPTIONS[0]?.value);
+  useEffect(() => {
+    if (!isSingleItemEdit || !open) {
+      return;
+    }
+
+    const current = filters[0];
+    if (!current) {
+      return;
+    }
+
+    const fieldRole = getFieldRole(fields, current.field);
+    const aggregate = normalizeHavingAggregate(current.aggregate, fieldRole);
+    const operator = normalizeHavingOperator(current.operator);
+
+    form.setFieldsValue({
+      field: current.field,
+      aggregateFunc: aggregate.func,
+      operator,
+      value: getHavingFilterFormValue(
+        operator,
+        current.value,
+      ) as HavingFormValue,
+    });
+  }, [isSingleItemEdit, open, filters, fields, form]);
+
+  useEffect(() => {
+    if (!isActive) {
+      return;
+    }
+
+    const currentAggregateFunc = form.getFieldValue('aggregateFunc');
+    if (
+      currentAggregateFunc &&
+      availableAggregateFuncs.includes(currentAggregateFunc)
+    ) {
+      return;
+    }
+
+    form.setFieldValue(
+      'aggregateFunc',
+      getDefaultHavingAggregateByFieldRole(selectedFieldRole).func,
+    );
+  }, [form, isActive, selectedFieldRole, availableAggregateFuncs]);
+
+  useEffect(() => {
+    if (!isActive) {
+      return;
+    }
+
+    const currentOperator = normalizeHavingOperator(
+      form.getFieldValue('operator'),
+    );
+    if (operatorOptions.some((option) => option.value === currentOperator)) {
+      return;
+    }
+
+    form.setFieldValue('operator', getDefaultHavingOperator(isNumericValue));
+  }, [form, isActive, operatorOptions, isNumericValue]);
+
+  useEffect(() => {
+    if (!isActive) {
+      return;
+    }
+
+    const currentValue = form.getFieldValue('value');
+    if (inputStrategy === 'none') {
+      if (currentValue !== undefined) {
+        form.setFieldValue('value', undefined);
       }
+      return;
     }
-  }, [popoverOpen, form]);
 
-  React.useEffect(() => {
-    if (popoverOpen && operator) {
-      const currentValue = form.getFieldValue('value');
-      if (operator === 'between') {
-        if (
-          typeof currentValue !== 'object' ||
-          Array.isArray(currentValue) ||
-          currentValue === null
-        ) {
-          form.setFieldValue('value', {
-            min: undefined,
-            max: undefined,
-            leftOp: '<=',
-            rightOp: '<=',
-          });
-        }
-      } else {
-        if (
-          typeof currentValue === 'object' &&
-          !Array.isArray(currentValue) &&
-          currentValue !== null
-        ) {
-          form.setFieldValue('value', undefined);
-        }
+    if (inputStrategy === 'range') {
+      const normalizedRange = normalizeHavingRangeValue(currentValue);
+      const hasChanged =
+        !currentValue ||
+        typeof currentValue !== 'object' ||
+        Array.isArray(currentValue) ||
+        currentValue.min !== normalizedRange.min ||
+        currentValue.max !== normalizedRange.max;
+
+      if (hasChanged) {
+        form.setFieldValue('value', normalizedRange);
       }
+      return;
     }
-  }, [operator, popoverOpen, form]);
 
-  // itemEdit 模式下，自动进入编辑模式
-  React.useEffect(() => {
-    if (itemEdit && filters.length === 1 && !editingId && !isAdding) {
-      const item = filters[0];
-      setEditingId(item.id || null);
-      const value =
-        item.operator === 'between'
-          ? item.value
-          : Array.isArray(item.value)
-            ? item.value.join(',')
-            : item.value;
-      form.setFieldsValue({
-        field: item.field,
-        aggregateFunc: item.aggregateFunc,
-        operator: item.operator,
-        value: value,
-      });
+    if (inputStrategy === 'tags') {
+      if (!Array.isArray(currentValue)) {
+        form.setFieldValue(
+          'value',
+          getHavingFilterFormValue(
+            selectedOperator,
+            currentValue,
+          ) as HavingFormValue,
+        );
+      }
+      return;
     }
-  }, [itemEdit, filters, form, editingId, isAdding]);
+
+    if (Array.isArray(currentValue)) {
+      form.setFieldValue('value', currentValue[0]);
+      return;
+    }
+
+    if (typeof currentValue === 'object' && currentValue !== null) {
+      form.setFieldValue('value', undefined);
+    }
+  }, [form, inputStrategy, isActive, selectedOperator]);
 
   const handleAddClick = () => {
     setEditingId(null);
     form.resetFields();
     form.setFieldsValue({
       aggregateFunc: 'sum',
-      operator: '>',
+      operator: getDefaultHavingOperator(true),
     });
     setIsAdding(true);
   };
 
   const handleEdit = (id: string) => {
-    const item = filters.find((f) => f.id === id);
-    if (!item) return;
+    const item = filters.find((filter) => filter.id === id);
+    if (!item) {
+      return;
+    }
 
-    const value =
-      item.operator === 'between'
-        ? item.value
-        : Array.isArray(item.value)
-          ? item.value.join(',')
-          : item.value;
+    const fieldRole = getFieldRole(fields, item.field);
+    const aggregate = normalizeHavingAggregate(item.aggregate, fieldRole);
+    const operator = normalizeHavingOperator(item.operator);
+
     setEditingId(id);
     setIsAdding(false);
     form.setFieldsValue({
       field: item.field,
-      aggregateFunc: item.aggregateFunc,
-      operator: item.operator,
-      value: value,
+      aggregateFunc: aggregate.func,
+      operator,
+      value: getHavingFilterFormValue(operator, item.value) as HavingFormValue,
     });
   };
 
@@ -194,55 +349,54 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      const { field, aggregateFunc, operator, value } = values;
-      const finalValue =
-        (operator === 'in' ||
-          operator === 'not in' ||
-          operator === '=' ||
-          operator === '!=') &&
-        typeof value === 'string'
-          ? value.split(',').map((v: string) => v.trim())
-          : value;
+      const fieldRole = getFieldRole(fields, values.field);
+      const aggregate = normalizeHavingAggregate(
+        toHavingAggregate(values.aggregateFunc),
+        fieldRole,
+      );
+      const operator = normalizeHavingOperator(values.operator);
+      const finalValue = serializeHavingFilterValue({
+        operator,
+        isNumericValue: isHavingNumericAggregate(fieldRole, aggregate),
+        value: values.value,
+      });
 
-      // 获取原有 filter 的 id（编辑模式）
-      const existingFilter = editingId
-        ? filters.find((f) => f.id === editingId)
-        : undefined;
-      const newFilter: HavingItem = {
+      const existingFilter = isSingleItemEdit
+        ? filters[0]
+        : editingId
+          ? filters.find((filter) => filter.id === editingId)
+          : undefined;
+
+      const nextFilter: HavingItem = {
         id: existingFilter?.id,
-        field,
-        aggregateFunc,
+        field: values.field,
+        aggregate,
         operator,
         value: finalValue,
       };
 
-      // 优先使用增量回调
-      if (editingId) {
-        // 编辑模式：需要 onChange
+      if (editingId || isSingleItemEdit) {
         if (onChange) {
-          const newFilters = [...filters];
-          const editIndex = newFilters.findIndex((f) => f.id === editingId);
-          if (editIndex >= 0) {
-            newFilters[editIndex] = {
-              ...newFilters[editIndex],
-              field,
-              aggregateFunc,
-              operator,
-              value: finalValue,
+          const nextFilters = [...filters];
+          const targetId = existingFilter?.id;
+          const targetIndex = nextFilters.findIndex(
+            (item) => item.id === targetId,
+          );
+          if (targetIndex >= 0) {
+            nextFilters[targetIndex] = {
+              ...nextFilters[targetIndex],
+              ...nextFilter,
             };
-            onChange(newFilters);
+            onChange(nextFilters);
           }
-        } else if (onRemove && onAdd) {
-          // 兼容模式：先删除再添加
-          onRemove(editingId);
-          onAdd(newFilter);
+        } else if (onRemove && existingFilter?.id) {
+          onRemove(existingFilter.id);
+          onAdd?.(nextFilter);
         }
       } else if (onAdd) {
-        // 增量添加模式
-        onAdd(newFilter);
+        onAdd(nextFilter);
       } else if (onChange) {
-        // 全量添加模式
-        onChange([...filters, newFilter]);
+        onChange([...filters, nextFilter]);
       }
 
       setIsAdding(false);
@@ -252,65 +406,112 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   };
 
   const handleDelete = (id: string) => {
-    // 如果有 onRemove 回调和 ID，使用增量删除
-    if (onRemove && id) {
-      onRemove(id);
-    } else if (onChange) {
-      // 否则使用全量更新（兼容模式）
-      const newFilters = filters.filter((f) => f.id !== id);
-      onChange(newFilters);
+    if (onChange) {
+      onChange(filters.filter((item) => item.id !== id));
+      return;
     }
+
+    onRemove?.(id);
   };
 
   const handleClearAll = () => {
-    if (onChange) {
-      onChange([]);
-    }
+    onChange?.([]);
   };
 
-  // 生成 Having 过滤条件显示文本
-  const getHavingDisplayText = (item: HavingItem) => {
-    if (
-      item.operator === 'between' &&
-      item.value &&
-      typeof item.value === 'object'
-    ) {
-      const v = item.value as {
-        min?: string;
-        max?: string;
-        leftOp?: string;
-        rightOp?: string;
-      };
-      return `${v.min ?? ''} ${v.leftOp ?? '<='} ${item.aggregateFunc}(${item.field}) ${v.rightOp ?? '<='} ${v.max ?? ''}`;
+  const renderValueFormItem = () => {
+    if (inputStrategy === 'none') {
+      return (
+        <Form.Item style={{ marginBottom: 8 }}>
+          <Text type="secondary" style={{ fontSize: 12 }}>
+            当前操作符无需输入值
+          </Text>
+        </Form.Item>
+      );
     }
-    return `${item.aggregateFunc}(${item.field}) ${item.operator} ${item.value}`;
+
+    if (inputStrategy === 'range') {
+      return (
+        <Form.Item label="值范围" style={{ marginBottom: 8 }}>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <Form.Item name={['value', 'min']} noStyle>
+              <InputNumber
+                size="small"
+                controls={false}
+                style={{ width: '100%' }}
+                placeholder="最小值"
+              />
+            </Form.Item>
+            <Form.Item name={['value', 'max']} noStyle>
+              <InputNumber
+                size="small"
+                controls={false}
+                style={{ width: '100%' }}
+                placeholder="最大值"
+              />
+            </Form.Item>
+          </div>
+        </Form.Item>
+      );
+    }
+
+    if (inputStrategy === 'tags') {
+      return (
+        <Form.Item
+          label="值"
+          name="value"
+          rules={[{ required: true, message: '请输入值' }]}
+          style={{ marginBottom: 8 }}
+        >
+          <Select
+            mode="tags"
+            size="small"
+            tokenSeparators={[',']}
+            placeholder="输入多个值，回车确认"
+          />
+        </Form.Item>
+      );
+    }
+
+    if (inputStrategy === 'number') {
+      return (
+        <Form.Item
+          label="值"
+          name="value"
+          rules={[{ required: true, message: '请输入数值' }]}
+          style={{ marginBottom: 8 }}
+        >
+          <InputNumber
+            size="small"
+            controls={false}
+            style={{ width: '100%' }}
+            placeholder="输入数值"
+          />
+        </Form.Item>
+      );
+    }
+
+    return (
+      <Form.Item
+        label="值"
+        name="value"
+        rules={[{ required: true, message: '请输入值' }]}
+        style={{ marginBottom: 8 }}
+      >
+        <Input size="small" placeholder="输入值" />
+      </Form.Item>
+    );
   };
 
   const renderHavingForm = () => (
     <Form
       form={form}
       layout="vertical"
-      style={{ width: 260, marginTop: 8 }}
+      style={{ width: 300, marginTop: 8 }}
       initialValues={{
-        operator: '>',
         aggregateFunc: 'sum',
+        operator: getDefaultHavingOperator(true),
       }}
     >
-      <Form.Item
-        label="聚合函数"
-        name="aggregateFunc"
-        rules={[{ required: true, message: '请选择聚合函数' }]}
-        style={{ marginBottom: 8 }}
-      >
-        <Radio.Group size="small" optionType="button">
-          {HAVING_AGGREGATE_OPTIONS.map((func) => (
-            <Radio key={func.value} value={func.value}>
-              {func.label.split(' ')[0]}
-            </Radio>
-          ))}
-        </Radio.Group>
-      </Form.Item>
-
       <Form.Item
         label="字段"
         name="field"
@@ -318,25 +519,31 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
         style={{ marginBottom: 8 }}
       >
         <Select
-          placeholder="选择字段"
           size="small"
+          placeholder="选择字段"
           showSearch
-          onChange={() => {
+          onChange={(fieldName) => {
+            const fieldRole = getFieldRole(fields, fieldName);
+            const aggregate = getDefaultHavingAggregateByFieldRole(fieldRole);
             form.setFieldsValue({
+              aggregateFunc: aggregate.func,
+              operator: getDefaultHavingOperator(
+                isHavingNumericAggregate(fieldRole, aggregate),
+              ),
               value: undefined,
             });
           }}
         >
-          {sortedFields.map((f) => {
-            const isActive = activeFields.includes(f.name);
+          {sortedFields.map((field) => {
+            const isActive = activeFields.includes(field.name);
             return (
-              <Option key={f.name} value={f.name}>
+              <Option key={field.name} value={field.name}>
                 <span
                   style={
                     isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
                   }
                 >
-                  {f.name} ({f.role === 'measure' ? '度量' : '维度'}){' '}
+                  {field.name} ({field.role === 'measure' ? '度量' : '维度'}){' '}
                   {isActive ? '(推荐)' : ''}
                 </span>
               </Option>
@@ -346,71 +553,68 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
       </Form.Item>
 
       <Form.Item
+        label="聚合方式"
+        name="aggregateFunc"
+        rules={[{ required: true, message: '请选择聚合方式' }]}
+        style={{ marginBottom: 8 }}
+      >
+        <div>
+          {recommendedAggregateOptions.length > 0 && (
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 6,
+                marginBottom: 8,
+              }}
+            >
+              {recommendedAggregateOptions.map((option) => (
+                <Tag.CheckableTag
+                  key={`having-aggregate-quick-${option.value}`}
+                  checked={selectedAggregateFunc === option.value}
+                  onChange={() => {
+                    form.setFieldValue('aggregateFunc', option.value);
+                  }}
+                >
+                  {option.shortLabel}
+                </Tag.CheckableTag>
+              ))}
+            </div>
+          )}
+          <Select
+            size="small"
+            options={aggregateSelectOptions}
+            value={selectedAggregateFunc}
+            placeholder="选择聚合方式"
+            onChange={(value) => {
+              form.setFieldValue('aggregateFunc', value);
+            }}
+            style={{ width: '100%' }}
+          />
+        </div>
+      </Form.Item>
+
+      <Form.Item
         label="操作符"
         name="operator"
-        rules={[{ required: true }]}
+        rules={[{ required: true, message: '请选择操作符' }]}
         style={{ marginBottom: 8 }}
       >
         <Select
           size="small"
           onChange={() => {
-            form.setFieldsValue({ value: undefined });
+            form.setFieldValue('value', undefined);
           }}
         >
-          {HAVING_OPERATOR_OPTIONS.map((op) => (
-            <Option key={op.value} value={op.value}>
-              {op.label}
+          {operatorOptions.map((option) => (
+            <Option key={option.value} value={option.value}>
+              {option.label}
             </Option>
           ))}
         </Select>
       </Form.Item>
 
-      {operator === 'between' ? (
-        <Form.Item label="范围" style={{ marginBottom: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <Form.Item name={['value', 'min']} noStyle>
-              <InputNumber
-                placeholder="最小"
-                size="small"
-                style={{ width: 50 }}
-                controls={false}
-              />
-            </Form.Item>
-            <Form.Item name={['value', 'leftOp']} noStyle>
-              <Select size="small" style={{ width: 45 }}>
-                <Option value="<">&lt;</Option>
-                <Option value="<=">&lt;=</Option>
-              </Select>
-            </Form.Item>
-            <Text ellipsis style={{ maxWidth: 60, fontSize: 12 }}>
-              {aggregateFunc}({selectedField || '?'})
-            </Text>
-            <Form.Item name={['value', 'rightOp']} noStyle>
-              <Select size="small" style={{ width: 45 }}>
-                <Option value="<">&lt;</Option>
-                <Option value="<=">&lt;=</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item name={['value', 'max']} noStyle>
-              <InputNumber
-                placeholder="最大"
-                size="small"
-                style={{ width: 50 }}
-                controls={false}
-              />
-            </Form.Item>
-          </div>
-        </Form.Item>
-      ) : (
-        <Form.Item
-          label="值"
-          name="value"
-          rules={[{ required: true, message: '请输入值' }]}
-          style={{ marginBottom: 8 }}
-        >
-          <Input size="small" placeholder="输入值" />
-        </Form.Item>
-      )}
+      {renderValueFormItem()}
 
       <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
         <Space>
@@ -423,7 +627,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
             onClick={handleSubmit}
             icon={<CheckOutlined />}
           >
-            {editingId ? '保存' : '添加'}
+            {editingId || isSingleItemEdit ? '保存' : '添加'}
           </Button>
         </Space>
       </Form.Item>
@@ -431,25 +635,27 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   );
 
   const renderHavingList = () => (
-    <div style={{ width: 280 }}>
+    <div style={{ width: 320 }}>
       {filters.length === 0 && !isAdding ? (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description="暂无分组过滤条件"
+          description="暂无 Having 条件"
           style={{ margin: '20px 0' }}
         />
       ) : (
-        <div style={{ maxHeight: 200, overflow: 'auto' }}>
+        <div style={{ maxHeight: 220, overflow: 'auto' }}>
           {filters.map((item, index) => (
             <div
               key={item.id ?? `having-filter-${index}`}
               style={{
-                padding: '4px 8px',
+                padding: '6px 8px',
                 opacity: editingId === item.id ? 0.5 : 1,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 gap: 8,
+                borderRadius: 6,
+                background: editingId === item.id ? '#f5f5f5' : 'transparent',
               }}
             >
               <Text style={{ fontSize: 12, minWidth: 0, flex: 1 }} ellipsis>
@@ -462,7 +668,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
                     size="small"
                     icon={<EditOutlined />}
                     onClick={() => item.id && handleEdit(item.id)}
-                    style={{ color: '#722ed1' }}
+                    style={{ color: '#1677ff' }}
                   />
                 </Tooltip>
                 <Tooltip title="删除">
@@ -528,8 +734,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
     </div>
   );
 
-  // itemEdit 模式：只渲染单个 item 的编辑表单
-  if (itemEdit && filters.length === 1) {
+  if (isSingleItemEdit) {
     return (
       <div ref={containerRef}>
         <div style={{ marginBottom: 8 }}>
@@ -542,7 +747,6 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
     );
   }
 
-  // embedded 模式下直接渲染内容，不显示按钮
   if (embedded) {
     return popoverContent;
   }

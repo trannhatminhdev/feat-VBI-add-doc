@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { VBIBuilder, VBIHavingClause } from '@visactor/vbi';
+import { VBIBuilder, VBIHavingAggregate, VBIHavingClause } from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
 
 const EMPTY_HAVING_CLAUSES: VBIHavingClause[] = [];
@@ -20,7 +20,7 @@ export const useVBIHavingFilter = (builder: VBIBuilder | undefined) => {
   const addFilter = useCallback(
     (
       field: string,
-      aggregateFunc?: string,
+      aggregate?: VBIHavingAggregate,
       operator?: string,
       value?: unknown,
     ) => {
@@ -30,8 +30,11 @@ export const useVBIHavingFilter = (builder: VBIBuilder | undefined) => {
 
       builder.doc.transact(() => {
         builder.havingFilter.add(field, (node) => {
-          if (aggregateFunc && operator) {
-            node.setOperator(`${aggregateFunc}(${operator})`);
+          if (aggregate) {
+            node.setAggregate(aggregate);
+          }
+          if (operator) {
+            node.setOperator(operator);
           }
           if (value !== undefined) {
             node.setValue(value);
@@ -77,13 +80,23 @@ export const useVBIHavingFilter = (builder: VBIBuilder | undefined) => {
   }, [builder]);
 
   const updateFilter = useCallback(
-    (id: string, updates: { operator?: string; value?: unknown }) => {
+    (
+      id: string,
+      updates: {
+        aggregate?: VBIHavingAggregate;
+        operator?: string;
+        value?: unknown;
+      },
+    ) => {
       if (!builder) {
         return;
       }
 
       builder.doc.transact(() => {
         builder.havingFilter.update(id, (node) => {
+          if (updates.aggregate) {
+            node.setAggregate(updates.aggregate);
+          }
           if (updates.operator) {
             node.setOperator(updates.operator);
           }
