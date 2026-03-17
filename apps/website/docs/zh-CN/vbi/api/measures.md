@@ -79,12 +79,12 @@ update(id: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilde
 
 ### find
 
-根据 ID 查找度量
+按回调条件查找第一个度量，行为与 Array.find 一致
 
 **定义**:
 
 ```typescript
-find(id: string): MeasureNodeBuilder | undefined
+find(predicate: (node: MeasureNodeBuilder, index: number) => boolean): MeasureNodeBuilder | undefined
 ```
 
 **返回**: `MeasureNodeBuilder \| undefined`
@@ -93,7 +93,7 @@ find(id: string): MeasureNodeBuilder | undefined
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `id` | string | - 度量 ID |
+| `predicate` | (node: MeasureNodeBuilder, index: number) => boolean | - 查找条件 |
 
 ### findAll
 

@@ -79,12 +79,12 @@ update(id: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBu
 
 ### find
 
-根据 ID 查找维度
+按回调条件查找第一个维度，行为与 Array.find 一致
 
 **定义**:
 
 ```typescript
-find(id: string): DimensionNodeBuilder | undefined
+find(predicate: (node: DimensionNodeBuilder, index: number) => boolean): DimensionNodeBuilder | undefined
 ```
 
 **返回**: `DimensionNodeBuilder \| undefined`
@@ -93,7 +93,7 @@ find(id: string): DimensionNodeBuilder | undefined
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `id` | string | - 维度 ID |
+| `predicate` | (node: DimensionNodeBuilder, index: number) => boolean | - 查找条件 |
 
 ### findAll
 

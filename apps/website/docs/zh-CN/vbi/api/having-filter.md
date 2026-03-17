@@ -127,12 +127,12 @@ remove(idOrIndex: string | number): HavingFilterBuilder
 
 ### find
 
-根据 ID 查找条件（过滤或分组）
+按回调条件查找第一个条件（过滤或分组），行为与 Array.find 一致
 
 **定义**:
 
 ```typescript
-find(id: string): HavingFilterNodeBuilder | HavingGroupBuilder | undefined
+find(predicate: (entry: HavingFilterNodeBuilder | HavingGroupBuilder, index: number) => boolean): HavingFilterNodeBuilder | HavingGroupBuilder | undefined
 ```
 
 **返回**: `HavingFilterNodeBuilder \| HavingGroupBuilder \| undefined`
@@ -141,7 +141,7 @@ find(id: string): HavingFilterNodeBuilder | HavingGroupBuilder | undefined
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `id` | string | - ID |
+| `predicate` | (entry: HavingFilterNodeBuilder \| HavingGroupBuilder, index: number) => boolean | - 查找条件 |
 
 ### clear
 
