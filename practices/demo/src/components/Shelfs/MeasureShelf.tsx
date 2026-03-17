@@ -63,16 +63,21 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     // 通过删除并重新添加来实现排序
     const draggedMeasure = measures[dragIndex];
     if (draggedMeasure) {
-      builder.doc.transact(() => {
-        builder.measures.remove(draggedMeasure.field);
-        // 将元素插入到新位置
-        const newMeasures = [...measures];
-        newMeasures.splice(dragIndex, 1);
-        newMeasures.splice(dropIndex, 0, draggedMeasure);
+      type YArrayLike = {
+        get: (index: number) => unknown;
+        delete: (index: number, length: number) => void;
+        insert: (index: number, content: unknown[]) => void;
+      };
+      const yMeasures = builder.dsl.get('measures') as YArrayLike | undefined;
+      if (!yMeasures) return;
 
-        newMeasures.forEach((m) => {
-          builder.measures.add(m.field, () => {});
-        });
+      builder.doc.transact(() => {
+        const draggedYMap = yMeasures.get(dragIndex);
+        if (!draggedYMap) return;
+
+        yMeasures.delete(dragIndex, 1);
+        const insertIndex = dragIndex < dropIndex ? dropIndex - 1 : dropIndex;
+        yMeasures.insert(insertIndex, [draggedYMap]);
       });
     }
   };
@@ -105,22 +110,22 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     }
   };
 
-  const renameMeasure = (field: string, alias: string) => {
-    updateMeasure(field, (node) => {
+  const renameMeasure = (id: string, alias: string) => {
+    updateMeasure(id, (node) => {
       node.setAlias(alias);
     });
   };
 
   const changeAggregate = (
-    field: string,
+    id: string,
     aggregate: 'sum' | 'count' | 'avg' | 'min' | 'max',
   ) => {
-    updateMeasure(field, (node) => {
+    updateMeasure(id, (node) => {
       node.setAggregate({ func: aggregate });
     });
   };
 
-  const openRenameModal = (field: string, currentAlias: string) => {
+  const openRenameModal = (id: string, currentAlias: string) => {
     let nextAlias = currentAlias;
     Modal.confirm({
       title: '重命名指标',
@@ -143,7 +148,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
           message.warning('名称不能为空');
           return Promise.reject();
         }
-        renameMeasure(field, trimmed);
+        renameMeasure(id, trimmed);
         return Promise.resolve();
       },
     });
@@ -181,12 +186,12 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     key: string,
   ) => {
     if (key === 'rename') {
-      openRenameModal(measure.field, measure.alias || measure.field);
+      openRenameModal(measure.id, measure.alias || measure.field);
       return;
     }
 
     if (key === 'delete') {
-      removeMeasure(measure.field);
+      removeMeasure(measure.id);
       return;
     }
 
@@ -199,7 +204,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
         aggregate === 'min' ||
         aggregate === 'max'
       ) {
-        changeAggregate(measure.field, aggregate);
+        changeAggregate(measure.id, aggregate);
       }
     }
   };
@@ -248,7 +253,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       )}
       {measures.map((measure, index) => (
         <div
-          key={`measure-shelf-${measure.field}`}
+          key={`measure-shelf-${measure.id}`}
           onDragOver={handleDragOver}
           onDrop={(e) => handleDrop(e, index)}
           style={{

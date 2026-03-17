@@ -53,15 +53,23 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
 
     const draggedDimension = dimensions[dragIndex];
     if (draggedDimension) {
-      builder.doc.transact(() => {
-        builder.dimensions.remove(draggedDimension.field);
-        const newDimensions = [...dimensions];
-        newDimensions.splice(dragIndex, 1);
-        newDimensions.splice(dropIndex, 0, draggedDimension);
+      type YArrayLike = {
+        get: (index: number) => unknown;
+        delete: (index: number, length: number) => void;
+        insert: (index: number, content: unknown[]) => void;
+      };
+      const yDimensions = builder.dsl.get('dimensions') as
+        | YArrayLike
+        | undefined;
+      if (!yDimensions) return;
 
-        newDimensions.forEach((d) => {
-          builder.dimensions.add(d.field, () => {});
-        });
+      builder.doc.transact(() => {
+        const draggedYMap = yDimensions.get(dragIndex);
+        if (!draggedYMap) return;
+
+        yDimensions.delete(dragIndex, 1);
+        const insertIndex = dragIndex < dropIndex ? dropIndex - 1 : dropIndex;
+        yDimensions.insert(insertIndex, [draggedYMap]);
       });
     }
   };
@@ -93,13 +101,13 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
     }
   };
 
-  const renameDimension = (field: string, alias: string) => {
-    updateDimension(field, (node) => {
+  const renameDimension = (id: string, alias: string) => {
+    updateDimension(id, (node) => {
       node.setAlias(alias);
     });
   };
 
-  const openRenameModal = (field: string, currentAlias: string) => {
+  const openRenameModal = (id: string, currentAlias: string) => {
     let nextAlias = currentAlias;
     Modal.confirm({
       title: '重命名维度',
@@ -122,7 +130,7 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
           message.warning('名称不能为空');
           return Promise.reject();
         }
-        renameDimension(field, trimmed);
+        renameDimension(id, trimmed);
         return Promise.resolve();
       },
     });
@@ -149,12 +157,12 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
     key: string,
   ) => {
     if (key === 'rename') {
-      openRenameModal(dimension.field, dimension.alias || dimension.field);
+      openRenameModal(dimension.id, dimension.alias || dimension.field);
       return;
     }
 
     if (key === 'delete') {
-      removeDimension(dimension.field);
+      removeDimension(dimension.id);
     }
   };
 
@@ -193,7 +201,7 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       )}
       {dimensions.map((dimension, index) => (
         <div
-          key={`dimension-shelf-${dimension.field}`}
+          key={`dimension-shelf-${dimension.id}`}
           onDragOver={handleDragOver}
           onDrop={(e) => handleDrop(e, index)}
           style={{

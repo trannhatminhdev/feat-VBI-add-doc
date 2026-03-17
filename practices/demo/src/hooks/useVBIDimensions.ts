@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { VBIBuilder } from '@visactor/vbi';
 
 export interface VBIDimension {
+  id: string;
   field: string;
   alias: string;
 }
@@ -45,10 +46,10 @@ export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
 
   // 删除维度
   const removeDimension = useCallback(
-    (field: string) => {
+    (id: string) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.dimensions.remove(field);
+          builder.dimensions.remove(id);
         });
       }
     },
@@ -57,10 +58,10 @@ export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
 
   // 更新维度
   const updateDimension = useCallback(
-    (field: string, callback: (node: any) => void) => {
+    (id: string, callback: (node: any) => void) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.dimensions.update(field, callback);
+          builder.dimensions.update(id, callback);
         });
       }
     },
@@ -69,9 +70,9 @@ export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
 
   // 查找维度
   const findDimension = useCallback(
-    (field: string) => {
+    (id: string) => {
       if (builder) {
-        return builder.dimensions.find((node) => node.getField() === field);
+        return builder.dimensions.find((node) => node.getId() === id);
       }
       return undefined;
     },
