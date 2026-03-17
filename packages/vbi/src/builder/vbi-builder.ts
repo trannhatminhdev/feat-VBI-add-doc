@@ -1,7 +1,7 @@
 import * as Y from 'yjs'
 
-import { VSeedDSL } from '@visactor/vseed'
-import { VQueryDSL } from '@visactor/vquery'
+import type { VSeedDSL } from '@visactor/vseed'
+import type { VQueryDSL } from '@visactor/vquery'
 import {
   DimensionsBuilder,
   MeasuresBuilder,
@@ -14,9 +14,17 @@ import {
   UndoManager,
 } from './features'
 
-import { VBIDSL, VBIBuilderInterface } from 'src/types'
-import { buildVQuery } from 'src/pipeline'
-import { getConnector } from './connector'
+import type { VBIDSL, VBIBuilderInterface } from 'src/types'
+import {
+  applyUpdateToDoc,
+  encodeDocStateAsUpdate,
+  buildVBIDSL,
+  buildVQueryDSL,
+  buildVSeedDSL,
+  isEmptyVBIDSL,
+  getBuilderSchema,
+  createBuilderFeatures,
+} from './modules'
 
 export class VBIBuilder implements VBIBuilderInterface {
   public doc: Y.Doc
@@ -36,69 +44,37 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.doc = doc
     this.dsl = doc.getMap('dsl') as Y.Map<any>
 
-    this.undoManager = new UndoManager(this.dsl)
-    this.chartType = new ChartTypeBuilder(doc, this.dsl)
-    this.measures = new MeasuresBuilder(doc, this.dsl)
-    this.dimensions = new DimensionsBuilder(doc, this.dsl)
-    this.havingFilter = new HavingFilterBuilder(doc, this.dsl)
-    this.whereFilter = new WhereFilterBuilder(doc, this.dsl)
-    this.theme = new ThemeBuilder(doc, this.dsl)
-    this.locale = new LocaleBuilder(doc, this.dsl)
-    this.limit = new LimitBuilder(doc, this.dsl)
+    const features = createBuilderFeatures(doc, this.dsl)
+    this.undoManager = features.undoManager
+    this.chartType = features.chartType
+    this.measures = features.measures
+    this.dimensions = features.dimensions
+    this.havingFilter = features.havingFilter
+    this.whereFilter = features.whereFilter
+    this.theme = features.theme
+    this.locale = features.locale
+    this.limit = features.limit
   }
-  public applyUpdate(update: Uint8Array) {
-    Y.applyUpdate(this.doc, update)
+
+  public applyUpdate = (update: Uint8Array, transactionOrigin?: any) => {
+    return applyUpdateToDoc(this.doc, update, transactionOrigin)
   }
-  public encodeStateAsUpdate(targetStateVector?: Uint8Array) {
-    return Y.encodeStateAsUpdate(this.doc, targetStateVector)
+
+  public encodeStateAsUpdate = (targetStateVector?: Uint8Array) => {
+    return encodeDocStateAsUpdate(this.doc, targetStateVector)
   }
+
   public buildVSeed = async (): Promise<VSeedDSL> => {
     const vbiDSL = this.build()
-    const connectorId = vbiDSL.connectorId
-    const connector = await getConnector(vbiDSL.connectorId)
-
     const queryDSL = this.buildVQuery()
-    const schema = await connector.discoverSchema()
-    const queryResult = await connector.query({ queryDSL, schema, connectorId })
-
-    return {
-      chartType: vbiDSL.chartType,
-      dataset: queryResult.dataset,
-      theme: vbiDSL.theme,
-      locale: vbiDSL.locale,
-    } as VSeedDSL
-  }
-  public buildVQuery = (): VQueryDSL => {
-    const vbiDSL = this.build()
-    return buildVQuery(vbiDSL, this)
-  }
-  public build = (): VBIDSL => {
-    return this.dsl.toJSON() as VBIDSL
+    return buildVSeedDSL({ vbiDSL, queryDSL })
   }
 
-  public isEmpty = (): boolean => {
-    const getLength = (value: any): number => {
-      if (value instanceof Y.Array) {
-        return value.length
-      }
+  public buildVQuery = (): VQueryDSL => buildVQueryDSL(this.dsl, this)
 
-      if (Array.isArray(value)) {
-        return value.length
-      }
+  public build = (): VBIDSL => buildVBIDSL(this.dsl)
 
-      return 0
-    }
+  public isEmpty = (): boolean => isEmptyVBIDSL(this.dsl)
 
-    const dimensionsLength = getLength(this.dsl.get('dimensions'))
-    const measuresLength = getLength(this.dsl.get('measures'))
-
-    return dimensionsLength === 0 && measuresLength === 0
-  }
-
-  public getSchema = async () => {
-    const connectorId = this.dsl.get('connectorId')
-    const con = await getConnector(connectorId)
-    const result = await con.discoverSchema()
-    return result
-  }
+  public getSchema = async () => getBuilderSchema(this.dsl)
 }

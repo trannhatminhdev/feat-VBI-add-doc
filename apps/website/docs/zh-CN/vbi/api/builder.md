@@ -6,7 +6,6 @@
 | --- | --- | --- |
 | **doc** | `Y.Doc` | - |
 | **dsl** | `Y.Map<any>` | - |
-| **undoManager** | `UndoManager` | - |
 | **chartType** | `ChartTypeBuilder` | - |
 | **measures** | `MeasuresBuilder` | - |
 | **dimensions** | `DimensionsBuilder` | - |
@@ -15,6 +14,7 @@
 | **theme** | `ThemeBuilder` | - |
 | **locale** | `LocaleBuilder` | - |
 | **limit** | `LimitBuilder` | - |
+| **undoManager** | `UndoManager` | - |
 
 
 ## 方法
@@ -38,22 +38,27 @@ constructor(doc: Y.Doc)
 **定义**:
 
 ```typescript
-applyUpdate(update: Uint8Array)
+applyUpdate(update: Uint8Array, transactionOrigin: any): void
 ```
+
+**返回**: `void`
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `update` | Uint8Array | - |
+| `transactionOrigin` | any | - |
 
 ### encodeStateAsUpdate
 
 **定义**:
 
 ```typescript
-encodeStateAsUpdate(targetStateVector: Uint8Array)
+encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
 ```
+
+**返回**: `Uint8Array<ArrayBufferLike>`
 
 **参数**:
 
@@ -90,6 +95,16 @@ build(): VBIDSL
 ```
 
 **返回**: `VBIDSL`
+
+### isEmpty
+
+**定义**:
+
+```typescript
+isEmpty(): boolean
+```
+
+**返回**: `boolean`
 
 ### getSchema
 

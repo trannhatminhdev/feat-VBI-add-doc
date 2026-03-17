@@ -1,0 +1,8 @@
+export { applyUpdateToDoc } from './apply-update'
+export { encodeDocStateAsUpdate } from './encode-state-as-update'
+export { buildVBIDSL } from './build'
+export { buildVQueryDSL } from './build-vquery'
+export { buildVSeedDSL } from './build-vseed'
+export { isEmptyVBIDSL } from './is-empty'
+export { getBuilderSchema } from './get-schema'
+export { createBuilderFeatures } from './create-builder-features'
