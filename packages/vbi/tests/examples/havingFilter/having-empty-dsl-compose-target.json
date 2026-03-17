@@ -1,0 +1,28 @@
+{
+  "name": "having-empty-dsl-compose-target",
+  "description": "从空DSL出发，通过builder拼装where/having/measures/dimensions，包含sum与countDistinct聚合的having条件组合",
+  "schema": [
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "province",
+      "type": "string"
+    },
+    {
+      "name": "profit",
+      "type": "number"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    },
+    {
+      "name": "country_or_region",
+      "type": "string"
+    }
+  ],
+  "dsl": {},
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.chartType.changeChartType('table'); builder.theme.setTheme('light'); builder.locale.setLocale('zh-CN'); builder.whereFilter.add('profit', n => n.setOperator('<').setValue(0)); const whereConds = builder.whereFilter.getConditions(); whereConds.get(0).set('id', 'c84825ed-547a-48f0-b4d9-55ebe53aab8c'); builder.havingFilter.clear(); builder.havingFilter.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('lt').setValue(-100000)); builder.havingFilter.add('province', n => n.setAggregate({\"func\":\"countDistinct\"}).setOperator('gt').setValue(4)); const havingConds = builder.havingFilter.getConditions(); havingConds.get(0).set('id', 'a6f2f16a-e0fc-4bdc-9729-bbe3a105cfca'); havingConds.get(1).set('id', '01c004d2-4041-40ee-a18b-a18fc0cea416'); builder.measures.add('sales', n => n.setAlias('sales').setEncoding('yAxis').setAggregate({\"func\":\"sum\"})); builder.measures.add('country_or_region', n => n.setAlias('country_or_region').setEncoding('yAxis').setAggregate({\"func\":\"count\"})); const measures = builder.dsl.get('measures'); measures.get(0).set('id', 'a5ba6c4a-31dc-4b2c-a38f-9f23c2bbe850'); measures.get(1).set('id', '49f3b33d-4ede-436c-8be9-a51619236916'); builder.dimensions.add('area', n => n.setAlias('area')); const dimensions = builder.dsl.get('dimensions'); dimensions.get(0).set('id', 'c3583433-a2cc-4234-85ff-75ae2472b674'); }"
+}
