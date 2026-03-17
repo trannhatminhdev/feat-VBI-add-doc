@@ -1,7 +1,7 @@
 import { isArray, isNullish } from 'remeda'
 import tinycolor from 'tinycolor2'
 import { InnerRowIndex } from 'src/dataReshape'
-import type { BodyCellStyle, Datum } from 'src/types'
+import type { BodyCellStyle, Datum, TotalType } from 'src/types'
 
 const tableStyleMap = {
   backgroundColor: 'bgColor',
@@ -60,21 +60,58 @@ export const pickBodyCellStyle = (bodyCellStyle: BodyCellStyle) => {
 /**
  * 计算数据列的最小值和最大值
  */
-export const getColumnMinMax = (allData: Datum[], field: string): { min: number; max: number } => {
+export const getColumnMinMax = (
+  allData: Datum[],
+  field: string,
+  totalAggregation?: TotalType,
+): { min: number; max: number } => {
   let min = Infinity
   let max = -Infinity
+  let sum = 0
+  let count = 0
+
+  const hasTotal = !!totalAggregation
+  const aggregationType: TotalType = typeof totalAggregation === 'string' ? totalAggregation : 'sum'
 
   for (const datum of allData) {
     const value = Number(datum[field])
     if (!Number.isNaN(value)) {
       min = Math.min(min, value)
       max = Math.max(max, value)
+      sum += value
+      count += 1
     }
   }
 
+  const baseMin = min === Infinity ? 0 : min
+  const baseMax = max === -Infinity ? 0 : max
+
+  if (!hasTotal) {
+    return {
+      min: baseMin,
+      max: baseMax,
+    }
+  }
+
+  const total = (() => {
+    switch (aggregationType) {
+      case 'avg':
+        return count ? sum / count : 0
+      case 'max':
+        return baseMax
+      case 'min':
+        return baseMin
+      case 'count':
+        return count
+      case 'sum':
+      default:
+        return sum
+    }
+  })()
+
   return {
-    min: min === Infinity ? 0 : min,
-    max: max === -Infinity ? 0 : max,
+    min: Math.min(baseMin, total),
+    max: Math.max(baseMax, total),
   }
 }
 

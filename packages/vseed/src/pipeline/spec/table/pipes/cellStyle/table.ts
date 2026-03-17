@@ -2,14 +2,16 @@ import type { ListTableConstructorOptions, ColumnDefine, ProgressbarColumnDefine
 import { array } from '@visactor/vutils'
 import { isNullish, isNumber, isPlainObject, isString } from 'remeda'
 import { isFieldSelector, matchesFieldSelector, selector, selectorWithDynamicFilter } from 'src/dataSelector/selector'
-import type { BodyCellStyle, ListTableSpecPipe, TableConfig } from 'src/types'
+import type { BodyCellStyle, ListTableSpecPipe, Table, TableConfig } from 'src/types'
 import type { FieldSelector, MeasureSelector } from 'src/types/dataSelector'
 import { getCellOriginalDataByDatum, pickBodyCellStyle, applyColorScale, getColumnMinMax } from './common'
 import { preorderTraverse } from 'src/pipeline/utils/tree/traverse'
 
 export const tableBodyCell: ListTableSpecPipe = (spec, context) => {
-  const { advancedVSeed } = context
+  const { advancedVSeed, vseed } = context
+  const { totals } = (vseed || {}) as Table
   const { cellStyle, config, chartType } = advancedVSeed
+  const totalAggregation = typeof totals === 'string' ? totals : undefined
   const bodyCellStyle = cellStyle?.bodyCellStyle
   const themeConfig = config?.[chartType] as TableConfig
 
@@ -70,14 +72,14 @@ export const tableBodyCell: ListTableSpecPipe = (spec, context) => {
     let columnMin: number
     let columnMax: number
     if (progressBarStyle || backgroundColorScale) {
-      const { min, max } = getColumnMinMax(allData, field)
+      const { min, max } = getColumnMinMax(allData, field, totalAggregation)
       columnMin = min
       columnMax = max
       if (progressBarStyle) {
         col.cellType = 'progressbar'
         ;(col as ProgressbarColumnDefine).barType = 'negative'
         ;(col as ProgressbarColumnDefine).min = progressBarStyle.barMin ?? columnMin
-        ;(col as ProgressbarColumnDefine).max = progressBarStyle.barMin ?? columnMax
+        ;(col as ProgressbarColumnDefine).max = progressBarStyle.barMax ?? columnMax
       }
     }
 

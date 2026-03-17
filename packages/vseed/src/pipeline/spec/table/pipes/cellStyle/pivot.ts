@@ -7,6 +7,20 @@ import type { FieldSelector } from 'src/types/dataSelector'
 import { getCellOriginalDataByDatum, pickBodyCellStyle, applyColorScale, getColumnMinMax } from './common'
 import type { IProgressbarColumnIndicator } from '@visactor/vtable/es/ts-types/pivot-table/indicator/progress-indicator'
 
+const isPivotTotalCell = (styleArg: any): boolean => {
+  const cellHeaderPaths = styleArg?.cellHeaderPaths
+  if (!cellHeaderPaths) {
+    return false
+  }
+
+  if (cellHeaderPaths.role === 'sub-total' || cellHeaderPaths.role === 'grand-total') {
+    return true
+  }
+
+  const headerPaths = [...(cellHeaderPaths.colHeaderPaths || []), ...(cellHeaderPaths.rowHeaderPaths || [])]
+  return headerPaths.some((path: any) => path?.role === 'sub-total' || path?.role === 'grand-total')
+}
+
 export const pivotTableBodyCell: PivotTableSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
   const { cellStyle, config, chartType } = advancedVSeed
@@ -107,6 +121,7 @@ export const pivotTableBodyCell: PivotTableSpecPipe = (spec, context) => {
             cellStyle.barMarkWidth = themeConfig?.barMarkWidth
             cellStyle.barPadding = themeConfig?.barPadding
             cellStyle.barRightToLeft = themeConfig?.barRightToLeft
+            cellStyle.showBar = !isPivotTotalCell(datum)
           }
 
           return {
