@@ -70,8 +70,10 @@ export const VSeedRender = withVisible((props: { vseed: VSeed }) => {
   const builderRef = useRef<Builder>(null)
   const dark = useDark()
   const selectedDimValueRef = useRef<string[]>([])
+  const hasValidDataset = Array.isArray(vseed.dataset) && vseed.dataset.length > 0
+
   useEffect(() => {
-    if (!ref.current) {
+    if (!hasValidDataset || !ref.current) {
       return
     }
     const theme = dark ? 'dark' : 'light'
@@ -189,7 +191,23 @@ export const VSeedRender = withVisible((props: { vseed: VSeed }) => {
       window.table = tableInstance
       return () => tableInstance.release()
     }
-  }, [vseed, dark])
+  }, [vseed, dark, hasValidDataset])
+
+  if (!hasValidDataset) {
+    return (
+      <div
+        style={{
+          height: 300,
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        暂无数据
+      </div>
+    )
+  }
 
   return (
     <div

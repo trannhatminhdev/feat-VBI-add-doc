@@ -1,4 +1,5 @@
 import * as path from 'node:path'
+import { pluginLlms } from '@rspress/plugin-llms'
 import { pluginPlayground } from '@rspress/plugin-playground'
 import { pluginPreview } from '@rspress/plugin-preview'
 import { defineConfig } from '@rspress/core'
@@ -10,6 +11,7 @@ export default defineConfig({
   base: '/VBI/',
   globalStyles: path.join(__dirname, 'components/styles/index.css'),
   plugins: [
+    pluginLlms(),
     pluginPreview(),
     pluginPlayground({
       include: [
