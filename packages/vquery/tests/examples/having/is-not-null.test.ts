@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { VQuery } from '@visactor/vquery'
+import { convertDSLToSQL, VQuery } from '@visactor/vquery'
 import vqueryConfig from './is-not-null.json'
 
 describe('Having Example with IS NOT NULL operator', () => {
@@ -16,6 +16,12 @@ describe('Having Example with IS NOT NULL operator', () => {
     }
 
     const dataset = await vquery.connectDataset(datasetId)
+
+    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+
+    expect(sql).toMatchInlineSnapshot(
+      `"select "department", sum("salary") as "Total Salary" from "having-is-not-null" group by "department" having ("Total Salary" is not null)"`,
+    )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 
