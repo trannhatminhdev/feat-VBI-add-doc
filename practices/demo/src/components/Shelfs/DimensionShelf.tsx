@@ -1,12 +1,12 @@
-import { CloseOutlined, DownOutlined } from '@ant-design/icons';
-import { Flex } from 'antd';
+import { DownOutlined, HolderOutlined } from '@ant-design/icons';
+import { Dropdown, Flex, Input, Modal, message, type MenuProps } from 'antd';
 import { useVBIStore } from 'src/model';
 import { useVBIDimensions } from 'src/hooks';
 import { useState } from 'react';
 
 export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
-  const { dimensions, addDimension, removeDimension } =
+  const { dimensions, addDimension, removeDimension, updateDimension } =
     useVBIDimensions(builder);
   const [isDragOver, setIsDragOver] = useState(false);
 
@@ -93,6 +93,71 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
     }
   };
 
+  const renameDimension = (field: string, alias: string) => {
+    updateDimension(field, (node) => {
+      node.setAlias(alias);
+    });
+  };
+
+  const openRenameModal = (field: string, currentAlias: string) => {
+    let nextAlias = currentAlias;
+    Modal.confirm({
+      title: '重命名维度',
+      okText: '保存',
+      cancelText: '取消',
+      content: (
+        <Input
+          autoFocus
+          defaultValue={currentAlias}
+          placeholder="请输入维度名称"
+          maxLength={50}
+          onChange={(e) => {
+            nextAlias = e.target.value;
+          }}
+        />
+      ),
+      onOk: () => {
+        const trimmed = nextAlias.trim();
+        if (!trimmed) {
+          message.warning('名称不能为空');
+          return Promise.reject();
+        }
+        renameDimension(field, trimmed);
+        return Promise.resolve();
+      },
+    });
+  };
+
+  const buildDimensionMenuItems = (): MenuProps['items'] => {
+    return [
+      {
+        key: 'rename',
+        label: '重命名',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        key: 'delete',
+        label: <span style={{ color: '#ff4d4f' }}>删除</span>,
+      },
+    ];
+  };
+
+  const onDimensionMenuClick = (
+    dimension: (typeof dimensions)[number],
+    key: string,
+  ) => {
+    if (key === 'rename') {
+      openRenameModal(dimension.field, dimension.alias || dimension.field);
+      return;
+    }
+
+    if (key === 'delete') {
+      removeDimension(dimension.field);
+    }
+  };
+
   return (
     <Flex
       vertical={false}
@@ -129,8 +194,6 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       {dimensions.map((dimension, index) => (
         <div
           key={`dimension-shelf-${dimension.field}`}
-          draggable
-          onDragStart={(e) => handleDragStart(e, index)}
           onDragOver={handleDragOver}
           onDrop={(e) => handleDrop(e, index)}
           style={{
@@ -147,26 +210,51 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
             height: 24,
           }}
         >
-          <DownOutlined style={{ fontSize: 8 }} />
-          <span
-            style={{
-              maxWidth: 100,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
+          <HolderOutlined
+            draggable
+            onDragStart={(e) => handleDragStart(e, index)}
+            onClick={(e) => e.stopPropagation()}
+            style={{ fontSize: 10, cursor: 'grab', color: '#8c8c8c' }}
+          />
+          <Dropdown
+            trigger={['click']}
+            placement="bottom"
+            arrow={{ pointAtCenter: true }}
+            menu={{
+              items: buildDimensionMenuItems(),
+              onClick: ({ key, domEvent }) => {
+                domEvent.stopPropagation();
+                onDimensionMenuClick(dimension, key);
+              },
             }}
           >
-            {dimension.field}
-          </span>
-          <CloseOutlined
-            onClick={(e) => {
-              e.stopPropagation();
-              removeDimension(dimension.field);
-            }}
-            style={{ fontSize: 10, cursor: 'pointer', color: '#8c8c8c' }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#ff4d4f')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#8c8c8c')}
-          />
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                cursor: 'pointer',
+                flex: 1,
+                minWidth: 0,
+                justifyContent: 'center',
+              }}
+            >
+              <span
+                style={{
+                  maxWidth: 100,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {dimension.alias || dimension.field}
+              </span>
+              <DownOutlined style={{ fontSize: 9, color: '#8c8c8c' }} />
+            </span>
+          </Dropdown>
         </div>
       ))}
     </Flex>

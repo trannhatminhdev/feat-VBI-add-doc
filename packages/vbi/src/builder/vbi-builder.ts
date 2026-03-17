@@ -21,7 +21,6 @@ import { getConnector } from './connector'
 export class VBIBuilder implements VBIBuilderInterface {
   public doc: Y.Doc
   public dsl: Y.Map<any>
-  public undoManager: UndoManager
 
   public chartType: ChartTypeBuilder
   public measures: MeasuresBuilder
@@ -31,6 +30,7 @@ export class VBIBuilder implements VBIBuilderInterface {
   public theme: ThemeBuilder
   public locale: LocaleBuilder
   public limit: LimitBuilder
+  public undoManager: UndoManager
 
   constructor(doc: Y.Doc) {
     this.doc = doc
@@ -46,15 +46,12 @@ export class VBIBuilder implements VBIBuilderInterface {
     this.locale = new LocaleBuilder(doc, this.dsl)
     this.limit = new LimitBuilder(doc, this.dsl)
   }
-
   public applyUpdate(update: Uint8Array) {
     Y.applyUpdate(this.doc, update)
   }
-
   public encodeStateAsUpdate(targetStateVector?: Uint8Array) {
     return Y.encodeStateAsUpdate(this.doc, targetStateVector)
   }
-
   public buildVSeed = async (): Promise<VSeedDSL> => {
     const vbiDSL = this.build()
     const connectorId = vbiDSL.connectorId
@@ -71,14 +68,31 @@ export class VBIBuilder implements VBIBuilderInterface {
       locale: vbiDSL.locale,
     } as VSeedDSL
   }
-
   public buildVQuery = (): VQueryDSL => {
     const vbiDSL = this.build()
     return buildVQuery(vbiDSL, this)
   }
-
   public build = (): VBIDSL => {
     return this.dsl.toJSON() as VBIDSL
+  }
+
+  public isEmpty = (): boolean => {
+    const getLength = (value: any): number => {
+      if (value instanceof Y.Array) {
+        return value.length
+      }
+
+      if (Array.isArray(value)) {
+        return value.length
+      }
+
+      return 0
+    }
+
+    const dimensionsLength = getLength(this.dsl.get('dimensions'))
+    const measuresLength = getLength(this.dsl.get('measures'))
+
+    return dimensionsLength === 0 && measuresLength === 0
   }
 
   public getSchema = async () => {

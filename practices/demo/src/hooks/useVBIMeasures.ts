@@ -22,16 +22,17 @@ export const useVBIMeasures = (builder: VBIBuilder | undefined) => {
       return;
     }
 
-    // 初始化
-    setMeasures(builder.measures.toJSON() as VBIMeasure[]);
-
-    // 监听变化
-    const updateHandler = () => {
+    // 统一由 toJSON 驱动 UI 状态
+    const syncFromBuilder = () => {
       setMeasures(builder.measures.toJSON() as VBIMeasure[]);
     };
 
-    const unobserve = builder.measures.observe(updateHandler);
-    return unobserve;
+    syncFromBuilder();
+    builder.doc.on('update', syncFromBuilder);
+
+    return () => {
+      builder.doc.off('update', syncFromBuilder);
+    };
   }, [builder]);
 
   // 添加度量

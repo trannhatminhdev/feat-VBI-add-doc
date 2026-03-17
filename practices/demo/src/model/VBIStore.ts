@@ -51,6 +51,12 @@ export const useVBIStore = create<BearState>((set, get) => ({
     const { builder, setLoading, setVSeed, setDsl } = get();
 
     const updateAll = async () => {
+      if (builder.isEmpty()) {
+        setLoading(false);
+        setVSeed(null);
+        return;
+      }
+
       setLoading(true);
       try {
         const newVSeed = await builder.buildVSeed();

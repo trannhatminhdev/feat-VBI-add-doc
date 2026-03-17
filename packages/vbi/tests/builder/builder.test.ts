@@ -33,4 +33,18 @@ describe('VBI', () => {
       ],
     })
   })
+
+  test('isEmpty', () => {
+    const builder = VBI.from({} as VBIDSL)
+    expect(builder.isEmpty()).toBe(true)
+
+    builder.dimensions.add('area', () => {})
+    expect(builder.isEmpty()).toBe(false)
+
+    builder.dimensions.remove('area')
+    expect(builder.isEmpty()).toBe(true)
+
+    builder.measures.add('sales', () => {})
+    expect(builder.isEmpty()).toBe(false)
+  })
 })

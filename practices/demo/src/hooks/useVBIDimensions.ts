@@ -18,16 +18,17 @@ export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
       return;
     }
 
-    // 初始化
-    setDimensions(builder.dimensions.toJSON() as VBIDimension[]);
-
-    // 监听变化
-    const updateHandler = () => {
+    // 统一由 toJSON 驱动 UI 状态
+    const syncFromBuilder = () => {
       setDimensions(builder.dimensions.toJSON() as VBIDimension[]);
     };
 
-    const unobserve = builder.dimensions.observe(updateHandler);
-    return unobserve;
+    syncFromBuilder();
+    builder.doc.on('update', syncFromBuilder);
+
+    return () => {
+      builder.doc.off('update', syncFromBuilder);
+    };
   }, [builder]);
 
   // 添加维度

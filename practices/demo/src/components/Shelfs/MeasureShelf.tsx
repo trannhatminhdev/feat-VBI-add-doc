@@ -1,12 +1,21 @@
-import { CloseOutlined, DownOutlined } from '@ant-design/icons';
-import { Flex } from 'antd';
+import { DownOutlined, HolderOutlined } from '@ant-design/icons';
+import { Dropdown, Flex, Input, Modal, message, type MenuProps } from 'antd';
 import { useVBIStore } from 'src/model';
 import { useVBIMeasures } from 'src/hooks';
 import { useState } from 'react';
 
+const AGGREGATE_ITEMS = [
+  { key: 'sum', label: '求和 (sum)' },
+  { key: 'count', label: '计数 (count)' },
+  { key: 'avg', label: '平均值 (avg)' },
+  { key: 'min', label: '最小值 (min)' },
+  { key: 'max', label: '最大值 (max)' },
+] as const;
+
 export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
-  const { measures, addMeasure, removeMeasure } = useVBIMeasures(builder);
+  const { measures, addMeasure, removeMeasure, updateMeasure } =
+    useVBIMeasures(builder);
   const [isDragOver, setIsDragOver] = useState(false);
 
   const handleDragStart = (e: React.DragEvent, index: number) => {
@@ -96,6 +105,114 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     }
   };
 
+  const renameMeasure = (field: string, alias: string) => {
+    updateMeasure(field, (node) => {
+      node.setAlias(alias);
+    });
+  };
+
+  const changeAggregate = (
+    field: string,
+    aggregate: 'sum' | 'count' | 'avg' | 'min' | 'max',
+  ) => {
+    updateMeasure(field, (node) => {
+      node.setAggregate({ func: aggregate });
+    });
+  };
+
+  const openRenameModal = (field: string, currentAlias: string) => {
+    let nextAlias = currentAlias;
+    Modal.confirm({
+      title: '重命名指标',
+      okText: '保存',
+      cancelText: '取消',
+      content: (
+        <Input
+          autoFocus
+          defaultValue={currentAlias}
+          placeholder="请输入指标名称"
+          maxLength={50}
+          onChange={(e) => {
+            nextAlias = e.target.value;
+          }}
+        />
+      ),
+      onOk: () => {
+        const trimmed = nextAlias.trim();
+        if (!trimmed) {
+          message.warning('名称不能为空');
+          return Promise.reject();
+        }
+        renameMeasure(field, trimmed);
+        return Promise.resolve();
+      },
+    });
+  };
+
+  const buildMeasureMenuItems = (
+    measure: (typeof measures)[number],
+  ): MenuProps['items'] => {
+    const currentAggregate = measure.aggregate?.func ?? 'sum';
+    return [
+      {
+        key: 'aggregate',
+        label: '修改聚合方式',
+        children: AGGREGATE_ITEMS.map((item) => ({
+          key: `aggregate:${item.key}`,
+          label: `${currentAggregate === item.key ? '✓ ' : ''}${item.label}`,
+        })),
+      },
+      {
+        key: 'rename',
+        label: '重命名',
+      },
+      {
+        type: 'divider',
+      },
+      {
+        key: 'delete',
+        label: <span style={{ color: '#ff4d4f' }}>删除</span>,
+      },
+    ];
+  };
+
+  const onMeasureMenuClick = (
+    measure: (typeof measures)[number],
+    key: string,
+  ) => {
+    if (key === 'rename') {
+      openRenameModal(measure.field, measure.alias || measure.field);
+      return;
+    }
+
+    if (key === 'delete') {
+      removeMeasure(measure.field);
+      return;
+    }
+
+    if (key.startsWith('aggregate:')) {
+      const aggregate = key.replace('aggregate:', '');
+      if (
+        aggregate === 'sum' ||
+        aggregate === 'count' ||
+        aggregate === 'avg' ||
+        aggregate === 'min' ||
+        aggregate === 'max'
+      ) {
+        changeAggregate(measure.field, aggregate);
+      }
+    }
+  };
+
+  const getMeasureDisplayLabel = (measure: (typeof measures)[number]) => {
+    const baseLabel = measure.alias || measure.field;
+    const aggregate = measure.aggregate?.func;
+    if (!aggregate) {
+      return baseLabel;
+    }
+    return `${aggregate}(${baseLabel})`;
+  };
+
   return (
     <Flex
       vertical={false}
@@ -132,8 +249,6 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       {measures.map((measure, index) => (
         <div
           key={`measure-shelf-${measure.field}`}
-          draggable
-          onDragStart={(e) => handleDragStart(e, index)}
           onDragOver={handleDragOver}
           onDrop={(e) => handleDrop(e, index)}
           style={{
@@ -150,26 +265,51 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
             height: 24,
           }}
         >
-          <DownOutlined style={{ fontSize: 8 }} />
-          <span
-            style={{
-              maxWidth: 90,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
+          <HolderOutlined
+            draggable
+            onDragStart={(e) => handleDragStart(e, index)}
+            onClick={(e) => e.stopPropagation()}
+            style={{ fontSize: 10, cursor: 'grab', color: '#8c8c8c' }}
+          />
+          <Dropdown
+            trigger={['click']}
+            placement="bottom"
+            arrow={{ pointAtCenter: true }}
+            menu={{
+              items: buildMeasureMenuItems(measure),
+              onClick: ({ key, domEvent }) => {
+                domEvent.stopPropagation();
+                onMeasureMenuClick(measure, key);
+              },
             }}
           >
-            {measure.field}
-          </span>
-          <CloseOutlined
-            onClick={(e) => {
-              e.stopPropagation();
-              removeMeasure(measure.field);
-            }}
-            style={{ fontSize: 9, cursor: 'pointer', color: '#8c8c8c' }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#ff4d4f')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = '#8c8c8c')}
-          />
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                cursor: 'pointer',
+                flex: 1,
+                minWidth: 0,
+                justifyContent: 'center',
+              }}
+            >
+              <span
+                style={{
+                  maxWidth: 120,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {getMeasureDisplayLabel(measure)}
+              </span>
+              <DownOutlined style={{ fontSize: 9, color: '#8c8c8c' }} />
+            </span>
+          </Dropdown>
         </div>
       ))}
     </Flex>
