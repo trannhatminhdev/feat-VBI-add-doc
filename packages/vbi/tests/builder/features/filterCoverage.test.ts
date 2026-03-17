@@ -139,7 +139,7 @@ describe('Having filter internals', () => {
     expect(group.toJSON()).toEqual({
       id: 'id-1',
       op: 'and',
-      conditions: [{ id: 'id-3', field: '利润', op: 'gt', value: 200 }],
+      conditions: [{ id: 'id-3', field: '利润', aggregate: { func: 'sum' }, op: 'gt', value: 200 }],
     })
   })
 
@@ -150,7 +150,7 @@ describe('Having filter internals', () => {
     })
 
     const node = builder.havingFilter.find((entry) => entry.getId() === 'id-1') as any
-    expect(node.toJSON()).toEqual({ id: 'id-1', field: '销售额', op: 'gte', value: 1000 })
+    expect(node.toJSON()).toEqual({ id: 'id-1', field: '销售额', aggregate: { func: 'sum' }, op: 'gte', value: 1000 })
   })
 
   test('having utils create groups and return undefined for missing nested ids', () => {

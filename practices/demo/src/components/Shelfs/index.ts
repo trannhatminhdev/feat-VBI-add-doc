@@ -1,3 +1,4 @@
 export { DimensionShelf } from './DimensionShelf';
 export { MeasureShelf } from './MeasureShelf';
-export { WhereShelf, HavingShelf } from './FilterShelf';
+export { WhereShelf } from './WhereShelf';
+export { HavingShelf } from './HavingShelf';

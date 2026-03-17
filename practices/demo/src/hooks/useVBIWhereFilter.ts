@@ -1,5 +1,46 @@
-import { useState, useEffect, useCallback } from 'react';
-import { VBIBuilder, VBIWhereClause, VBIFilter } from '@visactor/vbi';
+import { useCallback } from 'react';
+import {
+  VBIBuilder,
+  VBIWhereClause,
+  VBIFilter,
+  isVBIFilter,
+  isVBIWhereGroup,
+} from '@visactor/vbi';
+import { useBuilderDocState } from './useBuilderDocState';
+
+const EMPTY_WHERE_CLAUSES: VBIWhereClause[] = [];
+
+type WhereNodeMutator = (node: {
+  setOperator: (operator: string) => unknown;
+  setValue: (value: unknown) => unknown;
+  setField: (field: string) => unknown;
+}) => void;
+
+type WhereGroupMutator = (group: {
+  setOperator: (operator: 'and' | 'or') => unknown;
+  add: (field: string, callback: (node: unknown) => void) => unknown;
+  remove: (idOrIndex: string | number) => unknown;
+}) => void;
+
+const flattenWhereClauses = (items: VBIWhereClause[]): VBIFilter[] => {
+  const result: VBIFilter[] = [];
+
+  const traverse = (clauses: VBIWhereClause[]) => {
+    clauses.forEach((item) => {
+      if (isVBIFilter(item)) {
+        result.push(item);
+        return;
+      }
+
+      if (isVBIWhereGroup(item)) {
+        traverse(item.conditions);
+      }
+    });
+  };
+
+  traverse(items);
+  return result;
+};
 
 /**
  * VBI Where Filter Hook
@@ -7,53 +48,48 @@ import { VBIBuilder, VBIWhereClause, VBIFilter } from '@visactor/vbi';
  * 支持响应式同步和增量操作
  */
 export const useVBIWhereFilter = (builder: VBIBuilder | undefined) => {
-  const [filters, setFilters] = useState<VBIWhereClause[]>([]);
+  const filters = useBuilderDocState({
+    builder,
+    fallback: EMPTY_WHERE_CLAUSES,
+    getSnapshot: (activeBuilder) =>
+      activeBuilder.whereFilter.toJSON().conditions as VBIWhereClause[],
+  });
 
-  useEffect(() => {
-    if (!builder) {
-      return;
-    }
-
-    // 初始化
-    setFilters(builder.whereFilter.toJSON().conditions as VBIWhereClause[]);
-
-    // 监听变化 - 响应式同步
-    const updateHandler = () => {
-      setFilters(builder.whereFilter.toJSON().conditions as VBIWhereClause[]);
-    };
-
-    const unobserve = builder.whereFilter.observe(updateHandler);
-    return unobserve;
-  }, [builder]);
-
-  // 增量添加过滤条件（带初始值）
   const addFilter = useCallback(
-    (field: string, operator?: string, value?: any) => {
-      if (builder) {
-        builder.doc.transact(() => {
-          builder.whereFilter.add(field, (node) => {
-            if (operator) node.setOperator(operator);
-            if (value !== undefined) node.setValue(value);
-          });
-        });
+    (field: string, operator?: string, value?: unknown) => {
+      if (!builder) {
+        return;
       }
+
+      builder.doc.transact(() => {
+        builder.whereFilter.add(field, (node) => {
+          if (operator) {
+            node.setOperator(operator);
+          }
+          if (value !== undefined) {
+            node.setValue(value);
+          }
+        });
+      });
     },
     [builder],
   );
 
-  // 增量添加过滤分组
   const addGroup = useCallback(
-    (op: 'and' | 'or', callback?: (group: any) => void) => {
-      if (builder) {
-        builder.doc.transact(() => {
-          builder.whereFilter.addGroup(op, callback ?? (() => {}));
-        });
+    (op: 'and' | 'or', callback?: WhereGroupMutator) => {
+      if (!builder) {
+        return;
       }
+
+      builder.doc.transact(() => {
+        builder.whereFilter.addGroup(op, (group) => {
+          callback?.(group as unknown as Parameters<WhereGroupMutator>[0]);
+        });
+      });
     },
     [builder],
   );
 
-  // 删除过滤条件
   const removeFilter = useCallback(
     (id: string) => {
       if (builder) {
@@ -65,7 +101,6 @@ export const useVBIWhereFilter = (builder: VBIBuilder | undefined) => {
     [builder],
   );
 
-  // 清空所有过滤条件
   const clearFilters = useCallback(() => {
     if (builder) {
       builder.doc.transact(() => {
@@ -74,22 +109,26 @@ export const useVBIWhereFilter = (builder: VBIBuilder | undefined) => {
     }
   }, [builder]);
 
-  // 增量更新过滤条件
   const updateFilter = useCallback(
-    (id: string, updates: { operator?: string; value?: any }) => {
-      if (builder) {
-        builder.doc.transact(() => {
-          builder.whereFilter.update(id, (node: any) => {
-            if (updates.operator) node.setOperator(updates.operator);
-            if (updates.value !== undefined) node.setValue(updates.value);
-          });
-        });
+    (id: string, updates: { operator?: string; value?: unknown }) => {
+      if (!builder) {
+        return;
       }
+
+      builder.doc.transact(() => {
+        builder.whereFilter.update(id, (node) => {
+          if (updates.operator) {
+            node.setOperator(updates.operator);
+          }
+          if (updates.value !== undefined) {
+            node.setValue(updates.value);
+          }
+        });
+      });
     },
     [builder],
   );
 
-  // 查找过滤条件
   const findFilter = useCallback(
     (id: string) => {
       if (builder) {
@@ -100,68 +139,65 @@ export const useVBIWhereFilter = (builder: VBIBuilder | undefined) => {
     [builder],
   );
 
-  // 获取扁平化的过滤器列表（用于 UI 显示）
   const flattenFilters = useCallback((): VBIFilter[] => {
-    const result: VBIFilter[] = [];
-    const traverse = (items: VBIWhereClause[]) => {
-      items.forEach((item) => {
-        if ('field' in item) {
-          result.push(item as VBIFilter);
-        } else if ('conditions' in item && Array.isArray(item.conditions)) {
-          traverse(item.conditions);
-        }
-      });
-    };
-    traverse(filters);
-    return result;
+    return flattenWhereClauses(filters);
   }, [filters]);
 
-  // 增量更新分组
   const updateGroup = useCallback(
     (id: string, updates: { operator?: 'and' | 'or' }) => {
-      if (builder) {
-        builder.doc.transact(() => {
-          builder.whereFilter.updateGroup(id, (group: any) => {
-            if (updates.operator) group.setOperator(updates.operator);
-          });
-        });
+      if (!builder) {
+        return;
       }
+
+      builder.doc.transact(() => {
+        builder.whereFilter.updateGroup(id, (group) => {
+          if (updates.operator) {
+            group.setOperator(updates.operator);
+          }
+        });
+      });
     },
     [builder],
   );
 
-  // 添加条件到分组
   const addToGroup = useCallback(
-    (groupId: string, field: string, operator?: string, value?: any) => {
-      if (builder) {
-        builder.doc.transact(() => {
-          builder.whereFilter.updateGroup(groupId, (group: any) => {
-            group.add(field, (node: any) => {
-              if (operator) node.setOperator(operator);
-              if (value !== undefined) node.setValue(value);
-            });
+    (groupId: string, field: string, operator?: string, value?: unknown) => {
+      if (!builder) {
+        return;
+      }
+
+      builder.doc.transact(() => {
+        builder.whereFilter.updateGroup(groupId, (group) => {
+          group.add(field, (node) => {
+            const filterNode = node as Parameters<WhereNodeMutator>[0];
+            if (operator) {
+              filterNode.setOperator(operator);
+            }
+            if (value !== undefined) {
+              filterNode.setValue(value);
+            }
           });
         });
-      }
+      });
     },
     [builder],
   );
 
-  // 从分组中删除条件
   const removeFromGroup = useCallback(
     (groupId: string, idOrIndex: string | number) => {
-      if (builder) {
-        builder.doc.transact(() => {
-          builder.whereFilter.updateGroup(groupId, (group: any) => {
-            group.remove(idOrIndex);
-          });
-        });
+      if (!builder) {
+        return;
       }
+
+      builder.doc.transact(() => {
+        builder.whereFilter.updateGroup(groupId, (group) => {
+          group.remove(idOrIndex);
+        });
+      });
     },
     [builder],
   );
 
-  // 查找分组
   const findGroup = useCallback(
     (id: string) => {
       if (builder) {

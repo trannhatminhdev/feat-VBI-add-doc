@@ -65,12 +65,15 @@
       "conditions": [
         {
           "id": "old-1",
-          "field": "销售额",
+          "field": "sales",
           "op": "gt",
-          "value": 999999
+          "value": 999999,
+          "aggregate": {
+            "func": "sum"
+          }
         }
       ]
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.clear(); builder.havingFilter.addGroup('and', g => { g.add('销售额', n => n.setOperator('gte').setValue(100000)); g.addGroup('or', sub => { sub.add('利润', n => n.setOperator('gt').setValue(20000)); sub.add('数量', n => n.setOperator('gte').setValue(50)); }); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.clear(); builder.havingFilter.addGroup('and', g => { g.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gte').setValue(100000)); g.addGroup('or', sub => { sub.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(20000)); sub.add('amount', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gte').setValue(50)); }); }); }"
 }

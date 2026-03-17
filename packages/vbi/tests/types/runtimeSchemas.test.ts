@@ -1,6 +1,7 @@
 import { zVBIDimensionGroupSchema, zVBIDimensionTree } from 'src/types/dsl/dimensions/dimensions'
 import { zVBIHavingClause, zVBIHavingFilter, zVBIHavingGroup } from 'src/types/dsl/havingFilter/having'
 import { zVBIDSLLocale } from 'src/types/dsl/locale/locale'
+import { zAggregate } from 'src/types/dsl/measures/aggregate'
 import { zVBIMeasure, zVBIMeasureGroup, zVBIMeasureTree } from 'src/types/dsl/measures/measures'
 import { zVBIDSLTheme } from 'src/types/dsl/theme/theme'
 import { zVBIDSL } from 'src/types/dsl/vbi/vbi'
@@ -16,6 +17,16 @@ import {
 } from 'src/utils'
 
 describe('DSL schemas', () => {
+  test('parse extended measure aggregate funcs', () => {
+    expect(zAggregate.parse({ func: 'countDistinct' })).toEqual({ func: 'countDistinct' })
+    expect(zAggregate.parse({ func: 'variance' })).toEqual({ func: 'variance' })
+    expect(zAggregate.parse({ func: 'variancePop' })).toEqual({ func: 'variancePop' })
+    expect(zAggregate.parse({ func: 'stddev' })).toEqual({ func: 'stddev' })
+    expect(zAggregate.parse({ func: 'median' })).toEqual({ func: 'median' })
+    expect(zAggregate.parse({ func: 'quantile', quantile: 0.9 })).toEqual({ func: 'quantile', quantile: 0.9 })
+    expect(zAggregate.parse({ func: 'quantile' })).toEqual({ func: 'quantile' })
+  })
+
   test('parse where filter clauses and groups', () => {
     const filter = zVBIFilter.parse({ id: 'f-1', field: 'province', op: 'eq', value: '浙江' })
     const group = zVBIWhereGroup.parse({

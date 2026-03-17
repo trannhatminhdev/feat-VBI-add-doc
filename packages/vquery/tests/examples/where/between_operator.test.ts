@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { VQuery } from '@visactor/vquery'
+import { convertDSLToSQL, VQuery } from '@visactor/vquery'
 import vqueryConfig from './between_operator.json'
 
 describe('Where with BETWEEN / NOT BETWEEN Operator', () => {
@@ -16,6 +16,12 @@ describe('Where with BETWEEN / NOT BETWEEN Operator', () => {
     }
 
     const dataset = await vquery.connectDataset(datasetId)
+
+    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+
+    expect(sql).toMatchInlineSnapshot(
+      `"select "id", "name", "age", "gender" from "where-between-operator" where (("age" between 18 and 30 and "gender" in ('male', 'female')) or ("age" not between 18 and 30 and not "gender" in ('male', 'female')))"`,
+    )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 

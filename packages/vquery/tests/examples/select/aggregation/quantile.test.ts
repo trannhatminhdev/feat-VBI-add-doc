@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { VQuery } from '@visactor/vquery'
+import { convertDSLToSQL, VQuery } from '@visactor/vquery'
 import vqueryConfig from './quantile.json'
 
 describe('Select Quantile Example', () => {
@@ -16,6 +16,12 @@ describe('Select Quantile Example', () => {
     }
 
     const dataset = await vquery.connectDataset(datasetId)
+
+    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+
+    expect(sql).toMatchInlineSnapshot(
+      `"select quantile("salary", 0.9) as "salary_quantile" from "select-aggregation-quantile""`,
+    )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 

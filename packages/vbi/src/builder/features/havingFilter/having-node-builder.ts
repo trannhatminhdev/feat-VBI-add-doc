@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import { VBIHavingFilter } from '../../../types'
+import { VBIHavingFilter, VBIHavingAggregate } from '../../../types'
 
 /**
  * @description Having 过滤节点构建器，用于配置单个 Having 过滤条件
@@ -29,6 +29,13 @@ export class HavingFilterNodeBuilder {
   }
 
   /**
+   * @description 获取聚合配置
+   */
+  getAggregate(): VBIHavingAggregate | undefined {
+    return this.yMap.get('aggregate')
+  }
+
+  /**
    * @description 设置过滤条件的值
    * @param value - 过滤值
    */
@@ -43,6 +50,15 @@ export class HavingFilterNodeBuilder {
    */
   setOperator(operator: string): this {
     this.yMap.set('op', operator)
+    return this
+  }
+
+  /**
+   * @description 设置聚合配置
+   * @param aggregate - 聚合配置
+   */
+  setAggregate(aggregate: VBIHavingAggregate): this {
+    this.yMap.set('aggregate', aggregate)
     return this
   }
 

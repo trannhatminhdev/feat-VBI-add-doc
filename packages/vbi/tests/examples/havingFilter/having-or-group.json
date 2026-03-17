@@ -53,5 +53,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.addGroup('or', group => { group.add('销售额', n => n.setOperator('gt').setValue(1000000)); group.add('利润', n => n.setOperator('gt').setValue(200000)); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.addGroup('or', group => { group.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(1000000)); group.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(200000)); }); }"
 }

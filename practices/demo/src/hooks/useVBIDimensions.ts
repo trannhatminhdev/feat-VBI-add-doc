@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { VBIBuilder } from '@visactor/vbi';
+import { useBuilderDocState } from './useBuilderDocState';
 
 export interface VBIDimension {
   id: string;
@@ -7,30 +8,23 @@ export interface VBIDimension {
   alias: string;
 }
 
+type DimensionNodeLike = {
+  setAlias: (alias: string) => unknown;
+};
+type DimensionNodeMutator = (node: DimensionNodeLike) => void;
+const EMPTY_DIMENSIONS: VBIDimension[] = [];
+
 /**
  * VBI Dimensions Hook
  * 提供维度管理
  */
 export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
-  const [dimensions, setDimensions] = useState<VBIDimension[]>([]);
-
-  useEffect(() => {
-    if (!builder) {
-      return;
-    }
-
-    // 统一由 toJSON 驱动 UI 状态
-    const syncFromBuilder = () => {
-      setDimensions(builder.dimensions.toJSON() as VBIDimension[]);
-    };
-
-    syncFromBuilder();
-    builder.doc.on('update', syncFromBuilder);
-
-    return () => {
-      builder.doc.off('update', syncFromBuilder);
-    };
-  }, [builder]);
+  const dimensions = useBuilderDocState({
+    builder,
+    fallback: EMPTY_DIMENSIONS,
+    getSnapshot: (activeBuilder) =>
+      activeBuilder.dimensions.toJSON() as VBIDimension[],
+  });
 
   // 添加维度
   const addDimension = useCallback(
@@ -58,7 +52,7 @@ export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
 
   // 更新维度
   const updateDimension = useCallback(
-    (id: string, callback: (node: any) => void) => {
+    (id: string, callback: DimensionNodeMutator) => {
       if (builder) {
         builder.doc.transact(() => {
           builder.dimensions.update(id, callback);

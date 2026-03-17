@@ -34,7 +34,7 @@ function generateTest(jsonPath) {
     const testPath = path.join(path.dirname(jsonPath), testFileName)
 
     const template = `import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { VQuery } from '@visactor/vquery'
+import { convertDSLToSQL, VQuery } from '@visactor/vquery'
 import vqueryConfig from './${jsonFileName}'
 
 describe('${description}', () => {
@@ -51,6 +51,10 @@ describe('${description}', () => {
     }
 
     const dataset = await vquery.connectDataset(datasetId)
+
+    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+
+    expect(sql).toMatchInlineSnapshot()
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 

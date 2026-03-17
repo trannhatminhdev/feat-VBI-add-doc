@@ -3,6 +3,12 @@ import { Dropdown, Flex, Input, Modal, message, type MenuProps } from 'antd';
 import { useVBIStore } from 'src/model';
 import { useVBIDimensions } from 'src/hooks';
 import { useState } from 'react';
+import {
+  readFieldDragPayload,
+  readShelfDragIndex,
+  writeShelfDragIndex,
+} from './dragDropUtils';
+import { reorderYArray, type YArrayLike } from './reorderUtils';
 
 export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
@@ -11,8 +17,7 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const [isDragOver, setIsDragOver] = useState(false);
 
   const handleDragStart = (e: React.DragEvent, index: number) => {
-    e.dataTransfer.setData('text/plain', String(index));
-    e.dataTransfer.effectAllowed = 'move';
+    writeShelfDragIndex(e, index);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -23,53 +28,29 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const handleDrop = (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault();
     setIsDragOver(false);
-    // 检查是否是从字段列表拖拽
-    const jsonData = e.dataTransfer.getData('application/json');
-    if (jsonData) {
-      try {
-        const data = JSON.parse(jsonData);
-        if (data.role === 'dimension' && data.field) {
-          // 检查是否已存在
-          if (!dimensions.some((d) => d.field === data.field)) {
-            addDimension(data.field);
-          }
-          return;
-        }
-        if (data.role === 'measure' && data.field) {
-          // 拖拽指标到维度，保持原始字段名，不添加聚合方式
-          if (!dimensions.some((d) => d.field === data.field)) {
-            addDimension(data.field);
-          }
-          return;
-        }
-      } catch {
-        // 忽略解析错误
+    const dragPayload = readFieldDragPayload(e);
+    if (dragPayload?.field) {
+      if (!dimensions.some((d) => d.field === dragPayload.field)) {
+        addDimension(dragPayload.field);
       }
+      return;
     }
 
     // 内部排序
-    const dragIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
-    if (isNaN(dragIndex) || dragIndex === dropIndex) return;
+    const dragIndex = readShelfDragIndex(e);
+    if (dragIndex === undefined || dragIndex === dropIndex) {
+      return;
+    }
 
     const draggedDimension = dimensions[dragIndex];
     if (draggedDimension) {
-      type YArrayLike = {
-        get: (index: number) => unknown;
-        delete: (index: number, length: number) => void;
-        insert: (index: number, content: unknown[]) => void;
-      };
       const yDimensions = builder.dsl.get('dimensions') as
         | YArrayLike
         | undefined;
       if (!yDimensions) return;
 
       builder.doc.transact(() => {
-        const draggedYMap = yDimensions.get(dragIndex);
-        if (!draggedYMap) return;
-
-        yDimensions.delete(dragIndex, 1);
-        const insertIndex = dragIndex < dropIndex ? dropIndex - 1 : dropIndex;
-        yDimensions.insert(insertIndex, [draggedYMap]);
+        reorderYArray({ yArray: yDimensions, dragIndex, dropIndex });
       });
     }
   };
@@ -78,26 +59,12 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const handleContainerDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
-    const jsonData = e.dataTransfer.getData('application/json');
-    if (jsonData) {
-      try {
-        const data = JSON.parse(jsonData);
-        if (data.role === 'dimension' && data.field) {
-          // 检查是否已存在
-          if (!dimensions.some((d) => d.field === data.field)) {
-            addDimension(data.field);
-          }
-          return;
-        }
-        if (data.role === 'measure' && data.field) {
-          // 拖拽指标到维度，保持原始字段名，不添加聚合方式
-          if (!dimensions.some((d) => d.field === data.field)) {
-            addDimension(data.field);
-          }
-        }
-      } catch {
-        // 忽略解析错误
-      }
+    const dragPayload = readFieldDragPayload(e);
+    if (
+      dragPayload?.field &&
+      !dimensions.some((d) => d.field === dragPayload.field)
+    ) {
+      addDimension(dragPayload.field);
     }
   };
 

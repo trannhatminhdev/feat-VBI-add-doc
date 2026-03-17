@@ -1,26 +1,63 @@
 import { DownOutlined, HolderOutlined } from '@ant-design/icons';
 import { Dropdown, Flex, Input, Modal, message, type MenuProps } from 'antd';
 import { useVBIStore } from 'src/model';
-import { useVBIMeasures } from 'src/hooks';
-import { useState } from 'react';
-
-const AGGREGATE_ITEMS = [
-  { key: 'sum', label: '求和 (sum)' },
-  { key: 'count', label: '计数 (count)' },
-  { key: 'avg', label: '平均值 (avg)' },
-  { key: 'min', label: '最小值 (min)' },
-  { key: 'max', label: '最大值 (max)' },
-] as const;
+import { useVBIMeasures, useVBISchemaFields } from 'src/hooks';
+import { useMemo, useState } from 'react';
+import {
+  formatMeasureAggregate,
+  getAggregateItemsByFieldRole,
+  getDefaultAggregateByFieldRole,
+  getMeasureFieldRoleBySchemaType,
+  isAggregateSupportedByFieldRole,
+  type MeasureAggregate,
+} from './measureAggregateUtils';
+import {
+  readFieldDragPayload,
+  readShelfDragIndex,
+  writeShelfDragIndex,
+} from './dragDropUtils';
+import { reorderYArray, type YArrayLike } from './reorderUtils';
 
 export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
   const { measures, addMeasure, removeMeasure, updateMeasure } =
     useVBIMeasures(builder);
+  const { schemaFields } = useVBISchemaFields(builder);
   const [isDragOver, setIsDragOver] = useState(false);
+  const schemaTypeMap = useMemo(() => {
+    return Object.fromEntries(
+      schemaFields.map((item) => [item.name, item.type]),
+    );
+  }, [schemaFields]);
+
+  const getFieldRole = (fieldName: string, fieldType?: string) => {
+    return getMeasureFieldRoleBySchemaType(
+      fieldType ?? schemaTypeMap[fieldName],
+    );
+  };
+
+  const addDraggedFieldToShelf = (
+    dragField: ReturnType<typeof readFieldDragPayload>,
+  ) => {
+    if (!dragField || !dragField.field) {
+      return false;
+    }
+
+    const fieldName = dragField.field;
+    if (measures.some((item) => item.field === fieldName)) {
+      return true;
+    }
+
+    const fieldRole = getFieldRole(fieldName, dragField.type);
+    const aggregate = getDefaultAggregateByFieldRole(fieldRole);
+    addMeasure(fieldName, (node) => {
+      node.setAggregate(aggregate);
+    });
+    return true;
+  };
 
   const handleDragStart = (e: React.DragEvent, index: number) => {
-    e.dataTransfer.setData('text/plain', String(index));
-    e.dataTransfer.effectAllowed = 'move';
+    writeShelfDragIndex(e, index);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -31,53 +68,25 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const handleDrop = (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault();
     setIsDragOver(false);
-    // 检查是否是从字段列表拖拽
-    const jsonData = e.dataTransfer.getData('application/json');
-    if (jsonData) {
-      try {
-        const data = JSON.parse(jsonData);
-        if (data.role === 'measure' && data.field) {
-          // 从字段列表拖拽添加指标，检查是否已存在
-          if (!measures.some((m) => m.field === data.field)) {
-            addMeasure(data.field);
-          }
-          return;
-        }
-        if (data.role === 'dimension' && data.field) {
-          // 拖拽维度到指标，维度需要聚合才能作为度量，默认使用 count
-          const measureField = `count(${data.field})`;
-          if (!measures.some((m) => m.field === measureField)) {
-            addMeasure(measureField);
-          }
-          return;
-        }
-      } catch {
-        // 忽略解析错误
-      }
+    if (addDraggedFieldToShelf(readFieldDragPayload(e))) {
+      return;
     }
 
     // 内部排序
-    const dragIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
-    if (isNaN(dragIndex) || dragIndex === dropIndex) return;
+    const dragIndex = readShelfDragIndex(e);
+    if (dragIndex === undefined || dragIndex === dropIndex) {
+      return;
+    }
 
-    // 通过删除并重新添加来实现排序
     const draggedMeasure = measures[dragIndex];
     if (draggedMeasure) {
-      type YArrayLike = {
-        get: (index: number) => unknown;
-        delete: (index: number, length: number) => void;
-        insert: (index: number, content: unknown[]) => void;
-      };
       const yMeasures = builder.dsl.get('measures') as YArrayLike | undefined;
-      if (!yMeasures) return;
+      if (!yMeasures) {
+        return;
+      }
 
       builder.doc.transact(() => {
-        const draggedYMap = yMeasures.get(dragIndex);
-        if (!draggedYMap) return;
-
-        yMeasures.delete(dragIndex, 1);
-        const insertIndex = dragIndex < dropIndex ? dropIndex - 1 : dropIndex;
-        yMeasures.insert(insertIndex, [draggedYMap]);
+        reorderYArray({ yArray: yMeasures, dragIndex, dropIndex });
       });
     }
   };
@@ -86,28 +95,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const handleContainerDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
-    const jsonData = e.dataTransfer.getData('application/json');
-    if (jsonData) {
-      try {
-        const data = JSON.parse(jsonData);
-        if (data.role === 'measure' && data.field) {
-          // 检查是否已存在
-          if (!measures.some((m) => m.field === data.field)) {
-            addMeasure(data.field);
-          }
-          return;
-        }
-        if (data.role === 'dimension' && data.field) {
-          // 拖拽维度到指标，维度需要聚合才能作为度量，默认使用 count
-          const measureField = `count(${data.field})`;
-          if (!measures.some((m) => m.field === measureField)) {
-            addMeasure(measureField);
-          }
-        }
-      } catch {
-        // 忽略解析错误
-      }
-    }
+    addDraggedFieldToShelf(readFieldDragPayload(e));
   };
 
   const renameMeasure = (id: string, alias: string) => {
@@ -116,12 +104,9 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     });
   };
 
-  const changeAggregate = (
-    id: string,
-    aggregate: 'sum' | 'count' | 'avg' | 'min' | 'max',
-  ) => {
+  const changeAggregate = (id: string, aggregate: MeasureAggregate) => {
     updateMeasure(id, (node) => {
-      node.setAggregate({ func: aggregate });
+      node.setAggregate(aggregate);
     });
   };
 
@@ -157,14 +142,16 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const buildMeasureMenuItems = (
     measure: (typeof measures)[number],
   ): MenuProps['items'] => {
-    const currentAggregate = measure.aggregate?.func ?? 'sum';
+    const fieldRole = getFieldRole(measure.field);
+    const availableAggregates = getAggregateItemsByFieldRole(fieldRole);
+    const currentAggregateKey = measure.aggregate?.func ?? 'sum';
     return [
       {
         key: 'aggregate',
         label: '修改聚合方式',
-        children: AGGREGATE_ITEMS.map((item) => ({
+        children: availableAggregates.map((item) => ({
           key: `aggregate:${item.key}`,
-          label: `${currentAggregate === item.key ? '✓ ' : ''}${item.label}`,
+          label: `${currentAggregateKey === item.key ? '✓ ' : ''}${item.label}`,
         })),
       },
       {
@@ -196,22 +183,27 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     }
 
     if (key.startsWith('aggregate:')) {
-      const aggregate = key.replace('aggregate:', '');
-      if (
-        aggregate === 'sum' ||
-        aggregate === 'count' ||
-        aggregate === 'avg' ||
-        aggregate === 'min' ||
-        aggregate === 'max'
-      ) {
-        changeAggregate(measure.id, aggregate);
+      const aggregateKey = key.replace('aggregate:', '');
+      const fieldRole = getFieldRole(measure.field);
+      const selectedAggregate = getAggregateItemsByFieldRole(fieldRole).find(
+        (item) => item.key === aggregateKey,
+      )?.aggregate;
+
+      if (selectedAggregate) {
+        if (!isAggregateSupportedByFieldRole(selectedAggregate, fieldRole)) {
+          message.warning('该字段不支持此聚合方式');
+          return;
+        }
+        changeAggregate(measure.id, selectedAggregate);
       }
     }
   };
 
   const getMeasureDisplayLabel = (measure: (typeof measures)[number]) => {
     const baseLabel = measure.alias || measure.field;
-    const aggregate = measure.aggregate?.func;
+    const aggregate = formatMeasureAggregate(
+      measure.aggregate as MeasureAggregate | undefined,
+    );
     if (!aggregate) {
       return baseLabel;
     }

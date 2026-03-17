@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { VQuery } from '@visactor/vquery'
+import { convertDSLToSQL, VQuery } from '@visactor/vquery'
 import vqueryConfig from './in-single.json'
 
 describe('Having Example with single value IN operator', () => {
@@ -16,6 +16,12 @@ describe('Having Example with single value IN operator', () => {
     }
 
     const dataset = await vquery.connectDataset(datasetId)
+
+    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+
+    expect(sql).toMatchInlineSnapshot(
+      `"select "department", sum("salary") as "Total Salary" from "having-in-single" group by "department" having (min("department") in ('HR'))"`,
+    )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 

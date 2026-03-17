@@ -1,6 +1,7 @@
-import type { Select, VQueryDSL } from '@visactor/vquery'
+import type { VQueryDSL } from '@visactor/vquery'
 import type { buildPipe } from './types'
 import { MeasuresBuilder, DimensionsBuilder } from '../../builder'
+import { mapAggregateForVQuery } from './aggregateMap'
 
 export const buildSelect: buildPipe = (queryDSL, context) => {
   const { vbiDSL } = context
@@ -9,19 +10,19 @@ export const buildSelect: buildPipe = (queryDSL, context) => {
 
   const result = { ...queryDSL }
   const measureNodes = measures.filter((measure) => MeasuresBuilder.isMeasureNode(measure))
-  const measureSelects: Select<Record<string, unknown>> = measureNodes.map((measure) => ({
+  const measureSelects = measureNodes.map((measure) => ({
     field: measure.field,
     alias: measure.alias,
-    aggr: measure.aggregate,
+    aggr: mapAggregateForVQuery(measure.aggregate),
   }))
 
   const dimensionNodes = dimensions.filter((dimension) => DimensionsBuilder.isDimensionNode(dimension))
-  const dimensionSelects: Select<Record<string, unknown>> = dimensionNodes.map((dimension) => ({
+  const dimensionSelects = dimensionNodes.map((dimension) => ({
     field: dimension.field,
     alias: dimension.alias,
   }))
 
-  result.select = measureSelects.concat(dimensionSelects)
+  result.select = [...measureSelects, ...dimensionSelects] as any
 
   return result as VQueryDSL
 }

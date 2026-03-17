@@ -1,5 +1,5 @@
 import type { DatasetColumn, VQueryDSL } from '@visactor/vquery'
-import { VQuery } from '@visactor/vquery'
+import { convertDSLToSQL, VQuery } from '@visactor/vquery'
 import vqueryConfig from './basic.json'
 
 describe('Basic Having Example - filter aggregated results', () => {
@@ -16,6 +16,12 @@ describe('Basic Having Example - filter aggregated results', () => {
     }
 
     const dataset = await vquery.connectDataset(datasetId)
+
+    const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
+
+    expect(sql).toMatchInlineSnapshot(
+      `"select "department", sum("salary") as "Total Salary" from "having-basic" group by "department" having (sum("salary") > 5000)"`,
+    )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)
 

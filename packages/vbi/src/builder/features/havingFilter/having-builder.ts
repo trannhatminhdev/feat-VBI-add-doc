@@ -46,6 +46,7 @@ export class HavingFilterBuilder {
     const yMap = new Y.Map<any>()
     yMap.set('id', id.uuid())
     yMap.set('field', field)
+    yMap.set('aggregate', { func: 'sum' })
 
     this.getConditions().push([yMap])
 
