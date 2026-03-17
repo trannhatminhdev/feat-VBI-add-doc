@@ -6,7 +6,6 @@ import {
   Space,
   Popover,
   Form,
-  List,
   Typography,
   Tooltip,
   Radio,
@@ -22,6 +21,10 @@ import {
   ClearOutlined,
   CheckOutlined,
 } from '@ant-design/icons';
+import {
+  HAVING_AGGREGATE_OPTIONS,
+  HAVING_OPERATOR_OPTIONS,
+} from './havingFilterUtils';
 
 const { Option = Select.Option } = Select;
 const { Text } = Typography;
@@ -50,24 +53,6 @@ interface HavingFilterPanelProps {
   embedded?: boolean;
   itemEdit?: boolean;
 }
-
-const AGGREGATE_FUNCS = [
-  { label: '求和 (sum)', value: 'sum' },
-  { label: '平均值 (avg)', value: 'avg' },
-  { label: '计数 (count)', value: 'count' },
-  { label: '最大值 (max)', value: 'max' },
-  { label: '最小值 (min)', value: 'min' },
-];
-
-const HAVING_OPERATORS = [
-  { label: '等于 (=)', value: '=' },
-  { label: '不等于 (!=)', value: '!=' },
-  { label: '大于 (>)', value: '>' },
-  { label: '大于等于 (>=)', value: '>=' },
-  { label: '小于 (<)', value: '<' },
-  { label: '小于等于 (<=)', value: '<=' },
-  { label: '范围 (between)', value: 'between' },
-];
 
 export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   fields,
@@ -115,9 +100,9 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
       const currentOperator = form.getFieldValue('operator');
       if (
         currentOperator &&
-        !HAVING_OPERATORS.find((op) => op.value === currentOperator)
+        !HAVING_OPERATOR_OPTIONS.find((op) => op.value === currentOperator)
       ) {
-        form.setFieldValue('operator', HAVING_OPERATORS[0]?.value);
+        form.setFieldValue('operator', HAVING_OPERATOR_OPTIONS[0]?.value);
       }
     }
   }, [popoverOpen, form]);
@@ -318,7 +303,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
         style={{ marginBottom: 8 }}
       >
         <Radio.Group size="small" optionType="button">
-          {AGGREGATE_FUNCS.map((func) => (
+          {HAVING_AGGREGATE_OPTIONS.map((func) => (
             <Radio key={func.value} value={func.value}>
               {func.label.split(' ')[0]}
             </Radio>
@@ -372,7 +357,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
             form.setFieldsValue({ value: undefined });
           }}
         >
-          {HAVING_OPERATORS.map((op) => (
+          {HAVING_OPERATOR_OPTIONS.map((op) => (
             <Option key={op.value} value={op.value}>
               {op.label}
             </Option>
@@ -454,43 +439,45 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
           style={{ margin: '20px 0' }}
         />
       ) : (
-        <List
-          size="small"
-          dataSource={filters}
-          style={{ maxHeight: 200, overflow: 'auto' }}
-          renderItem={(item) => (
-            <List.Item
+        <div style={{ maxHeight: 200, overflow: 'auto' }}>
+          {filters.map((item, index) => (
+            <div
+              key={item.id ?? `having-filter-${index}`}
               style={{
                 padding: '4px 8px',
                 opacity: editingId === item.id ? 0.5 : 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 8,
               }}
-              actions={[
-                <Tooltip title="编辑" key="edit">
+            >
+              <Text style={{ fontSize: 12, minWidth: 0, flex: 1 }} ellipsis>
+                {getHavingDisplayText(item)}
+              </Text>
+              <Space size={2}>
+                <Tooltip title="编辑">
                   <Button
                     type="text"
                     size="small"
                     icon={<EditOutlined />}
-                    onClick={() => handleEdit(item.id!)}
+                    onClick={() => item.id && handleEdit(item.id)}
                     style={{ color: '#722ed1' }}
                   />
-                </Tooltip>,
-                <Tooltip title="删除" key="delete">
+                </Tooltip>
+                <Tooltip title="删除">
                   <Button
                     type="text"
                     size="small"
                     danger
                     icon={<DeleteOutlined />}
-                    onClick={() => handleDelete(item.id!)}
+                    onClick={() => item.id && handleDelete(item.id)}
                   />
-                </Tooltip>,
-              ]}
-            >
-              <Text style={{ fontSize: 12 }} ellipsis>
-                {getHavingDisplayText(item)}
-              </Text>
-            </List.Item>
-          )}
-        />
+                </Tooltip>
+              </Space>
+            </div>
+          ))}
+        </div>
       )}
 
       {isAdding && renderHavingForm()}

@@ -23,10 +23,32 @@ import {
 registerAll();
 register.chartModule('vchart', VChart);
 
+type PivotRecord = Record<string, unknown>;
+
+const readEventValue = (args: unknown) => {
+  if (!args || typeof args !== 'object' || !('value' in args)) {
+    return undefined;
+  }
+  return (args as { value?: unknown }).value;
+};
+
+const toNumericRange = (value: unknown): [number, number] | undefined => {
+  if (!Array.isArray(value) || value.length < 2) {
+    return undefined;
+  }
+
+  const minValue = Number(value[0]);
+  const maxValue = Number(value[1]);
+  if (Number.isNaN(minValue) || Number.isNaN(maxValue)) {
+    return undefined;
+  }
+
+  return [minValue, maxValue];
+};
+
 export const VSeedRender = (props: { vseed: VSeed }) => {
   const { vseed } = props;
   const ref = useRef<HTMLDivElement>(null);
-  const vseedBuilderRef = useRef<VSeedBuilder>(null);
 
   useEffect(() => {
     if (!ref.current) {
@@ -36,38 +58,46 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
       const theme = 'light';
       const builder = VSeedBuilder.from({ ...vseed, theme });
       const spec = builder.build();
-
-      vseedBuilderRef.current = builder;
       if (isPivotChart(vseed)) {
         const tableInstance = new PivotChart(
           ref.current,
           spec as PivotChartConstructorOptions,
         );
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const handleLegendItemClick = (args: any) => {
-          console.log('LEGEND_ITEM_CLICK', args);
+        const handleLegendItemClick = (args: unknown) => {
+          const rawValue = readEventValue(args);
+          const filteredValues =
+            rawValue === undefined
+              ? []
+              : Array.isArray(rawValue)
+                ? rawValue
+                : [rawValue];
           tableInstance.updateFilterRules([
             {
               filterKey: ColorIdEncoding,
-              filteredValues: args.value,
+              filteredValues,
             },
           ]);
         };
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const handleLegendChange = (args: any) => {
-          const maxValue = args.value[1];
-          const minValue = args.value[0];
+        const handleLegendChange = (args: unknown) => {
+          const range = toNumericRange(readEventValue(args));
+          if (!range) {
+            return;
+          }
+          const [minValue, maxValue] = range;
           tableInstance.updateFilterRules([
             {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              filterFunc: (record: any) => {
-                const value = record[record[ColorIdEncoding]];
-                if (value >= minValue && value <= maxValue) {
-                  return true;
+              filterFunc: (record: PivotRecord) => {
+                const colorKey = record[ColorIdEncoding];
+                if (typeof colorKey !== 'string') {
+                  return false;
                 }
-                return false;
+                const rawValue = record[colorKey];
+                if (typeof rawValue !== 'number') {
+                  return false;
+                }
+                return rawValue >= minValue && rawValue <= maxValue;
               },
             },
           ]);
@@ -99,35 +129,12 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
         vchart.renderSync();
         return () => vchart.release();
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('VSeed Render Error:', error);
     }
   }, [vseed]);
 
   return (
-    <div
-      ref={ref}
-      style={{ height: '100%', width: '100%', minHeight: 300 }}
-      onClick={() => {
-        console.group(`selected ${vseed.chartType}`);
-        console.log('builder', vseedBuilderRef.current);
-        console.log(
-          'spec',
-          vseedBuilderRef.current && vseedBuilderRef.current.spec,
-        );
-        console.log(
-          'vseed',
-          vseedBuilderRef.current && vseedBuilderRef.current.vseed,
-        );
-        console.log(
-          'advancedVSeed',
-          vseedBuilderRef.current && vseedBuilderRef.current.advancedVSeed,
-        );
-        console.groupEnd();
-      }}
-    ></div>
+    <div ref={ref} style={{ height: '100%', width: '100%', minHeight: 300 }} />
   );
 };
-
-// react 应用程序, 有一个非常非常重要的概念是: UI状态和业务逻辑是分离的

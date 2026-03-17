@@ -1,4 +1,7 @@
-export type MeasureFieldRole = 'dimension' | 'measure';
+import type { FieldRole } from 'src/utils/fieldRole';
+import { getFieldRoleBySchemaType } from 'src/utils/fieldRole';
+
+export type MeasureFieldRole = FieldRole;
 
 export type MeasureAggregate =
   | {
@@ -65,7 +68,11 @@ const DIMENSION_MEASURE_AGGREGATES = new Set([
 export const getMeasureFieldRoleBySchemaType = (
   schemaType?: string,
 ): MeasureFieldRole => {
-  return schemaType === 'number' ? 'measure' : 'dimension';
+  return getFieldRoleBySchemaType(schemaType);
+};
+
+export const getMeasureAggregateItems = (): MeasureAggregateItem[] => {
+  return [...ALL_MEASURE_AGGREGATE_ITEMS];
 };
 
 export const isAggregateSupportedByFieldRole = (

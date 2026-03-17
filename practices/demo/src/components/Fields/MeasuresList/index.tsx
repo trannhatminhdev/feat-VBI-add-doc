@@ -1,31 +1,17 @@
-import { List, Card } from 'antd';
-import { useEffect, useState } from 'react';
+import { Card, Flex } from 'antd';
 import { NumberOutlined } from '@ant-design/icons';
-import { useVBIMeasures } from 'src/hooks';
+import { useVBIMeasures, useVBISchemaFields } from 'src/hooks';
 import { useVBIStore } from 'src/model';
+import {
+  createFieldDragPayload,
+  writeFieldDragPayload,
+} from 'src/components/Shelfs/dragDropUtils';
 
 export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
   const { measures: shelfMeasures, addMeasure } = useVBIMeasures(builder);
-
-  const [schema, setSchema] = useState<
-    {
-      name: string;
-      type: string;
-    }[]
-  >([]);
-
-  useEffect(() => {
-    const run = async () => {
-      if (builder) {
-        const schema = await builder.getSchema();
-        setSchema(schema);
-      }
-    };
-    run();
-  }, [builder]);
-
-  const measures = schema.filter((d) => d.type === 'number');
+  const { schemaFields } = useVBISchemaFields(builder);
+  const measures = schemaFields.filter((d) => d.role === 'measure');
 
   // 处理拖拽开始
   const handleDragStart = (
@@ -33,15 +19,14 @@ export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
     fieldName: string,
     fieldType: string,
   ) => {
-    e.dataTransfer.setData(
-      'application/json',
-      JSON.stringify({
+    writeFieldDragPayload(
+      e,
+      createFieldDragPayload({
         field: fieldName,
         type: fieldType,
-        role: fieldType === 'number' ? 'measure' : 'dimension',
+        role: 'measure',
       }),
     );
-    e.dataTransfer.effectAllowed = 'copy';
   };
 
   return (
@@ -64,12 +49,12 @@ export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
         },
       }}
     >
-      <List
-        size="small"
-        dataSource={measures}
-        split={false}
-        renderItem={(item) => (
-          <List.Item style={{ padding: 0, marginBottom: 0 }}>
+      <Flex vertical gap={0}>
+        {measures.map((item) => (
+          <div
+            key={`measure-field-${item.name}`}
+            style={{ padding: 0, marginBottom: 0 }}
+          >
             <div
               draggable
               onDragStart={(e) => handleDragStart(e, item.name, item.type)}
@@ -120,9 +105,9 @@ export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
                 {item.name}
               </span>
             </div>
-          </List.Item>
-        )}
-      />
+          </div>
+        ))}
+      </Flex>
     </Card>
   );
 };

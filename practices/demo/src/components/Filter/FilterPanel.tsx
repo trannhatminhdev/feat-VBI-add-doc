@@ -6,7 +6,6 @@ import {
   Space,
   Popover,
   Form,
-  List,
   Typography,
   Tooltip,
   InputNumber,
@@ -504,43 +503,45 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           style={{ margin: '20px 0' }}
         />
       ) : (
-        <List
-          size="small"
-          dataSource={filters}
-          style={{ maxHeight: 200, overflow: 'auto' }}
-          renderItem={(item) => (
-            <List.Item
+        <div style={{ maxHeight: 200, overflow: 'auto' }}>
+          {filters.map((item, index) => (
+            <div
+              key={item.id ?? `where-filter-${index}`}
               style={{
                 padding: '4px 8px',
                 opacity: editingId === item.id ? 0.5 : 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 8,
               }}
-              actions={[
-                <Tooltip title="编辑" key="edit">
+            >
+              <Text style={{ fontSize: 12, minWidth: 0, flex: 1 }} ellipsis>
+                {getFilterDisplayText(item)}
+              </Text>
+              <Space size={2}>
+                <Tooltip title="编辑">
                   <Button
                     type="text"
                     size="small"
                     icon={<EditOutlined />}
-                    onClick={() => handleEdit(item.id!)}
+                    onClick={() => item.id && handleEdit(item.id)}
                     style={{ color: '#1890ff' }}
                   />
-                </Tooltip>,
-                <Tooltip title="删除" key="delete">
+                </Tooltip>
+                <Tooltip title="删除">
                   <Button
                     type="text"
                     size="small"
                     danger
                     icon={<DeleteOutlined />}
-                    onClick={() => handleDelete(item.id!)}
+                    onClick={() => item.id && handleDelete(item.id)}
                   />
-                </Tooltip>,
-              ]}
-            >
-              <Text style={{ fontSize: 12 }} ellipsis>
-                {getFilterDisplayText(item)}
-              </Text>
-            </List.Item>
-          )}
-        />
+                </Tooltip>
+              </Space>
+            </div>
+          ))}
+        </div>
       )}
 
       {isAdding && renderFilterForm()}

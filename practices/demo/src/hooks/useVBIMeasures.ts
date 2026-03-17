@@ -1,39 +1,35 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { VBIBuilder, type VBIMeasure as CoreVBIMeasure } from '@visactor/vbi';
+import { useBuilderDocState } from './useBuilderDocState';
 
 export type VBIMeasure = Omit<CoreVBIMeasure, 'encoding' | 'aggregate'> & {
   encoding?: CoreVBIMeasure['encoding'];
   aggregate?: CoreVBIMeasure['aggregate'];
 };
 
+type MeasureNodeLike = {
+  setAlias: (alias: string) => unknown;
+  setAggregate: (aggregate: NonNullable<VBIMeasure['aggregate']>) => unknown;
+};
+
+type MeasureNodeMutator = (node: MeasureNodeLike) => void;
+const EMPTY_MEASURES: VBIMeasure[] = [];
+
 /**
  * VBI Measures Hook
  * 提供度量管理
  */
 export const useVBIMeasures = (builder: VBIBuilder | undefined) => {
-  const [measures, setMeasures] = useState<VBIMeasure[]>([]);
-
-  useEffect(() => {
-    if (!builder) {
-      return;
-    }
-
-    // 统一由 toJSON 驱动 UI 状态
-    const syncFromBuilder = () => {
-      setMeasures(builder.measures.toJSON() as VBIMeasure[]);
-    };
-
-    syncFromBuilder();
-    builder.doc.on('update', syncFromBuilder);
-
-    return () => {
-      builder.doc.off('update', syncFromBuilder);
-    };
-  }, [builder]);
+  const measures = useBuilderDocState({
+    builder,
+    fallback: EMPTY_MEASURES,
+    getSnapshot: (activeBuilder) =>
+      activeBuilder.measures.toJSON() as VBIMeasure[],
+  });
 
   // 添加度量
   const addMeasure = useCallback(
-    (field: string, callback?: (node: any) => void) => {
+    (field: string, callback?: MeasureNodeMutator) => {
       if (builder) {
         builder.doc.transact(() => {
           builder.measures.add(field, (node) => {
@@ -59,7 +55,7 @@ export const useVBIMeasures = (builder: VBIBuilder | undefined) => {
 
   // 更新度量
   const updateMeasure = useCallback(
-    (id: string, callback: (node: any) => void) => {
+    (id: string, callback: MeasureNodeMutator) => {
       if (builder) {
         builder.doc.transact(() => {
           builder.measures.update(id, callback);

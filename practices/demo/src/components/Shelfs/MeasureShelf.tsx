@@ -1,8 +1,8 @@
 import { DownOutlined, HolderOutlined } from '@ant-design/icons';
 import { Dropdown, Flex, Input, Modal, message, type MenuProps } from 'antd';
 import { useVBIStore } from 'src/model';
-import { useVBIMeasures } from 'src/hooks';
-import { useEffect, useState } from 'react';
+import { useVBIMeasures, useVBISchemaFields } from 'src/hooks';
+import { useMemo, useState } from 'react';
 import {
   formatMeasureAggregate,
   getAggregateItemsByFieldRole,
@@ -11,42 +11,24 @@ import {
   isAggregateSupportedByFieldRole,
   type MeasureAggregate,
 } from './measureAggregateUtils';
-
-type DragFieldData = {
-  field?: string;
-  type?: string;
-  role?: 'dimension' | 'measure';
-};
+import {
+  readFieldDragPayload,
+  readShelfDragIndex,
+  writeShelfDragIndex,
+} from './dragDropUtils';
+import { reorderYArray, type YArrayLike } from './reorderUtils';
 
 export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
   const { measures, addMeasure, removeMeasure, updateMeasure } =
     useVBIMeasures(builder);
+  const { schemaFields } = useVBISchemaFields(builder);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [schemaTypeMap, setSchemaTypeMap] = useState<Record<string, string>>(
-    {},
-  );
-
-  useEffect(() => {
-    let destroyed = false;
-    const run = async () => {
-      if (!builder) {
-        return;
-      }
-      const schema = await builder.getSchema();
-      if (destroyed) {
-        return;
-      }
-      const typeMap = Object.fromEntries(
-        schema.map((item) => [item.name, item.type]),
-      );
-      setSchemaTypeMap(typeMap);
-    };
-    run();
-    return () => {
-      destroyed = true;
-    };
-  }, [builder]);
+  const schemaTypeMap = useMemo(() => {
+    return Object.fromEntries(
+      schemaFields.map((item) => [item.name, item.type]),
+    );
+  }, [schemaFields]);
 
   const getFieldRole = (fieldName: string, fieldType?: string) => {
     return getMeasureFieldRoleBySchemaType(
@@ -54,23 +36,10 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     );
   };
 
-  const parseDragFieldData = (
-    e: React.DragEvent,
-  ): DragFieldData | undefined => {
-    const jsonData = e.dataTransfer.getData('application/json');
-    if (!jsonData) {
-      return undefined;
-    }
-
-    try {
-      return JSON.parse(jsonData) as DragFieldData;
-    } catch {
-      return undefined;
-    }
-  };
-
-  const addDraggedFieldToShelf = (dragField: DragFieldData | undefined) => {
-    if (!dragField?.field) {
+  const addDraggedFieldToShelf = (
+    dragField: ReturnType<typeof readFieldDragPayload>,
+  ) => {
+    if (!dragField || !dragField.field) {
       return false;
     }
 
@@ -88,8 +57,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   };
 
   const handleDragStart = (e: React.DragEvent, index: number) => {
-    e.dataTransfer.setData('text/plain', String(index));
-    e.dataTransfer.effectAllowed = 'move';
+    writeShelfDragIndex(e, index);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -100,32 +68,25 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const handleDrop = (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault();
     setIsDragOver(false);
-    if (addDraggedFieldToShelf(parseDragFieldData(e))) {
+    if (addDraggedFieldToShelf(readFieldDragPayload(e))) {
       return;
     }
 
     // 内部排序
-    const dragIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
-    if (isNaN(dragIndex) || dragIndex === dropIndex) return;
+    const dragIndex = readShelfDragIndex(e);
+    if (dragIndex === undefined || dragIndex === dropIndex) {
+      return;
+    }
 
-    // 通过删除并重新添加来实现排序
     const draggedMeasure = measures[dragIndex];
     if (draggedMeasure) {
-      type YArrayLike = {
-        get: (index: number) => unknown;
-        delete: (index: number, length: number) => void;
-        insert: (index: number, content: unknown[]) => void;
-      };
       const yMeasures = builder.dsl.get('measures') as YArrayLike | undefined;
-      if (!yMeasures) return;
+      if (!yMeasures) {
+        return;
+      }
 
       builder.doc.transact(() => {
-        const draggedYMap = yMeasures.get(dragIndex);
-        if (!draggedYMap) return;
-
-        yMeasures.delete(dragIndex, 1);
-        const insertIndex = dragIndex < dropIndex ? dropIndex - 1 : dropIndex;
-        yMeasures.insert(insertIndex, [draggedYMap]);
+        reorderYArray({ yArray: yMeasures, dragIndex, dropIndex });
       });
     }
   };
@@ -134,7 +95,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const handleContainerDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
-    addDraggedFieldToShelf(parseDragFieldData(e));
+    addDraggedFieldToShelf(readFieldDragPayload(e));
   };
 
   const renameMeasure = (id: string, alias: string) => {

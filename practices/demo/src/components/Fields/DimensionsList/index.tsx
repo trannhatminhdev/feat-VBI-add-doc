@@ -1,33 +1,20 @@
-import { List, Card } from 'antd';
-import { memo, useEffect, useState } from 'react';
+import { Card, Flex } from 'antd';
+import { memo } from 'react';
 import { CalendarOutlined, FontSizeOutlined } from '@ant-design/icons';
-import { useVBIDimensions } from 'src/hooks';
+import { useVBIDimensions, useVBISchemaFields } from 'src/hooks';
 import { useVBIStore } from 'src/model';
+import {
+  createFieldDragPayload,
+  writeFieldDragPayload,
+} from 'src/components/Shelfs/dragDropUtils';
 
 export const DimensionsList = memo(
   ({ style }: { style?: React.CSSProperties }) => {
     const builder = useVBIStore((state) => state.builder);
     const { dimensions: shelfDimensions, addDimension } =
       useVBIDimensions(builder);
-
-    const [schema, setSchema] = useState<
-      {
-        name: string;
-        type: string;
-      }[]
-    >([]);
-
-    useEffect(() => {
-      const run = async () => {
-        if (builder) {
-          const schema = await builder.getSchema();
-          setSchema(schema);
-        }
-      };
-      run();
-    }, [builder]);
-
-    const dimensions = schema.filter((d) => d.type !== 'number');
+    const { schemaFields } = useVBISchemaFields(builder);
+    const dimensions = schemaFields.filter((d) => d.role === 'dimension');
 
     const getIcon = (type: string) => {
       if (type === 'date') {
@@ -42,15 +29,14 @@ export const DimensionsList = memo(
       fieldName: string,
       fieldType: string,
     ) => {
-      e.dataTransfer.setData(
-        'application/json',
-        JSON.stringify({
+      writeFieldDragPayload(
+        e,
+        createFieldDragPayload({
           field: fieldName,
           type: fieldType,
-          role: fieldType === 'number' ? 'measure' : 'dimension',
+          role: 'dimension',
         }),
       );
-      e.dataTransfer.effectAllowed = 'copy';
     };
 
     return (
@@ -75,12 +61,12 @@ export const DimensionsList = memo(
           },
         }}
       >
-        <List
-          size="small"
-          dataSource={dimensions}
-          split={false}
-          renderItem={(item) => (
-            <List.Item style={{ padding: 0, marginBottom: 0 }}>
+        <Flex vertical gap={0}>
+          {dimensions.map((item) => (
+            <div
+              key={`dimension-field-${item.name}`}
+              style={{ padding: 0, marginBottom: 0 }}
+            >
               <div
                 draggable
                 onDragStart={(e) => handleDragStart(e, item.name, item.type)}
@@ -131,9 +117,9 @@ export const DimensionsList = memo(
                   {item.name}
                 </span>
               </div>
-            </List.Item>
-          )}
-        />
+            </div>
+          ))}
+        </Flex>
       </Card>
     );
   },

@@ -150,7 +150,7 @@ const ChartWrapper = () => {
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             description={
-              <Space direction="vertical" size={2}>
+              <Space orientation="vertical" size={2}>
                 <Typography.Text strong>暂时为空</Typography.Text>
                 <Typography.Text type="secondary">
                   请先拖拽至少一个 Dimensions 或 Measures 字段到右侧分析区
