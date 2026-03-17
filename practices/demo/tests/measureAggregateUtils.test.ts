@@ -60,8 +60,8 @@ test('checks aggregate support by field role', () => {
 test('formats aggregate labels for display', () => {
   expect(formatMeasureAggregate(undefined)).toBeUndefined();
   expect(formatMeasureAggregate({ func: 'sum' })).toBe('sum');
-  expect(formatMeasureAggregate({ func: 'quantile' })).toBe('quantile(0.5)');
+  expect(formatMeasureAggregate({ func: 'quantile' })).toBe('p50');
   expect(formatMeasureAggregate({ func: 'quantile', quantile: 0.8 })).toBe(
-    'quantile(0.8)',
+    'p80',
   );
 });
