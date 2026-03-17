@@ -20,7 +20,7 @@ describe('Having Example with array IN operator', () => {
     const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("salary") as "Total Salary" from "having-in-array" group by "department" having ("department" in ('HR', 'Engineering'))"`,
+      `"select "department", sum("salary") as "Total Salary" from "having-in-array" group by "department" having (min("department") in ('HR', 'Engineering'))"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

@@ -20,7 +20,7 @@ describe('Basic Having Example - filter aggregated results', () => {
     const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("salary") as "Total Salary" from "having-basic" group by "department" having ("Total Salary" > 5000)"`,
+      `"select "department", sum("salary") as "Total Salary" from "having-basic" group by "department" having (sum("salary") > 5000)"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

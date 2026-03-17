@@ -20,7 +20,7 @@ describe('Having Example with multiple conditions (AND/OR)', () => {
     const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("salary") as "Total Salary", CAST(count("salary") AS INTEGER) as "Count" from "having-multi" group by "department" having ("Total Salary" > 5000 and "Count" > 1)"`,
+      `"select "department", sum("salary") as "Total Salary", CAST(count("salary") AS INTEGER) as "Count" from "having-multi" group by "department" having (sum("salary") > 5000 and count("salary") > 1)"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

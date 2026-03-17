@@ -20,7 +20,7 @@ describe('Having Example with OR conditions', () => {
     const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("salary") as "Total Salary" from "having-or" group by "department" having ("Total Salary" > 15000 or "Total Salary" < 5000)"`,
+      `"select "department", sum("salary") as "Total Salary" from "having-or" group by "department" having (sum("salary") > 15000 or sum("salary") < 5000)"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

@@ -42,11 +42,11 @@ describe('having', () => {
         having: {
           op: 'and',
           conditions: [
-            { field: 'age', op: 'sum', value: 100 },
-            { field: 'age', op: 'avg', value: 20 },
-            { field: 'id', op: 'count', value: 2 },
-            { field: 'age', op: 'min', value: 10 },
-            { field: 'age', op: 'max', value: 80 },
+            { field: 'age', aggr: { func: 'sum' }, op: '=', value: 100 },
+            { field: 'age', aggr: { func: 'avg' }, op: '=', value: 20 },
+            { field: 'id', aggr: { func: 'count' }, op: '=', value: 2 },
+            { field: 'age', aggr: { func: 'min' }, op: '=', value: 10 },
+            { field: 'age', aggr: { func: 'max' }, op: '=', value: 80 },
           ],
         },
       },
@@ -55,6 +55,36 @@ describe('having', () => {
 
     expect(sql).toMatchInlineSnapshot(
       `"select "department", sum("age") as "SUM_AGE", avg("age") as "AVG_AGE", CAST(count("id") AS INTEGER) as "CNT", min("age") as "MIN_AGE", max("age") as "MAX_AGE" from "orders" group by "department" having (sum("age") = 100 and avg("age") = 20 and count("id") = 2 and min("age") = 10 and max("age") = 80)"`,
+    )
+  })
+
+  it('aggr + comparison operator', () => {
+    interface USER {
+      sales: number
+      profit: number
+      area: string
+      province: string
+    }
+
+    const sql = convertDSLToSQL<USER, 'orders'>(
+      {
+        select: [
+          { field: 'province', alias: 'province', aggr: { func: 'count_distinct' } },
+          { field: 'profit', alias: 'profit', aggr: { func: 'sum' } },
+          { field: 'area', alias: 'area' },
+        ],
+        groupBy: ['area'],
+        having: {
+          op: 'and',
+          conditions: [{ field: 'sales', aggr: { func: 'sum' }, op: '>', value: 5 }],
+        },
+        limit: 1000,
+      },
+      'orders',
+    )
+
+    expect(sql).toMatchInlineSnapshot(
+      `"select CAST(count(distinct "province") AS INTEGER) as "province", sum("profit") as "profit", "area" as "area" from "orders" group by "area" having (sum("sales") > 5) limit 1000"`,
     )
   })
 
@@ -75,11 +105,11 @@ describe('having', () => {
             {
               op: 'and',
               conditions: [
-                { field: 'age', op: '>=', value: 18 },
-                { field: 'age', op: '<=', value: 30 },
+                { field: 'age', aggr: { func: 'avg' }, op: '>=', value: 18 },
+                { field: 'age', aggr: { func: 'avg' }, op: '<=', value: 30 },
               ],
             },
-            { field: 'department', op: '=', value: 'engineering' },
+            { field: 'department', aggr: { func: 'min' }, op: '=', value: 'engineering' },
           ],
         },
       },
@@ -87,7 +117,7 @@ describe('having', () => {
     )
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", avg("age") as "AVG_AGE" from "orders" group by "department" having (("age" >= 18 and "age" <= 30) or "department" = 'engineering')"`,
+      `"select "department", avg("age") as "AVG_AGE" from "orders" group by "department" having ((avg("age") >= 18 and avg("age") <= 30) or min("department") = 'engineering')"`,
     )
   })
 
@@ -105,8 +135,8 @@ describe('having', () => {
         having: {
           op: 'or',
           conditions: [
-            { field: 'department', op: 'is null' },
-            { field: 'department', op: 'is not null' },
+            { field: 'department', aggr: { func: 'min' }, op: 'is null' },
+            { field: 'department', aggr: { func: 'max' }, op: 'is not null' },
           ],
         },
       },
@@ -114,7 +144,7 @@ describe('having', () => {
     )
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("age") as "TOTAL_AGE" from "orders" group by "department" having ("department" is null or "department" is not null)"`,
+      `"select "department", sum("age") as "TOTAL_AGE" from "orders" group by "department" having (min("department") is null or max("department") is not null)"`,
     )
   })
 
@@ -132,8 +162,8 @@ describe('having', () => {
         having: {
           op: 'or',
           conditions: [
-            { field: 'age', op: 'between', value: [18, 30] },
-            { field: 'age', op: 'not between', value: [40, 50] },
+            { field: 'age', aggr: { func: 'sum' }, op: 'between', value: [18, 30] },
+            { field: 'age', aggr: { func: 'sum' }, op: 'not between', value: [40, 50] },
           ],
         },
       },
@@ -141,7 +171,7 @@ describe('having', () => {
     )
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", avg("age") as "AVG_AGE" from "orders" group by "department" having ("age" between 18 and 30 or "age" not between 40 and 50)"`,
+      `"select "department", avg("age") as "AVG_AGE" from "orders" group by "department" having (sum("age") between 18 and 30 or sum("age") not between 40 and 50)"`,
     )
   })
 
@@ -159,8 +189,8 @@ describe('having', () => {
         having: {
           op: 'and',
           conditions: [
-            { field: 'department', op: 'in', value: 'sales' },
-            { field: 'department', op: 'not in', value: 'finance' },
+            { field: 'department', aggr: { func: 'min' }, op: 'in', value: 'sales' },
+            { field: 'department', aggr: { func: 'min' }, op: 'not in', value: 'finance' },
           ],
         },
       },
@@ -168,7 +198,7 @@ describe('having', () => {
     )
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("age") as "TOTAL_AGE" from "orders" group by "department" having ("department" in ('sales') and not "department" in ('finance'))"`,
+      `"select "department", sum("age") as "TOTAL_AGE" from "orders" group by "department" having (min("department") in ('sales') and not min("department") in ('finance'))"`,
     )
   })
 })

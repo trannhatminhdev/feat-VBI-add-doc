@@ -20,7 +20,7 @@ describe('Having Example with NOT IN operator', () => {
     const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("salary") as "Total Salary" from "having-not-in" group by "department" having (not "department" in ('Marketing'))"`,
+      `"select "department", sum("salary") as "Total Salary" from "having-not-in" group by "department" having (not min("department") in ('Marketing'))"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

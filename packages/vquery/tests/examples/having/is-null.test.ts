@@ -20,7 +20,7 @@ describe('Having Example with IS NULL operator', () => {
     const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("salary") as "Total Salary" from "having-is-null" group by "department" having ("Total Salary" is null)"`,
+      `"select "department", sum("salary") as "Total Salary" from "having-is-null" group by "department" having (sum("salary") is null)"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

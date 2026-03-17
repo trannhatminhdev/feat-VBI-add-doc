@@ -20,7 +20,7 @@ describe('Having Example with single value IN operator', () => {
     const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("salary") as "Total Salary" from "having-in-single" group by "department" having ("department" in ('HR'))"`,
+      `"select "department", sum("salary") as "Total Salary" from "having-in-single" group by "department" having (min("department") in ('HR'))"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

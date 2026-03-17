@@ -20,7 +20,7 @@ describe('Having Example with BETWEEN operator', () => {
     const sql = convertDSLToSQL(vqueryDSL as VQueryDSL<Record<string, string | number>>, datasetId)
 
     expect(sql).toMatchInlineSnapshot(
-      `"select "department", sum("salary") as "Total Salary" from "having-between" group by "department" having ("Total Salary" between 5000 and 12000)"`,
+      `"select "department", sum("salary") as "Total Salary" from "having-between" group by "department" having (sum("salary") between 5000 and 12000)"`,
     )
 
     const queryResult = await dataset.query(vqueryDSL as VQueryDSL<Record<string, string | number>>)

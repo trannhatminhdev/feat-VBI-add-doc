@@ -3,4 +3,13 @@ export type { GroupBy } from './GroupBy'
 export type { OrderBy } from './OrderBy'
 export type { Select } from './Select'
 export type { Where, WhereClause, WhereLeaf, WhereGroup } from './Where'
-export type { Having, HavingClause, HavingLeaf, HavingGroup, HavingOperator } from './Having'
+export type {
+  Having,
+  HavingClause,
+  HavingLeaf,
+  HavingGroup,
+  HavingOperator,
+  HavingAggregation,
+  HavingAggregateFunction,
+  HavingComparisonOperator,
+} from './Having'
