@@ -1,7 +1,8 @@
 import { CloseOutlined, DownOutlined } from '@ant-design/icons';
-import { Flex, Popover } from 'antd';
+import { Button, Flex, Popover, Tooltip, Typography } from 'antd';
 import { useVBIStore } from 'src/model';
 import { useVBIHavingFilter, useVBISchemaFields } from 'src/hooks';
+import { useBuilderDocState } from 'src/hooks/useBuilderDocState';
 import { HavingFilterPanel, type HavingItem } from 'src/components/Filter';
 import {
   getDefaultHavingAggregateByFieldRole,
@@ -51,10 +52,22 @@ const flattenHavingFilters = (
   return result;
 };
 
-export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
+export const HavingShelf = ({
+  style,
+  showRootOperator = true,
+}: {
+  style?: React.CSSProperties;
+  showRootOperator?: boolean;
+}) => {
   const builder = useVBIStore((state) => state.builder);
   const { filters: havingFilterClauses } = useVBIHavingFilter(builder);
   const { schemaFields, fieldRoleMap } = useVBISchemaFields(builder);
+  const havingRootOperator = useBuilderDocState<'and' | 'or'>({
+    builder,
+    fallback: 'and',
+    getSnapshot: (activeBuilder) =>
+      activeBuilder.havingFilter.toJSON().op === 'or' ? 'or' : 'and',
+  });
 
   const allFields = useMemo(() => {
     return schemaFields.map((field) => ({
@@ -65,6 +78,7 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
 
   const [isDragOver, setIsDragOver] = useState(false);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
   const prevHavingFilterRef = useRef<string[]>([]);
 
   const havingFilterItems = useMemo(() => {
@@ -200,6 +214,7 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
         onCancel={() => setEditingItemId(null)}
         itemEdit
         open={isOpen}
+        fixedField={item.field}
       />
     );
   };
@@ -210,13 +225,6 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
 
     const payload = readFieldDragPayload(e);
     if (!payload?.field) {
-      return;
-    }
-
-    const exists = havingFilterItems.some(
-      (filter) => filter.field === payload.field,
-    );
-    if (exists) {
       return;
     }
 
@@ -234,10 +242,25 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
     });
   };
 
+  const handleRootOperatorChange = (nextOperator: 'and' | 'or') => {
+    if (!builder || nextOperator === havingRootOperator) {
+      return;
+    }
+
+    builder.doc.transact(() => {
+      const havingRoot = builder.dsl.get('havingFilter') as
+        | { set: (key: string, value: unknown) => void }
+        | undefined;
+      havingRoot?.set('op', nextOperator);
+    });
+  };
+
+  const nextHavingRootOperator = havingRootOperator === 'and' ? 'or' : 'and';
+
   return (
     <Flex
       vertical={false}
-      gap={8}
+      gap={6}
       onDrop={handleContainerDrop}
       onDragOver={(e) => {
         e.preventDefault();
@@ -247,20 +270,75 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
       onDragLeave={() => setIsDragOver(false)}
       style={{
         flexBasis: 300,
-        minHeight: 32,
-        height: 32,
-        border: isDragOver ? '2px dashed #1677ff' : '1px solid #e8e8e8',
+        minHeight: 30,
+        height: 30,
+        border: 'none',
         borderRadius: 6,
-        padding: '2px 8px',
-        backgroundColor: '#fafafa',
+        padding: '1px 0',
+        backgroundColor: isDragOver ? 'rgba(22, 119, 255, 0.1)' : 'transparent',
+        boxShadow: isDragOver
+          ? 'inset 0 0 0 1px rgba(22, 119, 255, 0.45)'
+          : 'none',
         transition: 'all 0.2s',
         alignItems: 'center',
-        flexWrap: 'wrap',
+        flexWrap: 'nowrap',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        scrollbarWidth: 'thin',
         ...style,
       }}
     >
-      {havingFilterItems.map((item) =>
-        item.id ? (
+      {showRootOperator && (
+        <Tooltip
+          title={`当前逻辑 ${havingRootOperator.toUpperCase()}，点击切换为 ${nextHavingRootOperator.toUpperCase()}`}
+        >
+          <Button
+            type="text"
+            size="small"
+            onClick={() => handleRootOperatorChange(nextHavingRootOperator)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 22,
+              minWidth: 22,
+              height: 18,
+              padding: 0,
+              lineHeight: 1,
+              borderRadius: 5,
+              border: '1px solid #bdd7ff',
+              background: '#fff',
+              color: '#0958d9',
+              flexShrink: 0,
+            }}
+          >
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+                fontSize: 8,
+                fontWeight: 700,
+                letterSpacing: 0.2,
+                lineHeight: 1,
+              }}
+            >
+              {havingRootOperator.toUpperCase()}
+            </span>
+          </Button>
+        </Tooltip>
+      )}
+      {havingFilterItems.map((item) => {
+        if (!item.id) {
+          return null;
+        }
+
+        const displayText = getHavingDisplayText(item);
+        const isHovered = hoveredItemId === item.id;
+
+        return (
           <Popover
             key={`having-popover-${item.id}`}
             content={renderHavingItemPopover(
@@ -271,40 +349,63 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
             placement="bottom"
             open={editingItemId === item.id}
             onOpenChange={(open) => {
-              if (!open) {
-                setEditingItemId(null);
-              }
+              setEditingItemId((prev) => {
+                if (open) {
+                  return item.id ?? null;
+                }
+                return prev === item.id ? null : prev;
+              });
             }}
             overlayStyle={{ padding: 0 }}
-            overlayInnerStyle={{ padding: '8px' }}
+            overlayInnerStyle={{ padding: '14px', borderRadius: 10 }}
           >
             <div
-              onClick={() => item.id && setEditingItemId(item.id)}
+              onMouseEnter={() => setHoveredItemId(item.id ?? null)}
+              onMouseLeave={() => setHoveredItemId(null)}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 4,
-                padding: '2px 6px',
-                backgroundColor: '#e6f4ff',
-                border: '1px solid #91caff',
-                borderRadius: 4,
+                padding: '0 6px',
+                backgroundColor: isHovered ? '#dbeeff' : '#edf5ff',
+                border: isHovered ? '1px solid #69b1ff' : '1px solid #91caff',
+                borderRadius: 6,
                 cursor: 'pointer',
-                fontSize: 11,
+                fontSize: 10,
                 color: '#1677ff',
-                height: 24,
+                height: 22,
+                flexShrink: 0,
+                transition: 'all 0.2s',
               }}
             >
-              <DownOutlined style={{ fontSize: 8 }} />
               <span
                 style={{
-                  maxWidth: 130,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 16,
+                  height: 16,
+                  borderRadius: 4,
+                  backgroundColor: isHovered
+                    ? 'rgba(22, 119, 255, 0.28)'
+                    : 'rgba(22, 119, 255, 0.16)',
+                  color: '#0958d9',
+                  flexShrink: 0,
                 }}
               >
-                {getHavingDisplayText(item)}
+                <DownOutlined style={{ fontSize: 8 }} />
               </span>
+              <Typography.Text
+                ellipsis={{ tooltip: displayText }}
+                style={{
+                  maxWidth: 124,
+                  marginBottom: 0,
+                  color: 'inherit',
+                  fontSize: 10,
+                }}
+              >
+                {displayText}
+              </Typography.Text>
               <CloseOutlined
                 onClick={(event) => {
                   event.stopPropagation();
@@ -312,7 +413,7 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
                     handleHavingFilterRemove(item.id);
                   }
                 }}
-                style={{ fontSize: 10, cursor: 'pointer', color: '#8c8c8c' }}
+                style={{ fontSize: 8, cursor: 'pointer', color: '#8c8c8c' }}
                 onMouseEnter={(event) => {
                   event.currentTarget.style.color = '#ff4d4f';
                 }}
@@ -322,10 +423,17 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
               />
             </div>
           </Popover>
-        ) : null,
-      )}
+        );
+      })}
       {havingFilterItems.length === 0 && (
-        <span style={{ color: '#bbb', fontSize: 12, padding: '2px 8px' }}>
+        <span
+          style={{
+            color: '#bbb',
+            fontSize: 12,
+            padding: '2px 8px',
+            flexShrink: 0,
+          }}
+        >
           拖拽字段到此处（支持维度/度量）
         </span>
       )}

@@ -28,10 +28,12 @@ export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
 
   // 添加维度
   const addDimension = useCallback(
-    (field: string) => {
+    (field: string, callback?: DimensionNodeMutator) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.dimensions.add(field, () => {});
+          builder.dimensions.add(field, (node) => {
+            callback?.(node);
+          });
         });
       }
     },

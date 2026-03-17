@@ -1,5 +1,13 @@
-import { DownOutlined, HolderOutlined } from '@ant-design/icons';
-import { Dropdown, Flex, Input, Modal, message, type MenuProps } from 'antd';
+import { CloseOutlined, DownOutlined } from '@ant-design/icons';
+import {
+  Dropdown,
+  Flex,
+  Input,
+  Modal,
+  Typography,
+  message,
+  type MenuProps,
+} from 'antd';
 import { useVBIStore } from 'src/model';
 import { useVBIDimensions } from 'src/hooks';
 import { useState } from 'react';
@@ -9,12 +17,43 @@ import {
   writeShelfDragIndex,
 } from './dragDropUtils';
 import { reorderYArray, type YArrayLike } from './reorderUtils';
+import {
+  getNextFieldDuplicateName,
+  hasDuplicateShelfName,
+} from './shelfNameUtils';
+
+const MENU_ITEM_STYLE: React.CSSProperties = {
+  height: 30,
+  lineHeight: '30px',
+};
 
 export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
   const { dimensions, addDimension, removeDimension, updateDimension } =
     useVBIDimensions(builder);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
+
+  const addDraggedFieldToShelf = (
+    dragField: ReturnType<typeof readFieldDragPayload>,
+  ) => {
+    if (!dragField?.field) {
+      return false;
+    }
+
+    const fieldName = dragField.field;
+    const nextName = getNextFieldDuplicateName({
+      field: fieldName,
+      items: dimensions,
+    });
+
+    addDimension(fieldName, (node) => {
+      if (nextName !== fieldName) {
+        node.setAlias(nextName);
+      }
+    });
+    return true;
+  };
 
   const handleDragStart = (e: React.DragEvent, index: number) => {
     writeShelfDragIndex(e, index);
@@ -28,44 +67,35 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const handleDrop = (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault();
     setIsDragOver(false);
-    const dragPayload = readFieldDragPayload(e);
-    if (dragPayload?.field) {
-      if (!dimensions.some((d) => d.field === dragPayload.field)) {
-        addDimension(dragPayload.field);
-      }
+
+    if (addDraggedFieldToShelf(readFieldDragPayload(e))) {
       return;
     }
 
-    // 内部排序
     const dragIndex = readShelfDragIndex(e);
     if (dragIndex === undefined || dragIndex === dropIndex) {
       return;
     }
 
     const draggedDimension = dimensions[dragIndex];
-    if (draggedDimension) {
-      const yDimensions = builder.dsl.get('dimensions') as
-        | YArrayLike
-        | undefined;
-      if (!yDimensions) return;
-
-      builder.doc.transact(() => {
-        reorderYArray({ yArray: yDimensions, dragIndex, dropIndex });
-      });
+    if (!draggedDimension) {
+      return;
     }
+
+    const yDimensions = builder.dsl.get('dimensions') as YArrayLike | undefined;
+    if (!yDimensions) {
+      return;
+    }
+
+    builder.doc.transact(() => {
+      reorderYArray({ yArray: yDimensions, dragIndex, dropIndex });
+    });
   };
 
-  // 处理拖拽到空白区域
   const handleContainerDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
-    const dragPayload = readFieldDragPayload(e);
-    if (
-      dragPayload?.field &&
-      !dimensions.some((d) => d.field === dragPayload.field)
-    ) {
-      addDimension(dragPayload.field);
-    }
+    addDraggedFieldToShelf(readFieldDragPayload(e));
   };
 
   const renameDimension = (id: string, alias: string) => {
@@ -97,6 +127,16 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
           message.warning('名称不能为空');
           return Promise.reject();
         }
+        if (
+          hasDuplicateShelfName({
+            name: trimmed,
+            items: dimensions,
+            excludeId: id,
+          })
+        ) {
+          message.error('名称已存在');
+          return Promise.reject();
+        }
         renameDimension(id, trimmed);
         return Promise.resolve();
       },
@@ -108,13 +148,12 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       {
         key: 'rename',
         label: '重命名',
-      },
-      {
-        type: 'divider',
+        style: MENU_ITEM_STYLE,
       },
       {
         key: 'delete',
         label: <span style={{ color: '#ff4d4f' }}>删除</span>,
+        style: MENU_ITEM_STYLE,
       },
     ];
   };
@@ -136,7 +175,7 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   return (
     <Flex
       vertical={false}
-      gap={8}
+      gap={6}
       onDrop={(e) => {
         handleContainerDrop(e);
         setIsDragOver(false);
@@ -149,89 +188,144 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       onDragLeave={() => setIsDragOver(false)}
       style={{
         flexBasis: 300,
-        minHeight: 32,
-        height: 32,
-        border: isDragOver ? '2px dashed #1890ff' : '1px solid #e8e8e8',
+        minHeight: 30,
+        height: 30,
+        border: 'none',
         borderRadius: 6,
-        padding: '2px 8px',
-        backgroundColor: '#fafafa',
+        padding: '1px 0',
+        backgroundColor: isDragOver
+          ? 'rgba(22, 119, 255, 0.08)'
+          : 'transparent',
+        boxShadow: isDragOver
+          ? 'inset 0 0 0 1px rgba(22, 119, 255, 0.35)'
+          : 'none',
         transition: 'all 0.2s',
         alignItems: 'center',
-        flexWrap: 'wrap',
+        flexWrap: 'nowrap',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        scrollbarWidth: 'thin',
         ...style,
       }}
     >
       {dimensions.length === 0 && (
-        <span style={{ color: '#bbb', fontSize: 12, padding: '2px 8px' }}>
+        <span
+          style={{
+            color: '#bbb',
+            fontSize: 12,
+            padding: '2px 8px',
+            flexShrink: 0,
+          }}
+        >
           拖拽维度/指标到此处
         </span>
       )}
-      {dimensions.map((dimension, index) => (
-        <div
-          key={`dimension-shelf-${dimension.id}`}
-          onDragOver={handleDragOver}
-          onDrop={(e) => handleDrop(e, index)}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 4,
-            padding: '2px 6px',
-            backgroundColor: '#e6f7ff',
-            border: '1px solid #91d5ff',
-            borderRadius: 4,
-            cursor: 'grab',
-            fontSize: 11,
-            color: '#1890ff',
-            height: 24,
-          }}
-        >
-          <HolderOutlined
+      {dimensions.map((dimension, index) => {
+        const displayLabel = dimension.alias || dimension.field;
+        const isHovered = hoveredItemId === dimension.id;
+
+        return (
+          <div
+            key={`dimension-shelf-${dimension.id}`}
             draggable
             onDragStart={(e) => handleDragStart(e, index)}
-            onClick={(e) => e.stopPropagation()}
-            style={{ fontSize: 10, cursor: 'grab', color: '#8c8c8c' }}
-          />
-          <Dropdown
-            trigger={['click']}
-            placement="bottom"
-            arrow={{ pointAtCenter: true }}
-            menu={{
-              items: buildDimensionMenuItems(),
-              onClick: ({ key, domEvent }) => {
-                domEvent.stopPropagation();
-                onDimensionMenuClick(dimension, key);
-              },
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, index)}
+            onMouseEnter={() => setHoveredItemId(dimension.id)}
+            onMouseLeave={() => setHoveredItemId(null)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              padding: '0 6px',
+              backgroundColor: isHovered ? '#ddeeff' : '#edf5ff',
+              border: isHovered ? '1px solid #91caff' : '1px solid #b7d9ff',
+              borderRadius: 6,
+              cursor: 'grab',
+              fontSize: 10,
+              color: '#0958d9',
+              height: 22,
+              flexShrink: 0,
+              transition: 'all 0.2s',
             }}
           >
-            <span
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-                cursor: 'pointer',
-                flex: 1,
-                minWidth: 0,
-                justifyContent: 'center',
+            <Dropdown
+              trigger={['click']}
+              placement="bottom"
+              arrow={{ pointAtCenter: true }}
+              menu={{
+                items: buildDimensionMenuItems(),
+                onClick: ({ key, domEvent }) => {
+                  domEvent.stopPropagation();
+                  onDimensionMenuClick(dimension, key);
+                },
+                style: {
+                  fontSize: 12,
+                  minWidth: 98,
+                  paddingBlock: 2,
+                },
               }}
             >
               <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
                 style={{
-                  maxWidth: 100,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  cursor: 'pointer',
+                  flex: '1 1 auto',
+                  minWidth: 0,
+                  justifyContent: 'center',
                 }}
               >
-                {dimension.alias || dimension.field}
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 16,
+                    height: 16,
+                    borderRadius: 4,
+                    backgroundColor: isHovered
+                      ? 'rgba(22, 119, 255, 0.26)'
+                      : 'rgba(22, 119, 255, 0.15)',
+                    color: '#1677ff',
+                    flexShrink: 0,
+                  }}
+                >
+                  <DownOutlined style={{ fontSize: 8 }} />
+                </span>
+                <Typography.Text
+                  ellipsis={{ tooltip: displayLabel }}
+                  style={{
+                    maxWidth: 92,
+                    marginBottom: 0,
+                    color: 'inherit',
+                    fontSize: 10,
+                  }}
+                >
+                  {displayLabel}
+                </Typography.Text>
               </span>
-              <DownOutlined style={{ fontSize: 9, color: '#8c8c8c' }} />
-            </span>
-          </Dropdown>
-        </div>
-      ))}
+            </Dropdown>
+            <CloseOutlined
+              onClick={(event) => {
+                event.stopPropagation();
+                removeDimension(dimension.id);
+              }}
+              style={{ fontSize: 9, cursor: 'pointer', color: '#8c8c8c' }}
+              onMouseEnter={(event) => {
+                event.currentTarget.style.color = '#ff4d4f';
+              }}
+              onMouseLeave={(event) => {
+                event.currentTarget.style.color = '#8c8c8c';
+              }}
+            />
+          </div>
+        );
+      })}
     </Flex>
   );
 };

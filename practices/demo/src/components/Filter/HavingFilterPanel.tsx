@@ -66,6 +66,7 @@ interface HavingFilterPanelProps {
   embedded?: boolean;
   itemEdit?: boolean;
   open?: boolean;
+  fixedField?: string;
 }
 
 type HavingFormValues = {
@@ -103,6 +104,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   embedded = false,
   itemEdit = false,
   open = false,
+  fixedField,
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -110,12 +112,16 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   const [form] = Form.useForm<HavingFormValues>();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const selectedField = Form.useWatch('field', form);
+  const selectedFieldFromForm = Form.useWatch('field', form);
   const selectedAggregateFunc = Form.useWatch('aggregateFunc', form);
   const selectedOperator = normalizeHavingOperator(
     Form.useWatch('operator', form),
   );
   const isSingleItemEdit = itemEdit && filters.length === 1;
+  const fixedEditingField = isSingleItemEdit
+    ? fixedField || filters[0]?.field
+    : undefined;
+  const selectedField = selectedFieldFromForm ?? fixedEditingField;
 
   const sortedFields = React.useMemo(() => {
     const activeSet = new Set(activeFields);
@@ -349,7 +355,12 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      const fieldRole = getFieldRole(fields, values.field);
+      const field = values.field ?? fixedEditingField;
+      if (!field) {
+        return;
+      }
+
+      const fieldRole = getFieldRole(fields, field);
       const aggregate = normalizeHavingAggregate(
         toHavingAggregate(values.aggregateFunc),
         fieldRole,
@@ -369,7 +380,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
 
       const nextFilter: HavingItem = {
         id: existingFilter?.id,
-        field: values.field,
+        field,
         aggregate,
         operator,
         value: finalValue,
@@ -421,8 +432,8 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   const renderValueFormItem = () => {
     if (inputStrategy === 'none') {
       return (
-        <Form.Item style={{ marginBottom: 8 }}>
-          <Text type="secondary" style={{ fontSize: 12 }}>
+        <Form.Item style={{ marginBottom: 10 }}>
+          <Text type="secondary" style={{ fontSize: 11 }}>
             当前操作符无需输入值
           </Text>
         </Form.Item>
@@ -431,11 +442,14 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
 
     if (inputStrategy === 'range') {
       return (
-        <Form.Item label="值范围" style={{ marginBottom: 8 }}>
-          <div style={{ display: 'flex', gap: 8 }}>
+        <Form.Item
+          label={isSingleItemEdit ? undefined : '值范围'}
+          style={{ marginBottom: 10 }}
+        >
+          <div style={{ display: 'flex', gap: 10 }}>
             <Form.Item name={['value', 'min']} noStyle>
               <InputNumber
-                size="small"
+                variant="filled"
                 controls={false}
                 style={{ width: '100%' }}
                 placeholder="最小值"
@@ -443,7 +457,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
             </Form.Item>
             <Form.Item name={['value', 'max']} noStyle>
               <InputNumber
-                size="small"
+                variant="filled"
                 controls={false}
                 style={{ width: '100%' }}
                 placeholder="最大值"
@@ -457,14 +471,14 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
     if (inputStrategy === 'tags') {
       return (
         <Form.Item
-          label="值"
+          label={isSingleItemEdit ? undefined : '值'}
           name="value"
           rules={[{ required: true, message: '请输入值' }]}
-          style={{ marginBottom: 8 }}
+          style={{ marginBottom: 10 }}
         >
           <Select
             mode="tags"
-            size="small"
+            variant="filled"
             tokenSeparators={[',']}
             placeholder="输入多个值，回车确认"
           />
@@ -475,13 +489,13 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
     if (inputStrategy === 'number') {
       return (
         <Form.Item
-          label="值"
+          label={isSingleItemEdit ? undefined : '值'}
           name="value"
           rules={[{ required: true, message: '请输入数值' }]}
-          style={{ marginBottom: 8 }}
+          style={{ marginBottom: 10 }}
         >
           <InputNumber
-            size="small"
+            variant="filled"
             controls={false}
             style={{ width: '100%' }}
             placeholder="输入数值"
@@ -492,12 +506,12 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
 
     return (
       <Form.Item
-        label="值"
+        label={isSingleItemEdit ? undefined : '值'}
         name="value"
         rules={[{ required: true, message: '请输入值' }]}
-        style={{ marginBottom: 8 }}
+        style={{ marginBottom: 10 }}
       >
-        <Input size="small" placeholder="输入值" />
+        <Input placeholder="输入值" variant="filled" />
       </Form.Item>
     );
   };
@@ -506,60 +520,67 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
     <Form
       form={form}
       layout="vertical"
-      style={{ width: 300, marginTop: 8 }}
+      size="small"
+      requiredMark={false}
+      style={{
+        width: isSingleItemEdit ? 222 : 244,
+        marginTop: isSingleItemEdit ? 0 : 4,
+      }}
       initialValues={{
         aggregateFunc: 'sum',
         operator: getDefaultHavingOperator(true),
       }}
     >
-      <Form.Item
-        label="字段"
-        name="field"
-        rules={[{ required: true, message: '请选择字段' }]}
-        style={{ marginBottom: 8 }}
-      >
-        <Select
-          size="small"
-          placeholder="选择字段"
-          showSearch
-          onChange={(fieldName) => {
-            const fieldRole = getFieldRole(fields, fieldName);
-            const aggregate = getDefaultHavingAggregateByFieldRole(fieldRole);
-            form.setFieldsValue({
-              aggregateFunc: aggregate.func,
-              operator: getDefaultHavingOperator(
-                isHavingNumericAggregate(fieldRole, aggregate),
-              ),
-              value: undefined,
-            });
-          }}
+      {!isSingleItemEdit && (
+        <Form.Item
+          label="字段"
+          name="field"
+          rules={[{ required: true, message: '请选择字段' }]}
+          style={{ marginBottom: 8 }}
         >
-          {sortedFields.map((field) => {
-            const isActive = activeFields.includes(field.name);
-            return (
-              <Option key={field.name} value={field.name}>
-                <span
-                  style={
-                    isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
-                  }
-                >
-                  {field.name} ({field.role === 'measure' ? '度量' : '维度'}){' '}
-                  {isActive ? '(推荐)' : ''}
-                </span>
-              </Option>
-            );
-          })}
-        </Select>
-      </Form.Item>
+          <Select
+            placeholder="选择字段"
+            showSearch
+            variant="filled"
+            onChange={(fieldName) => {
+              const fieldRole = getFieldRole(fields, fieldName);
+              const aggregate = getDefaultHavingAggregateByFieldRole(fieldRole);
+              form.setFieldsValue({
+                aggregateFunc: aggregate.func,
+                operator: getDefaultHavingOperator(
+                  isHavingNumericAggregate(fieldRole, aggregate),
+                ),
+                value: undefined,
+              });
+            }}
+          >
+            {sortedFields.map((field) => {
+              const isActive = activeFields.includes(field.name);
+              return (
+                <Option key={field.name} value={field.name}>
+                  <span
+                    style={
+                      isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
+                    }
+                  >
+                    {field.name} ({field.role === 'measure' ? '度量' : '维度'}){' '}
+                    {isActive ? '(推荐)' : ''}
+                  </span>
+                </Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
+      )}
 
       <Form.Item
-        label="聚合方式"
+        label={isSingleItemEdit ? undefined : '聚合方式'}
         name="aggregateFunc"
         rules={[{ required: true, message: '请选择聚合方式' }]}
-        style={{ marginBottom: 8 }}
+        style={{ marginBottom: 10 }}
       >
         <div>
-          {recommendedAggregateOptions.length > 0 && (
+          {!isSingleItemEdit && recommendedAggregateOptions.length > 0 && (
             <div
               style={{
                 display: 'flex',
@@ -582,7 +603,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
             </div>
           )}
           <Select
-            size="small"
+            variant="filled"
             options={aggregateSelectOptions}
             value={selectedAggregateFunc}
             placeholder="选择聚合方式"
@@ -595,13 +616,13 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
       </Form.Item>
 
       <Form.Item
-        label="操作符"
+        label={isSingleItemEdit ? undefined : '操作符'}
         name="operator"
         rules={[{ required: true, message: '请选择操作符' }]}
-        style={{ marginBottom: 8 }}
+        style={{ marginBottom: 10 }}
       >
         <Select
-          size="small"
+          variant="filled"
           onChange={() => {
             form.setFieldValue('value', undefined);
           }}
@@ -616,8 +637,8 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
 
       {renderValueFormItem()}
 
-      <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
-        <Space>
+      <Form.Item style={{ marginBottom: 0, marginTop: 2, textAlign: 'right' }}>
+        <Space size={8}>
           <Button size="small" onClick={handleCancel}>
             取消
           </Button>
@@ -635,7 +656,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   );
 
   const renderHavingList = () => (
-    <div style={{ width: 320 }}>
+    <div style={{ width: 260 }}>
       {filters.length === 0 && !isAdding ? (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -648,7 +669,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
             <div
               key={item.id ?? `having-filter-${index}`}
               style={{
-                padding: '6px 8px',
+                padding: '4px 6px',
                 opacity: editingId === item.id ? 0.5 : 1,
                 display: 'flex',
                 alignItems: 'center',
@@ -697,7 +718,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: 8,
+          marginBottom: 6,
         }}
       >
         <Text strong style={{ fontSize: 13 }}>
@@ -735,16 +756,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   );
 
   if (isSingleItemEdit) {
-    return (
-      <div ref={containerRef}>
-        <div style={{ marginBottom: 8 }}>
-          <Text strong style={{ fontSize: 13 }}>
-            编辑分组过滤
-          </Text>
-        </div>
-        {renderHavingForm()}
-      </div>
-    );
+    return <div ref={containerRef}>{renderHavingForm()}</div>;
   }
 
   if (embedded) {

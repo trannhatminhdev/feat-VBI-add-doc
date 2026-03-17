@@ -114,5 +114,11 @@ export const formatMeasureAggregate = (
     return aggregate.func;
   }
 
-  return `quantile(${aggregate.quantile ?? 0.5})`;
+  const quantile = aggregate.quantile ?? 0.5;
+  const percent = quantile * 100;
+  const normalizedPercent = Number.isInteger(percent)
+    ? `${percent}`
+    : `${percent.toFixed(2)}`.replace(/\.?0+$/, '');
+
+  return `p${normalizedPercent}`;
 };

@@ -1,7 +1,8 @@
 import { CloseOutlined, DownOutlined } from '@ant-design/icons';
-import { Flex, Popover } from 'antd';
+import { Button, Flex, Popover, Tooltip, Typography } from 'antd';
 import { useVBIStore } from 'src/model';
 import { useVBIWhereFilter, useVBISchemaFields } from 'src/hooks';
+import { useBuilderDocState } from 'src/hooks/useBuilderDocState';
 import { FilterPanel, type FilterItem } from 'src/components/Filter';
 import {
   getWhereDisplayText,
@@ -10,10 +11,22 @@ import {
 import { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 import { readFieldDragPayload } from './dragDropUtils';
 
-export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
+export const WhereShelf = ({
+  style,
+  showRootOperator = true,
+}: {
+  style?: React.CSSProperties;
+  showRootOperator?: boolean;
+}) => {
   const builder = useVBIStore((state) => state.builder);
   const { flattenFilters } = useVBIWhereFilter(builder);
   const { schemaFields } = useVBISchemaFields(builder);
+  const whereRootOperator = useBuilderDocState<'and' | 'or'>({
+    builder,
+    fallback: 'and',
+    getSnapshot: (activeBuilder) =>
+      activeBuilder.whereFilter.toJSON().op === 'or' ? 'or' : 'and',
+  });
 
   const allFields = useMemo(() => {
     return schemaFields.map((field) => ({
@@ -24,6 +37,7 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
 
   const [isDragOver, setIsDragOver] = useState(false);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
   const prevFiltersRef = useRef<string[]>([]);
 
   const whereFilterItems = useMemo((): FilterItem[] => {
@@ -138,6 +152,7 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
         onCancel={() => setEditingItemId(null)}
         itemEdit
         open={isOpen}
+        fixedField={item.field}
       />
     );
   };
@@ -151,13 +166,6 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
       return;
     }
 
-    const exists = whereFilterItems.some(
-      (filter) => filter.field === payload.field,
-    );
-    if (exists) {
-      return;
-    }
-
     handleWhereFilterAdd({
       id: '',
       field: payload.field,
@@ -166,10 +174,25 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
     });
   };
 
+  const handleRootOperatorChange = (nextOperator: 'and' | 'or') => {
+    if (!builder || nextOperator === whereRootOperator) {
+      return;
+    }
+
+    builder.doc.transact(() => {
+      const whereRoot = builder.dsl.get('whereFilter') as
+        | { set: (key: string, value: unknown) => void }
+        | undefined;
+      whereRoot?.set('op', nextOperator);
+    });
+  };
+
+  const nextWhereRootOperator = whereRootOperator === 'and' ? 'or' : 'and';
+
   return (
     <Flex
       vertical={false}
-      gap={8}
+      gap={6}
       onDrop={handleContainerDrop}
       onDragOver={(e) => {
         e.preventDefault();
@@ -179,20 +202,77 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
       onDragLeave={() => setIsDragOver(false)}
       style={{
         flexBasis: 300,
-        minHeight: 32,
-        height: 32,
-        border: isDragOver ? '2px dashed #fa8c16' : '1px solid #e8e8e8',
+        minHeight: 30,
+        height: 30,
+        border: 'none',
         borderRadius: 6,
-        padding: '2px 8px',
-        backgroundColor: '#fafafa',
+        padding: '1px 0',
+        backgroundColor: isDragOver
+          ? 'rgba(250, 140, 22, 0.11)'
+          : 'transparent',
+        boxShadow: isDragOver
+          ? 'inset 0 0 0 1px rgba(250, 140, 22, 0.45)'
+          : 'none',
         transition: 'all 0.2s',
         alignItems: 'center',
-        flexWrap: 'wrap',
+        flexWrap: 'nowrap',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        scrollbarWidth: 'thin',
         ...style,
       }}
     >
-      {whereFilterItems.map((item) =>
-        item.id ? (
+      {showRootOperator && (
+        <Tooltip
+          title={`当前逻辑 ${whereRootOperator.toUpperCase()}，点击切换为 ${nextWhereRootOperator.toUpperCase()}`}
+        >
+          <Button
+            type="text"
+            size="small"
+            onClick={() => handleRootOperatorChange(nextWhereRootOperator)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 22,
+              minWidth: 22,
+              height: 18,
+              padding: 0,
+              lineHeight: 1,
+              borderRadius: 5,
+              border: '1px solid #ffd8a8',
+              background: '#fff',
+              color: '#d46b08',
+              flexShrink: 0,
+            }}
+          >
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+                fontSize: 8,
+                fontWeight: 700,
+                letterSpacing: 0.2,
+                lineHeight: 1,
+              }}
+            >
+              {whereRootOperator.toUpperCase()}
+            </span>
+          </Button>
+        </Tooltip>
+      )}
+      {whereFilterItems.map((item) => {
+        if (!item.id) {
+          return null;
+        }
+
+        const displayText = getWhereDisplayText(item);
+        const isHovered = hoveredItemId === item.id;
+
+        return (
           <Popover
             key={`where-popover-${item.id}`}
             content={renderWhereItemPopover(
@@ -203,40 +283,63 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
             placement="bottom"
             open={editingItemId === item.id}
             onOpenChange={(open) => {
-              if (!open) {
-                setEditingItemId(null);
-              }
+              setEditingItemId((prev) => {
+                if (open) {
+                  return item.id ?? null;
+                }
+                return prev === item.id ? null : prev;
+              });
             }}
             overlayStyle={{ padding: 0 }}
-            overlayInnerStyle={{ padding: '8px' }}
+            overlayInnerStyle={{ padding: '14px', borderRadius: 10 }}
           >
             <div
-              onClick={() => item.id && setEditingItemId(item.id)}
+              onMouseEnter={() => setHoveredItemId(item.id ?? null)}
+              onMouseLeave={() => setHoveredItemId(null)}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 4,
-                padding: '2px 6px',
-                backgroundColor: '#fff7e6',
-                border: '1px solid #ffd591',
-                borderRadius: 4,
+                padding: '0 6px',
+                backgroundColor: isHovered ? '#ffe7cc' : '#fff8ee',
+                border: isHovered ? '1px solid #ffbb96' : '1px solid #ffd591',
+                borderRadius: 6,
                 cursor: 'pointer',
-                fontSize: 11,
+                fontSize: 10,
                 color: '#fa8c16',
-                height: 24,
+                height: 22,
+                flexShrink: 0,
+                transition: 'all 0.2s',
               }}
             >
-              <DownOutlined style={{ fontSize: 8 }} />
               <span
                 style={{
-                  maxWidth: 140,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 16,
+                  height: 16,
+                  borderRadius: 4,
+                  backgroundColor: isHovered
+                    ? 'rgba(250, 140, 22, 0.28)'
+                    : 'rgba(250, 140, 22, 0.16)',
+                  color: '#d46b08',
+                  flexShrink: 0,
                 }}
               >
-                {getWhereDisplayText(item)}
+                <DownOutlined style={{ fontSize: 8 }} />
               </span>
+              <Typography.Text
+                ellipsis={{ tooltip: displayText }}
+                style={{
+                  maxWidth: 132,
+                  marginBottom: 0,
+                  color: 'inherit',
+                  fontSize: 10,
+                }}
+              >
+                {displayText}
+              </Typography.Text>
               <CloseOutlined
                 onClick={(event) => {
                   event.stopPropagation();
@@ -245,7 +348,7 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
                   }
                 }}
                 style={{
-                  fontSize: 9,
+                  fontSize: 8,
                   cursor: 'pointer',
                   color: '#8c8c8c',
                   marginLeft: 2,
@@ -259,10 +362,17 @@ export const WhereShelf = ({ style }: { style?: React.CSSProperties }) => {
               />
             </div>
           </Popover>
-        ) : null,
-      )}
+        );
+      })}
       {whereFilterItems.length === 0 && (
-        <span style={{ color: '#bbb', fontSize: 12, padding: '2px 8px' }}>
+        <span
+          style={{
+            color: '#bbb',
+            fontSize: 12,
+            padding: '2px 8px',
+            flexShrink: 0,
+          }}
+        >
           拖拽字段到此处
         </span>
       )}

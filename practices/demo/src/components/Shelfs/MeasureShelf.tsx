@@ -1,5 +1,13 @@
-import { DownOutlined, HolderOutlined } from '@ant-design/icons';
-import { Dropdown, Flex, Input, Modal, message, type MenuProps } from 'antd';
+import { CloseOutlined, DownOutlined } from '@ant-design/icons';
+import {
+  Dropdown,
+  Flex,
+  Input,
+  Modal,
+  Typography,
+  message,
+  type MenuProps,
+} from 'antd';
 import { useVBIStore } from 'src/model';
 import { useVBIMeasures, useVBISchemaFields } from 'src/hooks';
 import { useMemo, useState } from 'react';
@@ -17,6 +25,16 @@ import {
   writeShelfDragIndex,
 } from './dragDropUtils';
 import { reorderYArray, type YArrayLike } from './reorderUtils';
+import {
+  getNextFieldDuplicateName,
+  hasDuplicateShelfName,
+} from './shelfNameUtils';
+
+const QUANTILE_PERCENT_OPTIONS = [1, 5, 25, 50, 75, 90, 95, 99] as const;
+const MENU_ITEM_STYLE: React.CSSProperties = {
+  height: 30,
+  lineHeight: '30px',
+};
 
 export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
@@ -24,6 +42,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     useVBIMeasures(builder);
   const { schemaFields } = useVBISchemaFields(builder);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
   const schemaTypeMap = useMemo(() => {
     return Object.fromEntries(
       schemaFields.map((item) => [item.name, item.type]),
@@ -44,14 +63,17 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     }
 
     const fieldName = dragField.field;
-    if (measures.some((item) => item.field === fieldName)) {
-      return true;
-    }
-
+    const nextName = getNextFieldDuplicateName({
+      field: fieldName,
+      items: measures,
+    });
     const fieldRole = getFieldRole(fieldName, dragField.type);
     const aggregate = getDefaultAggregateByFieldRole(fieldRole);
     addMeasure(fieldName, (node) => {
       node.setAggregate(aggregate);
+      if (nextName !== fieldName) {
+        node.setAlias(nextName);
+      }
     });
     return true;
   };
@@ -133,6 +155,16 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
           message.warning('名称不能为空');
           return Promise.reject();
         }
+        if (
+          hasDuplicateShelfName({
+            name: trimmed,
+            items: measures,
+            excludeId: id,
+          })
+        ) {
+          message.error('名称已存在');
+          return Promise.reject();
+        }
         renameMeasure(id, trimmed);
         return Promise.resolve();
       },
@@ -144,26 +176,51 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   ): MenuProps['items'] => {
     const fieldRole = getFieldRole(measure.field);
     const availableAggregates = getAggregateItemsByFieldRole(fieldRole);
+    const currentQuantilePercent =
+      measure.aggregate?.func === 'quantile'
+        ? Math.round((measure.aggregate.quantile ?? 0.5) * 100)
+        : undefined;
     const currentAggregateKey = measure.aggregate?.func ?? 'sum';
+
+    const aggregateMenuItems: NonNullable<MenuProps['items']> =
+      availableAggregates.map((item) => {
+        if (item.key !== 'quantile') {
+          const shortLabel = item.label.split(' ')[0] ?? item.label;
+          return {
+            key: `aggregate:${item.key}`,
+            label: `${currentAggregateKey === item.key ? '✓ ' : ''}${shortLabel}`,
+            style: MENU_ITEM_STYLE,
+          };
+        }
+
+        return {
+          key: 'aggregate:quantile',
+          label: `${currentAggregateKey === 'quantile' ? '✓ ' : ''}分位数`,
+          style: MENU_ITEM_STYLE,
+          children: QUANTILE_PERCENT_OPTIONS.map((percent) => ({
+            key: `aggregate:quantile:${percent}`,
+            label: `${currentQuantilePercent === percent ? '✓ ' : ''}P${percent}`,
+            style: MENU_ITEM_STYLE,
+          })),
+        };
+      });
+
     return [
       {
         key: 'aggregate',
-        label: '修改聚合方式',
-        children: availableAggregates.map((item) => ({
-          key: `aggregate:${item.key}`,
-          label: `${currentAggregateKey === item.key ? '✓ ' : ''}${item.label}`,
-        })),
+        label: '聚合',
+        style: MENU_ITEM_STYLE,
+        children: aggregateMenuItems,
       },
       {
         key: 'rename',
         label: '重命名',
-      },
-      {
-        type: 'divider',
+        style: MENU_ITEM_STYLE,
       },
       {
         key: 'delete',
         label: <span style={{ color: '#ff4d4f' }}>删除</span>,
+        style: MENU_ITEM_STYLE,
       },
     ];
   };
@@ -185,6 +242,25 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     if (key.startsWith('aggregate:')) {
       const aggregateKey = key.replace('aggregate:', '');
       const fieldRole = getFieldRole(measure.field);
+
+      if (aggregateKey === 'quantile') {
+        changeAggregate(measure.id, { func: 'quantile', quantile: 0.5 });
+        return;
+      }
+
+      if (aggregateKey.startsWith('quantile:')) {
+        const percentValue = Number(aggregateKey.replace('quantile:', ''));
+        if (!Number.isFinite(percentValue)) {
+          return;
+        }
+        const quantileValue = Math.max(0, Math.min(100, percentValue)) / 100;
+        changeAggregate(measure.id, {
+          func: 'quantile',
+          quantile: quantileValue,
+        });
+        return;
+      }
+
       const selectedAggregate = getAggregateItemsByFieldRole(fieldRole).find(
         (item) => item.key === aggregateKey,
       )?.aggregate;
@@ -213,7 +289,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   return (
     <Flex
       vertical={false}
-      gap={8}
+      gap={6}
       onDrop={(e) => {
         handleContainerDrop(e);
         setIsDragOver(false);
@@ -226,89 +302,142 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       onDragLeave={() => setIsDragOver(false)}
       style={{
         flexBasis: 300,
-        minHeight: 32,
-        height: 32,
-        border: isDragOver ? '2px dashed #52c41a' : '1px solid #e8e8e8',
+        minHeight: 30,
+        height: 30,
+        border: 'none',
         borderRadius: 6,
-        padding: '2px 8px',
-        backgroundColor: '#fafafa',
+        padding: '1px 0',
+        backgroundColor: isDragOver ? 'rgba(82, 196, 26, 0.1)' : 'transparent',
+        boxShadow: isDragOver
+          ? 'inset 0 0 0 1px rgba(82, 196, 26, 0.4)'
+          : 'none',
         transition: 'all 0.2s',
         alignItems: 'center',
-        flexWrap: 'wrap',
+        flexWrap: 'nowrap',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        scrollbarWidth: 'thin',
         ...style,
       }}
     >
       {measures.length === 0 && (
-        <span style={{ color: '#bbb', fontSize: 12, padding: '2px 8px' }}>
+        <span
+          style={{
+            color: '#bbb',
+            fontSize: 12,
+            padding: '2px 8px',
+            flexShrink: 0,
+          }}
+        >
           拖拽度量/维度到此处
         </span>
       )}
-      {measures.map((measure, index) => (
-        <div
-          key={`measure-shelf-${measure.id}`}
-          onDragOver={handleDragOver}
-          onDrop={(e) => handleDrop(e, index)}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 4,
-            padding: '2px 6px',
-            backgroundColor: '#f6ffed',
-            border: '1px solid #b7eb8f',
-            borderRadius: 4,
-            cursor: 'grab',
-            fontSize: 11,
-            color: '#52c41a',
-            height: 24,
-          }}
-        >
-          <HolderOutlined
+      {measures.map((measure, index) => {
+        const displayLabel = getMeasureDisplayLabel(measure);
+        const isHovered = hoveredItemId === measure.id;
+
+        return (
+          <div
+            key={`measure-shelf-${measure.id}`}
             draggable
             onDragStart={(e) => handleDragStart(e, index)}
-            onClick={(e) => e.stopPropagation()}
-            style={{ fontSize: 10, cursor: 'grab', color: '#8c8c8c' }}
-          />
-          <Dropdown
-            trigger={['click']}
-            placement="bottom"
-            arrow={{ pointAtCenter: true }}
-            menu={{
-              items: buildMeasureMenuItems(measure),
-              onClick: ({ key, domEvent }) => {
-                domEvent.stopPropagation();
-                onMeasureMenuClick(measure, key);
-              },
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, index)}
+            onMouseEnter={() => setHoveredItemId(measure.id)}
+            onMouseLeave={() => setHoveredItemId(null)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              padding: '0 6px',
+              backgroundColor: isHovered ? '#e9f9df' : '#f3fff0',
+              border: isHovered ? '1px solid #95de64' : '1px solid #c8efbb',
+              borderRadius: 6,
+              cursor: 'grab',
+              fontSize: 10,
+              color: '#389e0d',
+              height: 22,
+              flexShrink: 0,
+              transition: 'all 0.2s',
             }}
           >
-            <span
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-                cursor: 'pointer',
-                flex: 1,
-                minWidth: 0,
-                justifyContent: 'center',
+            <Dropdown
+              trigger={['click']}
+              placement="bottom"
+              arrow={{ pointAtCenter: true }}
+              menu={{
+                items: buildMeasureMenuItems(measure),
+                onClick: ({ key, domEvent }) => {
+                  domEvent.stopPropagation();
+                  onMeasureMenuClick(measure, key);
+                },
+                style: {
+                  fontSize: 12,
+                  minWidth: 98,
+                  paddingBlock: 2,
+                },
               }}
             >
               <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
                 style={{
-                  maxWidth: 120,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  cursor: 'pointer',
+                  flex: '1 1 auto',
+                  minWidth: 0,
+                  justifyContent: 'center',
                 }}
               >
-                {getMeasureDisplayLabel(measure)}
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 16,
+                    height: 16,
+                    borderRadius: 4,
+                    backgroundColor: isHovered
+                      ? 'rgba(82, 196, 26, 0.28)'
+                      : 'rgba(82, 196, 26, 0.18)',
+                    color: '#389e0d',
+                    flexShrink: 0,
+                  }}
+                >
+                  <DownOutlined style={{ fontSize: 8 }} />
+                </span>
+                <Typography.Text
+                  ellipsis={{ tooltip: displayLabel }}
+                  style={{
+                    maxWidth: 112,
+                    marginBottom: 0,
+                    color: 'inherit',
+                    fontSize: 10,
+                  }}
+                >
+                  {displayLabel}
+                </Typography.Text>
               </span>
-              <DownOutlined style={{ fontSize: 9, color: '#8c8c8c' }} />
-            </span>
-          </Dropdown>
-        </div>
-      ))}
+            </Dropdown>
+            <CloseOutlined
+              onClick={(event) => {
+                event.stopPropagation();
+                removeMeasure(measure.id);
+              }}
+              style={{ fontSize: 9, cursor: 'pointer', color: '#8c8c8c' }}
+              onMouseEnter={(event) => {
+                event.currentTarget.style.color = '#ff4d4f';
+              }}
+              onMouseLeave={(event) => {
+                event.currentTarget.style.color = '#8c8c8c';
+              }}
+            />
+          </div>
+        );
+      })}
     </Flex>
   );
 };

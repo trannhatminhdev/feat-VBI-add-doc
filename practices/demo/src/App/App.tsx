@@ -1,4 +1,13 @@
-import { Flex, Spin, Card, Empty, Typography, Space } from 'antd';
+import {
+  Flex,
+  Spin,
+  Card,
+  Empty,
+  Typography,
+  Space,
+  Button,
+  Tooltip,
+} from 'antd';
 import { VSeedRender } from 'src/components/Render';
 import { MeasuresList } from 'src/components/Fields/MeasuresList';
 import { DimensionsList } from 'src/components/Fields/DimensionsList';
@@ -12,12 +21,96 @@ import {
 } from 'src/components/Shelfs';
 import { Toolbar } from 'src/components/Toolbar';
 import { useVBIStore } from 'src/model';
+import { useBuilderDocState } from 'src/hooks/useBuilderDocState';
 import { useEffect } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 interface APPProps {
   builder?: VBIBuilder;
 }
+
+const ShelfRootOperatorButton = ({ type }: { type: 'where' | 'having' }) => {
+  const builder = useVBIStore((state) => state.builder);
+  const rootOperator = useBuilderDocState<'and' | 'or'>({
+    builder,
+    fallback: 'and',
+    getSnapshot: (activeBuilder) => {
+      if (type === 'where') {
+        return activeBuilder.whereFilter.toJSON().op === 'or' ? 'or' : 'and';
+      }
+      return activeBuilder.havingFilter.toJSON().op === 'or' ? 'or' : 'and';
+    },
+  });
+
+  const nextRootOperator = rootOperator === 'and' ? 'or' : 'and';
+  const colors =
+    type === 'where'
+      ? {
+          border: '#ffd8a8',
+          color: '#d46b08',
+        }
+      : {
+          border: '#bdd7ff',
+          color: '#0958d9',
+        };
+
+  const handleRootOperatorChange = () => {
+    if (!builder) {
+      return;
+    }
+
+    builder.doc.transact(() => {
+      const rootKey = type === 'where' ? 'whereFilter' : 'havingFilter';
+      const rootNode = builder.dsl.get(rootKey) as
+        | { set: (key: string, value: unknown) => void }
+        | undefined;
+      rootNode?.set('op', nextRootOperator);
+    });
+  };
+
+  return (
+    <Tooltip
+      title={`当前逻辑 ${rootOperator.toUpperCase()}，点击切换为 ${nextRootOperator.toUpperCase()}`}
+    >
+      <Button
+        type="text"
+        size="small"
+        onClick={handleRootOperatorChange}
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 22,
+          minWidth: 22,
+          height: 18,
+          padding: 0,
+          lineHeight: 1,
+          borderRadius: 5,
+          border: `1px solid ${colors.border}`,
+          background: '#fff',
+          color: colors.color,
+          flexShrink: 0,
+        }}
+      >
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '100%',
+            fontSize: 8,
+            fontWeight: 700,
+            letterSpacing: 0.2,
+            lineHeight: 1,
+          }}
+        >
+          {rootOperator.toUpperCase()}
+        </span>
+      </Button>
+    </Tooltip>
+  );
+};
 
 export const APP = (props: APPProps) => {
   const { initialize, initialized } = useVBIStore(
@@ -76,34 +169,138 @@ export const APP = (props: APPProps) => {
             size="small"
             styles={{
               body: {
-                padding: '8px',
+                padding: 0,
               },
             }}
           >
-            <Flex vertical gap={4}>
-              <Flex align="center" gap={8}>
-                <div style={{ width: 70, fontWeight: 500, fontSize: 12 }}>
+            <Flex
+              vertical
+              gap={0}
+              style={{
+                padding: '0px',
+              }}
+            >
+              <Flex
+                align="center"
+                gap={8}
+                style={{ minHeight: 38, borderBottom: '1px solid #f0f0f0' }}
+              >
+                <div
+                  style={{
+                    width: 80,
+                    fontWeight: 500,
+                    fontSize: 12,
+                    paddingLeft: 12,
+                    boxSizing: 'border-box',
+                  }}
+                >
                   Dimensions
                 </div>
-                <DimensionShelf style={{ flex: 1, minHeight: 28 }} />
+                <DimensionShelf
+                  style={{
+                    minHeight: 38,
+                    height: 38,
+                    flex: '0 0 calc(100% - 90px)',
+                    width: '0 0 calc(100% - 90px)',
+                  }}
+                />
               </Flex>
-              <Flex align="center" gap={8}>
-                <div style={{ width: 70, fontWeight: 500, fontSize: 12 }}>
+              <Flex
+                align="center"
+                gap={8}
+                style={{ minHeight: 38, borderBottom: '1px solid #f0f0f0' }}
+              >
+                <div
+                  style={{
+                    width: 80,
+                    fontWeight: 500,
+                    fontSize: 12,
+                    paddingLeft: 12,
+                    boxSizing: 'border-box',
+                  }}
+                >
                   Measures
                 </div>
-                <MeasureShelf style={{ flex: 1, minHeight: 28 }} />
+                <MeasureShelf
+                  style={{
+                    minHeight: 38,
+                    height: 38,
+                    flex: '0 0 calc(100% - 90px)',
+                    width: '0 0 calc(100% - 90px)',
+                  }}
+                />
               </Flex>
-              <Flex align="center" gap={8}>
-                <div style={{ width: 70, fontWeight: 500, fontSize: 12 }}>
-                  Where
-                </div>
-                <WhereShelf style={{ flex: 1, minHeight: 28 }} />
+              <Flex
+                align="center"
+                justify="space-between"
+                style={{ minHeight: 38, borderBottom: '1px solid #f0f0f0' }}
+              >
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  style={{
+                    width: 80,
+                    minWidth: 80,
+                    paddingLeft: 12,
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  <div
+                    style={{
+                      flex: 1,
+                      fontWeight: 500,
+                      fontSize: 12,
+                    }}
+                  >
+                    Where
+                  </div>
+                  <ShelfRootOperatorButton type="where" />
+                </Flex>
+                <WhereShelf
+                  showRootOperator={false}
+                  style={{
+                    minHeight: 38,
+                    height: 38,
+                    flex: '0 0 calc(100% - 90px)',
+                    width: '0 0 calc(100% - 90px)',
+                  }}
+                />
               </Flex>
-              <Flex align="center" gap={8}>
-                <div style={{ width: 70, fontWeight: 500, fontSize: 12 }}>
-                  Having
-                </div>
-                <HavingShelf style={{ flex: 1, minHeight: 28 }} />
+              <Flex
+                align="center"
+                justify="space-between"
+                style={{ minHeight: 38 }}
+              >
+                <Flex
+                  align="center"
+                  justify="space-between"
+                  style={{
+                    width: 80,
+                    minWidth: 80,
+                    paddingLeft: 12,
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  <div
+                    style={{
+                      flex: 1,
+                      fontWeight: 500,
+                      fontSize: 12,
+                    }}
+                  >
+                    Having
+                  </div>
+                  <ShelfRootOperatorButton type="having" />
+                </Flex>
+                <HavingShelf
+                  showRootOperator={false}
+                  style={{
+                    minHeight: 38,
+                    height: 38,
+                    flex: '0 0 calc(100% - 90px)',
+                    width: '0 0 calc(100% - 90px)',
+                  }}
+                />
               </Flex>
             </Flex>
           </Card>
