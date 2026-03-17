@@ -30,5 +30,5 @@
     "measures": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.dimensions.update('product_type', node => {\n    node.setAlias('待删除的产品类型')\n  })\n  builder.dimensions.remove('product_type')\n}"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  const dimensionId = builder.dimensions.toJSON().find(item => item.field === 'product_type')?.id\n  if (dimensionId) {\n    builder.dimensions.update(dimensionId, node => {\n      node.setAlias('待删除的产品类型')\n    })\n    builder.dimensions.remove(dimensionId)\n  }\n}"
 }

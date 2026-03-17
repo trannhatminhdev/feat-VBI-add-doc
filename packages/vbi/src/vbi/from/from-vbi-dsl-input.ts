@@ -14,8 +14,8 @@ export const fromVBIDSLInput = (vbi: VBIDSLInput) => {
     setBaseDSLFields(dsl, vbi)
     dsl.set('whereFilter', ensureWhereGroup(vbi.whereFilter))
     dsl.set('havingFilter', ensureHavingGroup(vbi.havingFilter))
-    dsl.set('measures', ensureYArray(vbi.measures))
-    dsl.set('dimensions', ensureYArray(vbi.dimensions))
+    dsl.set('measures', ensureYArray(vbi.measures, 'field'))
+    dsl.set('dimensions', ensureYArray(vbi.dimensions, 'field'))
   })
 
   return new VBIBuilder(doc)

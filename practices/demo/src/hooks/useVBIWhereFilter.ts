@@ -93,7 +93,7 @@ export const useVBIWhereFilter = (builder: VBIBuilder | undefined) => {
   const findFilter = useCallback(
     (id: string) => {
       if (builder) {
-        return builder.whereFilter.find(id);
+        return builder.whereFilter.find((entry) => entry.getId() === id);
       }
       return undefined;
     },
@@ -165,7 +165,9 @@ export const useVBIWhereFilter = (builder: VBIBuilder | undefined) => {
   const findGroup = useCallback(
     (id: string) => {
       if (builder) {
-        const result = builder.whereFilter.find(id);
+        const result = builder.whereFilter.find(
+          (entry) => entry.getId() === id,
+        );
         if (result && 'getOperator' in result) {
           return result;
         }

@@ -31,7 +31,10 @@ describe('Measures', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.measures.add('sales', (n) => n.setAlias('销售额'))
-      builder.measures.update('sales', (n) => n.setEncoding('yAxis').setAggregate({ func: 'sum' }))
+      const measureId = builder.measures.find((node) => node.getField() === 'sales')?.getId()
+      if (measureId) {
+        builder.measures.update(measureId, (n) => n.setEncoding('yAxis').setAggregate({ func: 'sum' }))
+      }
     }
     applyBuilder(builder)
 
@@ -57,6 +60,7 @@ describe('Measures', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -130,9 +134,12 @@ describe('Measures', () => {
       builder.measures.add('sales', (node) => {
         node.setAlias('原销售额')
       })
-      builder.measures.update('sales', (node) => {
-        node.setAlias('销售额').setAggregate({ func: 'sum' })
-      })
+      const measureId = builder.measures.find((node) => node.getField() === 'sales')?.getId()
+      if (measureId) {
+        builder.measures.update(measureId, (node) => {
+          node.setAlias('销售额').setAggregate({ func: 'sum' })
+        })
+      }
     }
     applyBuilder(builder)
 
@@ -158,6 +165,7 @@ describe('Measures', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -245,8 +253,11 @@ describe('Measures', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.measures.update('sales', (n) => n.setAlias('待移除的销售额'))
-      builder.measures.remove('sales')
+      const measureId = builder.measures.toJSON().find((item) => item.field === 'sales')?.id
+      if (measureId) {
+        builder.measures.update(measureId, (n) => n.setAlias('待移除的销售额'))
+        builder.measures.remove(measureId)
+      }
     }
     applyBuilder(builder)
 
@@ -272,6 +283,7 @@ describe('Measures', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
         ],
         "theme": "light",
@@ -351,11 +363,14 @@ describe('Measures', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      const measure = builder.measures.find('sales')
-      if (measure) {
-        measure.setAlias('待调整销售额').setEncoding('yAxis')
+      const measureId = builder.measures.toJSON().find((item) => item.field === 'sales')?.id
+      if (measureId) {
+        const measure = builder.measures.find((node) => node.getId() === measureId)
+        if (measure) {
+          measure.setAlias('待调整销售额').setEncoding('yAxis')
+        }
+        builder.measures.update(measureId, (n) => n.setAlias('新销售额').setAggregate({ func: 'avg' }))
       }
-      builder.measures.update('sales', (n) => n.setAlias('新销售额').setAggregate({ func: 'avg' }))
     }
     applyBuilder(builder)
 
@@ -381,6 +396,7 @@ describe('Measures', () => {
             "alias": "新销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",

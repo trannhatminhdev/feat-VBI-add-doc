@@ -18,6 +18,18 @@ constructor(yMap: Y.Map<any>)
 | --- | --- | --- |
 | `yMap` | Y.Map<any> | - |
 
+### getId
+
+获取节点 ID
+
+**定义**:
+
+```typescript
+getId(): string
+```
+
+**返回**: `string`
+
 ### getField
 
 获取字段名

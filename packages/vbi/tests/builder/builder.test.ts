@@ -15,6 +15,7 @@ describe('VBI', () => {
     expect(builder.build()).toEqual({
       dimensions: [
         {
+          id: 'id-2',
           alias: 'Area',
           field: 'area',
         },
@@ -23,6 +24,7 @@ describe('VBI', () => {
       havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [
         {
+          id: 'id-1',
           aggregate: {
             func: 'max',
           },
@@ -41,7 +43,10 @@ describe('VBI', () => {
     builder.dimensions.add('area', () => {})
     expect(builder.isEmpty()).toBe(false)
 
-    builder.dimensions.remove('area')
+    const dimensionId = builder.dimensions.find((node) => node.getField() === 'area')?.getId()
+    if (dimensionId) {
+      builder.dimensions.remove(dimensionId)
+    }
     expect(builder.isEmpty()).toBe(true)
 
     builder.measures.add('sales', () => {})

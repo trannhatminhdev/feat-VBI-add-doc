@@ -75,7 +75,7 @@ export const useVBIMeasures = (builder: VBIBuilder | undefined) => {
   const findMeasure = useCallback(
     (field: string) => {
       if (builder) {
-        return builder.measures.find(field);
+        return builder.measures.find((node) => node.getField() === field);
       }
       return undefined;
     },

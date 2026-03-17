@@ -13,6 +13,7 @@ describe('DimensionsBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [
         {
+          id: 'id-1',
           alias: '类别',
           field: 'category',
         },
@@ -37,10 +38,12 @@ describe('DimensionsBuilder', () => {
     expect(builder.build()).toEqual({
       dimensions: [
         {
+          id: 'id-1',
           alias: '地区',
           field: 'region',
         },
         {
+          id: 'id-2',
           alias: '城市',
           field: 'city',
         },
@@ -60,9 +63,9 @@ describe('DimensionsBuilder', () => {
     } as VBIDSL
     const builder = VBI.from(dsl)
 
-    builder.dimensions.remove('category')
+    builder.dimensions.remove('id-1')
 
-    expect(builder.build().dimensions).toEqual([{ field: 'region', alias: '地区' }])
+    expect(builder.build().dimensions).toEqual([{ id: 'id-2', field: 'region', alias: '地区' }])
   })
 
   test('removeDimension not found', () => {
@@ -71,18 +74,18 @@ describe('DimensionsBuilder', () => {
 
     builder.dimensions.remove('notExist')
 
-    expect(builder.build().dimensions).toEqual([{ field: 'category', alias: '类别' }])
+    expect(builder.build().dimensions).toEqual([{ id: 'id-1', field: 'category', alias: '类别' }])
   })
 
   test('updateDimension', () => {
     const dsl = { dimensions: [{ field: 'category', alias: '类别' }] } as VBIDSL
     const builder = VBI.from(dsl)
 
-    builder.dimensions.update('category', (node) => {
+    builder.dimensions.update('id-1', (node) => {
       node.setAlias('新类别')
     })
 
-    expect(builder.build().dimensions).toEqual([{ field: 'category', alias: '新类别' }])
+    expect(builder.build().dimensions).toEqual([{ id: 'id-1', field: 'category', alias: '新类别' }])
   })
 
   test('updateDimension throws error if not found', () => {
@@ -93,7 +96,7 @@ describe('DimensionsBuilder', () => {
       builder.dimensions.update('notExist', (node) => {
         node.setAlias('新类别')
       })
-    }).toThrow('Dimension with field "notExist" not found')
+    }).toThrow('Dimension with id "notExist" not found')
   })
 
   test('findDimension', () => {
@@ -105,17 +108,17 @@ describe('DimensionsBuilder', () => {
     } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.dimensions.find('category')
+    const node = builder.dimensions.find((node) => node.getId() === 'id-1')
 
     expect(node?.getField()).toBe('category')
-    expect(node?.toJSON()).toEqual({ field: 'category', alias: '类别' })
+    expect(node?.toJSON()).toEqual({ id: 'id-1', field: 'category', alias: '类别' })
   })
 
   test('findDimension returns undefined if not found', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.dimensions.find('notExist')
+    const node = builder.dimensions.find((node) => node.getId() === 'notExist')
 
     expect(node).toBeUndefined()
   })
@@ -157,8 +160,8 @@ describe('DimensionsBuilder', () => {
     const json = builder.dimensions.toJSON()
 
     expect(json).toEqual([
-      { field: 'category', alias: '类别' },
-      { field: 'region', alias: '地区' },
+      { id: 'id-1', field: 'category', alias: '类别' },
+      { id: 'id-2', field: 'region', alias: '地区' },
     ])
   })
 
@@ -197,7 +200,7 @@ describe('DimensionsBuilder', () => {
   })
 
   test('isDimensionNode', () => {
-    const node = { field: 'category', alias: '类别' }
+    const node = { id: 'id-1', field: 'category', alias: '类别' }
     const group = { field: 'group1', children: [] }
 
     expect(DimensionsBuilder.isDimensionNode(node)).toBe(true)
@@ -205,7 +208,7 @@ describe('DimensionsBuilder', () => {
   })
 
   test('isDimensionGroup', () => {
-    const node = { field: 'category', alias: '类别' }
+    const node = { id: 'id-1', field: 'category', alias: '类别' }
     const group = { field: 'group1', children: [] }
 
     expect(DimensionsBuilder.isDimensionGroup(node)).toBe(false)
@@ -216,16 +219,25 @@ describe('DimensionsBuilder', () => {
     const dsl = { dimensions: [{ field: 'category', alias: '类别' }] } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.dimensions.find('category')
+    const node = builder.dimensions.find((node) => node.getId() === 'id-1')
 
     expect(node?.getField()).toBe('category')
+  })
+
+  test('DimensionNodeBuilder getId', () => {
+    const dsl = { dimensions: [{ field: 'category', alias: '类别' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    const node = builder.dimensions.find((node) => node.getId() === 'id-1')
+
+    expect(node?.getId()).toBe('id-1')
   })
 
   test('DimensionNodeBuilder setAlias', () => {
     const dsl = { dimensions: [{ field: 'category', alias: '类别' }] } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.dimensions.find('category')
+    const node = builder.dimensions.find((node) => node.getId() === 'id-1')
     node?.setAlias('新类别')
 
     expect(builder.dimensions.toJSON()[0].alias).toBe('新类别')
@@ -235,10 +247,10 @@ describe('DimensionsBuilder', () => {
     const dsl = { dimensions: [{ field: 'category', alias: '类别' }] } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.dimensions.find('category')
+    const node = builder.dimensions.find((node) => node.getId() === 'id-1')
     const json = node?.toJSON()
 
-    expect(json).toEqual({ field: 'category', alias: '类别' })
+    expect(json).toEqual({ id: 'id-1', field: 'category', alias: '类别' })
   })
 
   test('chained add operations', () => {

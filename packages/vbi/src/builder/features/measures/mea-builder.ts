@@ -1,14 +1,21 @@
 import * as Y from 'yjs'
 import type { ObserveCallback, VBIMeasure, VBIMeasureGroup, VBIMeasureTree } from 'src/types'
 import { MeasureNodeBuilder } from './mea-node-builder'
+import { id } from 'src/utils'
+import { getOrCreateMeasures, locateMeasureIndexById, normalizeMeasureNodeIds } from './measure-utils'
 
 /**
  * @description 度量构建器，用于添加、修改、删除度量配置。度量是数据的数值字段，如：销售额、利润、数量
  */
 export class MeasuresBuilder {
   private dsl: Y.Map<any>
-  constructor(_doc: Y.Doc, dsl: Y.Map<any>) {
+  constructor(doc: Y.Doc, dsl: Y.Map<any>) {
     this.dsl = dsl
+
+    doc.transact(() => {
+      const measures = getOrCreateMeasures(this.dsl)
+      normalizeMeasureNodeIds(measures)
+    })
   }
 
   /**
@@ -18,6 +25,7 @@ export class MeasuresBuilder {
    */
   add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder {
     const measure: VBIMeasure = {
+      id: id.uuid(),
       alias: field,
       field,
       encoding: 'yAxis',
@@ -29,7 +37,8 @@ export class MeasuresBuilder {
     for (const [key, value] of Object.entries(measure)) {
       yMap.set(key, value)
     }
-    this.dsl.get('measures').push([yMap])
+    const measures = getOrCreateMeasures(this.dsl)
+    measures.push([yMap])
 
     const node = new MeasureNodeBuilder(yMap)
 
@@ -38,29 +47,29 @@ export class MeasuresBuilder {
   }
 
   /**
-   * @description 删除指定字段的度量
-   * @param field - 字段名
+   * @description 删除指定 ID 的度量
+   * @param id - 度量 ID
    */
-  remove(field: VBIMeasure['field']): MeasuresBuilder {
-    const measures = this.dsl.get('measures')
-    const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
+  remove(id: string): MeasuresBuilder {
+    const measures = getOrCreateMeasures(this.dsl)
+    const index = locateMeasureIndexById(measures, id)
     if (index !== -1) {
-      this.dsl.get('measures').delete(index, 1)
+      measures.delete(index, 1)
     }
     return this
   }
 
   /**
    * @description 更新度量配置
-   * @param field - 字段名
+   * @param id - 度量 ID
    * @param callback - 回调函数
    */
-  update(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder {
-    const measures = this.dsl.get('measures') as Y.Array<any>
-    const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
+  update(id: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder {
+    const measures = getOrCreateMeasures(this.dsl)
+    const index = locateMeasureIndexById(measures, id)
 
     if (index === -1) {
-      throw new Error(`Measure with field "${field}" not found`)
+      throw new Error(`Measure with id "${id}" not found`)
     }
 
     const measureYMap = measures.get(index)
@@ -70,25 +79,26 @@ export class MeasuresBuilder {
   }
 
   /**
-   * @description 根据字段名查找度量
-   * @param field - 字段名
+   * @description 按回调条件查找第一个度量，行为与 Array.find 一致
+   * @param predicate - 查找条件
    */
-  find(field: VBIMeasure['field']): MeasureNodeBuilder | undefined {
-    const measures = this.dsl.get('measures') as Y.Array<any>
-    const index = measures.toArray().findIndex((item: any) => item.get('field') === field)
-
-    if (index === -1) {
-      return undefined
+  find(predicate: (node: MeasureNodeBuilder, index: number) => boolean): MeasureNodeBuilder | undefined {
+    const measures = getOrCreateMeasures(this.dsl)
+    const items = measures.toArray() as Y.Map<any>[]
+    for (let index = 0; index < items.length; index++) {
+      const node = new MeasureNodeBuilder(items[index])
+      if (predicate(node, index)) {
+        return node
+      }
     }
-
-    return new MeasureNodeBuilder(measures.get(index))
+    return undefined
   }
 
   /**
    * @description 获取所有度量
    */
   findAll(): MeasureNodeBuilder[] {
-    const measures = this.dsl.get('measures') as Y.Array<any>
+    const measures = getOrCreateMeasures(this.dsl)
     return measures.toArray().map((yMap: any) => new MeasureNodeBuilder(yMap))
   }
 
@@ -96,7 +106,8 @@ export class MeasuresBuilder {
    * @description 导出所有度量为 JSON 数组
    */
   toJSON(): VBIMeasure[] {
-    return this.dsl.get('measures').toJSON() as VBIMeasure[]
+    const measures = getOrCreateMeasures(this.dsl)
+    return measures.toJSON() as VBIMeasure[]
   }
 
   /**
@@ -109,9 +120,10 @@ export class MeasuresBuilder {
    * @returns 取消监听的函数
    */
   observe(callback: ObserveCallback): () => void {
-    this.dsl.get('measures').observe(callback)
+    const measures = getOrCreateMeasures(this.dsl)
+    measures.observe(callback as any)
     return () => {
-      this.dsl.get('measures').unobserve(callback)
+      measures.unobserve(callback as any)
     }
   }
 

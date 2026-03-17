@@ -407,7 +407,9 @@ export const HavingShelf = ({ style }: { style?: React.CSSProperties }) => {
       }
 
       // 查找现有过滤器以获取原始 field
-      const existingFilter = builder.havingFilter.find(updatedItem.id);
+      const existingFilter = builder.havingFilter.find(
+        (entry) => entry.getId() === updatedItem.id,
+      );
 
       const existingField =
         existingFilter && 'getField' in existingFilter

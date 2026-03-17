@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { zAggregate } from './aggregate'
 
 export const zVBIMeasure = z.object({
+  id: z.string(),
   field: z.string(),
   alias: z.string(),
   encoding: z.enum(['yAxis', 'xAxis', 'color', 'label', 'tooltip', 'size']),

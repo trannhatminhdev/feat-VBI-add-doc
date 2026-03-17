@@ -21,5 +21,5 @@
     "measures": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.measures.add('sales', n => n.setAlias('销售额'))\n  builder.measures.update('sales', n => n.setEncoding('yAxis').setAggregate({ func: 'sum' }))\n}"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.measures.add('sales', n => n.setAlias('销售额'))\n  const measureId = builder.measures.find(node => node.getField() === 'sales')?.getId()\n  if (measureId) {\n    builder.measures.update(measureId, n => n.setEncoding('yAxis').setAggregate({ func: 'sum' }))\n  }\n}"
 }

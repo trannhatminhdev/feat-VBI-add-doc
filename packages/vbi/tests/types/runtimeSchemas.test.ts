@@ -63,9 +63,10 @@ describe('DSL schemas', () => {
   test('parse dimension and measure tree schemas', () => {
     const dimensionGroup = zVBIDimensionGroupSchema.parse({
       alias: '地区层级',
-      children: [{ field: 'province', alias: '省份' }],
+      children: [{ id: 'd-1', field: 'province', alias: '省份' }],
     })
     const measure = zVBIMeasure.parse({
+      id: 'm-1',
       field: 'sales',
       alias: '销售额',
       encoding: 'yAxis',

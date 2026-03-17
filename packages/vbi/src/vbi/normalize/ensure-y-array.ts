@@ -1,7 +1,7 @@
 import * as Y from 'yjs'
-import { toYMap } from './to-y-map'
+import { toYMap, type EnsureIdMode } from './to-y-map'
 
-export const ensureYArray = (arr: any, ensureId = false): Y.Array<any> => {
+export const ensureYArray = (arr: any, ensureId: EnsureIdMode = false): Y.Array<any> => {
   if (!arr) {
     return new Y.Array<any>()
   }

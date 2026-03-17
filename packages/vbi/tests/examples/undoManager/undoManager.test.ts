@@ -75,6 +75,7 @@ describe('UndoManager', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -83,6 +84,7 @@ describe('UndoManager', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
         ],
         "theme": "light",

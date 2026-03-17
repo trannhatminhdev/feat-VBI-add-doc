@@ -136,22 +136,33 @@ export class WhereFilterBuilder {
   }
 
   /**
-   * @description 根据 ID 查找条件（过滤或分组）
-   * @param id - ID
+   * @description 按回调条件查找第一个条件（过滤或分组），行为与 Array.find 一致
+   * @param predicate - 查找条件
    */
-  find(id: string): WhereFilterNodeBuilder | WhereGroupBuilder | undefined {
-    const conditions = this.getConditions()
-    const match = findEntry(conditions, id)
-    const yMap = match?.item
+  find(
+    predicate: (entry: WhereFilterNodeBuilder | WhereGroupBuilder, index: number) => boolean,
+  ): WhereFilterNodeBuilder | WhereGroupBuilder | undefined {
+    const traverse = (collection: Y.Array<any>): WhereFilterNodeBuilder | WhereGroupBuilder | undefined => {
+      const items = collection.toArray() as Y.Map<any>[]
+      for (let index = 0; index < items.length; index++) {
+        const yMap = items[index]
+        const entry = WhereFilterBuilder.isGroup(yMap) ? new WhereGroupBuilder(yMap) : new WhereFilterNodeBuilder(yMap)
 
-    if (!yMap) {
+        if (predicate(entry, index)) {
+          return entry
+        }
+
+        if (WhereFilterBuilder.isGroup(yMap)) {
+          const nestedCollection = yMap.get('conditions') as Y.Array<any>
+          const nestedMatch = traverse(nestedCollection)
+          if (nestedMatch) {
+            return nestedMatch
+          }
+        }
+      }
       return undefined
     }
-
-    if (WhereFilterBuilder.isGroup(yMap)) {
-      return new WhereGroupBuilder(yMap)
-    }
-    return new WhereFilterNodeBuilder(yMap)
+    return traverse(this.getConditions())
   }
 
   /**

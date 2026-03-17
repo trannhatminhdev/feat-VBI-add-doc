@@ -187,7 +187,7 @@ describe('WhereFilterBuilder', () => {
       .add('category', (node) => node.setOperator('eq').setValue('Electronics'))
       .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
 
-    const node = builder.whereFilter.find('id-1')
+    const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
 
     expect(node).toBeDefined()
     expect((node as any).getField()).toBe('category')
@@ -207,7 +207,7 @@ describe('WhereFilterBuilder', () => {
       group.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
     })
 
-    const node = builder.whereFilter.find('id-2')
+    const node = builder.whereFilter.find((entry) => entry.getId() === 'id-2')
 
     expect(node).toBeDefined()
     expect((node as any).getField()).toBe('region')
@@ -223,7 +223,7 @@ describe('WhereFilterBuilder', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.whereFilter.find('not-exist')
+    const node = builder.whereFilter.find((entry) => entry.getId() === 'not-exist')
 
     expect(node).toBeUndefined()
   })
@@ -318,7 +318,7 @@ describe('WhereFilterBuilder', () => {
     const builder = VBI.from(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
-    const node = builder.whereFilter.find('id-1')
+    const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
     expect((node as any).getId()).toBe('id-1')
   })
 
@@ -327,7 +327,7 @@ describe('WhereFilterBuilder', () => {
     const builder = VBI.from(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
-    const node = builder.whereFilter.find('id-1')
+    const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
     expect((node as any).getField()).toBe('category')
   })
 
@@ -336,7 +336,7 @@ describe('WhereFilterBuilder', () => {
     const builder = VBI.from(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
-    const node = builder.whereFilter.find('id-1')
+    const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
     expect((node as any).getOperator()).toBe('eq')
   })
 
@@ -345,7 +345,7 @@ describe('WhereFilterBuilder', () => {
     const builder = VBI.from(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
-    const node = builder.whereFilter.find('id-1')
+    const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
     ;(node as any).setOperator('in')
 
     expect((builder.whereFilter.toJSON().conditions[0] as VBIFilter).op).toBe('in')
@@ -356,7 +356,7 @@ describe('WhereFilterBuilder', () => {
     const builder = VBI.from(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
-    const node = builder.whereFilter.find('id-1')
+    const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
     ;(node as any).setValue(['Electronics', 'Books'])
 
     expect((builder.whereFilter.toJSON().conditions[0] as VBIFilter).value).toEqual(['Electronics', 'Books'])
@@ -367,7 +367,7 @@ describe('WhereFilterBuilder', () => {
     const builder = VBI.from(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
-    const node = builder.whereFilter.find('id-1')
+    const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
     expect((node as any).toJSON()).toEqual({
       id: 'id-1',
       field: 'category',
@@ -422,8 +422,8 @@ describe('WhereFilterBuilder', () => {
     const builder = VBI.from({
       ...VBI.generateEmptyDSL('demo'),
       chartType: 'column',
-      dimensions: [{ field: 'category', alias: 'category' }],
-      measures: [{ field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+      dimensions: [{ id: 'id-1', field: 'category', alias: 'category' }],
+      measures: [{ id: 'id-2', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
       whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: { id: 'root', op: 'and', conditions: [] },
       version: 1,
@@ -543,7 +543,7 @@ describe('WhereGroupBuilder', () => {
 
     builder.whereFilter.addGroup('or', () => {})
 
-    const group = builder.whereFilter.find('id-1')
+    const group = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
     expect(group).toBeDefined()
     expect((group as any).getOperator()).toBe('or')
   })
@@ -554,7 +554,7 @@ describe('WhereGroupBuilder', () => {
 
     builder.whereFilter.addGroup('or', () => {})
 
-    const group = builder.whereFilter.find('id-1')
+    const group = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
     expect((group as any).getId()).toBe('id-1')
     expect((group as any).getConditions()).toBeInstanceOf(Y.Array)
   })

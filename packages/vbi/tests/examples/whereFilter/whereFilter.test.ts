@@ -60,6 +60,7 @@ describe('WhereFilter', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -77,6 +78,7 @@ describe('WhereFilter', () => {
             "alias": "销售额",
             "encoding": "xAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -85,7 +87,7 @@ describe('WhereFilter', () => {
           "conditions": [
             {
               "field": "product_type",
-              "id": "id-1",
+              "id": "id-3",
               "op": "eq",
               "value": "办公用品",
             },
@@ -277,6 +279,7 @@ describe('WhereFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -294,6 +297,7 @@ describe('WhereFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -302,13 +306,13 @@ describe('WhereFilter', () => {
           "conditions": [
             {
               "field": "product_type",
-              "id": "id-1",
+              "id": "id-3",
               "op": "eq",
               "value": "技术",
             },
             {
               "field": "discount",
-              "id": "id-2",
+              "id": "id-4",
               "op": ">",
               "value": 0.5,
             },
@@ -426,6 +430,7 @@ describe('WhereFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -443,6 +448,7 @@ describe('WhereFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -453,18 +459,18 @@ describe('WhereFilter', () => {
               "conditions": [
                 {
                   "field": "product_type",
-                  "id": "id-2",
+                  "id": "id-4",
                   "op": "eq",
                   "value": "办公用品",
                 },
                 {
                   "field": "product_type",
-                  "id": "id-3",
+                  "id": "id-5",
                   "op": "eq",
                   "value": "技术",
                 },
               ],
-              "id": "id-1",
+              "id": "id-3",
               "op": "or",
             },
           ],
@@ -609,6 +615,7 @@ describe('WhereFilter', () => {
           {
             "alias": "品类",
             "field": "product_type",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -626,6 +633,7 @@ describe('WhereFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -634,7 +642,7 @@ describe('WhereFilter', () => {
           "conditions": [
             {
               "field": "sales",
-              "id": "id-1",
+              "id": "id-3",
               "op": "between",
               "value": {
                 "max": 10000,
@@ -784,6 +792,7 @@ describe('WhereFilter', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -801,6 +810,7 @@ describe('WhereFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -809,7 +819,7 @@ describe('WhereFilter', () => {
           "conditions": [
             {
               "field": "profit",
-              "id": "id-1",
+              "id": "id-3",
               "op": ">",
               "value": 0,
             },
@@ -817,18 +827,18 @@ describe('WhereFilter', () => {
               "conditions": [
                 {
                   "field": "area",
-                  "id": "id-3",
+                  "id": "id-5",
                   "op": "eq",
                   "value": "华东",
                 },
                 {
                   "field": "area",
-                  "id": "id-4",
+                  "id": "id-6",
                   "op": "eq",
                   "value": "华北",
                 },
               ],
-              "id": "id-2",
+              "id": "id-4",
               "op": "or",
             },
           ],
@@ -1015,6 +1025,7 @@ describe('WhereFilter', () => {
           {
             "alias": "城市",
             "field": "city",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -1032,6 +1043,7 @@ describe('WhereFilter', () => {
             "alias": "销售额",
             "encoding": "xAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -1247,6 +1259,7 @@ describe('WhereFilter', () => {
           {
             "alias": "城市",
             "field": "city",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -1264,6 +1277,7 @@ describe('WhereFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -1272,7 +1286,7 @@ describe('WhereFilter', () => {
           "conditions": [
             {
               "field": "area",
-              "id": "id-1",
+              "id": "id-3",
               "op": "eq",
               "value": "华东",
             },
@@ -1280,18 +1294,18 @@ describe('WhereFilter', () => {
               "conditions": [
                 {
                   "field": "product_type",
-                  "id": "id-3",
+                  "id": "id-5",
                   "op": "eq",
                   "value": "办公用品",
                 },
                 {
                   "field": "product_type",
-                  "id": "id-4",
+                  "id": "id-6",
                   "op": "eq",
                   "value": "家具",
                 },
               ],
-              "id": "id-2",
+              "id": "id-4",
               "op": "or",
             },
           ],
@@ -1470,6 +1484,7 @@ describe('WhereFilter', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -1487,6 +1502,7 @@ describe('WhereFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -1495,7 +1511,7 @@ describe('WhereFilter', () => {
           "conditions": [
             {
               "field": "sales",
-              "id": "id-1",
+              "id": "id-3",
               "op": ">",
               "value": 500,
             },
@@ -1505,25 +1521,25 @@ describe('WhereFilter', () => {
                   "conditions": [
                     {
                       "field": "customer_type",
-                      "id": "id-4",
+                      "id": "id-6",
                       "op": "eq",
                       "value": "消费者",
                     },
                     {
                       "field": "delivery_method",
-                      "id": "id-5",
+                      "id": "id-7",
                       "op": "eq",
                       "value": "当日",
                     },
                   ],
-                  "id": "id-3",
+                  "id": "id-5",
                   "op": "and",
                 },
                 {
                   "conditions": [
                     {
                       "field": "customer_type",
-                      "id": "id-7",
+                      "id": "id-9",
                       "op": "in",
                       "value": [
                         "公司",
@@ -1532,16 +1548,16 @@ describe('WhereFilter', () => {
                     },
                     {
                       "field": "delivery_method",
-                      "id": "id-8",
+                      "id": "id-10",
                       "op": "eq",
                       "value": "一级",
                     },
                   ],
-                  "id": "id-6",
+                  "id": "id-8",
                   "op": "and",
                 },
               ],
-              "id": "id-2",
+              "id": "id-4",
               "op": "or",
             },
           ],
@@ -1795,6 +1811,7 @@ describe('WhereFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -1812,6 +1829,7 @@ describe('WhereFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -1978,6 +1996,7 @@ describe('WhereFilter', () => {
           {
             "alias": "配送方式",
             "field": "delivery_method",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -1995,6 +2014,7 @@ describe('WhereFilter', () => {
             "alias": "订单量",
             "encoding": "xAxis",
             "field": "amount",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -2003,7 +2023,7 @@ describe('WhereFilter', () => {
           "conditions": [
             {
               "field": "area",
-              "id": "id-1",
+              "id": "id-3",
               "op": "in",
               "value": [
                 "华东",
@@ -2150,6 +2170,7 @@ describe('WhereFilter', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -2167,6 +2188,7 @@ describe('WhereFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -2386,6 +2408,7 @@ describe('WhereFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -2403,6 +2426,7 @@ describe('WhereFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",

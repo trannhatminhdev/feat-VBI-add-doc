@@ -155,8 +155,8 @@ describe('WhereFilterBuilder', () => {
     const whereFilter = builder.whereFilter.toJSON().conditions
     expect(whereFilter).toHaveLength(2)
 
-    const node1 = builder.whereFilter.find('id-1')
-    const node2 = builder.whereFilter.find('id-2')
+    const node1 = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
+    const node2 = builder.whereFilter.find((entry) => entry.getId() === 'id-2')
     expect((node1 as any).toJSON().field).toBe('sales')
     expect((node2 as any).toJSON().field).toBe('region')
   })
@@ -220,7 +220,7 @@ describe('WhereFilterBuilder', () => {
       node.setOperator('eq').setValue('Beijing')
     })
 
-    const found = builder.whereFilter.find('id-2')
+    const found = builder.whereFilter.find((entry) => entry.getId() === 'id-2')
     expect((found as any).toJSON()).toEqual({
       id: 'id-2',
       field: 'region',
@@ -228,7 +228,7 @@ describe('WhereFilterBuilder', () => {
       value: 'Beijing',
     })
 
-    const notFound = builder.whereFilter.find('nonexistent')
+    const notFound = builder.whereFilter.find((entry) => entry.getId() === 'nonexistent')
     expect(notFound).toBeUndefined()
   })
 })

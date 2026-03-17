@@ -71,7 +71,7 @@ export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
   const findDimension = useCallback(
     (field: string) => {
       if (builder) {
-        return builder.dimensions.find(field);
+        return builder.dimensions.find((node) => node.getField() === field);
       }
       return undefined;
     },

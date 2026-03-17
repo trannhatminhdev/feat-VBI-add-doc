@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const zVBIDimensionSchema = z.object({
+  id: z.string(),
   field: z.string(),
   alias: z.string(),
 })

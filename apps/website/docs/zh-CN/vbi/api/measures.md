@@ -11,14 +11,14 @@
 **定义**:
 
 ```typescript
-constructor(_doc: Y.Doc, dsl: Y.Map<any>)
+constructor(doc: Y.Doc, dsl: Y.Map<any>)
 ```
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `_doc` | Y.Doc | - |
+| `doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
 
 ### add
@@ -42,12 +42,12 @@ add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilde
 
 ### remove
 
-删除指定字段的度量
+删除指定 ID 的度量
 
 **定义**:
 
 ```typescript
-remove(field: VBIMeasure['field']): MeasuresBuilder
+remove(id: string): MeasuresBuilder
 ```
 
 **返回**: `MeasuresBuilder`
@@ -56,7 +56,7 @@ remove(field: VBIMeasure['field']): MeasuresBuilder
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | VBIMeasure['field'] | - 字段名 |
+| `id` | string | - 度量 ID |
 
 ### update
 
@@ -65,7 +65,7 @@ remove(field: VBIMeasure['field']): MeasuresBuilder
 **定义**:
 
 ```typescript
-update(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
+update(id: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder
 ```
 
 **返回**: `MeasuresBuilder`
@@ -74,17 +74,17 @@ update(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBui
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | string | - 字段名 |
+| `id` | string | - 度量 ID |
 | `callback` | (node: MeasureNodeBuilder) => void | - 回调函数 |
 
 ### find
 
-根据字段名查找度量
+根据 ID 查找度量
 
 **定义**:
 
 ```typescript
-find(field: VBIMeasure['field']): MeasureNodeBuilder | undefined
+find(id: string): MeasureNodeBuilder | undefined
 ```
 
 **返回**: `MeasureNodeBuilder \| undefined`
@@ -93,7 +93,7 @@ find(field: VBIMeasure['field']): MeasureNodeBuilder | undefined
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | VBIMeasure['field'] | - 字段名 |
+| `id` | string | - 度量 ID |
 
 ### findAll
 
