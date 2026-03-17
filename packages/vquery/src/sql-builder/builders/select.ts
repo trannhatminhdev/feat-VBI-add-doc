@@ -29,11 +29,11 @@ export const applySelect = <DB, TB extends keyof DB & string, O, T>(
 
           if (item.aggr) {
             const { func } = item.aggr
-            if (['avg', 'sum', 'min', 'max', 'variance', 'variancePop', 'stddev', 'median'].includes(func)) {
+            if (['avg', 'sum', 'min', 'max', 'variance', 'variance_pop', 'stddev', 'median'].includes(func)) {
               if (func === 'variance') {
                 return sql`var_samp(${expression})`.as(alias)
               }
-              if (func === 'variancePop') {
+              if (func === 'variance_pop') {
                 return sql`var_pop(${expression})`.as(alias)
               }
               return sql`${sql.raw(func)}(${expression})`.as(alias)

@@ -1,15 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { VBIBuilder } from '@visactor/vbi';
+import { VBIBuilder, type VBIMeasure as CoreVBIMeasure } from '@visactor/vbi';
 
-export interface VBIMeasure {
-  id: string;
-  field: string;
-  alias: string;
-  encoding?: string;
-  aggregate?: {
-    func: string;
-  };
-}
+export type VBIMeasure = Omit<CoreVBIMeasure, 'encoding' | 'aggregate'> & {
+  encoding?: CoreVBIMeasure['encoding'];
+  aggregate?: CoreVBIMeasure['aggregate'];
+};
 
 /**
  * VBI Measures Hook
@@ -38,10 +33,12 @@ export const useVBIMeasures = (builder: VBIBuilder | undefined) => {
 
   // 添加度量
   const addMeasure = useCallback(
-    (field: string) => {
+    (field: string, callback?: (node: any) => void) => {
       if (builder) {
         builder.doc.transact(() => {
-          builder.measures.add(field, () => {});
+          builder.measures.add(field, (node) => {
+            callback?.(node);
+          });
         });
       }
     },

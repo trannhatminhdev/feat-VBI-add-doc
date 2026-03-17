@@ -279,6 +279,26 @@ describe('MeasuresBuilder', () => {
     expect(builder.measures.toJSON()[0].aggregate).toEqual({ func: 'avg' })
   })
 
+  test('MeasureNodeBuilder setAggregate supports extended funcs', () => {
+    const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    const node = builder.measures.find((item) => item.getId() === 'id-1')
+    node?.setAggregate({ func: 'countDistinct' })
+
+    expect(builder.measures.toJSON()[0].aggregate).toEqual({ func: 'countDistinct' })
+  })
+
+  test('MeasureNodeBuilder setAggregate supports quantile', () => {
+    const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    const node = builder.measures.find((item) => item.getId() === 'id-1')
+    node?.setAggregate({ func: 'quantile', quantile: 0.75 })
+
+    expect(builder.measures.toJSON()[0].aggregate).toEqual({ func: 'quantile', quantile: 0.75 })
+  })
+
   test('MeasureNodeBuilder toJSON', () => {
     const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
     const builder = VBI.from(dsl)
@@ -304,5 +324,24 @@ describe('MeasuresBuilder', () => {
     expect(json[0].field).toBe('sales')
     expect(json[1].field).toBe('orders')
     expect(json[2].field).toBe('profit')
+  })
+
+  test('buildVQuery keeps extended aggregate configs', () => {
+    const dsl = {
+      measures: [
+        { field: 'customer_id', alias: '客户去重数', aggregate: { func: 'countDistinct' } },
+        { field: 'sales', alias: '销售额中位数', aggregate: { func: 'median' } },
+        { field: 'profit', alias: '利润总体方差', aggregate: { func: 'variancePop' } },
+        { field: 'discount', alias: '利润分位数', aggregate: { func: 'quantile', quantile: 0.9 } },
+      ],
+    } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    expect(builder.buildVQuery().select).toEqual([
+      { field: 'customer_id', alias: '客户去重数', aggr: { func: 'count_distinct' } },
+      { field: 'sales', alias: '销售额中位数', aggr: { func: 'median' } },
+      { field: 'profit', alias: '利润总体方差', aggr: { func: 'variance_pop' } },
+      { field: 'discount', alias: '利润分位数', aggr: { func: 'quantile', quantile: 0.9 } },
+    ])
   })
 })

@@ -6,7 +6,7 @@ export type BaseAggregateFunction =
   | 'min'
   | 'max'
   | 'variance'
-  | 'variancePop'
+  | 'variance_pop'
   | 'stddev'
   | 'median'
   | 'quantile'
