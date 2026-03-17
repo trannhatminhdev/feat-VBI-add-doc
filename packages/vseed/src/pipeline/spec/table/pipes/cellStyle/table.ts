@@ -9,7 +9,7 @@ import { preorderTraverse } from 'src/pipeline/utils/tree/traverse'
 
 export const tableBodyCell: ListTableSpecPipe = (spec, context) => {
   const { advancedVSeed, vseed } = context
-  const { totals } = vseed as Table
+  const { totals } = (vseed || {}) as Table
   const { cellStyle, config, chartType } = advancedVSeed
   const totalAggregation = typeof totals === 'string' ? totals : undefined
   const bodyCellStyle = cellStyle?.bodyCellStyle
