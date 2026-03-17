@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.17
+
+### Patch Changes
+
+- Calculate total value into cell progressbar in background, but hide it in pivot
+
 ## 0.4.16
 
 ### Patch Changes
