@@ -58,6 +58,7 @@ describe('ChartType', () => {
           {
             "alias": "订单日期",
             "field": "order_date",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -75,6 +76,7 @@ describe('ChartType', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -216,6 +218,7 @@ describe('ChartType', () => {
           {
             "alias": "产品类型",
             "field": "product_type",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -233,6 +236,7 @@ describe('ChartType', () => {
             "alias": "销售额",
             "encoding": "xAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -346,6 +350,7 @@ describe('ChartType', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -363,6 +368,7 @@ describe('ChartType', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -504,6 +510,7 @@ describe('ChartType', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -521,6 +528,7 @@ describe('ChartType', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -646,6 +654,7 @@ describe('ChartType', () => {
           {
             "alias": "客户类型",
             "field": "customer_type",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -663,6 +672,7 @@ describe('ChartType', () => {
             "alias": "销售额",
             "encoding": "size",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -776,6 +786,7 @@ describe('ChartType', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -793,6 +804,7 @@ describe('ChartType', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -934,6 +946,7 @@ describe('ChartType', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -951,6 +964,7 @@ describe('ChartType', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -1092,6 +1106,7 @@ describe('ChartType', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -1109,6 +1124,7 @@ describe('ChartType', () => {
             "alias": "销售额",
             "encoding": "size",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -1234,6 +1250,7 @@ describe('ChartType', () => {
           {
             "alias": "城市",
             "field": "city",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -1251,6 +1268,7 @@ describe('ChartType', () => {
             "alias": "销售额",
             "encoding": "size",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -1407,6 +1425,7 @@ describe('ChartType', () => {
             "alias": "销售额",
             "encoding": "xAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -1415,6 +1434,7 @@ describe('ChartType', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
         ],
         "theme": "light",

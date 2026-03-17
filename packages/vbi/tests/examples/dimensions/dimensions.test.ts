@@ -33,9 +33,12 @@ describe('Dimensions', () => {
       builder.dimensions.add('product_type', (node) => {
         node.setAlias('商品类型')
       })
-      builder.dimensions.update('product_type', (node) => {
-        node.setAlias('产品类型')
-      })
+      const dimensionId = builder.dimensions.find((node) => node.getField() === 'product_type')?.getId()
+      if (dimensionId) {
+        builder.dimensions.update(dimensionId, (node) => {
+          node.setAlias('产品类型')
+        })
+      }
     }
     applyBuilder(builder)
 
@@ -49,6 +52,7 @@ describe('Dimensions', () => {
           {
             "alias": "产品类型",
             "field": "product_type",
+            "id": "id-1",
           },
         ],
         "havingFilter": {
@@ -146,10 +150,12 @@ describe('Dimensions', () => {
           {
             "alias": "产品类型",
             "field": "product_type",
+            "id": "id-1",
           },
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -318,10 +324,13 @@ describe('Dimensions', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.dimensions.update('product_type', (node) => {
-        node.setAlias('待删除的产品类型')
-      })
-      builder.dimensions.remove('product_type')
+      const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'product_type')?.id
+      if (dimensionId) {
+        builder.dimensions.update(dimensionId, (node) => {
+          node.setAlias('待删除的产品类型')
+        })
+        builder.dimensions.remove(dimensionId)
+      }
     }
     applyBuilder(builder)
 
@@ -335,6 +344,7 @@ describe('Dimensions', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -474,11 +484,14 @@ describe('Dimensions', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      const dimension = builder.dimensions.find('product_type')
-      if (dimension) {
-        dimension.setAlias('待调整的产品类型')
+      const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'product_type')?.id
+      if (dimensionId) {
+        const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)
+        if (dimension) {
+          dimension.setAlias('待调整的产品类型')
+        }
+        builder.dimensions.update(dimensionId, (n) => n.setAlias('新产品类型'))
       }
-      builder.dimensions.update('product_type', (n) => n.setAlias('新产品类型'))
     }
     applyBuilder(builder)
 
@@ -492,6 +505,7 @@ describe('Dimensions', () => {
           {
             "alias": "新产品类型",
             "field": "product_type",
+            "id": "id-1",
           },
         ],
         "havingFilter": {

@@ -26,5 +26,5 @@
     ],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  const measure = builder.measures.find('sales')\n  if (measure) {\n    measure.setAlias('待调整销售额').setEncoding('yAxis')\n  }\n  builder.measures.update('sales', n => n.setAlias('新销售额').setAggregate({ func: 'avg' }))\n}"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  const measureId = builder.measures.toJSON().find(item => item.field === 'sales')?.id\n  if (measureId) {\n    const measure = builder.measures.find((node) => node.getId() === measureId)\n    if (measure) {\n      measure.setAlias('待调整销售额').setEncoding('yAxis')\n    }\n    builder.measures.update(measureId, n => n.setAlias('新销售额').setAggregate({ func: 'avg' }))\n  }\n}"
 }

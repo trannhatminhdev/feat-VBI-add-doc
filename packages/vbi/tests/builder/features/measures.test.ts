@@ -16,6 +16,7 @@ describe('MeasuresBuilder', () => {
       havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [
         {
+          id: 'id-1',
           aggregate: {
             func: 'max',
           },
@@ -44,6 +45,7 @@ describe('MeasuresBuilder', () => {
       havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [
         {
+          id: 'id-1',
           aggregate: {
             func: 'sum',
           },
@@ -52,6 +54,7 @@ describe('MeasuresBuilder', () => {
           field: 'sales',
         },
         {
+          id: 'id-2',
           aggregate: {
             func: 'min',
           },
@@ -72,9 +75,11 @@ describe('MeasuresBuilder', () => {
     } as VBIDSL
     const builder = VBI.from(dsl)
 
-    builder.measures.remove('sales')
+    builder.measures.remove('id-1')
 
-    expect(builder.build().measures).toEqual([{ field: 'orders', alias: '订单数', aggregate: { func: 'count' } }])
+    expect(builder.build().measures).toEqual([
+      { id: 'id-2', field: 'orders', alias: '订单数', aggregate: { func: 'count' } },
+    ])
   })
 
   test('removeMeasure not found', () => {
@@ -83,18 +88,20 @@ describe('MeasuresBuilder', () => {
 
     builder.measures.remove('notExist')
 
-    expect(builder.build().measures).toEqual([{ field: 'sales', alias: '销售额' }])
+    expect(builder.build().measures).toEqual([{ id: 'id-1', field: 'sales', alias: '销售额' }])
   })
 
   test('updateMeasure', () => {
     const dsl = { measures: [{ field: 'sales', alias: '销售额', aggregate: { func: 'sum' } }] } as VBIDSL
     const builder = VBI.from(dsl)
 
-    builder.measures.update('sales', (node) => {
+    builder.measures.update('id-1', (node) => {
       node.setAlias('新销售额').setAggregate({ func: 'avg' })
     })
 
-    expect(builder.build().measures).toEqual([{ field: 'sales', alias: '新销售额', aggregate: { func: 'avg' } }])
+    expect(builder.build().measures).toEqual([
+      { id: 'id-1', field: 'sales', alias: '新销售额', aggregate: { func: 'avg' } },
+    ])
   })
 
   test('updateMeasure throws error if not found', () => {
@@ -105,7 +112,7 @@ describe('MeasuresBuilder', () => {
       builder.measures.update('notExist', (node) => {
         node.setAlias('新销售额')
       })
-    }).toThrow('Measure with field "notExist" not found')
+    }).toThrow('Measure with id "notExist" not found')
   })
 
   test('findMeasure', () => {
@@ -117,17 +124,17 @@ describe('MeasuresBuilder', () => {
     } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.measures.find('sales')
+    const node = builder.measures.find((node) => node.getId() === 'id-1')
 
     expect(node?.getField()).toBe('sales')
-    expect(node?.toJSON()).toEqual({ field: 'sales', alias: '销售额' })
+    expect(node?.toJSON()).toEqual({ id: 'id-1', field: 'sales', alias: '销售额' })
   })
 
   test('findMeasure returns undefined if not found', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.measures.find('notExist')
+    const node = builder.measures.find((node) => node.getId() === 'notExist')
 
     expect(node).toBeUndefined()
   })
@@ -169,8 +176,8 @@ describe('MeasuresBuilder', () => {
     const json = builder.measures.toJSON()
 
     expect(json).toEqual([
-      { field: 'sales', alias: '销售额' },
-      { field: 'orders', alias: '订单数' },
+      { id: 'id-1', field: 'sales', alias: '销售额' },
+      { id: 'id-2', field: 'orders', alias: '订单数' },
     ])
   })
 
@@ -228,16 +235,25 @@ describe('MeasuresBuilder', () => {
     const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.measures.find('sales')
+    const node = builder.measures.find((node) => node.getId() === 'id-1')
 
     expect(node?.getField()).toBe('sales')
+  })
+
+  test('MeasureNodeBuilder getId', () => {
+    const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    const node = builder.measures.find((node) => node.getId() === 'id-1')
+
+    expect(node?.getId()).toBe('id-1')
   })
 
   test('MeasureNodeBuilder setAlias', () => {
     const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.measures.find('sales')
+    const node = builder.measures.find((node) => node.getId() === 'id-1')
     node?.setAlias('新销售额')
 
     expect(builder.measures.toJSON()[0].alias).toBe('新销售额')
@@ -247,7 +263,7 @@ describe('MeasuresBuilder', () => {
     const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.measures.find('sales')
+    const node = builder.measures.find((node) => node.getId() === 'id-1')
     node?.setEncoding('xAxis')
 
     expect(builder.measures.toJSON()[0].encoding).toBe('xAxis')
@@ -257,7 +273,7 @@ describe('MeasuresBuilder', () => {
     const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.measures.find('sales')
+    const node = builder.measures.find((node) => node.getId() === 'id-1')
     node?.setAggregate({ func: 'avg' })
 
     expect(builder.measures.toJSON()[0].aggregate).toEqual({ func: 'avg' })
@@ -267,10 +283,10 @@ describe('MeasuresBuilder', () => {
     const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
     const builder = VBI.from(dsl)
 
-    const node = builder.measures.find('sales')
+    const node = builder.measures.find((node) => node.getId() === 'id-1')
     const json = node?.toJSON()
 
-    expect(json).toEqual({ field: 'sales', alias: '销售额' })
+    expect(json).toEqual({ id: 'id-1', field: 'sales', alias: '销售额' })
   })
 
   test('chained add operations', () => {

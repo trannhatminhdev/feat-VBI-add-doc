@@ -96,7 +96,7 @@ export const useVBIHavingFilter = (builder: VBIBuilder | undefined) => {
   const findFilter = useCallback(
     (id: string) => {
       if (builder) {
-        return builder.havingFilter.find(id);
+        return builder.havingFilter.find((entry) => entry.getId() === id);
       }
       return undefined;
     },

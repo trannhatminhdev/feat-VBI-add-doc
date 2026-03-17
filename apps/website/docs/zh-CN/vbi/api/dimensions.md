@@ -11,14 +11,14 @@
 **定义**:
 
 ```typescript
-constructor(_doc: Y.Doc, dsl: Y.Map<any>)
+constructor(doc: Y.Doc, dsl: Y.Map<any>)
 ```
 
 **参数**:
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `_doc` | Y.Doc | - |
+| `doc` | Y.Doc | - |
 | `dsl` | Y.Map<any> | - |
 
 ### add
@@ -42,12 +42,12 @@ add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBu
 
 ### remove
 
-删除指定字段的维度
+删除指定 ID 的维度
 
 **定义**:
 
 ```typescript
-remove(field: VBIDimension['field']): DimensionsBuilder
+remove(id: string): DimensionsBuilder
 ```
 
 **返回**: `DimensionsBuilder`
@@ -56,16 +56,16 @@ remove(field: VBIDimension['field']): DimensionsBuilder
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | VBIDimension['field'] | - 字段名 |
+| `id` | string | - 维度 ID |
 
 ### update
 
-更新指定维度字段的配置
+更新指定维度 ID 的配置
 
 **定义**:
 
 ```typescript
-update(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
+update(id: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder
 ```
 
 **返回**: `DimensionsBuilder`
@@ -74,17 +74,17 @@ update(field: string, callback: (node: DimensionNodeBuilder) => void): Dimension
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | string | - 字段名 |
+| `id` | string | - 维度 ID |
 | `callback` | (node: DimensionNodeBuilder) => void | - 回调函数 |
 
 ### find
 
-根据字段名查找维度
+按回调条件查找第一个维度，行为与 Array.find 一致
 
 **定义**:
 
 ```typescript
-find(field: VBIDimension['field']): DimensionNodeBuilder | undefined
+find(predicate: (node: DimensionNodeBuilder, index: number) => boolean): DimensionNodeBuilder | undefined
 ```
 
 **返回**: `DimensionNodeBuilder \| undefined`
@@ -93,7 +93,7 @@ find(field: VBIDimension['field']): DimensionNodeBuilder | undefined
 
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
-| `field` | VBIDimension['field'] | - 字段名 |
+| `predicate` | (node: DimensionNodeBuilder, index: number) => boolean | - 查找条件 |
 
 ### findAll
 

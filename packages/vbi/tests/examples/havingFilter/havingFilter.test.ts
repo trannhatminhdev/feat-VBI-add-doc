@@ -60,13 +60,14 @@ describe('HavingFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
           "conditions": [
             {
               "field": "销售额",
-              "id": "id-1",
+              "id": "id-3",
               "op": "gt",
               "value": 1000000,
             },
@@ -84,6 +85,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",
@@ -225,19 +227,20 @@ describe('HavingFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-3",
           },
         ],
         "havingFilter": {
           "conditions": [
             {
               "field": "销售额",
-              "id": "id-1",
+              "id": "id-4",
               "op": "gt",
               "value": 1000000,
             },
             {
               "field": "利润",
-              "id": "id-2",
+              "id": "id-5",
               "op": "gt",
               "value": 200000,
             },
@@ -255,6 +258,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -263,6 +267,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
         ],
         "theme": "light",
@@ -427,6 +432,7 @@ describe('HavingFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-3",
           },
         ],
         "havingFilter": {
@@ -444,6 +450,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -452,6 +459,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
         ],
         "theme": "light",
@@ -620,6 +628,7 @@ describe('HavingFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-4",
           },
         ],
         "havingFilter": {
@@ -628,7 +637,7 @@ describe('HavingFilter', () => {
               "conditions": [
                 {
                   "field": "销售额",
-                  "id": "id-2",
+                  "id": "id-6",
                   "op": "gte",
                   "value": 100000,
                 },
@@ -636,22 +645,22 @@ describe('HavingFilter', () => {
                   "conditions": [
                     {
                       "field": "利润",
-                      "id": "id-4",
+                      "id": "id-8",
                       "op": "gt",
                       "value": 20000,
                     },
                     {
                       "field": "数量",
-                      "id": "id-5",
+                      "id": "id-9",
                       "op": "gte",
                       "value": 50,
                     },
                   ],
-                  "id": "id-3",
+                  "id": "id-7",
                   "op": "or",
                 },
               ],
-              "id": "id-1",
+              "id": "id-5",
               "op": "and",
             },
           ],
@@ -668,6 +677,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -676,6 +686,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
           {
             "aggregate": {
@@ -684,6 +695,7 @@ describe('HavingFilter', () => {
             "alias": "数量",
             "encoding": "yAxis",
             "field": "amount",
+            "id": "id-3",
           },
         ],
         "theme": "light",
@@ -898,6 +910,7 @@ describe('HavingFilter', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-5",
           },
         ],
         "havingFilter": {
@@ -908,40 +921,40 @@ describe('HavingFilter', () => {
                   "conditions": [
                     {
                       "field": "销售额",
-                      "id": "id-3",
+                      "id": "id-8",
                       "op": "gt",
                       "value": 500000,
                     },
                     {
                       "field": "利润",
-                      "id": "id-4",
+                      "id": "id-9",
                       "op": "gt",
                       "value": 50000,
                     },
                   ],
-                  "id": "id-2",
+                  "id": "id-7",
                   "op": "and",
                 },
                 {
                   "conditions": [
                     {
                       "field": "数量",
-                      "id": "id-6",
+                      "id": "id-11",
                       "op": "gt",
                       "value": 100,
                     },
                     {
                       "field": "平均折扣",
-                      "id": "id-7",
+                      "id": "id-12",
                       "op": "lt",
                       "value": 0.3,
                     },
                   ],
-                  "id": "id-5",
+                  "id": "id-10",
                   "op": "and",
                 },
               ],
-              "id": "id-1",
+              "id": "id-6",
               "op": "or",
             },
           ],
@@ -958,6 +971,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -966,6 +980,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
           {
             "aggregate": {
@@ -974,6 +989,7 @@ describe('HavingFilter', () => {
             "alias": "数量",
             "encoding": "yAxis",
             "field": "amount",
+            "id": "id-3",
           },
           {
             "aggregate": {
@@ -982,6 +998,7 @@ describe('HavingFilter', () => {
             "alias": "平均折扣",
             "encoding": "yAxis",
             "field": "discount",
+            "id": "id-4",
           },
         ],
         "theme": "light",
@@ -1233,19 +1250,20 @@ describe('HavingFilter', () => {
           {
             "alias": "品类",
             "field": "product_type",
+            "id": "id-3",
           },
         ],
         "havingFilter": {
           "conditions": [
             {
               "field": "销售额",
-              "id": "id-1",
+              "id": "id-4",
               "op": "gte",
               "value": 500000,
             },
             {
               "field": "利润",
-              "id": "id-2",
+              "id": "id-5",
               "op": "gte",
               "value": 50000,
             },
@@ -1263,6 +1281,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -1271,6 +1290,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
         ],
         "theme": "light",
@@ -1441,6 +1461,7 @@ describe('HavingFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-4",
           },
         ],
         "havingFilter": {
@@ -1455,13 +1476,13 @@ describe('HavingFilter', () => {
                 },
                 {
                   "field": "利润",
-                  "id": "id-1",
+                  "id": "id-5",
                   "op": "gt",
                   "value": 100000,
                 },
                 {
                   "field": "数量",
-                  "id": "id-2",
+                  "id": "id-6",
                   "op": "gte",
                   "value": 200,
                 },
@@ -1483,6 +1504,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -1491,6 +1513,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
           {
             "aggregate": {
@@ -1499,6 +1522,7 @@ describe('HavingFilter', () => {
             "alias": "数量",
             "encoding": "yAxis",
             "field": "amount",
+            "id": "id-3",
           },
         ],
         "theme": "light",
@@ -1704,6 +1728,7 @@ describe('HavingFilter', () => {
           {
             "alias": "品类",
             "field": "product_type",
+            "id": "id-3",
           },
         ],
         "havingFilter": {
@@ -1734,6 +1759,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -1742,6 +1768,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
         ],
         "theme": "light",
@@ -1901,13 +1928,14 @@ describe('HavingFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-4",
           },
         ],
         "havingFilter": {
           "conditions": [
             {
               "field": "销售额",
-              "id": "id-1",
+              "id": "id-5",
               "op": "gt",
               "value": 500000,
             },
@@ -1915,18 +1943,18 @@ describe('HavingFilter', () => {
               "conditions": [
                 {
                   "field": "利润",
-                  "id": "id-3",
+                  "id": "id-7",
                   "op": "gt",
                   "value": 100000,
                 },
                 {
                   "field": "数量",
-                  "id": "id-4",
+                  "id": "id-8",
                   "op": "gte",
                   "value": 30,
                 },
               ],
-              "id": "id-2",
+              "id": "id-6",
               "op": "or",
             },
           ],
@@ -1943,6 +1971,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -1951,6 +1980,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
           {
             "aggregate": {
@@ -1959,6 +1989,7 @@ describe('HavingFilter', () => {
             "alias": "数量",
             "encoding": "yAxis",
             "field": "amount",
+            "id": "id-3",
           },
         ],
         "theme": "light",
@@ -2150,10 +2181,12 @@ describe('HavingFilter', () => {
           {
             "alias": "品类",
             "field": "product_type",
+            "id": "id-3",
           },
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-4",
           },
         ],
         "havingFilter": {
@@ -2162,18 +2195,18 @@ describe('HavingFilter', () => {
               "conditions": [
                 {
                   "field": "平均折扣",
-                  "id": "id-2",
+                  "id": "id-6",
                   "op": "lt",
                   "value": 0.2,
                 },
                 {
                   "field": "销售额",
-                  "id": "id-3",
+                  "id": "id-7",
                   "op": "gt",
                   "value": 100000,
                 },
               ],
-              "id": "id-1",
+              "id": "id-5",
               "op": "and",
             },
           ],
@@ -2190,6 +2223,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -2198,6 +2232,7 @@ describe('HavingFilter', () => {
             "alias": "平均折扣",
             "encoding": "yAxis",
             "field": "discount",
+            "id": "id-2",
           },
         ],
         "theme": "light",
@@ -2413,6 +2448,7 @@ describe('HavingFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-4",
           },
         ],
         "havingFilter": {
@@ -2421,7 +2457,7 @@ describe('HavingFilter', () => {
               "conditions": [
                 {
                   "field": "销售额",
-                  "id": "id-2",
+                  "id": "id-6",
                   "op": "gt",
                   "value": 1000000,
                 },
@@ -2429,22 +2465,22 @@ describe('HavingFilter', () => {
                   "conditions": [
                     {
                       "field": "利润",
-                      "id": "id-4",
+                      "id": "id-8",
                       "op": "gt",
                       "value": 200000,
                     },
                     {
                       "field": "数量",
-                      "id": "id-5",
+                      "id": "id-9",
                       "op": "gte",
                       "value": 50,
                     },
                   ],
-                  "id": "id-3",
+                  "id": "id-7",
                   "op": "or",
                 },
               ],
-              "id": "id-1",
+              "id": "id-5",
               "op": "and",
             },
           ],
@@ -2461,6 +2497,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -2469,6 +2506,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
           {
             "aggregate": {
@@ -2477,6 +2515,7 @@ describe('HavingFilter', () => {
             "alias": "数量",
             "encoding": "yAxis",
             "field": "amount",
+            "id": "id-3",
           },
         ],
         "theme": "light",
@@ -2663,6 +2702,7 @@ describe('HavingFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-3",
           },
         ],
         "havingFilter": {
@@ -2671,18 +2711,18 @@ describe('HavingFilter', () => {
               "conditions": [
                 {
                   "field": "销售额",
-                  "id": "id-2",
+                  "id": "id-5",
                   "op": "gt",
                   "value": 1000000,
                 },
                 {
                   "field": "利润",
-                  "id": "id-3",
+                  "id": "id-6",
                   "op": "gt",
                   "value": 200000,
                 },
               ],
-              "id": "id-1",
+              "id": "id-4",
               "op": "or",
             },
           ],
@@ -2699,6 +2739,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -2707,6 +2748,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
         ],
         "theme": "light",
@@ -2880,6 +2922,7 @@ describe('HavingFilter', () => {
           {
             "alias": "子品类",
             "field": "product_sub_type",
+            "id": "id-4",
           },
         ],
         "havingFilter": {
@@ -2888,24 +2931,24 @@ describe('HavingFilter', () => {
               "conditions": [
                 {
                   "field": "利润",
-                  "id": "id-2",
+                  "id": "id-6",
                   "op": "gt",
                   "value": 0,
                 },
                 {
                   "field": "数量",
-                  "id": "id-3",
+                  "id": "id-7",
                   "op": "gt",
                   "value": 20,
                 },
                 {
                   "field": "销售额",
-                  "id": "id-4",
+                  "id": "id-8",
                   "op": "gt",
                   "value": 10000,
                 },
               ],
-              "id": "id-1",
+              "id": "id-5",
               "op": "and",
             },
           ],
@@ -2922,6 +2965,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "xAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -2930,6 +2974,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
           {
             "aggregate": {
@@ -2938,6 +2983,7 @@ describe('HavingFilter', () => {
             "alias": "数量",
             "encoding": "size",
             "field": "amount",
+            "id": "id-3",
           },
         ],
         "theme": "light",
@@ -3167,6 +3213,7 @@ describe('HavingFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-3",
           },
         ],
         "havingFilter": {
@@ -3203,6 +3250,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -3211,6 +3259,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
         ],
         "theme": "light",
@@ -3376,6 +3425,7 @@ describe('HavingFilter', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-3",
           },
         ],
         "havingFilter": {
@@ -3384,18 +3434,18 @@ describe('HavingFilter', () => {
               "conditions": [
                 {
                   "field": "销售额",
-                  "id": "id-3",
+                  "id": "id-6",
                   "op": "gt",
                   "value": 50000,
                 },
                 {
                   "field": "利润",
-                  "id": "id-4",
+                  "id": "id-7",
                   "op": "gt",
                   "value": 10000,
                 },
               ],
-              "id": "id-2",
+              "id": "id-5",
               "op": "or",
             },
           ],
@@ -3412,6 +3462,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -3420,6 +3471,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
         ],
         "theme": "light",
@@ -3428,7 +3480,7 @@ describe('HavingFilter', () => {
           "conditions": [
             {
               "field": "product_type",
-              "id": "id-1",
+              "id": "id-4",
               "op": "=",
               "value": "办公用品",
             },
@@ -3636,6 +3688,7 @@ describe('HavingFilter', () => {
           {
             "alias": "区域",
             "field": "area",
+            "id": "id-3",
           },
         ],
         "havingFilter": {
@@ -3660,6 +3713,7 @@ describe('HavingFilter', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
           {
             "aggregate": {
@@ -3668,6 +3722,7 @@ describe('HavingFilter', () => {
             "alias": "利润",
             "encoding": "yAxis",
             "field": "profit",
+            "id": "id-2",
           },
         ],
         "theme": "light",

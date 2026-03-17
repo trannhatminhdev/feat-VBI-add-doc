@@ -129,7 +129,7 @@ describe('HavingFilterBuilder', () => {
     })
 
     const filterId = builder.havingFilter.toJSON().conditions[0].id!
-    const found = builder.havingFilter.find(filterId)
+    const found = builder.havingFilter.find((entry) => entry.getId() === filterId)
 
     expect(found).toBeInstanceOf(HavingFilterNodeBuilder)
     expect((found as HavingFilterNodeBuilder).getField()).toBe('sales')
@@ -138,7 +138,7 @@ describe('HavingFilterBuilder', () => {
   test('find returns undefined if not found', () => {
     const builder = VBI.from({} as VBIDSL)
 
-    expect(builder.havingFilter.find('non-existent')).toBeUndefined()
+    expect(builder.havingFilter.find((entry) => entry.getId() === 'non-existent')).toBeUndefined()
   })
 
   test('clear removes all filters', () => {
@@ -195,7 +195,7 @@ describe('HavingFilterBuilder', () => {
     builder.havingFilter.add('sales', (node) => node.setOperator('gt').setValue(1000))
 
     const filterId = builder.havingFilter.toJSON().conditions[0].id!
-    const node = builder.havingFilter.find(filterId) as HavingFilterNodeBuilder
+    const node = builder.havingFilter.find((entry) => entry.getId() === filterId) as HavingFilterNodeBuilder
 
     expect(node.getId()).toBe(filterId)
   })
@@ -205,7 +205,7 @@ describe('HavingFilterBuilder', () => {
     builder.havingFilter.add('sales', (node) => node.setOperator('gt').setValue(1000))
 
     const filterId = builder.havingFilter.toJSON().conditions[0].id!
-    const node = builder.havingFilter.find(filterId) as HavingFilterNodeBuilder
+    const node = builder.havingFilter.find((entry) => entry.getId() === filterId) as HavingFilterNodeBuilder
 
     expect(node.getOperator()).toBe('gt')
   })
@@ -270,7 +270,7 @@ describe('HavingGroupBuilder', () => {
     })
 
     const groupId = builder.havingFilter.toJSON().conditions[0].id!
-    const found = builder.havingFilter.find(groupId)
+    const found = builder.havingFilter.find((entry) => entry.getId() === groupId)
 
     expect(found).toBeInstanceOf(HavingGroupBuilder)
   })
@@ -344,7 +344,7 @@ describe('HavingGroupBuilder', () => {
     })
 
     const groupId = builder.havingFilter.toJSON().conditions[0].id!
-    const groupFound = builder.havingFilter.find(groupId) as HavingGroupBuilder
+    const groupFound = builder.havingFilter.find((entry) => entry.getId() === groupId) as HavingGroupBuilder
     const conditions = groupFound.toJSON().conditions
     const salesId = conditions[0].id!
 
@@ -363,7 +363,7 @@ describe('HavingGroupBuilder', () => {
     })
 
     const groupId = builder.havingFilter.toJSON().conditions[0].id!
-    const groupFound = builder.havingFilter.find(groupId) as HavingGroupBuilder
+    const groupFound = builder.havingFilter.find((entry) => entry.getId() === groupId) as HavingGroupBuilder
 
     groupFound.remove(0)
 
@@ -379,7 +379,7 @@ describe('HavingGroupBuilder', () => {
     })
 
     const groupId = builder.havingFilter.toJSON().conditions[0].id!
-    const groupFound = builder.havingFilter.find(groupId) as HavingGroupBuilder
+    const groupFound = builder.havingFilter.find((entry) => entry.getId() === groupId) as HavingGroupBuilder
 
     groupFound.remove('missing-id')
 
@@ -396,7 +396,7 @@ describe('HavingGroupBuilder', () => {
     })
 
     const groupId = builder.havingFilter.toJSON().conditions[0].id!
-    const groupFound = builder.havingFilter.find(groupId) as HavingGroupBuilder
+    const groupFound = builder.havingFilter.find((entry) => entry.getId() === groupId) as HavingGroupBuilder
 
     groupFound.clear()
 
@@ -410,7 +410,7 @@ describe('HavingGroupBuilder', () => {
     })
 
     const groupId = builder.havingFilter.toJSON().conditions[0].id!
-    const groupFound = builder.havingFilter.find(groupId) as HavingGroupBuilder
+    const groupFound = builder.havingFilter.find((entry) => entry.getId() === groupId) as HavingGroupBuilder
 
     expect(groupFound.getId()).toBe(groupId)
     expect(groupFound.getOperator()).toBe('or')

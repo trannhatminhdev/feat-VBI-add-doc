@@ -54,7 +54,7 @@ describe('Where filter internals', () => {
       group.add('city', (node) => node.setOperator('eq').setValue('杭州'))
     })
 
-    const group = builder.whereFilter.find('id-1') as any
+    const group = builder.whereFilter.find((entry) => entry.getId() === 'id-1') as any
     group.remove('id-2')
     group.remove(99)
 
@@ -132,7 +132,7 @@ describe('Having filter internals', () => {
       group.add('利润', (node) => node.setOperator('gt').setValue(200))
     })
 
-    const group = builder.havingFilter.find('id-1') as any
+    const group = builder.havingFilter.find((entry) => entry.getId() === 'id-1') as any
     group.remove('id-2')
     group.remove(99)
 
@@ -149,7 +149,7 @@ describe('Having filter internals', () => {
       node.setOperator('gte').setValue(1000)
     })
 
-    const node = builder.havingFilter.find('id-1') as any
+    const node = builder.havingFilter.find((entry) => entry.getId() === 'id-1') as any
     expect(node.toJSON()).toEqual({ id: 'id-1', field: '销售额', op: 'gte', value: 1000 })
   })
 

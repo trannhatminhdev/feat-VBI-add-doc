@@ -61,6 +61,7 @@ describe('Theme', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -78,6 +79,7 @@ describe('Theme', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "dark",
@@ -222,6 +224,7 @@ describe('Theme', () => {
           {
             "alias": "省份",
             "field": "province",
+            "id": "id-2",
           },
         ],
         "havingFilter": {
@@ -239,6 +242,7 @@ describe('Theme', () => {
             "alias": "销售额",
             "encoding": "yAxis",
             "field": "sales",
+            "id": "id-1",
           },
         ],
         "theme": "light",

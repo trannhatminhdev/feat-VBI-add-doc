@@ -34,4 +34,5 @@ export interface VBIBuilderInterface {
   buildVSeed: () => Promise<VSeedDSL>
   buildVQuery: () => VQueryDSL
   build: () => VBIDSL
+  isEmpty: () => boolean
 }

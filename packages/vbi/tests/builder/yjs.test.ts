@@ -22,6 +22,7 @@ describe('VBI YJS Integration', () => {
       havingFilter: { id: 'root', op: 'and', conditions: [] },
       measures: [
         {
+          id: 'id-1',
           aggregate: {
             func: 'sum',
           },
@@ -57,6 +58,7 @@ test('encodeStateAsUpdate', () => {
     havingFilter: { id: 'root', op: 'and', conditions: [] },
     measures: [
       {
+        id: 'id-1',
         aggregate: {
           func: 'max',
         },

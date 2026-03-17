@@ -38,5 +38,5 @@
     ],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.measures.update('sales', n => n.setAlias('待移除的销售额'))\n  builder.measures.remove('sales')\n}"
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  const measureId = builder.measures.toJSON().find(item => item.field === 'sales')?.id\n  if (measureId) {\n    builder.measures.update(measureId, n => n.setAlias('待移除的销售额'))\n    builder.measures.remove(measureId)\n  }\n}"
 }
