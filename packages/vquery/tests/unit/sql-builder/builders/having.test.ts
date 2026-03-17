@@ -58,6 +58,41 @@ describe('having', () => {
     )
   })
 
+  it('advanced aggregate operators', () => {
+    interface USER {
+      id: number
+      age: number
+      department: string
+    }
+
+    const sql = convertDSLToSQL<USER, 'orders'>(
+      {
+        select: [
+          'department',
+          { field: 'id', aggr: { func: 'count_distinct' }, alias: 'DISTINCT_ID' },
+          { field: 'age', aggr: { func: 'variance' }, alias: 'VAR_AGE' },
+          { field: 'age', aggr: { func: 'variance_pop' }, alias: 'VAR_POP_AGE' },
+          { field: 'age', aggr: { func: 'quantile', quantile: 0.9 }, alias: 'Q90_AGE' },
+        ],
+        groupBy: ['department'],
+        having: {
+          op: 'and',
+          conditions: [
+            { field: 'id', aggr: { func: 'count_distinct' }, op: '>', value: 1 },
+            { field: 'age', aggr: { func: 'variance' }, op: '>=', value: 2 },
+            { field: 'age', aggr: { func: 'variance_pop' }, op: '>=', value: 1 },
+            { field: 'age', aggr: { func: 'quantile' }, op: '>', value: 20 },
+          ],
+        },
+      },
+      'orders',
+    )
+
+    expect(sql).toMatchInlineSnapshot(
+      `"select "department", CAST(count(distinct "id") AS INTEGER) as "DISTINCT_ID", var_samp("age") as "VAR_AGE", var_pop("age") as "VAR_POP_AGE", quantile("age", 0.9) as "Q90_AGE" from "orders" group by "department" having (count(distinct "id") > 1 and var_samp("age") >= 2 and var_pop("age") >= 1 and quantile("age", 0.5) > 20)"`,
+    )
+  })
+
   it('aggr + comparison operator', () => {
     interface USER {
       sales: number
@@ -200,5 +235,26 @@ describe('having', () => {
     expect(sql).toMatchInlineSnapshot(
       `"select "department", sum("age") as "TOTAL_AGE" from "orders" group by "department" having (min("department") in ('sales') and not min("department") in ('finance'))"`,
     )
+  })
+
+  it('throws when aggr is missing', () => {
+    interface USER {
+      age: number
+      department: string
+    }
+
+    expect(() =>
+      convertDSLToSQL<USER, 'orders'>(
+        {
+          select: ['department', { field: 'age', aggr: { func: 'sum' }, alias: 'TOTAL_AGE' }],
+          groupBy: ['department'],
+          having: {
+            op: 'and',
+            conditions: [{ field: 'age', op: '>', value: 1 } as never],
+          },
+        },
+        'orders',
+      ),
+    ).toThrow(`Invalid having clause for field "age": aggr.func is required`)
   })
 })

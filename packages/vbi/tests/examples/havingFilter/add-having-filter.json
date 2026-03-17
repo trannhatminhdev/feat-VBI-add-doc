@@ -41,5 +41,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.add('销售额', node => { node.setOperator('gt').setValue(1000000); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.add('sales', node => { node.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(1000000); }); }"
 }

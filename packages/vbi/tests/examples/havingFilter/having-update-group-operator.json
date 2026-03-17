@@ -57,15 +57,21 @@
           "conditions": [
             {
               "id": "cond-1",
-              "field": "销售额",
+              "field": "sales",
               "op": "gt",
-              "value": 1000000
+              "value": 1000000,
+              "aggregate": {
+                "func": "sum"
+              }
             },
             {
               "id": "cond-2",
-              "field": "利润",
+              "field": "profit",
               "op": "gt",
-              "value": 200000
+              "value": 200000,
+              "aggregate": {
+                "func": "sum"
+              }
             }
           ]
         }

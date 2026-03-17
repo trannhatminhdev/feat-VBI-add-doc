@@ -44,7 +44,7 @@ describe('HavingFilterBuilder', () => {
     expect(builder.havingFilter.toJSON()).toEqual({
       id: 'root',
       op: 'and',
-      conditions: [{ id: expect.any(String), field: 'sales', op: 'gt', value: 1000 }],
+      conditions: [{ id: expect.any(String), field: 'sales', aggregate: { func: 'sum' }, op: 'gt', value: 1000 }],
     })
   })
 
@@ -90,7 +90,9 @@ describe('HavingFilterBuilder', () => {
 
     builder.havingFilter.remove(99)
 
-    expect(builder.havingFilter.toJSON().conditions).toEqual([{ id: expect.any(String), field: 'sales', value: 1000 }])
+    expect(builder.havingFilter.toJSON().conditions).toEqual([
+      { id: expect.any(String), field: 'sales', aggregate: { func: 'sum' }, value: 1000 },
+    ])
   })
 
   test('update by id', () => {
@@ -384,7 +386,7 @@ describe('HavingGroupBuilder', () => {
     groupFound.remove('missing-id')
 
     expect((builder.havingFilter.toJSON().conditions[0] as any).conditions).toEqual([
-      { id: 'id-2', field: 'sales', op: 'gt', value: 1000 },
+      { id: 'id-2', field: 'sales', aggregate: { func: 'sum' }, op: 'gt', value: 1000 },
     ])
   })
 

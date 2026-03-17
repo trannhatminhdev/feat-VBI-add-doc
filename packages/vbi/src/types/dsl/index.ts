@@ -1,7 +1,7 @@
 export type { VBIDimensionTree, VBIDimensionGroup, VBIDimension } from './dimensions/dimensions'
 export type { VBIMeasureTree, VBIMeasureGroup, VBIMeasure } from './measures/measures'
 export type { VBIFilter, VBIWhereGroup, VBIWhereClause } from './whereFilter/filters'
-export type { VBIHavingFilter, VBIHavingGroup, VBIHavingClause } from './havingFilter/having'
+export type { VBIHavingFilter, VBIHavingGroup, VBIHavingClause, VBIHavingAggregate } from './havingFilter/having'
 export type { VBIDSLTheme } from './theme/theme'
 export type { VBIDSLLocale } from './locale/locale'
 export type { VBIDSL, VBIDSLInput } from './vbi/vbi'

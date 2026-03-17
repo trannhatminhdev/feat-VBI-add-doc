@@ -44,8 +44,8 @@ describe('HavingFilter', () => {
 
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
-      builder.havingFilter.add('销售额', (node) => {
-        node.setOperator('gt').setValue(1000000)
+      builder.havingFilter.add('sales', (node) => {
+        node.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000)
       })
     }
     applyBuilder(builder)
@@ -66,7 +66,10 @@ describe('HavingFilter', () => {
         "havingFilter": {
           "conditions": [
             {
-              "field": "销售额",
+              "aggregate": {
+                "func": "sum",
+              },
+              "field": "sales",
               "id": "id-3",
               "op": "gt",
               "value": 1000000,
@@ -108,7 +111,10 @@ describe('HavingFilter', () => {
         "having": {
           "conditions": [
             {
-              "field": "销售额",
+              "aggr": {
+                "func": "sum",
+              },
+              "field": "sales",
               "op": "gt",
               "value": 1000000,
             },
@@ -212,8 +218,8 @@ describe('HavingFilter', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.havingFilter
-        .add('销售额', (n) => n.setOperator('gt').setValue(1000000))
-        .add('利润', (n) => n.setOperator('gt').setValue(200000))
+        .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
+        .add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(200000))
     }
     applyBuilder(builder)
 
@@ -233,13 +239,19 @@ describe('HavingFilter', () => {
         "havingFilter": {
           "conditions": [
             {
-              "field": "销售额",
+              "aggregate": {
+                "func": "sum",
+              },
+              "field": "sales",
               "id": "id-4",
               "op": "gt",
               "value": 1000000,
             },
             {
-              "field": "利润",
+              "aggregate": {
+                "func": "sum",
+              },
+              "field": "profit",
               "id": "id-5",
               "op": "gt",
               "value": 200000,
@@ -290,12 +302,18 @@ describe('HavingFilter', () => {
         "having": {
           "conditions": [
             {
-              "field": "销售额",
+              "aggr": {
+                "func": "sum",
+              },
+              "field": "sales",
               "op": "gt",
               "value": 1000000,
             },
             {
-              "field": "利润",
+              "aggr": {
+                "func": "sum",
+              },
+              "field": "profit",
               "op": "gt",
               "value": 200000,
             },
@@ -398,15 +416,21 @@ describe('HavingFilter', () => {
         conditions: [
           {
             id: 'having-1',
-            field: '销售额',
+            field: 'sales',
             op: 'gt',
             value: 1000000,
+            aggregate: {
+              func: 'sum',
+            },
           },
           {
             id: 'having-2',
-            field: '利润',
+            field: 'profit',
             op: 'gt',
             value: 200000,
+            aggregate: {
+              func: 'sum',
+            },
           },
         ],
       },
@@ -593,9 +617,12 @@ describe('HavingFilter', () => {
         conditions: [
           {
             id: 'old-1',
-            field: '销售额',
+            field: 'sales',
             op: 'gt',
             value: 999999,
+            aggregate: {
+              func: 'sum',
+            },
           },
         ],
       },
@@ -609,10 +636,10 @@ describe('HavingFilter', () => {
     const applyBuilder = (builder: VBIBuilder) => {
       builder.havingFilter.clear()
       builder.havingFilter.addGroup('and', (g) => {
-        g.add('销售额', (n) => n.setOperator('gte').setValue(100000))
+        g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(100000))
         g.addGroup('or', (sub) => {
-          sub.add('利润', (n) => n.setOperator('gt').setValue(20000))
-          sub.add('数量', (n) => n.setOperator('gte').setValue(50))
+          sub.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(20000))
+          sub.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(50))
         })
       })
     }
@@ -636,7 +663,10 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "id": "id-6",
                   "op": "gte",
                   "value": 100000,
@@ -644,13 +674,19 @@ describe('HavingFilter', () => {
                 {
                   "conditions": [
                     {
-                      "field": "利润",
+                      "aggregate": {
+                        "func": "sum",
+                      },
+                      "field": "profit",
                       "id": "id-8",
                       "op": "gt",
                       "value": 20000,
                     },
                     {
-                      "field": "数量",
+                      "aggregate": {
+                        "func": "sum",
+                      },
+                      "field": "amount",
                       "id": "id-9",
                       "op": "gte",
                       "value": 50,
@@ -720,19 +756,28 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "op": "gte",
                   "value": 100000,
                 },
                 {
                   "conditions": [
                     {
-                      "field": "利润",
+                      "aggr": {
+                        "func": "sum",
+                      },
+                      "field": "profit",
                       "op": "gt",
                       "value": 20000,
                     },
                     {
-                      "field": "数量",
+                      "aggr": {
+                        "func": "sum",
+                      },
+                      "field": "amount",
                       "op": "gte",
                       "value": 50,
                     },
@@ -889,12 +934,12 @@ describe('HavingFilter', () => {
     const applyBuilder = (builder: VBIBuilder) => {
       builder.havingFilter.addGroup('or', (root) => {
         root.addGroup('and', (g1) => {
-          g1.add('销售额', (n) => n.setOperator('gt').setValue(500000))
-          g1.add('利润', (n) => n.setOperator('gt').setValue(50000))
+          g1.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(500000))
+          g1.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(50000))
         })
         root.addGroup('and', (g2) => {
-          g2.add('数量', (n) => n.setOperator('gt').setValue(100))
-          g2.add('平均折扣', (n) => n.setOperator('lt').setValue(0.3))
+          g2.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100))
+          g2.add('discount', (n) => n.setAggregate({ func: 'avg' }).setOperator('lt').setValue(0.3))
         })
       })
     }
@@ -920,13 +965,19 @@ describe('HavingFilter', () => {
                 {
                   "conditions": [
                     {
-                      "field": "销售额",
+                      "aggregate": {
+                        "func": "sum",
+                      },
+                      "field": "sales",
                       "id": "id-8",
                       "op": "gt",
                       "value": 500000,
                     },
                     {
-                      "field": "利润",
+                      "aggregate": {
+                        "func": "sum",
+                      },
+                      "field": "profit",
                       "id": "id-9",
                       "op": "gt",
                       "value": 50000,
@@ -938,13 +989,19 @@ describe('HavingFilter', () => {
                 {
                   "conditions": [
                     {
-                      "field": "数量",
+                      "aggregate": {
+                        "func": "sum",
+                      },
+                      "field": "amount",
                       "id": "id-11",
                       "op": "gt",
                       "value": 100,
                     },
                     {
-                      "field": "平均折扣",
+                      "aggregate": {
+                        "func": "avg",
+                      },
+                      "field": "discount",
                       "id": "id-12",
                       "op": "lt",
                       "value": 0.3,
@@ -1025,12 +1082,18 @@ describe('HavingFilter', () => {
                 {
                   "conditions": [
                     {
-                      "field": "销售额",
+                      "aggr": {
+                        "func": "sum",
+                      },
+                      "field": "sales",
                       "op": "gt",
                       "value": 500000,
                     },
                     {
-                      "field": "利润",
+                      "aggr": {
+                        "func": "sum",
+                      },
+                      "field": "profit",
                       "op": "gt",
                       "value": 50000,
                     },
@@ -1040,12 +1103,18 @@ describe('HavingFilter', () => {
                 {
                   "conditions": [
                     {
-                      "field": "数量",
+                      "aggr": {
+                        "func": "sum",
+                      },
+                      "field": "amount",
                       "op": "gt",
                       "value": 100,
                     },
                     {
-                      "field": "平均折扣",
+                      "aggr": {
+                        "func": "avg",
+                      },
+                      "field": "discount",
                       "op": "lt",
                       "value": 0.3,
                     },
@@ -1226,8 +1295,8 @@ describe('HavingFilter', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.havingFilter
-        .add('销售额', (n) => n.setOperator('gt').setValue(100000))
-        .add('利润', (n) => n.setOperator('gt').setValue(10000))
+        .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+        .add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(10000))
       const json = builder.havingFilter.toJSON().conditions
       const salesId = json[0].id
       const profitId = json[1].id
@@ -1256,13 +1325,19 @@ describe('HavingFilter', () => {
         "havingFilter": {
           "conditions": [
             {
-              "field": "销售额",
+              "aggregate": {
+                "func": "sum",
+              },
+              "field": "sales",
               "id": "id-4",
               "op": "gte",
               "value": 500000,
             },
             {
-              "field": "利润",
+              "aggregate": {
+                "func": "sum",
+              },
+              "field": "profit",
               "id": "id-5",
               "op": "gte",
               "value": 50000,
@@ -1313,12 +1388,18 @@ describe('HavingFilter', () => {
         "having": {
           "conditions": [
             {
-              "field": "销售额",
+              "aggr": {
+                "func": "sum",
+              },
+              "field": "sales",
               "op": "gte",
               "value": 500000,
             },
             {
-              "field": "利润",
+              "aggr": {
+                "func": "sum",
+              },
+              "field": "profit",
               "op": "gte",
               "value": 50000,
             },
@@ -1428,9 +1509,12 @@ describe('HavingFilter', () => {
             conditions: [
               {
                 id: 'cond-1',
-                field: '销售额',
+                field: 'sales',
                 op: 'gt',
                 value: 500000,
+                aggregate: {
+                  func: 'sum',
+                },
               },
             ],
           },
@@ -1445,8 +1529,8 @@ describe('HavingFilter', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.havingFilter.updateGroup('group-1', (group) => {
-        group.add('利润', (n) => n.setOperator('gt').setValue(100000))
-        group.add('数量', (n) => n.setOperator('gte').setValue(200))
+        group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+        group.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(200))
       })
     }
     applyBuilder(builder)
@@ -1469,19 +1553,28 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "id": "cond-1",
                   "op": "gt",
                   "value": 500000,
                 },
                 {
-                  "field": "利润",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "id": "id-5",
                   "op": "gt",
                   "value": 100000,
                 },
                 {
-                  "field": "数量",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "amount",
                   "id": "id-6",
                   "op": "gte",
                   "value": 200,
@@ -1547,17 +1640,26 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "op": "gt",
                   "value": 500000,
                 },
                 {
-                  "field": "利润",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "op": "gt",
                   "value": 100000,
                 },
                 {
-                  "field": "数量",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "amount",
                   "op": "gte",
                   "value": 200,
                 },
@@ -1690,15 +1792,21 @@ describe('HavingFilter', () => {
             conditions: [
               {
                 id: 'cond-1',
-                field: '销售额',
+                field: 'sales',
                 op: 'gt',
                 value: 100000,
+                aggregate: {
+                  func: 'sum',
+                },
               },
               {
                 id: 'cond-2',
-                field: '利润',
+                field: 'profit',
                 op: 'gt',
                 value: 10000,
+                aggregate: {
+                  func: 'sum',
+                },
               },
             ],
           },
@@ -1736,7 +1844,10 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "利润",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "id": "cond-2",
                   "op": "gt",
                   "value": 10000,
@@ -1793,7 +1904,10 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "利润",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "op": "gt",
                   "value": 10000,
                 },
@@ -1910,10 +2024,10 @@ describe('HavingFilter', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.havingFilter
-        .add('销售额', (n) => n.setOperator('gt').setValue(500000))
+        .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(500000))
         .addGroup('or', (group) => {
-          group.add('利润', (n) => n.setOperator('gt').setValue(100000))
-          group.add('数量', (n) => n.setOperator('gte').setValue(30))
+          group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+          group.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(30))
         })
     }
     applyBuilder(builder)
@@ -1934,7 +2048,10 @@ describe('HavingFilter', () => {
         "havingFilter": {
           "conditions": [
             {
-              "field": "销售额",
+              "aggregate": {
+                "func": "sum",
+              },
+              "field": "sales",
               "id": "id-5",
               "op": "gt",
               "value": 500000,
@@ -1942,13 +2059,19 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "利润",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "id": "id-7",
                   "op": "gt",
                   "value": 100000,
                 },
                 {
-                  "field": "数量",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "amount",
                   "id": "id-8",
                   "op": "gte",
                   "value": 30,
@@ -2012,19 +2135,28 @@ describe('HavingFilter', () => {
         "having": {
           "conditions": [
             {
-              "field": "销售额",
+              "aggr": {
+                "func": "sum",
+              },
+              "field": "sales",
               "op": "gt",
               "value": 500000,
             },
             {
               "conditions": [
                 {
-                  "field": "利润",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "op": "gt",
                   "value": 100000,
                 },
                 {
-                  "field": "数量",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "amount",
                   "op": "gte",
                   "value": 30,
                 },
@@ -2165,8 +2297,8 @@ describe('HavingFilter', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.havingFilter.addGroup('and', (g) => {
-        g.add('平均折扣', (n) => n.setOperator('lt').setValue(0.2))
-        g.add('销售额', (n) => n.setOperator('gt').setValue(100000))
+        g.add('discount', (n) => n.setAggregate({ func: 'avg' }).setOperator('lt').setValue(0.2))
+        g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
       })
     }
     applyBuilder(builder)
@@ -2194,13 +2326,19 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "平均折扣",
+                  "aggregate": {
+                    "func": "avg",
+                  },
+                  "field": "discount",
                   "id": "id-6",
                   "op": "lt",
                   "value": 0.2,
                 },
                 {
-                  "field": "销售额",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "id": "id-7",
                   "op": "gt",
                   "value": 100000,
@@ -2258,12 +2396,18 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "平均折扣",
+                  "aggr": {
+                    "func": "avg",
+                  },
+                  "field": "discount",
                   "op": "lt",
                   "value": 0.2,
                 },
                 {
-                  "field": "销售额",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "op": "gt",
                   "value": 100000,
                 },
@@ -2429,10 +2573,10 @@ describe('HavingFilter', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.havingFilter.addGroup('and', (outer) => {
-        outer.add('销售额', (n) => n.setOperator('gt').setValue(1000000))
+        outer.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
         outer.addGroup('or', (inner) => {
-          inner.add('利润', (n) => n.setOperator('gt').setValue(200000))
-          inner.add('数量', (n) => n.setOperator('gte').setValue(50))
+          inner.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(200000))
+          inner.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(50))
         })
       })
     }
@@ -2456,7 +2600,10 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "id": "id-6",
                   "op": "gt",
                   "value": 1000000,
@@ -2464,13 +2611,19 @@ describe('HavingFilter', () => {
                 {
                   "conditions": [
                     {
-                      "field": "利润",
+                      "aggregate": {
+                        "func": "sum",
+                      },
+                      "field": "profit",
                       "id": "id-8",
                       "op": "gt",
                       "value": 200000,
                     },
                     {
-                      "field": "数量",
+                      "aggregate": {
+                        "func": "sum",
+                      },
+                      "field": "amount",
                       "id": "id-9",
                       "op": "gte",
                       "value": 50,
@@ -2540,19 +2693,28 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "op": "gt",
                   "value": 1000000,
                 },
                 {
                   "conditions": [
                     {
-                      "field": "利润",
+                      "aggr": {
+                        "func": "sum",
+                      },
+                      "field": "profit",
                       "op": "gt",
                       "value": 200000,
                     },
                     {
-                      "field": "数量",
+                      "aggr": {
+                        "func": "sum",
+                      },
+                      "field": "amount",
                       "op": "gte",
                       "value": 50,
                     },
@@ -2686,8 +2848,8 @@ describe('HavingFilter', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.havingFilter.addGroup('or', (group) => {
-        group.add('销售额', (n) => n.setOperator('gt').setValue(1000000))
-        group.add('利润', (n) => n.setOperator('gt').setValue(200000))
+        group.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
+        group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(200000))
       })
     }
     applyBuilder(builder)
@@ -2710,13 +2872,19 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "id": "id-5",
                   "op": "gt",
                   "value": 1000000,
                 },
                 {
-                  "field": "利润",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "id": "id-6",
                   "op": "gt",
                   "value": 200000,
@@ -2773,12 +2941,18 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "op": "gt",
                   "value": 1000000,
                 },
                 {
-                  "field": "利润",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "op": "gt",
                   "value": 200000,
                 },
@@ -2905,9 +3079,9 @@ describe('HavingFilter', () => {
     // Apply custom builder code
     const applyBuilder = (builder: VBIBuilder) => {
       builder.havingFilter.addGroup('and', (g) => {
-        g.add('利润', (n) => n.setOperator('gt').setValue(0))
-        g.add('数量', (n) => n.setOperator('gt').setValue(20))
-        g.add('销售额', (n) => n.setOperator('gt').setValue(10000))
+        g.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(0))
+        g.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(20))
+        g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(10000))
       })
     }
     applyBuilder(builder)
@@ -2930,19 +3104,28 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "利润",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "id": "id-6",
                   "op": "gt",
                   "value": 0,
                 },
                 {
-                  "field": "数量",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "amount",
                   "id": "id-7",
                   "op": "gt",
                   "value": 20,
                 },
                 {
-                  "field": "销售额",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "id": "id-8",
                   "op": "gt",
                   "value": 10000,
@@ -3008,17 +3191,26 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "利润",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "op": "gt",
                   "value": 0,
                 },
                 {
-                  "field": "数量",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "amount",
                   "op": "gt",
                   "value": 20,
                 },
                 {
-                  "field": "销售额",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "op": "gt",
                   "value": 10000,
                 },
@@ -3175,15 +3367,21 @@ describe('HavingFilter', () => {
             conditions: [
               {
                 id: 'cond-1',
-                field: '销售额',
+                field: 'sales',
                 op: 'gt',
                 value: 1000000,
+                aggregate: {
+                  func: 'sum',
+                },
               },
               {
                 id: 'cond-2',
-                field: '利润',
+                field: 'profit',
                 op: 'gt',
                 value: 200000,
+                aggregate: {
+                  func: 'sum',
+                },
               },
             ],
           },
@@ -3221,13 +3419,19 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "id": "cond-1",
                   "op": "gt",
                   "value": 1000000,
                 },
                 {
-                  "field": "利润",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "id": "cond-2",
                   "op": "gt",
                   "value": 200000,
@@ -3284,12 +3488,18 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "op": "gt",
                   "value": 1000000,
                 },
                 {
-                  "field": "利润",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "op": "gt",
                   "value": 200000,
                 },
@@ -3409,8 +3619,8 @@ describe('HavingFilter', () => {
     const applyBuilder = (builder: VBIBuilder) => {
       builder.whereFilter.add('product_type', (n) => n.setOperator('=').setValue('办公用品'))
       builder.havingFilter.addGroup('or', (g) => {
-        g.add('销售额', (n) => n.setOperator('gt').setValue(50000))
-        g.add('利润', (n) => n.setOperator('gt').setValue(10000))
+        g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(50000))
+        g.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(10000))
       })
     }
     applyBuilder(builder)
@@ -3433,13 +3643,19 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "id": "id-6",
                   "op": "gt",
                   "value": 50000,
                 },
                 {
-                  "field": "利润",
+                  "aggregate": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "id": "id-7",
                   "op": "gt",
                   "value": 10000,
@@ -3503,12 +3719,18 @@ describe('HavingFilter', () => {
             {
               "conditions": [
                 {
-                  "field": "销售额",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "sales",
                   "op": "gt",
                   "value": 50000,
                 },
                 {
-                  "field": "利润",
+                  "aggr": {
+                    "func": "sum",
+                  },
+                  "field": "profit",
                   "op": "gt",
                   "value": 10000,
                 },
@@ -3654,15 +3876,21 @@ describe('HavingFilter', () => {
         conditions: [
           {
             id: 'having-1',
-            field: '销售额',
+            field: 'sales',
             op: 'gt',
             value: 1000000,
+            aggregate: {
+              func: 'sum',
+            },
           },
           {
             id: 'having-2',
-            field: '利润',
+            field: 'profit',
             op: 'gt',
             value: 200000,
+            aggregate: {
+              func: 'sum',
+            },
           },
         ],
       },
@@ -3694,7 +3922,10 @@ describe('HavingFilter', () => {
         "havingFilter": {
           "conditions": [
             {
-              "field": "利润",
+              "aggregate": {
+                "func": "sum",
+              },
+              "field": "profit",
               "id": "having-2",
               "op": "gt",
               "value": 200000,
@@ -3745,7 +3976,10 @@ describe('HavingFilter', () => {
         "having": {
           "conditions": [
             {
-              "field": "利润",
+              "aggr": {
+                "func": "sum",
+              },
+              "field": "profit",
               "op": "gt",
               "value": 200000,
             },

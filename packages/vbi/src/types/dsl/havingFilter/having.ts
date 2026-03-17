@@ -1,10 +1,13 @@
 import { z } from 'zod'
+import { zAggregate } from '../measures/aggregate'
 
 const zHavingLogicalOperator = z.enum(['and', 'or'])
+export type VBIHavingAggregate = z.infer<typeof zAggregate>
 
 export const zVBIHavingFilter = z.object({
   id: z.string(),
   field: z.string(),
+  aggregate: zAggregate.optional(),
   op: z.string().optional(),
   value: z.any().optional(),
 })

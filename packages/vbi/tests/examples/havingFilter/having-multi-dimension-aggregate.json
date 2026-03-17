@@ -61,5 +61,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.addGroup('and', g => { g.add('平均折扣', n => n.setOperator('lt').setValue(0.2)); g.add('销售额', n => n.setOperator('gt').setValue(100000)); }); }"
+  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.addGroup('and', g => { g.add('discount', n => n.setAggregate({\"func\":\"avg\"}).setOperator('lt').setValue(0.2)); g.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(100000)); }); }"
 }
