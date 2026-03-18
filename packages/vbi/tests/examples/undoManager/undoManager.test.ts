@@ -108,14 +108,14 @@ describe('UndoManager', () => {
             "aggr": {
               "func": "sum",
             },
-            "alias": "销售额",
+            "alias": "id-1",
             "field": "sales",
           },
           {
             "aggr": {
               "func": "sum",
             },
-            "alias": "利润",
+            "alias": "id-2",
             "field": "profit",
           },
         ],
@@ -129,11 +129,24 @@ describe('UndoManager', () => {
         "chartType": "bar",
         "dataset": [
           {
-            "利润": 2147538.9250000017,
-            "销售额": 16068954.12500003,
+            "id-1": 16068954.12500003,
+            "id-2": 2147538.9250000017,
           },
         ],
+        "dimensions": [],
         "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "id": "id-1",
+          },
+          {
+            "alias": "利润",
+            "encoding": "yAxis",
+            "id": "id-2",
+          },
+        ],
         "theme": "light",
       }
     `)

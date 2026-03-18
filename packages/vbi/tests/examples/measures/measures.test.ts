@@ -84,7 +84,7 @@ describe('Measures', () => {
             "aggr": {
               "func": "sum",
             },
-            "alias": "销售额",
+            "alias": "id-1",
             "field": "sales",
           },
         ],
@@ -98,10 +98,18 @@ describe('Measures', () => {
         "chartType": "table",
         "dataset": [
           {
-            "销售额": 16068954.12500003,
+            "id-1": 16068954.12500003,
           },
         ],
+        "dimensions": [],
         "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "id": "id-1",
+          },
+        ],
         "theme": "light",
       }
     `)
@@ -189,7 +197,7 @@ describe('Measures', () => {
             "aggr": {
               "func": "sum",
             },
-            "alias": "销售额",
+            "alias": "id-1",
             "field": "sales",
           },
         ],
@@ -203,10 +211,18 @@ describe('Measures', () => {
         "chartType": "table",
         "dataset": [
           {
-            "销售额": 16068954.12500003,
+            "id-1": 16068954.12500003,
           },
         ],
+        "dimensions": [],
         "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "id": "id-1",
+          },
+        ],
         "theme": "light",
       }
     `)
@@ -307,7 +323,7 @@ describe('Measures', () => {
             "aggr": {
               "func": "sum",
             },
-            "alias": "利润",
+            "alias": "id-2",
             "field": "profit",
           },
         ],
@@ -321,10 +337,18 @@ describe('Measures', () => {
         "chartType": "table",
         "dataset": [
           {
-            "利润": 2147538.9250000017,
+            "id-2": 2147538.9250000017,
           },
         ],
+        "dimensions": [],
         "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "利润",
+            "encoding": "yAxis",
+            "id": "id-2",
+          },
+        ],
         "theme": "light",
       }
     `)
@@ -420,7 +444,7 @@ describe('Measures', () => {
             "aggr": {
               "func": "avg",
             },
-            "alias": "新销售额",
+            "alias": "id-1",
             "field": "sales",
           },
         ],
@@ -434,10 +458,18 @@ describe('Measures', () => {
         "chartType": "table",
         "dataset": [
           {
-            "新销售额": 1613.5108068079155,
+            "id-1": 1613.5108068079155,
           },
         ],
+        "dimensions": [],
         "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "新销售额",
+            "encoding": "yAxis",
+            "id": "id-1",
+          },
+        ],
         "theme": "light",
       }
     `)

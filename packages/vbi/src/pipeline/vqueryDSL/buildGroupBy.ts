@@ -8,8 +8,6 @@ export const buildGroupBy: buildPipe = (queryDSL, context) => {
   const dimensions = vbiDSL.dimensions
   const dimensionNodes = dimensions.filter((dimension) => DimensionsBuilder.isDimensionNode(dimension))
 
-  result.groupBy = dimensionNodes.map((dimension) =>
-    dimension.aggregate ? (dimension.alias ?? dimension.field) : dimension.field,
-  )
+  result.groupBy = dimensionNodes.map((dimension) => (dimension.aggregate ? dimension.id : dimension.field))
   return result as VQueryDSL
 }
