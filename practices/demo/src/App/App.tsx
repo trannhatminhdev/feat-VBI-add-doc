@@ -7,6 +7,7 @@ import { ShelfDndProvider } from 'src/components/Shelfs/dnd';
 import { Toolbar } from 'src/components/Toolbar';
 import { useVBIBuilder } from 'src/hooks';
 import type { DemoTheme } from 'src/constants/builder';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 import { useShallow } from 'zustand/shallow';
 import { ChartPanel, FieldsPanel, ShelfPanel } from './components';
@@ -90,6 +91,31 @@ const DemoWorkbench = ({ themeMode }: { themeMode: DemoTheme }) => {
   );
 };
 
+const AppContent = ({
+  initialized,
+  themeMode,
+}: {
+  initialized: boolean;
+  themeMode: DemoTheme;
+}) => {
+  const { locale, t } = useTranslation();
+  const antdLocale = DEMO_ANTD_LOCALES[locale];
+  const antdThemeConfig = useMemo(
+    () => createThemeConfig(themeMode),
+    [themeMode],
+  );
+
+  return (
+    <ConfigProvider locale={antdLocale} theme={antdThemeConfig}>
+      {!initialized ? (
+        <Spin tip={t('appInitializing')} fullscreen />
+      ) : (
+        <DemoWorkbench themeMode={themeMode} />
+      )}
+    </ConfigProvider>
+  );
+};
+
 export const APP = ({ builder }: APPProps) => {
   const { initialize, initialized, storeBuilder } = useVBIStore(
     useShallow((state) => ({
@@ -98,25 +124,11 @@ export const APP = ({ builder }: APPProps) => {
       storeBuilder: state.builder,
     })),
   );
-  const { locale, theme } = useVBIBuilder(storeBuilder);
+  const { theme } = useVBIBuilder(storeBuilder);
 
   useEffect(() => {
     return initialize(builder);
   }, [builder, initialize]);
 
-  const antdLocale = DEMO_ANTD_LOCALES[locale];
-  const antdThemeConfig = useMemo(() => createThemeConfig(theme), [theme]);
-
-  return (
-    <ConfigProvider locale={antdLocale} theme={antdThemeConfig}>
-      {!initialized ? (
-        <Spin
-          tip={locale === 'en-US' ? 'Initializing...' : '初始化中...'}
-          fullscreen
-        />
-      ) : (
-        <DemoWorkbench themeMode={theme} />
-      )}
-    </ConfigProvider>
-  );
+  return <AppContent initialized={initialized} themeMode={theme} />;
 };

@@ -1,6 +1,7 @@
 import { Card, Empty, Flex, Space, Typography, theme } from 'antd';
 import { VSeedRender } from 'src/components/Render';
 import { useVBIBuilder } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 
 export const ChartPanel = () => {
@@ -10,6 +11,7 @@ export const ChartPanel = () => {
   const isEmptyDsl = builder.isEmpty();
   const { token } = theme.useToken();
   const { theme: themeMode } = useVBIBuilder(builder);
+  const { t } = useTranslation();
 
   return (
     <Card
@@ -50,9 +52,9 @@ export const ChartPanel = () => {
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             description={
               <Space orientation="vertical" size={2}>
-                <Typography.Text strong>暂时为空</Typography.Text>
+                <Typography.Text strong>{t('appEmptyTitle')}</Typography.Text>
                 <Typography.Text type="secondary">
-                  请先拖拽至少一个 Dimensions 或 Measures 字段到右侧分析区
+                  {t('appEmptyDescription')}
                 </Typography.Text>
               </Space>
             }

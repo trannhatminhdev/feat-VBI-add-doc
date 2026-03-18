@@ -1,3 +1,5 @@
+import type { Translate } from 'src/i18n';
+
 export type WhereFilterFieldRole = 'dimension' | 'measure';
 
 export type WhereFilterRangeValue = {
@@ -34,39 +36,97 @@ const NO_VALUE_OPERATORS = new Set(['is null', 'is not null']);
 const RANGE_OPERATORS = new Set(['between', 'not between']);
 const TAG_OPERATORS = new Set(['in', 'not in']);
 
-export const DIMENSION_OPERATORS = [
-  { label: '等于 (=)', value: '=' },
-  { label: '不等于 (!=)', value: '!=' },
-  { label: '包含任一 (in)', value: 'in' },
-  { label: '不包含 (not in)', value: 'not in' },
-  { label: '模糊匹配 (like)', value: 'like' },
-  { label: '不匹配 (not like)', value: 'not like' },
-  { label: '不区分大小写匹配 (ilike)', value: 'ilike' },
-  { label: '不区分大小写不匹配 (not ilike)', value: 'not ilike' },
-  { label: '为空 (is null)', value: 'is null' },
-  { label: '不为空 (is not null)', value: 'is not null' },
-];
+const FILTER_OPERATOR_KEYS: Record<string, string> = {
+  '=': 'eq',
+  '!=': 'ne',
+  '>': 'gt',
+  '>=': 'gte',
+  '<': 'lt',
+  '<=': 'lte',
+  in: 'in',
+  'not in': 'notIn',
+  like: 'like',
+  'not like': 'notLike',
+  ilike: 'ilike',
+  'not ilike': 'notIlike',
+  between: 'between',
+  'not between': 'notBetween',
+  'is null': 'isNull',
+  'is not null': 'isNotNull',
+};
 
-export const MEASURE_OPERATORS = [
-  { label: '等于 (=)', value: '=' },
-  { label: '不等于 (!=)', value: '!=' },
-  { label: '大于 (>)', value: '>' },
-  { label: '大于等于 (>=)', value: '>=' },
-  { label: '小于 (<)', value: '<' },
-  { label: '小于等于 (<=)', value: '<=' },
-  { label: '包含任一 (in)', value: 'in' },
-  { label: '不包含 (not in)', value: 'not in' },
-  { label: '范围 (between)', value: 'between' },
-  { label: '不在范围内 (not between)', value: 'not between' },
-  { label: '为空 (is null)', value: 'is null' },
-  { label: '不为空 (is not null)', value: 'is not null' },
-];
+const DIMENSION_OPERATOR_VALUES = [
+  '=',
+  '!=',
+  'in',
+  'not in',
+  'like',
+  'not like',
+  'ilike',
+  'not ilike',
+  'is null',
+  'is not null',
+] as const;
+
+const MEASURE_OPERATOR_VALUES = [
+  '=',
+  '!=',
+  '>',
+  '>=',
+  '<',
+  '<=',
+  'in',
+  'not in',
+  'between',
+  'not between',
+  'is null',
+  'is not null',
+] as const;
 
 export function normalizeWhereOperator(operator?: string): string {
   if (!operator) {
     return '=';
   }
   return OPERATOR_ALIASES[operator] ?? operator;
+}
+
+export function getFilterOperatorKey(operator?: string): string {
+  return FILTER_OPERATOR_KEYS[normalizeWhereOperator(operator)] ?? 'eq';
+}
+
+const toTranslationKeySuffix = (value: string) => {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+};
+
+export function getFilterOperatorOptionLabel(
+  operator: string,
+  t: Translate,
+): string {
+  return t(
+    `filtersOperators${toTranslationKeySuffix(getFilterOperatorKey(operator))}Option`,
+  );
+}
+
+export function getFilterOperatorDisplayLabel(
+  operator: string,
+  t: Translate,
+): string {
+  return t(
+    `filtersOperators${toTranslationKeySuffix(getFilterOperatorKey(operator))}Display`,
+  );
+}
+
+export function getWhereOperatorOptions(
+  role: WhereFilterFieldRole,
+  t: Translate,
+) {
+  const values =
+    role === 'measure' ? MEASURE_OPERATOR_VALUES : DIMENSION_OPERATOR_VALUES;
+
+  return values.map((value) => ({
+    label: getFilterOperatorOptionLabel(value, t),
+    value,
+  }));
 }
 
 export function getDefaultWhereOperator(role: WhereFilterFieldRole): string {
@@ -214,22 +274,28 @@ export function serializeWhereFilterValue(params: {
   return value;
 }
 
-export function getWhereDisplayText(item: WhereFilterLike): string {
+export function getWhereDisplayText(
+  item: WhereFilterLike,
+  t: Translate,
+): string {
   const operator = normalizeWhereOperator(item.operator);
+  const operatorLabel = getFilterOperatorDisplayLabel(operator, t);
 
   if (NO_VALUE_OPERATORS.has(operator)) {
-    return `${item.field} ${operator}`;
+    return `${item.field} ${operatorLabel}`;
   }
 
   if (RANGE_OPERATORS.has(operator)) {
     const range = normalizeWhereRangeValue(item.value);
     const expression =
       `${range.min ?? ''} ${range.leftOp ?? '<='} ${item.field} ${range.rightOp ?? '<='} ${range.max ?? ''}`.trim();
-    return operator === 'not between' ? `not (${expression})` : expression;
+    return operator === 'not between'
+      ? t('filtersDisplayNotRange', { expression })
+      : expression;
   }
 
   const valueText = Array.isArray(item.value)
     ? item.value.join(', ')
     : String(item.value ?? '');
-  return `${item.field} ${operator} ${valueText}`;
+  return `${item.field} ${operatorLabel} ${valueText}`.trim();
 }

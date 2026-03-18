@@ -1,9 +1,19 @@
 import type { VBIHavingAggregate } from '@visactor/vbi';
+import type { Translate } from 'src/i18n';
 import {
+  MEASURE_AGGREGATE_KEYS,
   getAggregateItemsByFieldRole,
+  getMeasureAggregateText,
+  isAggregateSupportedByFieldRole,
+  type MeasureAggregate,
+  type MeasureAggregateKey,
   type MeasureAggregateItem,
 } from 'src/components/Shelfs/measureAggregateUtils';
 import type { FieldRole } from 'src/utils/fieldRole';
+import {
+  getFilterOperatorDisplayLabel,
+  getFilterOperatorOptionLabel,
+} from './whereFilterUtils';
 
 export type HavingFieldRole = FieldRole;
 
@@ -32,6 +42,12 @@ export type HavingAggregateOption = {
   value: string;
 };
 
+export type HavingAggregateOptionGroup = {
+  key: 'common' | 'advanced';
+  label: string;
+  options: HavingAggregateOption[];
+};
+
 const UI_TO_DSL_OPERATOR: Record<string, string> = {
   '=': 'eq',
   '!=': 'neq',
@@ -52,31 +68,25 @@ const NO_VALUE_OPERATORS = new Set(['is null', 'is not null']);
 const RANGE_OPERATORS = new Set(['between', 'not between']);
 const TAG_OPERATORS = new Set(['in', 'not in']);
 
-const NUMERIC_HAVING_OPERATOR_OPTIONS = [
-  { label: '大于 (>)', value: '>' },
-  { label: '大于等于 (>=)', value: '>=' },
-  { label: '小于 (<)', value: '<' },
-  { label: '小于等于 (<=)', value: '<=' },
-  { label: '范围 (between)', value: 'between' },
-  { label: '不在范围内 (not between)', value: 'not between' },
+const NUMERIC_HAVING_OPERATOR_VALUES = [
+  '>',
+  '>=',
+  '<',
+  '<=',
+  'between',
+  'not between',
 ] as const;
 
-const COMMON_HAVING_OPERATOR_OPTIONS = [
-  { label: '等于 (=)', value: '=' },
-  { label: '不等于 (!=)', value: '!=' },
-  { label: '包含任一 (in)', value: 'in' },
-  { label: '不包含 (not in)', value: 'not in' },
-  { label: '为空 (is null)', value: 'is null' },
-  { label: '不为空 (is not null)', value: 'is not null' },
+const COMMON_HAVING_OPERATOR_VALUES = [
+  '=',
+  '!=',
+  'in',
+  'not in',
+  'is null',
+  'is not null',
 ] as const;
 
-const SUPPORTED_AGGREGATE_FUNCS = new Set(
-  getAggregateItemsByFieldRole('measure').map((item) => item.key),
-);
-
-const AGGREGATE_LABEL_MAP = new Map(
-  getAggregateItemsByFieldRole('measure').map((item) => [item.key, item.label]),
-);
+const SUPPORTED_AGGREGATE_FUNCS = new Set<string>(MEASURE_AGGREGATE_KEYS);
 
 const RECOMMENDED_AGGREGATES: Record<HavingFieldRole, Set<string>> = {
   measure: new Set(['sum', 'avg', 'count', 'countDistinct']),
@@ -116,7 +126,7 @@ const toHavingAggregateOptions = (
 ): HavingAggregateOption[] => {
   return items.map((item) => ({
     label: item.label,
-    shortLabel: item.label.split(' ')[0] ?? item.label,
+    shortLabel: item.shortLabel,
     value: item.key,
   }));
 };
@@ -177,11 +187,9 @@ export function normalizeHavingAggregate(
     return fallback;
   }
 
-  const availableFuncs = new Set(
-    getAggregateItemsByFieldRole(fieldRole).map((item) => item.key),
-  );
-
-  if (!availableFuncs.has(aggregate.func)) {
+  if (
+    !isAggregateSupportedByFieldRole(aggregate as MeasureAggregate, fieldRole)
+  ) {
     return fallback;
   }
 
@@ -198,29 +206,35 @@ export function normalizeHavingAggregate(
 
 export function getHavingAggregateOptionsByFieldRole(
   fieldRole: HavingFieldRole,
+  t: Translate,
 ): HavingAggregateOption[] {
-  return toHavingAggregateOptions(getAggregateItemsByFieldRole(fieldRole));
+  return toHavingAggregateOptions(getAggregateItemsByFieldRole(fieldRole, t));
 }
 
 export function getHavingAggregateOptionGroupsByFieldRole(
   fieldRole: HavingFieldRole,
-) {
+  t: Translate,
+): HavingAggregateOptionGroup[] {
   const recommendedSet = RECOMMENDED_AGGREGATES[fieldRole];
-  const options = getHavingAggregateOptionsByFieldRole(fieldRole);
+  const options = getHavingAggregateOptionsByFieldRole(fieldRole, t);
 
   const recommended = options.filter((item) => recommendedSet.has(item.value));
   const advanced = options.filter((item) => !recommendedSet.has(item.value));
 
-  return [
+  const groups: HavingAggregateOptionGroup[] = [
     {
-      label: '常用',
+      key: 'common',
+      label: t('filtersOperatorGroupsCommon'),
       options: recommended,
     },
     {
-      label: '高级',
+      key: 'advanced',
+      label: t('filtersOperatorGroupsAdvanced'),
       options: advanced,
     },
-  ].filter((group) => group.options.length > 0);
+  ];
+
+  return groups.filter((group) => group.options.length > 0);
 }
 
 export function isHavingNumericAggregate(
@@ -238,16 +252,22 @@ export function getDefaultHavingOperator(isNumericValue: boolean): string {
   return isNumericValue ? '>' : '=';
 }
 
-export function getHavingOperatorOptions(isNumericValue: boolean) {
-  if (!isNumericValue) {
-    return COMMON_HAVING_OPERATOR_OPTIONS;
-  }
+export function getHavingOperatorOptions(
+  isNumericValue: boolean,
+  t: Translate,
+) {
+  const values = !isNumericValue
+    ? COMMON_HAVING_OPERATOR_VALUES
+    : [
+        ...COMMON_HAVING_OPERATOR_VALUES.slice(0, 2),
+        ...NUMERIC_HAVING_OPERATOR_VALUES,
+        ...COMMON_HAVING_OPERATOR_VALUES.slice(2),
+      ];
 
-  return [
-    ...COMMON_HAVING_OPERATOR_OPTIONS.slice(0, 2),
-    ...NUMERIC_HAVING_OPERATOR_OPTIONS,
-    ...COMMON_HAVING_OPERATOR_OPTIONS.slice(2),
-  ];
+  return values.map((value) => ({
+    label: getFilterOperatorOptionLabel(value, t),
+    value,
+  }));
 }
 
 export function getHavingFilterInputStrategy(
@@ -268,11 +288,11 @@ export function getHavingFilterInputStrategy(
     return 'tags';
   }
 
-  if (isNumericValue) {
-    return 'number';
+  if (!isNumericValue) {
+    return 'text';
   }
 
-  return 'text';
+  return 'number';
 }
 
 export function normalizeHavingRangeValue(
@@ -361,28 +381,44 @@ export function serializeHavingFilterValue(params: {
   return value;
 }
 
-export function getHavingAggregateLabel(aggregate: VBIHavingAggregate): string {
-  return AGGREGATE_LABEL_MAP.get(aggregate.func) ?? aggregate.func;
+export function getHavingAggregateLabel(
+  aggregate: VBIHavingAggregate,
+  t: Translate,
+  mode: 'label' | 'short' = 'label',
+): string {
+  if (!SUPPORTED_AGGREGATE_FUNCS.has(aggregate.func)) {
+    return aggregate.func;
+  }
+
+  return getMeasureAggregateText(
+    aggregate.func as MeasureAggregateKey,
+    t,
+    mode,
+  );
 }
 
-export function getHavingDisplayText(item: HavingFilterLike): string {
+export function getHavingDisplayText(
+  item: HavingFilterLike,
+  t: Translate,
+): string {
   const normalizedOperator = normalizeHavingOperator(item.operator);
-  const aggregateExpr = `${item.aggregate.func}(${item.field})`;
+  const aggregateExpr = `${getHavingAggregateLabel(item.aggregate, t, 'short')}(${item.field})`;
+  const operatorLabel = getFilterOperatorDisplayLabel(normalizedOperator, t);
 
   if (NO_VALUE_OPERATORS.has(normalizedOperator)) {
-    return `${aggregateExpr} ${normalizedOperator}`;
+    return `${aggregateExpr} ${operatorLabel}`;
   }
 
   if (RANGE_OPERATORS.has(normalizedOperator)) {
     const range = normalizeHavingRangeValue(item.value);
     const minText = range.min ?? '';
     const maxText = range.max ?? '';
-    return `${aggregateExpr} ${normalizedOperator} [${minText}, ${maxText}]`;
+    return `${aggregateExpr} ${operatorLabel} [${minText}, ${maxText}]`;
   }
 
   const valueText = Array.isArray(item.value)
     ? item.value.join(', ')
     : String(item.value ?? '');
 
-  return `${aggregateExpr} ${normalizedOperator} ${valueText}`;
+  return `${aggregateExpr} ${operatorLabel} ${valueText}`.trim();
 }

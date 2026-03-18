@@ -10,18 +10,33 @@ type NamedShelfItem = {
 export const openShelfRenameModal = (params: {
   title: string;
   placeholder: string;
+  okText: string;
+  cancelText: string;
+  emptyNameMessage: string;
+  duplicateNameMessage: string;
   id: string;
   currentAlias: string;
   items: NamedShelfItem[];
   onRename: (id: string, alias: string) => void;
 }) => {
-  const { title, placeholder, id, currentAlias, items, onRename } = params;
+  const {
+    title,
+    placeholder,
+    okText,
+    cancelText,
+    emptyNameMessage,
+    duplicateNameMessage,
+    id,
+    currentAlias,
+    items,
+    onRename,
+  } = params;
   let nextAlias = currentAlias;
 
   Modal.confirm({
     title,
-    okText: '保存',
-    cancelText: '取消',
+    okText,
+    cancelText,
     content: (
       <Input
         autoFocus
@@ -36,8 +51,8 @@ export const openShelfRenameModal = (params: {
     onOk: () => {
       const trimmed = nextAlias.trim();
       if (!trimmed) {
-        message.warning('名称不能为空');
-        return Promise.reject(new Error('名称不能为空'));
+        message.warning(emptyNameMessage);
+        return Promise.reject(new Error(emptyNameMessage));
       }
 
       if (
@@ -47,8 +62,8 @@ export const openShelfRenameModal = (params: {
           excludeId: id,
         })
       ) {
-        message.error('名称已存在');
-        return Promise.reject(new Error('名称已存在'));
+        message.error(duplicateNameMessage);
+        return Promise.reject(new Error(duplicateNameMessage));
       }
 
       onRename(id, trimmed);

@@ -16,6 +16,7 @@ import {
   toHavingDslOperator,
 } from 'src/components/Filter/havingFilterUtils';
 import { useVBIHavingFilter, useVBISchemaFields } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 import type { FieldRole } from 'src/utils/fieldRole';
 import { FilterShelf, type FilterShelfTone } from '../common/FilterShelf';
@@ -70,6 +71,7 @@ export const HavingShelf = ({
 }) => {
   const builder = useVBIStore((state) => state.builder);
   const { token } = theme.useToken();
+  const { t } = useTranslation();
   const { filters: havingFilterClauses } = useVBIHavingFilter(builder);
   const { schemaFields, fieldRoleMap, fieldTypeMap } =
     useVBISchemaFields(builder);
@@ -219,14 +221,14 @@ export const HavingShelf = ({
       shelf="having"
       items={havingFilterItems}
       style={style}
-      placeholder="拖拽字段到此处"
+      placeholder={t('shelvesPlaceholdersFilters')}
       tone={havingShelfTone}
       maxLabelWidth={124}
       showRootOperator={showRootOperator}
       rootOperator={operator}
       rootOperatorColors={havingRootOperatorColors}
       onRootOperatorChange={setOperator}
-      getDisplayText={getHavingDisplayText}
+      getDisplayText={(item) => getHavingDisplayText(item, t)}
       getItemPayload={(item) => ({
         field: item.field,
         type: fieldTypeMap[item.field],

@@ -6,6 +6,7 @@ import {
   type SchemaFieldDragData,
 } from 'src/components/Shelfs/dnd';
 import { useVBIMeasures, useVBISchemaFields } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 
 const MeasureFieldItem = ({
@@ -87,13 +88,18 @@ const MeasureFieldItem = ({
 export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
   const { token } = theme.useToken();
+  const { t } = useTranslation();
   const { measures: shelfMeasures, addMeasure } = useVBIMeasures(builder);
   const { schemaFields } = useVBISchemaFields(builder);
   const measures = schemaFields.filter((d) => d.role === 'measure');
 
   return (
     <Card
-      title={<span style={{ fontSize: 13, fontWeight: 500 }}>Measures</span>}
+      title={
+        <span style={{ fontSize: 13, fontWeight: 500 }}>
+          {t('panelsFieldsMeasures')}
+        </span>
+      }
       size="small"
       style={{ ...style }}
       styles={{

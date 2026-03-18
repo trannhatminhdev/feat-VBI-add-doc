@@ -1,5 +1,6 @@
 import type { MenuProps } from 'antd';
 import { useVBIDimensions, useVBISchemaFields } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 import { getFieldRoleBySchemaType } from 'src/utils/fieldRole';
 import {
@@ -37,6 +38,7 @@ const DIMENSION_SHELF_TONE: FieldShelfTone = {
 
 export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
+  const { t } = useTranslation();
   const {
     dimensions,
     addDimension,
@@ -141,10 +143,10 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
     if (isDateField(dimension.field)) {
       items.push({
         key: 'aggregate',
-        label: '日期聚合',
+        label: t('shelvesMenuDateAggregate'),
         style: SHELF_MENU_ITEM_STYLE,
         children: [
-          ...getDimensionDateAggregateItems().map((item) => ({
+          ...getDimensionDateAggregateItems(t).map((item) => ({
             key: `aggregate:${item.key}`,
             label: `${currentAggregate?.func === item.key ? '✓ ' : ''}${
               item.shortLabel
@@ -153,7 +155,9 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
           })),
           {
             key: 'aggregate:none',
-            label: `${!currentAggregate ? '✓ ' : ''}原始值`,
+            label: `${!currentAggregate ? '✓ ' : ''}${t(
+              'shelvesMenuRawValue',
+            )}`,
             style: SHELF_MENU_ITEM_STYLE,
           },
         ],
@@ -163,12 +167,14 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
     items.push(
       {
         key: 'rename',
-        label: '重命名',
+        label: t('shelvesMenuRename'),
         style: SHELF_MENU_ITEM_STYLE,
       },
       {
         key: 'delete',
-        label: <span style={{ color: '#ff4d4f' }}>删除</span>,
+        label: (
+          <span style={{ color: '#ff4d4f' }}>{t('shelvesMenuDelete')}</span>
+        ),
         style: SHELF_MENU_ITEM_STYLE,
       },
     );
@@ -188,7 +194,7 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
         return;
       }
 
-      const nextAggregate = getDimensionDateAggregateItems().find(
+      const nextAggregate = getDimensionDateAggregateItems(t).find(
         (item) => item.key === aggregateKey,
       )?.aggregate;
 
@@ -200,8 +206,12 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
 
     if (key === 'rename') {
       openShelfRenameModal({
-        title: '重命名维度',
-        placeholder: '请输入维度名称',
+        title: t('shelvesRenameModalDimensionTitle'),
+        placeholder: t('shelvesRenameModalDimensionPlaceholder'),
+        okText: t('shelvesRenameModalSave'),
+        cancelText: t('shelvesRenameModalCancel'),
+        emptyNameMessage: t('shelvesRenameModalEmptyName'),
+        duplicateNameMessage: t('shelvesRenameModalDuplicateName'),
         id: dimension.id,
         currentAlias: dimension.alias || dimension.field,
         items: dimensions,
@@ -222,6 +232,7 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
         dimension.aggregate,
         fieldTypeMap[dimension.field],
       ),
+      t,
     );
 
     if (!aggregate) {
@@ -235,7 +246,7 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
     <FieldShelf
       shelf="dimensions"
       items={dimensions}
-      placeholder="拖拽维度/指标到此处"
+      placeholder={t('shelvesPlaceholdersDimensions')}
       tone={DIMENSION_SHELF_TONE}
       style={style}
       maxLabelWidth={124}

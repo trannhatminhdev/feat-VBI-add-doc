@@ -1,4 +1,5 @@
 import type { FieldRole } from 'src/utils/fieldRole';
+import type { Translate } from 'src/i18n';
 import { getFieldRoleBySchemaType } from 'src/utils/fieldRole';
 
 export type MeasureFieldRole = FieldRole;
@@ -22,38 +23,54 @@ export type MeasureAggregate =
       quantile?: number;
     };
 
+export const MEASURE_AGGREGATE_KEYS = [
+  'sum',
+  'count',
+  'countDistinct',
+  'avg',
+  'min',
+  'max',
+  'variance',
+  'variancePop',
+  'stddev',
+  'median',
+  'quantile',
+] as const;
+
+export type MeasureAggregateKey = (typeof MEASURE_AGGREGATE_KEYS)[number];
+
 export type MeasureAggregateItem = {
-  key: string;
+  key: MeasureAggregateKey;
   label: string;
+  shortLabel: string;
   aggregate: MeasureAggregate;
 };
 
-const ALL_MEASURE_AGGREGATE_ITEMS: MeasureAggregateItem[] = [
-  { key: 'sum', label: '求和 (sum)', aggregate: { func: 'sum' } },
-  { key: 'count', label: '计数 (count)', aggregate: { func: 'count' } },
+const ALL_MEASURE_AGGREGATE_ITEM_DEFS: Array<{
+  key: MeasureAggregateKey;
+  aggregate: MeasureAggregate;
+}> = [
+  { key: 'sum', aggregate: { func: 'sum' } },
+  { key: 'count', aggregate: { func: 'count' } },
   {
     key: 'countDistinct',
-    label: '去重计数 (countDistinct)',
     aggregate: { func: 'countDistinct' },
   },
-  { key: 'avg', label: '平均值 (avg)', aggregate: { func: 'avg' } },
-  { key: 'min', label: '最小值 (min)', aggregate: { func: 'min' } },
-  { key: 'max', label: '最大值 (max)', aggregate: { func: 'max' } },
+  { key: 'avg', aggregate: { func: 'avg' } },
+  { key: 'min', aggregate: { func: 'min' } },
+  { key: 'max', aggregate: { func: 'max' } },
   {
     key: 'variance',
-    label: '样本方差 (variance)',
     aggregate: { func: 'variance' },
   },
   {
     key: 'variancePop',
-    label: '总体方差 (variancePop)',
     aggregate: { func: 'variancePop' },
   },
-  { key: 'stddev', label: '标准差 (stddev)', aggregate: { func: 'stddev' } },
-  { key: 'median', label: '中位数 (median)', aggregate: { func: 'median' } },
+  { key: 'stddev', aggregate: { func: 'stddev' } },
+  { key: 'median', aggregate: { func: 'median' } },
   {
     key: 'quantile',
-    label: '分位数 (quantile)',
     aggregate: { func: 'quantile', quantile: 0.5 },
   },
 ];
@@ -71,8 +88,28 @@ export const getMeasureFieldRoleBySchemaType = (
   return getFieldRoleBySchemaType(schemaType);
 };
 
-export const getMeasureAggregateItems = (): MeasureAggregateItem[] => {
-  return [...ALL_MEASURE_AGGREGATE_ITEMS];
+const toTranslationKeySuffix = (value: string) => {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+};
+
+export const getMeasureAggregateText = (
+  key: MeasureAggregateKey,
+  t: Translate,
+  mode: 'label' | 'short' = 'label',
+) => {
+  return t(
+    `aggregatesMeasure${toTranslationKeySuffix(key)}${toTranslationKeySuffix(mode)}`,
+  );
+};
+
+export const getMeasureAggregateItems = (
+  t: Translate,
+): MeasureAggregateItem[] => {
+  return ALL_MEASURE_AGGREGATE_ITEM_DEFS.map((item) => ({
+    ...item,
+    label: getMeasureAggregateText(item.key, t, 'label'),
+    shortLabel: getMeasureAggregateText(item.key, t, 'short'),
+  }));
 };
 
 export const isAggregateSupportedByFieldRole = (
@@ -88,8 +125,9 @@ export const isAggregateSupportedByFieldRole = (
 
 export const getAggregateItemsByFieldRole = (
   fieldRole: MeasureFieldRole,
+  t: Translate,
 ): MeasureAggregateItem[] => {
-  return ALL_MEASURE_AGGREGATE_ITEMS.filter((item) =>
+  return getMeasureAggregateItems(t).filter((item) =>
     isAggregateSupportedByFieldRole(item.aggregate, fieldRole),
   );
 };
@@ -105,13 +143,14 @@ export const getDefaultAggregateByFieldRole = (
 
 export const formatMeasureAggregate = (
   aggregate: MeasureAggregate | undefined,
+  t: Translate,
 ) => {
   if (!aggregate) {
     return undefined;
   }
 
   if (aggregate.func !== 'quantile') {
-    return aggregate.func;
+    return getMeasureAggregateText(aggregate.func, t, 'short');
   }
 
   const quantile = aggregate.quantile ?? 0.5;
@@ -120,5 +159,5 @@ export const formatMeasureAggregate = (
     ? `${percent}`
     : `${percent.toFixed(2)}`.replace(/\.?0+$/, '');
 
-  return `p${normalizedPercent}`;
+  return `P${normalizedPercent}`;
 };

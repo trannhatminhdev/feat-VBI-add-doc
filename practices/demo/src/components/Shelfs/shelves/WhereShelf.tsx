@@ -6,6 +6,7 @@ import {
   normalizeWhereOperator,
 } from 'src/components/Filter/whereFilterUtils';
 import { useVBISchemaFields, useVBIWhereFilter } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 import { FilterShelf, type FilterShelfTone } from '../common/FilterShelf';
 import { useFilterRootOperator } from '../hooks/useFilterRootOperator';
@@ -27,6 +28,7 @@ export const WhereShelf = ({
 }) => {
   const builder = useVBIStore((state) => state.builder);
   const { token } = theme.useToken();
+  const { t } = useTranslation();
   const { flattenFilters } = useVBIWhereFilter(builder);
   const { schemaFields, fieldRoleMap, fieldTypeMap } =
     useVBISchemaFields(builder);
@@ -152,14 +154,14 @@ export const WhereShelf = ({
       shelf="where"
       items={whereFilterItems}
       style={style}
-      placeholder="拖拽字段到此处"
+      placeholder={t('shelvesPlaceholdersFilters')}
       tone={whereShelfTone}
       maxLabelWidth={132}
       showRootOperator={showRootOperator}
       rootOperator={operator}
       rootOperatorColors={whereRootOperatorColors}
       onRootOperatorChange={setOperator}
-      getDisplayText={getWhereDisplayText}
+      getDisplayText={(item) => getWhereDisplayText(item, t)}
       getItemPayload={(item) => ({
         field: item.field,
         type: fieldTypeMap[item.field],

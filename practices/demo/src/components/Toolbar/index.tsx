@@ -12,8 +12,9 @@ import { Button, InputNumber, Segmented, Space, Tooltip, theme } from 'antd';
 import { ChartTypeSelector } from 'src/components/ChartType';
 import type { DemoLocale, DemoTheme } from 'src/constants/builder';
 import { useVBIBuilder, useVBIUndoManager } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
-import { formatDefaultLimit, getLocaleText, TOOLBAR_TEXT } from './config';
+import { formatDefaultLimit } from './config';
 
 const normalizeLimitValue = (value: number) => {
   return Math.max(1, Math.round(value));
@@ -38,11 +39,10 @@ export const Toolbar: React.FC = () => {
   const builder = useVBIStore((state) => state.builder);
   const { token } = theme.useToken();
   const { canUndo, canRedo, undo, redo } = useVBIUndoManager(builder);
+  const { t, locale, setLocale } = useTranslation();
   const {
-    locale,
     theme: themeMode,
     limit,
-    setLocale,
     setTheme,
     setLimit,
   } = useVBIBuilder(builder);
@@ -119,14 +119,12 @@ export const Toolbar: React.FC = () => {
             whiteSpace: 'nowrap',
           }}
         >
-          <ChartTypeSelector compact locale={locale} />
+          <ChartTypeSelector compact />
 
           <ToolbarDivider />
 
           <Space.Compact size="small">
-            <Tooltip
-              title={`${getLocaleText(locale, TOOLBAR_TEXT.history.undo)} (Ctrl/Cmd+Z)`}
-            >
+            <Tooltip title={`${t('toolbarHistoryUndo')} (Ctrl/Cmd+Z)`}>
               <Button
                 icon={<UndoOutlined style={{ fontSize: 12 }} />}
                 onClick={undo}
@@ -135,7 +133,7 @@ export const Toolbar: React.FC = () => {
               />
             </Tooltip>
             <Tooltip
-              title={`${getLocaleText(locale, TOOLBAR_TEXT.history.redo)} (Ctrl+Y / Cmd+Shift+Z)`}
+              title={`${t('toolbarHistoryRedo')} (Ctrl+Y / Cmd+Shift+Z)`}
             >
               <Button
                 icon={<RedoOutlined style={{ fontSize: 12 }} />}
@@ -166,16 +164,16 @@ export const Toolbar: React.FC = () => {
               }
             }}
             size="small"
-            placeholder={getLocaleText(locale, TOOLBAR_TEXT.limit.placeholder)}
+            placeholder={t('toolbarLimitPlaceholder', {
+              defaultLimit: defaultLimitText,
+            })}
             formatter={(value) => formatNumber(value)}
             parser={(value) => Number(value?.replace(/[^\d]/g, '') || 0)}
           />
           <Tooltip
-            title={
-              locale === 'zh-CN'
-                ? `取数条数，默认 ${defaultLimitText}`
-                : `Rows per query, default ${defaultLimitText}`
-            }
+            title={t('toolbarLimitTooltip', {
+              defaultLimit: defaultLimitText,
+            })}
           >
             <InfoCircleOutlined
               style={{
@@ -189,14 +187,14 @@ export const Toolbar: React.FC = () => {
           <ToolbarDivider />
 
           <Tooltip
-            title={`${getLocaleText(locale, TOOLBAR_TEXT.locale.label)}: ${getLocaleText(locale, TOOLBAR_TEXT.locale.description)}`}
+            title={`${t('toolbarLocaleLabel')}: ${t('toolbarLocaleDescription')}`}
           >
             <Segmented
               size="small"
               value={locale}
               options={[
-                { label: '中', value: 'zh-CN' },
-                { label: 'EN', value: 'en-US' },
+                { label: t('toolbarLocaleSwitchZh'), value: 'zh-CN' },
+                { label: t('toolbarLocaleSwitchEn'), value: 'en-US' },
               ]}
               onChange={(value) => setLocale(value as DemoLocale)}
             />
@@ -205,7 +203,7 @@ export const Toolbar: React.FC = () => {
           <ToolbarDivider />
 
           <Tooltip
-            title={`${getLocaleText(locale, TOOLBAR_TEXT.theme.label)}: ${getLocaleText(locale, TOOLBAR_TEXT.theme.description)}`}
+            title={`${t('toolbarThemeLabel')}: ${t('toolbarThemeDescription')}`}
           >
             <Segmented
               size="small"
@@ -227,15 +225,9 @@ export const Toolbar: React.FC = () => {
           <ToolbarDivider />
 
           <Tooltip
-            title={
-              locale === 'zh-CN'
-                ? isFullscreen
-                  ? '退出全屏'
-                  : '进入全屏'
-                : isFullscreen
-                  ? 'Exit fullscreen'
-                  : 'Enter fullscreen'
-            }
+            title={t(
+              isFullscreen ? 'toolbarFullscreenExit' : 'toolbarFullscreenEnter',
+            )}
           >
             <Button
               icon={

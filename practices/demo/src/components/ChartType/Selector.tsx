@@ -2,13 +2,11 @@ import React, { useMemo, useState } from 'react';
 import { AppstoreOutlined } from '@ant-design/icons';
 import { Button, Popover, Typography, theme } from 'antd';
 import { useVBIChartType } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
-import type { DemoLocale } from 'src/constants/builder';
 import {
-  CHART_TYPE_GROUPS,
+  getChartTypeGroups,
   getChartTypeMeta,
-  getLocaleText,
-  TOOLBAR_TEXT,
 } from 'src/components/Toolbar/config';
 
 const { Text } = Typography;
@@ -18,12 +16,10 @@ const PANEL_CARD_HEIGHT = 64;
 export const ChartTypeSelector = ({
   compact = false,
   showText = true,
-  locale,
   style,
 }: {
   compact?: boolean;
   showText?: boolean;
-  locale: DemoLocale;
   style?: React.CSSProperties;
 }) => {
   const builder = useVBIStore((state) => state.builder);
@@ -31,20 +27,26 @@ export const ChartTypeSelector = ({
     useVBIChartType(builder);
   const [open, setOpen] = useState(false);
   const { token } = theme.useToken();
+  const { t } = useTranslation();
 
   const availableChartTypes = getAvailableChartTypes();
 
   const groupedChartTypes = useMemo(() => {
-    return CHART_TYPE_GROUPS.map((group) => ({
-      ...group,
-      items: availableChartTypes.filter(
-        (type) => getChartTypeMeta(type).group === group.key,
-      ),
-    })).filter((group) => group.items.length > 0);
-  }, [availableChartTypes]);
+    return getChartTypeGroups(t)
+      .map((group) => ({
+        ...group,
+        items: availableChartTypes.filter(
+          (type) => getChartTypeMeta(type, t).group === group.key,
+        ),
+      }))
+      .filter((group) => group.items.length > 0);
+  }, [availableChartTypes, t]);
 
-  const currentChartMeta = getChartTypeMeta(chartType);
-  const triggerTooltip = `${getLocaleText(locale, currentChartMeta.label)}: ${getLocaleText(locale, currentChartMeta.description)}`;
+  const currentChartMeta = useMemo(
+    () => getChartTypeMeta(chartType, t),
+    [chartType, t],
+  );
+  const triggerTooltip = `${currentChartMeta.label}: ${currentChartMeta.description}`;
 
   const handleSelect = (type: string) => {
     changeChartType(type);
@@ -52,9 +54,9 @@ export const ChartTypeSelector = ({
   };
 
   const renderChartCard = (type: string) => {
-    const meta = getChartTypeMeta(type);
+    const meta = getChartTypeMeta(type, t);
     const selected = chartType === type;
-    const tooltipText = `${getLocaleText(locale, meta.label)}: ${getLocaleText(locale, meta.description)}`;
+    const tooltipText = `${meta.label}: ${meta.description}`;
 
     return (
       <button
@@ -108,7 +110,7 @@ export const ChartTypeSelector = ({
             lineHeight: 1.2,
           }}
         >
-          {getLocaleText(locale, meta.label)}
+          {meta.label}
         </span>
       </button>
     );
@@ -125,7 +127,7 @@ export const ChartTypeSelector = ({
     >
       <div style={{ marginBottom: 10 }}>
         <Text strong style={{ fontSize: 13 }}>
-          {getLocaleText(locale, TOOLBAR_TEXT.chartType.panelTitle)}
+          {t('toolbarChartTypePanelTitle')}
         </Text>
       </div>
 
@@ -134,7 +136,7 @@ export const ChartTypeSelector = ({
           <div key={group.key}>
             <div style={{ marginBottom: 6 }}>
               <Text strong style={{ fontSize: 11 }}>
-                {getLocaleText(locale, group.label)}
+                {group.label}
               </Text>
             </div>
             <div
@@ -223,7 +225,7 @@ export const ChartTypeSelector = ({
                   whiteSpace: 'nowrap',
                 }}
               >
-                {getLocaleText(locale, currentChartMeta.label)}
+                {currentChartMeta.label}
               </span>
               {!compact ? (
                 <span
@@ -234,7 +236,7 @@ export const ChartTypeSelector = ({
                     whiteSpace: 'normal',
                   }}
                 >
-                  {getLocaleText(locale, currentChartMeta.description)}
+                  {currentChartMeta.description}
                 </span>
               ) : null}
             </span>

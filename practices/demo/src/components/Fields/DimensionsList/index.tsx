@@ -8,6 +8,7 @@ import {
 } from 'src/components/Shelfs/dnd';
 import { getDefaultDimensionDateAggregate } from 'src/components/Shelfs/dimensionDateAggregateUtils';
 import { useVBIDimensions, useVBISchemaFields } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 
 const DimensionFieldItem = ({
@@ -98,6 +99,7 @@ export const DimensionsList = memo(
   ({ style }: { style?: React.CSSProperties }) => {
     const builder = useVBIStore((state) => state.builder);
     const { token } = theme.useToken();
+    const { t } = useTranslation();
     const { dimensions: shelfDimensions, addDimension } =
       useVBIDimensions(builder);
     const { schemaFields } = useVBISchemaFields(builder);
@@ -106,7 +108,9 @@ export const DimensionsList = memo(
     return (
       <Card
         title={
-          <span style={{ fontSize: 13, fontWeight: 500 }}>Dimensions</span>
+          <span style={{ fontSize: 13, fontWeight: 500 }}>
+            {t('panelsFieldsDimensions')}
+          </span>
         }
         size="small"
         style={{ ...style }}

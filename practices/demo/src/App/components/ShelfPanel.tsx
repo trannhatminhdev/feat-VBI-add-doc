@@ -5,6 +5,7 @@ import {
   MeasureShelf,
   WhereShelf,
 } from 'src/components/Shelfs';
+import { useTranslation } from 'src/i18n';
 import { FilterRootOperatorToggle } from './FilterRootOperatorToggle';
 import { ShelfRow } from './ShelfRow';
 
@@ -16,6 +17,8 @@ const SHELF_STYLE: React.CSSProperties = {
 };
 
 export const ShelfPanel = () => {
+  const { t } = useTranslation();
+
   return (
     <Card
       size="small"
@@ -37,23 +40,23 @@ export const ShelfPanel = () => {
         }}
       >
         <ShelfRow
-          label="Dimensions"
+          label={t('panelsShelvesDimensions')}
           shelf={<DimensionShelf style={SHELF_STYLE} />}
           borderBottom
         />
         <ShelfRow
-          label="Measures"
+          label={t('panelsShelvesMeasures')}
           shelf={<MeasureShelf style={SHELF_STYLE} />}
           borderBottom
         />
         <ShelfRow
-          label="Where"
+          label={t('panelsShelvesWhere')}
           shelf={<WhereShelf showRootOperator={false} style={SHELF_STYLE} />}
           operator={<FilterRootOperatorToggle type="where" />}
           borderBottom
         />
         <ShelfRow
-          label="Having"
+          label={t('panelsShelvesHaving')}
           shelf={<HavingShelf showRootOperator={false} style={SHELF_STYLE} />}
           operator={<FilterRootOperatorToggle type="having" />}
           borderBottom={false}
