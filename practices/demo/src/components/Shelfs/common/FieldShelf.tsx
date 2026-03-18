@@ -21,10 +21,19 @@ const SHELF_ITEM_SPACING = 6;
 export const SHELF_MENU_ITEM_STYLE: React.CSSProperties = {
   minHeight: 32,
   lineHeight: '20px',
-  paddingBlock: 6,
-  paddingInline: 8,
-  marginBlock: 0,
+  margin: 0,
   borderRadius: 0,
+  width: '100%',
+  boxSizing: 'border-box',
+};
+
+export const SHELF_MENU_SUBMENU_TITLE_STYLE: React.CSSProperties = {
+  minHeight: 32,
+  lineHeight: '20px',
+  margin: 0,
+  borderRadius: 0,
+  width: '100%',
+  boxSizing: 'border-box',
 };
 
 export type FieldShelfTone = ShelfTone;
@@ -204,6 +213,9 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
               minWidth: 124,
               padding: '8px 0',
               borderRadius: token.borderRadiusLG,
+            },
+            styles: {
+              itemTitle: SHELF_MENU_SUBMENU_TITLE_STYLE,
             },
           }}
           overlayStyle={{

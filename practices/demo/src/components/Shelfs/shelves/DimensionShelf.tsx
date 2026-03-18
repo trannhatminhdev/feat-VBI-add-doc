@@ -166,7 +166,6 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       items.push({
         key: 'aggregate',
         label: t('shelvesMenuDateAggregate'),
-        style: SHELF_MENU_ITEM_STYLE,
         children: [
           ...getDimensionDateAggregateItems(t).map((item) => ({
             key: `aggregate:${item.key}`,

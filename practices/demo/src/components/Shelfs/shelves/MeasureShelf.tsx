@@ -149,7 +149,6 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
           label: `${currentAggregateKey === 'quantile' ? '✓ ' : ''}${t(
             'shelvesMenuQuantile',
           )}`,
-          style: SHELF_MENU_ITEM_STYLE,
           children: QUANTILE_PERCENT_OPTIONS.map((percent) => ({
             key: `aggregate:quantile:${percent}`,
             label: `${currentQuantilePercent === percent ? '✓ ' : ''}P${percent}`,
@@ -162,7 +161,6 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       {
         key: 'aggregate',
         label: t('shelvesMenuAggregate'),
-        style: SHELF_MENU_ITEM_STYLE,
         children: aggregateMenuItems,
       },
       {
