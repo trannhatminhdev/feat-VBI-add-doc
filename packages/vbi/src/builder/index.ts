@@ -1,5 +1,6 @@
-export { VBIBuilder } from './vbi-builder'
+export { VBIBuilder } from './builder'
 export { VBI } from '../vbi'
+export * from './adapters'
 export {
   MeasuresBuilder,
   DimensionsBuilder,
