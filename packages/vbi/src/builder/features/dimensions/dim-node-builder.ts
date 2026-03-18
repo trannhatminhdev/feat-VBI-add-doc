@@ -40,6 +40,14 @@ export class DimensionNodeBuilder {
   }
 
   /**
+   * @description 清除日期聚合函数
+   */
+  clearAggregate(): this {
+    this.yMap.delete('aggregate')
+    return this
+  }
+
+  /**
    * @description 导出为 JSON
    */
   toJSON(): VBIDimension {

@@ -1,6 +1,5 @@
 import type { MenuProps } from 'antd';
 import { message } from 'antd';
-import { useMemo } from 'react';
 import { useVBIMeasures, useVBISchemaFields } from 'src/hooks';
 import { useVBIStore } from 'src/model';
 import {
@@ -42,17 +41,11 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
   const { measures, addMeasure, removeMeasure, updateMeasure } =
     useVBIMeasures(builder);
-  const { schemaFields } = useVBISchemaFields(builder);
-
-  const schemaTypeMap = useMemo(() => {
-    return Object.fromEntries(
-      schemaFields.map((item) => [item.name, item.type]),
-    );
-  }, [schemaFields]);
+  const { fieldTypeMap } = useVBISchemaFields(builder);
 
   const getFieldRole = (fieldName: string, fieldType?: string) => {
     return getMeasureFieldRoleBySchemaType(
-      fieldType ?? schemaTypeMap[fieldName],
+      fieldType ?? fieldTypeMap[fieldName],
     );
   };
 
@@ -246,7 +239,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       getDisplayLabel={getMeasureDisplayLabel}
       getItemPayload={(item) => ({
         field: item.field,
-        type: schemaTypeMap[item.field],
+        type: fieldTypeMap[item.field],
         role: getFieldRole(item.field),
       })}
       buildMenuItems={buildMeasureMenuItems}

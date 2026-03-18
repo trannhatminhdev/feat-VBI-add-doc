@@ -1,11 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { VBIBuilder } from '@visactor/vbi';
-import { getFieldRoleBySchemaType, type FieldRole } from 'src/utils/fieldRole';
+import {
+  getFieldRoleBySchemaType,
+  isDateSchemaType,
+  type FieldRole,
+} from 'src/utils/fieldRole';
 
 export interface VBISchemaField {
   name: string;
   type: string;
   role: FieldRole;
+  isDate: boolean;
 }
 
 const EMPTY_SCHEMA: VBISchemaField[] = [];
@@ -33,6 +38,7 @@ export const useVBISchemaFields = (builder: VBIBuilder | undefined) => {
           name: item.name,
           type: item.type,
           role: getFieldRoleBySchemaType(item.type),
+          isDate: isDateSchemaType(item.type),
         })),
       );
     };
@@ -50,8 +56,15 @@ export const useVBISchemaFields = (builder: VBIBuilder | undefined) => {
     ) as Record<string, FieldRole>;
   }, [schemaFields]);
 
+  const fieldTypeMap = useMemo(() => {
+    return Object.fromEntries(
+      schemaFields.map((item) => [item.name, item.type]),
+    ) as Record<string, string>;
+  }, [schemaFields]);
+
   return {
     schemaFields,
     fieldRoleMap,
+    fieldTypeMap,
   };
 };

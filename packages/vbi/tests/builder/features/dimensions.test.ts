@@ -271,6 +271,18 @@ describe('DimensionsBuilder', () => {
     expect(builder.dimensions.toJSON()[0].aggregate).toEqual({ func: 'toYear' })
   })
 
+  test('DimensionNodeBuilder clearAggregate', () => {
+    const dsl = {
+      dimensions: [{ field: 'order_date', alias: '订单日期', aggregate: { func: 'toMonth' } }],
+    } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    const node = builder.dimensions.find((node) => node.getId() === 'id-1')
+    node?.clearAggregate()
+
+    expect(builder.dimensions.toJSON()[0].aggregate).toBeUndefined()
+  })
+
   test('DimensionNodeBuilder toJSON', () => {
     const dsl = {
       dimensions: [{ field: 'order_date', alias: '订单日期', aggregate: { func: 'toMonth' } }],

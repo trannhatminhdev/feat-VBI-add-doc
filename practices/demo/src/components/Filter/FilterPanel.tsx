@@ -45,6 +45,8 @@ export interface FilterItem {
 export interface FilterField {
   name: string;
   role: 'dimension' | 'measure';
+  type?: string;
+  isDate?: boolean;
 }
 
 interface FilterPanelProps {
@@ -61,6 +63,18 @@ interface FilterPanelProps {
   open?: boolean;
   fixedField?: string;
 }
+
+const getFieldRoleLabel = (field: FilterField) => {
+  if (field.role === 'measure') {
+    return '度量';
+  }
+
+  if (field.isDate) {
+    return '日期维度';
+  }
+
+  return '维度';
+};
 
 export const FilterPanel: React.FC<FilterPanelProps> = ({
   fields,
@@ -362,8 +376,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                       isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
                     }
                   >
-                    {f.name} ({f.role === 'measure' ? '度量' : '维度'}){' '}
-                    {isActive ? '(推荐)' : ''}
+                    {f.name} ({getFieldRoleLabel(f)}) {isActive ? '(推荐)' : ''}
                   </span>
                 </Option>
               );

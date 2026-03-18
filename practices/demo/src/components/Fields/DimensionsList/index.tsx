@@ -6,6 +6,7 @@ import {
   createSchemaFieldDragId,
   type SchemaFieldDragData,
 } from 'src/components/Shelfs/dnd';
+import { getDefaultDimensionDateAggregate } from 'src/components/Shelfs/dimensionDateAggregateUtils';
 import { useVBIDimensions, useVBISchemaFields } from 'src/hooks';
 import { useVBIStore } from 'src/model';
 
@@ -129,7 +130,11 @@ export const DimensionsList = memo(
                 fieldType={item.type}
                 onClick={() => {
                   if (!shelfDimensions.some((d) => d.field === item.name)) {
-                    addDimension(item.name);
+                    addDimension(item.name, (node) => {
+                      if (item.isDate) {
+                        node.setAggregate(getDefaultDimensionDateAggregate());
+                      }
+                    });
                   }
                 }}
               />

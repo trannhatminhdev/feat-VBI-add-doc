@@ -53,6 +53,8 @@ export interface HavingItem {
 export interface HavingField {
   name: string;
   role: 'dimension' | 'measure';
+  type?: string;
+  isDate?: boolean;
 }
 
 interface HavingFilterPanelProps {
@@ -91,6 +93,18 @@ const getFieldRole = (
     return 'measure';
   }
   return fields.find((field) => field.name === fieldName)?.role ?? 'measure';
+};
+
+const getFieldRoleLabel = (field: HavingField) => {
+  if (field.role === 'measure') {
+    return '度量';
+  }
+
+  if (field.isDate) {
+    return '日期维度';
+  }
+
+  return '维度';
 };
 
 export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
@@ -563,7 +577,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
                       isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
                     }
                   >
-                    {field.name} ({field.role === 'measure' ? '度量' : '维度'}){' '}
+                    {field.name} ({getFieldRoleLabel(field)}){' '}
                     {isActive ? '(推荐)' : ''}
                   </span>
                 </Option>

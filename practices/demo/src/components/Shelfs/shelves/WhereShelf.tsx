@@ -44,7 +44,8 @@ export const WhereShelf = ({
 }) => {
   const builder = useVBIStore((state) => state.builder);
   const { flattenFilters } = useVBIWhereFilter(builder);
-  const { schemaFields, fieldRoleMap } = useVBISchemaFields(builder);
+  const { schemaFields, fieldRoleMap, fieldTypeMap } =
+    useVBISchemaFields(builder);
   const { operator, setOperator } = useFilterRootOperator({
     builder,
     type: 'where',
@@ -54,13 +55,9 @@ export const WhereShelf = ({
     return schemaFields.map((field) => ({
       name: field.name,
       role: field.role,
+      type: field.type,
+      isDate: field.isDate,
     }));
-  }, [schemaFields]);
-
-  const schemaTypeMap = useMemo(() => {
-    return Object.fromEntries(
-      schemaFields.map((item) => [item.name, item.type]),
-    );
   }, [schemaFields]);
 
   const whereFilterItems = useMemo((): WhereShelfItem[] => {
@@ -158,7 +155,7 @@ export const WhereShelf = ({
       getDisplayText={getWhereDisplayText}
       getItemPayload={(item) => ({
         field: item.field,
-        type: schemaTypeMap[item.field],
+        type: fieldTypeMap[item.field],
         role: fieldRoleMap[item.field] ?? 'dimension',
       })}
       onAddFieldAt={(payload, insertIndex) => {

@@ -1,15 +1,16 @@
 import { useCallback } from 'react';
-import { VBIBuilder } from '@visactor/vbi';
+import {
+  VBIBuilder,
+  type VBIDimension as CoreVBIDimension,
+} from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
 
-export interface VBIDimension {
-  id: string;
-  field: string;
-  alias: string;
-}
+export type VBIDimension = CoreVBIDimension;
 
 type DimensionNodeLike = {
   setAlias: (alias: string) => unknown;
+  setAggregate: (aggregate: NonNullable<VBIDimension['aggregate']>) => unknown;
+  clearAggregate?: () => unknown;
 };
 type DimensionNodeMutator = (node: DimensionNodeLike) => void;
 const EMPTY_DIMENSIONS: VBIDimension[] = [];
