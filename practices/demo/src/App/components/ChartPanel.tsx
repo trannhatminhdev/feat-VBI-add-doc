@@ -11,13 +11,18 @@ export const ChartPanel = () => {
   return (
     <Card
       loading={loading}
+      style={{
+        minWidth: 0,
+      }}
       styles={{
         root: {
           height: '100%',
+          minWidth: 0,
         },
         body: {
           padding: '12px',
           height: '100%',
+          minWidth: 0,
         },
       }}
     >

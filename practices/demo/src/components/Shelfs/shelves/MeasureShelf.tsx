@@ -17,7 +17,10 @@ import {
   isAggregateSupportedByFieldRole,
   type MeasureAggregate,
 } from '../utils/measureAggregateUtils';
-import { reorderYArray, type YArrayLike } from '../utils/reorderUtils';
+import {
+  reorderYArrayByInsertIndex,
+  type YArrayLike,
+} from '../utils/reorderUtils';
 import { getNextFieldDuplicateName } from '../utils/shelfNameUtils';
 
 const QUANTILE_PERCENT_OPTIONS = [1, 5, 25, 50, 75, 90, 95, 99] as const;
@@ -53,7 +56,13 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     );
   };
 
-  const addDraggedFieldToShelf = (fieldName: string, fieldType?: string) => {
+  const addFieldAt = (params: {
+    fieldName: string;
+    fieldType?: string;
+    insertIndex: number;
+  }) => {
+    const { fieldName, fieldType, insertIndex } = params;
+    const originalLength = measures.length;
     const nextName = getNextFieldDuplicateName({
       field: fieldName,
       items: measures,
@@ -68,7 +77,20 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       }
     });
 
-    return true;
+    if (insertIndex < originalLength) {
+      const yMeasures = builder.dsl.get('measures') as YArrayLike | undefined;
+      if (!yMeasures) {
+        return;
+      }
+
+      builder.doc.transact(() => {
+        reorderYArrayByInsertIndex({
+          yArray: yMeasures,
+          dragIndex: originalLength,
+          insertIndex,
+        });
+      });
+    }
   };
 
   const renameMeasure = (id: string, alias: string) => {
@@ -215,29 +237,44 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
 
   return (
     <FieldShelf
+      shelf="measures"
       items={measures}
       placeholder="拖拽度量/维度到此处"
       tone={MEASURE_SHELF_TONE}
       style={style}
       maxLabelWidth={112}
       getDisplayLabel={getMeasureDisplayLabel}
+      getItemPayload={(item) => ({
+        field: item.field,
+        type: schemaTypeMap[item.field],
+        role: getFieldRole(item.field),
+      })}
       buildMenuItems={buildMeasureMenuItems}
       onMenuClick={handleMeasureMenuClick}
       onRemove={removeMeasure}
-      onAddFromPayload={(payload) => {
+      onAddFieldAt={(payload, insertIndex) => {
         if (!payload.field) {
-          return false;
+          return;
         }
-        return addDraggedFieldToShelf(payload.field, payload.type);
+
+        addFieldAt({
+          fieldName: payload.field,
+          fieldType: payload.type,
+          insertIndex,
+        });
       }}
-      onReorder={(dragIndex, dropIndex) => {
+      onReorder={(dragIndex, insertIndex) => {
         const yMeasures = builder.dsl.get('measures') as YArrayLike | undefined;
         if (!yMeasures) {
           return;
         }
 
         builder.doc.transact(() => {
-          reorderYArray({ yArray: yMeasures, dragIndex, dropIndex });
+          reorderYArrayByInsertIndex({
+            yArray: yMeasures,
+            dragIndex,
+            insertIndex,
+          });
         });
       }}
     />

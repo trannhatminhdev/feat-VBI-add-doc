@@ -19,6 +19,10 @@ import { useVBIStore } from 'src/model';
 import type { FieldRole } from 'src/utils/fieldRole';
 import { FilterShelf, type FilterShelfTone } from '../common/FilterShelf';
 import { useFilterRootOperator } from '../hooks/useFilterRootOperator';
+import {
+  reorderYArrayByInsertIndex,
+  type YArrayLike,
+} from '../utils/reorderUtils';
 
 type HavingShelfItem = HavingItem & {
   id: string;
@@ -96,9 +100,38 @@ export const HavingShelf = ({
     }));
   }, [schemaFields]);
 
+  const schemaTypeMap = useMemo(() => {
+    return Object.fromEntries(
+      schemaFields.map((item) => [item.name, item.type]),
+    );
+  }, [schemaFields]);
+
   const havingFilterItems = useMemo(() => {
     return flattenHavingFilters(havingFilterClauses, fieldRoleMap);
   }, [havingFilterClauses, fieldRoleMap]);
+
+  const reorderHavingFilters = useCallback(
+    (dragIndex: number, insertIndex: number) => {
+      const havingRoot = builder.dsl.get('havingFilter') as
+        | { get: (key: string) => unknown }
+        | undefined;
+      const conditions = havingRoot?.get('conditions') as
+        | YArrayLike
+        | undefined;
+      if (!conditions) {
+        return;
+      }
+
+      builder.doc.transact(() => {
+        reorderYArrayByInsertIndex({
+          yArray: conditions,
+          dragIndex,
+          insertIndex,
+        });
+      });
+    },
+    [builder],
+  );
 
   const handleHavingFilterAdd = useCallback(
     (item: HavingItem) => {
@@ -179,9 +212,10 @@ export const HavingShelf = ({
 
   return (
     <FilterShelf
+      shelf="having"
       items={havingFilterItems}
       style={style}
-      placeholder="拖拽字段到此处（支持维度/度量）"
+      placeholder="拖拽字段到此处"
       tone={HAVING_SHELF_TONE}
       maxLabelWidth={124}
       showRootOperator={showRootOperator}
@@ -189,11 +223,17 @@ export const HavingShelf = ({
       rootOperatorColors={HAVING_ROOT_OPERATOR_COLORS}
       onRootOperatorChange={setOperator}
       getDisplayText={getHavingDisplayText}
-      onDropField={(payload) => {
+      getItemPayload={(item) => ({
+        field: item.field,
+        type: schemaTypeMap[item.field],
+        role: fieldRoleMap[item.field] ?? 'measure',
+      })}
+      onAddFieldAt={(payload, insertIndex) => {
         if (!payload.field) {
           return;
         }
 
+        const currentLength = havingFilterItems.length;
         const defaultAggregate = getDefaultHavingAggregateByFieldRole(
           payload.role,
         );
@@ -208,7 +248,12 @@ export const HavingShelf = ({
           operator: defaultOperator,
           value: undefined,
         });
+
+        if (insertIndex < currentLength) {
+          reorderHavingFilters(currentLength, insertIndex);
+        }
       }}
+      onReorder={reorderHavingFilters}
       onRemove={(id) => {
         if (id.startsWith('temp_')) {
           return;

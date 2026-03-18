@@ -11,14 +11,17 @@ import { ShelfRow } from './ShelfRow';
 const SHELF_STYLE: React.CSSProperties = {
   minHeight: 38,
   height: 38,
-  flex: '0 0 calc(100% - 90px)',
-  width: '0 0 calc(100% - 90px)',
+  flex: '1 1 0',
+  minWidth: 0,
 };
 
 export const ShelfPanel = () => {
   return (
     <Card
       size="small"
+      style={{
+        minWidth: 0,
+      }}
       styles={{
         body: {
           padding: 0,
@@ -30,6 +33,7 @@ export const ShelfPanel = () => {
         gap={0}
         style={{
           padding: 0,
+          minWidth: 0,
         }}
       >
         <ShelfRow

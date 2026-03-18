@@ -1,8 +1,8 @@
 import { Flex } from 'antd';
 
 const LABEL_CONTAINER_STYLE: React.CSSProperties = {
-  width: 80,
-  minWidth: 80,
+  width: 90,
+  minWidth: 90,
   paddingLeft: 12,
   boxSizing: 'border-box',
 };
@@ -30,6 +30,8 @@ export const ShelfRow = ({
       justify="space-between"
       style={{
         minHeight: 38,
+        minWidth: 0,
+        width: '100%',
         borderBottom: borderBottom ? '1px solid #f0f0f0' : 'none',
       }}
     >
@@ -41,7 +43,15 @@ export const ShelfRow = ({
         <div style={LABEL_TEXT_STYLE}>{label}</div>
         {operator}
       </Flex>
-      {shelf}
+      <Flex
+        style={{
+          paddingLeft: 12,
+          flex: '1 1 0',
+          minWidth: 0,
+        }}
+      >
+        {shelf}
+      </Flex>
     </Flex>
   );
 };

@@ -1,33 +1,29 @@
+import { useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 import { CloseOutlined, DownOutlined } from '@ant-design/icons';
-import { Dropdown, Flex, Typography, type MenuProps } from 'antd';
-import { useState } from 'react';
+import { Dropdown, Typography, type MenuProps } from 'antd';
+import { useMemo, useState } from 'react';
 import {
-  readFieldDragPayload,
-  readShelfDragIndex,
-  writeShelfDragIndex,
-  type FieldDragPayload,
-} from '../utils/dragDropUtils';
+  ShelfItemDropZones,
+  createShelfItemDragId,
+  type ShelfFieldPayload,
+  type ShelfItemDragData,
+  type ShelfType,
+  useShelfDndRegistration,
+  useShelfItemDropTargets,
+} from '../dnd';
+import { ShelfTrack, type ShelfTone } from './ShelfTrack';
 
 const REMOVE_ICON_DEFAULT_COLOR = '#8c8c8c';
 const REMOVE_ICON_HOVER_COLOR = '#ff4d4f';
+const SHELF_ITEM_SPACING = 8;
 
 export const SHELF_MENU_ITEM_STYLE: React.CSSProperties = {
   height: 30,
   lineHeight: '30px',
 };
 
-export type FieldShelfTone = {
-  dragOverBackground: string;
-  dragOverBorder: string;
-  itemBackground: string;
-  itemHoverBackground: string;
-  itemBorder: string;
-  itemHoverBorder: string;
-  textColor: string;
-  iconBackground: string;
-  iconHoverBackground: string;
-  iconColor: string;
-};
+export type FieldShelfTone = ShelfTone;
 
 type FieldShelfItem = {
   id: string;
@@ -36,50 +32,28 @@ type FieldShelfItem = {
 };
 
 type FieldShelfProps<TItem extends FieldShelfItem> = {
+  shelf: ShelfType;
   items: TItem[];
   placeholder: string;
   tone: FieldShelfTone;
   style?: React.CSSProperties;
   maxLabelWidth?: number;
   getDisplayLabel?: (item: TItem) => string;
+  getItemPayload: (item: TItem) => ShelfFieldPayload;
   buildMenuItems: (item: TItem) => MenuProps['items'];
   onMenuClick: (item: TItem, key: string) => void;
   onRemove: (id: string) => void;
-  onAddFromPayload: (payload: FieldDragPayload) => boolean;
-  onReorder: (dragIndex: number, dropIndex: number) => void;
-};
-
-const getContainerStyle = (params: {
-  isDragOver: boolean;
-  tone: FieldShelfTone;
-  style?: React.CSSProperties;
-}): React.CSSProperties => {
-  const { isDragOver, tone, style } = params;
-
-  return {
-    flexBasis: 300,
-    minHeight: 30,
-    height: 30,
-    border: 'none',
-    borderRadius: 6,
-    padding: '1px 0',
-    backgroundColor: isDragOver ? tone.dragOverBackground : 'transparent',
-    boxShadow: isDragOver ? `inset 0 0 0 1px ${tone.dragOverBorder}` : 'none',
-    transition: 'all 0.2s',
-    alignItems: 'center',
-    flexWrap: 'nowrap',
-    overflowX: 'auto',
-    overflowY: 'hidden',
-    scrollbarWidth: 'thin',
-    ...style,
-  };
+  onAddFieldAt: (payload: ShelfFieldPayload, insertIndex: number) => void;
+  onReorder: (dragIndex: number, insertIndex: number) => void;
 };
 
 const getItemStyle = (params: {
   isHovered: boolean;
+  isDragging: boolean;
   tone: FieldShelfTone;
+  transform: string | undefined;
 }): React.CSSProperties => {
-  const { isHovered, tone } = params;
+  const { isHovered, isDragging, tone, transform } = params;
 
   return {
     display: 'inline-flex',
@@ -91,12 +65,15 @@ const getItemStyle = (params: {
       ? `1px solid ${tone.itemHoverBorder}`
       : `1px solid ${tone.itemBorder}`,
     borderRadius: 6,
-    cursor: 'grab',
+    cursor: isDragging ? 'grabbing' : 'grab',
     fontSize: 10,
     color: tone.textColor,
     height: 22,
     flexShrink: 0,
     transition: 'all 0.2s',
+    opacity: isDragging ? 0 : 1,
+    visibility: isDragging ? 'hidden' : 'visible',
+    transform,
   };
 };
 
@@ -119,181 +96,228 @@ const getIconStyle = (params: {
   };
 };
 
+const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
+  shelf: ShelfType;
+  item: TItem;
+  index: number;
+  displayLabel: string;
+  tone: FieldShelfTone;
+  maxLabelWidth: number;
+  isHovered: boolean;
+  setHoveredItemId: (id: string | null) => void;
+  payload: ShelfFieldPayload;
+  buildMenuItems: (item: TItem) => MenuProps['items'];
+  onMenuClick: (item: TItem, key: string) => void;
+  onRemove: (id: string) => void;
+}) => {
+  const {
+    shelf,
+    item,
+    index,
+    displayLabel,
+    tone,
+    maxLabelWidth,
+    isHovered,
+    setHoveredItemId,
+    payload,
+    buildMenuItems,
+    onMenuClick,
+    onRemove,
+  } = props;
+
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: createShelfItemDragId(shelf, item.id),
+      data: {
+        kind: 'shelf-item',
+        shelf,
+        itemId: item.id,
+        index,
+        payload,
+        label: displayLabel,
+      } satisfies ShelfItemDragData,
+    });
+  const dropTargets = useShelfItemDropTargets({
+    shelf,
+    index,
+  });
+
+  return (
+    <div
+      style={{
+        position: 'relative',
+        display: 'inline-flex',
+        flexShrink: 0,
+        paddingRight: SHELF_ITEM_SPACING,
+      }}
+    >
+      <ShelfItemDropZones
+        color={tone.iconColor}
+        beforeRef={dropTargets.before.setNodeRef}
+        afterRef={dropTargets.after.setNodeRef}
+        isBeforeOver={dropTargets.before.isOver}
+        isAfterOver={dropTargets.after.isOver}
+      />
+      <div
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners}
+        onMouseEnter={() => setHoveredItemId(item.id)}
+        onMouseLeave={() => setHoveredItemId(null)}
+        style={getItemStyle({
+          isHovered: isHovered || dropTargets.isOver,
+          isDragging,
+          tone,
+          transform: isDragging ? undefined : CSS.Translate.toString(transform),
+        })}
+      >
+        <Dropdown
+          trigger={['click']}
+          placement="bottom"
+          arrow={{ pointAtCenter: true }}
+          menu={{
+            items: buildMenuItems(item),
+            onClick: ({ key, domEvent }) => {
+              domEvent.stopPropagation();
+              onMenuClick(item, String(key));
+            },
+            style: {
+              fontSize: 12,
+              minWidth: 98,
+              paddingBlock: 2,
+            },
+          }}
+        >
+          <span
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              cursor: 'pointer',
+              flex: '1 1 auto',
+              minWidth: 0,
+              justifyContent: 'center',
+            }}
+          >
+            <span
+              style={getIconStyle({
+                isHovered,
+                tone,
+              })}
+            >
+              <DownOutlined style={{ fontSize: 8 }} />
+            </span>
+            <Typography.Text
+              ellipsis={{ tooltip: displayLabel }}
+              style={{
+                maxWidth: maxLabelWidth,
+                marginBottom: 0,
+                color: 'inherit',
+                fontSize: 10,
+              }}
+            >
+              {displayLabel}
+            </Typography.Text>
+          </span>
+        </Dropdown>
+        <CloseOutlined
+          onClick={(event) => {
+            event.stopPropagation();
+            onRemove(item.id);
+          }}
+          style={{
+            fontSize: 9,
+            cursor: 'pointer',
+            color: REMOVE_ICON_DEFAULT_COLOR,
+          }}
+          onMouseEnter={(event) => {
+            event.currentTarget.style.color = REMOVE_ICON_HOVER_COLOR;
+          }}
+          onMouseLeave={(event) => {
+            event.currentTarget.style.color = REMOVE_ICON_DEFAULT_COLOR;
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
 export const FieldShelf = <TItem extends FieldShelfItem>(
   props: FieldShelfProps<TItem>,
 ) => {
   const {
+    shelf,
     items,
     placeholder,
     tone,
     style,
     maxLabelWidth = 112,
     getDisplayLabel,
+    getItemPayload,
     buildMenuItems,
     onMenuClick,
     onRemove,
-    onAddFromPayload,
+    onAddFieldAt,
     onReorder,
   } = props;
 
-  const [isDragOver, setIsDragOver] = useState(false);
   const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
 
-  const handleDropOnItem = (event: React.DragEvent, dropIndex: number) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setIsDragOver(false);
+  const dndItems = useMemo(() => {
+    return items.map((item) => ({
+      id: item.id,
+      payload: getItemPayload(item),
+    }));
+  }, [getItemPayload, items]);
 
-    const payload = readFieldDragPayload(event);
-    if (payload && onAddFromPayload(payload)) {
-      return;
-    }
+  const dndAdapter = useMemo(() => {
+    return {
+      shelf,
+      items: dndItems,
+      addFieldAt: onAddFieldAt,
+      removeItem: onRemove,
+      reorderWithin: onReorder,
+    };
+  }, [dndItems, onAddFieldAt, onRemove, onReorder, shelf]);
 
-    const dragIndex = readShelfDragIndex(event);
-    if (dragIndex === undefined || dragIndex === dropIndex) {
-      return;
-    }
-
-    onReorder(dragIndex, dropIndex);
-  };
-
-  const handleContainerDrop = (event: React.DragEvent) => {
-    event.preventDefault();
-    setIsDragOver(false);
-
-    const payload = readFieldDragPayload(event);
-    if (!payload) {
-      return;
-    }
-
-    onAddFromPayload(payload);
-  };
+  useShelfDndRegistration(dndAdapter);
 
   return (
-    <Flex
-      vertical={false}
-      gap={6}
-      onDrop={handleContainerDrop}
-      onDragOver={(event) => {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = 'copy';
-        setIsDragOver(true);
-      }}
-      onDragLeave={() => setIsDragOver(false)}
-      style={getContainerStyle({
-        isDragOver,
-        tone,
-        style,
-      })}
+    <ShelfTrack
+      shelf={shelf}
+      itemsCount={items.length}
+      placeholder={placeholder}
+      tone={tone}
+      style={style}
     >
-      {items.length === 0 && (
-        <span
-          style={{
-            color: '#bbb',
-            fontSize: 12,
-            padding: '2px 8px',
-            flexShrink: 0,
-          }}
-        >
-          {placeholder}
-        </span>
-      )}
       {items.map((item, index) => {
+        const payload = getItemPayload(item);
         const displayLabel = getDisplayLabel
           ? getDisplayLabel(item)
           : item.alias || item.field;
         const isHovered = hoveredItemId === item.id;
 
         return (
-          <div
+          <FieldShelfTag
             key={item.id}
-            draggable
-            onDragStart={(event) => writeShelfDragIndex(event, index)}
-            onDragOver={(event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              event.dataTransfer.dropEffect = 'move';
-            }}
-            onDrop={(event) => handleDropOnItem(event, index)}
-            onMouseEnter={() => setHoveredItemId(item.id)}
-            onMouseLeave={() => setHoveredItemId(null)}
-            style={getItemStyle({
-              isHovered,
-              tone,
-            })}
-          >
-            <Dropdown
-              trigger={['click']}
-              placement="bottom"
-              arrow={{ pointAtCenter: true }}
-              menu={{
-                items: buildMenuItems(item),
-                onClick: ({ key, domEvent }) => {
-                  domEvent.stopPropagation();
-                  onMenuClick(item, String(key));
-                },
-                style: {
-                  fontSize: 12,
-                  minWidth: 98,
-                  paddingBlock: 2,
-                },
-              }}
-            >
-              <span
-                onClick={(event) => {
-                  event.stopPropagation();
-                }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 4,
-                  cursor: 'pointer',
-                  flex: '1 1 auto',
-                  minWidth: 0,
-                  justifyContent: 'center',
-                }}
-              >
-                <span
-                  style={getIconStyle({
-                    isHovered,
-                    tone,
-                  })}
-                >
-                  <DownOutlined style={{ fontSize: 8 }} />
-                </span>
-                <Typography.Text
-                  ellipsis={{ tooltip: displayLabel }}
-                  style={{
-                    maxWidth: maxLabelWidth,
-                    marginBottom: 0,
-                    color: 'inherit',
-                    fontSize: 10,
-                  }}
-                >
-                  {displayLabel}
-                </Typography.Text>
-              </span>
-            </Dropdown>
-            <CloseOutlined
-              onClick={(event) => {
-                event.stopPropagation();
-                onRemove(item.id);
-              }}
-              style={{
-                fontSize: 9,
-                cursor: 'pointer',
-                color: REMOVE_ICON_DEFAULT_COLOR,
-              }}
-              onMouseEnter={(event) => {
-                event.currentTarget.style.color = REMOVE_ICON_HOVER_COLOR;
-              }}
-              onMouseLeave={(event) => {
-                event.currentTarget.style.color = REMOVE_ICON_DEFAULT_COLOR;
-              }}
-            />
-          </div>
+            shelf={shelf}
+            item={item}
+            index={index}
+            displayLabel={displayLabel}
+            tone={tone}
+            maxLabelWidth={maxLabelWidth}
+            isHovered={isHovered}
+            setHoveredItemId={setHoveredItemId}
+            payload={payload}
+            buildMenuItems={buildMenuItems}
+            onMenuClick={onMenuClick}
+            onRemove={onRemove}
+          />
         );
       })}
-    </Flex>
+    </ShelfTrack>
   );
 };

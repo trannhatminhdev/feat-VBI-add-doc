@@ -1,33 +1,93 @@
+import { useDraggable } from '@dnd-kit/core';
 import { Card, Flex } from 'antd';
 import { NumberOutlined } from '@ant-design/icons';
+import {
+  createSchemaFieldDragId,
+  type SchemaFieldDragData,
+} from 'src/components/Shelfs/dnd';
 import { useVBIMeasures, useVBISchemaFields } from 'src/hooks';
 import { useVBIStore } from 'src/model';
-import {
-  createFieldDragPayload,
-  writeFieldDragPayload,
-} from 'src/components/Shelfs/dragDropUtils';
+
+const MeasureFieldItem = ({
+  fieldName,
+  fieldType,
+  onClick,
+}: {
+  fieldName: string;
+  fieldType: string;
+  onClick: () => void;
+}) => {
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: createSchemaFieldDragId({
+      field: fieldName,
+      role: 'measure',
+    }),
+    data: {
+      kind: 'schema-field',
+      payload: {
+        field: fieldName,
+        type: fieldType,
+        role: 'measure',
+      },
+      label: fieldName,
+    } satisfies SchemaFieldDragData,
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      onClick={onClick}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        padding: '4px 8px',
+        cursor: 'grab',
+        borderRadius: '4px',
+        transition: 'all 0.2s',
+        fontSize: 12,
+        color: '#333',
+        opacity: isDragging ? 0.5 : 1,
+      }}
+      onMouseEnter={(event) => {
+        event.currentTarget.style.backgroundColor = 'rgba(82, 196, 26, 0.1)';
+        event.currentTarget.style.color = '#52c41a';
+      }}
+      onMouseLeave={(event) => {
+        event.currentTarget.style.backgroundColor = 'transparent';
+        event.currentTarget.style.color = '#333';
+      }}
+    >
+      <span
+        style={{
+          marginRight: 6,
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <NumberOutlined style={{ color: '#52c41a', fontSize: 12 }} />
+      </span>
+      <span
+        style={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          fontSize: 12,
+        }}
+      >
+        {fieldName}
+      </span>
+    </div>
+  );
+};
 
 export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
   const { measures: shelfMeasures, addMeasure } = useVBIMeasures(builder);
   const { schemaFields } = useVBISchemaFields(builder);
   const measures = schemaFields.filter((d) => d.role === 'measure');
-
-  // 处理拖拽开始
-  const handleDragStart = (
-    e: React.DragEvent,
-    fieldName: string,
-    fieldType: string,
-  ) => {
-    writeFieldDragPayload(
-      e,
-      createFieldDragPayload({
-        field: fieldName,
-        type: fieldType,
-        role: 'measure',
-      }),
-    );
-  };
 
   return (
     <Card
@@ -55,56 +115,15 @@ export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
             key={`measure-field-${item.name}`}
             style={{ padding: 0, marginBottom: 0 }}
           >
-            <div
-              draggable
-              onDragStart={(e) => handleDragStart(e, item.name, item.type)}
+            <MeasureFieldItem
+              fieldName={item.name}
+              fieldType={item.type}
               onClick={() => {
-                // 检查是否已存在
                 if (!shelfMeasures.some((m) => m.field === item.name)) {
                   addMeasure(item.name);
                 }
               }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-                padding: '4px 8px',
-                cursor: 'grab',
-                borderRadius: '4px',
-                transition: 'all 0.2s',
-                fontSize: 12,
-                color: '#333',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  'rgba(82, 196, 26, 0.1)';
-                e.currentTarget.style.color = '#52c41a';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = '#333';
-              }}
-            >
-              <span
-                style={{
-                  marginRight: 6,
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <NumberOutlined style={{ color: '#52c41a', fontSize: 12 }} />
-              </span>
-              <span
-                style={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  fontSize: 12,
-                }}
-              >
-                {item.name}
-              </span>
-            </div>
+            />
           </div>
         ))}
       </Flex>

@@ -1,13 +1,18 @@
 import type { MenuProps } from 'antd';
-import { useVBIDimensions } from 'src/hooks';
+import { useMemo } from 'react';
+import { useVBIDimensions, useVBISchemaFields } from 'src/hooks';
 import { useVBIStore } from 'src/model';
+import { getFieldRoleBySchemaType } from 'src/utils/fieldRole';
 import {
   FieldShelf,
   SHELF_MENU_ITEM_STYLE,
   type FieldShelfTone,
 } from '../common/FieldShelf';
 import { openShelfRenameModal } from '../common/openShelfRenameModal';
-import { reorderYArray, type YArrayLike } from '../utils/reorderUtils';
+import {
+  reorderYArrayByInsertIndex,
+  type YArrayLike,
+} from '../utils/reorderUtils';
 import { getNextFieldDuplicateName } from '../utils/shelfNameUtils';
 
 const DIMENSION_SHELF_TONE: FieldShelfTone = {
@@ -27,8 +32,17 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
   const { dimensions, addDimension, removeDimension, updateDimension } =
     useVBIDimensions(builder);
+  const { schemaFields } = useVBISchemaFields(builder);
 
-  const addDraggedFieldToShelf = (fieldName: string) => {
+  const schemaTypeMap = useMemo(() => {
+    return Object.fromEntries(
+      schemaFields.map((item) => [item.name, item.type]),
+    );
+  }, [schemaFields]);
+
+  const addFieldAt = (params: { fieldName: string; insertIndex: number }) => {
+    const { fieldName, insertIndex } = params;
+    const originalLength = dimensions.length;
     const nextName = getNextFieldDuplicateName({
       field: fieldName,
       items: dimensions,
@@ -40,7 +54,22 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       }
     });
 
-    return true;
+    if (insertIndex < originalLength) {
+      const yDimensions = builder.dsl.get('dimensions') as
+        | YArrayLike
+        | undefined;
+      if (!yDimensions) {
+        return;
+      }
+
+      builder.doc.transact(() => {
+        reorderYArrayByInsertIndex({
+          yArray: yDimensions,
+          dragIndex: originalLength,
+          insertIndex,
+        });
+      });
+    }
   };
 
   const renameDimension = (id: string, alias: string) => {
@@ -66,11 +95,17 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
 
   return (
     <FieldShelf
+      shelf="dimensions"
       items={dimensions}
       placeholder="拖拽维度/指标到此处"
       tone={DIMENSION_SHELF_TONE}
       style={style}
       maxLabelWidth={92}
+      getItemPayload={(item) => ({
+        field: item.field,
+        type: schemaTypeMap[item.field],
+        role: getFieldRoleBySchemaType(schemaTypeMap[item.field]),
+      })}
       buildMenuItems={buildMenuItems}
       onMenuClick={(dimension, key) => {
         if (key === 'rename') {
@@ -90,13 +125,17 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
         }
       }}
       onRemove={removeDimension}
-      onAddFromPayload={(payload) => {
+      onAddFieldAt={(payload, insertIndex) => {
         if (!payload.field) {
-          return false;
+          return;
         }
-        return addDraggedFieldToShelf(payload.field);
+
+        addFieldAt({
+          fieldName: payload.field,
+          insertIndex,
+        });
       }}
-      onReorder={(dragIndex, dropIndex) => {
+      onReorder={(dragIndex, insertIndex) => {
         const yDimensions = builder.dsl.get('dimensions') as
           | YArrayLike
           | undefined;
@@ -105,7 +144,11 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
         }
 
         builder.doc.transact(() => {
-          reorderYArray({ yArray: yDimensions, dragIndex, dropIndex });
+          reorderYArrayByInsertIndex({
+            yArray: yDimensions,
+            dragIndex,
+            insertIndex,
+          });
         });
       }}
     />

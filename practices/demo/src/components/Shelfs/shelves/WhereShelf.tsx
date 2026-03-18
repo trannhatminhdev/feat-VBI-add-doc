@@ -8,6 +8,10 @@ import { useVBISchemaFields, useVBIWhereFilter } from 'src/hooks';
 import { useVBIStore } from 'src/model';
 import { FilterShelf, type FilterShelfTone } from '../common/FilterShelf';
 import { useFilterRootOperator } from '../hooks/useFilterRootOperator';
+import {
+  reorderYArrayByInsertIndex,
+  type YArrayLike,
+} from '../utils/reorderUtils';
 
 type WhereShelfItem = FilterItem & {
   id: string;
@@ -40,7 +44,7 @@ export const WhereShelf = ({
 }) => {
   const builder = useVBIStore((state) => state.builder);
   const { flattenFilters } = useVBIWhereFilter(builder);
-  const { schemaFields } = useVBISchemaFields(builder);
+  const { schemaFields, fieldRoleMap } = useVBISchemaFields(builder);
   const { operator, setOperator } = useFilterRootOperator({
     builder,
     type: 'where',
@@ -53,6 +57,12 @@ export const WhereShelf = ({
     }));
   }, [schemaFields]);
 
+  const schemaTypeMap = useMemo(() => {
+    return Object.fromEntries(
+      schemaFields.map((item) => [item.name, item.type]),
+    );
+  }, [schemaFields]);
+
   const whereFilterItems = useMemo((): WhereShelfItem[] => {
     return flattenFilters()
       .filter((item): item is typeof item & { id: string } => Boolean(item.id))
@@ -63,6 +73,27 @@ export const WhereShelf = ({
         value: item.value,
       }));
   }, [flattenFilters]);
+
+  const reorderWhereFilters = useCallback(
+    (dragIndex: number, insertIndex: number) => {
+      const whereRoot = builder.dsl.get('whereFilter') as
+        | { get: (key: string) => unknown }
+        | undefined;
+      const conditions = whereRoot?.get('conditions') as YArrayLike | undefined;
+      if (!conditions) {
+        return;
+      }
+
+      builder.doc.transact(() => {
+        reorderYArrayByInsertIndex({
+          yArray: conditions,
+          dragIndex,
+          insertIndex,
+        });
+      });
+    },
+    [builder],
+  );
 
   const handleWhereFilterAdd = useCallback(
     (item: FilterItem) => {
@@ -114,6 +145,7 @@ export const WhereShelf = ({
 
   return (
     <FilterShelf
+      shelf="where"
       items={whereFilterItems}
       style={style}
       placeholder="拖拽字段到此处"
@@ -124,18 +156,29 @@ export const WhereShelf = ({
       rootOperatorColors={WHERE_ROOT_OPERATOR_COLORS}
       onRootOperatorChange={setOperator}
       getDisplayText={getWhereDisplayText}
-      onDropField={(payload) => {
+      getItemPayload={(item) => ({
+        field: item.field,
+        type: schemaTypeMap[item.field],
+        role: fieldRoleMap[item.field] ?? 'dimension',
+      })}
+      onAddFieldAt={(payload, insertIndex) => {
         if (!payload.field) {
           return;
         }
 
+        const currentLength = whereFilterItems.length;
         handleWhereFilterAdd({
           id: '',
           field: payload.field,
           operator: '=',
           value: undefined,
         });
+
+        if (insertIndex < currentLength) {
+          reorderWhereFilters(currentLength, insertIndex);
+        }
       }}
+      onReorder={reorderWhereFilters}
       onRemove={(id) => {
         if (id.startsWith('temp_')) {
           return;
