@@ -1,0 +1,34 @@
+{
+  "name": "mixed-date-and-normal-dimensions",
+  "description": "普通维度与按季度聚合的日期维度混合分组",
+  "schema": [
+    {
+      "name": "area",
+      "type": "string"
+    },
+    {
+      "name": "order_date",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.dimensions\n    .add('area', node => {\n      node.setAlias('区域')\n    })\n    .add('order_date', node => {\n      node.setAlias('季度').setAggregate({ func: 'toQuarter' })\n    })\n}"
+}

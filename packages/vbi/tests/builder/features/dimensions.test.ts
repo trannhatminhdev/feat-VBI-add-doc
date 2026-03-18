@@ -88,6 +88,24 @@ describe('DimensionsBuilder', () => {
     expect(builder.build().dimensions).toEqual([{ id: 'id-1', field: 'category', alias: '新类别' }])
   })
 
+  test('updateDimension aggregate', () => {
+    const dsl = { dimensions: [{ field: 'order_date', alias: '订单日期' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.dimensions.update('id-1', (node) => {
+      node.setAlias('月份').setAggregate({ func: 'toMonth' })
+    })
+
+    expect(builder.build().dimensions).toEqual([
+      {
+        id: 'id-1',
+        field: 'order_date',
+        alias: '月份',
+        aggregate: { func: 'toMonth' },
+      },
+    ])
+  })
+
   test('updateDimension throws error if not found', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)
@@ -243,14 +261,26 @@ describe('DimensionsBuilder', () => {
     expect(builder.dimensions.toJSON()[0].alias).toBe('新类别')
   })
 
+  test('DimensionNodeBuilder setAggregate', () => {
+    const dsl = { dimensions: [{ field: 'order_date', alias: '订单日期' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    const node = builder.dimensions.find((node) => node.getId() === 'id-1')
+    node?.setAggregate({ func: 'toYear' })
+
+    expect(builder.dimensions.toJSON()[0].aggregate).toEqual({ func: 'toYear' })
+  })
+
   test('DimensionNodeBuilder toJSON', () => {
-    const dsl = { dimensions: [{ field: 'category', alias: '类别' }] } as VBIDSL
+    const dsl = {
+      dimensions: [{ field: 'order_date', alias: '订单日期', aggregate: { func: 'toMonth' } }],
+    } as VBIDSL
     const builder = VBI.from(dsl)
 
     const node = builder.dimensions.find((node) => node.getId() === 'id-1')
     const json = node?.toJSON()
 
-    expect(json).toEqual({ id: 'id-1', field: 'category', alias: '类别' })
+    expect(json).toEqual({ id: 'id-1', field: 'order_date', alias: '订单日期', aggregate: { func: 'toMonth' } })
   })
 
   test('chained add operations', () => {

@@ -6,6 +6,7 @@
 | --- | --- | --- |
 | **doc** | `Y.Doc` | - |
 | **dsl** | `Y.Map<any>` | - |
+| **adapters** | `VBIBuilderAdapters<TQueryDSL, TSeedDSL>` | - |
 | **chartType** | `ChartTypeBuilder` | - |
 | **measures** | `MeasuresBuilder` | - |
 | **dimensions** | `DimensionsBuilder` | - |
@@ -24,7 +25,7 @@
 **定义**:
 
 ```typescript
-constructor(doc: Y.Doc)
+constructor(doc: Y.Doc, options: VBIBuilderOptions<TQueryDSL, TSeedDSL>)
 ```
 
 **参数**:
@@ -32,6 +33,7 @@ constructor(doc: Y.Doc)
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `doc` | Y.Doc | - |
+| `options` | VBIBuilderOptions<TQueryDSL, TSeedDSL> | - |
 
 ### applyUpdate
 
@@ -71,20 +73,20 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
 **定义**:
 
 ```typescript
-buildVSeed(): Promise<VSeedDSL>
+buildVSeed(): Promise<TSeedDSL>
 ```
 
-**返回**: `Promise<VSeedDSL>`
+**返回**: `Promise<TSeedDSL>`
 
 ### buildVQuery
 
 **定义**:
 
 ```typescript
-buildVQuery(): VQueryDSL
+buildVQuery(): TQueryDSL
 ```
 
-**返回**: `VQueryDSL`
+**返回**: `TQueryDSL`
 
 ### build
 

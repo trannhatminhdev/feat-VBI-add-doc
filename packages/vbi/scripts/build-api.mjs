@@ -22,7 +22,7 @@ const OUTPUT_DIR = path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vbi
 // ============================================================================
 
 const BUILDER_CONFIG = [
-  { name: 'Builder', file: 'vbi-builder.ts', category: 'main' },
+  { name: 'Builder', file: 'builder.ts', category: 'main' },
   {
     name: 'chartType',
     label: 'chartType',

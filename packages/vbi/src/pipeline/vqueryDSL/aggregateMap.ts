@@ -1,4 +1,4 @@
-export type VQueryAggregateFunc =
+export type VQueryBaseAggregateFunc =
   | 'count'
   | 'count_distinct'
   | 'sum'
@@ -11,12 +11,24 @@ export type VQueryAggregateFunc =
   | 'median'
   | 'quantile'
 
+export type VQueryDateAggregateFunc =
+  | 'to_year'
+  | 'to_quarter'
+  | 'to_month'
+  | 'to_week'
+  | 'to_day'
+  | 'to_hour'
+  | 'to_minute'
+  | 'to_second'
+
+export type VQueryAggregateFunc = VQueryBaseAggregateFunc | VQueryDateAggregateFunc
+
 export type VQueryAggregate = {
   func: VQueryAggregateFunc
   quantile?: number
 }
 
-export type VBIAggregateInput =
+export type VBIMeasureAggregateInput =
   | { func: 'count' }
   | { func: 'countDistinct' }
   | { func: 'sum' }
@@ -29,7 +41,17 @@ export type VBIAggregateInput =
   | { func: 'median' }
   | { func: 'quantile'; quantile?: number }
 
-const VBI_TO_VQUERY_AGGR_FUNC_MAP: Record<VBIAggregateInput['func'], VQueryAggregateFunc> = {
+export type VBIDimensionAggregateInput =
+  | { func: 'toYear' }
+  | { func: 'toQuarter' }
+  | { func: 'toMonth' }
+  | { func: 'toWeek' }
+  | { func: 'toDay' }
+  | { func: 'toHour' }
+  | { func: 'toMinute' }
+  | { func: 'toSecond' }
+
+const VBI_TO_VQUERY_MEASURE_AGGR_FUNC_MAP: Record<VBIMeasureAggregateInput['func'], VQueryBaseAggregateFunc> = {
   count: 'count',
   countDistinct: 'count_distinct',
   sum: 'sum',
@@ -43,10 +65,31 @@ const VBI_TO_VQUERY_AGGR_FUNC_MAP: Record<VBIAggregateInput['func'], VQueryAggre
   quantile: 'quantile',
 }
 
-export const mapAggregateForVQuery = (aggregate: VBIAggregateInput | undefined): VQueryAggregate | undefined => {
+const VBI_TO_VQUERY_DIMENSION_AGGR_FUNC_MAP: Record<VBIDimensionAggregateInput['func'], VQueryDateAggregateFunc> = {
+  toYear: 'to_year',
+  toQuarter: 'to_quarter',
+  toMonth: 'to_month',
+  toWeek: 'to_week',
+  toDay: 'to_day',
+  toHour: 'to_hour',
+  toMinute: 'to_minute',
+  toSecond: 'to_second',
+}
+
+export const mapAggregateForVQuery = (aggregate: VBIMeasureAggregateInput | undefined): VQueryAggregate | undefined => {
   if (!aggregate) {
     return aggregate
   }
-  const mappedFunc = VBI_TO_VQUERY_AGGR_FUNC_MAP[aggregate.func] ?? aggregate.func
+  const mappedFunc = VBI_TO_VQUERY_MEASURE_AGGR_FUNC_MAP[aggregate.func] ?? aggregate.func
+  return { ...aggregate, func: mappedFunc } as VQueryAggregate
+}
+
+export const mapDimensionAggregateForVQuery = (
+  aggregate: VBIDimensionAggregateInput | undefined,
+): VQueryAggregate | undefined => {
+  if (!aggregate) {
+    return aggregate
+  }
+  const mappedFunc = VBI_TO_VQUERY_DIMENSION_AGGR_FUNC_MAP[aggregate.func] ?? aggregate.func
   return { ...aggregate, func: mappedFunc } as VQueryAggregate
 }

@@ -9,13 +9,13 @@
     "type": "file",
     "name": "dimensions",
     "label": "Dimensions",
-    "count": 4
+    "count": 7
   },
   {
     "type": "file",
     "name": "havingFilter",
     "label": "HavingFilter",
-    "count": 16
+    "count": 18
   },
   {
     "type": "file",

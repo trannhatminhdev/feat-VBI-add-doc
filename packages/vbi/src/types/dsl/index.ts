@@ -1,4 +1,5 @@
 export type { VBIDimensionTree, VBIDimensionGroup, VBIDimension } from './dimensions/dimensions'
+export type { VBIDimensionAggregate } from './dimensions/aggregate'
 export type { VBIMeasureTree, VBIMeasureGroup, VBIMeasure } from './measures/measures'
 export type { VBIFilter, VBIWhereGroup, VBIWhereClause } from './whereFilter/filters'
 export type { VBIHavingFilter, VBIHavingGroup, VBIHavingClause, VBIHavingAggregate } from './havingFilter/having'

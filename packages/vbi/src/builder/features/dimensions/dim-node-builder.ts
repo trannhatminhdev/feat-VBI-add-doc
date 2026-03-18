@@ -31,6 +31,15 @@ export class DimensionNodeBuilder {
   }
 
   /**
+   * @description 设置日期聚合函数
+   * @param aggregate - 日期聚合配置
+   */
+  setAggregate(aggregate: NonNullable<VBIDimension['aggregate']>): this {
+    this.yMap.set('aggregate', aggregate)
+    return this
+  }
+
+  /**
    * @description 导出为 JSON
    */
   toJSON(): VBIDimension {

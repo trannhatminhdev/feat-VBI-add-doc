@@ -156,4 +156,41 @@ describe('select', () => {
       theme: 'light',
     })
   })
+
+  test('date dimension select uses derived alias in groupBy', async () => {
+    registerDemoConnector()
+    const connectorId = getDemoConnectorId()
+
+    const builder = VBI.from(VBI.generateEmptyDSL(connectorId))
+
+    builder.measures.add('sales', (node) => {
+      node.setAlias('销售额').setAggregate({ func: 'sum' })
+    })
+
+    builder.dimensions.add('order_date', (node) => {
+      node.setAlias('年份').setAggregate({ func: 'toYear' })
+    })
+
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toEqual({
+      groupBy: ['年份'],
+      limit: 1000,
+      select: [
+        {
+          field: 'sales',
+          alias: '销售额',
+          aggr: { func: 'sum' },
+        },
+        {
+          field: 'order_date',
+          alias: '年份',
+          aggr: { func: 'to_year' },
+        },
+      ],
+    })
+
+    const vseed = await builder.buildVSeed()
+    const years = vseed.dataset.map((row) => row['年份']).sort()
+    expect(years).toEqual(['2016', '2017', '2018', '2019'])
+  })
 })
