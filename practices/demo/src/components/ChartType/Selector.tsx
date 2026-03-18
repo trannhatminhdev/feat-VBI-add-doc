@@ -166,7 +166,7 @@ export const ChartTypeSelector = ({
         placement="bottomLeft"
         overlayStyle={{ padding: 0 }}
         overlayInnerStyle={{
-          padding: 10,
+          padding: 14,
           borderRadius: token.borderRadiusLG,
         }}
       >
@@ -193,7 +193,7 @@ export const ChartTypeSelector = ({
               justifyContent: 'center',
               width: compact ? 18 : 38,
               height: compact ? 18 : 38,
-              borderRadius: compact ? 6 : 12,
+              borderRadius: token.borderRadius,
               background: token.colorPrimaryBg,
               color: token.colorPrimary,
               fontSize: compact ? 11 : 18,

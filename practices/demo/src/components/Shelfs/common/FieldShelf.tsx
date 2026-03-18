@@ -1,7 +1,7 @@
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { CloseOutlined, DownOutlined } from '@ant-design/icons';
-import { Dropdown, Typography, type MenuProps } from 'antd';
+import { Dropdown, Typography, theme, type MenuProps } from 'antd';
 import { useMemo, useState } from 'react';
 import {
   ShelfItemDropZones,
@@ -16,11 +16,15 @@ import { ShelfTrack, type ShelfTone } from './ShelfTrack';
 
 const REMOVE_ICON_DEFAULT_COLOR = '#8c8c8c';
 const REMOVE_ICON_HOVER_COLOR = '#ff4d4f';
-const SHELF_ITEM_SPACING = 8;
+const SHELF_ITEM_SPACING = 6;
 
 export const SHELF_MENU_ITEM_STYLE: React.CSSProperties = {
-  height: 30,
-  lineHeight: '30px',
+  minHeight: 32,
+  lineHeight: '20px',
+  paddingBlock: 6,
+  paddingInline: 8,
+  marginBlock: 0,
+  borderRadius: 0,
 };
 
 export type FieldShelfTone = ShelfTone;
@@ -58,19 +62,19 @@ const getItemStyle = (params: {
   return {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: 4,
-    padding: '0 6px',
+    gap: 3,
+    padding: '0 5px',
     backgroundColor: isHovered ? tone.itemHoverBackground : tone.itemBackground,
     border: isHovered
       ? `1px solid ${tone.itemHoverBorder}`
       : `1px solid ${tone.itemBorder}`,
-    borderRadius: 6,
+    borderRadius: 8,
     cursor: isDragging ? 'grabbing' : 'grab',
-    fontSize: 10,
+    fontSize: 11,
     color: tone.textColor,
-    height: 22,
+    height: 20,
     flexShrink: 0,
-    transition: 'all 0.2s',
+    transition: 'border-color 0.2s, background-color 0.2s, color 0.2s',
     opacity: isDragging ? 0 : 1,
     visibility: isDragging ? 'hidden' : 'visible',
     transform,
@@ -87,8 +91,8 @@ const getIconStyle = (params: {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 16,
-    height: 16,
+    width: 14,
+    height: 14,
     borderRadius: 4,
     backgroundColor: isHovered ? tone.iconHoverBackground : tone.iconBackground,
     color: tone.iconColor,
@@ -101,7 +105,7 @@ const getRemoveIconWrapperStyle = (isHovered: boolean): React.CSSProperties => {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: isHovered ? 12 : 0,
+    width: isHovered ? 10 : 0,
     marginLeft: isHovered ? 2 : 0,
     overflow: 'hidden',
     opacity: isHovered ? 1 : 0,
@@ -124,6 +128,7 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
   onMenuClick: (item: TItem, key: string) => void;
   onRemove: (id: string) => void;
 }) => {
+  const { token } = theme.useToken();
   const {
     shelf,
     item,
@@ -188,7 +193,6 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
         <Dropdown
           trigger={['click']}
           placement="bottom"
-          arrow={{ pointAtCenter: true }}
           menu={{
             items: buildMenuItems(item),
             onClick: ({ key, domEvent }) => {
@@ -196,10 +200,14 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
               onMenuClick(item, String(key));
             },
             style: {
-              fontSize: 12,
-              minWidth: 98,
-              paddingBlock: 2,
+              fontSize: 11,
+              minWidth: 124,
+              padding: '8px 0',
+              borderRadius: token.borderRadiusLG,
             },
+          }}
+          overlayStyle={{
+            paddingBlock: 4,
           }}
         >
           <span
@@ -230,7 +238,7 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
                 maxWidth: maxLabelWidth,
                 marginBottom: 0,
                 color: 'inherit',
-                fontSize: 10,
+                fontSize: 11,
               }}
             >
               {displayLabel}
@@ -244,7 +252,7 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
               onRemove(item.id);
             }}
             style={{
-              fontSize: 9,
+              fontSize: 8,
               cursor: 'pointer',
               color: REMOVE_ICON_DEFAULT_COLOR,
             }}

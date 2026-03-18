@@ -2,6 +2,9 @@ import { useDroppable } from '@dnd-kit/core';
 import { DropArea, ShelfBoundaryDropZone, type ShelfType } from '../dnd';
 
 export type ShelfTone = {
+  trackBackground: string;
+  trackBorder: string;
+  placeholderColor: string;
   dragOverBackground: string;
   dragOverBorder: string;
   itemBackground: string;
@@ -33,18 +36,19 @@ const getContainerStyle = (params: {
 
   return {
     flexBasis: 300,
-    minHeight: 30,
-    height: 30,
+    minHeight: 28,
+    height: 28,
     border: 'none',
-    borderRadius: 6,
-    padding: '1px 0',
+    borderRadius: 10,
+    padding: '0 6px',
     backgroundColor: isDragOver ? tone.dragOverBackground : 'transparent',
     boxShadow: isDragOver ? `inset 0 0 0 1px ${tone.dragOverBorder}` : 'none',
-    transition: 'all 0.2s',
+    transition: 'background-color 0.2s, border-color 0.2s',
     overflowX: 'auto',
     overflowY: 'hidden',
     scrollbarWidth: 'thin',
     position: 'relative',
+    background: isDragOver ? tone.dragOverBackground : tone.trackBackground,
     ...style,
   };
 };
@@ -52,6 +56,7 @@ const getContainerStyle = (params: {
 const rowStyle: React.CSSProperties = {
   display: 'inline-flex',
   alignItems: 'center',
+  gap: 6,
   minWidth: '100%',
   minHeight: '100%',
 };
@@ -61,18 +66,20 @@ const trackStyle: React.CSSProperties = {
   display: 'inline-flex',
   alignItems: 'center',
   minWidth: 0,
-  minHeight: 22,
+  minHeight: 20,
   flex: '1 0 auto',
 };
 
-const placeholderStyle: React.CSSProperties = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  minHeight: 22,
-  color: '#bbb',
-  fontSize: 12,
-  padding: '2px 8px 2px 0',
-  flexShrink: 0,
+const getPlaceholderStyle = (tone: ShelfTone): React.CSSProperties => {
+  return {
+    display: 'inline-flex',
+    alignItems: 'center',
+    minHeight: 20,
+    color: tone.placeholderColor,
+    fontSize: 11,
+    padding: '0 6px 0 0',
+    flexShrink: 0,
+  };
 };
 
 export const ShelfTrack = ({
@@ -117,7 +124,7 @@ export const ShelfTrack = ({
                 color={tone.iconColor}
                 edge="start"
               />
-              <span style={placeholderStyle}>{placeholder}</span>
+              <span style={getPlaceholderStyle(tone)}>{placeholder}</span>
             </>
           ) : (
             <>

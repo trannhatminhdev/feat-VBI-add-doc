@@ -36,6 +36,18 @@ import { useTranslation } from 'src/i18n';
 const { Option = Select.Option } = Select;
 const { Text } = Typography;
 
+const POPOVER_TEXT_BUTTON_STYLE: React.CSSProperties = {
+  height: 22,
+  padding: '0 12px',
+};
+
+const POPOVER_ICON_BUTTON_STYLE: React.CSSProperties = {
+  width: 22,
+  minWidth: 22,
+  height: 22,
+  padding: 0,
+};
+
 export interface FilterItem {
   id?: string;
   field: string;
@@ -341,8 +353,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       size="small"
       requiredMark={false}
       style={{
-        width: isSingleItemEdit ? 206 : 228,
-        marginTop: isSingleItemEdit ? 0 : 4,
+        width: isSingleItemEdit ? 214 : 238,
+        marginTop: isSingleItemEdit ? 0 : 6,
       }}
       initialValues={{
         operator: getDefaultWhereOperator('dimension'),
@@ -535,7 +547,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
       <Form.Item style={{ marginBottom: 0, marginTop: 2, textAlign: 'right' }}>
         <Space size={8}>
-          <Button size="small" onClick={handleCancel}>
+          <Button
+            size="small"
+            onClick={handleCancel}
+            style={POPOVER_TEXT_BUTTON_STYLE}
+          >
             {t('commonActionsCancel')}
           </Button>
           <Button
@@ -543,6 +559,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             size="small"
             onClick={handleSubmit}
             icon={<CheckOutlined />}
+            style={POPOVER_TEXT_BUTTON_STYLE}
           >
             {editingId || isSingleItemEdit
               ? t('commonActionsSave')
@@ -554,7 +571,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   );
 
   const renderFilterList = () => (
-    <div style={{ width: 248 }}>
+    <div style={{ width: 256 }}>
       {filters.length === 0 && !isAdding ? (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -567,12 +584,21 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             <div
               key={item.id ?? `where-filter-${index}`}
               style={{
-                padding: '4px 6px',
+                padding: '8px 6px',
                 opacity: editingId === item.id ? 0.5 : 1,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                gap: 8,
+                gap: 10,
+                borderBottom:
+                  index < filters.length - 1
+                    ? `1px solid ${token.colorBorderSecondary}`
+                    : 'none',
+                background:
+                  editingId === item.id
+                    ? token.colorFillSecondary
+                    : 'transparent',
+                borderRadius: token.borderRadiusSM,
               }}
             >
               <Text style={{ fontSize: 12, minWidth: 0, flex: 1 }} ellipsis>
@@ -585,7 +611,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                     size="small"
                     icon={<EditOutlined />}
                     onClick={() => item.id && handleEdit(item.id)}
-                    style={{ color: token.colorPrimary }}
+                    style={{
+                      ...POPOVER_ICON_BUTTON_STYLE,
+                      color: token.colorPrimary,
+                    }}
                   />
                 </Tooltip>
                 <Tooltip title={t('commonActionsDelete')}>
@@ -595,6 +624,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                     danger
                     icon={<DeleteOutlined />}
                     onClick={() => item.id && handleDelete(item.id)}
+                    style={POPOVER_ICON_BUTTON_STYLE}
                   />
                 </Tooltip>
               </Space>
@@ -614,7 +644,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: 6,
+          marginBottom: 10,
         }}
       >
         <Text strong style={{ fontSize: 13 }}>
@@ -629,6 +659,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                   size="small"
                   icon={<PlusOutlined />}
                   onClick={handleAddClick}
+                  style={POPOVER_ICON_BUTTON_STYLE}
                 />
               </Tooltip>
               {filters.length > 0 && (
@@ -639,6 +670,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                     danger
                     icon={<ClearOutlined />}
                     onClick={handleClearAll}
+                    style={POPOVER_ICON_BUTTON_STYLE}
                   />
                 </Tooltip>
               )}
@@ -669,10 +701,15 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       onOpenChange={setPopoverOpen}
       placement="left"
       overlayStyle={{ padding: 0 }}
-      overlayInnerStyle={{ padding: '12px' }}
+      overlayInnerStyle={{
+        padding: '14px 18px 12px',
+        borderRadius: token.borderRadiusLG,
+      }}
     >
       <Badge count={filters.length} size="small" offset={[8, 0]}>
-        <Button icon={<FilterOutlined />}>{t('filtersButtonsWhere')}</Button>
+        <Button size="small" icon={<FilterOutlined />}>
+          {t('filtersButtonsWhere')}
+        </Button>
       </Badge>
     </Popover>
   );

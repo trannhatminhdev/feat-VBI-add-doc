@@ -1,4 +1,4 @@
-import { Card, Flex } from 'antd';
+import { Card, Flex, theme } from 'antd';
 import {
   DimensionShelf,
   HavingShelf,
@@ -10,20 +10,22 @@ import { FilterRootOperatorToggle } from './FilterRootOperatorToggle';
 import { ShelfRow } from './ShelfRow';
 
 const SHELF_STYLE: React.CSSProperties = {
-  minHeight: 38,
-  height: 38,
+  minHeight: 34,
+  height: 34,
   flex: '1 1 0',
   minWidth: 0,
 };
 
 export const ShelfPanel = () => {
   const { t } = useTranslation();
+  const { token } = theme.useToken();
 
   return (
     <Card
       size="small"
       style={{
         minWidth: 0,
+        borderColor: token.colorBorderSecondary,
       }}
       styles={{
         body: {

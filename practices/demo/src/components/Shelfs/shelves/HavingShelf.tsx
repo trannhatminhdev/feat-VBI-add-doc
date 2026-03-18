@@ -15,7 +15,11 @@ import {
   normalizeHavingOperator,
   toHavingDslOperator,
 } from 'src/components/Filter/havingFilterUtils';
-import { useVBIHavingFilter, useVBISchemaFields } from 'src/hooks';
+import {
+  useVBIBuilder,
+  useVBIHavingFilter,
+  useVBISchemaFields,
+} from 'src/hooks';
 import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 import type { FieldRole } from 'src/utils/fieldRole';
@@ -71,6 +75,7 @@ export const HavingShelf = ({
 }) => {
   const builder = useVBIStore((state) => state.builder);
   const { token } = theme.useToken();
+  const { theme: themeMode } = useVBIBuilder(builder);
   const { t } = useTranslation();
   const { filters: havingFilterClauses } = useVBIHavingFilter(builder);
   const { schemaFields, fieldRoleMap, fieldTypeMap } =
@@ -94,27 +99,39 @@ export const HavingShelf = ({
   }, [havingFilterClauses, fieldRoleMap]);
 
   const havingShelfTone = useMemo<FilterShelfTone>(() => {
+    const accent = themeMode === 'dark' ? '#5cdbd3' : '#13c2c2';
+    const border = themeMode === 'dark' ? 'rgba(92, 219, 211, 0.4)' : '#87e8de';
+    const hoverBackground =
+      themeMode === 'dark' ? 'rgba(19, 194, 194, 0.14)' : '#e6fffb';
+    const iconBackground =
+      themeMode === 'dark'
+        ? 'rgba(92, 219, 211, 0.14)'
+        : 'rgba(19, 194, 194, 0.12)';
+
     return {
-      dragOverBackground: 'rgba(22, 119, 255, 0.1)',
-      dragOverBorder: 'rgba(22, 119, 255, 0.45)',
-      itemBackground: token.colorPrimaryBg,
-      itemHoverBackground: token.colorPrimaryBg,
-      itemBorder: token.colorPrimaryBorder,
-      itemHoverBorder: token.colorPrimary,
-      textColor: token.colorPrimary,
-      iconBackground: 'rgba(22, 119, 255, 0.16)',
-      iconHoverBackground: 'rgba(22, 119, 255, 0.28)',
-      iconColor: token.colorPrimary,
+      trackBackground: token.colorBgContainer,
+      trackBorder: border,
+      placeholderColor: token.colorTextQuaternary,
+      dragOverBackground: hoverBackground,
+      dragOverBorder: accent,
+      itemBackground: token.colorBgContainer,
+      itemHoverBackground: hoverBackground,
+      itemBorder: border,
+      itemHoverBorder: accent,
+      textColor: accent,
+      iconBackground,
+      iconHoverBackground: hoverBackground,
+      iconColor: accent,
     };
-  }, [token]);
+  }, [themeMode, token]);
 
   const havingRootOperatorColors = useMemo(() => {
     return {
-      border: token.colorPrimaryBorder,
-      color: token.colorPrimary,
+      border: themeMode === 'dark' ? 'rgba(92, 219, 211, 0.4)' : '#87e8de',
+      color: themeMode === 'dark' ? '#5cdbd3' : '#13c2c2',
       background: token.colorBgContainer,
     };
-  }, [token]);
+  }, [themeMode, token]);
 
   const reorderHavingFilters = useCallback(
     (dragIndex: number, insertIndex: number) => {

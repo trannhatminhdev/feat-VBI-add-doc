@@ -5,7 +5,11 @@ import {
   getWhereDisplayText,
   normalizeWhereOperator,
 } from 'src/components/Filter/whereFilterUtils';
-import { useVBISchemaFields, useVBIWhereFilter } from 'src/hooks';
+import {
+  useVBIBuilder,
+  useVBISchemaFields,
+  useVBIWhereFilter,
+} from 'src/hooks';
 import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 import { FilterShelf, type FilterShelfTone } from '../common/FilterShelf';
@@ -28,6 +32,7 @@ export const WhereShelf = ({
 }) => {
   const builder = useVBIStore((state) => state.builder);
   const { token } = theme.useToken();
+  const { theme: themeMode } = useVBIBuilder(builder);
   const { t } = useTranslation();
   const { flattenFilters } = useVBIWhereFilter(builder);
   const { schemaFields, fieldRoleMap, fieldTypeMap } =
@@ -47,27 +52,40 @@ export const WhereShelf = ({
   }, [schemaFields]);
 
   const whereShelfTone = useMemo<FilterShelfTone>(() => {
+    const accent = themeMode === 'dark' ? '#ffd591' : '#d46b08';
+    const border =
+      themeMode === 'dark' ? 'rgba(255, 213, 145, 0.42)' : '#ffd591';
+    const hoverBackground =
+      themeMode === 'dark' ? 'rgba(255, 165, 61, 0.14)' : '#fff4e6';
+    const iconBackground =
+      themeMode === 'dark'
+        ? 'rgba(255, 165, 61, 0.14)'
+        : 'rgba(250, 140, 22, 0.12)';
+
     return {
-      dragOverBackground: 'rgba(250, 140, 22, 0.11)',
-      dragOverBorder: 'rgba(250, 140, 22, 0.45)',
-      itemBackground: token.colorWarningBg,
-      itemHoverBackground: token.colorWarningBg,
-      itemBorder: token.colorWarningBorder,
-      itemHoverBorder: token.colorWarning,
-      textColor: token.colorWarning,
-      iconBackground: 'rgba(250, 140, 22, 0.16)',
-      iconHoverBackground: 'rgba(250, 140, 22, 0.28)',
-      iconColor: token.colorWarning,
+      trackBackground: token.colorBgContainer,
+      trackBorder: border,
+      placeholderColor: token.colorTextQuaternary,
+      dragOverBackground: hoverBackground,
+      dragOverBorder: accent,
+      itemBackground: token.colorBgContainer,
+      itemHoverBackground: hoverBackground,
+      itemBorder: border,
+      itemHoverBorder: accent,
+      textColor: accent,
+      iconBackground,
+      iconHoverBackground: hoverBackground,
+      iconColor: accent,
     };
-  }, [token]);
+  }, [themeMode, token]);
 
   const whereRootOperatorColors = useMemo(() => {
     return {
-      border: token.colorWarningBorder,
-      color: token.colorWarning,
+      border: themeMode === 'dark' ? 'rgba(255, 213, 145, 0.42)' : '#ffd591',
+      color: themeMode === 'dark' ? '#ffd591' : '#d46b08',
       background: token.colorBgContainer,
     };
-  }, [token]);
+  }, [themeMode, token]);
 
   const whereFilterItems = useMemo((): WhereShelfItem[] => {
     return flattenFilters()
