@@ -59,6 +59,7 @@ interface FilterPanelProps {
   embedded?: boolean;
   itemEdit?: boolean;
   open?: boolean;
+  fixedField?: string;
 }
 
 export const FilterPanel: React.FC<FilterPanelProps> = ({
@@ -73,6 +74,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   embedded = false,
   itemEdit = false,
   open = false,
+  fixedField,
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -81,8 +83,12 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const operator = Form.useWatch('operator', form);
-  const selectedField = Form.useWatch('field', form);
+  const selectedFieldFromForm = Form.useWatch('field', form);
   const isSingleItemEdit = itemEdit && filters.length === 1;
+  const fixedEditingField = isSingleItemEdit
+    ? fixedField || filters[0]?.field
+    : undefined;
+  const selectedField = selectedFieldFromForm ?? fixedEditingField;
 
   // 根据选择的字段自动判断类型
   const selectedFieldRole = selectedField
@@ -223,7 +229,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      const { field, operator, value } = values;
+      const field = values.field ?? fixedEditingField;
+      const { operator, value } = values;
+      if (!field) {
+        return;
+      }
       const fieldRole =
         fields.find((f) => f.name === field)?.role ??
         selectedFieldRole ??
@@ -313,56 +323,63 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     <Form
       form={form}
       layout="vertical"
-      style={{ width: 260, marginTop: 8 }}
+      size="small"
+      requiredMark={false}
+      style={{
+        width: isSingleItemEdit ? 206 : 228,
+        marginTop: isSingleItemEdit ? 0 : 4,
+      }}
       initialValues={{
         operator: getDefaultWhereOperator('dimension'),
       }}
     >
-      <Form.Item
-        label="字段"
-        name="field"
-        rules={[{ required: true, message: '请选择字段' }]}
-        style={{ marginBottom: 8 }}
-      >
-        <Select
-          placeholder="选择字段"
-          size="small"
-          showSearch
-          onChange={(fieldName) => {
-            const nextFieldRole =
-              fields.find((f) => f.name === fieldName)?.role ?? 'dimension';
-            form.setFieldsValue({
-              operator: getDefaultWhereOperator(nextFieldRole),
-              value: undefined,
-            });
-          }}
+      {!isSingleItemEdit && (
+        <Form.Item
+          label="字段"
+          name="field"
+          rules={[{ required: true, message: '请选择字段' }]}
+          style={{ marginBottom: 8 }}
         >
-          {fields.map((f) => {
-            const isActive = activeFields.includes(f.name);
-            return (
-              <Option key={f.name} value={f.name}>
-                <span
-                  style={
-                    isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
-                  }
-                >
-                  {f.name} ({f.role === 'measure' ? '度量' : '维度'}){' '}
-                  {isActive ? '(推荐)' : ''}
-                </span>
-              </Option>
-            );
-          })}
-        </Select>
-      </Form.Item>
+          <Select
+            placeholder="选择字段"
+            showSearch
+            variant="filled"
+            onChange={(fieldName) => {
+              const nextFieldRole =
+                fields.find((f) => f.name === fieldName)?.role ?? 'dimension';
+              form.setFieldsValue({
+                operator: getDefaultWhereOperator(nextFieldRole),
+                value: undefined,
+              });
+            }}
+          >
+            {fields.map((f) => {
+              const isActive = activeFields.includes(f.name);
+              return (
+                <Option key={f.name} value={f.name}>
+                  <span
+                    style={
+                      isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
+                    }
+                  >
+                    {f.name} ({f.role === 'measure' ? '度量' : '维度'}){' '}
+                    {isActive ? '(推荐)' : ''}
+                  </span>
+                </Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
+      )}
 
       <Form.Item
-        label="操作符"
+        label={isSingleItemEdit ? undefined : '操作符'}
         name="operator"
         rules={[{ required: true }]}
-        style={{ marginBottom: 8 }}
+        style={{ marginBottom: 10 }}
       >
         <Select
-          size="small"
+          variant="filled"
           onChange={() => {
             form.setFieldsValue({ value: undefined });
           }}
@@ -376,35 +393,50 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       </Form.Item>
 
       {inputStrategy === 'none' ? (
-        <div style={{ color: '#999', fontSize: 12, padding: '8px 0' }}>
+        <div style={{ color: '#999', fontSize: 11, padding: '6px 0 10px' }}>
           此操作符不需要输入值
         </div>
       ) : inputStrategy === 'range' ? (
-        <Form.Item label="范围" style={{ marginBottom: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <Form.Item
+          label={isSingleItemEdit ? undefined : '范围'}
+          style={{ marginBottom: 10 }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <Form.Item name={['value', 'min']} noStyle>
               {selectedFieldRole === 'measure' ? (
                 <InputNumber
                   placeholder="最小"
-                  size="small"
-                  style={{ width: 60 }}
+                  variant="filled"
+                  style={{ width: isSingleItemEdit ? 46 : 62 }}
                   controls={false}
                 />
               ) : (
-                <Input placeholder="最小" size="small" style={{ width: 60 }} />
+                <Input
+                  placeholder="最小"
+                  variant="filled"
+                  style={{ width: isSingleItemEdit ? 46 : 62 }}
+                />
               )}
             </Form.Item>
             <Form.Item name={['value', 'leftOp']} noStyle>
-              <Select size="small" style={{ width: 50 }}>
+              <Select
+                variant="filled"
+                style={{ width: isSingleItemEdit ? 36 : 48 }}
+              >
                 <Option value="<">&lt;</Option>
                 <Option value="<=">&lt;=</Option>
               </Select>
             </Form.Item>
-            <Text ellipsis style={{ maxWidth: 60, fontSize: 12 }}>
-              {selectedField || '?'}
-            </Text>
+            {!isSingleItemEdit && (
+              <Text ellipsis style={{ maxWidth: 60, fontSize: 12 }}>
+                {selectedField || '?'}
+              </Text>
+            )}
             <Form.Item name={['value', 'rightOp']} noStyle>
-              <Select size="small" style={{ width: 50 }}>
+              <Select
+                variant="filled"
+                style={{ width: isSingleItemEdit ? 36 : 48 }}
+              >
                 <Option value="<">&lt;</Option>
                 <Option value="<=">&lt;=</Option>
               </Select>
@@ -413,19 +445,23 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               {selectedFieldRole === 'measure' ? (
                 <InputNumber
                   placeholder="最大"
-                  size="small"
-                  style={{ width: 60 }}
+                  variant="filled"
+                  style={{ width: isSingleItemEdit ? 46 : 62 }}
                   controls={false}
                 />
               ) : (
-                <Input placeholder="最大" size="small" style={{ width: 60 }} />
+                <Input
+                  placeholder="最大"
+                  variant="filled"
+                  style={{ width: isSingleItemEdit ? 46 : 62 }}
+                />
               )}
             </Form.Item>
           </div>
         </Form.Item>
       ) : inputStrategy === 'tags' ? (
         <Form.Item
-          label="值"
+          label={isSingleItemEdit ? undefined : '值'}
           name="value"
           rules={[
             {
@@ -437,11 +473,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               },
             },
           ]}
-          style={{ marginBottom: 8 }}
+          style={{ marginBottom: 10 }}
         >
           <Select
             mode="tags"
-            size="small"
+            variant="filled"
             tokenSeparators={[',']}
             placeholder={
               selectedFieldRole === 'measure'
@@ -453,7 +489,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </Form.Item>
       ) : (
         <Form.Item
-          label="值"
+          label={isSingleItemEdit ? undefined : '值'}
           name="value"
           rules={[
             {
@@ -461,23 +497,23 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               message: '请输入值',
             },
           ]}
-          style={{ marginBottom: 8 }}
+          style={{ marginBottom: 10 }}
         >
           {inputStrategy === 'number' ? (
             <InputNumber
-              size="small"
+              variant="filled"
               placeholder="输入数值"
               style={{ width: '100%' }}
               controls={false}
             />
           ) : (
-            <Input size="small" placeholder="输入值" />
+            <Input placeholder="输入值" variant="filled" />
           )}
         </Form.Item>
       )}
 
-      <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
-        <Space>
+      <Form.Item style={{ marginBottom: 0, marginTop: 2, textAlign: 'right' }}>
+        <Space size={8}>
           <Button size="small" onClick={handleCancel}>
             取消
           </Button>
@@ -495,7 +531,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   );
 
   const renderFilterList = () => (
-    <div style={{ width: 280 }}>
+    <div style={{ width: 248 }}>
       {filters.length === 0 && !isAdding ? (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
@@ -508,7 +544,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             <div
               key={item.id ?? `where-filter-${index}`}
               style={{
-                padding: '4px 8px',
+                padding: '4px 6px',
                 opacity: editingId === item.id ? 0.5 : 1,
                 display: 'flex',
                 alignItems: 'center',
@@ -555,7 +591,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: 8,
+          marginBottom: 6,
         }}
       >
         <Text strong style={{ fontSize: 13 }}>
@@ -594,16 +630,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
   // itemEdit 模式：只渲染单个 item 的编辑表单
   if (itemEdit && filters.length === 1) {
-    return (
-      <div ref={containerRef}>
-        <div style={{ marginBottom: 8 }}>
-          <Text strong style={{ fontSize: 13 }}>
-            编辑过滤条件
-          </Text>
-        </div>
-        {renderFilterForm()}
-      </div>
-    );
+    return <div ref={containerRef}>{renderFilterForm()}</div>;
   }
 
   // embedded 模式下直接渲染内容，不显示按钮

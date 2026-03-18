@@ -1248,6 +1248,364 @@ describe('HavingFilter', () => {
     `)
   })
 
+  it('having-empty-dsl-compose-target', async () => {
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'line',
+      dimensions: [],
+      measures: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+    })
+
+    // Apply custom builder code
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.chartType.changeChartType('table')
+      builder.theme.setTheme('light')
+      builder.locale.setLocale('zh-CN')
+      builder.whereFilter.add('profit', (n) => n.setOperator('<').setValue(0))
+      const whereConds = builder.whereFilter.getConditions()
+      whereConds.get(0).set('id', 'c84825ed-547a-48f0-b4d9-55ebe53aab8c')
+      builder.havingFilter.clear()
+      builder.havingFilter.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('lt').setValue(-100000))
+      builder.havingFilter.add('province', (n) =>
+        n.setAggregate({ func: 'countDistinct' }).setOperator('gt').setValue(4),
+      )
+      const havingConds = builder.havingFilter.getConditions()
+      havingConds.get(0).set('id', 'a6f2f16a-e0fc-4bdc-9729-bbe3a105cfca')
+      havingConds.get(1).set('id', '01c004d2-4041-40ee-a18b-a18fc0cea416')
+      builder.measures.add('sales', (n) => n.setAlias('sales').setEncoding('yAxis').setAggregate({ func: 'sum' }))
+      builder.measures.add('country_or_region', (n) =>
+        n.setAlias('country_or_region').setEncoding('yAxis').setAggregate({ func: 'count' }),
+      )
+      const measures = builder.dsl.get('measures')
+      measures.get(0).set('id', 'a5ba6c4a-31dc-4b2c-a38f-9f23c2bbe850')
+      measures.get(1).set('id', '49f3b33d-4ede-436c-8be9-a51619236916')
+      builder.dimensions.add('area', (n) => n.setAlias('area'))
+      const dimensions = builder.dsl.get('dimensions')
+      dimensions.get(0).set('id', 'c3583433-a2cc-4234-85ff-75ae2472b674')
+    }
+    applyBuilder(builder)
+
+    // Build VBI DSL
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "table",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "area",
+            "field": "area",
+            "id": "c3583433-a2cc-4234-85ff-75ae2472b674",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "aggregate": {
+                "func": "sum",
+              },
+              "field": "profit",
+              "id": "a6f2f16a-e0fc-4bdc-9729-bbe3a105cfca",
+              "op": "lt",
+              "value": -100000,
+            },
+            {
+              "aggregate": {
+                "func": "countDistinct",
+              },
+              "field": "province",
+              "id": "01c004d2-4041-40ee-a18b-a18fc0cea416",
+              "op": "gt",
+              "value": 4,
+            },
+          ],
+          "id": "root",
+          "op": "and",
+        },
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "sales",
+            "encoding": "yAxis",
+            "field": "sales",
+            "id": "a5ba6c4a-31dc-4b2c-a38f-9f23c2bbe850",
+          },
+          {
+            "aggregate": {
+              "func": "count",
+            },
+            "alias": "country_or_region",
+            "encoding": "yAxis",
+            "field": "country_or_region",
+            "id": "49f3b33d-4ede-436c-8be9-a51619236916",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "profit",
+              "id": "c84825ed-547a-48f0-b4d9-55ebe53aab8c",
+              "op": "<",
+              "value": 0,
+            },
+          ],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VQuery DSL
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "area",
+        ],
+        "having": {
+          "conditions": [
+            {
+              "aggr": {
+                "func": "sum",
+              },
+              "field": "profit",
+              "op": "lt",
+              "value": -100000,
+            },
+            {
+              "aggr": {
+                "func": "count_distinct",
+              },
+              "field": "province",
+              "op": "gt",
+              "value": 4,
+            },
+          ],
+          "op": "and",
+        },
+        "limit": 1000,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "sales",
+            "field": "sales",
+          },
+          {
+            "aggr": {
+              "func": "count",
+            },
+            "alias": "country_or_region",
+            "field": "country_or_region",
+          },
+          {
+            "alias": "area",
+            "field": "area",
+          },
+        ],
+        "where": {
+          "conditions": [
+            {
+              "field": "profit",
+              "op": "<",
+              "value": 0,
+            },
+          ],
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VSeed DSL
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "table",
+        "dataset": [
+          {
+            "area": "华东",
+            "country_or_region": 643,
+            "sales": 870384.3609999999,
+          },
+          {
+            "area": "中南",
+            "country_or_region": 441,
+            "sales": 598623.2070000004,
+          },
+        ],
+        "locale": "zh-CN",
+        "theme": "light",
+      }
+    `)
+  })
+
+  it('having-field-not-in-measures-and-dimensions', async () => {
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'line',
+      dimensions: [],
+      measures: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+    })
+
+    // Apply custom builder code
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.chartType.changeChartType('bar')
+      builder.dimensions.add('area', (n) => n.setAlias('区域'))
+      builder.measures.add('sales', (n) => n.setAlias('销售额').setEncoding('yAxis').setAggregate({ func: 'sum' }))
+      builder.havingFilter.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
+      builder.limit.setLimit(20)
+    }
+    applyBuilder(builder)
+
+    // Build VBI DSL
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "bar",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "区域",
+            "field": "area",
+            "id": "id-1",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [
+            {
+              "aggregate": {
+                "func": "sum",
+              },
+              "field": "profit",
+              "id": "id-3",
+              "op": "gt",
+              "value": 100000,
+            },
+          ],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 20,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "field": "sales",
+            "id": "id-2",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VQuery DSL
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "area",
+        ],
+        "having": {
+          "conditions": [
+            {
+              "aggr": {
+                "func": "sum",
+              },
+              "field": "profit",
+              "op": "gt",
+              "value": 100000,
+            },
+          ],
+          "op": "and",
+        },
+        "limit": 20,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "销售额",
+            "field": "sales",
+          },
+          {
+            "alias": "区域",
+            "field": "area",
+          },
+        ],
+      }
+    `)
+
+    // Build VSeed DSL
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "bar",
+        "dataset": [
+          {
+            "区域": "华东",
+            "销售额": 4684506.442,
+          },
+          {
+            "区域": "中南",
+            "销售额": 4137415.0929999948,
+          },
+          {
+            "区域": "东北",
+            "销售额": 2681567.469000001,
+          },
+          {
+            "区域": "华北",
+            "销售额": 2447301.017000004,
+          },
+        ],
+        "locale": "zh-CN",
+        "theme": "light",
+      }
+    `)
+  })
+
   it('having-find-and-update', async () => {
     const builder = VBI.from({
       connectorId: 'demoSupermarket',
