@@ -78,6 +78,18 @@ setAggregate(aggregate: NonNullable<VBIDimension['aggregate']>): this
 | --- | --- | --- |
 | `aggregate` | NonNullable<VBIDimension['aggregate']> | - 日期聚合配置 |
 
+### clearAggregate
+
+清除日期聚合函数
+
+**定义**:
+
+```typescript
+clearAggregate(): this
+```
+
+**返回**: `this`
+
 ### toJSON
 
 导出为 JSON
