@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.18
+
+### Patch Changes
+
+- Add stackCornerRadius show in stack and negative value case
+
 ## 0.4.17
 
 ### Patch Changes
