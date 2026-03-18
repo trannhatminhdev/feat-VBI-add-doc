@@ -12,6 +12,7 @@ import {
   Empty,
   Badge,
   Tag,
+  theme,
 } from 'antd';
 import {
   FilterOutlined,
@@ -120,6 +121,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   open = false,
   fixedField,
 }) => {
+  const { token } = theme.useToken();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -690,7 +692,10 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
                 justifyContent: 'space-between',
                 gap: 8,
                 borderRadius: 6,
-                background: editingId === item.id ? '#f5f5f5' : 'transparent',
+                background:
+                  editingId === item.id
+                    ? token.colorFillSecondary
+                    : 'transparent',
               }}
             >
               <Text style={{ fontSize: 12, minWidth: 0, flex: 1 }} ellipsis>
@@ -703,7 +708,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
                     size="small"
                     icon={<EditOutlined />}
                     onClick={() => item.id && handleEdit(item.id)}
-                    style={{ color: '#1677ff' }}
+                    style={{ color: token.colorPrimary }}
                   />
                 </Tooltip>
                 <Tooltip title="删除">

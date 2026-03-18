@@ -1,88 +1,256 @@
 import React from 'react';
-import { Button, Space, Tooltip, Select, InputNumber } from 'antd';
-import { UndoOutlined, RedoOutlined } from '@ant-design/icons';
+import {
+  FullscreenExitOutlined,
+  FullscreenOutlined,
+  InfoCircleOutlined,
+  MoonOutlined,
+  RedoOutlined,
+  SunOutlined,
+  UndoOutlined,
+} from '@ant-design/icons';
+import { Button, InputNumber, Segmented, Space, Tooltip, theme } from 'antd';
+import { ChartTypeSelector } from 'src/components/ChartType';
+import type { DemoLocale, DemoTheme } from 'src/constants/builder';
+import { useVBIBuilder, useVBIUndoManager } from 'src/hooks';
 import { useVBIStore } from 'src/model';
-import { useVBIUndoManager, useVBIBuilder, useVBIChartType } from 'src/hooks';
+import { formatDefaultLimit, getLocaleText, TOOLBAR_TEXT } from './config';
+
+const normalizeLimitValue = (value: number) => {
+  return Math.max(1, Math.round(value));
+};
+
+const ToolbarDivider = () => {
+  const { token } = theme.useToken();
+
+  return (
+    <span
+      style={{
+        width: 1,
+        height: 18,
+        background: token.colorBorderSecondary,
+        flexShrink: 0,
+      }}
+    />
+  );
+};
 
 export const Toolbar: React.FC = () => {
   const builder = useVBIStore((state) => state.builder);
+  const { token } = theme.useToken();
   const { canUndo, canRedo, undo, redo } = useVBIUndoManager(builder);
-  const { locale, theme, limit, setLocale, setTheme, setLimit } =
-    useVBIBuilder(builder);
-  const { chartType, changeChartType, getAvailableChartTypes } =
-    useVBIChartType(builder);
+  const {
+    locale,
+    theme: themeMode,
+    limit,
+    setLocale,
+    setTheme,
+    setLimit,
+  } = useVBIBuilder(builder);
+  const defaultLimitText = formatDefaultLimit(locale);
+  const [isFullscreen, setIsFullscreen] = React.useState(false);
 
-  const handleUndo = () => {
-    undo();
+  React.useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+
+    handleFullscreenChange();
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
+  const formatNumber = (value: string | number | undefined | null) => {
+    if (value === undefined || value === null || value === '') {
+      return '';
+    }
+
+    const numericValue =
+      typeof value === 'number'
+        ? value
+        : Number(String(value).replace(/[^\d.-]/g, ''));
+
+    if (!Number.isFinite(numericValue)) {
+      return '';
+    }
+
+    return new Intl.NumberFormat(locale).format(numericValue);
   };
 
-  const handleRedo = () => {
-    redo();
+  const toggleFullscreen = async () => {
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch (error) {
+      console.error('Failed to toggle fullscreen:', error);
+    }
   };
 
   return (
-    <Space wrap size="small">
-      <Select
-        value={chartType}
-        onChange={changeChartType}
-        style={{ width: 120 }}
-        size="small"
-      >
-        {getAvailableChartTypes().map((type) => (
-          <Select.Option key={type} value={type}>
-            {type}
-          </Select.Option>
-        ))}
-      </Select>
-      <Tooltip title="撤销 (Ctrl+Z)">
-        <Button
-          icon={<UndoOutlined />}
-          onClick={handleUndo}
-          disabled={!canUndo}
-          size="small"
-        />
-      </Tooltip>
-      <Tooltip title="重做 (Ctrl+Y)">
-        <Button
-          icon={<RedoOutlined />}
-          onClick={handleRedo}
-          disabled={!canRedo}
-          size="small"
-        />
-      </Tooltip>
-      <Select
-        value={locale}
-        onChange={setLocale}
-        style={{ width: 90 }}
-        size="small"
-      >
-        <Select.Option value="zh-CN">中文</Select.Option>
-        <Select.Option value="zh-TW">繁體</Select.Option>
-        <Select.Option value="en-US">EN</Select.Option>
-        <Select.Option value="ja-JP">日文</Select.Option>
-      </Select>
-      <Select
-        value={theme}
-        onChange={setTheme}
-        style={{ width: 70 }}
-        size="small"
-      >
-        <Select.Option value="light">浅色</Select.Option>
-        <Select.Option value="dark">深色</Select.Option>
-      </Select>
-      <InputNumber
-        min={0}
-        max={100000}
-        value={limit}
-        style={{ width: 80 }}
-        onChange={(value) => {
-          if (typeof value === 'number') {
-            setLimit(value);
-          }
+    <div
+      style={{
+        width: '100%',
+        overflowX: 'auto',
+        padding: '6px 8px',
+        background:
+          themeMode === 'dark'
+            ? 'linear-gradient(90deg, rgba(17, 24, 39, 0.92) 0%, rgba(22, 30, 46, 0.82) 100%)'
+            : 'linear-gradient(90deg, rgba(240, 247, 255, 0.92) 0%, rgba(255, 255, 255, 0.96) 100%)',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 16,
+          minWidth: 'max-content',
         }}
-        size="small"
-        placeholder="limit"
-      />
-    </Space>
+      >
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <ChartTypeSelector compact locale={locale} />
+
+          <ToolbarDivider />
+
+          <Space.Compact size="small">
+            <Tooltip
+              title={`${getLocaleText(locale, TOOLBAR_TEXT.history.undo)} (Ctrl/Cmd+Z)`}
+            >
+              <Button
+                icon={<UndoOutlined style={{ fontSize: 12 }} />}
+                onClick={undo}
+                disabled={!canUndo}
+                size="small"
+              />
+            </Tooltip>
+            <Tooltip
+              title={`${getLocaleText(locale, TOOLBAR_TEXT.history.redo)} (Ctrl+Y / Cmd+Shift+Z)`}
+            >
+              <Button
+                icon={<RedoOutlined style={{ fontSize: 12 }} />}
+                onClick={redo}
+                disabled={!canRedo}
+                size="small"
+              />
+            </Tooltip>
+          </Space.Compact>
+        </div>
+
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <InputNumber
+            min={1}
+            step={50}
+            value={limit}
+            style={{ width: 110 }}
+            onChange={(value) => {
+              if (typeof value === 'number') {
+                setLimit(normalizeLimitValue(value));
+              }
+            }}
+            size="small"
+            placeholder={getLocaleText(locale, TOOLBAR_TEXT.limit.placeholder)}
+            formatter={(value) => formatNumber(value)}
+            parser={(value) => Number(value?.replace(/[^\d]/g, '') || 0)}
+          />
+          <Tooltip
+            title={
+              locale === 'zh-CN'
+                ? `取数条数，默认 ${defaultLimitText}`
+                : `Rows per query, default ${defaultLimitText}`
+            }
+          >
+            <InfoCircleOutlined
+              style={{
+                fontSize: 12,
+                color: token.colorTextTertiary,
+                cursor: 'help',
+              }}
+            />
+          </Tooltip>
+
+          <ToolbarDivider />
+
+          <Tooltip
+            title={`${getLocaleText(locale, TOOLBAR_TEXT.locale.label)}: ${getLocaleText(locale, TOOLBAR_TEXT.locale.description)}`}
+          >
+            <Segmented
+              size="small"
+              value={locale}
+              options={[
+                { label: '中', value: 'zh-CN' },
+                { label: 'EN', value: 'en-US' },
+              ]}
+              onChange={(value) => setLocale(value as DemoLocale)}
+            />
+          </Tooltip>
+
+          <ToolbarDivider />
+
+          <Tooltip
+            title={`${getLocaleText(locale, TOOLBAR_TEXT.theme.label)}: ${getLocaleText(locale, TOOLBAR_TEXT.theme.description)}`}
+          >
+            <Segmented
+              size="small"
+              value={themeMode}
+              options={[
+                {
+                  label: <SunOutlined style={{ fontSize: 12 }} />,
+                  value: 'light',
+                },
+                {
+                  label: <MoonOutlined style={{ fontSize: 12 }} />,
+                  value: 'dark',
+                },
+              ]}
+              onChange={(value) => setTheme(value as DemoTheme)}
+            />
+          </Tooltip>
+
+          <ToolbarDivider />
+
+          <Tooltip
+            title={
+              locale === 'zh-CN'
+                ? isFullscreen
+                  ? '退出全屏'
+                  : '进入全屏'
+                : isFullscreen
+                  ? 'Exit fullscreen'
+                  : 'Enter fullscreen'
+            }
+          >
+            <Button
+              icon={
+                isFullscreen ? (
+                  <FullscreenExitOutlined style={{ fontSize: 12 }} />
+                ) : (
+                  <FullscreenOutlined style={{ fontSize: 12 }} />
+                )
+              }
+              onClick={toggleFullscreen}
+              size="small"
+            />
+          </Tooltip>
+        </div>
+      </div>
+    </div>
   );
 };

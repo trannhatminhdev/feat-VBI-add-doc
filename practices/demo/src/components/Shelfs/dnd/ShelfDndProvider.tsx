@@ -16,6 +16,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { theme } from 'antd';
 import { resolveShelfDropAction } from './dropLogic';
 import type {
   ShelfDndAdapter,
@@ -39,6 +40,7 @@ export const ShelfDndProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const { token } = theme.useToken();
   const [activeDrag, setActiveDrag] = useState<ShelfDragData | null>(null);
   const adaptersRef = useRef<Map<ShelfType, ShelfDndAdapter>>(new Map());
 
@@ -161,11 +163,11 @@ export const ShelfDndProvider = ({
                 padding: '0 8px',
                 height: 24,
                 borderRadius: 6,
-                border: '1px solid rgba(0, 0, 0, 0.12)',
-                background: '#ffffff',
-                boxShadow: '0 6px 18px rgba(0, 0, 0, 0.16)',
+                border: `1px solid ${token.colorBorder}`,
+                background: token.colorBgElevated,
+                boxShadow: token.boxShadowSecondary,
                 fontSize: 12,
-                color: '#1f1f1f',
+                color: token.colorText,
                 maxWidth: 200,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',

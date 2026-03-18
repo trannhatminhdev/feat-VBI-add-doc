@@ -11,6 +11,7 @@ import {
   InputNumber,
   Badge,
   Empty,
+  theme,
 } from 'antd';
 import {
   FilterOutlined,
@@ -90,6 +91,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   open = false,
   fixedField,
 }) => {
+  const { token } = theme.useToken();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -575,7 +577,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                     size="small"
                     icon={<EditOutlined />}
                     onClick={() => item.id && handleEdit(item.id)}
-                    style={{ color: '#1890ff' }}
+                    style={{ color: token.colorPrimary }}
                   />
                 </Tooltip>
                 <Tooltip title="删除">

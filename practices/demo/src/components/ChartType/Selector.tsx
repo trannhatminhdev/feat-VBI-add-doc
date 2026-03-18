@@ -1,123 +1,155 @@
-import React, { useState } from 'react';
-import { Button, Popover } from 'antd';
-import {
-  LineChartOutlined,
-  BarChartOutlined,
-  PieChartOutlined,
-  DotChartOutlined,
-  AreaChartOutlined,
-  RadarChartOutlined,
-  HeatMapOutlined,
-} from '@ant-design/icons';
-import { useVBIStore } from 'src/model';
+import React, { useMemo, useState } from 'react';
+import { AppstoreOutlined } from '@ant-design/icons';
+import { Button, Popover, Typography, theme } from 'antd';
 import { useVBIChartType } from 'src/hooks';
+import { useVBIStore } from 'src/model';
+import type { DemoLocale } from 'src/constants/builder';
+import {
+  CHART_TYPE_GROUPS,
+  getChartTypeMeta,
+  getLocaleText,
+  TOOLBAR_TEXT,
+} from 'src/components/Toolbar/config';
 
-const CHART_ICONS: Record<string, React.ReactNode> = {
-  line: <LineChartOutlined />,
-  bar: <BarChartOutlined />,
-  column: <BarChartOutlined />,
-  pie: <PieChartOutlined />,
-  donut: <PieChartOutlined />,
-  rose: <PieChartOutlined />,
-  dot: <DotChartOutlined />,
-  area: <AreaChartOutlined />,
-  radar: <RadarChartOutlined />,
-  heatmap: <HeatMapOutlined />,
-  scatter: <DotChartOutlined />,
-  boxplot: <BarChartOutlined />,
-  treemap: <BarChartOutlined />,
-  sankey: <LineChartOutlined />,
-  arcDiagram: <LineChartOutlined />,
-  funnel: <BarChartOutlined />,
-  table: <div style={{ fontSize: 14 }}>表格</div>,
-  pivotTable: <div style={{ fontSize: 14 }}>透视表</div>,
-};
+const { Text } = Typography;
+const PANEL_CARD_WIDTH = 96;
+const PANEL_CARD_HEIGHT = 64;
 
-const CHART_LABELS: Record<string, string> = {
-  line: '折线图',
-  bar: '柱状图',
-  column: '柱状图',
-  pie: '饼图',
-  donut: '环形图',
-  rose: '玫瑰图',
-  dot: '点图',
-  area: '面积图',
-  radar: '雷达图',
-  heatmap: '热力图',
-  scatter: '散点图',
-  boxplot: '箱线图',
-  treemap: '树图',
-  sankey: '桑基图',
-  arcDiagram: '弧线图',
-  funnel: '漏斗图',
-  table: '表格',
-  pivotTable: '透视表',
-};
-
-export const ChartTypeSelector = (props: { style?: React.CSSProperties }) => {
+export const ChartTypeSelector = ({
+  compact = false,
+  showText = true,
+  locale,
+  style,
+}: {
+  compact?: boolean;
+  showText?: boolean;
+  locale: DemoLocale;
+  style?: React.CSSProperties;
+}) => {
   const builder = useVBIStore((state) => state.builder);
   const { chartType, changeChartType, getAvailableChartTypes } =
     useVBIChartType(builder);
   const [open, setOpen] = useState(false);
+  const { token } = theme.useToken();
 
-  const { style } = props;
-  const chartTypes = getAvailableChartTypes();
+  const availableChartTypes = getAvailableChartTypes();
+
+  const groupedChartTypes = useMemo(() => {
+    return CHART_TYPE_GROUPS.map((group) => ({
+      ...group,
+      items: availableChartTypes.filter(
+        (type) => getChartTypeMeta(type).group === group.key,
+      ),
+    })).filter((group) => group.items.length > 0);
+  }, [availableChartTypes]);
+
+  const currentChartMeta = getChartTypeMeta(chartType);
+  const triggerTooltip = `${getLocaleText(locale, currentChartMeta.label)}: ${getLocaleText(locale, currentChartMeta.description)}`;
 
   const handleSelect = (type: string) => {
     changeChartType(type);
     setOpen(false);
   };
 
-  const renderChartItem = (type: string) => (
-    <div
-      key={type}
-      onClick={() => handleSelect(type)}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '8px 4px',
-        cursor: 'pointer',
-        borderRadius: 4,
-        border: chartType === type ? '2px solid #1890ff' : '1px solid #d9d9d9',
-        backgroundColor: chartType === type ? '#e6f7ff' : '#fff',
-        transition: 'all 0.2s',
-        minWidth: 60,
-      }}
-      onMouseEnter={(e) => {
-        if (chartType !== type) {
-          e.currentTarget.style.borderColor = '#1890ff';
-          e.currentTarget.style.backgroundColor = '#f5f5f5';
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (chartType !== type) {
-          e.currentTarget.style.borderColor = '#d9d9d9';
-          e.currentTarget.style.backgroundColor = '#fff';
-        }
-      }}
-    >
-      <div style={{ fontSize: 20, color: '#1890ff', marginBottom: 4 }}>
-        {CHART_ICONS[type] || <DotChartOutlined />}
-      </div>
-      <div style={{ fontSize: 11, color: '#333', textAlign: 'center' }}>
-        {CHART_LABELS[type] || type}
-      </div>
-    </div>
-  );
+  const renderChartCard = (type: string) => {
+    const meta = getChartTypeMeta(type);
+    const selected = chartType === type;
+    const tooltipText = `${getLocaleText(locale, meta.label)}: ${getLocaleText(locale, meta.description)}`;
 
-  const content = (
-    <div style={{ width: 280 }}>
-      <div
+    return (
+      <button
+        key={type}
+        type="button"
+        title={tooltipText}
+        aria-label={tooltipText}
+        onClick={() => handleSelect(type)}
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: 8,
-          padding: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 6,
+          width: PANEL_CARD_WIDTH,
+          height: PANEL_CARD_HEIGHT,
+          padding: '8px 6px',
+          borderRadius: token.borderRadius,
+          border: `1px solid ${
+            selected ? token.colorPrimaryBorder : token.colorBorderSecondary
+          }`,
+          background: selected ? token.colorPrimaryBg : token.colorBgContainer,
+          color: selected ? token.colorPrimary : token.colorText,
+          cursor: 'pointer',
+          textAlign: 'center',
+          boxShadow: 'none',
+          transition: 'border-color 0.2s ease, background-color 0.2s ease',
         }}
       >
-        {chartTypes.map(renderChartItem)}
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 20,
+            height: 20,
+            fontSize: 13,
+            flexShrink: 0,
+          }}
+        >
+          {meta.icon}
+        </span>
+        <span
+          style={{
+            width: '100%',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            fontSize: 11,
+            fontWeight: 600,
+            lineHeight: 1.2,
+          }}
+        >
+          {getLocaleText(locale, meta.label)}
+        </span>
+      </button>
+    );
+  };
+
+  const content = (
+    <div
+      style={{
+        width: 'min(540px, calc(100vw - 24px))',
+        maxWidth: 'calc(100vw - 24px)',
+        maxHeight: 'min(58vh, 420px)',
+        overflowY: 'auto',
+      }}
+    >
+      <div style={{ marginBottom: 10 }}>
+        <Text strong style={{ fontSize: 13 }}>
+          {getLocaleText(locale, TOOLBAR_TEXT.chartType.panelTitle)}
+        </Text>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {groupedChartTypes.map((group) => (
+          <div key={group.key}>
+            <div style={{ marginBottom: 6 }}>
+              <Text strong style={{ fontSize: 11 }}>
+                {getLocaleText(locale, group.label)}
+              </Text>
+            </div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(auto-fill, ${PANEL_CARD_WIDTH}px)`,
+                gridAutoRows: `${PANEL_CARD_HEIGHT}px`,
+                gap: 6,
+                justifyContent: 'start',
+              }}
+            >
+              {group.items.map(renderChartCard)}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -131,13 +163,82 @@ export const ChartTypeSelector = (props: { style?: React.CSSProperties }) => {
         onOpenChange={setOpen}
         placement="bottomLeft"
         overlayStyle={{ padding: 0 }}
-        overlayInnerStyle={{ padding: '8px' }}
+        overlayInnerStyle={{
+          padding: 10,
+          borderRadius: token.borderRadiusLG,
+        }}
       >
-        <Button style={{ minWidth: 100, textAlign: 'left' }}>
-          <span style={{ marginRight: 8 }}>
-            {CHART_ICONS[chartType] || <DotChartOutlined />}
+        <Button
+          size={compact ? 'middle' : 'large'}
+          title={triggerTooltip}
+          aria-label={triggerTooltip}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: compact ? 6 : 12,
+            width: compact ? (showText ? 128 : 32) : '100%',
+            maxWidth: '100%',
+            height: compact ? 28 : 'auto',
+            padding: compact ? (showText ? '0 8px' : '0 7px') : '12px 14px',
+            borderRadius: token.borderRadius,
+          }}
+        >
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: compact ? 18 : 38,
+              height: compact ? 18 : 38,
+              borderRadius: compact ? 6 : 12,
+              background: token.colorPrimaryBg,
+              color: token.colorPrimary,
+              fontSize: compact ? 11 : 18,
+              flexShrink: 0,
+            }}
+          >
+            {currentChartMeta.icon ?? <AppstoreOutlined />}
           </span>
-          {CHART_LABELS[chartType] || chartType}
+          {showText ? (
+            <span
+              style={{
+                display: 'flex',
+                flex: 1,
+                minWidth: 0,
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                textAlign: 'left',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: compact ? 12 : 13,
+                  fontWeight: 600,
+                  lineHeight: 1.2,
+                  color: token.colorText,
+                  maxWidth: '100%',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {getLocaleText(locale, currentChartMeta.label)}
+              </span>
+              {!compact ? (
+                <span
+                  style={{
+                    fontSize: 12,
+                    lineHeight: 1.4,
+                    color: token.colorTextSecondary,
+                    whiteSpace: 'normal',
+                  }}
+                >
+                  {getLocaleText(locale, currentChartMeta.description)}
+                </span>
+              ) : null}
+            </span>
+          ) : null}
         </Button>
       </Popover>
     </div>

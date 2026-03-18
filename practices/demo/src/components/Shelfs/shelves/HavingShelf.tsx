@@ -3,6 +3,7 @@ import {
   isVBIHavingGroup,
   type VBIHavingClause,
 } from '@visactor/vbi';
+import { theme } from 'antd';
 import { useCallback, useMemo } from 'react';
 import { HavingFilterPanel, type HavingItem } from 'src/components/Filter';
 import {
@@ -26,24 +27,6 @@ import {
 
 type HavingShelfItem = HavingItem & {
   id: string;
-};
-
-const HAVING_SHELF_TONE: FilterShelfTone = {
-  dragOverBackground: 'rgba(22, 119, 255, 0.1)',
-  dragOverBorder: 'rgba(22, 119, 255, 0.45)',
-  itemBackground: '#edf5ff',
-  itemHoverBackground: '#dbeeff',
-  itemBorder: '#91caff',
-  itemHoverBorder: '#69b1ff',
-  textColor: '#1677ff',
-  iconBackground: 'rgba(22, 119, 255, 0.16)',
-  iconHoverBackground: 'rgba(22, 119, 255, 0.28)',
-  iconColor: '#0958d9',
-};
-
-const HAVING_ROOT_OPERATOR_COLORS = {
-  border: '#bdd7ff',
-  color: '#0958d9',
 };
 
 const flattenHavingFilters = (
@@ -86,6 +69,7 @@ export const HavingShelf = ({
   showRootOperator?: boolean;
 }) => {
   const builder = useVBIStore((state) => state.builder);
+  const { token } = theme.useToken();
   const { filters: havingFilterClauses } = useVBIHavingFilter(builder);
   const { schemaFields, fieldRoleMap, fieldTypeMap } =
     useVBISchemaFields(builder);
@@ -106,6 +90,29 @@ export const HavingShelf = ({
   const havingFilterItems = useMemo(() => {
     return flattenHavingFilters(havingFilterClauses, fieldRoleMap);
   }, [havingFilterClauses, fieldRoleMap]);
+
+  const havingShelfTone = useMemo<FilterShelfTone>(() => {
+    return {
+      dragOverBackground: 'rgba(22, 119, 255, 0.1)',
+      dragOverBorder: 'rgba(22, 119, 255, 0.45)',
+      itemBackground: token.colorPrimaryBg,
+      itemHoverBackground: token.colorPrimaryBg,
+      itemBorder: token.colorPrimaryBorder,
+      itemHoverBorder: token.colorPrimary,
+      textColor: token.colorPrimary,
+      iconBackground: 'rgba(22, 119, 255, 0.16)',
+      iconHoverBackground: 'rgba(22, 119, 255, 0.28)',
+      iconColor: token.colorPrimary,
+    };
+  }, [token]);
+
+  const havingRootOperatorColors = useMemo(() => {
+    return {
+      border: token.colorPrimaryBorder,
+      color: token.colorPrimary,
+      background: token.colorBgContainer,
+    };
+  }, [token]);
 
   const reorderHavingFilters = useCallback(
     (dragIndex: number, insertIndex: number) => {
@@ -213,11 +220,11 @@ export const HavingShelf = ({
       items={havingFilterItems}
       style={style}
       placeholder="拖拽字段到此处"
-      tone={HAVING_SHELF_TONE}
+      tone={havingShelfTone}
       maxLabelWidth={124}
       showRootOperator={showRootOperator}
       rootOperator={operator}
-      rootOperatorColors={HAVING_ROOT_OPERATOR_COLORS}
+      rootOperatorColors={havingRootOperatorColors}
       onRootOperatorChange={setOperator}
       getDisplayText={getHavingDisplayText}
       getItemPayload={(item) => ({

@@ -1,6 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 import { VBIBuilder } from '@visactor/vbi';
 
+const isEditableTarget = (target: EventTarget | null) => {
+  if (!(target instanceof HTMLElement)) {
+    return false;
+  }
+
+  if (target.isContentEditable || target.closest('[contenteditable="true"]')) {
+    return true;
+  }
+
+  return ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
+};
+
 /**
  * VBI Undo Manager Hook
  * 提供撤销/重做管理
@@ -27,6 +39,40 @@ export const useVBIUndoManager = (builder: VBIBuilder | undefined) => {
     builder.doc.on('update', updateHandler);
     return () => {
       builder.doc.off('update', updateHandler);
+    };
+  }, [builder]);
+
+  useEffect(() => {
+    if (!builder) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isEditableTarget(event.target) || event.altKey) {
+        return;
+      }
+
+      const withCommand = event.ctrlKey || event.metaKey;
+      if (!withCommand) {
+        return;
+      }
+
+      const key = event.key.toLowerCase();
+      const wantsUndo = key === 'z' && !event.shiftKey;
+      const wantsRedo = key === 'y' || (key === 'z' && event.shiftKey);
+
+      if (wantsUndo && builder.undoManager.canUndo()) {
+        event.preventDefault();
+        builder.undoManager.undo();
+      } else if (wantsRedo && builder.undoManager.canRedo()) {
+        event.preventDefault();
+        builder.undoManager.redo();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [builder]);
 

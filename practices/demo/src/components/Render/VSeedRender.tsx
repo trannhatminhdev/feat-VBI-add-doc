@@ -55,8 +55,7 @@ export const VSeedRender = (props: { vseed: VSeed }) => {
       return;
     }
     try {
-      const theme = 'light';
-      const builder = VSeedBuilder.from({ ...vseed, theme });
+      const builder = VSeedBuilder.from(vseed);
       const spec = builder.build();
       if (isPivotChart(vseed)) {
         const tableInstance = new PivotChart(

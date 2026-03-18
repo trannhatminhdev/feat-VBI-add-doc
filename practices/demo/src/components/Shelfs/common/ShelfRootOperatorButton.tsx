@@ -5,6 +5,7 @@ export type RootOperator = 'and' | 'or';
 export type RootOperatorButtonColor = {
   border: string;
   color: string;
+  background?: string;
 };
 
 export const ShelfRootOperatorButton = (props: {
@@ -34,7 +35,7 @@ export const ShelfRootOperatorButton = (props: {
           lineHeight: 1,
           borderRadius: 5,
           border: `1px solid ${colors.border}`,
-          background: '#fff',
+          background: colors.background ?? 'transparent',
           color: colors.color,
           flexShrink: 0,
         }}

@@ -1,12 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
 import { VBIBuilder, VBIDSL } from '@visactor/vbi';
+import {
+  DEMO_DEFAULT_LIMIT,
+  DEMO_DEFAULT_LOCALE,
+  DEMO_DEFAULT_THEME,
+  type DemoLocale,
+  type DemoTheme,
+} from 'src/constants/builder';
 
 export interface VBIBuilderState {
-  locale: string;
-  theme: string;
+  locale: DemoLocale;
+  theme: DemoTheme;
   limit: number;
   connectorId: string;
 }
+
+const normalizeLimit = (limit: number) => {
+  return Math.max(1, Math.round(limit));
+};
 
 /**
  * VBI Builder Hook
@@ -14,9 +25,9 @@ export interface VBIBuilderState {
  */
 export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
   const [state, setState] = useState<VBIBuilderState>({
-    locale: 'zh-CN',
-    theme: 'light',
-    limit: 1000,
+    locale: DEMO_DEFAULT_LOCALE,
+    theme: DEMO_DEFAULT_THEME,
+    limit: DEMO_DEFAULT_LIMIT,
     connectorId: '',
   });
 
@@ -28,9 +39,9 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
 
     const dsl = builder.dsl.toJSON() as VBIDSL;
     setState({
-      locale: dsl.locale ?? 'zh-CN',
-      theme: dsl.theme ?? 'light',
-      limit: dsl.limit ?? 1000,
+      locale: (dsl.locale ?? DEMO_DEFAULT_LOCALE) as DemoLocale,
+      theme: (dsl.theme ?? DEMO_DEFAULT_THEME) as DemoTheme,
+      limit: normalizeLimit(dsl.limit ?? DEMO_DEFAULT_LIMIT),
       connectorId: dsl.connectorId ?? '',
     });
 
@@ -38,9 +49,9 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
     const updateHandler = () => {
       const newDsl = builder.dsl.toJSON() as VBIDSL;
       setState({
-        locale: newDsl.locale ?? 'zh-CN',
-        theme: newDsl.theme ?? 'light',
-        limit: newDsl.limit ?? 1000,
+        locale: (newDsl.locale ?? DEMO_DEFAULT_LOCALE) as DemoLocale,
+        theme: (newDsl.theme ?? DEMO_DEFAULT_THEME) as DemoTheme,
+        limit: normalizeLimit(newDsl.limit ?? DEMO_DEFAULT_LIMIT),
         connectorId: newDsl.connectorId ?? '',
       });
     };
@@ -53,7 +64,7 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
 
   // 设置语言
   const setLocale = useCallback(
-    (locale: string) => {
+    (locale: DemoLocale) => {
       if (builder) {
         builder.locale.setLocale(locale);
       }
@@ -63,7 +74,7 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
 
   // 设置主题
   const setTheme = useCallback(
-    (theme: string) => {
+    (theme: DemoTheme) => {
       if (builder) {
         builder.theme.setTheme(theme);
       }
@@ -75,7 +86,7 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
   const setLimit = useCallback(
     (limit: number) => {
       if (builder) {
-        builder.limit.setLimit(limit);
+        builder.limit.setLimit(normalizeLimit(limit));
       }
     },
     [builder],
