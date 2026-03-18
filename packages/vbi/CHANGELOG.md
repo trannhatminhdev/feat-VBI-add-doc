@@ -1,5 +1,12 @@
 # @visactor/vbi
 
+## 0.4.19
+
+### Patch Changes
+
+- 76dbf5c: feat: add adapters options for vbi create method, for custom buildQuery and buildChart
+  - @visactor/vseed@0.4.19
+
 ## 0.4.18
 
 ### Patch Changes
