@@ -1,9 +1,11 @@
 import { z } from 'zod'
+import { zDimensionAggregate } from './aggregate'
 
 export const zVBIDimensionSchema = z.object({
   id: z.string(),
   field: z.string(),
   alias: z.string(),
+  aggregate: zDimensionAggregate.optional(),
 })
 
 export const zVBIDimensionGroupSchema: z.ZodType<VBIDimensionGroup> = z.object({

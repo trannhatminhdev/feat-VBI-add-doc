@@ -1,10 +1,12 @@
 import { useCallback, useMemo } from 'react';
+import { theme } from 'antd';
 import { FilterPanel, type FilterItem } from 'src/components/Filter';
 import {
   getWhereDisplayText,
   normalizeWhereOperator,
 } from 'src/components/Filter/whereFilterUtils';
 import { useVBISchemaFields, useVBIWhereFilter } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 import { FilterShelf, type FilterShelfTone } from '../common/FilterShelf';
 import { useFilterRootOperator } from '../hooks/useFilterRootOperator';
@@ -17,24 +19,6 @@ type WhereShelfItem = FilterItem & {
   id: string;
 };
 
-const WHERE_SHELF_TONE: FilterShelfTone = {
-  dragOverBackground: 'rgba(250, 140, 22, 0.11)',
-  dragOverBorder: 'rgba(250, 140, 22, 0.45)',
-  itemBackground: '#fff8ee',
-  itemHoverBackground: '#ffe7cc',
-  itemBorder: '#ffd591',
-  itemHoverBorder: '#ffbb96',
-  textColor: '#fa8c16',
-  iconBackground: 'rgba(250, 140, 22, 0.16)',
-  iconHoverBackground: 'rgba(250, 140, 22, 0.28)',
-  iconColor: '#d46b08',
-};
-
-const WHERE_ROOT_OPERATOR_COLORS = {
-  border: '#ffd8a8',
-  color: '#d46b08',
-};
-
 export const WhereShelf = ({
   style,
   showRootOperator = true,
@@ -43,8 +27,11 @@ export const WhereShelf = ({
   showRootOperator?: boolean;
 }) => {
   const builder = useVBIStore((state) => state.builder);
+  const { token } = theme.useToken();
+  const { t } = useTranslation();
   const { flattenFilters } = useVBIWhereFilter(builder);
-  const { schemaFields, fieldRoleMap } = useVBISchemaFields(builder);
+  const { schemaFields, fieldRoleMap, fieldTypeMap } =
+    useVBISchemaFields(builder);
   const { operator, setOperator } = useFilterRootOperator({
     builder,
     type: 'where',
@@ -54,14 +41,33 @@ export const WhereShelf = ({
     return schemaFields.map((field) => ({
       name: field.name,
       role: field.role,
+      type: field.type,
+      isDate: field.isDate,
     }));
   }, [schemaFields]);
 
-  const schemaTypeMap = useMemo(() => {
-    return Object.fromEntries(
-      schemaFields.map((item) => [item.name, item.type]),
-    );
-  }, [schemaFields]);
+  const whereShelfTone = useMemo<FilterShelfTone>(() => {
+    return {
+      dragOverBackground: 'rgba(250, 140, 22, 0.11)',
+      dragOverBorder: 'rgba(250, 140, 22, 0.45)',
+      itemBackground: token.colorWarningBg,
+      itemHoverBackground: token.colorWarningBg,
+      itemBorder: token.colorWarningBorder,
+      itemHoverBorder: token.colorWarning,
+      textColor: token.colorWarning,
+      iconBackground: 'rgba(250, 140, 22, 0.16)',
+      iconHoverBackground: 'rgba(250, 140, 22, 0.28)',
+      iconColor: token.colorWarning,
+    };
+  }, [token]);
+
+  const whereRootOperatorColors = useMemo(() => {
+    return {
+      border: token.colorWarningBorder,
+      color: token.colorWarning,
+      background: token.colorBgContainer,
+    };
+  }, [token]);
 
   const whereFilterItems = useMemo((): WhereShelfItem[] => {
     return flattenFilters()
@@ -148,17 +154,17 @@ export const WhereShelf = ({
       shelf="where"
       items={whereFilterItems}
       style={style}
-      placeholder="拖拽字段到此处"
-      tone={WHERE_SHELF_TONE}
+      placeholder={t('shelvesPlaceholdersFilters')}
+      tone={whereShelfTone}
       maxLabelWidth={132}
       showRootOperator={showRootOperator}
       rootOperator={operator}
-      rootOperatorColors={WHERE_ROOT_OPERATOR_COLORS}
+      rootOperatorColors={whereRootOperatorColors}
       onRootOperatorChange={setOperator}
-      getDisplayText={getWhereDisplayText}
+      getDisplayText={(item) => getWhereDisplayText(item, t)}
       getItemPayload={(item) => ({
         field: item.field,
-        type: schemaTypeMap[item.field],
+        type: fieldTypeMap[item.field],
         role: fieldRoleMap[item.field] ?? 'dimension',
       })}
       onAddFieldAt={(payload, insertIndex) => {

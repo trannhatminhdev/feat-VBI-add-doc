@@ -96,6 +96,20 @@ const getIconStyle = (params: {
   };
 };
 
+const getRemoveIconWrapperStyle = (isHovered: boolean): React.CSSProperties => {
+  return {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: isHovered ? 12 : 0,
+    marginLeft: isHovered ? 2 : 0,
+    overflow: 'hidden',
+    opacity: isHovered ? 1 : 0,
+    transition: 'width 0.2s, margin-left 0.2s, opacity 0.2s',
+    flexShrink: 0,
+  };
+};
+
 const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
   shelf: ShelfType;
   item: TItem;
@@ -223,23 +237,25 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
             </Typography.Text>
           </span>
         </Dropdown>
-        <CloseOutlined
-          onClick={(event) => {
-            event.stopPropagation();
-            onRemove(item.id);
-          }}
-          style={{
-            fontSize: 9,
-            cursor: 'pointer',
-            color: REMOVE_ICON_DEFAULT_COLOR,
-          }}
-          onMouseEnter={(event) => {
-            event.currentTarget.style.color = REMOVE_ICON_HOVER_COLOR;
-          }}
-          onMouseLeave={(event) => {
-            event.currentTarget.style.color = REMOVE_ICON_DEFAULT_COLOR;
-          }}
-        />
+        <span style={getRemoveIconWrapperStyle(isHovered)}>
+          <CloseOutlined
+            onClick={(event) => {
+              event.stopPropagation();
+              onRemove(item.id);
+            }}
+            style={{
+              fontSize: 9,
+              cursor: 'pointer',
+              color: REMOVE_ICON_DEFAULT_COLOR,
+            }}
+            onMouseEnter={(event) => {
+              event.currentTarget.style.color = REMOVE_ICON_HOVER_COLOR;
+            }}
+            onMouseLeave={(event) => {
+              event.currentTarget.style.color = REMOVE_ICON_DEFAULT_COLOR;
+            }}
+          />
+        </span>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import type { MenuProps } from 'antd';
 import { message } from 'antd';
-import { useMemo } from 'react';
 import { useVBIMeasures, useVBISchemaFields } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 import {
   FieldShelf,
@@ -40,19 +40,14 @@ const MEASURE_SHELF_TONE: FieldShelfTone = {
 
 export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
+  const { t } = useTranslation();
   const { measures, addMeasure, removeMeasure, updateMeasure } =
     useVBIMeasures(builder);
-  const { schemaFields } = useVBISchemaFields(builder);
-
-  const schemaTypeMap = useMemo(() => {
-    return Object.fromEntries(
-      schemaFields.map((item) => [item.name, item.type]),
-    );
-  }, [schemaFields]);
+  const { fieldTypeMap } = useVBISchemaFields(builder);
 
   const getFieldRole = (fieldName: string, fieldType?: string) => {
     return getMeasureFieldRoleBySchemaType(
-      fieldType ?? schemaTypeMap[fieldName],
+      fieldType ?? fieldTypeMap[fieldName],
     );
   };
 
@@ -109,7 +104,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     measure: (typeof measures)[number],
   ): MenuProps['items'] => {
     const fieldRole = getFieldRole(measure.field);
-    const availableAggregates = getAggregateItemsByFieldRole(fieldRole);
+    const availableAggregates = getAggregateItemsByFieldRole(fieldRole, t);
     const currentQuantilePercent =
       measure.aggregate?.func === 'quantile'
         ? Math.round((measure.aggregate.quantile ?? 0.5) * 100)
@@ -119,17 +114,20 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     const aggregateMenuItems: NonNullable<MenuProps['items']> =
       availableAggregates.map((item) => {
         if (item.key !== 'quantile') {
-          const shortLabel = item.label.split(' ')[0] ?? item.label;
           return {
             key: `aggregate:${item.key}`,
-            label: `${currentAggregateKey === item.key ? '✓ ' : ''}${shortLabel}`,
+            label: `${currentAggregateKey === item.key ? '✓ ' : ''}${
+              item.shortLabel
+            }`,
             style: SHELF_MENU_ITEM_STYLE,
           };
         }
 
         return {
           key: 'aggregate:quantile',
-          label: `${currentAggregateKey === 'quantile' ? '✓ ' : ''}分位数`,
+          label: `${currentAggregateKey === 'quantile' ? '✓ ' : ''}${t(
+            'shelvesMenuQuantile',
+          )}`,
           style: SHELF_MENU_ITEM_STYLE,
           children: QUANTILE_PERCENT_OPTIONS.map((percent) => ({
             key: `aggregate:quantile:${percent}`,
@@ -142,18 +140,20 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     return [
       {
         key: 'aggregate',
-        label: '聚合',
+        label: t('shelvesMenuAggregate'),
         style: SHELF_MENU_ITEM_STYLE,
         children: aggregateMenuItems,
       },
       {
         key: 'rename',
-        label: '重命名',
+        label: t('shelvesMenuRename'),
         style: SHELF_MENU_ITEM_STYLE,
       },
       {
         key: 'delete',
-        label: <span style={{ color: '#ff4d4f' }}>删除</span>,
+        label: (
+          <span style={{ color: '#ff4d4f' }}>{t('shelvesMenuDelete')}</span>
+        ),
         style: SHELF_MENU_ITEM_STYLE,
       },
     ];
@@ -165,8 +165,12 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   ) => {
     if (key === 'rename') {
       openShelfRenameModal({
-        title: '重命名指标',
-        placeholder: '请输入指标名称',
+        title: t('shelvesRenameModalMeasureTitle'),
+        placeholder: t('shelvesRenameModalMeasurePlaceholder'),
+        okText: t('shelvesRenameModalSave'),
+        cancelText: t('shelvesRenameModalCancel'),
+        emptyNameMessage: t('shelvesRenameModalEmptyName'),
+        duplicateNameMessage: t('shelvesRenameModalDuplicateName'),
         id: measure.id,
         currentAlias: measure.alias || measure.field,
         items: measures,
@@ -206,7 +210,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       return;
     }
 
-    const selectedAggregate = getAggregateItemsByFieldRole(fieldRole).find(
+    const selectedAggregate = getAggregateItemsByFieldRole(fieldRole, t).find(
       (item) => item.key === aggregateKey,
     )?.aggregate;
 
@@ -215,7 +219,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     }
 
     if (!isAggregateSupportedByFieldRole(selectedAggregate, fieldRole)) {
-      message.warning('该字段不支持此聚合方式');
+      message.warning(t('shelvesMeasureUnsupportedAggregate'));
       return;
     }
 
@@ -226,6 +230,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     const baseLabel = measure.alias || measure.field;
     const aggregate = formatMeasureAggregate(
       measure.aggregate as MeasureAggregate | undefined,
+      t,
     );
 
     if (!aggregate) {
@@ -239,14 +244,14 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     <FieldShelf
       shelf="measures"
       items={measures}
-      placeholder="拖拽度量/维度到此处"
+      placeholder={t('shelvesPlaceholdersMeasures')}
       tone={MEASURE_SHELF_TONE}
       style={style}
       maxLabelWidth={112}
       getDisplayLabel={getMeasureDisplayLabel}
       getItemPayload={(item) => ({
         field: item.field,
-        type: schemaTypeMap[item.field],
+        type: fieldTypeMap[item.field],
         role: getFieldRole(item.field),
       })}
       buildMenuItems={buildMeasureMenuItems}

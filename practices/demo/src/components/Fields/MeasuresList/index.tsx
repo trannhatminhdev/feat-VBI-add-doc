@@ -1,11 +1,12 @@
 import { useDraggable } from '@dnd-kit/core';
-import { Card, Flex } from 'antd';
+import { Card, Flex, theme } from 'antd';
 import { NumberOutlined } from '@ant-design/icons';
 import {
   createSchemaFieldDragId,
   type SchemaFieldDragData,
 } from 'src/components/Shelfs/dnd';
 import { useVBIMeasures, useVBISchemaFields } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 
 const MeasureFieldItem = ({
@@ -17,6 +18,7 @@ const MeasureFieldItem = ({
   fieldType: string;
   onClick: () => void;
 }) => {
+  const { token } = theme.useToken();
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: createSchemaFieldDragId({
       field: fieldName,
@@ -48,16 +50,16 @@ const MeasureFieldItem = ({
         borderRadius: '4px',
         transition: 'all 0.2s',
         fontSize: 12,
-        color: '#333',
+        color: token.colorText,
         opacity: isDragging ? 0.5 : 1,
       }}
       onMouseEnter={(event) => {
-        event.currentTarget.style.backgroundColor = 'rgba(82, 196, 26, 0.1)';
-        event.currentTarget.style.color = '#52c41a';
+        event.currentTarget.style.backgroundColor = token.colorSuccessBg;
+        event.currentTarget.style.color = token.colorSuccess;
       }}
       onMouseLeave={(event) => {
         event.currentTarget.style.backgroundColor = 'transparent';
-        event.currentTarget.style.color = '#333';
+        event.currentTarget.style.color = token.colorText;
       }}
     >
       <span
@@ -67,7 +69,7 @@ const MeasureFieldItem = ({
           alignItems: 'center',
         }}
       >
-        <NumberOutlined style={{ color: '#52c41a', fontSize: 12 }} />
+        <NumberOutlined style={{ color: token.colorSuccess, fontSize: 12 }} />
       </span>
       <span
         style={{
@@ -85,13 +87,19 @@ const MeasureFieldItem = ({
 
 export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
+  const { token } = theme.useToken();
+  const { t } = useTranslation();
   const { measures: shelfMeasures, addMeasure } = useVBIMeasures(builder);
   const { schemaFields } = useVBISchemaFields(builder);
   const measures = schemaFields.filter((d) => d.role === 'measure');
 
   return (
     <Card
-      title={<span style={{ fontSize: 13, fontWeight: 500 }}>Measures</span>}
+      title={
+        <span style={{ fontSize: 13, fontWeight: 500 }}>
+          {t('panelsFieldsMeasures')}
+        </span>
+      }
       size="small"
       style={{ ...style }}
       styles={{
@@ -105,7 +113,7 @@ export const MeasuresList = ({ style }: { style?: React.CSSProperties }) => {
         header: {
           minHeight: 32,
           padding: '6px 12px',
-          borderBottom: '1px solid #f0f0f0',
+          borderBottom: `1px solid ${token.colorBorder}`,
         },
       }}
     >

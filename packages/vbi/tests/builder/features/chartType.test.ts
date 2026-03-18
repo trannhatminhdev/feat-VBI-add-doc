@@ -47,9 +47,12 @@ describe('ChartTypeBuilder', () => {
     expect(types).toContain('table')
     expect(types).toContain('line')
     expect(types).toContain('column')
+    expect(types).toContain('bar')
     expect(types).toContain('barPercent')
     expect(types).toContain('pie')
-    expect(types.length).toBeGreaterThan(10)
+    expect(types).toContain('treeMap')
+    expect(types).toContain('racePie')
+    expect(types.length).toBeGreaterThan(20)
   })
 
   test('observe and unobserve', () => {

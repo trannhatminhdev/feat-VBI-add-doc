@@ -19,5 +19,13 @@
       "src/*": ["./src/*"]
     }
   },
+  "references": [
+    {
+      "path": "../vseed"
+    },
+    {
+      "path": "../vquery"
+    }
+  ],
   "include": ["src", "src/**/*.json"]
 }

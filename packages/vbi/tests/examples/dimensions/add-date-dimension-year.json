@@ -1,0 +1,30 @@
+{
+  "name": "add-date-dimension-year",
+  "description": "添加按年聚合的日期维度",
+  "schema": [
+    {
+      "name": "order_date",
+      "type": "string"
+    },
+    {
+      "name": "sales",
+      "type": "number"
+    }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": {
+          "func": "sum"
+        }
+      }
+    ],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.dimensions.add('order_date', node => {\n    node.setAlias('订单日期')\n  })\n  const dimensionId = builder.dimensions.find(node => node.getField() === 'order_date')?.getId()\n  if (dimensionId) {\n    builder.dimensions.update(dimensionId, node => {\n      node.setAlias('年份').setAggregate({ func: 'toYear' })\n    })\n  }\n}"
+}

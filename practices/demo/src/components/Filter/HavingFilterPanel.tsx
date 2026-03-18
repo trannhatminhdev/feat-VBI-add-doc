@@ -12,6 +12,7 @@ import {
   Empty,
   Badge,
   Tag,
+  theme,
 } from 'antd';
 import {
   FilterOutlined,
@@ -22,6 +23,7 @@ import {
   CheckOutlined,
 } from '@ant-design/icons';
 import type { VBIHavingAggregate } from '@visactor/vbi';
+import { useTranslation } from 'src/i18n';
 import {
   getDefaultHavingAggregateByFieldRole,
   getDefaultHavingOperator,
@@ -53,6 +55,8 @@ export interface HavingItem {
 export interface HavingField {
   name: string;
   role: 'dimension' | 'measure';
+  type?: string;
+  isDate?: boolean;
 }
 
 interface HavingFilterPanelProps {
@@ -93,6 +97,18 @@ const getFieldRole = (
   return fields.find((field) => field.name === fieldName)?.role ?? 'measure';
 };
 
+const getFieldRoleLabel = (field: HavingField, t: (key: string) => string) => {
+  if (field.role === 'measure') {
+    return t('filtersFieldRolesMeasure');
+  }
+
+  if (field.isDate) {
+    return t('filtersFieldRolesDateDimension');
+  }
+
+  return t('filtersFieldRolesDimension');
+};
+
 export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   fields,
   activeFields = [],
@@ -106,6 +122,8 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   open = false,
   fixedField,
 }) => {
+  const { token } = theme.useToken();
+  const { t } = useTranslation();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -147,8 +165,8 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   }, [fields, selectedField, isSingleItemEdit, filters]);
 
   const aggregateOptionGroups = React.useMemo(() => {
-    return getHavingAggregateOptionGroupsByFieldRole(selectedFieldRole);
-  }, [selectedFieldRole]);
+    return getHavingAggregateOptionGroupsByFieldRole(selectedFieldRole, t);
+  }, [selectedFieldRole, t]);
 
   const aggregateSelectOptions = React.useMemo(() => {
     return aggregateOptionGroups.map((group) => ({
@@ -168,7 +186,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
 
   const recommendedAggregateOptions = React.useMemo(() => {
     return (
-      aggregateOptionGroups.find((group) => group.label === '常用')?.options ??
+      aggregateOptionGroups.find((group) => group.key === 'common')?.options ??
       []
     );
   }, [aggregateOptionGroups]);
@@ -186,8 +204,8 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
   }, [selectedFieldRole, selectedAggregate]);
 
   const operatorOptions = React.useMemo(() => {
-    return getHavingOperatorOptions(isNumericValue);
-  }, [isNumericValue]);
+    return getHavingOperatorOptions(isNumericValue, t);
+  }, [isNumericValue, t]);
 
   const inputStrategy = React.useMemo(() => {
     return getHavingFilterInputStrategy(selectedOperator, isNumericValue);
@@ -434,7 +452,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
       return (
         <Form.Item style={{ marginBottom: 10 }}>
           <Text type="secondary" style={{ fontSize: 11 }}>
-            当前操作符无需输入值
+            {t('filtersFormNoValueRequired')}
           </Text>
         </Form.Item>
       );
@@ -443,7 +461,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
     if (inputStrategy === 'range') {
       return (
         <Form.Item
-          label={isSingleItemEdit ? undefined : '值范围'}
+          label={isSingleItemEdit ? undefined : t('filtersFormValueRange')}
           style={{ marginBottom: 10 }}
         >
           <div style={{ display: 'flex', gap: 10 }}>
@@ -452,7 +470,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
                 variant="filled"
                 controls={false}
                 style={{ width: '100%' }}
-                placeholder="最小值"
+                placeholder={t('filtersFormMinValue')}
               />
             </Form.Item>
             <Form.Item name={['value', 'max']} noStyle>
@@ -460,7 +478,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
                 variant="filled"
                 controls={false}
                 style={{ width: '100%' }}
-                placeholder="最大值"
+                placeholder={t('filtersFormMaxValue')}
               />
             </Form.Item>
           </div>
@@ -471,16 +489,18 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
     if (inputStrategy === 'tags') {
       return (
         <Form.Item
-          label={isSingleItemEdit ? undefined : '值'}
+          label={isSingleItemEdit ? undefined : t('filtersFormValue')}
           name="value"
-          rules={[{ required: true, message: '请输入值' }]}
+          rules={[
+            { required: true, message: t('filtersValidationEnterValue') },
+          ]}
           style={{ marginBottom: 10 }}
         >
           <Select
             mode="tags"
             variant="filled"
             tokenSeparators={[',']}
-            placeholder="输入多个值，回车确认"
+            placeholder={t('filtersFormInputMultipleValues')}
           />
         </Form.Item>
       );
@@ -489,16 +509,18 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
     if (inputStrategy === 'number') {
       return (
         <Form.Item
-          label={isSingleItemEdit ? undefined : '值'}
+          label={isSingleItemEdit ? undefined : t('filtersFormValue')}
           name="value"
-          rules={[{ required: true, message: '请输入数值' }]}
+          rules={[
+            { required: true, message: t('filtersValidationEnterNumber') },
+          ]}
           style={{ marginBottom: 10 }}
         >
           <InputNumber
             variant="filled"
             controls={false}
             style={{ width: '100%' }}
-            placeholder="输入数值"
+            placeholder={t('filtersFormInputNumber')}
           />
         </Form.Item>
       );
@@ -506,12 +528,12 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
 
     return (
       <Form.Item
-        label={isSingleItemEdit ? undefined : '值'}
+        label={isSingleItemEdit ? undefined : t('filtersFormValue')}
         name="value"
-        rules={[{ required: true, message: '请输入值' }]}
+        rules={[{ required: true, message: t('filtersValidationEnterValue') }]}
         style={{ marginBottom: 10 }}
       >
-        <Input placeholder="输入值" variant="filled" />
+        <Input placeholder={t('filtersFormInputValue')} variant="filled" />
       </Form.Item>
     );
   };
@@ -533,13 +555,15 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
     >
       {!isSingleItemEdit && (
         <Form.Item
-          label="字段"
+          label={t('filtersFormField')}
           name="field"
-          rules={[{ required: true, message: '请选择字段' }]}
+          rules={[
+            { required: true, message: t('filtersValidationSelectField') },
+          ]}
           style={{ marginBottom: 8 }}
         >
           <Select
-            placeholder="选择字段"
+            placeholder={t('filtersFormSelectField')}
             showSearch
             variant="filled"
             onChange={(fieldName) => {
@@ -563,8 +587,8 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
                       isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
                     }
                   >
-                    {field.name} ({field.role === 'measure' ? '度量' : '维度'}){' '}
-                    {isActive ? '(推荐)' : ''}
+                    {field.name} ({getFieldRoleLabel(field, t)}){' '}
+                    {isActive ? t('commonStatusRecommended') : ''}
                   </span>
                 </Option>
               );
@@ -574,9 +598,11 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
       )}
 
       <Form.Item
-        label={isSingleItemEdit ? undefined : '聚合方式'}
+        label={isSingleItemEdit ? undefined : t('filtersFormAggregate')}
         name="aggregateFunc"
-        rules={[{ required: true, message: '请选择聚合方式' }]}
+        rules={[
+          { required: true, message: t('filtersValidationSelectAggregate') },
+        ]}
         style={{ marginBottom: 10 }}
       >
         <div>
@@ -606,7 +632,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
             variant="filled"
             options={aggregateSelectOptions}
             value={selectedAggregateFunc}
-            placeholder="选择聚合方式"
+            placeholder={t('filtersFormSelectAggregate')}
             onChange={(value) => {
               form.setFieldValue('aggregateFunc', value);
             }}
@@ -616,9 +642,11 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
       </Form.Item>
 
       <Form.Item
-        label={isSingleItemEdit ? undefined : '操作符'}
+        label={isSingleItemEdit ? undefined : t('filtersFormOperator')}
         name="operator"
-        rules={[{ required: true, message: '请选择操作符' }]}
+        rules={[
+          { required: true, message: t('filtersValidationSelectOperator') },
+        ]}
         style={{ marginBottom: 10 }}
       >
         <Select
@@ -640,7 +668,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
       <Form.Item style={{ marginBottom: 0, marginTop: 2, textAlign: 'right' }}>
         <Space size={8}>
           <Button size="small" onClick={handleCancel}>
-            取消
+            {t('commonActionsCancel')}
           </Button>
           <Button
             type="primary"
@@ -648,7 +676,9 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
             onClick={handleSubmit}
             icon={<CheckOutlined />}
           >
-            {editingId || isSingleItemEdit ? '保存' : '添加'}
+            {editingId || isSingleItemEdit
+              ? t('commonActionsSave')
+              : t('commonActionsAdd')}
           </Button>
         </Space>
       </Form.Item>
@@ -660,7 +690,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
       {filters.length === 0 && !isAdding ? (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description="暂无 Having 条件"
+          description={t('filtersEmptyHaving')}
           style={{ margin: '20px 0' }}
         />
       ) : (
@@ -676,23 +706,26 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
                 justifyContent: 'space-between',
                 gap: 8,
                 borderRadius: 6,
-                background: editingId === item.id ? '#f5f5f5' : 'transparent',
+                background:
+                  editingId === item.id
+                    ? token.colorFillSecondary
+                    : 'transparent',
               }}
             >
               <Text style={{ fontSize: 12, minWidth: 0, flex: 1 }} ellipsis>
-                {getHavingDisplayText(item)}
+                {getHavingDisplayText(item, t)}
               </Text>
               <Space size={2}>
-                <Tooltip title="编辑">
+                <Tooltip title={t('commonActionsEdit')}>
                   <Button
                     type="text"
                     size="small"
                     icon={<EditOutlined />}
                     onClick={() => item.id && handleEdit(item.id)}
-                    style={{ color: '#1677ff' }}
+                    style={{ color: token.colorPrimary }}
                   />
                 </Tooltip>
-                <Tooltip title="删除">
+                <Tooltip title={t('commonActionsDelete')}>
                   <Button
                     type="text"
                     size="small"
@@ -722,12 +755,12 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
         }}
       >
         <Text strong style={{ fontSize: 13 }}>
-          分组过滤 (Having)
+          {t('filtersTitlesHaving')}
         </Text>
         <Space size={4}>
           {!isAdding && !editingId && (
             <>
-              <Tooltip title="添加条件">
+              <Tooltip title={t('commonActionsAddCondition')}>
                 <Button
                   type="text"
                   size="small"
@@ -736,7 +769,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
                 />
               </Tooltip>
               {filters.length > 0 && (
-                <Tooltip title="清空全部">
+                <Tooltip title={t('commonActionsClearAll')}>
                   <Button
                     type="text"
                     size="small"
@@ -774,7 +807,7 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
       overlayInnerStyle={{ padding: '12px' }}
     >
       <Badge count={filters.length} size="small" offset={[8, 0]}>
-        <Button icon={<FilterOutlined />}>分组过滤</Button>
+        <Button icon={<FilterOutlined />}>{t('filtersButtonsHaving')}</Button>
       </Badge>
     </Popover>
   );

@@ -1,3 +1,4 @@
+import { zDimensionAggregate } from 'src/types/dsl/dimensions/aggregate'
 import { zVBIDimensionGroupSchema, zVBIDimensionTree } from 'src/types/dsl/dimensions/dimensions'
 import { zVBIHavingClause, zVBIHavingFilter, zVBIHavingGroup } from 'src/types/dsl/havingFilter/having'
 import { zVBIDSLLocale } from 'src/types/dsl/locale/locale'
@@ -17,6 +18,12 @@ import {
 } from 'src/utils'
 
 describe('DSL schemas', () => {
+  test('parse dimension date aggregate funcs', () => {
+    expect(zDimensionAggregate.parse({ func: 'toYear' })).toEqual({ func: 'toYear' })
+    expect(zDimensionAggregate.parse({ func: 'toMonth' })).toEqual({ func: 'toMonth' })
+    expect(() => zDimensionAggregate.parse({ func: 'sum' })).toThrow()
+  })
+
   test('parse extended measure aggregate funcs', () => {
     expect(zAggregate.parse({ func: 'countDistinct' })).toEqual({ func: 'countDistinct' })
     expect(zAggregate.parse({ func: 'variance' })).toEqual({ func: 'variance' })
@@ -74,7 +81,7 @@ describe('DSL schemas', () => {
   test('parse dimension and measure tree schemas', () => {
     const dimensionGroup = zVBIDimensionGroupSchema.parse({
       alias: '地区层级',
-      children: [{ id: 'd-1', field: 'province', alias: '省份' }],
+      children: [{ id: 'd-1', field: 'order_date', alias: '月份', aggregate: { func: 'toMonth' } }],
     })
     const measure = zVBIMeasure.parse({
       id: 'm-1',

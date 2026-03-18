@@ -11,6 +11,7 @@ import {
   InputNumber,
   Badge,
   Empty,
+  theme,
 } from 'antd';
 import {
   FilterOutlined,
@@ -21,16 +22,16 @@ import {
   CheckOutlined,
 } from '@ant-design/icons';
 import {
-  DIMENSION_OPERATORS,
-  MEASURE_OPERATORS,
   getDefaultWhereOperator,
   getWhereDisplayText,
   getWhereFilterFormValue,
   getWhereFilterInputStrategy,
+  getWhereOperatorOptions,
   normalizeWhereOperator,
   normalizeWhereRangeValue,
   serializeWhereFilterValue,
 } from './whereFilterUtils';
+import { useTranslation } from 'src/i18n';
 
 const { Option = Select.Option } = Select;
 const { Text } = Typography;
@@ -45,6 +46,8 @@ export interface FilterItem {
 export interface FilterField {
   name: string;
   role: 'dimension' | 'measure';
+  type?: string;
+  isDate?: boolean;
 }
 
 interface FilterPanelProps {
@@ -62,6 +65,18 @@ interface FilterPanelProps {
   fixedField?: string;
 }
 
+const getFieldRoleLabel = (field: FilterField, t: (key: string) => string) => {
+  if (field.role === 'measure') {
+    return t('filtersFieldRolesMeasure');
+  }
+
+  if (field.isDate) {
+    return t('filtersFieldRolesDateDimension');
+  }
+
+  return t('filtersFieldRolesDimension');
+};
+
 export const FilterPanel: React.FC<FilterPanelProps> = ({
   fields,
   activeFields = [],
@@ -76,6 +91,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   open = false,
   fixedField,
 }) => {
+  const { token } = theme.useToken();
+  const { t } = useTranslation();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -96,10 +113,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     : 'dimension';
 
   const availableOperators = React.useMemo(() => {
-    return selectedFieldRole === 'measure'
-      ? MEASURE_OPERATORS
-      : DIMENSION_OPERATORS;
-  }, [selectedFieldRole]);
+    return getWhereOperatorOptions(selectedFieldRole, t);
+  }, [selectedFieldRole, t]);
 
   const inputStrategy = React.useMemo(() => {
     return getWhereFilterInputStrategy(operator, selectedFieldRole);
@@ -316,7 +331,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
   // Generate filter display text
   const getFilterDisplayText = (item: FilterItem) => {
-    return getWhereDisplayText(item);
+    return getWhereDisplayText(item, t);
   };
 
   const renderFilterForm = () => (
@@ -335,13 +350,15 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     >
       {!isSingleItemEdit && (
         <Form.Item
-          label="字段"
+          label={t('filtersFormField')}
           name="field"
-          rules={[{ required: true, message: '请选择字段' }]}
+          rules={[
+            { required: true, message: t('filtersValidationSelectField') },
+          ]}
           style={{ marginBottom: 8 }}
         >
           <Select
-            placeholder="选择字段"
+            placeholder={t('filtersFormSelectField')}
             showSearch
             variant="filled"
             onChange={(fieldName) => {
@@ -362,8 +379,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                       isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
                     }
                   >
-                    {f.name} ({f.role === 'measure' ? '度量' : '维度'}){' '}
-                    {isActive ? '(推荐)' : ''}
+                    {f.name} ({getFieldRoleLabel(f, t)}){' '}
+                    {isActive ? t('commonStatusRecommended') : ''}
                   </span>
                 </Option>
               );
@@ -373,9 +390,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       )}
 
       <Form.Item
-        label={isSingleItemEdit ? undefined : '操作符'}
+        label={isSingleItemEdit ? undefined : t('filtersFormOperator')}
         name="operator"
-        rules={[{ required: true }]}
+        rules={[
+          { required: true, message: t('filtersValidationSelectOperator') },
+        ]}
         style={{ marginBottom: 10 }}
       >
         <Select
@@ -394,25 +413,25 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
       {inputStrategy === 'none' ? (
         <div style={{ color: '#999', fontSize: 11, padding: '6px 0 10px' }}>
-          此操作符不需要输入值
+          {t('filtersFormNoValueRequired')}
         </div>
       ) : inputStrategy === 'range' ? (
         <Form.Item
-          label={isSingleItemEdit ? undefined : '范围'}
+          label={isSingleItemEdit ? undefined : t('filtersFormRange')}
           style={{ marginBottom: 10 }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <Form.Item name={['value', 'min']} noStyle>
               {selectedFieldRole === 'measure' ? (
                 <InputNumber
-                  placeholder="最小"
+                  placeholder={t('filtersFormMin')}
                   variant="filled"
                   style={{ width: isSingleItemEdit ? 46 : 62 }}
                   controls={false}
                 />
               ) : (
                 <Input
-                  placeholder="最小"
+                  placeholder={t('filtersFormMin')}
                   variant="filled"
                   style={{ width: isSingleItemEdit ? 46 : 62 }}
                 />
@@ -444,14 +463,14 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             <Form.Item name={['value', 'max']} noStyle>
               {selectedFieldRole === 'measure' ? (
                 <InputNumber
-                  placeholder="最大"
+                  placeholder={t('filtersFormMax')}
                   variant="filled"
                   style={{ width: isSingleItemEdit ? 46 : 62 }}
                   controls={false}
                 />
               ) : (
                 <Input
-                  placeholder="最大"
+                  placeholder={t('filtersFormMax')}
                   variant="filled"
                   style={{ width: isSingleItemEdit ? 46 : 62 }}
                 />
@@ -461,7 +480,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </Form.Item>
       ) : inputStrategy === 'tags' ? (
         <Form.Item
-          label={isSingleItemEdit ? undefined : '值'}
+          label={isSingleItemEdit ? undefined : t('filtersFormValue')}
           name="value"
           rules={[
             {
@@ -469,7 +488,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                 if (Array.isArray(value) && value.length > 0) {
                   return Promise.resolve();
                 }
-                return Promise.reject(new Error('请输入至少一个值'));
+                return Promise.reject(
+                  new Error(t('filtersValidationEnterAtLeastOneValue')),
+                );
               },
             },
           ]}
@@ -481,20 +502,20 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             tokenSeparators={[',']}
             placeholder={
               selectedFieldRole === 'measure'
-                ? '输入数值后回车，可添加多个'
-                : '输入值后回车，可添加多个'
+                ? t('filtersFormInputNumbers')
+                : t('filtersFormInputValues')
             }
             style={{ width: '100%' }}
           />
         </Form.Item>
       ) : (
         <Form.Item
-          label={isSingleItemEdit ? undefined : '值'}
+          label={isSingleItemEdit ? undefined : t('filtersFormValue')}
           name="value"
           rules={[
             {
               required: !['is null', 'is not null'].includes(operator ?? ''),
-              message: '请输入值',
+              message: t('filtersValidationEnterValue'),
             },
           ]}
           style={{ marginBottom: 10 }}
@@ -502,12 +523,12 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           {inputStrategy === 'number' ? (
             <InputNumber
               variant="filled"
-              placeholder="输入数值"
+              placeholder={t('filtersFormInputNumber')}
               style={{ width: '100%' }}
               controls={false}
             />
           ) : (
-            <Input placeholder="输入值" variant="filled" />
+            <Input placeholder={t('filtersFormInputValue')} variant="filled" />
           )}
         </Form.Item>
       )}
@@ -515,7 +536,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       <Form.Item style={{ marginBottom: 0, marginTop: 2, textAlign: 'right' }}>
         <Space size={8}>
           <Button size="small" onClick={handleCancel}>
-            取消
+            {t('commonActionsCancel')}
           </Button>
           <Button
             type="primary"
@@ -523,7 +544,9 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             onClick={handleSubmit}
             icon={<CheckOutlined />}
           >
-            {editingId || isSingleItemEdit ? '保存' : '添加'}
+            {editingId || isSingleItemEdit
+              ? t('commonActionsSave')
+              : t('commonActionsAdd')}
           </Button>
         </Space>
       </Form.Item>
@@ -535,7 +558,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       {filters.length === 0 && !isAdding ? (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
-          description="暂无筛选条件"
+          description={t('filtersEmptyWhere')}
           style={{ margin: '20px 0' }}
         />
       ) : (
@@ -556,16 +579,16 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                 {getFilterDisplayText(item)}
               </Text>
               <Space size={2}>
-                <Tooltip title="编辑">
+                <Tooltip title={t('commonActionsEdit')}>
                   <Button
                     type="text"
                     size="small"
                     icon={<EditOutlined />}
                     onClick={() => item.id && handleEdit(item.id)}
-                    style={{ color: '#1890ff' }}
+                    style={{ color: token.colorPrimary }}
                   />
                 </Tooltip>
-                <Tooltip title="删除">
+                <Tooltip title={t('commonActionsDelete')}>
                   <Button
                     type="text"
                     size="small"
@@ -595,12 +618,12 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         }}
       >
         <Text strong style={{ fontSize: 13 }}>
-          明细过滤 (Where)
+          {t('filtersTitlesWhere')}
         </Text>
         <Space size={4}>
           {!isAdding && !editingId && (
             <>
-              <Tooltip title="添加条件">
+              <Tooltip title={t('commonActionsAddCondition')}>
                 <Button
                   type="text"
                   size="small"
@@ -609,7 +632,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                 />
               </Tooltip>
               {filters.length > 0 && (
-                <Tooltip title="清空全部">
+                <Tooltip title={t('commonActionsClearAll')}>
                   <Button
                     type="text"
                     size="small"
@@ -649,7 +672,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       overlayInnerStyle={{ padding: '12px' }}
     >
       <Badge count={filters.length} size="small" offset={[8, 0]}>
-        <Button icon={<FilterOutlined />}>数据筛选</Button>
+        <Button icon={<FilterOutlined />}>{t('filtersButtonsWhere')}</Button>
       </Badge>
     </Popover>
   );

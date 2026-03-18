@@ -1,12 +1,14 @@
 import { useDraggable } from '@dnd-kit/core';
-import { Card, Flex } from 'antd';
+import { Card, Flex, theme } from 'antd';
 import { memo } from 'react';
 import { CalendarOutlined, FontSizeOutlined } from '@ant-design/icons';
 import {
   createSchemaFieldDragId,
   type SchemaFieldDragData,
 } from 'src/components/Shelfs/dnd';
+import { getDefaultDimensionDateAggregate } from 'src/components/Shelfs/dimensionDateAggregateUtils';
 import { useVBIDimensions, useVBISchemaFields } from 'src/hooks';
+import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 
 const DimensionFieldItem = ({
@@ -18,6 +20,7 @@ const DimensionFieldItem = ({
   fieldType: string;
   onClick: () => void;
 }) => {
+  const { token } = theme.useToken();
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: createSchemaFieldDragId({
       field: fieldName,
@@ -49,16 +52,16 @@ const DimensionFieldItem = ({
         borderRadius: '4px',
         transition: 'all 0.2s',
         fontSize: 12,
-        color: '#333',
+        color: token.colorText,
         opacity: isDragging ? 0.5 : 1,
       }}
       onMouseEnter={(event) => {
-        event.currentTarget.style.backgroundColor = 'rgba(24, 144, 255, 0.1)';
-        event.currentTarget.style.color = '#1890ff';
+        event.currentTarget.style.backgroundColor = token.colorPrimaryBg;
+        event.currentTarget.style.color = token.colorPrimary;
       }}
       onMouseLeave={(event) => {
         event.currentTarget.style.backgroundColor = 'transparent';
-        event.currentTarget.style.color = '#333';
+        event.currentTarget.style.color = token.colorText;
       }}
     >
       <span
@@ -69,9 +72,13 @@ const DimensionFieldItem = ({
         }}
       >
         {fieldType === 'date' ? (
-          <CalendarOutlined style={{ color: '#1890ff', fontSize: 12 }} />
+          <CalendarOutlined
+            style={{ color: token.colorPrimary, fontSize: 12 }}
+          />
         ) : (
-          <FontSizeOutlined style={{ color: '#1890ff', fontSize: 12 }} />
+          <FontSizeOutlined
+            style={{ color: token.colorPrimary, fontSize: 12 }}
+          />
         )}
       </span>
       <span
@@ -91,6 +98,8 @@ const DimensionFieldItem = ({
 export const DimensionsList = memo(
   ({ style }: { style?: React.CSSProperties }) => {
     const builder = useVBIStore((state) => state.builder);
+    const { token } = theme.useToken();
+    const { t } = useTranslation();
     const { dimensions: shelfDimensions, addDimension } =
       useVBIDimensions(builder);
     const { schemaFields } = useVBISchemaFields(builder);
@@ -99,7 +108,9 @@ export const DimensionsList = memo(
     return (
       <Card
         title={
-          <span style={{ fontSize: 13, fontWeight: 500 }}>Dimensions</span>
+          <span style={{ fontSize: 13, fontWeight: 500 }}>
+            {t('panelsFieldsDimensions')}
+          </span>
         }
         size="small"
         style={{ ...style }}
@@ -114,7 +125,7 @@ export const DimensionsList = memo(
           header: {
             minHeight: 32,
             padding: '6px 12px',
-            borderBottom: '1px solid #f0f0f0',
+            borderBottom: `1px solid ${token.colorBorder}`,
           },
         }}
       >
@@ -129,7 +140,11 @@ export const DimensionsList = memo(
                 fieldType={item.type}
                 onClick={() => {
                   if (!shelfDimensions.some((d) => d.field === item.name)) {
-                    addDimension(item.name);
+                    addDimension(item.name, (node) => {
+                      if (item.isDate) {
+                        node.setAggregate(getDefaultDimensionDateAggregate());
+                      }
+                    });
                   }
                 }}
               />

@@ -1,10 +1,12 @@
 import { Button, Tooltip } from 'antd';
+import { useTranslation } from 'src/i18n';
 
 export type RootOperator = 'and' | 'or';
 
 export type RootOperatorButtonColor = {
   border: string;
   color: string;
+  background?: string;
 };
 
 export const ShelfRootOperatorButton = (props: {
@@ -14,10 +16,14 @@ export const ShelfRootOperatorButton = (props: {
 }) => {
   const { operator, colors, onChange } = props;
   const nextOperator: RootOperator = operator === 'and' ? 'or' : 'and';
+  const { t } = useTranslation();
 
   return (
     <Tooltip
-      title={`当前逻辑 ${operator.toUpperCase()}，点击切换为 ${nextOperator.toUpperCase()}`}
+      title={t('shelvesRootOperatorTooltip', {
+        current: operator.toUpperCase(),
+        next: nextOperator.toUpperCase(),
+      })}
     >
       <Button
         type="text"
@@ -34,7 +40,7 @@ export const ShelfRootOperatorButton = (props: {
           lineHeight: 1,
           borderRadius: 5,
           border: `1px solid ${colors.border}`,
-          background: '#fff',
+          background: colors.background ?? 'transparent',
           color: colors.color,
           flexShrink: 0,
         }}
