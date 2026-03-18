@@ -1,6 +1,5 @@
-import type { VQueryDSL } from '@visactor/vquery'
+import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/builder/adapters/vquery-vseed/types'
 import type { VBIDSL } from '../dsl'
-import type { VSeedDSL } from '@visactor/vseed'
 import type {
   MeasuresBuilder,
   DimensionsBuilder,
@@ -14,7 +13,7 @@ import type {
 } from 'src/builder/features'
 import type { Map, Doc } from 'yjs'
 
-export interface VBIBuilderInterface {
+export interface VBIBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
   doc: Doc
   dsl: Map<any>
   undoManager: UndoManager
@@ -31,8 +30,8 @@ export interface VBIBuilderInterface {
   applyUpdate: (update: Uint8Array, origin?: any) => void
   encodeStateAsUpdate: (targetStateVector?: Uint8Array) => Uint8Array
 
-  buildVSeed: () => Promise<VSeedDSL>
-  buildVQuery: () => VQueryDSL
+  buildVSeed: () => Promise<TSeedDSL>
+  buildVQuery: () => TQueryDSL
   build: () => VBIDSL
   isEmpty: () => boolean
 }

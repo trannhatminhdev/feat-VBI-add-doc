@@ -1,5 +1,7 @@
 import type { VQueryDSL } from '@visactor/vquery'
-import type { VBIDSL } from '../../types'
-import type { VBIBuilder } from '../../builder'
+import type { VBIBuilderInterface, VBIDSL } from '../../types'
 
-export type buildPipe = (queryDSL: VQueryDSL, context: { vbiDSL: VBIDSL; builder: VBIBuilder }) => VQueryDSL
+export type buildPipe = (
+  queryDSL: VQueryDSL,
+  context: { vbiDSL: VBIDSL; builder: VBIBuilderInterface<any, any> },
+) => VQueryDSL

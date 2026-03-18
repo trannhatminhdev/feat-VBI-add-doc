@@ -1,4 +1,4 @@
-import { VBI } from '@visactor/vbi'
+import { createVBI, VBI } from '@visactor/vbi'
 import { VBIDSL } from 'src/types/dsl'
 
 describe('VBI', () => {
@@ -51,5 +51,55 @@ describe('VBI', () => {
 
     builder.measures.add('sales', () => {})
     expect(builder.isEmpty()).toBe(false)
+  })
+
+  test('supports custom DSL adapters', async () => {
+    type CustomQueryDSL = {
+      source: 'factory' | 'instance'
+      count: number
+    }
+
+    type CustomSeedDSL = {
+      type: 'custom-seed'
+      chartType: string
+      queryDSL: CustomQueryDSL
+    }
+
+    const CustomVBI = createVBI<CustomQueryDSL, CustomSeedDSL>({
+      adapters: {
+        buildVQuery: ({ vbiDSL }) => ({
+          source: 'factory',
+          count: vbiDSL.measures.length,
+        }),
+        buildVSeed: async ({ queryDSL, vbiDSL }) => ({
+          type: 'custom-seed',
+          chartType: vbiDSL.chartType as string,
+          queryDSL,
+        }),
+      },
+    })
+
+    const builder = CustomVBI.from(VBI.generateEmptyDSL('custom'), {
+      adapters: {
+        buildVQuery: ({ vbiDSL }) => ({
+          source: 'instance',
+          count: vbiDSL.dimensions.length,
+        }),
+      },
+    })
+
+    expect(builder.buildVQuery()).toEqual({
+      source: 'instance',
+      count: 0,
+    })
+
+    expect(await builder.buildVSeed()).toEqual({
+      type: 'custom-seed',
+      chartType: 'table',
+      queryDSL: {
+        source: 'instance',
+        count: 0,
+      },
+    })
   })
 })
