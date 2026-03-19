@@ -389,7 +389,7 @@ export function APP() {
             title="Starter Fields"
           />
         }
-        leftPanelWidth={320}
+        leftPanelWidth={360}
         main={
           hasConfiguredFields ? (
             <ChartRenderer

@@ -37,4 +37,19 @@ describe('FieldPanel', () => {
 
     expect(builder.measures.toJSON()).toHaveLength(0)
   })
+
+  it('keeps selected field lists in dedicated scroll regions', () => {
+    const builder = createTestBuilder()
+
+    const view = render(
+      <FieldPanel
+        builder={builder}
+        dimensionOptions={[{ label: 'Region', value: 'region' }]}
+        measureOptions={[{ label: 'Sales', value: 'sales' }]}
+      />,
+    )
+
+    expect(view.getByLabelText('Selected dimensions')).toBeTruthy()
+    expect(view.getByLabelText('Selected measures')).toBeTruthy()
+  })
 })

@@ -97,6 +97,22 @@ export function APP() {
   >([]);
   const [filters, setFilters] = useState<FilterItem[]>([]);
 
+  const getDimensionIdByField = (field: string) => {
+    const dimension = builderRef.current?.dimensions
+      ?.toJSON?.()
+      ?.find((item: { field: string; id: string }) => item.field === field);
+
+    return dimension?.id;
+  };
+
+  const getMeasureIdByField = (field: string) => {
+    const measure = builderRef.current?.measures
+      ?.toJSON?.()
+      ?.find((item: { field: string; id: string }) => item.field === field);
+
+    return measure?.id;
+  };
+
   useEffect(() => {
     const handleFilterError = () => {
       setFilters((prev) => prev.slice(0, -1));
@@ -332,8 +348,14 @@ export function APP() {
     setDimensionFields(newDims);
     if (builderRef.current?.dimensions && builderRef.current.doc) {
       const { dimensions, doc } = builderRef.current;
+      const dimensionId = getDimensionIdByField(field);
+
+      if (!dimensionId) {
+        return;
+      }
+
       doc.transact(() => {
-        dimensions.removeDimension(field);
+        dimensions.remove(dimensionId);
       });
     }
     setRenderKey((prev) => prev + 1);
@@ -395,10 +417,17 @@ export function APP() {
   const handleRemoveMeasure = (field: string) => {
     const newMeas = measureFields.filter((m) => m !== field);
     setMeasureFields(newMeas);
+    setDimensionMeasures((prev) => prev.filter((measure) => measure !== field));
     if (builderRef.current?.measures && builderRef.current.doc) {
       const { measures, doc } = builderRef.current;
+      const measureId = getMeasureIdByField(field);
+
+      if (!measureId) {
+        return;
+      }
+
       doc.transact(() => {
-        measures.removeMeasure(field);
+        measures.remove(measureId);
       });
     }
     setRenderKey((prev) => prev + 1);
@@ -407,8 +436,16 @@ export function APP() {
   const handleRenameMeasure = (field: string, newAlias: string) => {
     if (builderRef.current?.measures && builderRef.current.doc) {
       const { measures, doc } = builderRef.current;
+      const measureId = getMeasureIdByField(field);
+
+      if (!measureId) {
+        return;
+      }
+
       doc.transact(() => {
-        measures.renameMeasure(field, newAlias);
+        measures.update(measureId, (node: { setAlias: (alias: string) => void }) => {
+          node.setAlias(newAlias);
+        });
       });
       // measureFields 存的是 field，不需要改
       syncMeasuresDetail();
@@ -423,8 +460,23 @@ export function APP() {
   ) => {
     if (builderRef.current?.measures && builderRef.current.doc) {
       const { measures, doc } = builderRef.current;
+      const measureId = getMeasureIdByField(field);
+
+      if (!measureId) {
+        return;
+      }
+
       doc.transact(() => {
-        measures.modifyAggregate(field, func, quantile);
+        measures.update(
+          measureId,
+          (node: {
+            setAggregate: (aggregate: { func: string; quantile?: number }) => void;
+          }) => {
+            node.setAggregate(
+              quantile === undefined ? { func } : { func, quantile },
+            );
+          },
+        );
       });
       syncMeasuresDetail();
       setRenderKey((prev) => prev + 1);
