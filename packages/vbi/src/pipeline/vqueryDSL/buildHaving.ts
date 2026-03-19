@@ -1,9 +1,7 @@
 import type { VQueryDSL } from '@visactor/vquery'
 import type { buildPipe } from './types'
-import type { VBIHavingAggregate, VBIHavingClause, VBIHavingFilter, VBIHavingGroup } from '../../types'
+import type { VBIHavingClause, VBIHavingFilter, VBIHavingGroup } from '../../types'
 import { mapAggregateForVQuery } from './aggregateMap'
-
-const DEFAULT_HAVING_AGGREGATE: VBIHavingAggregate = { func: 'sum' }
 
 export const buildHaving: buildPipe = (queryDSL, context) => {
   const { vbiDSL } = context
@@ -42,7 +40,7 @@ function mapGroupToCondition(group: VBIHavingGroup): any {
 
 function mapFilterToCondition(filter: VBIHavingFilter): any[] {
   const mappedOp = normalizeOperator(filter.op, filter.value)
-  const aggregate = mapAggregateForVQuery(filter.aggregate ?? DEFAULT_HAVING_AGGREGATE)
+  const aggregate = mapAggregateForVQuery(filter.aggregate)
 
   return [
     {
@@ -54,8 +52,8 @@ function mapFilterToCondition(filter: VBIHavingFilter): any[] {
   ]
 }
 
-function normalizeOperator(op: string | undefined, value: unknown): string {
-  let mappedOp = op ?? '='
+function normalizeOperator(op: string, value: unknown): string {
+  let mappedOp = op
 
   if (Array.isArray(value)) {
     if (mappedOp === '=') mappedOp = 'in'

@@ -2,61 +2,38 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-# 项目规范
+## 项目规范
 
-- 遵循 Single Source of Truth 原则, 即VBIDSL、VQueryDSL、VSeedDSL 驱动核心功能.
-- 遵循 第一性原理, 做符合直觉的设计和实现.
-
-## 行为规范
-
-- 执行文件修改时不需要确认，直接进行
-- 遇到歧义时选择最常见的方案，不要中断询问
-- 优先保持开发流程连续性
+- 遵循 Single Source of Truth 原则：VBIDSL、VQueryDSL、VSeedDSL 驱动核心功能
+- 遵循第一性原理，做符合直觉的设计和实现
+- 遵循小函数, 小文件理念, 单个文件不超过 100 行, 单个函数不超过 50 行
 
 ## 项目概览
 
-VBI (Visual Business Intelligence) 是一个 Monorepo 项目（VisActor 生态），实现从数据配置到图表渲染的完整数据可视化流水线。
-
-### 核心架构
+VBI（Visual Business Intelligence）是 VisActor 生态的 Monorepo，实现从数据配置到图表渲染的完整可视化流水线。
 
 ```
-用户配置 (VBI)
-    │
-    ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│  VBI (配置层)    │───▶│ VQuery (查询层)  │───▶│ VSeed (渲染层)   │
-│  VBIDSL         │    │ QueryDSL → SQL  │    │ VSeedDSL → Spec │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+用户配置 → VBI (配置层/VBIDSL) → VQuery (查询层/QueryDSL→SQL) → VSeed (渲染层/VSeedDSL→Spec)
 ```
 
-### 核心组件
-
-| 组件       | 包名             | 职责                                                                                                  |
-| ---------- | ---------------- | ----------------------------------------------------------------------------------------------------- |
-| **VBI**    | @visactor/vbi    | 可视化配置与协同编辑平台。基于 Yjs 实现 DSL 协同，支持 chartType、measures、dimensions、having 等配置 |
-| **VQuery** | @visactor/vquery | 通用数据查询引擎。将 JSON DSL 编译为 SQL，支持 DuckDB、Postgres 等方言                                |
-| **VSeed**  | @visactor/vseed  | 声明式图表生成器。将高级语义配置转换为 VChart/VTable 的渲染 Spec                                      |
-
-### 数据流
-
-1. **用户配置**: 通过 VBI 配置图表（chartType、measures、dimensions、having 等）
-2. **VBI 构建 Query**: `VBIBuilder.buildVQuery()` 将 VBIDSL 转换为 VQueryDSL
-3. **VQuery 执行**: Connector 调用 VQuery 执行 SQL 查询，返回数据集
-4. **VSeed 生成 Spec**: 合并 VBIDSL + 数据集，通过 Builder 转换为 VChart/VTable Spec
-5. **前端渲染**: 使用 VChart/VTable 渲染图表
+| 包                   | 职责                                                  |
+| -------------------- | ----------------------------------------------------- |
+| **@visactor/vbi**    | BI 构建器，基于 Yjs 协同编辑 DSL，依赖 vseed + vquery |
+| **@visactor/vquery** | 通用查询引擎，JSON DSL → SQL，支持 DuckDB/Postgres    |
+| **@visactor/vseed**  | 声明式图表生成器，语义配置 → VChart/VTable Spec       |
 
 ### 目录结构
 
 ```
 VBI/
-├── apps/           # 应用程序
+├── apps/          # 应用程序
 │   ├── website/   # 文档站点
-│   ├── vbi_fe/   # VBI 前端应用
-│   └── vbi_be/   # VBI 后端应用
+│   ├── vbi_fe/    # VBI 前端应用
+│   └── vbi_be/    # VBI 后端应用
 ├── packages/      # 核心包 (Monorepo)
-│   ├── vbi/      # VBI 主包 (配置层)
-│   ├── vquery/   # 查询引擎 (查询层)
-│   └── vseed/   # 图表生成器 (渲染层)
+│   ├── vbi/       # VBI 主包  (配置层)
+│   ├── vquery/    # 查询引擎   (查询层)
+│   └── vseed/     # 图表生成器 (渲染层)
 ├── practices/     # 实践示例
 │   ├── demo/
 │   ├── minimalist/
@@ -65,311 +42,55 @@ VBI/
 └── tools/         # 工具
 ```
 
----
+### 数据流
 
-## VBI 项目 (项目级别)
+1. 用户通过 VBI 配置图表（chartType、measures、dimensions、having 等）
+2. `VBIBuilder.buildVQuery()` 将 VBIDSL → VQueryDSL
+3. Connector 调用 VQuery 执行 SQL，返回数据集
+4. 合并 VBIDSL + 数据集，通过 VSeed Builder → VChart/VTable Spec
+5. 前端渲染
 
-项目级别指整个 Monorepo 仓库的通用操作。
+## 常用命令
 
-### 常用开发命令
-
-**重要原则**: 所有 `pnpm` 命令必须在项目根目录执行。针对特定包的操作请使用 `--filter` 参数。
-
-```bash
-# 构建
-pnpm run build  # 构建所有包
-
-# 开发
-pnpm run dev    # 启动文档站点 (apps/website), 会自动监听所有包源码编译
-
-# 代码质量
-pnpm run lint      # 全量 Lint
-pnpm run typecheck # 全量类型检查
-pnpm run format    # 格式化代码
-```
-
----
-
-## packages/vbi (@visactor/vbi)
-
-vbi 包是 BI 构建器，依赖 vseed 和 vquery。基于 Yjs 实现协同编辑 DSL。
-
-### 架构
-
-| 模块          | 功能                                                                                         |
-| ------------- | -------------------------------------------------------------------------------------------- |
-| **builder**   | 核心构建器 (VBIBuilder, MeasuresBuilder, DimensionsBuilder, ChartTypeBuilder, HavingBuilder) |
-| **pipeline**  | 转换管道 (VBI DSL → VQuery DSL)                                                              |
-| **types**     | VBIDSL 类型定义                                                                              |
-| **insight**   | 数据洞察功能                                                                                 |
-| **connector** | 数据源连接器注册表                                                                           |
-
-### VBIDSL 结构
-
-```typescript
-{
-  connectorId: string,   // 数据源连接器ID
-  chartType: ChartType, // 图表类型
-  dimensions: Dimension[],  // 维度树
-  measures: Measure[],   // 度量树
-  having: HavingFilter[], // 分组过滤
-  theme: 'light' | 'dark',
-  locale: string,
-  version: number
-}
-```
-
-### 开发流程
-
-```
-1. 先写测试用例 (单元测试或集成测试)
-2. 开发实现代码
-3. 验证: typecheck → lint → format → test (仅针对改动的包)
-```
-
-### 命令参考
+**所有 `pnpm` 命令必须在项目根目录执行，针对特定包用 `--filter`。**
 
 ```bash
-# 构建
-pnpm --filter=@visactor/vbi build  # 构建
+# 全局
+pnpm run build                  # 构建所有包
+pnpm run dev                    # 启动文档站点，自动监听所有包源码
+pnpm run lint                   # 全量 Lint
+pnpm run typecheck              # 全量类型检查
+pnpm run format                 # 格式化代码
 
-# 测试
-pnpm --filter=@visactor/vbi run test          # 运行测试
-pnpm --filter=@visactor/vbi run test:update   # 更新快照
-pnpm --filter=@visactor/vbi run test:coverage # 生成测试覆盖率报告
-
-# 生成器
-pnpm --filter=@visactor/vbi run g          # 从 JSON 生成文档、测试文件、API
-pnpm --filter=@visactor/vbi run build:api  # 生成 API 文档
-
-# 代码质量
+# 子包通用（以 vbi 为例，替换 filter 即可）
+pnpm --filter=@visactor/vbi run build
+pnpm --filter=@visactor/vbi run test
+pnpm --filter=@visactor/vbi run test:update
+pnpm --filter=@visactor/vbi run test:coverage
 pnpm --filter=@visactor/vbi run lint
 pnpm --filter=@visactor/vbi run format
-pnpm run typecheck
+pnpm --filter=@visactor/vbi run g             # 从 JSON 生成文档、测试、API
+
+# vseed 额外命令
+pnpm --filter=@visactor/vseed run test:unit
+pnpm --filter=@visactor/vseed run test:integration
 ```
 
-### 测试
-
-- 使用 Rstest 框架
-- 依赖 @visactor/vseed 和 @visactor/vquery
-- 集成测试 必须写json测试用例, 由 `scripts/build-tests.mjs` 脚本生成 xx.test.ts
-- 编写 VBI 集成测试时，必须在 JSON 测试用例中增加 `code` 字段, 实现 `applyBuilder` 函数，用于测试 VBIBuilder 的接口。
-
-```typescript
-{
-  "code": `
-    export const applyBuilder = async () => {
-      const builder = new VBIBuilder()
-      // 测试 VBIBuilder 的接口
-    }
-  `
-}
-```
-
-### 目录结构
+## 开发流程（统一）
 
 ```
-packages/
-├── vbi/        # VBI 核心源码 (依赖 VSeed, VQuery)
-├── vquery/     # VQuery 查询引擎源码
-└── vseed/      # VSeed 核心源码
-
-apps/
-└── website/    # 文档站点
-
-packages/vbi/
-├── src/
-│   ├── builder/       # 核心构建器
-│   ├── pipeline/     # 转换管道
-│   ├── types/        # 类型定义
-│   ├── insight/      # 数据洞察
-│   └── connector/    # 数据源连接器
-├── scripts/          # 构建脚本
-│   ├── build-tests.mjs
-│   └── build-examples.mjs
-└── tests/
-    ├── builder/      # 单元测试
-    ├── query/        # 查询集成测试
-    ├── examples/     # 集成测试 (JSON Spec)
-    │   ├── chartType/
-    │   ├── locale/
-    │   └── theme/
-    ├── mocks/        # Mock 文件
-    ├── demoConnector.ts
-    └── supermarket.json
-```
-
----
-
-## packages/vquery (@visactor/vquery)
-
-### 架构
-
-| 模块                    | 功能                                            |
-| ----------------------- | ----------------------------------------------- |
-| **VQuery**              | 主类，管理数据集生命周期                        |
-| **sql-builder**         | DSL → SQL 转换 (Select, Where, GroupBy, Having) |
-| **adapters**            | DuckDB 浏览器执行引擎 (WASM)                    |
-| **data-source-builder** | 数据源构建器                                    |
-
-### QueryDSL 结构
-
-```typescript
-{
-  select: Select<T>,       // 字段选择
-  where?: Where<T>,       // 过滤条件
-  groupBy?: GroupBy<T>,   // 分组
-  having?: Having<T>,     // 分组过滤
-  orderBy?: OrderBy<T>,   // 排序
-  limit?: number          // 限制数量
-}
-```
-
-### 开发流程
-
-```
-1. 先写测试用例 (单元测试或集成测试)
+1. 先写测试用例（单元测试或集成测试 JSON Spec）
 2. 开发实现代码
-3. 运行 pnpm g 生成测试文件、文档和更新快照
-4. 验证: typecheck → lint → format → test (仅针对改动的包)
+3. 运行 pnpm --filter=@visactor/[pkg] run g 生成测试文件、文档、API
+4. 验证：typecheck → lint → format → test（仅子包）
 ```
-
-### 命令参考
-
-```bash
-# 构建
-pnpm --filter=@visactor/vquery build  # 构建
-
-# 测试
-pnpm --filter=@visactor/vquery run test          # 运行测试
-pnpm --filter=@visactor/vquery run test:update   # 更新快照
-pnpm --filter=@visactor/vquery run test:coverage # 生成测试覆盖率报告
-
-# 生成器 (修改代码后执行)
-pnpm --filter=@visactor/vquery run g
-
-# 代码质量
-pnpm --filter=@visactor/vquery run lint
-pnpm --filter=@visactor/vquery run format
-pnpm run typecheck
-```
-
-### 测试结构
-
-- 使用 Rstest 框架
-- 单元测试与集成测试
-
----
-
-## packages/vseed (@visactor/vseed)
-
-### 架构
-
-| 模块             | 功能                                                   |
-| ---------------- | ------------------------------------------------------ |
-| **Builder**      | 核心入口，管理 Context 与 Pipeline                     |
-| **Pipeline**     | AdvancedPipeline (高级配置) → SpecPipeline (最终 Spec) |
-| **register**     | 图表类型注册 (line/bar/pie/table 等)                   |
-| **dataReshape**  | 数据重塑/透视                                          |
-| **dataSelector** | 数据选择器                                             |
-| **theme**        | 主题管理                                               |
-| **i18n**         | 国际化                                                 |
-
-### 核心流程
-
-```
-VSeed DSL → Builder.buildAdvanced() → AdvancedVSeed → Builder.buildSpec() → VChart/VTable Spec
-```
-
-### 支持的图表类型
-
-- 表格: Table, PivotTable
-- 笛卡尔: Line, Column, Bar, Area, Scatter, DualAxis
-- 极坐标: Rose, Pie, Donut, Radar
-- 竞赛图: RaceBar, RaceColumn, RaceScatter, RaceLine, RacePie
-- 层级: TreeMap, Sunburst, CirclePacking
-- 其他: Funnel, Heatmap, BoxPlot, Histogram
-
-### 开发流程
-
-```
-1. 先写集成测试用例 (JSON Spec)
-2. 开发实现代码
-3. 运行 pnpm g 生成测试文件、文档、示例和 API
-4. 验证: typecheck → lint → format → test (仅针对改动的包)
-```
-
-### 命令参考
-
-```bash
-# 构建
-pnpm --filter=@visactor/vseed build  # 构建
-
-# 测试
-pnpm --filter=@visactor/vseed run test:unit        # 单元测试
-pnpm --filter=@visactor/vseed run test:integration # 集成测试
-pnpm --filter=@visactor/vseed run test:update      # 更新快照
-pnpm --filter=@visactor/vseed run test:coverage    # 生成测试覆盖率报告
-
-# 生成器 (修改代码后执行)
-pnpm --filter=@visactor/vseed run g
-
-# 代码质量
-pnpm --filter=@visactor/vseed run lint
-pnpm --filter=@visactor/vseed run format
-pnpm run typecheck
-```
-
-### 测试结构
-
-- **单元测试 (Unit)**: 位于 `packages/vseed/tests/unit`
-- **集成测试 (Integration)**: 位于 `packages/vseed/tests/integrations`，基于 JSON Spec 的快照测试
 
 ## 验证指南
 
-根据任务类型选择合适的验证方式：
+| 场景                      | 命令                                                                              |
+| ------------------------- | --------------------------------------------------------------------------------- |
+| **单包修改**（推荐）      | `pnpm --filter=@visactor/[pkg] run test` + `pnpm run lint` + `pnpm run typecheck` |
+| **多包/破坏性变更**       | `pnpm run lint` + `pnpm run format` + `pnpm run typecheck`                        |
+| **快速验证**（typo/文档） | `pnpm run lint`                                                                   |
 
-### 场景 1: 单包修改（推荐）
-
-仅验证改动的包，适用于大多数情况：
-
-```bash
-pnpm --filter=@visactor/vbi run test       # 仅运行子包测试
-pnpm run lint       # 全量 Lint（禁止对子包单独 lint）
-pnpm run typecheck  # 全量类型检查（禁止对子包单独 typecheck）
-```
-
-### 场景 2: 多包修改或破坏性变更
-
-需要全量验证：
-
-```bash
-pnpm run lint      # 全量 Lint
-pnpm run format    # 格式化代码
-pnpm run typecheck # 全量类型检查
-```
-
-### 场景 3: 快速验证（修复 typo 或文档）
-
-仅运行全量 lint：
-
-```bash
-pnpm run lint
-```
-
-## 持续改良 Claude.md
-
-每一个任务完成后，需要执行以下验证：
-
-- 运行 `pnpm run lint` 检查代码规范（全量）
-- 运行 `pnpm run typecheck` 检查类型（全量）
-- 运行 `pnpm --filter=@visactor/[package] run test` 确保测试通过（仅子包）
-
-### 技能文档语言策略（新增）
-
-当技能文档需要从中文切换到英文时，优先采用「英文主文档 + 中文触发词兼容」策略，避免影响中文用户触发效果：
-
-1. `description` 同时覆盖英文与中文关键词（生成/编辑/诊断/报错等）
-2. 示例 query 保留中英文对照
-3. 明确输出语言规则：默认跟随用户输入语言（中文输入→中文输出）
-4. 不改变既有 workflow/rules 路径，确保行为一致，仅调整文档表达
+> **注意**：lint 和 typecheck 始终全量执行，禁止对子包单独运行。

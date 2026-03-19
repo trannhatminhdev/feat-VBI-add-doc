@@ -1,0 +1,20 @@
+{
+  "name": "where-filter-array-value-converts-to-not-in",
+  "description": "Where filter with array value using '!=' operator should convert to 'not in'",
+  "schema": [
+    { "name": "area", "type": "string" },
+    { "name": "sales", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "column",
+    "dimensions": [{ "field": "area", "alias": "区域" }],
+    "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
+    "limit": 20,
+    "whereFilter": {
+      "id": "root",
+      "op": "and",
+      "conditions": []
+    }
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter.add('area', node => {\n    node.setOperator('!=').setValue(['华东', '华北']);\n  });\n}"
+}

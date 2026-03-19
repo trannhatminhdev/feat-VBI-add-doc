@@ -1,6 +1,7 @@
 import { VBI } from '@visactor/vbi'
 import { VBIDSL } from 'src/types/dsl'
 import { MeasuresBuilder } from 'src/builder/features/measures/mea-builder'
+import { registerDemoConnector } from '../../demoConnector'
 
 describe('MeasuresBuilder', () => {
   test('addMeasure', () => {
@@ -366,5 +367,26 @@ describe('MeasuresBuilder', () => {
       { field: 'profit', alias: 'id-3', aggr: { func: 'variance_pop' } },
       { field: 'discount', alias: 'id-4', aggr: { func: 'quantile', quantile: 0.9 } },
     ])
+  })
+
+  test('buildVSeed preserves measure encoding', async () => {
+    registerDemoConnector()
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'column',
+      dimensions: [{ id: 'id-1', field: 'product_type', alias: 'product_type', encoding: 'column' }],
+      measures: [
+        { id: 'id-2', field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } },
+        { id: 'id-3', field: 'profit', alias: '利润', encoding: 'secondaryYAxis', aggregate: { func: 'avg' } },
+      ],
+    } as VBIDSL)
+
+    const vSeedDSL = await builder.buildVSeed()
+
+    expect(vSeedDSL.measures).toEqual([
+      { id: 'id-2', alias: '销售额', encoding: 'yAxis' },
+      { id: 'id-3', alias: '利润', encoding: 'secondaryYAxis' },
+    ])
+    expect(vSeedDSL.dimensions).toEqual([{ id: 'id-1', alias: 'product_type', encoding: 'column' }])
   })
 })

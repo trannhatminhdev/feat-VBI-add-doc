@@ -7,8 +7,8 @@ export type VBIHavingAggregate = z.infer<typeof zAggregate>
 export const zVBIHavingFilter = z.object({
   id: z.string(),
   field: z.string(),
-  aggregate: zAggregate.optional(),
-  op: z.string().optional(),
+  aggregate: zAggregate,
+  op: z.string(),
   value: z.any().optional(),
 })
 

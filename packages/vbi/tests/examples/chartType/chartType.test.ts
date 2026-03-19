@@ -1318,6 +1318,153 @@ describe('ChartType', () => {
     `)
   })
 
+  it('pie-chart-measure-encoding', async () => {
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'pie',
+      dimensions: [
+        {
+          field: 'product_type',
+          alias: '产品类型',
+        },
+      ],
+      measures: [
+        {
+          field: 'sales',
+          alias: '销售额',
+          encoding: 'angle',
+          aggregate: {
+            func: 'sum',
+          },
+        },
+      ],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+      limit: 10,
+    })
+
+    // Apply custom builder code
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.chartType.changeChartType('pie')
+    }
+    applyBuilder(builder)
+
+    // Build VBI DSL
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "pie",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "产品类型",
+            "encoding": "color",
+            "field": "product_type",
+            "id": "id-2",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 10,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "销售额",
+            "encoding": "angle",
+            "field": "sales",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VQuery DSL
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "product_type",
+        ],
+        "limit": 10,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-1",
+            "field": "sales",
+          },
+          {
+            "alias": "id-2",
+            "field": "product_type",
+          },
+        ],
+      }
+    `)
+
+    // Build VSeed DSL
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "pie",
+        "dataset": [
+          {
+            "id-1": 4865589.791999991,
+            "id-2": "办公用品",
+          },
+          {
+            "id-1": 5469023.503999994,
+            "id-2": "技术",
+          },
+          {
+            "id-1": 5734340.829,
+            "id-2": "家具",
+          },
+        ],
+        "dimensions": [
+          {
+            "alias": "产品类型",
+            "encoding": "color",
+            "id": "id-2",
+          },
+        ],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "encoding": "angle",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+  })
+
   it('rose-by-city', async () => {
     const builder = VBI.from({
       connectorId: 'demoSupermarket',
@@ -1486,6 +1633,170 @@ describe('ChartType', () => {
             "alias": "销售额",
             "encoding": "angle",
             "id": "id-1",
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+  })
+
+  it('scatter-chart-measure-encoding', async () => {
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'scatter',
+      dimensions: [],
+      measures: [
+        {
+          field: 'sales',
+          alias: '销售额',
+          encoding: 'xAxis',
+        },
+        {
+          field: 'profit',
+          alias: '利润',
+          encoding: 'yAxis',
+        },
+      ],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+      limit: 10,
+    })
+
+    // Apply custom builder code
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.chartType.changeChartType('scatter')
+    }
+    applyBuilder(builder)
+
+    // Build VBI DSL
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "scatter",
+        "connectorId": "demoSupermarket",
+        "dimensions": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 10,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "encoding": "xAxis",
+            "field": "sales",
+            "id": "id-1",
+          },
+          {
+            "alias": "利润",
+            "encoding": "yAxis",
+            "field": "profit",
+            "id": "id-2",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VQuery DSL
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [],
+        "limit": 10,
+        "select": [
+          {
+            "aggr": undefined,
+            "alias": "id-1",
+            "field": "sales",
+          },
+          {
+            "aggr": undefined,
+            "alias": "id-2",
+            "field": "profit",
+          },
+        ],
+      }
+    `)
+
+    // Build VSeed DSL
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "scatter",
+        "dataset": [
+          {
+            "id-1": 129.696,
+            "id-2": -60.704,
+          },
+          {
+            "id-1": 125.44,
+            "id-2": 42.56,
+          },
+          {
+            "id-1": 31.92,
+            "id-2": 4.2,
+          },
+          {
+            "id-1": 321.216,
+            "id-2": -27.104,
+          },
+          {
+            "id-1": 1375.92,
+            "id-2": 550.2,
+          },
+          {
+            "id-1": 11129.58,
+            "id-2": 3783.78,
+          },
+          {
+            "id-1": 479.92,
+            "id-2": 172.76,
+          },
+          {
+            "id-1": 8659.84,
+            "id-2": 2684.08,
+          },
+          {
+            "id-1": 588,
+            "id-2": 46.9,
+          },
+          {
+            "id-1": 154.28,
+            "id-2": 33.88,
+          },
+        ],
+        "dimensions": [],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "encoding": "xAxis",
+            "id": "id-1",
+          },
+          {
+            "alias": "利润",
+            "encoding": "yAxis",
+            "id": "id-2",
           },
         ],
         "theme": "light",

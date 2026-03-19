@@ -3,6 +3,8 @@ package-lock.json
 pnpm-lock.yaml
 yarn.lock
 
+CLAUDE.md
+
 # Disable format in docs
 /apps/website/doc_build
 /apps/website/docs/**/*.md

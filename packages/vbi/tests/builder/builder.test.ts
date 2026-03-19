@@ -1,5 +1,6 @@
 import { createVBI, VBI } from '@visactor/vbi'
 import { VBIDSL } from 'src/types/dsl'
+import { getConnector, registerConnector } from 'src/builder/connector'
 
 describe('VBI', () => {
   test('build', () => {
@@ -101,6 +102,59 @@ describe('VBI', () => {
         source: 'instance',
         count: 0,
       },
+    })
+  })
+
+  test('getConnector throws for unregistered connector', async () => {
+    const unregisteredId = 'unregistered-connector-id'
+
+    await expect(getConnector(unregisteredId)).rejects.toThrow(`connector ${unregisteredId} not registered`)
+  })
+
+  test('getConnector handles async factory function', async () => {
+    const testConnectorId = 'test-async-connector'
+    registerConnector(testConnectorId, async () => ({
+      discoverSchema: async () => [{ name: 'test', type: 'string' }],
+      query: async () => ({ dataset: [] }),
+    }))
+
+    const connector = await getConnector(testConnectorId)
+    const schema = await connector.discoverSchema()
+    expect(schema).toEqual([{ name: 'test', type: 'string' }])
+  })
+
+  test('createVBI uses defaultBuilderOptions when from is called without overrides', async () => {
+    type CustomQueryDSL = {
+      source: 'factory' | 'instance'
+      count: number
+    }
+
+    type CustomSeedDSL = {
+      type: 'custom-seed'
+      chartType: string
+      queryDSL: CustomQueryDSL
+    }
+
+    const CustomVBI = createVBI<CustomQueryDSL, CustomSeedDSL>({
+      adapters: {
+        buildVQuery: ({ vbiDSL }) => ({
+          source: 'factory',
+          count: vbiDSL.measures.length,
+        }),
+        buildVSeed: async ({ queryDSL, vbiDSL }) => ({
+          type: 'custom-seed',
+          chartType: vbiDSL.chartType as string,
+          queryDSL,
+        }),
+      },
+    })
+
+    // Call from WITHOUT second parameter - should use defaultBuilderOptions
+    const builder = CustomVBI.from(VBI.generateEmptyDSL('custom'))
+
+    expect(builder.buildVQuery()).toEqual({
+      source: 'factory',
+      count: 0,
     })
   })
 })

@@ -79,7 +79,7 @@ export class ChartTypeBuilder {
    * @param dimensionCount - 维度数量，默认使用当前 DSL 中的维度数量
    */
   getRecommendedDimensionEncodings(dimensionCount?: number) {
-    const resolvedCount = dimensionCount ?? this.dsl.get('dimensions')?.length ?? 0
+    const resolvedCount = dimensionCount ?? this.dsl.get('dimensions')?.length
     return getRecommendedDimensionEncodingsForChartType(this.getChartType(), resolvedCount)
   }
 
@@ -95,7 +95,7 @@ export class ChartTypeBuilder {
    * @param measureCount - 指标数量，默认使用当前 DSL 中的指标数量
    */
   getRecommendedMeasureEncodings(measureCount?: number) {
-    const resolvedCount = measureCount ?? this.dsl.get('measures')?.length ?? 0
+    const resolvedCount = measureCount ?? this.dsl.get('measures')?.length
     return getRecommendedMeasureEncodingsForChartType(this.getChartType(), resolvedCount)
   }
 

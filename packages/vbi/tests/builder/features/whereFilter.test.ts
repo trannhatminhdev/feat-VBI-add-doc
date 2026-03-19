@@ -418,7 +418,7 @@ describe('WhereFilterBuilder', () => {
     expect(json[7].op).toBe('like')
   })
 
-  test('buildVQuery handles not between range objects', () => {
+  test('buildVQuery handles not between with only min boundary', () => {
     const builder = VBI.from({
       ...VBI.generateEmptyDSL('demo'),
       chartType: 'column',
@@ -430,28 +430,98 @@ describe('WhereFilterBuilder', () => {
     } as VBIDSL)
 
     builder.whereFilter.add('sales', (node) => {
-      node.setOperator('not between').setValue({ min: 100, max: 200, leftOp: '<=', rightOp: '<=' })
+      node.setOperator('not between').setValue({ min: 100, max: undefined })
     })
 
     expect(builder.buildVQuery().where).toEqual({
       op: 'and',
       conditions: [
         {
-          op: 'or',
-          conditions: [
-            {
-              field: 'sales',
-              op: '<',
-              value: 100,
-            },
-            {
-              field: 'sales',
-              op: '>',
-              value: 200,
-            },
-          ],
+          field: 'sales',
+          op: '<',
+          value: 100,
         },
       ],
+    })
+  })
+
+  test('buildVQuery handles not between with only max boundary', () => {
+    const builder = VBI.from({
+      ...VBI.generateEmptyDSL('demo'),
+      chartType: 'column',
+      dimensions: [{ id: 'id-1', field: 'category', alias: 'category' }],
+      measures: [{ id: 'id-2', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
+      version: 1,
+    } as VBIDSL)
+
+    builder.whereFilter.add('sales', (node) => {
+      node.setOperator('not between').setValue({ min: undefined, max: 200 })
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        {
+          field: 'sales',
+          op: '>',
+          value: 200,
+        },
+      ],
+    })
+  })
+
+  test('buildVQuery handles between with array value', () => {
+    const builder = VBI.from({
+      ...VBI.generateEmptyDSL('demo'),
+      chartType: 'column',
+      dimensions: [{ id: 'id-1', field: 'category', alias: 'category' }],
+      measures: [{ id: 'id-2', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
+      version: 1,
+    } as VBIDSL)
+
+    builder.whereFilter.add('sales', (node) => {
+      node.setOperator('between').setValue([100, 200])
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        {
+          field: 'sales',
+          op: '>=',
+          value: 100,
+        },
+        {
+          field: 'sales',
+          op: '<=',
+          value: 200,
+        },
+      ],
+    })
+  })
+
+  test('buildVQuery handles where filter with non-object value', () => {
+    const builder = VBI.from({
+      ...VBI.generateEmptyDSL('demo'),
+      chartType: 'column',
+      dimensions: [{ id: 'id-1', field: 'category', alias: 'category' }],
+      measures: [{ id: 'id-2', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
+      version: 1,
+    } as VBIDSL)
+
+    builder.whereFilter.add('sales', (node) => {
+      node.setOperator('between').setValue(100)
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [],
     })
   })
 })

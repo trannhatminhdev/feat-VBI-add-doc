@@ -39,7 +39,7 @@ describe('DSL schemas', () => {
     const group = zVBIWhereGroup.parse({
       id: 'root',
       op: 'and',
-      conditions: [filter, { id: 'g-1', op: 'or', conditions: [{ id: 'f-2', field: 'area' }] }],
+      conditions: [filter, { id: 'g-1', op: 'or', conditions: [{ id: 'f-2', field: 'area', op: 'eq' }] }],
     })
 
     expect(zVBIWhereClause.parse(filter)).toEqual(filter)
@@ -47,11 +47,20 @@ describe('DSL schemas', () => {
   })
 
   test('parse having filter clauses and groups', () => {
-    const filter = zVBIHavingFilter.parse({ id: 'h-1', field: '销售额', op: 'gt', value: 1000 })
+    const filter = zVBIHavingFilter.parse({
+      id: 'h-1',
+      field: '销售额',
+      op: 'gt',
+      aggregate: { func: 'sum' },
+      value: 1000,
+    })
     const group = zVBIHavingGroup.parse({
       id: 'root',
       op: 'and',
-      conditions: [filter, { id: 'g-1', op: 'or', conditions: [{ id: 'h-2', field: '利润' }] }],
+      conditions: [
+        filter,
+        { id: 'g-1', op: 'or', conditions: [{ id: 'h-2', field: '利润', op: 'gt', aggregate: { func: 'sum' } }] },
+      ],
     })
 
     expect(zVBIHavingClause.parse(filter)).toEqual(filter)
@@ -104,7 +113,7 @@ describe('runtime guards and utils', () => {
   test('guard helpers narrow where and having clauses', () => {
     const whereFilter = { id: 'f-1', field: 'province', op: 'eq', value: '浙江' }
     const whereGroup = { id: 'g-1', op: 'and' as const, conditions: [whereFilter] }
-    const havingFilter = { id: 'h-1', field: '销售额', op: 'gt', value: 1000 }
+    const havingFilter = { id: 'h-1', field: '销售额', op: 'gt', aggregate: { func: 'sum' as const }, value: 1000 }
     const havingGroup = { id: 'g-2', op: 'or' as const, conditions: [havingFilter] }
 
     expect(isVBIFilter(whereFilter)).toBe(true)

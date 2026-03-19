@@ -2235,6 +2235,362 @@ describe('WhereFilter', () => {
     `)
   })
 
+  it('not-between-sales-range', async () => {
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'column',
+      dimensions: [
+        {
+          field: 'product_type',
+          alias: '品类',
+        },
+      ],
+      measures: [
+        {
+          field: 'profit',
+          alias: '利润',
+          encoding: 'yAxis',
+          aggregate: {
+            func: 'sum',
+          },
+        },
+      ],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+      limit: 20,
+    })
+
+    // Apply custom builder code
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.whereFilter.add('sales', (node) => {
+        node.setOperator('not between').setValue({ min: 1000, max: 10000 })
+      })
+    }
+    applyBuilder(builder)
+
+    // Build VBI DSL
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "品类",
+            "field": "product_type",
+            "id": "id-2",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 20,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "利润",
+            "encoding": "yAxis",
+            "field": "profit",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "sales",
+              "id": "id-3",
+              "op": "not between",
+              "value": {
+                "max": 10000,
+                "min": 1000,
+              },
+            },
+          ],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VQuery DSL
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "product_type",
+        ],
+        "limit": 20,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-1",
+            "field": "profit",
+          },
+          {
+            "alias": "id-2",
+            "field": "product_type",
+          },
+        ],
+        "where": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "sales",
+                  "op": "<",
+                  "value": 1000,
+                },
+                {
+                  "field": "sales",
+                  "op": ">",
+                  "value": 10000,
+                },
+              ],
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VSeed DSL
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "dataset": [
+          {
+            "id-1": 348256.1880000009,
+            "id-2": "办公用品",
+          },
+          {
+            "id-1": 201406.26799999987,
+            "id-2": "技术",
+          },
+          {
+            "id-1": 228240.27800000002,
+            "id-2": "家具",
+          },
+        ],
+        "dimensions": [
+          {
+            "alias": "品类",
+            "id": "id-2",
+          },
+        ],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "利润",
+            "encoding": "yAxis",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+  })
+
+  it('not-between-with-explicit-operators', async () => {
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'column',
+      dimensions: [
+        {
+          field: 'product_type',
+          alias: '品类',
+        },
+      ],
+      measures: [
+        {
+          field: 'profit',
+          alias: '利润',
+          encoding: 'yAxis',
+          aggregate: {
+            func: 'sum',
+          },
+        },
+      ],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+      limit: 20,
+    })
+
+    // Apply custom builder code
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.whereFilter.add('sales', (node) => {
+        node.setOperator('not between').setValue({ min: 1000, max: 10000, leftOp: '<', rightOp: '<' })
+      })
+    }
+    applyBuilder(builder)
+
+    // Build VBI DSL
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "品类",
+            "field": "product_type",
+            "id": "id-2",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 20,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "利润",
+            "encoding": "yAxis",
+            "field": "profit",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "sales",
+              "id": "id-3",
+              "op": "not between",
+              "value": {
+                "leftOp": "<",
+                "max": 10000,
+                "min": 1000,
+                "rightOp": "<",
+              },
+            },
+          ],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VQuery DSL
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "product_type",
+        ],
+        "limit": 20,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-1",
+            "field": "profit",
+          },
+          {
+            "alias": "id-2",
+            "field": "product_type",
+          },
+        ],
+        "where": {
+          "conditions": [
+            {
+              "conditions": [
+                {
+                  "field": "sales",
+                  "op": "<=",
+                  "value": 1000,
+                },
+                {
+                  "field": "sales",
+                  "op": ">=",
+                  "value": 10000,
+                },
+              ],
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VSeed DSL
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "dataset": [
+          {
+            "id-1": 348256.1880000009,
+            "id-2": "办公用品",
+          },
+          {
+            "id-1": 201406.26799999987,
+            "id-2": "技术",
+          },
+          {
+            "id-1": 228240.27800000002,
+            "id-2": "家具",
+          },
+        ],
+        "dimensions": [
+          {
+            "alias": "品类",
+            "id": "id-2",
+          },
+        ],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "利润",
+            "encoding": "yAxis",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+  })
+
   it('remove-filter-by-index', async () => {
     const builder = VBI.from({
       connectorId: 'demoSupermarket',
@@ -2651,6 +3007,346 @@ describe('WhereFilter', () => {
       {
         "chartType": "column",
         "dataset": [],
+        "dimensions": [
+          {
+            "alias": "区域",
+            "id": "id-2",
+          },
+        ],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+  })
+
+  it('where-filter-array-value-converts-to-in', async () => {
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'column',
+      dimensions: [
+        {
+          field: 'area',
+          alias: '区域',
+        },
+      ],
+      measures: [
+        {
+          field: 'sales',
+          alias: '销售额',
+          encoding: 'yAxis',
+          aggregate: {
+            func: 'sum',
+          },
+        },
+      ],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+      limit: 20,
+    })
+
+    // Apply custom builder code
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.whereFilter.add('area', (node) => {
+        node.setOperator('=').setValue(['华东', '华北'])
+      })
+    }
+    applyBuilder(builder)
+
+    // Build VBI DSL
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "区域",
+            "field": "area",
+            "id": "id-2",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 20,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "field": "sales",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "area",
+              "id": "id-3",
+              "op": "=",
+              "value": [
+                "华东",
+                "华北",
+              ],
+            },
+          ],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VQuery DSL
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "area",
+        ],
+        "limit": 20,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-1",
+            "field": "sales",
+          },
+          {
+            "alias": "id-2",
+            "field": "area",
+          },
+        ],
+        "where": {
+          "conditions": [
+            {
+              "field": "area",
+              "op": "in",
+              "value": [
+                "华东",
+                "华北",
+              ],
+            },
+          ],
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VSeed DSL
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "dataset": [
+          {
+            "id-1": 4684506.442,
+            "id-2": "华东",
+          },
+          {
+            "id-1": 2447301.017000004,
+            "id-2": "华北",
+          },
+        ],
+        "dimensions": [
+          {
+            "alias": "区域",
+            "id": "id-2",
+          },
+        ],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+  })
+
+  it('where-filter-array-value-converts-to-not-in', async () => {
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'column',
+      dimensions: [
+        {
+          field: 'area',
+          alias: '区域',
+        },
+      ],
+      measures: [
+        {
+          field: 'sales',
+          alias: '销售额',
+          encoding: 'yAxis',
+          aggregate: {
+            func: 'sum',
+          },
+        },
+      ],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+      limit: 20,
+    })
+
+    // Apply custom builder code
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.whereFilter.add('area', (node) => {
+        node.setOperator('!=').setValue(['华东', '华北'])
+      })
+    }
+    applyBuilder(builder)
+
+    // Build VBI DSL
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "区域",
+            "field": "area",
+            "id": "id-2",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 20,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "field": "sales",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "area",
+              "id": "id-3",
+              "op": "!=",
+              "value": [
+                "华东",
+                "华北",
+              ],
+            },
+          ],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VQuery DSL
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "area",
+        ],
+        "limit": 20,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-1",
+            "field": "sales",
+          },
+          {
+            "alias": "id-2",
+            "field": "area",
+          },
+        ],
+        "where": {
+          "conditions": [
+            {
+              "field": "area",
+              "op": "not in",
+              "value": [
+                "华东",
+                "华北",
+              ],
+            },
+          ],
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VSeed DSL
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "dataset": [
+          {
+            "id-1": 1303124.508000002,
+            "id-2": "西南",
+          },
+          {
+            "id-1": 4137415.0929999948,
+            "id-2": "中南",
+          },
+          {
+            "id-1": 815039.5959999998,
+            "id-2": "西北",
+          },
+          {
+            "id-1": 2681567.469000001,
+            "id-2": "东北",
+          },
+        ],
         "dimensions": [
           {
             "alias": "区域",
