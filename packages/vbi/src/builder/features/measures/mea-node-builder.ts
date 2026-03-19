@@ -22,6 +22,13 @@ export class MeasureNodeBuilder {
   }
 
   /**
+   * @description 获取图表编码位置
+   */
+  getEncoding(): VBIMeasure['encoding'] | undefined {
+    return this.yMap.get('encoding')
+  }
+
+  /**
    * @description 设置显示名称
    * @param alias - 显示名称
    */
@@ -32,9 +39,9 @@ export class MeasureNodeBuilder {
 
   /**
    * @description 设置图表编码位置
-   * @param encoding - 编码位置（yAxis/xAxis/color/size）
+   * @param encoding - 指标编码位置
    */
-  setEncoding(encoding: VBIMeasure['encoding']): this {
+  setEncoding(encoding: NonNullable<VBIMeasure['encoding']>): this {
     this.yMap.set('encoding', encoding)
     return this
   }

@@ -3,6 +3,7 @@ import type { ObserveCallback, VBIMeasure, VBIMeasureGroup, VBIMeasureTree } fro
 import { MeasureNodeBuilder } from './mea-node-builder'
 import { id } from 'src/utils'
 import { getOrCreateMeasures, locateMeasureIndexById, normalizeMeasureNodeIds } from './measure-utils'
+import { getRecommendedMeasureEncodingsForChartType } from '../chart-type/measure-encoding'
 
 /**
  * @description 度量构建器，用于添加、修改、删除度量配置。度量是数据的数值字段，如：销售额、利润、数量
@@ -24,11 +25,14 @@ export class MeasuresBuilder {
    * @param callback - 回调函数
    */
   add(field: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder {
+    const measures = getOrCreateMeasures(this.dsl)
+    const chartType = this.dsl.get('chartType') || 'table'
+    const [encoding] = getRecommendedMeasureEncodingsForChartType(chartType, measures.length + 1).slice(-1)
     const measure: VBIMeasure = {
       id: id.uuid(),
       alias: field,
       field,
-      encoding: 'yAxis',
+      encoding,
       aggregate: { func: 'sum' },
     }
 
@@ -37,7 +41,6 @@ export class MeasuresBuilder {
     for (const [key, value] of Object.entries(measure)) {
       yMap.set(key, value)
     }
-    const measures = getOrCreateMeasures(this.dsl)
     measures.push([yMap])
 
     const node = new MeasureNodeBuilder(yMap)

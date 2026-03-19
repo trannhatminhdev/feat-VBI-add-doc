@@ -95,6 +95,32 @@ getRecommendedDimensionEncodings(dimensionCount: number)
 | --- | --- | --- |
 | `dimensionCount` | number | - 维度数量，默认使用当前 DSL 中的维度数量 |
 
+### getSupportedMeasureEncodings
+
+获取当前图表类型支持的指标编码
+
+**定义**:
+
+```typescript
+getSupportedMeasureEncodings()
+```
+
+### getRecommendedMeasureEncodings
+
+根据当前图表类型，按指标顺序返回推荐的指标编码
+
+**定义**:
+
+```typescript
+getRecommendedMeasureEncodings(measureCount: number)
+```
+
+**参数**:
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `measureCount` | number | - 指标数量，默认使用当前 DSL 中的指标数量 |
+
 ### toJSON
 
 导出为 JSON

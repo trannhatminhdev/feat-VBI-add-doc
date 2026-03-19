@@ -76,6 +76,32 @@ describe('ChartTypeBuilder', () => {
     expect(builder.chartType.getRecommendedDimensionEncodings(4)).toEqual(['column', 'row', 'column', 'row'])
   })
 
+  test('getSupportedMeasureEncodings', () => {
+    const builder = VBI.from({ chartType: 'histogram' } as VBIDSL)
+
+    expect(builder.chartType.getSupportedMeasureEncodings()).toEqual([
+      'value',
+      'x0',
+      'x1',
+      'yAxis',
+      'detail',
+      'color',
+      'label',
+      'tooltip',
+    ])
+  })
+
+  test('getRecommendedMeasureEncodings', () => {
+    const builder = VBI.from({ chartType: 'dualAxis' } as VBIDSL)
+
+    expect(builder.chartType.getRecommendedMeasureEncodings(4)).toEqual([
+      'primaryYAxis',
+      'secondaryYAxis',
+      'secondaryYAxis',
+      'secondaryYAxis',
+    ])
+  })
+
   test('changeChartType reapplies dimension encodings', () => {
     const builder = VBI.from({
       chartType: 'table',
@@ -90,6 +116,23 @@ describe('ChartTypeBuilder', () => {
     expect(builder.dimensions.toJSON()).toEqual([
       { id: 'id-1', field: 'order_date', alias: '日期', encoding: 'xAxis' },
       { id: 'id-2', field: 'province', alias: '省份', encoding: 'color' },
+    ])
+  })
+
+  test('changeChartType reapplies measure encodings', () => {
+    const builder = VBI.from({
+      chartType: 'table',
+      measures: [
+        { field: 'sales', alias: '销售额', encoding: 'column', aggregate: { func: 'sum' } },
+        { field: 'profit', alias: '利润', encoding: 'column', aggregate: { func: 'sum' } },
+      ],
+    } as VBIDSL)
+
+    builder.chartType.changeChartType('dualAxis')
+
+    expect(builder.measures.toJSON()).toEqual([
+      { id: 'id-1', field: 'sales', alias: '销售额', encoding: 'primaryYAxis', aggregate: { func: 'sum' } },
+      { id: 'id-2', field: 'profit', alias: '利润', encoding: 'secondaryYAxis', aggregate: { func: 'sum' } },
     ])
   })
 

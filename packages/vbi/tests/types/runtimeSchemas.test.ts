@@ -87,7 +87,7 @@ describe('DSL schemas', () => {
       id: 'm-1',
       field: 'sales',
       alias: '销售额',
-      encoding: 'yAxis',
+      encoding: 'primaryYAxis',
       aggregate: { func: 'sum' },
     })
     const measureGroup = zVBIMeasureGroup.parse({

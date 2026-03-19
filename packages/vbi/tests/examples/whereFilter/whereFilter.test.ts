@@ -229,6 +229,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "xAxis",
             "id": "id-1",
           },
         ],
@@ -390,6 +391,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -589,6 +591,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -760,6 +763,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -1010,6 +1014,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -1265,6 +1270,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "xAxis",
             "id": "id-1",
           },
         ],
@@ -1493,6 +1499,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -1820,6 +1827,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -2042,6 +2050,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -2217,6 +2226,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "订单量",
+            "encoding": "xAxis",
             "id": "id-1",
           },
         ],
@@ -2459,6 +2469,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -2650,6 +2661,7 @@ describe('WhereFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],

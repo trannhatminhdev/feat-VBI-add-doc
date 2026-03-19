@@ -5,7 +5,12 @@ import {
   getRecommendedDimensionEncodingsForChartType,
   getSupportedDimensionEncodingsForChartType,
 } from './dimension-encoding'
+import {
+  getRecommendedMeasureEncodingsForChartType,
+  getSupportedMeasureEncodingsForChartType,
+} from './measure-encoding'
 import { reapplyDimensionEncodings } from './reapply-dimension-encodings'
+import { reapplyMeasureEncodings } from './reapply-measure-encodings'
 
 /**
  * @description 图表类型构建器，用于切换和获取图表类型。支持表格、柱状图、折线图、饼图、散点图等多种图表类型
@@ -51,6 +56,7 @@ export class ChartTypeBuilder {
     this.doc.transact(() => {
       this.dsl.set('chartType', chartType)
       reapplyDimensionEncodings(this.dsl, chartType)
+      reapplyMeasureEncodings(this.dsl, chartType)
     })
   }
 
@@ -75,6 +81,22 @@ export class ChartTypeBuilder {
   getRecommendedDimensionEncodings(dimensionCount?: number) {
     const resolvedCount = dimensionCount ?? this.dsl.get('dimensions')?.length ?? 0
     return getRecommendedDimensionEncodingsForChartType(this.getChartType(), resolvedCount)
+  }
+
+  /**
+   * @description 获取当前图表类型支持的指标编码
+   */
+  getSupportedMeasureEncodings() {
+    return getSupportedMeasureEncodingsForChartType(this.getChartType())
+  }
+
+  /**
+   * @description 根据当前图表类型，按指标顺序返回推荐的指标编码
+   * @param measureCount - 指标数量，默认使用当前 DSL 中的指标数量
+   */
+  getRecommendedMeasureEncodings(measureCount?: number) {
+    const resolvedCount = measureCount ?? this.dsl.get('measures')?.length ?? 0
+    return getRecommendedMeasureEncodingsForChartType(this.getChartType(), resolvedCount)
   }
 
   /**
