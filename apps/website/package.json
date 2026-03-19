@@ -22,6 +22,7 @@
     "minimalist": "workspace:*",
     "professional": "workspace:*",
     "streamlined": "workspace:*",
+    "vbi-react-starter": "workspace:*",
     "yjs": "13.6.28",
     "zustand": "5.0.6"
   },

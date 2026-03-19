@@ -39,6 +39,9 @@
     },
     {
       "path": "../../practices/professional"
+    },
+    {
+      "path": "../../practices/vbi-react-starter"
     }
   ],
   "include": ["docs", "components", "theme", "rspress.config.ts"],

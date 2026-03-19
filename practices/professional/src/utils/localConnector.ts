@@ -7,6 +7,8 @@ import {
 } from '@visactor/vquery';
 
 let localData: unknown[] = [];
+let localSchema: DatasetColumn[] | null = null;
+let datasetNeedsRefresh = true;
 
 export const createLocalConnector = (connectorId: string) => {
   const vquery = new VQuery();
@@ -20,6 +22,11 @@ export const createLocalConnector = (connectorId: string) => {
         if (localData.length === 0) {
           console.log('No local data yet');
           return [];
+        }
+
+        if (localSchema) {
+          console.log('Using provided schema:', localSchema);
+          return localSchema;
         }
 
         // 从数据的第一行推断字段类型
@@ -39,6 +46,13 @@ export const createLocalConnector = (connectorId: string) => {
 
       query: async ({ queryDSL, schema }) => {
         console.log('query called with DSL:', queryDSL, 'schema:', schema);
+        const hasDataset = await vquery.hasDataset(connectorId);
+
+        if (hasDataset && datasetNeedsRefresh) {
+          console.log('Dropping stale dataset before recreation...');
+          await vquery.dropDataset(connectorId);
+        }
+
         if (!(await vquery.hasDataset(connectorId))) {
           if (localData.length === 0) {
             console.log('No data for query');
@@ -52,6 +66,7 @@ export const createLocalConnector = (connectorId: string) => {
             schema as DatasetColumn[],
             datasetSource as RawDatasetSource,
           );
+          datasetNeedsRefresh = false;
         }
 
         const dataset = await vquery.connectDataset(connectorId);
@@ -116,14 +131,14 @@ export const createLocalConnector = (connectorId: string) => {
                     num = NaN;
                   }
 
-                  // 仅在有效时赋值，使用 alias 作为列名
+                  // 保留查询结果列名（优先 alias，否则 field），避免下游取不到值
                   if (!Number.isNaN(num)) {
-                    next[field] = num;
+                    next[sourceKey] = num;
                   }
                 }
 
                 console.log(
-                  `After: ${field} = ${next[field]} (type: ${typeof next[field]})`,
+                  `After: ${sourceKey} = ${next[sourceKey]} (type: ${typeof next[sourceKey]})`,
                 );
               }
 
@@ -131,7 +146,7 @@ export const createLocalConnector = (connectorId: string) => {
                 const sourceKey = alias || field;
                 const raw = (row as any)[sourceKey];
                 if (raw != null) {
-                  next[field] = raw;
+                  next[sourceKey] = raw;
                 }
               }
 
@@ -143,7 +158,7 @@ export const createLocalConnector = (connectorId: string) => {
         }
 
         return {
-          dataset: queryResult.dataset,
+          dataset: normalizedDataset,
         };
       },
     };
@@ -154,6 +169,17 @@ export const createLocalConnector = (connectorId: string) => {
 
 export const setLocalData = (data: unknown[]) => {
   localData = data;
+  localSchema = null;
+  datasetNeedsRefresh = true;
+};
+
+export const setLocalDataWithSchema = (
+  data: unknown[],
+  schema: DatasetColumn[] | null,
+) => {
+  localData = data;
+  localSchema = schema;
+  datasetNeedsRefresh = true;
 };
 
 export const getLocalData = () => localData;

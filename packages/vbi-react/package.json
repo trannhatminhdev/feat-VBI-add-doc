@@ -23,7 +23,7 @@
     },
     "./components": {
       "source": "./src/components/index.ts",
-      "types": "./dist/components.d.ts",
+      "types": "./dist/components/index.d.ts",
       "import": "./dist/components.js",
       "require": "./dist/components.cjs"
     }

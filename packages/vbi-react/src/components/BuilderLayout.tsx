@@ -38,18 +38,22 @@ export function BuilderLayout(props: BuilderLayoutProps) {
     .filter(Boolean)
     .join(' ')
 
+  const rows = [topBar ? 'auto' : undefined, 'minmax(0, 1fr)', footer ? 'auto' : undefined]
+    .filter(Boolean)
+    .join(' ')
+
   return (
     <section
       className={joinClassNames('vbi-react-builder-layout', className)}
-      style={{ display: 'grid', gap: 12, ...style }}
+      style={{ display: 'grid', gap: 12, gridTemplateRows: rows, minHeight: 0, minWidth: 0, ...style }}
     >
       {topBar ? <header>{topBar}</header> : null}
-      <div style={{ display: 'grid', gap: 12, gridTemplateColumns: columns }}>
-        {leftPanel ? <aside>{leftPanel}</aside> : null}
-        <main>{main}</main>
-        {rightPanel ? <aside>{rightPanel}</aside> : null}
+      <div style={{ display: 'grid', gap: 12, gridTemplateColumns: columns, minHeight: 0, minWidth: 0 }}>
+        {leftPanel ? <aside style={{ minHeight: 0, minWidth: 0 }}>{leftPanel}</aside> : null}
+        <main style={{ minHeight: 0, minWidth: 0 }}>{main}</main>
+        {rightPanel ? <aside style={{ minHeight: 0, minWidth: 0 }}>{rightPanel}</aside> : null}
       </div>
-      {footer ? <footer>{footer}</footer> : null}
+      {footer ? <footer style={{ minHeight: 0, minWidth: 0 }}>{footer}</footer> : null}
     </section>
   )
 }

@@ -307,6 +307,9 @@ importers:
       streamlined:
         specifier: workspace:*
         version: link:../../practices/streamlined
+      vbi-react-starter:
+        specifier: workspace:*
+        version: link:../../practices/vbi-react-starter
       yjs:
         specifier: 13.6.28
         version: 13.6.28
@@ -695,6 +698,9 @@ importers:
       '@visactor/vbi':
         specifier: workspace:*
         version: link:../../packages/vbi
+      '@visactor/vbi-react':
+        specifier: workspace:*
+        version: link:../../packages/vbi-react
       '@visactor/vchart':
         specifier: 2.0.15
         version: 2.0.15
@@ -811,6 +817,76 @@ importers:
       '@types/react':
         specifier: 19.2.7
         version: 19.2.7
+      eslint:
+        specifier: 9.39.1
+        version: 9.39.1(jiti@2.6.1)
+      globals:
+        specifier: 16.5.0
+        version: 16.5.0
+      jsdom:
+        specifier: 26.1.0
+        version: 26.1.0
+      prettier:
+        specifier: 3.7.3
+        version: 3.7.3
+      react:
+        specifier: 19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: 19.2.3
+        version: 19.2.3(react@19.2.3)
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      typescript-eslint:
+        specifier: 8.48.0
+        version: 8.48.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
+
+  practices/vbi-react-starter:
+    dependencies:
+      '@visactor/vbi':
+        specifier: workspace:*
+        version: link:../../packages/vbi
+      '@visactor/vbi-react':
+        specifier: workspace:*
+        version: link:../../packages/vbi-react
+      '@visactor/vchart':
+        specifier: 2.0.15
+        version: 2.0.15
+      '@visactor/vquery':
+        specifier: workspace:*
+        version: link:../../packages/vquery
+      '@visactor/vseed':
+        specifier: workspace:*
+        version: link:../../packages/vseed
+      '@visactor/vtable':
+        specifier: 1.23.1
+        version: 1.23.1
+    devDependencies:
+      '@eslint/js':
+        specifier: 9.39.1
+        version: 9.39.1
+      '@rsbuild/plugin-react':
+        specifier: 1.4.2
+        version: 1.4.2(@rsbuild/core@2.0.0-beta.6(core-js@3.47.0))
+      '@rslib/core':
+        specifier: 0.18.6
+        version: 0.18.6(typescript@5.9.3)
+      '@rstest/core':
+        specifier: 0.8.3
+        version: 0.8.3(happy-dom@20.4.0)(jsdom@26.1.0)
+      '@testing-library/jest-dom':
+        specifier: 6.9.1
+        version: 6.9.1
+      '@testing-library/react':
+        specifier: 16.3.1
+        version: 16.3.1(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      '@types/react':
+        specifier: 19.2.7
+        version: 19.2.7
+      '@types/react-dom':
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.7)
       eslint:
         specifier: 9.39.1
         version: 9.39.1(jiti@2.6.1)

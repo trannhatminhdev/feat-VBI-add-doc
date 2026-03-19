@@ -22,7 +22,7 @@ This file is a living design and delivery record. It must stay aligned with the 
 | `buildVSeed({ signal })` support in `@visactor/vbi`               | **Completed**   | `signal` is now accepted by `VBIBuilder.buildVSeed` and forwarded to `connector.query`                                                                                                                                                            |
 | `useWhereFilter`, `useHavingFilter`                               | **Completed**   | Implemented as reactive snapshots plus mutation callbacks around the singular `whereFilter` / `havingFilter` builder APIs and verified by package tests                                                                                           |
 | `@visactor/vbi-react/components` submodule                        | **In Progress** | Starter submodule now exports `FieldPanel`, `ChartTypeSelector`, `ChartRenderer`, and `BuilderLayout`; `FilterPanel`, `ThemeSelector`, and richer renderer integration are still pending                                                       |
-| `practices/professional` components validation                    | **Pending**     | First components rollout should validate in `practices/professional`; keep the other three practice demos unchanged                                                                                                                               |
+| `practices/professional` components validation                    | **In Progress** | `practices/professional` now includes a switchable `vbi-react Starter` preview that validates `FieldPanel`, `ChartTypeSelector`, `ChartRenderer`, and `BuilderLayout`; loading demo data in starter mode refreshes the available fields from the same explicit supermarket schema used by the other demos, parses quoted CSV rows correctly before seeding local data, recreates the local dataset when that schema changes, keeps dimension / measure selection explicit, and surfaces build errors directly in the preview while keeping the summary / DSL sections stacked below the builder so they no longer overlap the editing canvas; deeper end-to-end migration and formal verification are still pending |
 | Website docs / examples integration                               | **Pending**     | Components should double as site examples                                                                                                                                                                                                         |
 | Verification (`typecheck`, tests, build, lint`)                   | **In Progress** | Under Node `24.12.0`, `@visactor/vbi-react` tests, `typecheck`, and `build` pass with the starter components included; `lint` still needs dedicated follow-up, and `@visactor/vbi` currently has upstream typecheck issues in chart-type enums    |
 
@@ -836,7 +836,7 @@ if (error) {
 
 The library provides two usage modes to accommodate different use cases.
 
-Current implementation status: the hooks mode is complete for the current builder surface, and a first `@visactor/vbi-react/components` slice is now shipped. The current starter components are `FieldPanel`, `ChartTypeSelector`, `ChartRenderer`, and `BuilderLayout`. `FilterPanel`, `ThemeSelector`, and a richer built-in chart renderer remain target architecture.
+Current implementation status: the hooks mode is complete for the current builder surface, and a first `@visactor/vbi-react/components` slice is now shipped. The current starter components are `FieldPanel`, `ChartTypeSelector`, `ChartRenderer`, and `BuilderLayout`. A first `practices/professional` starter preview is integrated to validate these components in a real demo flow, and loading demo data there now refreshes the available fields from the same explicit supermarket schema used by the other demos, parses quoted CSV rows correctly before seeding local data, recreates the local dataset when that schema changes, keeps field selection explicit, surfaces build errors directly in the preview, and keeps its summary / DSL sections stacked below the builder so the main editing area stays visible. `FilterPanel`, `ThemeSelector`, and a richer built-in chart renderer remain target architecture.
 
 ### Core Principle
 
@@ -1155,6 +1155,7 @@ Rules for that stage:
 
 - `practices/professional` is the designated demo for validating the components layer end to end
 - Refactoring `practices/professional` is allowed if needed to make it a strong real-world validation target
+- Current rollout status: `practices/professional` now includes a dedicated `vbi-react Starter` preview mode for validating the starter components in isolation, with the extra preview metadata stacked below the builder instead of overlapping it
 - Do **not** modify `practices/demo`, `practices/minimalist`, or `practices/streamlined` as part of the components rollout unless a later explicit decision changes this scope
 - The other three practice demos should remain stable references while `professional` absorbs the first round of component-level integration changes
 - This scope supersedes earlier exploratory ideas about using `practices/demo` as the first migration target for the components rollout
@@ -1240,8 +1241,8 @@ This design document will become part of the architecture documentation, providi
 
 | Week | Task                                                                                                                     | Deliverable          | Status          |
 | ---- | ------------------------------------------------------------------------------------------------------------------------ | -------------------- | --------------- |
-| 7    | Integrate with `practices/professional` for components validation                                                        | Verify functionality | **Pending**     |
-| 7    | Keep `practices/demo`, `practices/minimalist`, and `practices/streamlined` unchanged during the first components rollout | scope guard          | **Pending**     |
+| 7    | Integrate with `practices/professional` for components validation                                                        | Verify functionality | **In Progress** |
+| 7    | Keep `practices/demo`, `practices/minimalist`, and `practices/streamlined` unchanged during the first components rollout | scope guard          | **In Progress** |
 | 7    | Write README documentation                                                                                               | Documentation        | **Pending**     |
 | 7    | Integrate docs under VBI website section                                                                                 | documentation pages  | **Pending**     |
 | 7    | Keep `DESIGN.md` synchronized with implementation status                                                                 | living design record | **In Progress** |
