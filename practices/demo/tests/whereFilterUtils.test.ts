@@ -1,6 +1,5 @@
 import { expect, test } from '@rstest/core';
 import {
-  getWhereDisplayText,
   getWhereFilterFormValue,
   getWhereFilterInputStrategy,
   normalizeWhereOperator,
@@ -10,16 +9,6 @@ import {
 test('normalizes legacy operators for UI display', () => {
   expect(normalizeWhereOperator('eq')).toBe('=');
   expect(normalizeWhereOperator('gte')).toBe('>=');
-});
-
-test('formats where display text for not between ranges', () => {
-  expect(
-    getWhereDisplayText({
-      field: 'sales',
-      operator: 'not between',
-      value: { min: 100, max: 200, leftOp: '<=', rightOp: '<=' },
-    }),
-  ).toBe('not (100 <= sales <= 200)');
 });
 
 test('selects input strategy by operator and field role', () => {

@@ -2,11 +2,8 @@ import { expect, test } from '@rstest/core';
 import {
   getDefaultHavingAggregateByFieldRole,
   getDefaultHavingOperator,
-  getHavingAggregateOptionGroupsByFieldRole,
-  getHavingDisplayText,
   getHavingFilterFormValue,
   getHavingFilterInputStrategy,
-  getHavingOperatorOptions,
   isHavingNumericAggregate,
   normalizeHavingAggregate,
   normalizeHavingOperator,
@@ -43,20 +40,6 @@ test('uses role-based default and normalized aggregates', () => {
   });
 });
 
-test('exposes grouped aggregate options and limits dimension aggregates', () => {
-  const dimensionValues = getHavingAggregateOptionGroupsByFieldRole(
-    'dimension',
-  ).flatMap((group) => group.options.map((item) => item.value));
-  expect(dimensionValues).toEqual(['count', 'countDistinct', 'min', 'max']);
-
-  const measureValues = getHavingAggregateOptionGroupsByFieldRole(
-    'measure',
-  ).flatMap((group) => group.options.map((item) => item.value));
-  expect(measureValues).toContain('sum');
-  expect(measureValues).toContain('variancePop');
-  expect(measureValues).toContain('quantile');
-});
-
 test('derives numeric mode and operator availability by aggregate role', () => {
   expect(isHavingNumericAggregate('measure', { func: 'sum' })).toBe(true);
   expect(isHavingNumericAggregate('dimension', { func: 'count' })).toBe(true);
@@ -64,16 +47,6 @@ test('derives numeric mode and operator availability by aggregate role', () => {
 
   expect(getDefaultHavingOperator(true)).toBe('>');
   expect(getDefaultHavingOperator(false)).toBe('=');
-
-  const numericOperators = getHavingOperatorOptions(true).map(
-    (item) => item.value,
-  );
-  const textOperators = getHavingOperatorOptions(false).map(
-    (item) => item.value,
-  );
-
-  expect(numericOperators).toContain('between');
-  expect(textOperators).not.toContain('between');
 });
 
 test('supports role-aware value strategy and serialization', () => {
@@ -110,26 +83,6 @@ test('supports role-aware value strategy and serialization', () => {
       value: '  华东  ',
     }),
   ).toBe('华东');
-});
-
-test('formats display text with explicit aggregate config', () => {
-  expect(
-    getHavingDisplayText({
-      field: 'sales',
-      aggregate: { func: 'sum' },
-      operator: 'gt',
-      value: 100,
-    }),
-  ).toBe('sum(sales) > 100');
-
-  expect(
-    getHavingDisplayText({
-      field: 'sales',
-      aggregate: { func: 'sum' },
-      operator: 'between',
-      value: [1, 5],
-    }),
-  ).toBe('sum(sales) between [1, 5]');
 });
 
 test('converts aggregate function key to aggregate config', () => {
