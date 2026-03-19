@@ -27,7 +27,7 @@ describe('VBI YJS Integration', () => {
             func: 'sum',
           },
           alias: 'Sales',
-          encoding: 'yAxis',
+          encoding: 'column',
           field: 'sales',
         },
       ],

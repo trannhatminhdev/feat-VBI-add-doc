@@ -1,10 +1,12 @@
 import { z } from 'zod'
+import { zDimensionEncoding } from '@visactor/vseed'
 import { zDimensionAggregate } from './aggregate'
 
 export const zVBIDimensionSchema = z.object({
   id: z.string(),
   field: z.string(),
   alias: z.string(),
+  encoding: zDimensionEncoding.optional(),
   aggregate: zDimensionAggregate.optional(),
 })
 

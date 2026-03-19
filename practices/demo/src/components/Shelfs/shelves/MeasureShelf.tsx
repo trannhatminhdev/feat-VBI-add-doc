@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import { useVBIBuilder, useVBIMeasures, useVBISchemaFields } from 'src/hooks';
 import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
+import type { VBIMeasure } from '@visactor/vbi';
 import {
   FieldShelf,
   SHELF_MENU_ITEM_STYLE,
@@ -27,6 +28,33 @@ import {
 const QUANTILE_PERCENT_OPTIONS = [1, 5, 25, 50, 75, 90, 95, 99] as const;
 const DELETE_DIVIDER_STYLE: React.CSSProperties = {
   marginBlock: 0,
+};
+
+const MEASURE_ENCODING_LABEL_KEY_MAP: Record<
+  NonNullable<VBIMeasure['encoding']>,
+  string
+> = {
+  primaryYAxis: 'shelvesMeasureEncodingPrimaryYAxis',
+  secondaryYAxis: 'shelvesMeasureEncodingSecondaryYAxis',
+  xAxis: 'shelvesMeasureEncodingXAxis',
+  yAxis: 'shelvesMeasureEncodingYAxis',
+  angle: 'shelvesMeasureEncodingAngle',
+  radius: 'shelvesMeasureEncodingRadius',
+  size: 'shelvesMeasureEncodingSize',
+  color: 'shelvesMeasureEncodingColor',
+  detail: 'shelvesMeasureEncodingDetail',
+  column: 'shelvesMeasureEncodingColumn',
+  label: 'shelvesMeasureEncodingLabel',
+  tooltip: 'shelvesMeasureEncodingTooltip',
+  value: 'shelvesMeasureEncodingValue',
+  q1: 'shelvesMeasureEncodingQ1',
+  q3: 'shelvesMeasureEncodingQ3',
+  min: 'shelvesMeasureEncodingMin',
+  max: 'shelvesMeasureEncodingMax',
+  median: 'shelvesMeasureEncodingMedian',
+  outliers: 'shelvesMeasureEncodingOutliers',
+  x0: 'shelvesMeasureEncodingX0',
+  x1: 'shelvesMeasureEncodingX1',
 };
 
 export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
@@ -113,6 +141,15 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     });
   };
 
+  const changeEncoding = (
+    id: string,
+    encoding: NonNullable<VBIMeasure['encoding']>,
+  ) => {
+    updateMeasure(id, (node) => {
+      node.setEncoding(encoding);
+    });
+  };
+
   const buildMeasureMenuItems = (
     measure: (typeof measures)[number],
   ): MenuProps['items'] => {
@@ -123,6 +160,15 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
         ? Math.round((measure.aggregate.quantile ?? 0.5) * 100)
         : undefined;
     const currentAggregateKey = measure.aggregate?.func ?? 'sum';
+    const supportedEncodings = builder.chartType.getSupportedMeasureEncodings();
+    const currentEncoding = measure.encoding;
+    const measureIndex = measures.findIndex((item) => item.id === measure.id);
+    const recommendedEncoding =
+      measureIndex >= 0
+        ? builder.chartType.getRecommendedMeasureEncodings(measures.length)[
+            measureIndex
+          ]
+        : undefined;
 
     const aggregateMenuItems: NonNullable<MenuProps['items']> =
       availableAggregates.map((item) => {
@@ -150,6 +196,25 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       });
 
     return [
+      {
+        key: 'encoding',
+        label: t('shelvesMenuEncoding'),
+        children: supportedEncodings.map((encoding) => {
+          const selectedPrefix = currentEncoding === encoding ? '✓ ' : '';
+          const recommendedSuffix =
+            recommendedEncoding === encoding
+              ? ` ${t('commonStatusRecommended')}`
+              : '';
+
+          return {
+            key: `encoding:${encoding}`,
+            label: `${selectedPrefix}${t(
+              MEASURE_ENCODING_LABEL_KEY_MAP[encoding],
+            )}${recommendedSuffix}`,
+            style: SHELF_MENU_ITEM_STYLE,
+          };
+        }),
+      },
       {
         key: 'aggregate',
         label: t('shelvesMenuAggregate'),
@@ -194,6 +259,14 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
 
     if (key === 'delete') {
       removeMeasure(measure.id);
+      return;
+    }
+
+    if (key.startsWith('encoding:')) {
+      const nextEncoding = key.replace('encoding:', '') as NonNullable<
+        VBIMeasure['encoding']
+      >;
+      changeEncoding(measure.id, nextEncoding);
       return;
     }
 

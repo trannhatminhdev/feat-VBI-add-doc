@@ -8,6 +8,8 @@ export type VBIMeasure = Omit<CoreVBIMeasure, 'encoding' | 'aggregate'> & {
 };
 
 type MeasureNodeLike = {
+  getEncoding?: () => VBIMeasure['encoding'];
+  setEncoding: (encoding: NonNullable<VBIMeasure['encoding']>) => unknown;
   setAlias: (alias: string) => unknown;
   setAggregate: (aggregate: NonNullable<VBIMeasure['aggregate']>) => unknown;
 };

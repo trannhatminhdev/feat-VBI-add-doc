@@ -18,6 +18,7 @@ describe('VBI', () => {
           id: 'id-2',
           alias: 'Area',
           field: 'area',
+          encoding: 'column',
         },
       ],
       whereFilter: { id: 'root', op: 'and', conditions: [] },

@@ -11,16 +11,32 @@ export const buildVSeedDSL: VBISeedBuilder<DefaultVBIQueryDSL, DefaultVBISeedDSL
   const queryResult = await connector.query({ queryDSL, schema, connectorId })
   const measures = vbiDSL.measures
     .filter((measure) => MeasuresBuilder.isMeasureNode(measure))
-    .map<Measure>((measure) => ({
-      id: measure.id,
-      alias: measure.alias,
-    }))
+    .map<Measure>((measure) => {
+      const nextMeasure: Measure = {
+        id: measure.id,
+        alias: measure.alias,
+      }
+
+      if (measure.encoding) {
+        nextMeasure.encoding = measure.encoding
+      }
+
+      return nextMeasure
+    })
   const dimensions = vbiDSL.dimensions
     .filter((dimension) => DimensionsBuilder.isDimensionNode(dimension))
-    .map<Dimension>((dimension) => ({
-      id: dimension.id,
-      alias: dimension.alias,
-    }))
+    .map<Dimension>((dimension) => {
+      const nextDimension: Dimension = {
+        id: dimension.id,
+        alias: dimension.alias,
+      }
+
+      if (dimension.encoding) {
+        nextDimension.encoding = dimension.encoding
+      }
+
+      return nextDimension
+    })
 
   return {
     chartType: vbiDSL.chartType,

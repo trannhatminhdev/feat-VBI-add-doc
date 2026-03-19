@@ -175,6 +175,7 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -393,10 +394,12 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],
@@ -602,10 +605,12 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],
@@ -918,14 +923,17 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
           {
             "alias": "数量",
+            "encoding": "yAxis",
             "id": "id-3",
           },
         ],
@@ -1316,18 +1324,22 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
           {
             "alias": "数量",
+            "encoding": "yAxis",
             "id": "id-3",
           },
           {
             "alias": "平均折扣",
+            "encoding": "yAxis",
             "id": "id-4",
           },
         ],
@@ -1395,6 +1407,7 @@ describe('HavingFilter', () => {
         "dimensions": [
           {
             "alias": "area",
+            "encoding": "column",
             "field": "area",
             "id": "c3583433-a2cc-4234-85ff-75ae2472b674",
           },
@@ -1543,6 +1556,7 @@ describe('HavingFilter', () => {
         "dimensions": [
           {
             "alias": "area",
+            "encoding": "column",
             "id": "c3583433-a2cc-4234-85ff-75ae2472b674",
           },
         ],
@@ -1550,10 +1564,12 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "sales",
+            "encoding": "yAxis",
             "id": "a5ba6c4a-31dc-4b2c-a38f-9f23c2bbe850",
           },
           {
             "alias": "country_or_region",
+            "encoding": "yAxis",
             "id": "49f3b33d-4ede-436c-8be9-a51619236916",
           },
         ],
@@ -1602,6 +1618,7 @@ describe('HavingFilter', () => {
         "dimensions": [
           {
             "alias": "区域",
+            "encoding": "yAxis",
             "field": "area",
             "id": "id-1",
           },
@@ -1707,6 +1724,7 @@ describe('HavingFilter', () => {
         "dimensions": [
           {
             "alias": "区域",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -1714,6 +1732,7 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],
@@ -1936,10 +1955,12 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],
@@ -2243,14 +2264,17 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
           {
             "alias": "数量",
+            "encoding": "yAxis",
             "id": "id-3",
           },
         ],
@@ -2483,10 +2507,12 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],
@@ -2776,14 +2802,17 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
           {
             "alias": "数量",
+            "encoding": "yAxis",
             "id": "id-3",
           },
         ],
@@ -3072,10 +3101,12 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "平均折扣",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],
@@ -3371,14 +3402,17 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
           {
             "alias": "数量",
+            "encoding": "yAxis",
             "id": "id-3",
           },
         ],
@@ -3614,10 +3648,12 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],
@@ -3930,14 +3966,17 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "xAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
           {
             "alias": "数量",
+            "encoding": "size",
             "id": "id-3",
           },
         ],
@@ -4197,10 +4236,12 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],
@@ -4479,10 +4520,12 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],
@@ -4701,10 +4744,12 @@ describe('HavingFilter', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],

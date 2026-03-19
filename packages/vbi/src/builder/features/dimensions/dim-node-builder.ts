@@ -22,11 +22,27 @@ export class DimensionNodeBuilder {
   }
 
   /**
+   * @description 获取图表编码位置
+   */
+  getEncoding(): VBIDimension['encoding'] | undefined {
+    return this.yMap.get('encoding')
+  }
+
+  /**
    * @description 设置显示名称
    * @param alias - 显示名称
    */
   setAlias(alias: string): this {
     this.yMap.set('alias', alias)
+    return this
+  }
+
+  /**
+   * @description 设置图表编码位置
+   * @param encoding - 维度编码位置
+   */
+  setEncoding(encoding: NonNullable<VBIDimension['encoding']>): this {
+    this.yMap.set('encoding', encoding)
     return this
   }
 

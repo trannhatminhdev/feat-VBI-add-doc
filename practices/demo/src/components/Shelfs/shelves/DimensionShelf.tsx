@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { useVBIBuilder, useVBIDimensions, useVBISchemaFields } from 'src/hooks';
 import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
+import type { VBIDimension } from '@visactor/vbi';
 import { getFieldRoleBySchemaType } from 'src/utils/fieldRole';
 import {
   FieldShelf,
@@ -26,6 +27,23 @@ import {
 
 const DELETE_DIVIDER_STYLE: React.CSSProperties = {
   marginBlock: 0,
+};
+
+const DIMENSION_ENCODING_LABEL_KEY_MAP: Record<
+  NonNullable<VBIDimension['encoding']>,
+  string
+> = {
+  xAxis: 'shelvesDimensionEncodingXAxis',
+  yAxis: 'shelvesDimensionEncodingYAxis',
+  angle: 'shelvesDimensionEncodingAngle',
+  color: 'shelvesDimensionEncodingColor',
+  detail: 'shelvesDimensionEncodingDetail',
+  tooltip: 'shelvesDimensionEncodingTooltip',
+  label: 'shelvesDimensionEncodingLabel',
+  row: 'shelvesDimensionEncodingRow',
+  column: 'shelvesDimensionEncodingColumn',
+  player: 'shelvesDimensionEncodingPlayer',
+  hierarchy: 'shelvesDimensionEncodingHierarchy',
 };
 
 export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
@@ -145,6 +163,15 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
     });
   };
 
+  const changeEncoding = (
+    id: string,
+    encoding: NonNullable<VBIDimension['encoding']>,
+  ) => {
+    updateDimension(id, (node) => {
+      node.setEncoding(encoding);
+    });
+  };
+
   const buildMenuItems = (
     dimension: (typeof dimensions)[number],
   ): MenuProps['items'] => {
@@ -153,6 +180,38 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       fieldTypeMap[dimension.field],
     );
     const items: NonNullable<MenuProps['items']> = [];
+    const supportedEncodings =
+      builder.chartType.getSupportedDimensionEncodings();
+    const currentEncoding = dimension.encoding;
+    const dimensionIndex = dimensions.findIndex(
+      (item) => item.id === dimension.id,
+    );
+    const recommendedEncoding =
+      dimensionIndex >= 0
+        ? builder.chartType.getRecommendedDimensionEncodings(dimensions.length)[
+            dimensionIndex
+          ]
+        : undefined;
+
+    items.push({
+      key: 'encoding',
+      label: t('shelvesMenuEncoding'),
+      children: supportedEncodings.map((encoding) => {
+        const selectedPrefix = currentEncoding === encoding ? '✓ ' : '';
+        const recommendedSuffix =
+          recommendedEncoding === encoding
+            ? ` ${t('commonStatusRecommended')}`
+            : '';
+
+        return {
+          key: `encoding:${encoding}`,
+          label: `${selectedPrefix}${t(
+            DIMENSION_ENCODING_LABEL_KEY_MAP[encoding],
+          )}${recommendedSuffix}`,
+          style: SHELF_MENU_ITEM_STYLE,
+        };
+      }),
+    });
 
     if (isDateField(dimension.field)) {
       items.push({
@@ -218,6 +277,14 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       if (nextAggregate) {
         changeAggregate(dimension.id, nextAggregate);
       }
+      return;
+    }
+
+    if (key.startsWith('encoding:')) {
+      const nextEncoding = key.replace('encoding:', '') as NonNullable<
+        VBIDimension['encoding']
+      >;
+      changeEncoding(dimension.id, nextEncoding);
       return;
     }
 

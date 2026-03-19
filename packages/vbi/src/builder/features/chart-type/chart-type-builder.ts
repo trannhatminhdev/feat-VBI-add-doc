@@ -1,17 +1,29 @@
 import { ChartTypeEnum } from '@visactor/vseed'
 import { ObserveCallback } from 'src/types'
 import * as Y from 'yjs'
+import {
+  getRecommendedDimensionEncodingsForChartType,
+  getSupportedDimensionEncodingsForChartType,
+} from './dimension-encoding'
+import {
+  getRecommendedMeasureEncodingsForChartType,
+  getSupportedMeasureEncodingsForChartType,
+} from './measure-encoding'
+import { reapplyDimensionEncodings } from './reapply-dimension-encodings'
+import { reapplyMeasureEncodings } from './reapply-measure-encodings'
 
 /**
  * @description 图表类型构建器，用于切换和获取图表类型。支持表格、柱状图、折线图、饼图、散点图等多种图表类型
  */
 export class ChartTypeBuilder {
+  private doc: Y.Doc
   private dsl: Y.Map<any>
 
   /**
    * @description 构造函数
    */
-  constructor(_doc: Y.Doc, dsl: Y.Map<any>) {
+  constructor(doc: Y.Doc, dsl: Y.Map<any>) {
+    this.doc = doc
     this.dsl = dsl
   }
 
@@ -41,7 +53,11 @@ export class ChartTypeBuilder {
    * @param chartType - 图表类型
    */
   changeChartType(chartType: string) {
-    this.dsl.set('chartType', chartType)
+    this.doc.transact(() => {
+      this.dsl.set('chartType', chartType)
+      reapplyDimensionEncodings(this.dsl, chartType)
+      reapplyMeasureEncodings(this.dsl, chartType)
+    })
   }
 
   /**
@@ -49,6 +65,38 @@ export class ChartTypeBuilder {
    */
   getChartType(): string {
     return this.dsl.get('chartType') || 'table'
+  }
+
+  /**
+   * @description 获取当前图表类型支持的维度编码
+   */
+  getSupportedDimensionEncodings() {
+    return getSupportedDimensionEncodingsForChartType(this.getChartType())
+  }
+
+  /**
+   * @description 根据当前图表类型，按维度顺序返回推荐的维度编码
+   * @param dimensionCount - 维度数量，默认使用当前 DSL 中的维度数量
+   */
+  getRecommendedDimensionEncodings(dimensionCount?: number) {
+    const resolvedCount = dimensionCount ?? this.dsl.get('dimensions')?.length ?? 0
+    return getRecommendedDimensionEncodingsForChartType(this.getChartType(), resolvedCount)
+  }
+
+  /**
+   * @description 获取当前图表类型支持的指标编码
+   */
+  getSupportedMeasureEncodings() {
+    return getSupportedMeasureEncodingsForChartType(this.getChartType())
+  }
+
+  /**
+   * @description 根据当前图表类型，按指标顺序返回推荐的指标编码
+   * @param measureCount - 指标数量，默认使用当前 DSL 中的指标数量
+   */
+  getRecommendedMeasureEncodings(measureCount?: number) {
+    const resolvedCount = measureCount ?? this.dsl.get('measures')?.length ?? 0
+    return getRecommendedMeasureEncodingsForChartType(this.getChartType(), resolvedCount)
   }
 
   /**

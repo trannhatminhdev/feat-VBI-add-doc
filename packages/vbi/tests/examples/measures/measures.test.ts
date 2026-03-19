@@ -106,6 +106,7 @@ describe('Measures', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -170,7 +171,7 @@ describe('Measures', () => {
               "func": "sum",
             },
             "alias": "销售额",
-            "encoding": "yAxis",
+            "encoding": "column",
             "field": "sales",
             "id": "id-1",
           },
@@ -218,6 +219,7 @@ describe('Measures', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "column",
             "id": "id-1",
           },
         ],
@@ -343,6 +345,7 @@ describe('Measures', () => {
         "measures": [
           {
             "alias": "利润",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],
@@ -463,6 +466,7 @@ describe('Measures', () => {
         "measures": [
           {
             "alias": "新销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],

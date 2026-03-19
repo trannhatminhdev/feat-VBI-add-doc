@@ -63,6 +63,7 @@ describe('Dimensions', () => {
               "func": "toYear",
             },
             "alias": "年份",
+            "encoding": "column",
             "field": "order_date",
             "id": "id-2",
           },
@@ -148,6 +149,7 @@ describe('Dimensions', () => {
         "dimensions": [
           {
             "alias": "年份",
+            "encoding": "column",
             "id": "id-2",
           },
         ],
@@ -155,6 +157,7 @@ describe('Dimensions', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -208,6 +211,7 @@ describe('Dimensions', () => {
         "dimensions": [
           {
             "alias": "产品类型",
+            "encoding": "column",
             "field": "product_type",
             "id": "id-1",
           },
@@ -266,6 +270,7 @@ describe('Dimensions', () => {
         "dimensions": [
           {
             "alias": "产品类型",
+            "encoding": "column",
             "id": "id-1",
           },
         ],
@@ -313,11 +318,13 @@ describe('Dimensions', () => {
         "dimensions": [
           {
             "alias": "产品类型",
+            "encoding": "column",
             "field": "product_type",
             "id": "id-1",
           },
           {
             "alias": "省份",
+            "encoding": "column",
             "field": "province",
             "id": "id-2",
           },
@@ -452,10 +459,12 @@ describe('Dimensions', () => {
         "dimensions": [
           {
             "alias": "产品类型",
+            "encoding": "column",
             "id": "id-1",
           },
           {
             "alias": "省份",
+            "encoding": "column",
             "id": "id-2",
           },
         ],
@@ -518,6 +527,7 @@ describe('Dimensions', () => {
         "dimensions": [
           {
             "alias": "区域",
+            "encoding": "column",
             "field": "area",
             "id": "id-2",
           },
@@ -526,6 +536,7 @@ describe('Dimensions', () => {
               "func": "toQuarter",
             },
             "alias": "季度",
+            "encoding": "column",
             "field": "order_date",
             "id": "id-3",
           },
@@ -700,10 +711,12 @@ describe('Dimensions', () => {
         "dimensions": [
           {
             "alias": "区域",
+            "encoding": "column",
             "id": "id-2",
           },
           {
             "alias": "季度",
+            "encoding": "column",
             "id": "id-3",
           },
         ],
@@ -711,6 +724,7 @@ describe('Dimensions', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -1109,6 +1123,7 @@ describe('Dimensions', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],

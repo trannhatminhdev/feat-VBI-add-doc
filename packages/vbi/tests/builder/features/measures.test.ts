@@ -21,7 +21,7 @@ describe('MeasuresBuilder', () => {
             func: 'max',
           },
           alias: 'Max(sales)',
-          encoding: 'yAxis',
+          encoding: 'column',
           field: 'sales',
         },
       ],
@@ -50,7 +50,7 @@ describe('MeasuresBuilder', () => {
             func: 'sum',
           },
           alias: 'sum(sales)',
-          encoding: 'yAxis',
+          encoding: 'column',
           field: 'sales',
         },
         {
@@ -59,7 +59,7 @@ describe('MeasuresBuilder', () => {
             func: 'min',
           },
           alias: 'Min(orders)',
-          encoding: 'yAxis',
+          encoding: 'column',
           field: 'orders',
         },
       ],
@@ -259,6 +259,15 @@ describe('MeasuresBuilder', () => {
     expect(builder.measures.toJSON()[0].alias).toBe('新销售额')
   })
 
+  test('MeasureNodeBuilder getEncoding', () => {
+    const dsl = { measures: [{ field: 'sales', alias: '销售额', encoding: 'primaryYAxis' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    const node = builder.measures.find((item) => item.getId() === 'id-1')
+
+    expect(node?.getEncoding()).toBe('primaryYAxis')
+  })
+
   test('MeasureNodeBuilder setEncoding', () => {
     const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
     const builder = VBI.from(dsl)
@@ -267,6 +276,20 @@ describe('MeasuresBuilder', () => {
     node?.setEncoding('xAxis')
 
     expect(builder.measures.toJSON()[0].encoding).toBe('xAxis')
+  })
+
+  test('addMeasure uses chart type recommendations', () => {
+    const builder = VBI.from({ chartType: 'dualAxis' } as VBIDSL)
+
+    builder.measures.add('sales', () => {})
+    builder.measures.add('profit', () => {})
+    builder.measures.add('discount', () => {})
+
+    expect(builder.measures.toJSON().map((measure) => measure.encoding)).toEqual([
+      'primaryYAxis',
+      'secondaryYAxis',
+      'secondaryYAxis',
+    ])
   })
 
   test('MeasureNodeBuilder setAggregate', () => {

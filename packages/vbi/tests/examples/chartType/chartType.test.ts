@@ -57,6 +57,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "订单日期",
+            "encoding": "xAxis",
             "field": "order_date",
             "id": "id-2",
           },
@@ -163,6 +164,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "订单日期",
+            "encoding": "xAxis",
             "id": "id-2",
           },
         ],
@@ -170,6 +172,7 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -229,6 +232,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "产品类型",
+            "encoding": "xAxis",
             "field": "product_type",
             "id": "id-2",
           },
@@ -246,7 +250,7 @@ describe('ChartType', () => {
               "func": "sum",
             },
             "alias": "销售额",
-            "encoding": "xAxis",
+            "encoding": "yAxis",
             "field": "sales",
             "id": "id-1",
           },
@@ -307,6 +311,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "产品类型",
+            "encoding": "xAxis",
             "id": "id-2",
           },
         ],
@@ -314,6 +319,7 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -373,6 +379,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "省份",
+            "encoding": "xAxis",
             "field": "province",
             "id": "id-2",
           },
@@ -479,6 +486,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "省份",
+            "encoding": "xAxis",
             "id": "id-2",
           },
         ],
@@ -486,6 +494,7 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -545,6 +554,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "区域",
+            "encoding": "yAxis",
             "field": "area",
             "id": "id-2",
           },
@@ -562,7 +572,7 @@ describe('ChartType', () => {
               "func": "sum",
             },
             "alias": "销售额",
-            "encoding": "yAxis",
+            "encoding": "xAxis",
             "field": "sales",
             "id": "id-1",
           },
@@ -635,6 +645,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "区域",
+            "encoding": "yAxis",
             "id": "id-2",
           },
         ],
@@ -642,6 +653,7 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "xAxis",
             "id": "id-1",
           },
         ],
@@ -701,6 +713,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "客户类型",
+            "encoding": "color",
             "field": "customer_type",
             "id": "id-2",
           },
@@ -718,7 +731,7 @@ describe('ChartType', () => {
               "func": "sum",
             },
             "alias": "销售额",
-            "encoding": "size",
+            "encoding": "angle",
             "field": "sales",
             "id": "id-1",
           },
@@ -779,6 +792,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "客户类型",
+            "encoding": "color",
             "id": "id-2",
           },
         ],
@@ -786,6 +800,7 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "angle",
             "id": "id-1",
           },
         ],
@@ -845,6 +860,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "省份",
+            "encoding": "xAxis",
             "field": "province",
             "id": "id-2",
           },
@@ -951,6 +967,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "省份",
+            "encoding": "xAxis",
             "id": "id-2",
           },
         ],
@@ -958,6 +975,7 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -1017,6 +1035,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "省份",
+            "encoding": "xAxis",
             "field": "province",
             "id": "id-2",
           },
@@ -1123,6 +1142,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "省份",
+            "encoding": "xAxis",
             "id": "id-2",
           },
         ],
@@ -1130,6 +1150,7 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -1189,6 +1210,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "区域",
+            "encoding": "color",
             "field": "area",
             "id": "id-2",
           },
@@ -1206,7 +1228,7 @@ describe('ChartType', () => {
               "func": "sum",
             },
             "alias": "销售额",
-            "encoding": "size",
+            "encoding": "angle",
             "field": "sales",
             "id": "id-1",
           },
@@ -1279,6 +1301,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "区域",
+            "encoding": "color",
             "id": "id-2",
           },
         ],
@@ -1286,6 +1309,7 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "angle",
             "id": "id-1",
           },
         ],
@@ -1345,6 +1369,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "城市",
+            "encoding": "color",
             "field": "city",
             "id": "id-2",
           },
@@ -1362,7 +1387,7 @@ describe('ChartType', () => {
               "func": "sum",
             },
             "alias": "销售额",
-            "encoding": "size",
+            "encoding": "angle",
             "field": "sales",
             "id": "id-1",
           },
@@ -1451,6 +1476,7 @@ describe('ChartType', () => {
         "dimensions": [
           {
             "alias": "城市",
+            "encoding": "color",
             "id": "id-2",
           },
         ],
@@ -1458,6 +1484,7 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "angle",
             "id": "id-1",
           },
         ],
@@ -1540,7 +1567,7 @@ describe('ChartType', () => {
               "func": "sum",
             },
             "alias": "利润",
-            "encoding": "yAxis",
+            "encoding": "xAxis",
             "field": "profit",
             "id": "id-2",
           },
@@ -1596,10 +1623,12 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
+            "encoding": "xAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
+            "encoding": "xAxis",
             "id": "id-2",
           },
         ],
