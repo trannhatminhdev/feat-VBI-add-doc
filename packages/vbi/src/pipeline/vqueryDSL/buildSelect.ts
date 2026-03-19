@@ -12,7 +12,7 @@ export const buildSelect: buildPipe = (queryDSL, context) => {
   const measureNodes = measures.filter((measure) => MeasuresBuilder.isMeasureNode(measure))
   const measureSelects = measureNodes.map((measure) => ({
     field: measure.field,
-    alias: measure.alias,
+    alias: measure.id,
     aggr: mapAggregateForVQuery(measure.aggregate),
   }))
 
@@ -22,13 +22,13 @@ export const buildSelect: buildPipe = (queryDSL, context) => {
     if (!aggregate) {
       return {
         field: dimension.field,
-        alias: dimension.alias,
+        alias: dimension.id,
       }
     }
 
     return {
       field: dimension.field,
-      alias: dimension.alias,
+      alias: dimension.id,
       aggr: aggregate,
     }
   })

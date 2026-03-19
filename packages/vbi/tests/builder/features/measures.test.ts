@@ -338,10 +338,10 @@ describe('MeasuresBuilder', () => {
     const builder = VBI.from(dsl)
 
     expect(builder.buildVQuery().select).toEqual([
-      { field: 'customer_id', alias: '客户去重数', aggr: { func: 'count_distinct' } },
-      { field: 'sales', alias: '销售额中位数', aggr: { func: 'median' } },
-      { field: 'profit', alias: '利润总体方差', aggr: { func: 'variance_pop' } },
-      { field: 'discount', alias: '利润分位数', aggr: { func: 'quantile', quantile: 0.9 } },
+      { field: 'customer_id', alias: 'id-1', aggr: { func: 'count_distinct' } },
+      { field: 'sales', alias: 'id-2', aggr: { func: 'median' } },
+      { field: 'profit', alias: 'id-3', aggr: { func: 'variance_pop' } },
+      { field: 'discount', alias: 'id-4', aggr: { func: 'quantile', quantile: 0.9 } },
     ])
   })
 })

@@ -1,6 +1,8 @@
+import { theme } from 'antd';
 import type { MenuProps } from 'antd';
 import { message } from 'antd';
-import { useVBIMeasures, useVBISchemaFields } from 'src/hooks';
+import { useMemo } from 'react';
+import { useVBIBuilder, useVBIMeasures, useVBISchemaFields } from 'src/hooks';
 import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 import {
@@ -21,29 +23,47 @@ import {
   reorderYArrayByInsertIndex,
   type YArrayLike,
 } from '../utils/reorderUtils';
-import { getNextFieldDuplicateName } from '../utils/shelfNameUtils';
 
 const QUANTILE_PERCENT_OPTIONS = [1, 5, 25, 50, 75, 90, 95, 99] as const;
-
-const MEASURE_SHELF_TONE: FieldShelfTone = {
-  dragOverBackground: 'rgba(82, 196, 26, 0.1)',
-  dragOverBorder: 'rgba(82, 196, 26, 0.4)',
-  itemBackground: '#f3fff0',
-  itemHoverBackground: '#e9f9df',
-  itemBorder: '#c8efbb',
-  itemHoverBorder: '#95de64',
-  textColor: '#389e0d',
-  iconBackground: 'rgba(82, 196, 26, 0.18)',
-  iconHoverBackground: 'rgba(82, 196, 26, 0.28)',
-  iconColor: '#389e0d',
+const DELETE_DIVIDER_STYLE: React.CSSProperties = {
+  marginBlock: 0,
 };
 
 export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
+  const { token } = theme.useToken();
+  const { theme: themeMode } = useVBIBuilder(builder);
   const { t } = useTranslation();
   const { measures, addMeasure, removeMeasure, updateMeasure } =
     useVBIMeasures(builder);
   const { fieldTypeMap } = useVBISchemaFields(builder);
+  const measureShelfTone = useMemo<FieldShelfTone>(() => {
+    const accent = themeMode === 'dark' ? '#95de64' : '#389e0d';
+    const border =
+      themeMode === 'dark' ? 'rgba(149, 222, 100, 0.34)' : '#c8efbb';
+    const hoverBackground =
+      themeMode === 'dark' ? 'rgba(84, 196, 26, 0.16)' : '#eef9e6';
+    const iconBackground =
+      themeMode === 'dark'
+        ? 'rgba(149, 222, 100, 0.14)'
+        : 'rgba(82, 196, 26, 0.12)';
+
+    return {
+      trackBackground: token.colorBgContainer,
+      trackBorder: border,
+      placeholderColor: token.colorTextQuaternary,
+      dragOverBackground: hoverBackground,
+      dragOverBorder: accent,
+      itemBackground: token.colorBgContainer,
+      itemHoverBackground: hoverBackground,
+      itemBorder: border,
+      itemHoverBorder: accent,
+      textColor: accent,
+      iconBackground,
+      iconHoverBackground: hoverBackground,
+      iconColor: accent,
+    };
+  }, [themeMode, token]);
 
   const getFieldRole = (fieldName: string, fieldType?: string) => {
     return getMeasureFieldRoleBySchemaType(
@@ -58,18 +78,11 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   }) => {
     const { fieldName, fieldType, insertIndex } = params;
     const originalLength = measures.length;
-    const nextName = getNextFieldDuplicateName({
-      field: fieldName,
-      items: measures,
-    });
     const fieldRole = getFieldRole(fieldName, fieldType);
     const aggregate = getDefaultAggregateByFieldRole(fieldRole);
 
     addMeasure(fieldName, (node) => {
       node.setAggregate(aggregate);
-      if (nextName !== fieldName) {
-        node.setAlias(nextName);
-      }
     });
 
     if (insertIndex < originalLength) {
@@ -128,7 +141,6 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
           label: `${currentAggregateKey === 'quantile' ? '✓ ' : ''}${t(
             'shelvesMenuQuantile',
           )}`,
-          style: SHELF_MENU_ITEM_STYLE,
           children: QUANTILE_PERCENT_OPTIONS.map((percent) => ({
             key: `aggregate:quantile:${percent}`,
             label: `${currentQuantilePercent === percent ? '✓ ' : ''}P${percent}`,
@@ -141,13 +153,16 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       {
         key: 'aggregate',
         label: t('shelvesMenuAggregate'),
-        style: SHELF_MENU_ITEM_STYLE,
         children: aggregateMenuItems,
       },
       {
         key: 'rename',
         label: t('shelvesMenuRename'),
         style: SHELF_MENU_ITEM_STYLE,
+      },
+      {
+        type: 'divider',
+        style: DELETE_DIVIDER_STYLE,
       },
       {
         key: 'delete',
@@ -170,10 +185,8 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
         okText: t('shelvesRenameModalSave'),
         cancelText: t('shelvesRenameModalCancel'),
         emptyNameMessage: t('shelvesRenameModalEmptyName'),
-        duplicateNameMessage: t('shelvesRenameModalDuplicateName'),
         id: measure.id,
         currentAlias: measure.alias || measure.field,
-        items: measures,
         onRename: renameMeasure,
       });
       return;
@@ -245,7 +258,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       shelf="measures"
       items={measures}
       placeholder={t('shelvesPlaceholdersMeasures')}
-      tone={MEASURE_SHELF_TONE}
+      tone={measureShelfTone}
       style={style}
       maxLabelWidth={112}
       getDisplayLabel={getMeasureDisplayLabel}

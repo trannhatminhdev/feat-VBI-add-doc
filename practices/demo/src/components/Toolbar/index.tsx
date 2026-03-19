@@ -27,7 +27,7 @@ const ToolbarDivider = () => {
     <span
       style={{
         width: 1,
-        height: 18,
+        height: 16,
         background: token.colorBorderSecondary,
         flexShrink: 0,
       }}
@@ -35,7 +35,10 @@ const ToolbarDivider = () => {
   );
 };
 
-export const Toolbar: React.FC = () => {
+export const Toolbar: React.FC<{
+  isFullscreen: boolean;
+  onToggleFullscreen: () => void | Promise<void>;
+}> = ({ isFullscreen, onToggleFullscreen }) => {
   const builder = useVBIStore((state) => state.builder);
   const { token } = theme.useToken();
   const { canUndo, canRedo, undo, redo } = useVBIUndoManager(builder);
@@ -47,19 +50,6 @@ export const Toolbar: React.FC = () => {
     setLimit,
   } = useVBIBuilder(builder);
   const defaultLimitText = formatDefaultLimit(locale);
-  const [isFullscreen, setIsFullscreen] = React.useState(false);
-
-  React.useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(Boolean(document.fullscreenElement));
-    };
-
-    handleFullscreenChange();
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => {
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-    };
-  }, []);
 
   const formatNumber = (value: string | number | undefined | null) => {
     if (value === undefined || value === null || value === '') {
@@ -78,28 +68,16 @@ export const Toolbar: React.FC = () => {
     return new Intl.NumberFormat(locale).format(numericValue);
   };
 
-  const toggleFullscreen = async () => {
-    try {
-      if (document.fullscreenElement) {
-        await document.exitFullscreen();
-      } else {
-        await document.documentElement.requestFullscreen();
-      }
-    } catch (error) {
-      console.error('Failed to toggle fullscreen:', error);
-    }
-  };
-
   return (
     <div
       style={{
         width: '100%',
         overflowX: 'auto',
-        padding: '6px 8px',
+        padding: '4px 6px',
         background:
           themeMode === 'dark'
-            ? 'linear-gradient(90deg, rgba(17, 24, 39, 0.92) 0%, rgba(22, 30, 46, 0.82) 100%)'
-            : 'linear-gradient(90deg, rgba(240, 247, 255, 0.92) 0%, rgba(255, 255, 255, 0.96) 100%)',
+            ? 'linear-gradient(90deg, rgba(10, 17, 28, 0.96) 0%, rgba(15, 22, 35, 0.88) 100%)'
+            : 'linear-gradient(90deg, rgba(248, 250, 252, 0.96) 0%, rgba(255, 255, 255, 0.98) 100%)',
       }}
     >
       <div
@@ -107,7 +85,7 @@ export const Toolbar: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: 16,
+          gap: 12,
           minWidth: 'max-content',
         }}
       >
@@ -115,7 +93,7 @@ export const Toolbar: React.FC = () => {
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 8,
+            gap: 6,
             whiteSpace: 'nowrap',
           }}
         >
@@ -149,7 +127,7 @@ export const Toolbar: React.FC = () => {
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 8,
+            gap: 6,
             whiteSpace: 'nowrap',
           }}
         >
@@ -157,7 +135,7 @@ export const Toolbar: React.FC = () => {
             min={1}
             step={50}
             value={limit}
-            style={{ width: 110 }}
+            style={{ width: 96 }}
             onChange={(value) => {
               if (typeof value === 'number') {
                 setLimit(normalizeLimitValue(value));
@@ -237,7 +215,9 @@ export const Toolbar: React.FC = () => {
                   <FullscreenOutlined style={{ fontSize: 12 }} />
                 )
               }
-              onClick={toggleFullscreen}
+              onClick={() => {
+                void onToggleFullscreen();
+              }}
               size="small"
             />
           </Tooltip>

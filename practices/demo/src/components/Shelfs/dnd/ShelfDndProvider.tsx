@@ -162,7 +162,7 @@ export const ShelfDndProvider = ({
                 alignItems: 'center',
                 padding: '0 8px',
                 height: 24,
-                borderRadius: 6,
+                borderRadius: 8,
                 border: `1px solid ${token.colorBorder}`,
                 background: token.colorBgElevated,
                 boxShadow: token.boxShadowSecondary,

@@ -1,11 +1,4 @@
 import { Input, Modal, message } from 'antd';
-import { hasDuplicateShelfName } from '../utils/shelfNameUtils';
-
-type NamedShelfItem = {
-  id: string;
-  field: string;
-  alias?: string | null;
-};
 
 export const openShelfRenameModal = (params: {
   title: string;
@@ -13,10 +6,8 @@ export const openShelfRenameModal = (params: {
   okText: string;
   cancelText: string;
   emptyNameMessage: string;
-  duplicateNameMessage: string;
   id: string;
   currentAlias: string;
-  items: NamedShelfItem[];
   onRename: (id: string, alias: string) => void;
 }) => {
   const {
@@ -25,10 +16,8 @@ export const openShelfRenameModal = (params: {
     okText,
     cancelText,
     emptyNameMessage,
-    duplicateNameMessage,
     id,
     currentAlias,
-    items,
     onRename,
   } = params;
   let nextAlias = currentAlias;
@@ -53,17 +42,6 @@ export const openShelfRenameModal = (params: {
       if (!trimmed) {
         message.warning(emptyNameMessage);
         return Promise.reject(new Error(emptyNameMessage));
-      }
-
-      if (
-        hasDuplicateShelfName({
-          name: trimmed,
-          items,
-          excludeId: id,
-        })
-      ) {
-        message.error(duplicateNameMessage);
-        return Promise.reject(new Error(duplicateNameMessage));
       }
 
       onRename(id, trimmed);

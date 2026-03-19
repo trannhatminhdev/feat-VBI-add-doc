@@ -104,10 +104,11 @@ const FieldListItem = ({
         alignItems: 'center',
         gap: 6,
         width: '100%',
-        padding: '4px 8px',
+        padding: '4px 6px',
         cursor: 'grab',
-        borderRadius: 6,
-        transition: 'all 0.2s',
+        borderRadius: token.borderRadiusSM,
+        border: `1px solid ${isHovered ? accentColor : 'transparent'}`,
+        transition: 'border-color 0.2s, background-color 0.2s, color 0.2s',
         fontSize: 12,
         color: isHovered ? accentColor : token.colorText,
         backgroundColor: isHovered ? hoverBackground : 'transparent',
@@ -389,19 +390,23 @@ export const FieldList = memo(({ style }: { style?: React.CSSProperties }) => {
       size="small"
       style={{ ...style }}
       styles={{
+        root: {
+          height: '100%',
+          minHeight: 0,
+          borderColor: token.colorBorderSecondary,
+        },
         body: {
-          padding: 6,
+          padding: 8,
           display: 'flex',
           flexDirection: 'column',
           gap: 6,
           flex: 1,
           minHeight: 0,
-          height: 'calc(100% - 32px)',
         },
         header: {
           minHeight: 32,
-          padding: '6px 12px',
-          borderBottom: `1px solid ${token.colorBorder}`,
+          padding: '6px 10px',
+          borderBottom: `1px solid ${token.colorBorderSecondary}`,
         },
       }}
     >
@@ -423,7 +428,10 @@ export const FieldList = memo(({ style }: { style?: React.CSSProperties }) => {
           trigger="click"
           placement="bottomRight"
           content={filterContent}
-          overlayInnerStyle={{ padding: 10, borderRadius: 10 }}
+          overlayInnerStyle={{
+            padding: 14,
+            borderRadius: token.borderRadiusLG,
+          }}
         >
           <Badge dot={hasActiveFilter}>
             <Button
@@ -436,7 +444,7 @@ export const FieldList = memo(({ style }: { style?: React.CSSProperties }) => {
                 minWidth: 28,
                 height: 28,
                 padding: 0,
-                borderRadius: 8,
+                borderRadius: token.borderRadiusSM,
                 border: `1px solid ${
                   hasActiveFilter
                     ? token.colorPrimaryBorder

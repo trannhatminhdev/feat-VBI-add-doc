@@ -1,7 +1,7 @@
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { CloseOutlined, DownOutlined } from '@ant-design/icons';
-import { Popover, Typography } from 'antd';
+import { Popover, Typography, theme } from 'antd';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ShelfItemDropZones,
@@ -21,7 +21,7 @@ import { ShelfTrack, type ShelfTone } from './ShelfTrack';
 
 const REMOVE_ICON_DEFAULT_COLOR = '#8c8c8c';
 const REMOVE_ICON_HOVER_COLOR = '#ff4d4f';
-const SHELF_ITEM_SPACING = 8;
+const SHELF_ITEM_SPACING = 6;
 
 export type FilterShelfTone = ShelfTone;
 
@@ -64,19 +64,19 @@ const getItemStyle = (params: {
   return {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: 4,
-    padding: '0 6px',
+    gap: 3,
+    padding: '0 5px',
     backgroundColor: isHovered ? tone.itemHoverBackground : tone.itemBackground,
     border: isHovered
       ? `1px solid ${tone.itemHoverBorder}`
       : `1px solid ${tone.itemBorder}`,
-    borderRadius: 6,
+    borderRadius: 8,
     cursor: isDragging ? 'grabbing' : 'grab',
-    fontSize: 10,
+    fontSize: 11,
     color: tone.textColor,
-    height: 22,
+    height: 20,
     flexShrink: 0,
-    transition: 'all 0.2s',
+    transition: 'border-color 0.2s, background-color 0.2s, color 0.2s',
     opacity: isDragging ? 0 : 1,
     visibility: isDragging ? 'hidden' : 'visible',
     transform,
@@ -93,8 +93,8 @@ const getIconStyle = (params: {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 16,
-    height: 16,
+    width: 14,
+    height: 14,
     borderRadius: 4,
     backgroundColor: isHovered ? tone.iconHoverBackground : tone.iconBackground,
     color: tone.iconColor,
@@ -107,7 +107,7 @@ const getRemoveIconWrapperStyle = (isHovered: boolean): React.CSSProperties => {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: isHovered ? 12 : 0,
+    width: isHovered ? 10 : 0,
     marginLeft: isHovered ? 2 : 0,
     overflow: 'hidden',
     opacity: isHovered ? 1 : 0,
@@ -136,6 +136,7 @@ const FilterShelfTag = <TItem extends FilterShelfItem>(props: {
     close: () => void;
   }) => React.ReactNode;
 }) => {
+  const { token } = theme.useToken();
   const {
     shelf,
     item,
@@ -196,8 +197,12 @@ const FilterShelfTag = <TItem extends FilterShelfItem>(props: {
         placement="bottom"
         open={isOpen}
         onOpenChange={setOpen}
+        arrow={false}
         overlayStyle={{ padding: 0 }}
-        overlayInnerStyle={{ padding: '14px', borderRadius: 10 }}
+        overlayInnerStyle={{
+          padding: '14px 18px 12px',
+          borderRadius: token.borderRadiusLG,
+        }}
       >
         <div
           ref={setNodeRef}
@@ -228,7 +233,7 @@ const FilterShelfTag = <TItem extends FilterShelfItem>(props: {
               maxWidth: maxLabelWidth,
               marginBottom: 0,
               color: 'inherit',
-              fontSize: 10,
+              fontSize: 11,
             }}
           >
             {displayText}

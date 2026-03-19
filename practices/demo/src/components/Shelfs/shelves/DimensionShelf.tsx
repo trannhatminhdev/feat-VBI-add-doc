@@ -1,5 +1,7 @@
+import { theme } from 'antd';
 import type { MenuProps } from 'antd';
-import { useVBIDimensions, useVBISchemaFields } from 'src/hooks';
+import { useMemo } from 'react';
+import { useVBIBuilder, useVBIDimensions, useVBISchemaFields } from 'src/hooks';
 import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
 import { getFieldRoleBySchemaType } from 'src/utils/fieldRole';
@@ -21,23 +23,15 @@ import {
   reorderYArrayByInsertIndex,
   type YArrayLike,
 } from '../utils/reorderUtils';
-import { getNextFieldDuplicateName } from '../utils/shelfNameUtils';
 
-const DIMENSION_SHELF_TONE: FieldShelfTone = {
-  dragOverBackground: 'rgba(22, 119, 255, 0.08)',
-  dragOverBorder: 'rgba(22, 119, 255, 0.35)',
-  itemBackground: '#edf5ff',
-  itemHoverBackground: '#ddeeff',
-  itemBorder: '#b7d9ff',
-  itemHoverBorder: '#91caff',
-  textColor: '#0958d9',
-  iconBackground: 'rgba(22, 119, 255, 0.15)',
-  iconHoverBackground: 'rgba(22, 119, 255, 0.26)',
-  iconColor: '#1677ff',
+const DELETE_DIVIDER_STYLE: React.CSSProperties = {
+  marginBlock: 0,
 };
 
 export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const builder = useVBIStore((state) => state.builder);
+  const { token } = theme.useToken();
+  const { theme: themeMode } = useVBIBuilder(builder);
   const { t } = useTranslation();
   const {
     dimensions,
@@ -47,6 +41,33 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
     findDimension,
   } = useVBIDimensions(builder);
   const { fieldTypeMap } = useVBISchemaFields(builder);
+  const dimensionShelfTone = useMemo<FieldShelfTone>(() => {
+    const accent = themeMode === 'dark' ? '#91caff' : '#0958d9';
+    const border =
+      themeMode === 'dark' ? 'rgba(145, 202, 255, 0.34)' : '#b7d9ff';
+    const hoverBackground =
+      themeMode === 'dark' ? 'rgba(32, 79, 183, 0.18)' : '#eef5ff';
+    const iconBackground =
+      themeMode === 'dark'
+        ? 'rgba(145, 202, 255, 0.14)'
+        : 'rgba(22, 119, 255, 0.12)';
+
+    return {
+      trackBackground: token.colorBgContainer,
+      trackBorder: border,
+      placeholderColor: token.colorTextQuaternary,
+      dragOverBackground: hoverBackground,
+      dragOverBorder: accent,
+      itemBackground: token.colorBgContainer,
+      itemHoverBackground: hoverBackground,
+      itemBorder: border,
+      itemHoverBorder: accent,
+      textColor: accent,
+      iconBackground,
+      iconHoverBackground: hoverBackground,
+      iconColor: accent,
+    };
+  }, [themeMode, token]);
 
   const isDateField = (fieldName: string) => {
     return isDateDimensionField(fieldTypeMap[fieldName]);
@@ -55,17 +76,10 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const addFieldAt = (params: { fieldName: string; insertIndex: number }) => {
     const { fieldName, insertIndex } = params;
     const originalLength = dimensions.length;
-    const nextName = getNextFieldDuplicateName({
-      field: fieldName,
-      items: dimensions,
-    });
 
     addDimension(fieldName, (node) => {
       if (isDateField(fieldName)) {
         node.setAggregate(getDefaultDimensionDateAggregate());
-      }
-      if (nextName !== fieldName) {
-        node.setAlias(nextName);
       }
     });
 
@@ -144,7 +158,6 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       items.push({
         key: 'aggregate',
         label: t('shelvesMenuDateAggregate'),
-        style: SHELF_MENU_ITEM_STYLE,
         children: [
           ...getDimensionDateAggregateItems(t).map((item) => ({
             key: `aggregate:${item.key}`,
@@ -169,6 +182,10 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
         key: 'rename',
         label: t('shelvesMenuRename'),
         style: SHELF_MENU_ITEM_STYLE,
+      },
+      {
+        type: 'divider',
+        style: DELETE_DIVIDER_STYLE,
       },
       {
         key: 'delete',
@@ -211,10 +228,8 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
         okText: t('shelvesRenameModalSave'),
         cancelText: t('shelvesRenameModalCancel'),
         emptyNameMessage: t('shelvesRenameModalEmptyName'),
-        duplicateNameMessage: t('shelvesRenameModalDuplicateName'),
         id: dimension.id,
         currentAlias: dimension.alias || dimension.field,
-        items: dimensions,
         onRename: renameDimension,
       });
       return;
@@ -247,7 +262,7 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       shelf="dimensions"
       items={dimensions}
       placeholder={t('shelvesPlaceholdersDimensions')}
-      tone={DIMENSION_SHELF_TONE}
+      tone={dimensionShelfTone}
       style={style}
       maxLabelWidth={124}
       getDisplayLabel={getDimensionDisplayLabel}
