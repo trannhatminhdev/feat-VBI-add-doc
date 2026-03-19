@@ -23,7 +23,6 @@ import {
   reorderYArrayByInsertIndex,
   type YArrayLike,
 } from '../utils/reorderUtils';
-import { getNextFieldDuplicateName } from '../utils/shelfNameUtils';
 
 const DELETE_DIVIDER_STYLE: React.CSSProperties = {
   marginBlock: 0,
@@ -77,17 +76,10 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const addFieldAt = (params: { fieldName: string; insertIndex: number }) => {
     const { fieldName, insertIndex } = params;
     const originalLength = dimensions.length;
-    const nextName = getNextFieldDuplicateName({
-      field: fieldName,
-      items: dimensions,
-    });
 
     addDimension(fieldName, (node) => {
       if (isDateField(fieldName)) {
         node.setAggregate(getDefaultDimensionDateAggregate());
-      }
-      if (nextName !== fieldName) {
-        node.setAlias(nextName);
       }
     });
 
@@ -236,10 +228,8 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
         okText: t('shelvesRenameModalSave'),
         cancelText: t('shelvesRenameModalCancel'),
         emptyNameMessage: t('shelvesRenameModalEmptyName'),
-        duplicateNameMessage: t('shelvesRenameModalDuplicateName'),
         id: dimension.id,
         currentAlias: dimension.alias || dimension.field,
-        items: dimensions,
         onRename: renameDimension,
       });
       return;

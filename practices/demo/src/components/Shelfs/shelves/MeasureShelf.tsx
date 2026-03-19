@@ -23,7 +23,6 @@ import {
   reorderYArrayByInsertIndex,
   type YArrayLike,
 } from '../utils/reorderUtils';
-import { getNextFieldDuplicateName } from '../utils/shelfNameUtils';
 
 const QUANTILE_PERCENT_OPTIONS = [1, 5, 25, 50, 75, 90, 95, 99] as const;
 const DELETE_DIVIDER_STYLE: React.CSSProperties = {
@@ -79,18 +78,11 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   }) => {
     const { fieldName, fieldType, insertIndex } = params;
     const originalLength = measures.length;
-    const nextName = getNextFieldDuplicateName({
-      field: fieldName,
-      items: measures,
-    });
     const fieldRole = getFieldRole(fieldName, fieldType);
     const aggregate = getDefaultAggregateByFieldRole(fieldRole);
 
     addMeasure(fieldName, (node) => {
       node.setAggregate(aggregate);
-      if (nextName !== fieldName) {
-        node.setAlias(nextName);
-      }
     });
 
     if (insertIndex < originalLength) {
@@ -193,10 +185,8 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
         okText: t('shelvesRenameModalSave'),
         cancelText: t('shelvesRenameModalCancel'),
         emptyNameMessage: t('shelvesRenameModalEmptyName'),
-        duplicateNameMessage: t('shelvesRenameModalDuplicateName'),
         id: measure.id,
         currentAlias: measure.alias || measure.field,
-        items: measures,
         onRename: renameMeasure,
       });
       return;

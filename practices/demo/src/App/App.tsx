@@ -167,7 +167,13 @@ const AppContent = ({
       theme={antdThemeConfig}
       componentSize="small"
     >
-      <div ref={appRootRef} className="demo-app-root" onClick={logState}>
+      <div
+        ref={appRootRef}
+        className="demo-app-root"
+        onClick={() => {
+          void logState();
+        }}
+      >
         {!initialized ? (
           <Spin tip={t('appInitializing')} fullscreen />
         ) : (

@@ -15,7 +15,7 @@ export interface BearState {
 
   initialize: (builder?: VBIBuilder) => DestroyCallback;
   bindEvent: () => DestroyCallback;
-  logState: () => void;
+  logState: () => Promise<void>;
 
   setDsl: (dsl: VBIDSL) => void;
   setLoading: (loading: boolean) => void;
@@ -32,13 +32,16 @@ export const useVBIStore = create<BearState>((set, get) => ({
   setLoading: (loading: boolean) => set({ loading }),
   setVSeed: (vseed: VSeed | null) => set({ vseed }),
   setDsl: (dsl: VBIDSL) => set({ dsl }),
-  logState: () => {
-    const { builder } = get();
+  logState: async () => {
+    const { builder, vseed } = get();
 
     console.group('selected builder');
+
     console.info('builder', builder);
     console.info('vbi', builder.build());
     console.info('vquery', builder.buildVQuery());
+    console.info('vseed', vseed);
+
     console.groupEnd();
   },
 
