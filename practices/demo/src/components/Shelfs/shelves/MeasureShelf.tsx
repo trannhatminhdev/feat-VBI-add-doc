@@ -1,16 +1,17 @@
 import { theme } from 'antd';
 import type { MenuProps } from 'antd';
 import { message } from 'antd';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useVBIBuilder, useVBIMeasures, useVBISchemaFields } from 'src/hooks';
 import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
-import type { VBIMeasure } from '@visactor/vbi';
+import type { VBIMeasure, VBIMeasureFormat } from '@visactor/vbi';
 import {
   FieldShelf,
   SHELF_MENU_ITEM_STYLE,
   type FieldShelfTone,
 } from '../common/FieldShelf';
+import { MeasureFormatPopover } from '../common/MeasureFormatPopover';
 import { openShelfRenameModal } from '../common/openShelfRenameModal';
 import {
   formatMeasureAggregate,
@@ -20,6 +21,7 @@ import {
   isAggregateSupportedByFieldRole,
   type MeasureAggregate,
 } from '../utils/measureAggregateUtils';
+import { formatMeasureFormatLabel } from '../utils/measureFormatUtils';
 import {
   reorderYArrayByInsertIndex,
   type YArrayLike,
@@ -141,12 +143,24 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     });
   };
 
+  const [formatEditingId, setFormatEditingId] = useState<string | null>(null);
+
   const changeEncoding = (
     id: string,
     encoding: NonNullable<VBIMeasure['encoding']>,
   ) => {
     updateMeasure(id, (node) => {
       node.setEncoding(encoding);
+    });
+  };
+
+  const changeFormat = (id: string, format: VBIMeasureFormat | undefined) => {
+    updateMeasure(id, (node) => {
+      if (format === undefined) {
+        node.clearFormat();
+      } else {
+        node.setFormat(format);
+      }
     });
   };
 
@@ -221,6 +235,18 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
         children: aggregateMenuItems,
       },
       {
+        key: 'format',
+        label: `${t('shelvesMenuFormat')}${
+          measure.format
+            ? ` (${formatMeasureFormatLabel(
+                measure.format as VBIMeasureFormat,
+                t,
+              )})`
+            : ''
+        }`,
+        style: SHELF_MENU_ITEM_STYLE,
+      },
+      {
         key: 'rename',
         label: t('shelvesMenuRename'),
         style: SHELF_MENU_ITEM_STYLE,
@@ -243,6 +269,11 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     measure: (typeof measures)[number],
     key: string,
   ) => {
+    if (key === 'format') {
+      setFormatEditingId(measure.id);
+      return;
+    }
+
     if (key === 'rename') {
       openShelfRenameModal({
         title: t('shelvesRenameModalMeasureTitle'),
@@ -326,48 +357,74 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     return `${aggregate}(${baseLabel})`;
   };
 
+  const formatEditingMeasure = useMemo(() => {
+    if (!formatEditingId) {
+      return undefined;
+    }
+    return measures.find((m) => m.id === formatEditingId);
+  }, [formatEditingId, measures]);
+
   return (
-    <FieldShelf
-      shelf="measures"
-      items={measures}
-      placeholder={t('shelvesPlaceholdersMeasures')}
-      tone={measureShelfTone}
-      style={style}
-      maxLabelWidth={112}
-      getDisplayLabel={getMeasureDisplayLabel}
-      getItemPayload={(item) => ({
-        field: item.field,
-        type: fieldTypeMap[item.field],
-        role: getFieldRole(item.field),
-      })}
-      buildMenuItems={buildMeasureMenuItems}
-      onMenuClick={handleMeasureMenuClick}
-      onRemove={removeMeasure}
-      onAddFieldAt={(payload, insertIndex) => {
-        if (!payload.field) {
-          return;
+    <MeasureFormatPopover
+      open={!!formatEditingMeasure}
+      onOpenChange={(open) => {
+        if (!open) {
+          setFormatEditingId(null);
         }
-
-        addFieldAt({
-          fieldName: payload.field,
-          fieldType: payload.type,
-          insertIndex,
-        });
       }}
-      onReorder={(dragIndex, insertIndex) => {
-        const yMeasures = builder.dsl.get('measures') as YArrayLike | undefined;
-        if (!yMeasures) {
-          return;
+      format={formatEditingMeasure?.format as VBIMeasureFormat | undefined}
+      onFormatChange={(format) => {
+        if (formatEditingMeasure) {
+          changeFormat(formatEditingMeasure.id, format);
         }
-
-        builder.doc.transact(() => {
-          reorderYArrayByInsertIndex({
-            yArray: yMeasures,
-            dragIndex,
-            insertIndex,
-          });
-        });
       }}
-    />
+    >
+      <div>
+        <FieldShelf
+          shelf="measures"
+          items={measures}
+          placeholder={t('shelvesPlaceholdersMeasures')}
+          tone={measureShelfTone}
+          style={style}
+          maxLabelWidth={112}
+          getDisplayLabel={getMeasureDisplayLabel}
+          getItemPayload={(item) => ({
+            field: item.field,
+            type: fieldTypeMap[item.field],
+            role: getFieldRole(item.field),
+          })}
+          buildMenuItems={buildMeasureMenuItems}
+          onMenuClick={handleMeasureMenuClick}
+          onRemove={removeMeasure}
+          onAddFieldAt={(payload, insertIndex) => {
+            if (!payload.field) {
+              return;
+            }
+
+            addFieldAt({
+              fieldName: payload.field,
+              fieldType: payload.type,
+              insertIndex,
+            });
+          }}
+          onReorder={(dragIndex, insertIndex) => {
+            const yMeasures = builder.dsl.get('measures') as
+              | YArrayLike
+              | undefined;
+            if (!yMeasures) {
+              return;
+            }
+
+            builder.doc.transact(() => {
+              reorderYArrayByInsertIndex({
+                yArray: yMeasures,
+                dragIndex,
+                insertIndex,
+              });
+            });
+          }}
+        />
+      </div>
+    </MeasureFormatPopover>
   );
 };

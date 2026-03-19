@@ -5,6 +5,9 @@ import {
   getWhereDisplayText,
   normalizeWhereOperator,
 } from 'src/components/Filter/whereFilterUtils';
+import { getDefaultDatePredicate } from 'src/components/Filter/dateFilterUtils';
+import { isDateSchemaType } from 'src/utils/fieldRole';
+import type { VBIWhereDatePredicate } from '@visactor/vbi';
 import {
   useVBIBuilder,
   useVBISchemaFields,
@@ -127,9 +130,13 @@ export const WhereShelf = ({
 
       builder.doc.transact(() => {
         builder.whereFilter.add(item.field, (node) => {
-          node.setOperator(item.operator);
-          if (item.value !== undefined) {
-            node.setValue(item.value);
+          if (item.operator === 'date') {
+            node.setDate(item.value as VBIWhereDatePredicate);
+          } else {
+            node.setOperator(item.operator);
+            if (item.value !== undefined) {
+              node.setValue(item.value);
+            }
           }
         });
       });
@@ -159,8 +166,12 @@ export const WhereShelf = ({
       builder.doc.transact(() => {
         builder.whereFilter.update(updatedItem.id as string, (node) => {
           node.setField(updatedItem.field);
-          node.setOperator(updatedItem.operator);
-          node.setValue(updatedItem.value);
+          if (updatedItem.operator === 'date') {
+            node.setDate(updatedItem.value as VBIWhereDatePredicate);
+          } else {
+            node.setOperator(updatedItem.operator);
+            node.setValue(updatedItem.value);
+          }
         });
       });
     },
@@ -190,12 +201,13 @@ export const WhereShelf = ({
           return;
         }
 
+        const isDate = isDateSchemaType(fieldTypeMap[payload.field]);
         const currentLength = whereFilterItems.length;
         handleWhereFilterAdd({
           id: '',
           field: payload.field,
-          operator: '=',
-          value: undefined,
+          operator: isDate ? 'date' : '=',
+          value: isDate ? getDefaultDatePredicate() : undefined,
         });
 
         if (insertIndex < currentLength) {
