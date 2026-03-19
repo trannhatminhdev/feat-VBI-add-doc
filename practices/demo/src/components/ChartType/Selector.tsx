@@ -183,7 +183,7 @@ export const ChartTypeSelector = ({
             maxWidth: '100%',
             height: compact ? 28 : 'auto',
             padding: compact ? (showText ? '0 8px' : '0 7px') : '12px 14px',
-            borderRadius: token.borderRadius,
+            borderRadius: token.borderRadiusOuter,
           }}
         >
           <span

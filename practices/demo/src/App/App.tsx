@@ -34,6 +34,7 @@ const createThemeConfig = (themeMode: DemoTheme) => {
       borderRadiusLG: 14,
       borderRadiusSM: 8,
       borderRadiusXS: 6,
+      borderRadiusOuter: 22,
       controlHeight: 32,
       controlHeightSM: 28,
       fontSize: 12,
@@ -71,7 +72,7 @@ const DemoWorkbench = ({
         <Card
           size="small"
           style={{
-            borderRadius: token.borderRadiusLG,
+            borderRadius: token.borderRadiusOuter,
             overflow: 'hidden',
             borderColor: token.colorBorderSecondary,
             background:
