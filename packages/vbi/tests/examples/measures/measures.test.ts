@@ -228,6 +228,236 @@ describe('Measures', () => {
     `)
   })
 
+  it('measure-with-custom-and-auto-format', async () => {
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'table',
+      dimensions: [
+        {
+          field: 'product_type',
+          alias: '品类',
+        },
+      ],
+      measures: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+      limit: 20,
+    })
+
+    // Apply custom builder code
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.measures
+        .add('sales', (node) => {
+          node.setAlias('销售额（万元）').setAggregate({ func: 'sum' }).setEncoding('column').setFormat({
+            type: 'number',
+            ratio: 10000,
+            symbol: '万',
+            prefix: '¥',
+            fractionDigits: 2,
+          })
+        })
+        .add('profit', (node) => {
+          node.setAlias('利润').setAggregate({ func: 'sum' }).setEncoding('column').setFormat({ autoFormat: true })
+        })
+        .add('discount', (node) => {
+          node.setAlias('平均折扣').setAggregate({ func: 'avg' }).setEncoding('column').setFormat({
+            type: 'percent',
+            fractionDigits: 1,
+          })
+        })
+    }
+    applyBuilder(builder)
+
+    // Build VBI DSL
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "table",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "品类",
+            "field": "product_type",
+            "id": "id-1",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 20,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "销售额（万元）",
+            "encoding": "column",
+            "field": "sales",
+            "format": {
+              "fractionDigits": 2,
+              "prefix": "¥",
+              "ratio": 10000,
+              "symbol": "万",
+              "type": "number",
+            },
+            "id": "id-2",
+          },
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "利润",
+            "encoding": "column",
+            "field": "profit",
+            "format": {
+              "autoFormat": true,
+            },
+            "id": "id-3",
+          },
+          {
+            "aggregate": {
+              "func": "avg",
+            },
+            "alias": "平均折扣",
+            "encoding": "column",
+            "field": "discount",
+            "format": {
+              "fractionDigits": 1,
+              "type": "percent",
+            },
+            "id": "id-4",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VQuery DSL
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "product_type",
+        ],
+        "limit": 20,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-2",
+            "field": "sales",
+          },
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-3",
+            "field": "profit",
+          },
+          {
+            "aggr": {
+              "func": "avg",
+            },
+            "alias": "id-4",
+            "field": "discount",
+          },
+          {
+            "alias": "id-1",
+            "field": "product_type",
+          },
+        ],
+      }
+    `)
+
+    // Build VSeed DSL
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "table",
+        "dataset": [
+          {
+            "id-1": "办公用品",
+            "id-2": 4865589.791999991,
+            "id-3": 757640.3519999951,
+            "id-4": 0.08510638297872211,
+          },
+          {
+            "id-1": "技术",
+            "id-2": 5469023.503999994,
+            "id-3": 751162.9440000018,
+            "id-4": 0.123570019723867,
+          },
+          {
+            "id-1": "家具",
+            "id-2": 5734340.829,
+            "id-3": 638735.6290000005,
+            "id-4": 0.1448752228163989,
+          },
+        ],
+        "dimensions": [
+          {
+            "alias": "品类",
+            "id": "id-1",
+          },
+        ],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额（万元）",
+            "autoFormat": false,
+            "encoding": "column",
+            "id": "id-2",
+            "numFormat": {
+              "fractionDigits": 2,
+              "prefix": "¥",
+              "ratio": 10000,
+              "symbol": "万",
+              "type": "number",
+            },
+          },
+          {
+            "alias": "利润",
+            "autoFormat": true,
+            "encoding": "column",
+            "id": "id-3",
+          },
+          {
+            "alias": "平均折扣",
+            "autoFormat": false,
+            "encoding": "column",
+            "id": "id-4",
+            "numFormat": {
+              "fractionDigits": 1,
+              "type": "percent",
+            },
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+  })
+
   it('remove-measure', async () => {
     const builder = VBI.from({
       connectorId: 'demoSupermarket',

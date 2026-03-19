@@ -389,4 +389,158 @@ describe('MeasuresBuilder', () => {
     ])
     expect(vSeedDSL.dimensions).toEqual([{ id: 'id-1', alias: 'product_type', encoding: 'column' }])
   })
+
+  test('MeasureNodeBuilder setFormat with autoFormat', () => {
+    const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.measures.update('id-1', (node) => {
+      node.setFormat({ autoFormat: true })
+    })
+
+    const json = builder.measures.toJSON()
+    expect(json[0].format).toEqual({ autoFormat: true })
+  })
+
+  test('MeasureNodeBuilder setFormat with custom format', () => {
+    const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    const customFormat = {
+      type: 'number' as const,
+      ratio: 10000,
+      symbol: '万',
+      prefix: '¥',
+      fractionDigits: 2,
+    }
+
+    builder.measures.update('id-1', (node) => {
+      node.setFormat(customFormat)
+    })
+
+    const json = builder.measures.toJSON()
+    expect(json[0].format).toEqual(customFormat)
+  })
+
+  test('MeasureNodeBuilder getFormat returns format', () => {
+    const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.measures.update('id-1', (node) => {
+      node.setFormat({ autoFormat: true })
+    })
+
+    const node = builder.measures.find((n) => n.getId() === 'id-1')
+    expect(node?.getFormat()).toEqual({ autoFormat: true })
+  })
+
+  test('MeasureNodeBuilder getFormat returns undefined when not set', () => {
+    const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    const node = builder.measures.find((n) => n.getId() === 'id-1')
+    expect(node?.getFormat()).toBeUndefined()
+  })
+
+  test('MeasureNodeBuilder clearFormat removes format', () => {
+    const dsl = { measures: [{ field: 'sales', alias: '销售额' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.measures.update('id-1', (node) => {
+      node.setFormat({ autoFormat: true })
+    })
+    builder.measures.update('id-1', (node) => {
+      node.clearFormat()
+    })
+
+    const node = builder.measures.find((n) => n.getId() === 'id-1')
+    expect(node?.getFormat()).toBeUndefined()
+    expect(node?.toJSON().format).toBeUndefined()
+  })
+
+  test('MeasureNodeBuilder setFormat chaining', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.measures.add('sales', (node) => {
+      node.setAlias('销售额').setFormat({ autoFormat: true }).setAggregate({ func: 'sum' })
+    })
+
+    const json = builder.measures.toJSON()
+    expect(json[0].format).toEqual({ autoFormat: true })
+    expect(json[0].alias).toBe('销售额')
+    expect(json[0].aggregate).toEqual({ func: 'sum' })
+  })
+
+  test('buildVSeed maps autoFormat format correctly', async () => {
+    registerDemoConnector()
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'column',
+      dimensions: [{ id: 'id-1', field: 'product_type', alias: 'product_type' }],
+      measures: [{ id: 'id-2', field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+    } as VBIDSL)
+
+    builder.measures.update('id-2', (node) => {
+      node.setFormat({ autoFormat: true })
+    })
+
+    const vSeedDSL = await builder.buildVSeed()
+
+    expect(vSeedDSL.measures).toEqual([{ id: 'id-2', alias: '销售额', encoding: 'yAxis', autoFormat: true }])
+  })
+
+  test('buildVSeed maps custom format correctly', async () => {
+    registerDemoConnector()
+    const customFormat = {
+      type: 'number' as const,
+      ratio: 10000,
+      symbol: '万',
+      prefix: '¥',
+      fractionDigits: 2,
+    }
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'column',
+      dimensions: [{ id: 'id-1', field: 'product_type', alias: 'product_type' }],
+      measures: [{ id: 'id-2', field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+    } as VBIDSL)
+
+    builder.measures.update('id-2', (node) => {
+      node.setFormat(customFormat)
+    })
+
+    const vSeedDSL = await builder.buildVSeed()
+
+    expect(vSeedDSL.measures).toEqual([
+      {
+        id: 'id-2',
+        alias: '销售额',
+        encoding: 'yAxis',
+        autoFormat: false,
+        numFormat: {
+          type: 'number',
+          ratio: 10000,
+          symbol: '万',
+          prefix: '¥',
+          fractionDigits: 2,
+        },
+      },
+    ])
+  })
+
+  test('buildVSeed omits format fields when format not set', async () => {
+    registerDemoConnector()
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'column',
+      dimensions: [{ id: 'id-1', field: 'product_type', alias: 'product_type' }],
+      measures: [{ id: 'id-2', field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+    } as VBIDSL)
+
+    const vSeedDSL = await builder.buildVSeed()
+
+    expect(vSeedDSL.measures![0]).not.toHaveProperty('autoFormat')
+    expect(vSeedDSL.measures![0]).not.toHaveProperty('numFormat')
+  })
 })

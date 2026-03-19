@@ -1,6 +1,7 @@
 import type { VQueryDSL } from '@visactor/vquery'
 import type { buildPipe } from './types'
-import type { VBIFilter, VBIWhereClause, VBIWhereGroup } from '../../types'
+import type { VBIWhereDatePredicate, VBIWhereFilter, VBIWhereClause, VBIWhereGroup } from '../../types'
+import { resolveDatePredicate } from './resolveDatePredicate'
 
 export const buildWhere: buildPipe = (queryDSL, context) => {
   const { vbiDSL } = context
@@ -30,18 +31,32 @@ function mapClauseToCondition(clause: VBIWhereClause): any[] {
 function mapGroupToCondition(group: VBIWhereGroup): any {
   return {
     op: group.op,
-    conditions: group.conditions.flatMap(mapClauseToCondition),
+    conditions: group.conditions.flatMap((c) => mapClauseToCondition(c)),
   }
 }
 
-function mapFilterToCondition(filter: VBIFilter): any[] {
+function mapFilterToCondition(filter: VBIWhereFilter): any[] {
+  if (filter.op === 'date') {
+    return handleDateFilter(filter.field, filter.value as VBIWhereDatePredicate)
+  }
   if (filter.op === 'between' || filter.op === 'not between') {
     return handleBetweenFilter(filter)
   }
   return handleSimpleFilter(filter)
 }
 
-function handleBetweenFilter(filter: VBIFilter): any[] {
+function handleDateFilter(field: string, predicate: VBIWhereDatePredicate): any[] {
+  const range = resolveDatePredicate(predicate)
+  const startOp = '>='
+  const endOp = range.bounds === '[]' ? '<=' : '<'
+
+  return [
+    { field, op: startOp, value: range.start },
+    { field, op: endOp, value: range.end },
+  ]
+}
+
+function handleBetweenFilter(filter: VBIWhereFilter): any[] {
   const value = normalizeBetweenValue(filter.value)
   const lowerCondition =
     value.min !== undefined && value.min !== null && value.min !== ''
@@ -81,20 +96,18 @@ function handleBetweenFilter(filter: VBIFilter): any[] {
   return [lowerCondition, upperCondition].filter(Boolean) as any[]
 }
 
-function normalizeBetweenValue(value: unknown): { min?: unknown; max?: unknown; leftOp?: string; rightOp?: string } {
+function normalizeBetweenValue(value: unknown): {
+  min?: unknown
+  max?: unknown
+  leftOp?: string
+  rightOp?: string
+} {
   if (Array.isArray(value)) {
-    return {
-      min: value[0],
-      max: value[1],
-      leftOp: '<=',
-      rightOp: '<=',
-    }
+    return { min: value[0], max: value[1], leftOp: '<=', rightOp: '<=' }
   }
-
   if (typeof value === 'object' && value !== null) {
     return value as { min?: unknown; max?: unknown; leftOp?: string; rightOp?: string }
   }
-
   return {}
 }
 
@@ -114,7 +127,7 @@ function invertUpperBound(condition: { field: string; op: string; value: unknown
   }
 }
 
-function handleSimpleFilter(filter: VBIFilter): any[] {
+function handleSimpleFilter(filter: VBIWhereFilter): any[] {
   let mappedOp = filter.op
   const value = filter.value
 
@@ -123,11 +136,5 @@ function handleSimpleFilter(filter: VBIFilter): any[] {
     if (mappedOp === '!=') mappedOp = 'not in'
   }
 
-  return [
-    {
-      field: filter.field,
-      op: mappedOp,
-      value,
-    },
-  ] as any[]
+  return [{ field: filter.field, op: mappedOp, value }] as any[]
 }

@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import { VBIMeasure } from '../../../types'
+import type { VBIMeasure, VBIMeasureFormat } from '../../../types'
 
 /**
  * @description 度量节点构建器，用于配置单个度量
@@ -52,6 +52,30 @@ export class MeasureNodeBuilder {
    */
   setAggregate(aggregate: VBIMeasure['aggregate']): this {
     this.yMap.set('aggregate', aggregate)
+    return this
+  }
+
+  /**
+   * @description 设置数值格式
+   * @param format - 格式配置
+   */
+  setFormat(format: VBIMeasureFormat): this {
+    this.yMap.set('format', format)
+    return this
+  }
+
+  /**
+   * @description 获取数值格式
+   */
+  getFormat(): VBIMeasureFormat | undefined {
+    return this.yMap.get('format')
+  }
+
+  /**
+   * @description 清除数值格式配置
+   */
+  clearFormat(): this {
+    this.yMap.delete('format')
     return this
   }
 

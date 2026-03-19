@@ -21,6 +21,17 @@ export const buildVSeedDSL: VBISeedBuilder<DefaultVBIQueryDSL, DefaultVBISeedDSL
         nextMeasure.encoding = measure.encoding
       }
 
+      if (measure.format) {
+        if ('autoFormat' in measure.format && measure.format.autoFormat === true) {
+          nextMeasure.autoFormat = true
+        } else {
+          nextMeasure.autoFormat = false
+          nextMeasure.numFormat = Object.fromEntries(
+            Object.entries(measure.format).filter(([key]) => key !== 'autoFormat'),
+          )
+        }
+      }
+
       return nextMeasure
     })
   const dimensions = vbiDSL.dimensions
