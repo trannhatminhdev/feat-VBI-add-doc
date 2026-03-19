@@ -3,6 +3,7 @@ import type { ObserveCallback, VBIDimension, VBIDimensionGroup, VBIDimensionTree
 import { DimensionNodeBuilder } from './dim-node-builder'
 import { id } from 'src/utils'
 import { getOrCreateDimensions, locateDimensionIndexById, normalizeDimensionNodeIds } from './dimension-utils'
+import { getRecommendedDimensionEncodingsForChartType } from '../chart-type/dimension-encoding'
 
 /**
  * @description 维度构建器，用于添加、修改、删除维度配置。维度是数据的分类字段，如：时间、地区、产品类别
@@ -24,10 +25,14 @@ export class DimensionsBuilder {
    * @param callback - 回调函数
    */
   add(field: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder {
+    const dimensions = getOrCreateDimensions(this.dsl)
+    const chartType = this.dsl.get('chartType') || 'table'
+    const [encoding] = getRecommendedDimensionEncodingsForChartType(chartType, dimensions.length + 1).slice(-1)
     const dimension: VBIDimension = {
       id: id.uuid(),
       alias: field,
       field,
+      encoding,
     }
 
     const yMap = new Y.Map<any>()
@@ -35,7 +40,6 @@ export class DimensionsBuilder {
       yMap.set(key, value)
     }
 
-    const dimensions = getOrCreateDimensions(this.dsl)
     dimensions.push([yMap])
     const node = new DimensionNodeBuilder(yMap)
 

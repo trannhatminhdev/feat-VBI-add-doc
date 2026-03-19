@@ -81,7 +81,7 @@ describe('DSL schemas', () => {
   test('parse dimension and measure tree schemas', () => {
     const dimensionGroup = zVBIDimensionGroupSchema.parse({
       alias: '地区层级',
-      children: [{ id: 'd-1', field: 'order_date', alias: '月份', aggregate: { func: 'toMonth' } }],
+      children: [{ id: 'd-1', field: 'order_date', alias: '月份', encoding: 'column', aggregate: { func: 'toMonth' } }],
     })
     const measure = zVBIMeasure.parse({
       id: 'm-1',

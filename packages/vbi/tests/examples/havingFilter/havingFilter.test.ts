@@ -1395,6 +1395,7 @@ describe('HavingFilter', () => {
         "dimensions": [
           {
             "alias": "area",
+            "encoding": "column",
             "field": "area",
             "id": "c3583433-a2cc-4234-85ff-75ae2472b674",
           },
@@ -1543,6 +1544,7 @@ describe('HavingFilter', () => {
         "dimensions": [
           {
             "alias": "area",
+            "encoding": "column",
             "id": "c3583433-a2cc-4234-85ff-75ae2472b674",
           },
         ],
@@ -1602,6 +1604,7 @@ describe('HavingFilter', () => {
         "dimensions": [
           {
             "alias": "区域",
+            "encoding": "yAxis",
             "field": "area",
             "id": "id-1",
           },
@@ -1707,6 +1710,7 @@ describe('HavingFilter', () => {
         "dimensions": [
           {
             "alias": "区域",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],

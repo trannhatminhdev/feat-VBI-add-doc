@@ -55,6 +55,44 @@ describe('ChartTypeBuilder', () => {
     expect(types.length).toBeGreaterThan(20)
   })
 
+  test('getSupportedDimensionEncodings', () => {
+    const builder = VBI.from({ chartType: 'raceLine' } as VBIDSL)
+
+    expect(builder.chartType.getSupportedDimensionEncodings()).toEqual([
+      'player',
+      'xAxis',
+      'color',
+      'detail',
+      'tooltip',
+      'label',
+      'row',
+      'column',
+    ])
+  })
+
+  test('getRecommendedDimensionEncodings', () => {
+    const builder = VBI.from({ chartType: 'pivotTable' } as VBIDSL)
+
+    expect(builder.chartType.getRecommendedDimensionEncodings(4)).toEqual(['column', 'row', 'column', 'row'])
+  })
+
+  test('changeChartType reapplies dimension encodings', () => {
+    const builder = VBI.from({
+      chartType: 'table',
+      dimensions: [
+        { field: 'order_date', alias: '日期', encoding: 'column' },
+        { field: 'province', alias: '省份', encoding: 'column' },
+      ],
+    } as VBIDSL)
+
+    builder.chartType.changeChartType('line')
+
+    expect(builder.dimensions.toJSON()).toEqual([
+      { id: 'id-1', field: 'order_date', alias: '日期', encoding: 'xAxis' },
+      { id: 'id-2', field: 'province', alias: '省份', encoding: 'color' },
+    ])
+  })
+
   test('observe and unobserve', () => {
     const dsl = {} as VBIDSL
     const builder = VBI.from(dsl)

@@ -17,10 +17,18 @@ export const buildVSeedDSL: VBISeedBuilder<DefaultVBIQueryDSL, DefaultVBISeedDSL
     }))
   const dimensions = vbiDSL.dimensions
     .filter((dimension) => DimensionsBuilder.isDimensionNode(dimension))
-    .map<Dimension>((dimension) => ({
-      id: dimension.id,
-      alias: dimension.alias,
-    }))
+    .map<Dimension>((dimension) => {
+      const nextDimension: Dimension = {
+        id: dimension.id,
+        alias: dimension.alias,
+      }
+
+      if (dimension.encoding) {
+        nextDimension.encoding = dimension.encoding
+      }
+
+      return nextDimension
+    })
 
   return {
     chartType: vbiDSL.chartType,

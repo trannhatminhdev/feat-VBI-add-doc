@@ -8,6 +8,8 @@ import { useBuilderDocState } from './useBuilderDocState';
 export type VBIDimension = CoreVBIDimension;
 
 type DimensionNodeLike = {
+  getEncoding?: () => VBIDimension['encoding'];
+  setEncoding: (encoding: NonNullable<VBIDimension['encoding']>) => unknown;
   setAlias: (alias: string) => unknown;
   setAggregate: (aggregate: NonNullable<VBIDimension['aggregate']>) => unknown;
   clearAggregate?: () => unknown;

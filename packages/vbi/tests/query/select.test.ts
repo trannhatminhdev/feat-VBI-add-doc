@@ -153,8 +153,8 @@ describe('select', () => {
         },
       ],
       dimensions: [
-        { alias: '区域', id: 'id-3' },
-        { alias: '省份', id: 'id-4' },
+        { alias: '区域', id: 'id-3', encoding: 'column' },
+        { alias: '省份', id: 'id-4', encoding: 'column' },
       ],
       locale: 'zh-CN',
       measures: [
@@ -199,7 +199,7 @@ describe('select', () => {
 
     const vseed = await builder.buildVSeed()
     expect(vseed).toMatchObject({
-      dimensions: [{ alias: '年份', id: 'id-2' }],
+      dimensions: [{ alias: '年份', id: 'id-2', encoding: 'column' }],
       measures: [{ alias: '销售额', id: 'id-1' }],
     })
     const years = vseed.dataset.map((row) => row['id-2']).sort()
@@ -260,8 +260,8 @@ describe('select', () => {
       { alias: '最高销售额', id: 'id-2' },
     ])
     expect(vseed.dimensions).toEqual([
-      { alias: '区域', id: 'id-3' },
-      { alias: '区域副本', id: 'id-4' },
+      { alias: '区域', id: 'id-3', encoding: 'column' },
+      { alias: '区域副本', id: 'id-4', encoding: 'column' },
     ])
     expect(Object.keys(vseed.dataset[0]).sort()).toEqual(['id-1', 'id-2', 'id-3', 'id-4'])
     expect(vseed.dataset[0]['id-3']).toBe(vseed.dataset[0]['id-4'])

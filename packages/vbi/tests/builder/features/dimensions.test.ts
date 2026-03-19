@@ -16,6 +16,7 @@ describe('DimensionsBuilder', () => {
           id: 'id-1',
           alias: '类别',
           field: 'category',
+          encoding: 'column',
         },
       ],
       whereFilter: { id: 'root', op: 'and', conditions: [] },
@@ -41,11 +42,13 @@ describe('DimensionsBuilder', () => {
           id: 'id-1',
           alias: '地区',
           field: 'region',
+          encoding: 'column',
         },
         {
           id: 'id-2',
           alias: '城市',
           field: 'city',
+          encoding: 'column',
         },
       ],
       whereFilter: { id: 'root', op: 'and', conditions: [] },
@@ -251,6 +254,15 @@ describe('DimensionsBuilder', () => {
     expect(node?.getId()).toBe('id-1')
   })
 
+  test('DimensionNodeBuilder getEncoding', () => {
+    const dsl = { dimensions: [{ field: 'category', alias: '类别', encoding: 'row' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    const node = builder.dimensions.find((item) => item.getId() === 'id-1')
+
+    expect(node?.getEncoding()).toBe('row')
+  })
+
   test('DimensionNodeBuilder setAlias', () => {
     const dsl = { dimensions: [{ field: 'category', alias: '类别' }] } as VBIDSL
     const builder = VBI.from(dsl)
@@ -269,6 +281,16 @@ describe('DimensionsBuilder', () => {
     node?.setAggregate({ func: 'toYear' })
 
     expect(builder.dimensions.toJSON()[0].aggregate).toEqual({ func: 'toYear' })
+  })
+
+  test('DimensionNodeBuilder setEncoding', () => {
+    const dsl = { dimensions: [{ field: 'category', alias: '类别' }] } as VBIDSL
+    const builder = VBI.from(dsl)
+
+    const node = builder.dimensions.find((item) => item.getId() === 'id-1')
+    node?.setEncoding('color')
+
+    expect(builder.dimensions.toJSON()[0].encoding).toBe('color')
   })
 
   test('DimensionNodeBuilder clearAggregate', () => {
@@ -310,5 +332,18 @@ describe('DimensionsBuilder', () => {
     expect(json[0].field).toBe('category')
     expect(json[1].field).toBe('region')
     expect(json[2].field).toBe('city')
+  })
+
+  test('addDimension uses chart type recommendations', () => {
+    const builder = VBI.from({ chartType: 'line' } as VBIDSL)
+
+    builder.dimensions
+      .add('order_date', (node) => node.setAlias('日期'))
+      .add('province', (node) => node.setAlias('省份'))
+
+    expect(builder.dimensions.toJSON()).toEqual([
+      { id: 'id-1', field: 'order_date', alias: '日期', encoding: 'xAxis' },
+      { id: 'id-2', field: 'province', alias: '省份', encoding: 'color' },
+    ])
   })
 })
