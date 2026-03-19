@@ -155,7 +155,6 @@ describe('Dimensions', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -712,7 +711,6 @@ describe('Dimensions', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -1111,7 +1109,6 @@ describe('Dimensions', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "yAxis",
             "id": "id-1",
           },
         ],

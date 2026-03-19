@@ -138,12 +138,10 @@ describe('UndoManager', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "yAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
-            "encoding": "yAxis",
             "id": "id-2",
           },
         ],

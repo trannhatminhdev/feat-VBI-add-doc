@@ -173,7 +173,6 @@ describe('Theme', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -349,7 +348,6 @@ describe('Theme', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "yAxis",
             "id": "id-1",
           },
         ],

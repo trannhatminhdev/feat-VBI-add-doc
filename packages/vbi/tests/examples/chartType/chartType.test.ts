@@ -170,7 +170,6 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -315,7 +314,6 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "xAxis",
             "id": "id-1",
           },
         ],
@@ -488,7 +486,6 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -645,7 +642,6 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -790,7 +786,6 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "size",
             "id": "id-1",
           },
         ],
@@ -963,7 +958,6 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -1136,7 +1130,6 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -1293,7 +1286,6 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "size",
             "id": "id-1",
           },
         ],
@@ -1466,7 +1458,6 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "size",
             "id": "id-1",
           },
         ],
@@ -1605,12 +1596,10 @@ describe('ChartType', () => {
         "measures": [
           {
             "alias": "销售额",
-            "encoding": "xAxis",
             "id": "id-1",
           },
           {
             "alias": "利润",
-            "encoding": "yAxis",
             "id": "id-2",
           },
         ],

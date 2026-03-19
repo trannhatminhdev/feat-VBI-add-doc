@@ -158,8 +158,8 @@ describe('select', () => {
       ],
       locale: 'zh-CN',
       measures: [
-        { alias: 'Sum(sales)', encoding: 'yAxis', id: 'id-1' },
-        { alias: 'Sum(profit)', encoding: 'yAxis', id: 'id-2' },
+        { alias: 'Sum(sales)', id: 'id-1' },
+        { alias: 'Sum(profit)', id: 'id-2' },
       ],
       theme: 'light',
     })
@@ -200,7 +200,7 @@ describe('select', () => {
     const vseed = await builder.buildVSeed()
     expect(vseed).toMatchObject({
       dimensions: [{ alias: '年份', id: 'id-2' }],
-      measures: [{ alias: '销售额', encoding: 'yAxis', id: 'id-1' }],
+      measures: [{ alias: '销售额', id: 'id-1' }],
     })
     const years = vseed.dataset.map((row) => row['id-2']).sort()
     expect(years).toEqual(['2016', '2017', '2018', '2019'])
@@ -256,8 +256,8 @@ describe('select', () => {
 
     const vseed = await builder.buildVSeed()
     expect(vseed.measures).toEqual([
-      { alias: '销售额', encoding: 'yAxis', id: 'id-1' },
-      { alias: '最高销售额', encoding: 'yAxis', id: 'id-2' },
+      { alias: '销售额', id: 'id-1' },
+      { alias: '最高销售额', id: 'id-2' },
     ])
     expect(vseed.dimensions).toEqual([
       { alias: '区域', id: 'id-3' },
