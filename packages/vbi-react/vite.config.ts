@@ -10,7 +10,7 @@ export default defineConfig({
         singleFork: true,
       },
     },
-    include: ['tests/**/*.test.ts'],
+    include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx'],
     exclude: ['node_modules/**', 'dist/**', '**/*.d.ts'],
     coverage: {
       provider: 'v8',
@@ -22,6 +22,7 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./tests/setup-dom.ts'],
     alias: {
+      '@visactor/vbi-react/components': new URL('./src/components/index.ts', import.meta.url).pathname,
       '@visactor/vbi-react': new URL('./src/index.ts', import.meta.url).pathname,
     },
   },

@@ -20,6 +20,12 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./components": {
+      "source": "./src/components/index.ts",
+      "types": "./dist/components.d.ts",
+      "import": "./dist/components.js",
+      "require": "./dist/components.cjs"
     }
   },
   "main": "./dist/index.cjs",

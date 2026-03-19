@@ -9,7 +9,7 @@ export default [
       globals: globals.browser,
       parserOptions: {
         projectService: {
-          allowDefaultProject: ['tests/*.ts', 'tests/*/*.ts'],
+          allowDefaultProject: ['tests/*.ts', 'tests/*.tsx', 'tests/*/*.ts', 'tests/*/*.tsx'],
         },
         tsconfigRootDir: import.meta.dirname,
       },

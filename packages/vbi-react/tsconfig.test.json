@@ -8,7 +8,8 @@
     "lib": ["ESNext", "DOM"],
     "types": ["vitest/globals"],
     "paths": {
-      "@visactor/vbi-react": ["./src/index.ts"]
+      "@visactor/vbi-react": ["./src/index.ts"],
+      "@visactor/vbi-react/components": ["./src/components/index.ts"]
     }
   }
 }

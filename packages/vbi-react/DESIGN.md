@@ -14,17 +14,17 @@ This file is a living design and delivery record. It must stay aligned with the 
 
 ### Current Delivery Status
 
-| Area                                                              | Status          | Notes                                                                                                                                                                                                                                    |
-| ----------------------------------------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `packages/vbi-react` package scaffold                             | **Completed**   | `package.json`, `tsconfig`, `rslib`, `vitest`, `eslint`, `README` are added                                                                                                                                                              |
-| Core hooks: `useVBI`, `useVSeed`                                  | **Completed**   | Implemented in `packages/vbi-react/src/hooks/` and verified by package tests                                                                                                                                                             |
-| Basic field hooks: `useChartType`, `useMeasures`, `useDimensions` | **Completed**   | Implemented against current `@visactor/vbi` builder APIs; `useChartType` and `useMeasures` are covered by package tests, while `useDimensions` follows the same pattern but still lacks dedicated test coverage                          |
-| `buildVSeed({ signal })` support in `@visactor/vbi`               | **Completed**   | `signal` is now accepted by `VBIBuilder.buildVSeed` and forwarded to `connector.query`                                                                                                                                                   |
-| `useWhereFilter`, `useHavingFilter`                               | **Completed**   | Implemented as reactive snapshots plus mutation callbacks around the singular `whereFilter` / `havingFilter` builder APIs and verified by package tests                                                                                  |
-| `@visactor/vbi-react/components` submodule                        | **Pending**     | New requirement: components must be implemented by composing hooks                                                                                                                                                                       |
-| `practices/professional` components validation                    | **Pending**     | First components rollout should validate in `practices/professional`; keep the other three practice demos unchanged                                                                                                                      |
-| Website docs / examples integration                               | **Pending**     | Components should double as site examples                                                                                                                                                                                                |
-| Verification (`typecheck`, tests, build, lint`)                   | **In Progress** | Under Node `24.12.0`, `@visactor/vbi-react` tests, `typecheck`, and `build` pass with the filter hooks included; `lint` still needs dedicated follow-up, and `@visactor/vbi` currently has upstream typecheck issues in chart-type enums |
+| Area                                                              | Status          | Notes                                                                                                                                                                                                                                             |
+| ----------------------------------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/vbi-react` package scaffold                             | **Completed**   | `package.json`, `tsconfig`, `rslib`, `vitest`, `eslint`, `README` are added                                                                                                                                                                       |
+| Core hooks: `useVBI`, `useVSeed`                                  | **Completed**   | Implemented in `packages/vbi-react/src/hooks/` and verified by package tests                                                                                                                                                                      |
+| Basic field hooks: `useChartType`, `useMeasures`, `useDimensions` | **Completed**   | Implemented against current `@visactor/vbi` builder APIs; `useChartType` and `useMeasures` are covered by package tests, while `useDimensions` follows the same pattern but still lacks dedicated test coverage                                   |
+| `buildVSeed({ signal })` support in `@visactor/vbi`               | **Completed**   | `signal` is now accepted by `VBIBuilder.buildVSeed` and forwarded to `connector.query`                                                                                                                                                            |
+| `useWhereFilter`, `useHavingFilter`                               | **Completed**   | Implemented as reactive snapshots plus mutation callbacks around the singular `whereFilter` / `havingFilter` builder APIs and verified by package tests                                                                                           |
+| `@visactor/vbi-react/components` submodule                        | **In Progress** | Starter submodule now exports `FieldPanel`, `ChartTypeSelector`, `ChartRenderer`, and `BuilderLayout`; `FilterPanel`, `ThemeSelector`, and richer renderer integration are still pending                                                       |
+| `practices/professional` components validation                    | **Pending**     | First components rollout should validate in `practices/professional`; keep the other three practice demos unchanged                                                                                                                               |
+| Website docs / examples integration                               | **Pending**     | Components should double as site examples                                                                                                                                                                                                         |
+| Verification (`typecheck`, tests, build, lint`)                   | **In Progress** | Under Node `24.12.0`, `@visactor/vbi-react` tests, `typecheck`, and `build` pass with the starter components included; `lint` still needs dedicated follow-up, and `@visactor/vbi` currently has upstream typecheck issues in chart-type enums    |
 
 ## 1. Current Architecture Analysis
 
@@ -836,11 +836,11 @@ if (error) {
 
 The library provides two usage modes to accommodate different use cases.
 
-Current implementation status: only the hooks mode is implemented today. The `@visactor/vbi-react/components` submodule described below remains a target architecture and is not yet shipped.
+Current implementation status: the hooks mode is complete for the current builder surface, and a first `@visactor/vbi-react/components` slice is now shipped. The current starter components are `FieldPanel`, `ChartTypeSelector`, `ChartRenderer`, and `BuilderLayout`. `FilterPanel`, `ThemeSelector`, and a richer built-in chart renderer remain target architecture.
 
 ### Core Principle
 
-All components in `@visactor/vbi-react/components` must be implemented by composing hooks from `@visactor/vbi-react`.
+All stateful components in `@visactor/vbi-react/components` must be implemented by composing hooks from `@visactor/vbi-react`. Pure layout shells such as `BuilderLayout` can stay presentational.
 
 That gives us a clean split:
 
@@ -889,7 +889,13 @@ import { FieldPanel, ChartTypeSelector, ChartRenderer, BuilderLayout } from '@vi
 function SimpleBuilder({ builder }: { builder: VBIBuilder }) {
   return (
     <BuilderLayout
-      leftPanel={<FieldPanel builder={builder} />}
+      leftPanel={
+        <FieldPanel
+          builder={builder}
+          dimensionOptions={[{ value: 'region' }, { value: 'category' }]}
+          measureOptions={[{ value: 'sales' }, { value: 'profit' }]}
+        />
+      }
       topBar={<ChartTypeSelector builder={builder} />}
       main={<ChartRenderer builder={builder} />}
     />
@@ -905,14 +911,20 @@ The library will provide the following minimal components:
 | --------------------- | ----------------------------------- |
 | **FieldPanel**        | Dimension and measure management UI |
 | **ChartTypeSelector** | Chart type selection dropdown       |
-| **ChartRenderer**     | VChart/VTable rendering wrapper     |
+| **ChartRenderer**     | `useVSeed` wrapper with render prop / JSON preview fallback |
 | **BuilderLayout**     | Common builder layout template      |
 | **FilterPanel**       | Where/Having filter UI              |
 | **ThemeSelector**     | Theme switching UI                  |
 
+Current shipping status:
+
+- **Completed**: `FieldPanel`, `ChartTypeSelector`, `ChartRenderer`, `BuilderLayout`
+- **Pending**: `FilterPanel`, `ThemeSelector`
+- `ChartRenderer` currently focuses on `useVSeed` state handling and leaves richer VChart/VTable embedding to a later pass or a custom `renderVSeed` prop
+
 **Design Constraints**:
 
-- Every component must be a thin composition layer over hooks
+- Every stateful component must be a thin composition layer over hooks
 - Every component should focus on one core responsibility
 - Every component should be simple enough to serve as a documentation example
 - Advanced customization should always be possible by dropping down to hooks
@@ -977,18 +989,25 @@ packages/vbi-react/
 │   │   ├── useHavingFilter.ts
 │   │   └── useWhereFilter.ts
 │   │
-│   ├── components/              # Pending: exported as @visactor/vbi-react/components
+│   ├── components/              # Exported as @visactor/vbi-react/components
 │   │   ├── index.ts
 │   │   ├── FieldPanel.tsx
 │   │   ├── ChartTypeSelector.tsx
 │   │   ├── ChartRenderer.tsx
-│   │   └── BuilderLayout.tsx
+│   │   ├── BuilderLayout.tsx
+│   │   ├── types.ts
+│   │   └── utils.ts
 │   │
 │   └── internal/                # Internal utilities
 │       ├── index.ts
 │       └── useBuilderObserver.ts
 │
 ├── tests/                       # Tests
+│   ├── components/
+│   │   ├── BuilderLayout.test.tsx
+│   │   ├── ChartRenderer.test.tsx
+│   │   ├── ChartTypeSelector.test.tsx
+│   │   └── FieldPanel.test.tsx
 │   ├── hooks/
 │   │   ├── useVBI.test.ts
 │   │   ├── useVSeed.test.ts
@@ -1009,11 +1028,11 @@ packages/vbi-react/
 
 ### 10.1 Testing Approach
 
-Components will be tested using snapshot testing to ensure stable UI behavior:
+Current starter components are verified with interaction-oriented component tests:
 
 1. Render component
-2. Convert DOM tree to JSON snapshot
-3. Compare snapshot in tests
+2. Drive the public UI through clicks / changes
+3. Assert visible output or builder state changes
 
 ### 10.2 Tools
 
@@ -1022,36 +1041,26 @@ Components will be tested using snapshot testing to ensure stable UI behavior:
 | **React Testing Library** | Component rendering and interaction testing |
 | **Vitest**                | Test runner                                 |
 | **happy-dom**             | DOM bootstrap for hook tests in Node        |
-| **snapshot testing**      | DOM snapshot comparison                     |
+| **component interaction tests** | Public UI flow verification            |
 
-Current hook tests run in Vitest's `node` environment, with `tests/setup-dom.ts` installing a `happy-dom` window onto `globalThis`. `tests/utils/createTestBuilder.ts` uses a local fake builder so hook tests no longer depend on `@visactor/vbi` runtime imports during verification.
+Current hook and component tests run in Vitest's `node` environment, with `tests/setup-dom.ts` installing a `happy-dom` window onto `globalThis`. `tests/utils/createTestBuilder.ts` uses a local fake builder so package tests no longer depend on `@visactor/vbi` runtime imports during verification.
 
 ### 10.3 Example Test
 
 ```typescript
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import { ChartTypeSelector } from '../components/ChartTypeSelector'
 
 describe('ChartTypeSelector', () => {
-  it('renders all chart types', () => {
+  it('updates chart type through the component UI', () => {
     const builder = createMockBuilder()
-    render(<ChartTypeSelector builder={builder} />)
+    const view = render(<ChartTypeSelector builder={builder} />)
 
-    expect(screen.getByRole('combobox')).toBeInTheDocument()
-    expect(screen.getByText('Table')).toBeInTheDocument()
-    expect(screen.getByText('Line')).toBeInTheDocument()
-    expect(screen.getByText('Bar')).toBeInTheDocument()
-  })
+    fireEvent.change(view.getByRole('combobox', { name: 'Chart type' }), {
+      target: { value: 'line' },
+    })
 
-  it('calls setChartType on change', () => {
-    const builder = createMockBuilder()
-    const setChartType = vi.fn()
-    builder.chartType.changeChartType = setChartType
-
-    render(<ChartTypeSelector builder={builder} />)
-    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'Bar' } })
-
-    expect(setChartType).toHaveBeenCalledWith('Bar')
+    expect(builder.chartType.getChartType()).toBe('line')
   })
 })
 ```
@@ -1220,11 +1229,11 @@ This design document will become part of the architecture documentation, providi
 
 | Week | Task                                              | Deliverable                   | Status      |
 | ---- | ------------------------------------------------- | ----------------------------- | ----------- |
-| 5    | Add `@visactor/vbi-react/components` submodule    | components entry              | **Pending** |
-| 5    | Design and implement core slim components         | FieldPanel, ChartTypeSelector | **Pending** |
-| 5    | Implement ChartRenderer                           | ChartRenderer.tsx             | **Pending** |
-| 6    | Implement BuilderLayout                           | BuilderLayout.tsx             | **Pending** |
-| 6    | Ensure every component is implemented by hooks    | architecture rule             | **Pending** |
+| 5    | Add `@visactor/vbi-react/components` submodule    | components entry              | **Completed** |
+| 5    | Design and implement core slim components         | FieldPanel, ChartTypeSelector | **Completed** |
+| 5    | Implement ChartRenderer                           | ChartRenderer.tsx             | **In Progress** |
+| 6    | Implement BuilderLayout                           | BuilderLayout.tsx             | **Completed** |
+| 6    | Ensure every stateful component is implemented by hooks | architecture rule        | **In Progress** |
 | 6    | Reuse components as docs/examples building blocks | site examples                 | **Pending** |
 
 ### Phase 4: Integration and Documentation (1 week)
@@ -1250,7 +1259,7 @@ This design document will become part of the architecture documentation, providi
 | **Async Handling**           | Use AbortController for request cancellation                                                     |
 | **Multiple Usage Modes**     | Headless hooks for deep customization + slim components for rapid setup                          |
 | **Package Strategy**         | Keep hooks and components in `vbi-react`, export components as `@visactor/vbi-react/components`  |
-| **Testing**                  | Hook unit tests are active today; component snapshot testing is planned for the components layer |
+| **Testing**                  | Hook unit tests and starter component interaction tests are active today; richer snapshot coverage can be added later |
 | **Key Challenges**           | Yjs lifecycle management, useSyncExternalStore adaptation                                        |
 | **Estimated Timeline**       | 7 weeks for MVP                                                                                  |
 | **Backward Compatibility**   | Smooth migration from practices/demo                                                             |
