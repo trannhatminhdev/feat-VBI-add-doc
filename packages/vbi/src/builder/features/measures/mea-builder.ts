@@ -9,8 +9,10 @@ import { getRecommendedMeasureEncodingsForChartType } from '../chart-type/measur
  * @description 度量构建器，用于添加、修改、删除度量配置。度量是数据的数值字段，如：销售额、利润、数量
  */
 export class MeasuresBuilder {
+  private doc: Y.Doc
   private dsl: Y.Map<any>
   constructor(doc: Y.Doc, dsl: Y.Map<any>) {
+    this.doc = doc
     this.dsl = dsl
 
     doc.transact(() => {
@@ -38,14 +40,16 @@ export class MeasuresBuilder {
 
     const yMap = new Y.Map<any>()
 
-    for (const [key, value] of Object.entries(measure)) {
-      yMap.set(key, value)
-    }
-    measures.push([yMap])
+    this.doc.transact(() => {
+      for (const [key, value] of Object.entries(measure)) {
+        yMap.set(key, value)
+      }
+      const measures = getOrCreateMeasures(this.dsl)
+      measures.push([yMap])
 
-    const node = new MeasureNodeBuilder(yMap)
-
-    callback(node)
+      const node = new MeasureNodeBuilder(yMap)
+      callback(node)
+    })
     return this
   }
 
@@ -54,11 +58,13 @@ export class MeasuresBuilder {
    * @param id - 度量 ID
    */
   remove(id: string): MeasuresBuilder {
-    const measures = getOrCreateMeasures(this.dsl)
-    const index = locateMeasureIndexById(measures, id)
-    if (index !== -1) {
-      measures.delete(index, 1)
-    }
+    this.doc.transact(() => {
+      const measures = getOrCreateMeasures(this.dsl)
+      const index = locateMeasureIndexById(measures, id)
+      if (index !== -1) {
+        measures.delete(index, 1)
+      }
+    })
     return this
   }
 
@@ -68,16 +74,18 @@ export class MeasuresBuilder {
    * @param callback - 回调函数
    */
   update(id: string, callback: (node: MeasureNodeBuilder) => void): MeasuresBuilder {
-    const measures = getOrCreateMeasures(this.dsl)
-    const index = locateMeasureIndexById(measures, id)
+    this.doc.transact(() => {
+      const measures = getOrCreateMeasures(this.dsl)
+      const index = locateMeasureIndexById(measures, id)
 
-    if (index === -1) {
-      throw new Error(`Measure with id "${id}" not found`)
-    }
+      if (index === -1) {
+        throw new Error(`Measure with id "${id}" not found`)
+      }
 
-    const measureYMap = measures.get(index)
-    const node = new MeasureNodeBuilder(measureYMap)
-    callback(node)
+      const measureYMap = measures.get(index)
+      const node = new MeasureNodeBuilder(measureYMap)
+      callback(node)
+    })
     return this
   }
 
@@ -124,9 +132,9 @@ export class MeasuresBuilder {
    */
   observe(callback: ObserveCallback): () => void {
     const measures = getOrCreateMeasures(this.dsl)
-    measures.observe(callback as any)
+    measures.observeDeep(callback as any)
     return () => {
-      measures.unobserve(callback as any)
+      measures.unobserveDeep(callback as any)
     }
   }
 

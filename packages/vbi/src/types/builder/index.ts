@@ -1,3 +1,4 @@
+export type { BuildVSeedOptions } from './build-vseed'
 export type { VBIBuilderInterface } from './VBIInterface'
 export type {
   VBIBuildVQueryContext,

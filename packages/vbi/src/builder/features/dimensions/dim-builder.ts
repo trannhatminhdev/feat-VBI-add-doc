@@ -9,8 +9,10 @@ import { getRecommendedDimensionEncodingsForChartType } from '../chart-type/dime
  * @description 维度构建器，用于添加、修改、删除维度配置。维度是数据的分类字段，如：时间、地区、产品类别
  */
 export class DimensionsBuilder {
+  private doc: Y.Doc
   private dsl: Y.Map<any>
   constructor(doc: Y.Doc, dsl: Y.Map<any>) {
+    this.doc = doc
     this.dsl = dsl
 
     doc.transact(() => {
@@ -36,14 +38,17 @@ export class DimensionsBuilder {
     }
 
     const yMap = new Y.Map<any>()
-    for (const [key, value] of Object.entries(dimension)) {
-      yMap.set(key, value)
-    }
+    this.doc.transact(() => {
+      for (const [key, value] of Object.entries(dimension)) {
+        yMap.set(key, value)
+      }
 
-    dimensions.push([yMap])
-    const node = new DimensionNodeBuilder(yMap)
+      const dimensions = getOrCreateDimensions(this.dsl)
+      dimensions.push([yMap])
+      const node = new DimensionNodeBuilder(yMap)
+      callback(node)
+    })
 
-    callback(node)
     return this
   }
 
@@ -52,11 +57,13 @@ export class DimensionsBuilder {
    * @param id - 维度 ID
    */
   remove(id: string): DimensionsBuilder {
-    const dimensions = getOrCreateDimensions(this.dsl)
-    const index = locateDimensionIndexById(dimensions, id)
-    if (index !== -1) {
-      dimensions.delete(index, 1)
-    }
+    this.doc.transact(() => {
+      const dimensions = getOrCreateDimensions(this.dsl)
+      const index = locateDimensionIndexById(dimensions, id)
+      if (index !== -1) {
+        dimensions.delete(index, 1)
+      }
+    })
     return this
   }
 
@@ -66,16 +73,18 @@ export class DimensionsBuilder {
    * @param callback - 回调函数
    */
   update(id: string, callback: (node: DimensionNodeBuilder) => void): DimensionsBuilder {
-    const dimensions = getOrCreateDimensions(this.dsl)
-    const index = locateDimensionIndexById(dimensions, id)
+    this.doc.transact(() => {
+      const dimensions = getOrCreateDimensions(this.dsl)
+      const index = locateDimensionIndexById(dimensions, id)
 
-    if (index === -1) {
-      throw new Error(`Dimension with id "${id}" not found`)
-    }
+      if (index === -1) {
+        throw new Error(`Dimension with id "${id}" not found`)
+      }
 
-    const dimensionYMap = dimensions.get(index)
-    const node = new DimensionNodeBuilder(dimensionYMap)
-    callback(node)
+      const dimensionYMap = dimensions.get(index)
+      const node = new DimensionNodeBuilder(dimensionYMap)
+      callback(node)
+    })
     return this
   }
 
@@ -118,9 +127,9 @@ export class DimensionsBuilder {
    */
   observe(callback: ObserveCallback): () => void {
     const dimensions = getOrCreateDimensions(this.dsl)
-    dimensions.observe(callback as any)
+    dimensions.observeDeep(callback as any)
     return () => {
-      dimensions.unobserve(callback as any)
+      dimensions.unobserveDeep(callback as any)
     }
   }
 

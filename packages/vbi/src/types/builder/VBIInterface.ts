@@ -1,5 +1,6 @@
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/builder/adapters/vquery-vseed/types'
 import type { VBIDSL } from '../dsl'
+import type { BuildVSeedOptions } from './build-vseed'
 import type {
   MeasuresBuilder,
   DimensionsBuilder,
@@ -30,7 +31,7 @@ export interface VBIBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = 
   applyUpdate: (update: Uint8Array, origin?: any) => void
   encodeStateAsUpdate: (targetStateVector?: Uint8Array) => Uint8Array
 
-  buildVSeed: () => Promise<TSeedDSL>
+  buildVSeed: (options?: BuildVSeedOptions) => Promise<TSeedDSL>
   buildVQuery: () => TQueryDSL
   build: () => VBIDSL
   isEmpty: () => boolean

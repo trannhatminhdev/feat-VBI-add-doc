@@ -1,7 +1,7 @@
 import * as Y from 'yjs'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/builder/adapters/vquery-vseed/types'
 import type { VBIDSLInput, VBIBuilderOptions } from 'src/types'
-import { VBIBuilder } from 'src/builder'
+import { VBIBuilder } from 'src/builder/builder'
 import { ensureYArray } from '../normalize/ensure-y-array'
 import { ensureWhereGroup } from '../normalize/ensure-where-group'
 import { ensureHavingGroup } from '../normalize/ensure-having-group'
