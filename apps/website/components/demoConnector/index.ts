@@ -1,8 +1,6 @@
 import { VQuery } from '@visactor/vquery'
 import { VBI } from '@visactor/vbi'
 import type { DatasetColumn, RawDatasetSource, VQueryDSL } from '@visactor/vquery'
-import supermarketData from '../../docs/public/dataset/supermarket.json'
-
 export const DEMO_CONNECTOR_ID = 'demoSupermarket'
 
 const SUPERMARKET_SCHEMA: Array<{ name: string; type: string }> = [
@@ -36,12 +34,11 @@ VBI.registerConnector(DEMO_CONNECTOR_ID, async () => {
       return SUPERMARKET_SCHEMA
     },
     query: async ({ queryDSL }) => {
+      const url = 'https://visactor.github.io/VBI/dataset/supermarket.csv'
       const datasetSource: RawDatasetSource = {
-        type: 'json',
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        rawDataset: supermarketData as any,
+        type: 'csv',
+        rawDataset: url,
       }
-
       const dataset = await vquery.connectDataset(
         DEMO_CONNECTOR_ID,
         SUPERMARKET_SCHEMA as DatasetColumn[],

@@ -8,11 +8,7 @@ const shouldEnsureIdForObject = (obj: Record<string, any>, ensureId: EnsureIdMod
     return true
   }
 
-  if (ensureId === 'field') {
-    return typeof obj.field === 'string'
-  }
-
-  return false
+  return ensureId === 'field' && typeof obj.field === 'string'
 }
 
 export const toYMap = (obj: Record<string, any>, ensureId: EnsureIdMode = false): Y.Map<any> => {
@@ -26,15 +22,7 @@ export const toYMap = (obj: Record<string, any>, ensureId: EnsureIdMode = false)
     if ((key === 'conditions' || key === 'children') && Array.isArray(value)) {
       const yArr = new Y.Array<any>()
       for (const child of value) {
-        if (child instanceof Y.Map) {
-          yArr.push([child])
-          continue
-        }
-        if (typeof child === 'object' && child !== null) {
-          yArr.push([toYMap(child as Record<string, any>, ensureId)])
-          continue
-        }
-        yArr.push([child])
+        yArr.push([toYMap(child as Record<string, any>, ensureId)])
       }
       yMap.set(key, yArr)
       continue

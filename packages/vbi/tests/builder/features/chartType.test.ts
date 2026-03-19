@@ -76,6 +76,33 @@ describe('ChartTypeBuilder', () => {
     expect(builder.chartType.getRecommendedDimensionEncodings(4)).toEqual(['column', 'row', 'column', 'row'])
   })
 
+  test('getRecommendedDimensionEncodings uses dsl dimensions when count not provided', () => {
+    const builder = VBI.from({
+      chartType: 'line',
+      dimensions: [
+        { field: 'category', alias: 'category' },
+        { field: 'subcategory', alias: 'subcategory' },
+        { field: 'region', alias: 'region' },
+      ],
+    } as VBIDSL)
+
+    // When no count is provided, it should use dsl.get('dimensions')?.length
+    expect(builder.chartType.getRecommendedDimensionEncodings()).toEqual(['xAxis', 'color', 'color'])
+  })
+
+  test('getRecommendedDimensionEncodings with explicit count overrides dsl', () => {
+    const builder = VBI.from({
+      chartType: 'line',
+      dimensions: [
+        { field: 'category', alias: 'category' },
+        { field: 'subcategory', alias: 'subcategory' },
+      ],
+    } as VBIDSL)
+
+    // Explicit count should override dsl length
+    expect(builder.chartType.getRecommendedDimensionEncodings(3)).toEqual(['xAxis', 'color', 'color'])
+  })
+
   test('getSupportedMeasureEncodings', () => {
     const builder = VBI.from({ chartType: 'histogram' } as VBIDSL)
 
@@ -100,6 +127,29 @@ describe('ChartTypeBuilder', () => {
       'secondaryYAxis',
       'secondaryYAxis',
     ])
+  })
+
+  test('getRecommendedMeasureEncodings uses dsl measures when count not provided', () => {
+    const builder = VBI.from({
+      chartType: 'column',
+      measures: [
+        { field: 'sales', alias: 'sales' },
+        { field: 'profit', alias: 'profit' },
+      ],
+    } as VBIDSL)
+
+    // When no count is provided, it should use dsl.get('measures')?.length
+    expect(builder.chartType.getRecommendedMeasureEncodings()).toEqual(['yAxis', 'yAxis'])
+  })
+
+  test('getRecommendedMeasureEncodings with explicit count overrides dsl', () => {
+    const builder = VBI.from({
+      chartType: 'column',
+      measures: [{ field: 'sales', alias: 'sales' }],
+    } as VBIDSL)
+
+    // Explicit count should override dsl length
+    expect(builder.chartType.getRecommendedMeasureEncodings(3)).toEqual(['yAxis', 'yAxis', 'yAxis'])
   })
 
   test('changeChartType reapplies dimension encodings', () => {
@@ -187,5 +237,31 @@ describe('ChartTypeBuilder', () => {
     expect(callCount).toBe(1)
 
     unobserve()
+  })
+
+  test('getRecommendedDimensionEncodings for race charts', () => {
+    // Test RaceBar
+    const builder1 = VBI.from({ chartType: 'raceBar' } as VBIDSL)
+    expect(builder1.chartType.getRecommendedDimensionEncodings(3)).toEqual(['player', 'yAxis', 'color'])
+
+    // Test RaceColumn
+    const builder2 = VBI.from({ chartType: 'raceColumn' } as VBIDSL)
+    expect(builder2.chartType.getRecommendedDimensionEncodings(3)).toEqual(['player', 'xAxis', 'color'])
+
+    // Test RaceLine
+    const builder3 = VBI.from({ chartType: 'raceLine' } as VBIDSL)
+    expect(builder3.chartType.getRecommendedDimensionEncodings(2)).toEqual(['player', 'color'])
+
+    // Test RaceScatter
+    const builder4 = VBI.from({ chartType: 'raceScatter' } as VBIDSL)
+    expect(builder4.chartType.getRecommendedDimensionEncodings(2)).toEqual(['player', 'color'])
+
+    // Test RacePie
+    const builder5 = VBI.from({ chartType: 'racePie' } as VBIDSL)
+    expect(builder5.chartType.getRecommendedDimensionEncodings(2)).toEqual(['player', 'color'])
+
+    // Test RaceDonut
+    const builder6 = VBI.from({ chartType: 'raceDonut' } as VBIDSL)
+    expect(builder6.chartType.getRecommendedDimensionEncodings(2)).toEqual(['player', 'color'])
   })
 })

@@ -5,7 +5,7 @@ const zWhereLogicalOperator = z.enum(['and', 'or'])
 export const zVBIFilter = z.object({
   id: z.string(),
   field: z.string(),
-  op: z.string().optional(),
+  op: z.string(),
   value: z.any().optional(),
 })
 

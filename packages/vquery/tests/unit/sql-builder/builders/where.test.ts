@@ -265,4 +265,136 @@ describe('where', () => {
     )
     expect(sql).toMatchInlineSnapshot(`"select "id" from "orders" where (not "gender" in ('female'))"`)
   })
+
+  it('date string comparison operators', () => {
+    interface ORDER {
+      id: number
+      order_date: string
+    }
+
+    const sql = convertDSLToSQL<ORDER, 'orders'>(
+      {
+        select: ['id'],
+        where: {
+          op: 'and',
+          conditions: [
+            {
+              field: 'order_date',
+              op: '=',
+              value: '2024-01-01',
+            },
+            {
+              field: 'order_date',
+              op: '>=',
+              value: '2024-01-01',
+            },
+            {
+              field: 'order_date',
+              op: '<',
+              value: '2025-01-01',
+            },
+          ],
+        },
+      },
+      'orders',
+    )
+
+    expect(sql).toMatchInlineSnapshot(
+      `"select "id" from "orders" where ("order_date" = '2024-01-01' and "order_date" >= '2024-01-01' and "order_date" < '2025-01-01')"`,
+    )
+  })
+
+  it('date string between', () => {
+    interface ORDER {
+      id: number
+      order_date: string
+    }
+
+    const sql = convertDSLToSQL<ORDER, 'orders'>(
+      {
+        select: ['id'],
+        where: {
+          op: 'and',
+          conditions: [
+            {
+              field: 'order_date',
+              op: 'between',
+              value: ['2024-01-01', '2024-12-31'],
+            },
+          ],
+        },
+      },
+      'orders',
+    )
+
+    expect(sql).toMatchInlineSnapshot(
+      `"select "id" from "orders" where ("order_date" between '2024-01-01' and '2024-12-31')"`,
+    )
+  })
+
+  it('timestamp Date comparison operators', () => {
+    interface EVENT {
+      id: number
+      created_at: Date
+      updated_at: Date
+    }
+
+    const createdAt = new Date('2024-01-01T00:00:00.000Z')
+    const updatedAt = new Date('2024-02-01T12:30:00.000Z')
+    const sql = convertDSLToSQL<EVENT, 'orders'>(
+      {
+        select: ['id'],
+        where: {
+          op: 'and',
+          conditions: [
+            {
+              field: 'created_at',
+              op: '>=',
+              value: createdAt,
+            },
+            {
+              field: 'updated_at',
+              op: '<=',
+              value: updatedAt,
+            },
+          ],
+        },
+      },
+      'orders',
+    )
+
+    expect(sql).toBe(
+      `select "id" from "orders" where ("created_at" >= '${createdAt.toString()}' and "updated_at" <= '${updatedAt.toString()}')`,
+    )
+  })
+
+  it('timestamp Date between', () => {
+    interface EVENT {
+      id: number
+      created_at: Date
+    }
+
+    const start = new Date('2024-01-01T00:00:00.000Z')
+    const end = new Date('2024-01-31T23:59:59.000Z')
+    const sql = convertDSLToSQL<EVENT, 'orders'>(
+      {
+        select: ['id'],
+        where: {
+          op: 'and',
+          conditions: [
+            {
+              field: 'created_at',
+              op: 'between',
+              value: [start, end],
+            },
+          ],
+        },
+      },
+      'orders',
+    )
+
+    expect(sql).toBe(
+      `select "id" from "orders" where ("created_at" between '${start.toString()}' and '${end.toString()}')`,
+    )
+  })
 })

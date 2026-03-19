@@ -6,21 +6,9 @@ export const ensureYArray = (arr: any, ensureId: EnsureIdMode = false): Y.Array<
     return new Y.Array<any>()
   }
 
-  if (arr instanceof Y.Array) {
-    return arr
-  }
-
   const yArr = new Y.Array<any>()
   for (const item of arr as any[]) {
-    if (item instanceof Y.Map) {
-      yArr.push([item])
-      continue
-    }
-    if (typeof item === 'object' && item !== null) {
-      yArr.push([toYMap(item, ensureId)])
-      continue
-    }
-    yArr.push([item])
+    yArr.push([toYMap(item, ensureId)])
   }
 
   return yArr

@@ -479,4 +479,60 @@ describe('HavingGroupBuilder', () => {
     expect(group.conditions[0].id).toBeDefined()
     expect(group.conditions[1].id).toBeDefined()
   })
+
+  test('buildVQuery handles having filter with array value and eq operator', () => {
+    const builder = VBI.from({
+      ...VBI.generateEmptyDSL('demo'),
+      chartType: 'column',
+      dimensions: [{ id: 'id-1', field: 'category', alias: 'category' }],
+      measures: [{ id: 'id-2', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
+      version: 1,
+    } as VBIDSL)
+
+    builder.havingFilter.add('sales', (node) => {
+      node.setOperator('=').setValue([1000, 2000, 3000])
+    })
+
+    expect(builder.buildVQuery().having).toEqual({
+      op: 'and',
+      conditions: [
+        {
+          field: 'sales',
+          aggr: { func: 'sum' },
+          op: 'in',
+          value: [1000, 2000, 3000],
+        },
+      ],
+    })
+  })
+
+  test('buildVQuery handles having filter with array value and neq operator', () => {
+    const builder = VBI.from({
+      ...VBI.generateEmptyDSL('demo'),
+      chartType: 'column',
+      dimensions: [{ id: 'id-1', field: 'category', alias: 'category' }],
+      measures: [{ id: 'id-2', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+      whereFilter: { id: 'root', op: 'and', conditions: [] },
+      havingFilter: { id: 'root', op: 'and', conditions: [] },
+      version: 1,
+    } as VBIDSL)
+
+    builder.havingFilter.add('sales', (node) => {
+      node.setOperator('!=').setValue([1000, 2000])
+    })
+
+    expect(builder.buildVQuery().having).toEqual({
+      op: 'and',
+      conditions: [
+        {
+          field: 'sales',
+          aggr: { func: 'sum' },
+          op: 'not in',
+          value: [1000, 2000],
+        },
+      ],
+    })
+  })
 })

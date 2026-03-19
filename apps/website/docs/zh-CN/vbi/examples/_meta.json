@@ -3,7 +3,7 @@
     "type": "file",
     "name": "chartType",
     "label": "ChartType",
-    "count": 10
+    "count": 12
   },
   {
     "type": "file",
@@ -15,7 +15,7 @@
     "type": "file",
     "name": "havingFilter",
     "label": "HavingFilter",
-    "count": 18
+    "count": 20
   },
   {
     "type": "file",
@@ -43,8 +43,14 @@
   },
   {
     "type": "file",
+    "name": "utils",
+    "label": "Utils",
+    "count": 0
+  },
+  {
+    "type": "file",
     "name": "whereFilter",
     "label": "WhereFilter",
-    "count": 12
+    "count": 13
   }
 ]

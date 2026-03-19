@@ -115,7 +115,7 @@ function invertUpperBound(condition: { field: string; op: string; value: unknown
 }
 
 function handleSimpleFilter(filter: VBIFilter): any[] {
-  let mappedOp = filter.op ?? '='
+  let mappedOp = filter.op
   const value = filter.value
 
   if (Array.isArray(value)) {
