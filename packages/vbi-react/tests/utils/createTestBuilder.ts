@@ -345,6 +345,7 @@ function createWhereGroupBuilder(group: VBIWhereGroup, notify: () => void): Test
       const filter: VBIFilter = {
         field,
         id: `where-filter-${whereFilterCount++}`,
+        op: '',
       }
 
       group.conditions.push(filter)
@@ -408,6 +409,7 @@ function createHavingGroupBuilder(group: VBIHavingGroup, notify: () => void): Te
         aggregate: { func: 'sum' },
         field,
         id: `having-filter-${havingFilterCount++}`,
+        op: '',
       }
 
       group.conditions.push(filter)
@@ -477,6 +479,7 @@ function createWhereFilterFeature(state: TestBuilderState, notify: () => void) {
       const filter: VBIFilter = {
         field,
         id: `where-filter-${whereFilterCount++}`,
+        op: '',
       }
 
       state.whereFilter.conditions.push(filter)
@@ -589,6 +592,7 @@ function createHavingFilterFeature(state: TestBuilderState, notify: () => void) 
         aggregate: { func: 'sum' },
         field,
         id: `having-filter-${havingFilterCount++}`,
+        op: '',
       }
 
       state.havingFilter.conditions.push(filter)
