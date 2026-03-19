@@ -1,6 +1,11 @@
 [
   "index",
-  "playground",
+  {
+    "type": "dir",
+    "name": "practices",
+    "label": "实践",
+    "collapsed": true
+  },
   {
     "type": "dir",
     "name": "examples",
@@ -9,14 +14,9 @@
   },
   {
     "type": "dir",
-    "name": "practices",
-    "label": "Practices",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
     "name": "api",
     "label": "API",
     "collapsed": true
-  }
+  },
+  "playground"
 ]

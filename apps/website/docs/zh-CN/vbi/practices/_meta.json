@@ -1,1 +1,6 @@
-["demo", "minimalist", "streamlined", "professional"]
+[
+  { "type": "file", "name": "standard", "label": "标准" },
+  { "type": "file", "name": "minimalist", "label": "极简" },
+  { "type": "file", "name": "streamlined", "label": "精简" },
+  { "type": "file", "name": "professional", "label": "专业" }
+]

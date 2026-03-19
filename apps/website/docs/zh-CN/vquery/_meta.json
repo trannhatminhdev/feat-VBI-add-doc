@@ -1,6 +1,6 @@
 [
   "index",
-  "playground",
   { "type": "dir", "name": "examples", "label": "示例", "collapsed": true },
-  { "type": "dir", "name": "development", "label": "贡献指南", "collapsed": true }
+  { "type": "dir", "name": "development", "label": "贡献指南", "collapsed": true },
+  "playground"
 ]
