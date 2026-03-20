@@ -1,10 +1,10 @@
 import {
   Button,
   Flex,
-  InputNumber,
   Input,
-  Popover,
+  InputNumber,
   Select,
+  Segmented,
   Switch,
   Typography,
   theme,
@@ -13,12 +13,9 @@ import { useCallback, useMemo } from 'react';
 import type { VBIMeasureFormat } from '@visactor/vbi';
 import { useTranslation } from 'src/i18n';
 
-type MeasureFormatPopoverProps = {
+type MeasureFormatPanelProps = {
   format?: VBIMeasureFormat;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
   onFormatChange: (format: VBIMeasureFormat | undefined) => void;
-  children: React.ReactNode;
 };
 
 const FORMAT_TYPES = ['number', 'percent', 'permille', 'scientific'] as const;
@@ -35,6 +32,11 @@ const LABEL_STYLE: React.CSSProperties = {
   marginBottom: 0,
   whiteSpace: 'nowrap',
   minWidth: 70,
+};
+
+const PANEL_STYLE: React.CSSProperties = {
+  width: 280,
+  padding: '14px 16px 12px',
 };
 
 const FormatForm = (props: {
@@ -80,17 +82,17 @@ const FormatForm = (props: {
   );
 
   return (
-    <Flex vertical gap={10} style={{ width: 260 }}>
-      <Flex align="center" justify="space-between">
-        <Typography.Text style={LABEL_STYLE}>
-          {t('formatAutoFormat')}
-        </Typography.Text>
-        <Switch
-          size="small"
-          checked={isAutoFormat}
-          onChange={handleAutoToggle}
-        />
-      </Flex>
+    <Flex vertical gap={10} style={PANEL_STYLE}>
+      <Segmented
+        block
+        size="small"
+        value={isAutoFormat ? 'auto' : 'custom'}
+        options={[
+          { label: t('formatAuto'), value: 'auto' },
+          { label: t('formatCustom'), value: 'custom' },
+        ]}
+        onChange={(value) => handleAutoToggle(value === 'auto')}
+      />
 
       {!isAutoFormat && (
         <>
@@ -213,25 +215,22 @@ const FormatForm = (props: {
   );
 };
 
-export const MeasureFormatPopover = (props: MeasureFormatPopoverProps) => {
-  const { format, open, onOpenChange, onFormatChange, children } = props;
+export const MeasureFormatPanel = (props: MeasureFormatPanelProps) => {
+  const { format, onFormatChange } = props;
   const { token } = theme.useToken();
 
   return (
-    <Popover
-      content={<FormatForm format={format} onFormatChange={onFormatChange} />}
-      trigger="click"
-      placement="bottom"
-      arrow={false}
-      open={open}
-      onOpenChange={onOpenChange}
-      overlayStyle={{ padding: 0 }}
-      overlayInnerStyle={{
-        padding: '14px 18px 12px',
+    <div
+      onClick={(event) => event.stopPropagation()}
+      onKeyDown={(event) => event.stopPropagation()}
+      style={{
+        background: token.colorBgElevated,
+        border: `1px solid ${token.colorBorderSecondary}`,
         borderRadius: token.borderRadiusLG,
+        boxShadow: token.boxShadowSecondary,
       }}
     >
-      {children}
-    </Popover>
+      <FormatForm format={format} onFormatChange={onFormatChange} />
+    </div>
   );
 };

@@ -1,5 +1,6 @@
 import type { VBIWhereDatePredicate } from '@visactor/vbi';
 import type { Translate } from 'src/i18n';
+import { formatDateInput } from './datePickerValueUtils';
 
 export function isDateFilter(filter: { op: string }): boolean {
   return filter.op === 'date';
@@ -25,12 +26,8 @@ function formatRangeText(
   p: Extract<VBIWhereDatePredicate, { type: 'range' }>,
   t: Translate,
 ): string {
-  const start =
-    p.start instanceof Date
-      ? p.start.toISOString().slice(0, 10)
-      : String(p.start);
-  const end =
-    p.end instanceof Date ? p.end.toISOString().slice(0, 10) : String(p.end);
+  const start = formatDateInput(p.start);
+  const end = formatDateInput(p.end);
   return t('dateFilterDisplayRange', { start, end });
 }
 
@@ -76,10 +73,7 @@ function formatPeriodText(
     case 'week':
       return t('dateFilterDisplayPeriodWeek', { year: p.year, week: p.week });
     case 'day': {
-      const date =
-        p.date instanceof Date
-          ? p.date.toISOString().slice(0, 10)
-          : String(p.date);
+      const date = formatDateInput(p.date);
       return t('dateFilterDisplayPeriodDay', { date });
     }
     default:

@@ -1,10 +1,18 @@
 import React, { useCallback } from 'react';
-import { Select, Input, InputNumber, Space } from 'antd';
+import { DatePicker, InputNumber, Select, Space } from 'antd';
+import type { DatePickerProps, GetProps } from 'antd';
 import type { VBIWhereDatePredicate } from '@visactor/vbi';
 import { useTranslation } from 'src/i18n';
+import {
+  formatPickerDate,
+  fromPeriodPickerDate,
+  toPeriodPickerValue,
+  toRangePickerValue,
+} from './datePickerValueUtils';
 import { getDefaultDatePredicate } from './dateFilterUtils';
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 interface DateFilterEditorProps {
   value?: VBIWhereDatePredicate;
@@ -14,7 +22,13 @@ interface DateFilterEditorProps {
 const DATE_TYPES = ['range', 'relative', 'current', 'period'] as const;
 const DATE_UNITS = ['year', 'quarter', 'month', 'week', 'day'] as const;
 const RELATIVE_MODES = ['last', 'next'] as const;
-const QUARTERS = [1, 2, 3, 4] as const;
+const PERIOD_PICKERS: Record<PeriodValue['unit'], DatePickerProps['picker']> = {
+  year: 'year',
+  quarter: 'quarter',
+  month: 'month',
+  week: 'week',
+  day: undefined,
+};
 
 export const DateFilterEditor: React.FC<DateFilterEditorProps> = ({
   value,
@@ -82,38 +96,38 @@ export const DateFilterEditor: React.FC<DateFilterEditorProps> = ({
 /* ---------- Range ---------- */
 
 type RangeValue = Extract<VBIWhereDatePredicate, { type: 'range' }>;
+type RangePickerValue = GetProps<typeof DatePicker.RangePicker>['value'];
 
 const RangeFields: React.FC<{
   value: RangeValue;
   onChange: (v: VBIWhereDatePredicate) => void;
 }> = ({ value, onChange }) => {
   const { t } = useTranslation();
-  const startStr =
-    value.start instanceof Date
-      ? value.start.toISOString().slice(0, 10)
-      : String(value.start ?? '');
-  const endStr =
-    value.end instanceof Date
-      ? value.end.toISOString().slice(0, 10)
-      : String(value.end ?? '');
+  const handleChange = useCallback(
+    (dates: RangePickerValue) => {
+      onChange({
+        ...value,
+        start: formatPickerDate(dates?.[0] ?? null),
+        end: formatPickerDate(dates?.[1] ?? null),
+      });
+    },
+    [onChange, value],
+  );
 
   return (
-    <Space direction="vertical" size={6} style={{ width: '100%' }}>
-      <Input
-        size="small"
-        variant="filled"
-        placeholder={t('dateFilterStartPlaceholder')}
-        value={startStr}
-        onChange={(e) => onChange({ ...value, start: e.target.value })}
-      />
-      <Input
-        size="small"
-        variant="filled"
-        placeholder={t('dateFilterEndPlaceholder')}
-        value={endStr}
-        onChange={(e) => onChange({ ...value, end: e.target.value })}
-      />
-    </Space>
+    <RangePicker
+      size="small"
+      variant="filled"
+      value={toRangePickerValue(value)}
+      onChange={handleChange}
+      format="YYYY-MM-DD"
+      inputReadOnly
+      style={{ width: '100%' }}
+      placeholder={[
+        t('dateFilterStartPlaceholder'),
+        t('dateFilterEndPlaceholder'),
+      ]}
+    />
   );
 };
 
@@ -232,122 +246,74 @@ const PeriodFields: React.FC<{
   return (
     <Space size={6} style={{ width: '100%' }} wrap>
       <UnitSelect value={value.unit} onChange={handleUnitChange} />
-      {renderPeriodDetail(value, onChange, t)}
+      <DatePicker
+        size="small"
+        variant="filled"
+        picker={PERIOD_PICKERS[value.unit]}
+        value={toPeriodPickerValue(value)}
+        onChange={(date) => {
+          if (!date) {
+            return;
+          }
+          onChange({
+            type: 'period',
+            ...fromPeriodPickerDate(value.unit, date),
+          });
+        }}
+        format={getPeriodPickerFormat(value.unit)}
+        inputReadOnly
+        allowClear={false}
+        placeholder={getPeriodPlaceholder(value.unit, t)}
+        style={{ width: 136 }}
+      />
     </Space>
   );
 };
 
-function renderPeriodDetail(
-  value: PeriodValue,
-  onChange: (v: VBIWhereDatePredicate) => void,
-  t: (key: string) => string,
-) {
-  switch (value.unit) {
+function getPeriodPickerFormat(
+  unit: PeriodValue['unit'],
+): DatePickerProps['format'] {
+  switch (unit) {
     case 'year':
-      return (
-        <InputNumber
-          size="small"
-          variant="filled"
-          value={value.year}
-          onChange={(v) => v != null && onChange({ ...value, year: v })}
-          style={{ width: 80 }}
-          controls={false}
-          placeholder={t('dateFilterYearPlaceholder')}
-        />
-      );
+      return 'YYYY';
     case 'quarter':
-      return (
-        <>
-          <InputNumber
-            size="small"
-            variant="filled"
-            value={value.year}
-            onChange={(v) => v != null && onChange({ ...value, year: v })}
-            style={{ width: 80 }}
-            controls={false}
-          />
-          <Select
-            size="small"
-            variant="filled"
-            value={value.quarter}
-            onChange={(q) => onChange({ ...value, quarter: q })}
-            style={{ width: 64 }}
-          >
-            {QUARTERS.map((q) => (
-              <Option key={q} value={q}>
-                Q{q}
-              </Option>
-            ))}
-          </Select>
-        </>
-      );
+      return (value) => {
+        const period = fromPeriodPickerDate('quarter', value);
+        if (period.unit !== 'quarter') {
+          return '';
+        }
+        return `${period.year}-Q${period.quarter}`;
+      };
     case 'month':
-      return (
-        <>
-          <InputNumber
-            size="small"
-            variant="filled"
-            value={value.year}
-            onChange={(v) => v != null && onChange({ ...value, year: v })}
-            style={{ width: 80 }}
-            controls={false}
-          />
-          <InputNumber
-            size="small"
-            variant="filled"
-            min={1}
-            max={12}
-            value={value.month}
-            onChange={(v) => v != null && onChange({ ...value, month: v })}
-            style={{ width: 64 }}
-            controls={false}
-            placeholder={t('dateFilterMonthPlaceholder')}
-          />
-        </>
-      );
+      return 'YYYY-MM';
     case 'week':
-      return (
-        <>
-          <InputNumber
-            size="small"
-            variant="filled"
-            value={value.year}
-            onChange={(v) => v != null && onChange({ ...value, year: v })}
-            style={{ width: 80 }}
-            controls={false}
-          />
-          <InputNumber
-            size="small"
-            variant="filled"
-            min={1}
-            max={53}
-            value={value.week}
-            onChange={(v) => v != null && onChange({ ...value, week: v })}
-            style={{ width: 64 }}
-            controls={false}
-            placeholder={t('dateFilterWeekPlaceholder')}
-          />
-        </>
-      );
+      return (value) => {
+        const period = fromPeriodPickerDate('week', value);
+        if (period.unit !== 'week') {
+          return '';
+        }
+        return `${period.year}-W${String(period.week).padStart(2, '0')}`;
+      };
     case 'day':
-      return (
-        <Input
-          size="small"
-          variant="filled"
-          value={
-            value.date instanceof Date
-              ? value.date.toISOString().slice(0, 10)
-              : String(value.date ?? '')
-          }
-          onChange={(e) =>
-            onChange({ type: 'period', unit: 'day', date: e.target.value })
-          }
-          placeholder="YYYY-MM-DD"
-          style={{ width: 120 }}
-        />
-      );
-    default:
-      return null;
+      return 'YYYY-MM-DD';
+  }
+}
+
+function getPeriodPlaceholder(
+  unit: PeriodValue['unit'],
+  t: (key: string) => string,
+): string {
+  switch (unit) {
+    case 'year':
+      return t('dateFilterYearPlaceholder');
+    case 'quarter':
+      return t('dateFilterUnitQuarter');
+    case 'month':
+      return t('dateFilterMonthPlaceholder');
+    case 'week':
+      return t('dateFilterWeekPlaceholder');
+    case 'day':
+      return t('filtersDateDate');
   }
 }
 

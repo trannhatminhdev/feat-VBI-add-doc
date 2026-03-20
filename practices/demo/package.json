@@ -33,6 +33,7 @@
     "@visactor/vseed": "workspace:*",
     "@visactor/vtable": "1.23.1",
     "antd": "6.1.3",
+    "dayjs": "1.11.20",
     "zustand": "5.0.6"
   },
   "devDependencies": {

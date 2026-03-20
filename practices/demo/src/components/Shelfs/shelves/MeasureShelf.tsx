@@ -1,7 +1,7 @@
 import { theme } from 'antd';
 import type { MenuProps } from 'antd';
 import { message } from 'antd';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useVBIBuilder, useVBIMeasures, useVBISchemaFields } from 'src/hooks';
 import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
@@ -11,7 +11,7 @@ import {
   SHELF_MENU_ITEM_STYLE,
   type FieldShelfTone,
 } from '../common/FieldShelf';
-import { MeasureFormatPopover } from '../common/MeasureFormatPopover';
+import { MeasureFormatPanel } from '../common/MeasureFormatPanel';
 import { openShelfRenameModal } from '../common/openShelfRenameModal';
 import {
   formatMeasureAggregate,
@@ -21,7 +21,11 @@ import {
   isAggregateSupportedByFieldRole,
   type MeasureAggregate,
 } from '../utils/measureAggregateUtils';
-import { formatMeasureFormatLabel } from '../utils/measureFormatUtils';
+import {
+  buildShelfMenuLabel,
+  SHELF_MENU_SUBMENU_OFFSET,
+} from '../utils/menuItemUtils';
+import { getMeasureMenuSelectedKeys } from '../utils/menuSelectionUtils';
 import {
   reorderYArrayByInsertIndex,
   type YArrayLike,
@@ -143,8 +147,6 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     });
   };
 
-  const [formatEditingId, setFormatEditingId] = useState<string | null>(null);
-
   const changeEncoding = (
     id: string,
     encoding: NonNullable<VBIMeasure['encoding']>,
@@ -169,13 +171,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   ): MenuProps['items'] => {
     const fieldRole = getFieldRole(measure.field);
     const availableAggregates = getAggregateItemsByFieldRole(fieldRole, t);
-    const currentQuantilePercent =
-      measure.aggregate?.func === 'quantile'
-        ? Math.round((measure.aggregate.quantile ?? 0.5) * 100)
-        : undefined;
-    const currentAggregateKey = measure.aggregate?.func ?? 'sum';
     const supportedEncodings = builder.chartType.getSupportedMeasureEncodings();
-    const currentEncoding = measure.encoding;
     const measureIndex = measures.findIndex((item) => item.id === measure.id);
     const recommendedEncoding =
       measureIndex >= 0
@@ -189,63 +185,73 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
         if (item.key !== 'quantile') {
           return {
             key: `aggregate:${item.key}`,
-            label: `${currentAggregateKey === item.key ? '✓ ' : ''}${
-              item.shortLabel
-            }`,
+            label: item.shortLabel,
             style: SHELF_MENU_ITEM_STYLE,
           };
         }
 
         return {
           key: 'aggregate:quantile',
-          label: `${currentAggregateKey === 'quantile' ? '✓ ' : ''}${t(
-            'shelvesMenuQuantile',
-          )}`,
+          label: t('shelvesMenuQuantile'),
+          popupOffset: SHELF_MENU_SUBMENU_OFFSET,
           children: QUANTILE_PERCENT_OPTIONS.map((percent) => ({
             key: `aggregate:quantile:${percent}`,
-            label: `${currentQuantilePercent === percent ? '✓ ' : ''}P${percent}`,
+            label: `P${percent}`,
             style: SHELF_MENU_ITEM_STYLE,
           })),
         };
       });
 
+    const formatMenuItem = {
+      key: 'format',
+      label: t('shelvesMenuFormat'),
+      popupOffset: SHELF_MENU_SUBMENU_OFFSET,
+      children: [
+        {
+          key: `format:panel:${measure.id}`,
+          disabled: true,
+          label: '',
+        },
+      ],
+      popupRender: () => {
+        return (
+          <MeasureFormatPanel
+            format={measure.format as VBIMeasureFormat | undefined}
+            onFormatChange={(format) => changeFormat(measure.id, format)}
+          />
+        );
+      },
+      style: SHELF_MENU_ITEM_STYLE,
+    } as unknown as NonNullable<MenuProps['items']>[number];
+
     return [
+      {
+        key: 'aggregate',
+        label: t('shelvesMenuAggregate'),
+        popupOffset: SHELF_MENU_SUBMENU_OFFSET,
+        children: aggregateMenuItems,
+      },
       {
         key: 'encoding',
         label: t('shelvesMenuEncoding'),
+        popupOffset: SHELF_MENU_SUBMENU_OFFSET,
         children: supportedEncodings.map((encoding) => {
-          const selectedPrefix = currentEncoding === encoding ? '✓ ' : '';
           const recommendedSuffix =
             recommendedEncoding === encoding
-              ? ` ${t('commonStatusRecommended')}`
+              ? t('commonStatusRecommended')
               : '';
 
           return {
             key: `encoding:${encoding}`,
-            label: `${selectedPrefix}${t(
-              MEASURE_ENCODING_LABEL_KEY_MAP[encoding],
-            )}${recommendedSuffix}`,
+            label: buildShelfMenuLabel(
+              t(MEASURE_ENCODING_LABEL_KEY_MAP[encoding]),
+              recommendedSuffix,
+            ),
             style: SHELF_MENU_ITEM_STYLE,
           };
         }),
       },
-      {
-        key: 'aggregate',
-        label: t('shelvesMenuAggregate'),
-        children: aggregateMenuItems,
-      },
-      {
-        key: 'format',
-        label: `${t('shelvesMenuFormat')}${
-          measure.format
-            ? ` (${formatMeasureFormatLabel(
-                measure.format as VBIMeasureFormat,
-                t,
-              )})`
-            : ''
-        }`,
-        style: SHELF_MENU_ITEM_STYLE,
-      },
+      formatMenuItem,
       {
         key: 'rename',
         label: t('shelvesMenuRename'),
@@ -269,11 +275,6 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     measure: (typeof measures)[number],
     key: string,
   ) => {
-    if (key === 'format') {
-      setFormatEditingId(measure.id);
-      return;
-    }
-
     if (key === 'rename') {
       openShelfRenameModal({
         title: t('shelvesRenameModalMeasureTitle'),
@@ -357,74 +358,49 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     return `${aggregate}(${baseLabel})`;
   };
 
-  const formatEditingMeasure = useMemo(() => {
-    if (!formatEditingId) {
-      return undefined;
-    }
-    return measures.find((m) => m.id === formatEditingId);
-  }, [formatEditingId, measures]);
-
   return (
-    <MeasureFormatPopover
-      open={!!formatEditingMeasure}
-      onOpenChange={(open) => {
-        if (!open) {
-          setFormatEditingId(null);
+    <FieldShelf
+      shelf="measures"
+      items={measures}
+      placeholder={t('shelvesPlaceholdersMeasures')}
+      tone={measureShelfTone}
+      style={style}
+      maxLabelWidth={112}
+      getDisplayLabel={getMeasureDisplayLabel}
+      getItemPayload={(item) => ({
+        field: item.field,
+        type: fieldTypeMap[item.field],
+        role: getFieldRole(item.field),
+      })}
+      buildMenuItems={buildMeasureMenuItems}
+      getMenuSelectedKeys={getMeasureMenuSelectedKeys}
+      onMenuClick={handleMeasureMenuClick}
+      onRemove={removeMeasure}
+      onAddFieldAt={(payload, insertIndex) => {
+        if (!payload.field) {
+          return;
         }
+
+        addFieldAt({
+          fieldName: payload.field,
+          fieldType: payload.type,
+          insertIndex,
+        });
       }}
-      format={formatEditingMeasure?.format as VBIMeasureFormat | undefined}
-      onFormatChange={(format) => {
-        if (formatEditingMeasure) {
-          changeFormat(formatEditingMeasure.id, format);
+      onReorder={(dragIndex, insertIndex) => {
+        const yMeasures = builder.dsl.get('measures') as YArrayLike | undefined;
+        if (!yMeasures) {
+          return;
         }
+
+        builder.doc.transact(() => {
+          reorderYArrayByInsertIndex({
+            yArray: yMeasures,
+            dragIndex,
+            insertIndex,
+          });
+        });
       }}
-    >
-      <div>
-        <FieldShelf
-          shelf="measures"
-          items={measures}
-          placeholder={t('shelvesPlaceholdersMeasures')}
-          tone={measureShelfTone}
-          style={style}
-          maxLabelWidth={112}
-          getDisplayLabel={getMeasureDisplayLabel}
-          getItemPayload={(item) => ({
-            field: item.field,
-            type: fieldTypeMap[item.field],
-            role: getFieldRole(item.field),
-          })}
-          buildMenuItems={buildMeasureMenuItems}
-          onMenuClick={handleMeasureMenuClick}
-          onRemove={removeMeasure}
-          onAddFieldAt={(payload, insertIndex) => {
-            if (!payload.field) {
-              return;
-            }
-
-            addFieldAt({
-              fieldName: payload.field,
-              fieldType: payload.type,
-              insertIndex,
-            });
-          }}
-          onReorder={(dragIndex, insertIndex) => {
-            const yMeasures = builder.dsl.get('measures') as
-              | YArrayLike
-              | undefined;
-            if (!yMeasures) {
-              return;
-            }
-
-            builder.doc.transact(() => {
-              reorderYArrayByInsertIndex({
-                yArray: yMeasures,
-                dragIndex,
-                insertIndex,
-              });
-            });
-          }}
-        />
-      </div>
-    </MeasureFormatPopover>
+    />
   );
 };

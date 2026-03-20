@@ -54,6 +54,7 @@ type FieldShelfProps<TItem extends FieldShelfItem> = {
   getDisplayLabel?: (item: TItem) => string;
   getItemPayload: (item: TItem) => ShelfFieldPayload;
   buildMenuItems: (item: TItem) => MenuProps['items'];
+  getMenuSelectedKeys?: (item: TItem) => string[];
   onMenuClick: (item: TItem, key: string) => void;
   onRemove: (id: string) => void;
   onAddFieldAt: (payload: ShelfFieldPayload, insertIndex: number) => void;
@@ -134,6 +135,7 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
   setHoveredItemId: (id: string | null) => void;
   payload: ShelfFieldPayload;
   buildMenuItems: (item: TItem) => MenuProps['items'];
+  getMenuSelectedKeys?: (item: TItem) => string[];
   onMenuClick: (item: TItem, key: string) => void;
   onRemove: (id: string) => void;
 }) => {
@@ -149,6 +151,7 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
     setHoveredItemId,
     payload,
     buildMenuItems,
+    getMenuSelectedKeys,
     onMenuClick,
     onRemove,
   } = props;
@@ -204,6 +207,8 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
           placement="bottom"
           menu={{
             items: buildMenuItems(item),
+            selectable: true,
+            selectedKeys: getMenuSelectedKeys?.(item),
             onClick: ({ key, domEvent }) => {
               domEvent.stopPropagation();
               onMenuClick(item, String(key));
@@ -211,15 +216,18 @@ const FieldShelfTag = <TItem extends FieldShelfItem>(props: {
             style: {
               fontSize: 11,
               minWidth: 124,
-              padding: '8px 0',
+              padding: '6px 0',
               borderRadius: token.borderRadiusLG,
             },
             styles: {
+              item: SHELF_MENU_ITEM_STYLE,
               itemTitle: SHELF_MENU_SUBMENU_TITLE_STYLE,
             },
           }}
-          overlayStyle={{
-            paddingBlock: 4,
+          styles={{
+            root: {
+              paddingBlock: 4,
+            },
           }}
         >
           <span
@@ -294,6 +302,7 @@ export const FieldShelf = <TItem extends FieldShelfItem>(
     getDisplayLabel,
     getItemPayload,
     buildMenuItems,
+    getMenuSelectedKeys,
     onMenuClick,
     onRemove,
     onAddFieldAt,
@@ -349,6 +358,7 @@ export const FieldShelf = <TItem extends FieldShelfItem>(
             setHoveredItemId={setHoveredItemId}
             payload={payload}
             buildMenuItems={buildMenuItems}
+            getMenuSelectedKeys={getMenuSelectedKeys}
             onMenuClick={onMenuClick}
             onRemove={onRemove}
           />
