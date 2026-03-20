@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import type { ObserveCallback, VBIDimension, VBIDimensionGroup, VBIDimensionTree } from 'src/types'
+import type { ObserveDeepCallback, VBIDimension, VBIDimensionGroup, VBIDimensionTree } from 'src/types'
 import { DimensionNodeBuilder } from './dim-node-builder'
 import { id } from 'src/utils'
 import { getOrCreateDimensions, locateDimensionIndexById, normalizeDimensionNodeIds } from './dimension-utils'
@@ -125,11 +125,11 @@ export class DimensionsBuilder {
    * @param callback - 回调函数
    * @returns 取消监听的函数
    */
-  observe(callback: ObserveCallback): () => void {
+  observe(callback: ObserveDeepCallback): () => void {
     const dimensions = getOrCreateDimensions(this.dsl)
-    dimensions.observeDeep(callback as any)
+    dimensions.observeDeep(callback)
     return () => {
-      dimensions.unobserveDeep(callback as any)
+      dimensions.unobserveDeep(callback)
     }
   }
 

@@ -12,20 +12,15 @@ let datasetNeedsRefresh = true;
 
 export const createLocalConnector = (connectorId: string) => {
   const vquery = new VQuery();
-  console.log('Creating local connector:', connectorId);
 
   VBI.registerConnector(connectorId, async () => {
-    console.log('Connector called for:', connectorId);
     return {
       discoverSchema: async () => {
-        console.log('discoverSchema called, localData:', localData);
         if (localData.length === 0) {
-          console.log('No local data yet');
           return [];
         }
 
         if (localSchema) {
-          console.log('Using provided schema:', localSchema);
           return localSchema;
         }
 
@@ -40,27 +35,22 @@ export const createLocalConnector = (connectorId: string) => {
             type: typeof value === 'number' ? 'number' : 'string',
           }),
         );
-        console.log('Schema discovered:', schema);
         return schema;
       },
 
       query: async ({ queryDSL, schema }) => {
-        console.log('query called with DSL:', queryDSL, 'schema:', schema);
         const hasDataset = await vquery.hasDataset(connectorId);
 
         if (hasDataset && datasetNeedsRefresh) {
-          console.log('Dropping stale dataset before recreation...');
           await vquery.dropDataset(connectorId);
         }
 
         if (!(await vquery.hasDataset(connectorId))) {
           if (localData.length === 0) {
-            console.log('No data for query');
             return { dataset: [] };
           }
 
           const datasetSource = { type: 'json', rawDataset: localData };
-          console.log('Creating dataset...');
           await vquery.createDataset(
             connectorId,
             schema as DatasetColumn[],
@@ -73,7 +63,6 @@ export const createLocalConnector = (connectorId: string) => {
         const queryResult = await dataset.query(
           queryDSL as VQueryDSL<Record<string, string | number>>,
         );
-        console.log('Query result:', queryResult);
 
         // 度量感知的类型转换：将度量结果从字符串转换为数字
         let normalizedDataset = queryResult.dataset;
@@ -105,7 +94,6 @@ export const createLocalConnector = (connectorId: string) => {
               }
             }
           }
-          console.log('Identified measure fields:', measureFields);
 
           if (measureFields.length > 0 || dimensionFields.length > 0) {
             // SQL 列名优先是 alias（如果提供），否则是 field
@@ -115,9 +103,6 @@ export const createLocalConnector = (connectorId: string) => {
               for (const { field, alias } of measureFields) {
                 const sourceKey = alias || field;
                 const raw = (row as any)[sourceKey];
-                console.log(
-                  `Before: ${sourceKey} = ${raw} (type: ${typeof raw})`,
-                );
 
                 if (raw != null) {
                   let num: number;
@@ -136,10 +121,6 @@ export const createLocalConnector = (connectorId: string) => {
                     next[sourceKey] = num;
                   }
                 }
-
-                console.log(
-                  `After: ${sourceKey} = ${next[sourceKey]} (type: ${typeof next[sourceKey]})`,
-                );
               }
 
               for (const { field, alias } of dimensionFields) {
@@ -152,8 +133,6 @@ export const createLocalConnector = (connectorId: string) => {
 
               return next;
             });
-
-            console.log('Normalized dataset:', normalizedDataset);
           }
         }
 

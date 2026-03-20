@@ -29,12 +29,12 @@ function useDebouncedValue<T>(value: T, delay: number): T {
       return
     }
 
-    const timer = window.setTimeout(() => {
+    const timer = setTimeout(() => {
       setDebouncedValue(value)
     }, delay)
 
     return () => {
-      window.clearTimeout(timer)
+      clearTimeout(timer)
     }
   }, [delay, value])
 

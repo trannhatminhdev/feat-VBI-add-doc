@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import type { VBIWhereGroup, ObserveCallback } from 'src/types'
+import type { VBIWhereGroup, ObserveDeepCallback } from 'src/types'
 import { id } from 'src/utils'
 import { createWhereGroup, findEntry, isWhereGroup } from './where-utils'
 import { WhereFilterNodeBuilder } from './where-node-builder'
@@ -186,10 +186,10 @@ export class WhereFilterBuilder {
    * @param callback - 回调函数
    * @returns 取消监听的函数
    */
-  observe(callback: ObserveCallback): () => void {
-    this.whereFilter.observeDeep(callback as any)
+  observe(callback: ObserveDeepCallback): () => void {
+    this.whereFilter.observeDeep(callback)
     return () => {
-      this.whereFilter.unobserveDeep(callback as any)
+      this.whereFilter.unobserveDeep(callback)
     }
   }
 

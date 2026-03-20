@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import type { ObserveCallback, VBIMeasure, VBIMeasureGroup, VBIMeasureTree } from 'src/types'
+import type { ObserveDeepCallback, VBIMeasure, VBIMeasureGroup, VBIMeasureTree } from 'src/types'
 import { MeasureNodeBuilder } from './mea-node-builder'
 import { id } from 'src/utils'
 import { getOrCreateMeasures, locateMeasureIndexById, normalizeMeasureNodeIds } from './measure-utils'
@@ -130,11 +130,11 @@ export class MeasuresBuilder {
    * @param callback - 回调函数
    * @returns 取消监听的函数
    */
-  observe(callback: ObserveCallback): () => void {
+  observe(callback: ObserveDeepCallback): () => void {
     const measures = getOrCreateMeasures(this.dsl)
-    measures.observeDeep(callback as any)
+    measures.observeDeep(callback)
     return () => {
-      measures.unobserveDeep(callback as any)
+      measures.unobserveDeep(callback)
     }
   }
 

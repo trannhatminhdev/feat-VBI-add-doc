@@ -8,4 +8,4 @@ export type {
   VBIBuilderAdapters,
   VBIBuilderOptions,
 } from './adapter'
-export type { ObserveCallback } from './observe'
+export type { ObserveCallback, ObserveDeepCallback } from './observe'
