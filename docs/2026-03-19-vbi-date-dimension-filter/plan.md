@@ -1,6 +1,6 @@
 # 执行计划: VBI 日期筛选器支持
 
-> 基于 ADR: `docs/adr/2026-03-19-vbi-date-dimension-filter.md`
+> 基于 ADR: `./adr.md`
 > TDD 驱动: 先写测试 → 再实现 → 全部测试通过
 
 ## 范围
