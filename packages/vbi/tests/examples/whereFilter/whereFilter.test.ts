@@ -1,6 +1,22 @@
 import { VBI, VBIBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
+async function withMockedNow<T>(iso: string, run: () => Promise<T>): Promise<T> {
+  const RealDate = globalThis.Date
+  globalThis.Date = class extends RealDate {
+    constructor(...args: any[]) {
+      if (args.length === 0) super(iso)
+      else super(...(args as [any]))
+    }
+  } as any
+
+  try {
+    return await run()
+  } finally {
+    globalThis.Date = RealDate
+  }
+}
+
 describe('WhereFilter', () => {
   beforeAll(async () => {
     registerDemoConnector()
@@ -1754,67 +1770,68 @@ describe('WhereFilter', () => {
   })
 
   it('date-filter-relative-with-nested-conditions', async () => {
-    const builder = VBI.from({
-      connectorId: 'demoSupermarket',
-      chartType: 'column',
-      dimensions: [
-        {
-          field: 'province',
-          alias: '省份',
-        },
-      ],
-      measures: [
-        {
-          field: 'sales',
-          alias: '销售额',
-          encoding: 'yAxis',
-          aggregate: {
-            func: 'sum',
+    await withMockedNow('2026-03-19T12:00:00Z', async () => {
+      const builder = VBI.from({
+        connectorId: 'demoSupermarket',
+        chartType: 'column',
+        dimensions: [
+          {
+            field: 'province',
+            alias: '省份',
           },
-        },
-        {
-          field: 'profit',
-          alias: '利润',
-          encoding: 'yAxis',
-          aggregate: {
-            func: 'sum',
+        ],
+        measures: [
+          {
+            field: 'sales',
+            alias: '销售额',
+            encoding: 'yAxis',
+            aggregate: {
+              func: 'sum',
+            },
           },
+          {
+            field: 'profit',
+            alias: '利润',
+            encoding: 'yAxis',
+            aggregate: {
+              func: 'sum',
+            },
+          },
+        ],
+        whereFilter: {
+          id: 'root',
+          op: 'and',
+          conditions: [],
         },
-      ],
-      whereFilter: {
-        id: 'root',
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        id: 'root',
-        op: 'and',
-        conditions: [],
-      },
-      theme: 'light',
-      locale: 'zh-CN',
-      version: 1,
-      limit: 20,
-    })
+        havingFilter: {
+          id: 'root',
+          op: 'and',
+          conditions: [],
+        },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
 
-    // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
-      builder.whereFilter
-        .add('order_date', (node) => {
-          node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' })
-        })
-        .add('sales', (node) => node.setOperator('>').setValue(500))
-        .addGroup('or', (group) => {
-          group
-            .add('customer_type', (n) => n.setOperator('eq').setValue('消费者'))
-            .add('customer_type', (n) => n.setOperator('in').setValue(['公司', '小型企业']))
-        })
-    }
-    applyBuilder(builder)
+      // Apply custom builder code
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter
+          .add('order_date', (node) => {
+            node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' })
+          })
+          .add('sales', (node) => node.setOperator('>').setValue(500))
+          .addGroup('or', (group) => {
+            group
+              .add('customer_type', (n) => n.setOperator('eq').setValue('消费者'))
+              .add('customer_type', (n) => n.setOperator('in').setValue(['公司', '小型企业']))
+          })
+      }
+      applyBuilder(builder)
 
-    // Build VBI DSL
-    const vbiDSL = builder.build()
-    expect(vbiDSL).toMatchInlineSnapshot(`
+      // Build VBI DSL
+      const vbiDSL = builder.build()
+      expect(vbiDSL).toMatchInlineSnapshot(`
       {
         "chartType": "column",
         "connectorId": "demoSupermarket",
@@ -1901,9 +1918,9 @@ describe('WhereFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
-    const vQueryDSL = builder.buildVQuery()
-    expect(vQueryDSL).toMatchInlineSnapshot(`
+      // Build VQuery DSL
+      const vQueryDSL = builder.buildVQuery()
+      expect(vQueryDSL).toMatchInlineSnapshot(`
       {
         "groupBy": [
           "province",
@@ -1970,9 +1987,9 @@ describe('WhereFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
-    const vSeedDSL = await builder.buildVSeed()
-    expect(vSeedDSL).toMatchInlineSnapshot(`
+      // Build VSeed DSL
+      const vSeedDSL = await builder.buildVSeed()
+      expect(vSeedDSL).toMatchInlineSnapshot(`
       {
         "chartType": "column",
         "dataset": [],
@@ -1998,6 +2015,7 @@ describe('WhereFilter', () => {
         "theme": "light",
       }
     `)
+    })
   })
 
   it('deeply-nested-or-and-groups', async () => {
