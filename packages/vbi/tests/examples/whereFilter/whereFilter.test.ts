@@ -1,6 +1,22 @@
 import { VBI, VBIBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
+async function withMockedNow<T>(iso: string, run: () => Promise<T>): Promise<T> {
+  const RealDate = globalThis.Date
+  globalThis.Date = class extends RealDate {
+    constructor(...args: any[]) {
+      if (args.length === 0) super(iso)
+      else super(...(args as [any]))
+    }
+  } as any
+
+  try {
+    return await run()
+  } finally {
+    globalThis.Date = RealDate
+  }
+}
+
 describe('WhereFilter', () => {
   beforeAll(async () => {
     registerDemoConnector()
@@ -1506,6 +1522,500 @@ describe('WhereFilter', () => {
         "theme": "light",
       }
     `)
+  })
+
+  it('date-filter-period-and-range-combo', async () => {
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'bar',
+      dimensions: [
+        {
+          field: 'product_type',
+          alias: '品类',
+        },
+        {
+          field: 'delivery_method',
+          alias: '配送方式',
+        },
+      ],
+      measures: [
+        {
+          field: 'sales',
+          alias: '销售额',
+          encoding: 'yAxis',
+          aggregate: {
+            func: 'sum',
+          },
+        },
+        {
+          field: 'profit',
+          alias: '利润率',
+          encoding: 'yAxis',
+          aggregate: {
+            func: 'avg',
+          },
+        },
+      ],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+      limit: 50,
+    })
+
+    // Apply custom builder code
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.whereFilter
+        .add('order_date', (node) => {
+          node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 })
+        })
+        .add('profit', (node) => {
+          node.setOperator('between').setValue({ min: 0, max: 5000, leftOp: '<=', rightOp: '<' })
+        })
+        .add('sales', (node) => node.setOperator('>=').setValue(100))
+    }
+    applyBuilder(builder)
+
+    // Build VBI DSL
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "bar",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "品类",
+            "field": "product_type",
+            "id": "id-3",
+          },
+          {
+            "alias": "配送方式",
+            "field": "delivery_method",
+            "id": "id-4",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 50,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "field": "sales",
+            "id": "id-1",
+          },
+          {
+            "aggregate": {
+              "func": "avg",
+            },
+            "alias": "利润率",
+            "encoding": "yAxis",
+            "field": "profit",
+            "id": "id-2",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "order_date",
+              "id": "id-5",
+              "op": "date",
+              "value": {
+                "quarter": 1,
+                "type": "period",
+                "unit": "quarter",
+                "year": 2024,
+              },
+            },
+            {
+              "field": "profit",
+              "id": "id-6",
+              "op": "between",
+              "value": {
+                "leftOp": "<=",
+                "max": 5000,
+                "min": 0,
+                "rightOp": "<",
+              },
+            },
+            {
+              "field": "sales",
+              "id": "id-7",
+              "op": ">=",
+              "value": 100,
+            },
+          ],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VQuery DSL
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "product_type",
+          "delivery_method",
+        ],
+        "limit": 50,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-1",
+            "field": "sales",
+          },
+          {
+            "aggr": {
+              "func": "avg",
+            },
+            "alias": "id-2",
+            "field": "profit",
+          },
+          {
+            "alias": "id-3",
+            "field": "product_type",
+          },
+          {
+            "alias": "id-4",
+            "field": "delivery_method",
+          },
+        ],
+        "where": {
+          "conditions": [
+            {
+              "field": "order_date",
+              "op": ">=",
+              "value": "2024-01-01",
+            },
+            {
+              "field": "order_date",
+              "op": "<",
+              "value": "2024-04-01",
+            },
+            {
+              "field": "profit",
+              "op": ">=",
+              "value": 0,
+            },
+            {
+              "field": "profit",
+              "op": "<",
+              "value": 5000,
+            },
+            {
+              "field": "sales",
+              "op": ">=",
+              "value": 100,
+            },
+          ],
+          "op": "and",
+        },
+      }
+    `)
+
+    // Build VSeed DSL
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "bar",
+        "dataset": [],
+        "dimensions": [
+          {
+            "alias": "品类",
+            "id": "id-3",
+          },
+          {
+            "alias": "配送方式",
+            "id": "id-4",
+          },
+        ],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "id": "id-1",
+          },
+          {
+            "alias": "利润率",
+            "encoding": "yAxis",
+            "id": "id-2",
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+  })
+
+  it('date-filter-relative-with-nested-conditions', async () => {
+    await withMockedNow('2026-03-19T12:00:00Z', async () => {
+      const builder = VBI.from({
+        connectorId: 'demoSupermarket',
+        chartType: 'column',
+        dimensions: [
+          {
+            field: 'province',
+            alias: '省份',
+          },
+        ],
+        measures: [
+          {
+            field: 'sales',
+            alias: '销售额',
+            encoding: 'yAxis',
+            aggregate: {
+              func: 'sum',
+            },
+          },
+          {
+            field: 'profit',
+            alias: '利润',
+            encoding: 'yAxis',
+            aggregate: {
+              func: 'sum',
+            },
+          },
+        ],
+        whereFilter: {
+          id: 'root',
+          op: 'and',
+          conditions: [],
+        },
+        havingFilter: {
+          id: 'root',
+          op: 'and',
+          conditions: [],
+        },
+        theme: 'light',
+        locale: 'zh-CN',
+        version: 1,
+        limit: 20,
+      })
+
+      // Apply custom builder code
+      const applyBuilder = (builder: VBIBuilder) => {
+        builder.whereFilter
+          .add('order_date', (node) => {
+            node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' })
+          })
+          .add('sales', (node) => node.setOperator('>').setValue(500))
+          .addGroup('or', (group) => {
+            group
+              .add('customer_type', (n) => n.setOperator('eq').setValue('消费者'))
+              .add('customer_type', (n) => n.setOperator('in').setValue(['公司', '小型企业']))
+          })
+      }
+      applyBuilder(builder)
+
+      // Build VBI DSL
+      const vbiDSL = builder.build()
+      expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "connectorId": "demoSupermarket",
+        "dimensions": [
+          {
+            "alias": "省份",
+            "field": "province",
+            "id": "id-3",
+          },
+        ],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 20,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "field": "sales",
+            "id": "id-1",
+          },
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "利润",
+            "encoding": "yAxis",
+            "field": "profit",
+            "id": "id-2",
+          },
+        ],
+        "theme": "light",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [
+            {
+              "field": "order_date",
+              "id": "id-4",
+              "op": "date",
+              "value": {
+                "amount": 30,
+                "mode": "last",
+                "type": "relative",
+                "unit": "day",
+              },
+            },
+            {
+              "field": "sales",
+              "id": "id-5",
+              "op": ">",
+              "value": 500,
+            },
+            {
+              "conditions": [
+                {
+                  "field": "customer_type",
+                  "id": "id-7",
+                  "op": "eq",
+                  "value": "消费者",
+                },
+                {
+                  "field": "customer_type",
+                  "id": "id-8",
+                  "op": "in",
+                  "value": [
+                    "公司",
+                    "小型企业",
+                  ],
+                },
+              ],
+              "id": "id-6",
+              "op": "or",
+            },
+          ],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+      // Build VQuery DSL
+      const vQueryDSL = builder.buildVQuery()
+      expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [
+          "province",
+        ],
+        "limit": 20,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-1",
+            "field": "sales",
+          },
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-2",
+            "field": "profit",
+          },
+          {
+            "alias": "id-3",
+            "field": "province",
+          },
+        ],
+        "where": {
+          "conditions": [
+            {
+              "field": "order_date",
+              "op": ">=",
+              "value": "2026-02-17",
+            },
+            {
+              "field": "order_date",
+              "op": "<",
+              "value": "2026-03-19",
+            },
+            {
+              "field": "sales",
+              "op": ">",
+              "value": 500,
+            },
+            {
+              "conditions": [
+                {
+                  "field": "customer_type",
+                  "op": "eq",
+                  "value": "消费者",
+                },
+                {
+                  "field": "customer_type",
+                  "op": "in",
+                  "value": [
+                    "公司",
+                    "小型企业",
+                  ],
+                },
+              ],
+              "op": "or",
+            },
+          ],
+          "op": "and",
+        },
+      }
+    `)
+
+      // Build VSeed DSL
+      const vSeedDSL = await builder.buildVSeed()
+      expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "column",
+        "dataset": [],
+        "dimensions": [
+          {
+            "alias": "省份",
+            "id": "id-3",
+          },
+        ],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "id": "id-1",
+          },
+          {
+            "alias": "利润",
+            "encoding": "yAxis",
+            "id": "id-2",
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+    })
   })
 
   it('deeply-nested-or-and-groups', async () => {

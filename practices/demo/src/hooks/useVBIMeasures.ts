@@ -1,5 +1,9 @@
 import { useCallback } from 'react';
-import { VBIBuilder, type VBIMeasure as CoreVBIMeasure } from '@visactor/vbi';
+import {
+  VBIBuilder,
+  type VBIMeasure as CoreVBIMeasure,
+  type VBIMeasureFormat,
+} from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
 
 export type VBIMeasure = Omit<CoreVBIMeasure, 'encoding' | 'aggregate'> & {
@@ -12,6 +16,9 @@ type MeasureNodeLike = {
   setEncoding: (encoding: NonNullable<VBIMeasure['encoding']>) => unknown;
   setAlias: (alias: string) => unknown;
   setAggregate: (aggregate: NonNullable<VBIMeasure['aggregate']>) => unknown;
+  setFormat: (format: VBIMeasureFormat) => unknown;
+  getFormat?: () => VBIMeasureFormat | undefined;
+  clearFormat: () => unknown;
 };
 
 type MeasureNodeMutator = (node: MeasureNodeLike) => void;

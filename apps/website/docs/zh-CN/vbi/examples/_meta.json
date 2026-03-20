@@ -27,7 +27,7 @@
     "type": "file",
     "name": "measures",
     "label": "Measures",
-    "count": 4
+    "count": 5
   },
   {
     "type": "file",
@@ -43,14 +43,8 @@
   },
   {
     "type": "file",
-    "name": "utils",
-    "label": "Utils",
-    "count": 0
-  },
-  {
-    "type": "file",
     "name": "whereFilter",
     "label": "WhereFilter",
-    "count": 13
+    "count": 18
   }
 ]

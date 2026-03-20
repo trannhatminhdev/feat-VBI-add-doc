@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import { VBIFilter } from '../../../types'
+import type { VBIWhereDatePredicate, VBIWhereFilter } from '../../../types'
 
 /**
  * @description Where 过滤节点构建器，用于配置单个 Where 过滤条件
@@ -56,9 +56,27 @@ export class WhereFilterNodeBuilder {
   }
 
   /**
+   * @description 设置日期过滤条件
+   * @param predicate - 日期谓词
+   */
+  setDate(predicate: VBIWhereDatePredicate): this {
+    this.yMap.set('op', 'date')
+    this.yMap.set('value', predicate)
+    return this
+  }
+
+  /**
+   * @description 获取日期过滤条件，非日期过滤返回 undefined
+   */
+  getDate(): VBIWhereDatePredicate | undefined {
+    if (this.yMap.get('op') !== 'date') return undefined
+    return this.yMap.get('value') as VBIWhereDatePredicate | undefined
+  }
+
+  /**
    * @description 导出为 JSON
    */
-  toJSON(): VBIFilter {
-    return this.yMap.toJSON() as VBIFilter
+  toJSON(): VBIWhereFilter {
+    return this.yMap.toJSON() as VBIWhereFilter
   }
 }

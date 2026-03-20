@@ -1,0 +1,35 @@
+{
+  "name": "date-filter-period-and-range-combo",
+  "description": "日期区间组合过滤：使用 period 筛选2024年Q1数据，同时用 range 限定利润区间，按品类和配送方式交叉分析",
+  "schema": [
+    { "name": "order_date", "type": "string" },
+    { "name": "product_type", "type": "string" },
+    { "name": "delivery_method", "type": "string" },
+    { "name": "sales", "type": "number" },
+    { "name": "profit", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "bar",
+    "dimensions": [
+      { "field": "product_type", "alias": "品类" },
+      { "field": "delivery_method", "alias": "配送方式" }
+    ],
+    "measures": [
+      {
+        "field": "sales",
+        "alias": "销售额",
+        "encoding": "yAxis",
+        "aggregate": { "func": "sum" }
+      },
+      {
+        "field": "profit",
+        "alias": "利润率",
+        "encoding": "yAxis",
+        "aggregate": { "func": "avg" }
+      }
+    ],
+    "limit": 50,
+    "whereFilter": { "id": "root", "op": "and", "conditions": [] }
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter\n    .add('order_date', node => {\n      node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 });\n    })\n    .add('profit', node => {\n      node.setOperator('between').setValue({ min: 0, max: 5000, leftOp: '<=', rightOp: '<' });\n    })\n    .add('sales', node => node.setOperator('>=').setValue(100));\n}"
+}

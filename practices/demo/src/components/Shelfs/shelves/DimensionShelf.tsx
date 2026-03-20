@@ -21,6 +21,11 @@ import {
   type DimensionDateAggregate,
 } from '../utils/dimensionDateAggregateUtils';
 import {
+  buildShelfMenuLabel,
+  SHELF_MENU_SUBMENU_OFFSET,
+} from '../utils/menuItemUtils';
+import { getDimensionMenuSelectedKeys } from '../utils/menuSelectionUtils';
+import {
   reorderYArrayByInsertIndex,
   type YArrayLike,
 } from '../utils/reorderUtils';
@@ -175,14 +180,9 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   const buildMenuItems = (
     dimension: (typeof dimensions)[number],
   ): MenuProps['items'] => {
-    const currentAggregate = normalizeDimensionDateAggregate(
-      dimension.aggregate,
-      fieldTypeMap[dimension.field],
-    );
     const items: NonNullable<MenuProps['items']> = [];
     const supportedEncodings =
       builder.chartType.getSupportedDimensionEncodings();
-    const currentEncoding = dimension.encoding;
     const dimensionIndex = dimensions.findIndex(
       (item) => item.id === dimension.id,
     );
@@ -193,48 +193,44 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
           ]
         : undefined;
 
-    items.push({
-      key: 'encoding',
-      label: t('shelvesMenuEncoding'),
-      children: supportedEncodings.map((encoding) => {
-        const selectedPrefix = currentEncoding === encoding ? '✓ ' : '';
-        const recommendedSuffix =
-          recommendedEncoding === encoding
-            ? ` ${t('commonStatusRecommended')}`
-            : '';
-
-        return {
-          key: `encoding:${encoding}`,
-          label: `${selectedPrefix}${t(
-            DIMENSION_ENCODING_LABEL_KEY_MAP[encoding],
-          )}${recommendedSuffix}`,
-          style: SHELF_MENU_ITEM_STYLE,
-        };
-      }),
-    });
-
     if (isDateField(dimension.field)) {
       items.push({
         key: 'aggregate',
         label: t('shelvesMenuDateAggregate'),
+        popupOffset: SHELF_MENU_SUBMENU_OFFSET,
         children: [
           ...getDimensionDateAggregateItems(t).map((item) => ({
             key: `aggregate:${item.key}`,
-            label: `${currentAggregate?.func === item.key ? '✓ ' : ''}${
-              item.shortLabel
-            }`,
+            label: item.shortLabel,
             style: SHELF_MENU_ITEM_STYLE,
           })),
           {
             key: 'aggregate:none',
-            label: `${!currentAggregate ? '✓ ' : ''}${t(
-              'shelvesMenuRawValue',
-            )}`,
+            label: t('shelvesMenuRawValue'),
             style: SHELF_MENU_ITEM_STYLE,
           },
         ],
       });
     }
+
+    items.push({
+      key: 'encoding',
+      label: t('shelvesMenuEncoding'),
+      popupOffset: SHELF_MENU_SUBMENU_OFFSET,
+      children: supportedEncodings.map((encoding) => {
+        const recommendedSuffix =
+          recommendedEncoding === encoding ? t('commonStatusRecommended') : '';
+
+        return {
+          key: `encoding:${encoding}`,
+          label: buildShelfMenuLabel(
+            t(DIMENSION_ENCODING_LABEL_KEY_MAP[encoding]),
+            recommendedSuffix,
+          ),
+          style: SHELF_MENU_ITEM_STYLE,
+        };
+      }),
+    });
 
     items.push(
       {
@@ -339,6 +335,9 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
         role: getFieldRoleBySchemaType(fieldTypeMap[item.field]),
       })}
       buildMenuItems={buildMenuItems}
+      getMenuSelectedKeys={(item) =>
+        getDimensionMenuSelectedKeys(item, fieldTypeMap[item.field])
+      }
       onMenuClick={handleMenuClick}
       onRemove={removeDimension}
       onAddFieldAt={(payload, insertIndex) => {

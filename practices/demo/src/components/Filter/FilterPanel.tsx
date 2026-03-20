@@ -31,6 +31,9 @@ import {
   normalizeWhereRangeValue,
   serializeWhereFilterValue,
 } from './whereFilterUtils';
+import { DateFilterEditor } from './DateFilterEditor';
+import { getDefaultDatePredicate } from './dateFilterUtils';
+import type { VBIWhereDatePredicate } from '@visactor/vbi';
 import { useTranslation } from 'src/i18n';
 
 const { Option = Select.Option } = Select;
@@ -109,6 +112,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form] = Form.useForm();
+  const [datePredicate, setDatePredicate] =
+    useState<VBIWhereDatePredicate | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const operator = Form.useWatch('operator', form);
@@ -120,9 +125,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   const selectedField = selectedFieldFromForm ?? fixedEditingField;
 
   // 根据选择的字段自动判断类型
-  const selectedFieldRole = selectedField
-    ? (fields.find((f) => f.name === selectedField)?.role ?? 'dimension')
-    : 'dimension';
+  const selectedFieldMeta = selectedField
+    ? fields.find((f) => f.name === selectedField)
+    : undefined;
+  const selectedFieldRole = selectedFieldMeta?.role ?? 'dimension';
+  const isDateField = selectedFieldMeta?.isDate === true;
 
   const availableOperators = React.useMemo(() => {
     return getWhereOperatorOptions(selectedFieldRole, t);
@@ -140,6 +147,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     if (!popoverOpen) {
       setIsAdding(false);
       setEditingId(null);
+      setDatePredicate(null);
       form.resetFields();
     }
   }, [popoverOpen, form, itemEdit]);
@@ -151,15 +159,24 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     }
 
     const item = filters[0];
-    form.setFieldsValue({
-      field: item.field,
-      operator: normalizeWhereOperator(item.operator),
-      value: getWhereFilterFormValue(item.operator, item.value),
-    });
+    if (normalizeWhereOperator(item.operator) === 'date') {
+      setDatePredicate(item.value as VBIWhereDatePredicate);
+      form.setFieldsValue({ field: item.field });
+    } else {
+      setDatePredicate(null);
+      form.setFieldsValue({
+        field: item.field,
+        operator: normalizeWhereOperator(item.operator),
+        value: getWhereFilterFormValue(item.operator, item.value),
+      });
+    }
   }, [isSingleItemEdit, open, filters, form]);
 
-  // Update operator when role changes
+  // Update operator when role changes (skip in date mode)
   useEffect(() => {
+    if (isDateField || datePredicate) {
+      return;
+    }
     if (isAdding || editingId || (isSingleItemEdit && open)) {
       const currentOperator = normalizeWhereOperator(
         form.getFieldValue('operator'),
@@ -171,10 +188,22 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         form.setFieldValue('operator', availableOperators[0]?.value);
       }
     }
-  }, [availableOperators, form, isAdding, editingId, isSingleItemEdit, open]);
+  }, [
+    availableOperators,
+    form,
+    isAdding,
+    editingId,
+    isSingleItemEdit,
+    open,
+    isDateField,
+    datePredicate,
+  ]);
 
-  // 按输入策略维护表单值形状
+  // 按输入策略维护表单值形状 (skip in date mode)
   useEffect(() => {
+    if (isDateField || datePredicate) {
+      return;
+    }
     if (isAdding || editingId || (isSingleItemEdit && open)) {
       const currentValue = form.getFieldValue('value');
 
@@ -230,10 +259,13 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     isSingleItemEdit,
     open,
     operator,
+    isDateField,
+    datePredicate,
   ]);
 
   const handleAddClick = () => {
     setEditingId(null);
+    setDatePredicate(null);
     form.resetFields();
     form.setFieldsValue({
       operator: getDefaultWhereOperator('dimension'),
@@ -247,30 +279,46 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
     setEditingId(id);
     setIsAdding(false);
-    form.setFieldsValue({
-      field: item.field,
-      operator: normalizeWhereOperator(item.operator),
-      value: getWhereFilterFormValue(item.operator, item.value),
-    });
+
+    if (normalizeWhereOperator(item.operator) === 'date') {
+      setDatePredicate(item.value as VBIWhereDatePredicate);
+      form.setFieldsValue({ field: item.field });
+    } else {
+      setDatePredicate(null);
+      form.setFieldsValue({
+        field: item.field,
+        operator: normalizeWhereOperator(item.operator),
+        value: getWhereFilterFormValue(item.operator, item.value),
+      });
+    }
   };
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
       const field = values.field ?? fixedEditingField;
-      const { operator, value } = values;
       if (!field) {
         return;
       }
-      const fieldRole =
-        fields.find((f) => f.name === field)?.role ??
-        selectedFieldRole ??
-        'dimension';
-      const normalizedOperator = normalizeWhereOperator(operator);
-      const finalValue = serializeWhereFilterValue({
-        operator: normalizedOperator,
-        fieldRole,
-        value,
-      });
+
+      const fieldMeta = fields.find((f) => f.name === field);
+      const isDateSubmit = fieldMeta?.isDate === true || datePredicate !== null;
+
+      let normalizedOperator: string;
+      let finalValue: unknown;
+
+      if (isDateSubmit && datePredicate) {
+        normalizedOperator = 'date';
+        finalValue = datePredicate;
+      } else {
+        const { operator, value } = values;
+        const fieldRole = fieldMeta?.role ?? selectedFieldRole ?? 'dimension';
+        normalizedOperator = normalizeWhereOperator(operator);
+        finalValue = serializeWhereFilterValue({
+          operator: normalizedOperator,
+          fieldRole,
+          value,
+        });
+      }
 
       // 获取原有 filter 的 id（编辑模式）
       const existingFilter = isSingleItemEdit
@@ -311,6 +359,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
 
       setIsAdding(false);
       setEditingId(null);
+      setDatePredicate(null);
       form.resetFields();
     });
   };
@@ -318,6 +367,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   const handleCancel = () => {
     setIsAdding(false);
     setEditingId(null);
+    setDatePredicate(null);
     form.resetFields();
     onCancel?.();
   };
@@ -374,12 +424,21 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             showSearch
             variant="filled"
             onChange={(fieldName) => {
-              const nextFieldRole =
-                fields.find((f) => f.name === fieldName)?.role ?? 'dimension';
-              form.setFieldsValue({
-                operator: getDefaultWhereOperator(nextFieldRole),
-                value: undefined,
-              });
+              const nextField = fields.find((f) => f.name === fieldName);
+              const nextFieldRole = nextField?.role ?? 'dimension';
+              if (nextField?.isDate) {
+                setDatePredicate(getDefaultDatePredicate());
+                form.setFieldsValue({
+                  operator: undefined,
+                  value: undefined,
+                });
+              } else {
+                setDatePredicate(null);
+                form.setFieldsValue({
+                  operator: getDefaultWhereOperator(nextFieldRole),
+                  value: undefined,
+                });
+              }
             }}
           >
             {fields.map((f) => {
@@ -401,148 +460,164 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </Form.Item>
       )}
 
-      <Form.Item
-        label={isSingleItemEdit ? undefined : t('filtersFormOperator')}
-        name="operator"
-        rules={[
-          { required: true, message: t('filtersValidationSelectOperator') },
-        ]}
-        style={{ marginBottom: 10 }}
-      >
-        <Select
-          variant="filled"
-          onChange={() => {
-            form.setFieldsValue({ value: undefined });
-          }}
-        >
-          {availableOperators.map((op) => (
-            <Option key={op.value} value={op.value}>
-              {op.label}
-            </Option>
-          ))}
-        </Select>
-      </Form.Item>
-
-      {inputStrategy === 'none' ? (
-        <div style={{ color: '#999', fontSize: 11, padding: '6px 0 10px' }}>
-          {t('filtersFormNoValueRequired')}
-        </div>
-      ) : inputStrategy === 'range' ? (
-        <Form.Item
-          label={isSingleItemEdit ? undefined : t('filtersFormRange')}
-          style={{ marginBottom: 10 }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Form.Item name={['value', 'min']} noStyle>
-              {selectedFieldRole === 'measure' ? (
-                <InputNumber
-                  placeholder={t('filtersFormMin')}
-                  variant="filled"
-                  style={{ width: isSingleItemEdit ? 46 : 62 }}
-                  controls={false}
-                />
-              ) : (
-                <Input
-                  placeholder={t('filtersFormMin')}
-                  variant="filled"
-                  style={{ width: isSingleItemEdit ? 46 : 62 }}
-                />
-              )}
-            </Form.Item>
-            <Form.Item name={['value', 'leftOp']} noStyle>
-              <Select
-                variant="filled"
-                style={{ width: isSingleItemEdit ? 36 : 48 }}
-              >
-                <Option value="<">&lt;</Option>
-                <Option value="<=">&lt;=</Option>
-              </Select>
-            </Form.Item>
-            {!isSingleItemEdit && (
-              <Text ellipsis style={{ maxWidth: 60, fontSize: 12 }}>
-                {selectedField || '?'}
-              </Text>
-            )}
-            <Form.Item name={['value', 'rightOp']} noStyle>
-              <Select
-                variant="filled"
-                style={{ width: isSingleItemEdit ? 36 : 48 }}
-              >
-                <Option value="<">&lt;</Option>
-                <Option value="<=">&lt;=</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item name={['value', 'max']} noStyle>
-              {selectedFieldRole === 'measure' ? (
-                <InputNumber
-                  placeholder={t('filtersFormMax')}
-                  variant="filled"
-                  style={{ width: isSingleItemEdit ? 46 : 62 }}
-                  controls={false}
-                />
-              ) : (
-                <Input
-                  placeholder={t('filtersFormMax')}
-                  variant="filled"
-                  style={{ width: isSingleItemEdit ? 46 : 62 }}
-                />
-              )}
-            </Form.Item>
-          </div>
-        </Form.Item>
-      ) : inputStrategy === 'tags' ? (
-        <Form.Item
-          label={isSingleItemEdit ? undefined : t('filtersFormValue')}
-          name="value"
-          rules={[
-            {
-              validator: (_, value) => {
-                if (Array.isArray(value) && value.length > 0) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(
-                  new Error(t('filtersValidationEnterAtLeastOneValue')),
-                );
-              },
-            },
-          ]}
-          style={{ marginBottom: 10 }}
-        >
-          <Select
-            mode="tags"
-            variant="filled"
-            tokenSeparators={[',']}
-            placeholder={
-              selectedFieldRole === 'measure'
-                ? t('filtersFormInputNumbers')
-                : t('filtersFormInputValues')
-            }
-            style={{ width: '100%' }}
+      {isDateField || datePredicate ? (
+        <div style={{ marginBottom: 10 }}>
+          <DateFilterEditor
+            value={datePredicate ?? getDefaultDatePredicate()}
+            onChange={setDatePredicate}
           />
-        </Form.Item>
+        </div>
       ) : (
-        <Form.Item
-          label={isSingleItemEdit ? undefined : t('filtersFormValue')}
-          name="value"
-          rules={[
-            {
-              required: !['is null', 'is not null'].includes(operator ?? ''),
-              message: t('filtersValidationEnterValue'),
-            },
-          ]}
-          style={{ marginBottom: 10 }}
-        >
-          {inputStrategy === 'number' ? (
-            <InputNumber
+        <>
+          <Form.Item
+            label={isSingleItemEdit ? undefined : t('filtersFormOperator')}
+            name="operator"
+            rules={[
+              { required: true, message: t('filtersValidationSelectOperator') },
+            ]}
+            style={{ marginBottom: 10 }}
+          >
+            <Select
               variant="filled"
-              placeholder={t('filtersFormInputNumber')}
-              style={{ width: '100%' }}
-              controls={false}
-            />
+              onChange={() => {
+                form.setFieldsValue({ value: undefined });
+              }}
+            >
+              {availableOperators.map((op) => (
+                <Option key={op.value} value={op.value}>
+                  {op.label}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          {inputStrategy === 'none' ? (
+            <div style={{ color: '#999', fontSize: 11, padding: '6px 0 10px' }}>
+              {t('filtersFormNoValueRequired')}
+            </div>
+          ) : inputStrategy === 'range' ? (
+            <Form.Item
+              label={isSingleItemEdit ? undefined : t('filtersFormRange')}
+              style={{ marginBottom: 10 }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Form.Item name={['value', 'min']} noStyle>
+                  {selectedFieldRole === 'measure' ? (
+                    <InputNumber
+                      placeholder={t('filtersFormMin')}
+                      variant="filled"
+                      style={{ width: isSingleItemEdit ? 46 : 62 }}
+                      controls={false}
+                    />
+                  ) : (
+                    <Input
+                      placeholder={t('filtersFormMin')}
+                      variant="filled"
+                      style={{ width: isSingleItemEdit ? 46 : 62 }}
+                    />
+                  )}
+                </Form.Item>
+                <Form.Item name={['value', 'leftOp']} noStyle>
+                  <Select
+                    variant="filled"
+                    style={{ width: isSingleItemEdit ? 36 : 48 }}
+                  >
+                    <Option value="<">&lt;</Option>
+                    <Option value="<=">&lt;=</Option>
+                  </Select>
+                </Form.Item>
+                {!isSingleItemEdit && (
+                  <Text ellipsis style={{ maxWidth: 60, fontSize: 12 }}>
+                    {selectedField || '?'}
+                  </Text>
+                )}
+                <Form.Item name={['value', 'rightOp']} noStyle>
+                  <Select
+                    variant="filled"
+                    style={{ width: isSingleItemEdit ? 36 : 48 }}
+                  >
+                    <Option value="<">&lt;</Option>
+                    <Option value="<=">&lt;=</Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item name={['value', 'max']} noStyle>
+                  {selectedFieldRole === 'measure' ? (
+                    <InputNumber
+                      placeholder={t('filtersFormMax')}
+                      variant="filled"
+                      style={{ width: isSingleItemEdit ? 46 : 62 }}
+                      controls={false}
+                    />
+                  ) : (
+                    <Input
+                      placeholder={t('filtersFormMax')}
+                      variant="filled"
+                      style={{ width: isSingleItemEdit ? 46 : 62 }}
+                    />
+                  )}
+                </Form.Item>
+              </div>
+            </Form.Item>
+          ) : inputStrategy === 'tags' ? (
+            <Form.Item
+              label={isSingleItemEdit ? undefined : t('filtersFormValue')}
+              name="value"
+              rules={[
+                {
+                  validator: (_, value) => {
+                    if (Array.isArray(value) && value.length > 0) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(
+                      new Error(t('filtersValidationEnterAtLeastOneValue')),
+                    );
+                  },
+                },
+              ]}
+              style={{ marginBottom: 10 }}
+            >
+              <Select
+                mode="tags"
+                variant="filled"
+                tokenSeparators={[',']}
+                placeholder={
+                  selectedFieldRole === 'measure'
+                    ? t('filtersFormInputNumbers')
+                    : t('filtersFormInputValues')
+                }
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
           ) : (
-            <Input placeholder={t('filtersFormInputValue')} variant="filled" />
+            <Form.Item
+              label={isSingleItemEdit ? undefined : t('filtersFormValue')}
+              name="value"
+              rules={[
+                {
+                  required: !['is null', 'is not null'].includes(
+                    operator ?? '',
+                  ),
+                  message: t('filtersValidationEnterValue'),
+                },
+              ]}
+              style={{ marginBottom: 10 }}
+            >
+              {inputStrategy === 'number' ? (
+                <InputNumber
+                  variant="filled"
+                  placeholder={t('filtersFormInputNumber')}
+                  style={{ width: '100%' }}
+                  controls={false}
+                />
+              ) : (
+                <Input
+                  placeholder={t('filtersFormInputValue')}
+                  variant="filled"
+                />
+              )}
+            </Form.Item>
           )}
-        </Form.Item>
+        </>
       )}
 
       <Form.Item style={{ marginBottom: 0, marginTop: 2, textAlign: 'right' }}>

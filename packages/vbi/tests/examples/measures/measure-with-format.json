@@ -1,0 +1,17 @@
+{
+  "name": "measure-with-custom-and-auto-format",
+  "description": "度量格式化：销售额使用万元自定义格式（¥前缀、保留2位小数），利润率使用自动格式化，折扣使用百分比格式",
+  "schema": [
+    { "name": "product_type", "type": "string" },
+    { "name": "sales", "type": "number" },
+    { "name": "profit", "type": "number" },
+    { "name": "discount", "type": "number" }
+  ],
+  "dsl": {
+    "chartType": "table",
+    "dimensions": [{ "field": "product_type", "alias": "品类" }],
+    "measures": [],
+    "limit": 20
+  },
+  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.measures\n    .add('sales', node => {\n      node.setAlias('销售额（万元）')\n        .setAggregate({ func: 'sum' })\n        .setEncoding('column')\n        .setFormat({\n          type: 'number',\n          ratio: 10000,\n          symbol: '万',\n          prefix: '¥',\n          fractionDigits: 2\n        });\n    })\n    .add('profit', node => {\n      node.setAlias('利润')\n        .setAggregate({ func: 'sum' })\n        .setEncoding('column')\n        .setFormat({ autoFormat: true });\n    })\n    .add('discount', node => {\n      node.setAlias('平均折扣')\n        .setAggregate({ func: 'avg' })\n        .setEncoding('column')\n        .setFormat({\n          type: 'percent',\n          fractionDigits: 1\n        });\n    });\n}"
+}

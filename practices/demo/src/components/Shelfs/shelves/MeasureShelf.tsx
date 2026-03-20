@@ -5,12 +5,13 @@ import { useMemo } from 'react';
 import { useVBIBuilder, useVBIMeasures, useVBISchemaFields } from 'src/hooks';
 import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';
-import type { VBIMeasure } from '@visactor/vbi';
+import type { VBIMeasure, VBIMeasureFormat } from '@visactor/vbi';
 import {
   FieldShelf,
   SHELF_MENU_ITEM_STYLE,
   type FieldShelfTone,
 } from '../common/FieldShelf';
+import { MeasureFormatPanel } from '../common/MeasureFormatPanel';
 import { openShelfRenameModal } from '../common/openShelfRenameModal';
 import {
   formatMeasureAggregate,
@@ -20,6 +21,11 @@ import {
   isAggregateSupportedByFieldRole,
   type MeasureAggregate,
 } from '../utils/measureAggregateUtils';
+import {
+  buildShelfMenuLabel,
+  SHELF_MENU_SUBMENU_OFFSET,
+} from '../utils/menuItemUtils';
+import { getMeasureMenuSelectedKeys } from '../utils/menuSelectionUtils';
 import {
   reorderYArrayByInsertIndex,
   type YArrayLike,
@@ -150,18 +156,22 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     });
   };
 
+  const changeFormat = (id: string, format: VBIMeasureFormat | undefined) => {
+    updateMeasure(id, (node) => {
+      if (format === undefined) {
+        node.clearFormat();
+      } else {
+        node.setFormat(format);
+      }
+    });
+  };
+
   const buildMeasureMenuItems = (
     measure: (typeof measures)[number],
   ): MenuProps['items'] => {
     const fieldRole = getFieldRole(measure.field);
     const availableAggregates = getAggregateItemsByFieldRole(fieldRole, t);
-    const currentQuantilePercent =
-      measure.aggregate?.func === 'quantile'
-        ? Math.round((measure.aggregate.quantile ?? 0.5) * 100)
-        : undefined;
-    const currentAggregateKey = measure.aggregate?.func ?? 'sum';
     const supportedEncodings = builder.chartType.getSupportedMeasureEncodings();
-    const currentEncoding = measure.encoding;
     const measureIndex = measures.findIndex((item) => item.id === measure.id);
     const recommendedEncoding =
       measureIndex >= 0
@@ -175,51 +185,73 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
         if (item.key !== 'quantile') {
           return {
             key: `aggregate:${item.key}`,
-            label: `${currentAggregateKey === item.key ? '✓ ' : ''}${
-              item.shortLabel
-            }`,
+            label: item.shortLabel,
             style: SHELF_MENU_ITEM_STYLE,
           };
         }
 
         return {
           key: 'aggregate:quantile',
-          label: `${currentAggregateKey === 'quantile' ? '✓ ' : ''}${t(
-            'shelvesMenuQuantile',
-          )}`,
+          label: t('shelvesMenuQuantile'),
+          popupOffset: SHELF_MENU_SUBMENU_OFFSET,
           children: QUANTILE_PERCENT_OPTIONS.map((percent) => ({
             key: `aggregate:quantile:${percent}`,
-            label: `${currentQuantilePercent === percent ? '✓ ' : ''}P${percent}`,
+            label: `P${percent}`,
             style: SHELF_MENU_ITEM_STYLE,
           })),
         };
       });
 
+    const formatMenuItem = {
+      key: 'format',
+      label: t('shelvesMenuFormat'),
+      popupOffset: SHELF_MENU_SUBMENU_OFFSET,
+      children: [
+        {
+          key: `format:panel:${measure.id}`,
+          disabled: true,
+          label: '',
+        },
+      ],
+      popupRender: () => {
+        return (
+          <MeasureFormatPanel
+            format={measure.format as VBIMeasureFormat | undefined}
+            onFormatChange={(format) => changeFormat(measure.id, format)}
+          />
+        );
+      },
+      style: SHELF_MENU_ITEM_STYLE,
+    } as unknown as NonNullable<MenuProps['items']>[number];
+
     return [
+      {
+        key: 'aggregate',
+        label: t('shelvesMenuAggregate'),
+        popupOffset: SHELF_MENU_SUBMENU_OFFSET,
+        children: aggregateMenuItems,
+      },
       {
         key: 'encoding',
         label: t('shelvesMenuEncoding'),
+        popupOffset: SHELF_MENU_SUBMENU_OFFSET,
         children: supportedEncodings.map((encoding) => {
-          const selectedPrefix = currentEncoding === encoding ? '✓ ' : '';
           const recommendedSuffix =
             recommendedEncoding === encoding
-              ? ` ${t('commonStatusRecommended')}`
+              ? t('commonStatusRecommended')
               : '';
 
           return {
             key: `encoding:${encoding}`,
-            label: `${selectedPrefix}${t(
-              MEASURE_ENCODING_LABEL_KEY_MAP[encoding],
-            )}${recommendedSuffix}`,
+            label: buildShelfMenuLabel(
+              t(MEASURE_ENCODING_LABEL_KEY_MAP[encoding]),
+              recommendedSuffix,
+            ),
             style: SHELF_MENU_ITEM_STYLE,
           };
         }),
       },
-      {
-        key: 'aggregate',
-        label: t('shelvesMenuAggregate'),
-        children: aggregateMenuItems,
-      },
+      formatMenuItem,
       {
         key: 'rename',
         label: t('shelvesMenuRename'),
@@ -341,6 +373,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
         role: getFieldRole(item.field),
       })}
       buildMenuItems={buildMeasureMenuItems}
+      getMenuSelectedKeys={getMeasureMenuSelectedKeys}
       onMenuClick={handleMeasureMenuClick}
       onRemove={removeMeasure}
       onAddFieldAt={(payload, insertIndex) => {

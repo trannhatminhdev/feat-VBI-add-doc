@@ -864,3 +864,443 @@ describe('WhereGroupBuilder', () => {
     expect(builder.whereFilter.toJSON().conditions).toEqual([])
   })
 })
+
+describe('WhereFilterNodeBuilder date support', () => {
+  test('setDate with range predicate', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'range', start: '2024-01-01', end: '2024-02-01', bounds: '[)' })
+    })
+
+    const conditions = builder.whereFilter.toJSON().conditions
+    expect(conditions).toEqual([
+      {
+        id: 'id-1',
+        field: 'order_date',
+        op: 'date',
+        value: { type: 'range', start: '2024-01-01', end: '2024-02-01', bounds: '[)' },
+      },
+    ])
+  })
+
+  test('setDate with relative predicate', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'relative', mode: 'last', amount: 7, unit: 'day' })
+    })
+
+    const conditions = builder.whereFilter.toJSON().conditions
+    expect(conditions[0]).toMatchObject({
+      field: 'order_date',
+      op: 'date',
+      value: { type: 'relative', mode: 'last', amount: 7, unit: 'day' },
+    })
+  })
+
+  test('setDate with current predicate', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'current', unit: 'month' })
+    })
+
+    const conditions = builder.whereFilter.toJSON().conditions
+    expect(conditions[0]).toMatchObject({
+      field: 'order_date',
+      op: 'date',
+      value: { type: 'current', unit: 'month' },
+    })
+  })
+
+  test('setDate with current predicate and offset', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'current', unit: 'month', offset: -1 })
+    })
+
+    const conditions = builder.whereFilter.toJSON().conditions
+    expect(conditions[0]).toMatchObject({
+      op: 'date',
+      value: { type: 'current', unit: 'month', offset: -1 },
+    })
+  })
+
+  test('setDate with period year predicate', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'period', unit: 'year', year: 2024 })
+    })
+
+    const conditions = builder.whereFilter.toJSON().conditions
+    expect(conditions[0]).toMatchObject({
+      op: 'date',
+      value: { type: 'period', unit: 'year', year: 2024 },
+    })
+  })
+
+  test('setDate with period quarter predicate', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 })
+    })
+
+    const conditions = builder.whereFilter.toJSON().conditions
+    expect(conditions[0]).toMatchObject({
+      op: 'date',
+      value: { type: 'period', unit: 'quarter', year: 2024, quarter: 1 },
+    })
+  })
+
+  test('getDate returns predicate when set', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'current', unit: 'month' })
+    })
+
+    const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
+    expect((node as any).getDate()).toEqual({ type: 'current', unit: 'month' })
+  })
+
+  test('getDate returns undefined for scalar filter', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter.add('region', (node) => {
+      node.setOperator('eq').setValue('Beijing')
+    })
+
+    const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
+    expect((node as any).getDate()).toBeUndefined()
+  })
+
+  test('setDate chains with other builder methods', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter
+      .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
+      .add('order_date', (node) => node.setDate({ type: 'current', unit: 'month' }))
+
+    const conditions = builder.whereFilter.toJSON().conditions as VBIFilter[]
+    expect(conditions).toHaveLength(2)
+    expect(conditions[0].op).toBe('eq')
+    expect(conditions[1].op).toBe('date')
+  })
+
+  test('update date filter via update method', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'current', unit: 'month' })
+    })
+
+    builder.whereFilter.update('id-1', (node) => {
+      node.setDate({ type: 'period', unit: 'year', year: 2024 })
+    })
+
+    const conditions = builder.whereFilter.toJSON().conditions
+    expect(conditions[0]).toMatchObject({
+      op: 'date',
+      value: { type: 'period', unit: 'year', year: 2024 },
+    })
+  })
+})
+
+describe('buildVQuery date filter lowering', () => {
+  const baseDSL = {
+    ...VBI.generateEmptyDSL('demo'),
+    chartType: 'column',
+    dimensions: [{ id: 'id-d1', field: 'category', alias: 'category' }],
+    measures: [{ id: 'id-m1', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
+    version: 1,
+  } as VBIDSL
+
+  test('range with default bounds [) lowers to >= and <', () => {
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'range', start: '2024-01-01', end: '2024-02-01' })
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-01-01' },
+        { field: 'order_date', op: '<', value: '2024-02-01' },
+      ],
+    })
+  })
+
+  test('range with bounds [] lowers to >= and <=', () => {
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'range', start: '2024-01-01', end: '2024-12-31', bounds: '[]' })
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-01-01' },
+        { field: 'order_date', op: '<=', value: '2024-12-31' },
+      ],
+    })
+  })
+
+  test('period year lowers to >= year-start and < next-year-start', () => {
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'period', unit: 'year', year: 2024 })
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-01-01' },
+        { field: 'order_date', op: '<', value: '2025-01-01' },
+      ],
+    })
+  })
+
+  test('period quarter lowers to >= quarter-start and < next-quarter-start', () => {
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 })
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-01-01' },
+        { field: 'order_date', op: '<', value: '2024-04-01' },
+      ],
+    })
+  })
+
+  test('period quarter Q4 lowers correctly across year boundary', () => {
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 4 })
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-10-01' },
+        { field: 'order_date', op: '<', value: '2025-01-01' },
+      ],
+    })
+  })
+
+  test('period month lowers to >= month-start and < next-month-start', () => {
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'period', unit: 'month', year: 2024, month: 3 })
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-03-01' },
+        { field: 'order_date', op: '<', value: '2024-04-01' },
+      ],
+    })
+  })
+
+  test('period month December crosses year boundary', () => {
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'period', unit: 'month', year: 2024, month: 12 })
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-12-01' },
+        { field: 'order_date', op: '<', value: '2025-01-01' },
+      ],
+    })
+  })
+
+  test('period day lowers to >= day and < next day', () => {
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'period', unit: 'day', date: '2024-03-15' })
+    })
+
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-03-15' },
+        { field: 'order_date', op: '<', value: '2024-03-16' },
+      ],
+    })
+  })
+
+  test('period week lowers to >= week-start(Monday) and < next-week-start', () => {
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'period', unit: 'week', year: 2024, week: 1 })
+    })
+
+    // ISO-8601: 2024-W01 starts on Monday 2024-01-01
+    expect(builder.buildVQuery().where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-01-01' },
+        { field: 'order_date', op: '<', value: '2024-01-08' },
+      ],
+    })
+  })
+
+  test('relative last 7 days lowers to date range', () => {
+    const RealDate = globalThis.Date
+    globalThis.Date = class extends RealDate {
+      constructor(...args: any[]) {
+        if (args.length === 0) super('2024-03-15T12:00:00Z')
+        else super(...(args as [any]))
+      }
+    } as any
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'relative', mode: 'last', amount: 7, unit: 'day' })
+    })
+
+    const where = builder.buildVQuery().where
+    expect(where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-03-08' },
+        { field: 'order_date', op: '<', value: '2024-03-15' },
+      ],
+    })
+    globalThis.Date = RealDate
+  })
+
+  test('relative next 3 months lowers to date range', () => {
+    const RealDate = globalThis.Date
+    globalThis.Date = class extends RealDate {
+      constructor(...args: any[]) {
+        if (args.length === 0) super('2024-03-15T12:00:00Z')
+        else super(...(args as [any]))
+      }
+    } as any
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'relative', mode: 'next', amount: 3, unit: 'month' })
+    })
+
+    const where = builder.buildVQuery().where
+    expect(where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-03-15' },
+        { field: 'order_date', op: '<', value: '2024-06-15' },
+      ],
+    })
+    globalThis.Date = RealDate
+  })
+
+  test('current month lowers to month bounds', () => {
+    const RealDate = globalThis.Date
+    globalThis.Date = class extends RealDate {
+      constructor(...args: any[]) {
+        if (args.length === 0) super('2024-03-15T12:00:00Z')
+        else super(...(args as [any]))
+      }
+    } as any
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'current', unit: 'month' })
+    })
+
+    const where = builder.buildVQuery().where
+    expect(where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-03-01' },
+        { field: 'order_date', op: '<', value: '2024-04-01' },
+      ],
+    })
+    globalThis.Date = RealDate
+  })
+
+  test('current month with offset -1 lowers to last month', () => {
+    const RealDate = globalThis.Date
+    globalThis.Date = class extends RealDate {
+      constructor(...args: any[]) {
+        if (args.length === 0) super('2024-03-15T12:00:00Z')
+        else super(...(args as [any]))
+      }
+    } as any
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'current', unit: 'month', offset: -1 })
+    })
+
+    const where = builder.buildVQuery().where
+    expect(where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-02-01' },
+        { field: 'order_date', op: '<', value: '2024-03-01' },
+      ],
+    })
+    globalThis.Date = RealDate
+  })
+
+  test('current year lowers to year bounds', () => {
+    const RealDate = globalThis.Date
+    globalThis.Date = class extends RealDate {
+      constructor(...args: any[]) {
+        if (args.length === 0) super('2024-06-15T12:00:00Z')
+        else super(...(args as [any]))
+      }
+    } as any
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter.add('order_date', (node) => {
+      node.setDate({ type: 'current', unit: 'year' })
+    })
+
+    const where = builder.buildVQuery().where
+    expect(where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'order_date', op: '>=', value: '2024-01-01' },
+        { field: 'order_date', op: '<', value: '2025-01-01' },
+      ],
+    })
+    globalThis.Date = RealDate
+  })
+
+  test('date filter mixed with scalar filter', () => {
+    const builder = VBI.from({ ...baseDSL })
+    builder.whereFilter
+      .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
+      .add('order_date', (node) => {
+        node.setDate({ type: 'range', start: '2024-01-01', end: '2024-02-01' })
+      })
+
+    const where = builder.buildVQuery().where
+    expect(where).toEqual({
+      op: 'and',
+      conditions: [
+        { field: 'region', op: 'eq', value: 'Beijing' },
+        { field: 'order_date', op: '>=', value: '2024-01-01' },
+        { field: 'order_date', op: '<', value: '2024-02-01' },
+      ],
+    })
+  })
+})

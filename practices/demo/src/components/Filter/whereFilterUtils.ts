@@ -1,4 +1,6 @@
+import type { VBIWhereDatePredicate } from '@visactor/vbi';
 import type { Translate } from 'src/i18n';
+import { getDateFilterDisplayText, isDateFilter } from './dateFilterUtils';
 
 export type WhereFilterFieldRole = 'dimension' | 'measure';
 
@@ -279,6 +281,15 @@ export function getWhereDisplayText(
   t: Translate,
 ): string {
   const operator = normalizeWhereOperator(item.operator);
+
+  if (isDateFilter({ op: operator })) {
+    const label = getDateFilterDisplayText(
+      item.value as VBIWhereDatePredicate,
+      t,
+    );
+    return `${item.field} ${t('dateFilterDisplayLabel')}: ${label}`;
+  }
+
   const operatorLabel = getFilterOperatorDisplayLabel(operator, t);
 
   if (NO_VALUE_OPERATORS.has(operator)) {
