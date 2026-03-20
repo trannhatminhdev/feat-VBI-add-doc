@@ -4,6 +4,7 @@ pnpm-lock.yaml
 yarn.lock
 
 CLAUDE.md
+AGENTS.md
 
 # Disable format in docs
 /apps/website/doc_build

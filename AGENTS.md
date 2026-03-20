@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 This file provides guidance to Coding Agent when working with code in this repository.
 
@@ -12,7 +12,7 @@ This file provides guidance to Coding Agent when working with code in this repos
 
 VBI（Visual Business Intelligence）是 VisActor 生态的 Monorepo，实现从数据配置到图表渲染的完整可视化流水线。
 
-```
+``` 
 用户配置 → VBI (配置层/VBIDSL) → VQuery (查询层/QueryDSL→SQL) → VSeed (渲染层/VSeedDSL→Spec)
 ```
 
@@ -26,23 +26,51 @@ VBI（Visual Business Intelligence）是 VisActor 生态的 Monorepo，实现从
 
 ```
 VBI/
-├── docs/          # 文档目录
-│   ├── adr/       # 架构决策记录
-│   ├── plan/      # 项目计划文档
-├── apps/          # 应用程序
-│   ├── website/   # 文档站点
-│   ├── vbi_fe/    # VBI 前端应用
-│   └── vbi_be/    # VBI 后端应用
-├── packages/      # 核心包 (Monorepo)
-│   ├── vbi/       # VBI 主包  (配置层)
-│   ├── vquery/    # 查询引擎   (查询层)
-│   └── vseed/     # 图表生成器 (渲染层)
-├── practices/     # 实践示例
-│   ├── demo/
-│   ├── minimalist/
-│   ├── professional/
-│   └── streamlined/
-└── tools/         # 工具
+├── apps/                           # 应用层：文档站点、前端、后端
+│   ├── website/                    # 官网文档、示例与 playground
+│   ├── vbi_fe/                     # VBI 前端应用
+│   └── vbi_be/                     # VBI 后端应用
+├── packages/                       # 包级实现，统一包含 src/ 与 docs/
+│   ├── vbi/                        # 配置层，负责 VBIDSL、Builder、协同编辑
+│   │   ├── src/                    # 源码
+│   │   └── docs/                   # 包级目标、ADR、计划
+│   ├── vquery/                     # 查询层，负责 QueryDSL → SQL 与数据查询
+│   │   ├── src/
+│   │   └── docs/
+│   ├── vseed/                      # 渲染层，负责 VSeedDSL → VChart/VTable Spec
+│   │   ├── src/
+│   │   └── docs/
+│   └── vbi-react/                  # React 适配与集成层
+│       ├── src/
+│       └── docs/
+├── practices/                      # 不同复杂度的实践示例
+│   ├── demo/                       # 标准版示例
+│   │   ├── src/
+│   │   └── docs/
+│   ├── minimalist/                 # 极简实现示例
+│   │   ├── src/
+│   │   └── docs/
+│   ├── professional/               # 偏业务化的完整示例
+│   │   ├── src/
+│   │   └── docs/
+│   ├── streamlined/                # 精简结构示例
+│   │   ├── src/
+│   │   └── docs/
+│   └── vbi-react-starter/          # React Starter 示例
+│       ├── src/
+│       └── docs/
+├── docs/                           # 仓库级设计与演进记录，按主题目录组织
+│   ├── README.md                   # 文档约定说明
+│   └── YYYY-MM-DD-topic/           # 单个决策、功能、Topic目录
+│       ├── goal.md                 # 目标/需求（按需）
+│       ├── adr.md                  # 架构决策（按需）
+│       └── plan.md                 # 执行计划（按需）
+├── tools/                          # 开发辅助脚本与工具
+├── docker/                         # 本地运行与部署相关容器配置
+├── skills/                         # 仓库内置的开发辅助技能
+├── README.md                       # 项目总览与使用说明
+├── AGENTS.md                       # Coding Agent 协作说明
+└── CLAUDE.md                       # Claude Code 协作说明
 ```
 
 ### 数据流
@@ -96,4 +124,4 @@ pnpm --filter=@visactor/vseed run test:integration
 | **多包/破坏性变更**       | `pnpm run lint` + `pnpm run format` + `pnpm run typecheck`                        |
 | **快速验证**（typo/文档） | `pnpm run lint`                                                                   |
 
-> **注意**：lint 和 typecheck 始终全量执行，禁止对子包单独运行。
+> **注意**：鼓励 项目仓库级别的 lint 和 typecheck

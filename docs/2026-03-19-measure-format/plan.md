@@ -1,6 +1,6 @@
 # 执行计划: VBI Measure 数值格式支持
 
-> 基于 ADR: `docs/adr/2026-03-19-measure-format.md`
+> 基于 ADR: `./adr.md`
 > TDD 驱动: 先写测试 → 再实现 → 全部测试通过
 
 ## 范围
