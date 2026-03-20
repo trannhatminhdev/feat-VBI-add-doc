@@ -7,19 +7,21 @@ import {
 } from '@visactor/vquery';
 
 let localData: unknown[] = [];
+let localSchema: DatasetColumn[] | null = null;
+let datasetNeedsRefresh = true;
 
 export const createLocalConnector = (connectorId: string) => {
   const vquery = new VQuery();
-  console.log('Creating local connector:', connectorId);
 
   VBI.registerConnector(connectorId, async () => {
-    console.log('Connector called for:', connectorId);
     return {
       discoverSchema: async () => {
-        console.log('discoverSchema called, localData:', localData);
         if (localData.length === 0) {
-          console.log('No local data yet');
           return [];
+        }
+
+        if (localSchema) {
+          return localSchema;
         }
 
         // 从数据的第一行推断字段类型
@@ -33,32 +35,34 @@ export const createLocalConnector = (connectorId: string) => {
             type: typeof value === 'number' ? 'number' : 'string',
           }),
         );
-        console.log('Schema discovered:', schema);
         return schema;
       },
 
       query: async ({ queryDSL, schema }) => {
-        console.log('query called with DSL:', queryDSL, 'schema:', schema);
+        const hasDataset = await vquery.hasDataset(connectorId);
+
+        if (hasDataset && datasetNeedsRefresh) {
+          await vquery.dropDataset(connectorId);
+        }
+
         if (!(await vquery.hasDataset(connectorId))) {
           if (localData.length === 0) {
-            console.log('No data for query');
             return { dataset: [] };
           }
 
           const datasetSource = { type: 'json', rawDataset: localData };
-          console.log('Creating dataset...');
           await vquery.createDataset(
             connectorId,
             schema as DatasetColumn[],
             datasetSource as RawDatasetSource,
           );
+          datasetNeedsRefresh = false;
         }
 
         const dataset = await vquery.connectDataset(connectorId);
         const queryResult = await dataset.query(
           queryDSL as VQueryDSL<Record<string, string | number>>,
         );
-        console.log('Query result:', queryResult);
 
         // 度量感知的类型转换：将度量结果从字符串转换为数字
         let normalizedDataset = queryResult.dataset;
@@ -90,7 +94,6 @@ export const createLocalConnector = (connectorId: string) => {
               }
             }
           }
-          console.log('Identified measure fields:', measureFields);
 
           if (measureFields.length > 0 || dimensionFields.length > 0) {
             // SQL 列名优先是 alias（如果提供），否则是 field
@@ -100,9 +103,6 @@ export const createLocalConnector = (connectorId: string) => {
               for (const { field, alias } of measureFields) {
                 const sourceKey = alias || field;
                 const raw = (row as any)[sourceKey];
-                console.log(
-                  `Before: ${sourceKey} = ${raw} (type: ${typeof raw})`,
-                );
 
                 if (raw != null) {
                   let num: number;
@@ -116,34 +116,28 @@ export const createLocalConnector = (connectorId: string) => {
                     num = NaN;
                   }
 
-                  // 仅在有效时赋值，使用 alias 作为列名
+                  // 保留查询结果列名（优先 alias，否则 field），避免下游取不到值
                   if (!Number.isNaN(num)) {
-                    next[field] = num;
+                    next[sourceKey] = num;
                   }
                 }
-
-                console.log(
-                  `After: ${field} = ${next[field]} (type: ${typeof next[field]})`,
-                );
               }
 
               for (const { field, alias } of dimensionFields) {
                 const sourceKey = alias || field;
                 const raw = (row as any)[sourceKey];
                 if (raw != null) {
-                  next[field] = raw;
+                  next[sourceKey] = raw;
                 }
               }
 
               return next;
             });
-
-            console.log('Normalized dataset:', normalizedDataset);
           }
         }
 
         return {
-          dataset: queryResult.dataset,
+          dataset: normalizedDataset,
         };
       },
     };
@@ -154,6 +148,17 @@ export const createLocalConnector = (connectorId: string) => {
 
 export const setLocalData = (data: unknown[]) => {
   localData = data;
+  localSchema = null;
+  datasetNeedsRefresh = true;
+};
+
+export const setLocalDataWithSchema = (
+  data: unknown[],
+  schema: DatasetColumn[] | null,
+) => {
+  localData = data;
+  localSchema = schema;
+  datasetNeedsRefresh = true;
 };
 
 export const getLocalData = () => localData;

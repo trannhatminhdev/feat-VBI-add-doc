@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src", "tests/**/*"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "noEmit": true,
+    "lib": ["ESNext", "DOM"],
+    "types": ["vitest/globals"],
+    "paths": {
+      "@visactor/vbi-react": ["./src/index.ts"],
+      "@visactor/vbi-react/components": ["./src/components/index.ts"]
+    }
+  }
+}

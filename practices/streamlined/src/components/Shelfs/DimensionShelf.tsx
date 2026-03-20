@@ -1,5 +1,5 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { ObserveCallback, VBIDimension } from '@visactor/vbi';
+import { VBIDimension } from '@visactor/vbi';
 import { Button, Flex, Space } from 'antd';
 import { useEffect, useState } from 'react';
 import { useVBIStore } from 'src/model';
@@ -16,8 +16,7 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
   );
 
   useEffect(() => {
-    const updateDimensions: ObserveCallback = (event, transaction) => {
-      console.info('[observe] dimensions', event, transaction);
+    const updateDimensions = () => {
       setDimensions(builder.dimensions.toJSON());
     };
 

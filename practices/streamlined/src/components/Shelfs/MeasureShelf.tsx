@@ -1,5 +1,5 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { ObserveCallback, VBIMeasure } from '@visactor/vbi';
+import { VBIMeasure } from '@visactor/vbi';
 import { Button, Flex, Space } from 'antd';
 import { useEffect, useState } from 'react';
 import { useVBIStore } from 'src/model';
@@ -11,8 +11,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
   );
 
   useEffect(() => {
-    const updateMeasures: ObserveCallback = (event, transaction) => {
-      console.info('[observe] measures', event, transaction);
+    const updateMeasures = () => {
       setMeasures(builder.measures.toJSON());
     };
 

@@ -13,6 +13,7 @@ export const zVBIQueryProps = z.object({
   queryDSL: z.custom<VQueryDSL>(),
   schema: zSchema,
   connectorId: zVBIConnectorId,
+  signal: z.custom<AbortSignal>().optional(),
 })
 
 export type VBIQueryProps = z.infer<typeof zVBIQueryProps>

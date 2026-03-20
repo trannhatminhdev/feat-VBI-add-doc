@@ -216,6 +216,30 @@ describe('MeasuresBuilder', () => {
     expect(callCount).toBe(1)
   })
 
+  test('observe reacts to nested measure updates', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    let callCount = 0
+    const unobserve = builder.measures.observe(() => {
+      callCount++
+    })
+
+    builder.measures.add('sales', (node) => {
+      node.setAlias('销售额')
+    })
+
+    const measureId = builder.measures.toJSON()[0]?.id
+
+    builder.measures.update(measureId, (node) => {
+      node.setAlias('收入')
+    })
+
+    expect(callCount).toBe(2)
+
+    unobserve()
+  })
+
   test('isMeasureNode', () => {
     const node = { field: 'sales', alias: '销售额', encoding: 'yAxis', aggregate: { func: 'sum' } }
     const group = { field: 'group1', children: [], alias: 'group' }

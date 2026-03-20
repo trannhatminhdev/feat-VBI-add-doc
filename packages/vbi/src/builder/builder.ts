@@ -14,7 +14,7 @@ import {
   UndoManager,
 } from './features'
 
-import type { VBIDSL, VBIBuilderAdapters, VBIBuilderInterface, VBIBuilderOptions } from 'src/types'
+import type { BuildVSeedOptions, VBIDSL, VBIBuilderAdapters, VBIBuilderInterface, VBIBuilderOptions } from 'src/types'
 import { applyUpdateToDoc, encodeDocStateAsUpdate, buildVBIDSL, isEmptyVBIDSL, getBuilderSchema } from './modules'
 
 export class VBIBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>
@@ -58,7 +58,7 @@ export class VBIBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISee
     return encodeDocStateAsUpdate(this.doc, targetStateVector)
   }
 
-  public buildVSeed = async (): Promise<TSeedDSL> => {
+  public buildVSeed = async (options: BuildVSeedOptions = {}): Promise<TSeedDSL> => {
     const vbiDSL = this.build()
     const queryDSL = this.adapters.buildVQuery({
       dsl: this.dsl,
@@ -69,6 +69,7 @@ export class VBIBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISee
       dsl: this.dsl,
       vbiDSL,
       queryDSL,
+      options,
       builder: this,
     })
   }

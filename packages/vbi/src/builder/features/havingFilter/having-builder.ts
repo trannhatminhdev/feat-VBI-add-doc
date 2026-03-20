@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import type { VBIHavingGroup, ObserveCallback } from 'src/types'
+import type { VBIHavingGroup, ObserveDeepCallback } from 'src/types'
 import { id } from 'src/utils'
 import { createHavingGroup, findEntry, isHavingGroup } from './having-utils'
 import { HavingFilterNodeBuilder } from './having-node-builder'
@@ -189,10 +189,10 @@ export class HavingFilterBuilder {
    * @param callback - 回调函数
    * @returns 取消监听的函数
    */
-  observe(callback: ObserveCallback): () => void {
-    this.havingFilter.observeDeep(callback as any)
+  observe(callback: ObserveDeepCallback): () => void {
+    this.havingFilter.observeDeep(callback)
     return () => {
-      this.havingFilter.unobserveDeep(callback as any)
+      this.havingFilter.unobserveDeep(callback)
     }
   }
 

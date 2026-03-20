@@ -220,6 +220,30 @@ describe('DimensionsBuilder', () => {
     expect(callCount).toBe(1)
   })
 
+  test('observe reacts to nested dimension updates', () => {
+    const dsl = {} as VBIDSL
+    const builder = VBI.from(dsl)
+
+    let callCount = 0
+    const unobserve = builder.dimensions.observe(() => {
+      callCount++
+    })
+
+    builder.dimensions.add('category', (node) => {
+      node.setAlias('类别')
+    })
+
+    const dimensionId = builder.dimensions.toJSON()[0]?.id
+
+    builder.dimensions.update(dimensionId, (node) => {
+      node.setAlias('产品类别')
+    })
+
+    expect(callCount).toBe(2)
+
+    unobserve()
+  })
+
   test('isDimensionNode', () => {
     const node = { id: 'id-1', field: 'category', alias: '类别' }
     const group = { field: 'group1', children: [] }

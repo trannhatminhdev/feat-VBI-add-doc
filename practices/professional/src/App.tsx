@@ -14,7 +14,13 @@ import EncodingPanel from './components/Fields/EncodingPanel';
 import { VSeedRender } from './components/Render';
 import { useVBIStore } from './model';
 import { useShallow } from 'zustand/shallow';
-import { setLocalData } from './utils/localConnector';
+import { setLocalDataWithSchema } from './utils/localConnector';
+import { parseCsv } from './utils/parseCsv';
+import {
+  supermarketDimensions,
+  supermarketMeasures,
+  supermarketSchema,
+} from './utils/supermarketSchema';
 
 type EncodingChannel =
   | 'yAxis'
@@ -90,6 +96,22 @@ export function APP() {
     { name: string; role: 'dimension' | 'measure' }[]
   >([]);
   const [filters, setFilters] = useState<FilterItem[]>([]);
+
+  const getDimensionIdByField = (field: string) => {
+    const dimension = builderRef.current?.dimensions
+      ?.toJSON?.()
+      ?.find((item: { field: string; id: string }) => item.field === field);
+
+    return dimension?.id;
+  };
+
+  const getMeasureIdByField = (field: string) => {
+    const measure = builderRef.current?.measures
+      ?.toJSON?.()
+      ?.find((item: { field: string; id: string }) => item.field === field);
+
+    return measure?.id;
+  };
 
   useEffect(() => {
     const handleFilterError = () => {
@@ -233,34 +255,44 @@ export function APP() {
       const response = await fetch(url);
       const csv = await response.text();
 
-      const lines = csv.split('\n');
-      const headers = lines[0].split(',').map((h: string) => h.trim());
-      const data = lines
-        .slice(1)
-        .map((line: string) => {
-          const values = line.split(',').map((v: string) => v.trim());
+      const [headerRow = [], ...dataRows] = parseCsv(csv);
+      const headers = headerRow.map((header: string) => header.trim());
+      const schemaByName = new Map(
+        supermarketSchema.map((field) => [field.name, field.type]),
+      );
+
+      const data = dataRows
+        .map((values: string[]) => {
           const row: Record<string, unknown> = {};
           headers.forEach((header: string, index: number) => {
-            const value = values[index];
-            row[header] = isNaN(Number(value)) ? value : Number(value);
+            const rawValue = values[index]?.trim() ?? '';
+            const schemaType = schemaByName.get(header);
+
+            if (schemaType === 'number') {
+              row[header] = rawValue === '' ? null : Number(rawValue);
+              return;
+            }
+
+            row[header] = rawValue;
           });
           return row;
         })
         .filter((row: Record<string, unknown>) =>
-          Object.values(row).some((v) => v !== ''),
+          Object.values(row).some((value) => value !== '' && value !== null),
         );
 
       // 设置本地数据
-      setLocalData(data);
+      setLocalDataWithSchema(data, supermarketSchema);
 
-      // 识别维度和度量
       if (data.length > 0) {
-        const dims = headers.filter((h: string) => isNaN(Number(data[0]?.[h])));
-        const meas = headers.filter(
-          (h: string) => !isNaN(Number(data[0]?.[h])),
+        const dims = headers.filter((header: string) =>
+          supermarketDimensions.includes(header),
         );
-        setDimensions(dims.length > 0 ? dims : headers.slice(0, 3));
-        setMeasures(meas.length > 0 ? meas : headers.slice(3));
+        const meas = headers.filter((header: string) =>
+          supermarketMeasures.includes(header),
+        );
+        setDimensions(dims);
+        setMeasures(meas);
         setDimensionFields([]);
         setMeasureFields([]);
       }
@@ -316,8 +348,14 @@ export function APP() {
     setDimensionFields(newDims);
     if (builderRef.current?.dimensions && builderRef.current.doc) {
       const { dimensions, doc } = builderRef.current;
+      const dimensionId = getDimensionIdByField(field);
+
+      if (!dimensionId) {
+        return;
+      }
+
       doc.transact(() => {
-        dimensions.removeDimension(field);
+        dimensions.remove(dimensionId);
       });
     }
     setRenderKey((prev) => prev + 1);
@@ -379,10 +417,17 @@ export function APP() {
   const handleRemoveMeasure = (field: string) => {
     const newMeas = measureFields.filter((m) => m !== field);
     setMeasureFields(newMeas);
+    setDimensionMeasures((prev) => prev.filter((measure) => measure !== field));
     if (builderRef.current?.measures && builderRef.current.doc) {
       const { measures, doc } = builderRef.current;
+      const measureId = getMeasureIdByField(field);
+
+      if (!measureId) {
+        return;
+      }
+
       doc.transact(() => {
-        measures.removeMeasure(field);
+        measures.remove(measureId);
       });
     }
     setRenderKey((prev) => prev + 1);
@@ -391,8 +436,16 @@ export function APP() {
   const handleRenameMeasure = (field: string, newAlias: string) => {
     if (builderRef.current?.measures && builderRef.current.doc) {
       const { measures, doc } = builderRef.current;
+      const measureId = getMeasureIdByField(field);
+
+      if (!measureId) {
+        return;
+      }
+
       doc.transact(() => {
-        measures.renameMeasure(field, newAlias);
+        measures.update(measureId, (node: { setAlias: (alias: string) => void }) => {
+          node.setAlias(newAlias);
+        });
       });
       // measureFields 存的是 field，不需要改
       syncMeasuresDetail();
@@ -407,8 +460,23 @@ export function APP() {
   ) => {
     if (builderRef.current?.measures && builderRef.current.doc) {
       const { measures, doc } = builderRef.current;
+      const measureId = getMeasureIdByField(field);
+
+      if (!measureId) {
+        return;
+      }
+
       doc.transact(() => {
-        measures.modifyAggregate(field, func, quantile);
+        measures.update(
+          measureId,
+          (node: {
+            setAggregate: (aggregate: { func: string; quantile?: number }) => void;
+          }) => {
+            node.setAggregate(
+              quantile === undefined ? { func } : { func, quantile },
+            );
+          },
+        );
       });
       syncMeasuresDetail();
       setRenderKey((prev) => prev + 1);
@@ -700,7 +768,6 @@ export function APP() {
                     overflow: 'hidden',
                   }}
                 >
-                  {/* Top Panel: Configuration */}
                   <div
                     style={{
                       display: 'flex',
@@ -736,7 +803,6 @@ export function APP() {
                     />
                   </div>
 
-                  {/* Bottom Panel: Encoding */}
                   <div
                     style={{
                       backgroundColor: '#1a1b33',

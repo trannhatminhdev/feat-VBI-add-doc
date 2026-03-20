@@ -1,6 +1,7 @@
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/builder/adapters/vquery-vseed/types'
 import type { Map } from 'yjs'
 import type { VBIDSL } from '../dsl'
+import type { BuildVSeedOptions } from './build-vseed'
 import type { VBIBuilderInterface } from './VBIInterface'
 
 export interface VBIBuildVQueryContext<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
@@ -11,6 +12,7 @@ export interface VBIBuildVQueryContext<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL 
 
 export interface VBIBuildVSeedContext<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>
   extends VBIBuildVQueryContext<TQueryDSL, TSeedDSL> {
+  options: BuildVSeedOptions
   queryDSL: TQueryDSL
 }
 

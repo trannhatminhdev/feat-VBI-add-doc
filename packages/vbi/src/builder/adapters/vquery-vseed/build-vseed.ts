@@ -4,11 +4,15 @@ import type { VBISeedBuilder } from 'src/types'
 import { getConnector } from 'src/builder/connector'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from './types'
 
-export const buildVSeedDSL: VBISeedBuilder<DefaultVBIQueryDSL, DefaultVBISeedDSL> = async ({ vbiDSL, queryDSL }) => {
+export const buildVSeedDSL: VBISeedBuilder<DefaultVBIQueryDSL, DefaultVBISeedDSL> = async ({
+  vbiDSL,
+  queryDSL,
+  options,
+}) => {
   const connectorId = vbiDSL.connectorId
   const connector = await getConnector(connectorId)
   const schema = await connector.discoverSchema()
-  const queryResult = await connector.query({ queryDSL, schema, connectorId })
+  const queryResult = await connector.query({ queryDSL, schema, connectorId, signal: options.signal })
   const measures = vbiDSL.measures
     .filter((measure) => MeasuresBuilder.isMeasureNode(measure))
     .map<Measure>((measure) => {

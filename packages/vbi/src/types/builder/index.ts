@@ -1,3 +1,4 @@
+export type { BuildVSeedOptions } from './build-vseed'
 export type { VBIBuilderInterface } from './VBIInterface'
 export type {
   VBIBuildVQueryContext,
@@ -7,4 +8,4 @@ export type {
   VBIBuilderAdapters,
   VBIBuilderOptions,
 } from './adapter'
-export type { ObserveCallback } from './observe'
+export type { ObserveCallback, ObserveDeepCallback } from './observe'
