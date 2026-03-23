@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { VBIMeasure, VBIBuilder } from '@visactor/vbi'
+import type { VBIMeasure, VBIChartBuilder } from '@visactor/vbi'
 
 import { useBuilderObserver } from '../internal'
 
@@ -12,7 +12,7 @@ export interface UseMeasuresReturn {
   updateMeasure: (id: string, config: UseMeasuresConfig) => void
 }
 
-export function useMeasures(builder: VBIBuilder): UseMeasuresReturn {
+export function useMeasures(builder: VBIChartBuilder): UseMeasuresReturn {
   const serializedMeasures = useBuilderObserver(
     (callback) => builder.measures.observe(() => callback()),
     () => JSON.stringify(builder.measures.toJSON()),

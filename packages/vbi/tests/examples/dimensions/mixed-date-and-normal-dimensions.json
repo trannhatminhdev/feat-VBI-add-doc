@@ -30,5 +30,5 @@
     ],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.dimensions\n    .add('area', node => {\n      node.setAlias('区域')\n    })\n    .add('order_date', node => {\n      node.setAlias('季度').setAggregate({ func: 'toQuarter' })\n    })\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.dimensions\n    .add('area', node => {\n      node.setAlias('区域')\n    })\n    .add('order_date', node => {\n      node.setAlias('季度').setAggregate({ func: 'toQuarter' })\n    })\n}"
 }

@@ -1,8 +1,8 @@
 export { VBI } from './vbi'
 export { createVBI } from './vbi/create-vbi'
 export type { VBIInstance } from './vbi/create-vbi'
-export { VBIBuilder } from './builder'
-export { defaultVBIBuilderAdapters, resolveVBIBuilderAdapters } from './builder/adapters'
+export { VBIChartBuilder } from './builder'
+export { defaultVBIChartBuilderAdapters, resolveVBIChartBuilderAdapters } from './builder/adapters'
 export {
   MeasuresBuilder,
   DimensionsBuilder,

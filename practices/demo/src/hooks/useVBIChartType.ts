@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
-import { VBIBuilder } from '@visactor/vbi';
+import { VBIChartBuilder } from '@visactor/vbi';
 
 /**
  * VBI ChartType Hook
  * 提供图表类型管理
  */
-export const useVBIChartType = (builder: VBIBuilder | undefined) => {
+export const useVBIChartType = (builder: VBIChartBuilder | undefined) => {
   const [chartType, setChartType] = useState<string>('table');
 
   useEffect(() => {

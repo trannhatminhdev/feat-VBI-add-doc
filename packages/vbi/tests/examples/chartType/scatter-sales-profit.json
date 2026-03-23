@@ -14,5 +14,5 @@
     ],
     "limit": 10
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.chartType.changeChartType('bar'); }"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => { builder.chartType.changeChartType('bar'); }"
 }

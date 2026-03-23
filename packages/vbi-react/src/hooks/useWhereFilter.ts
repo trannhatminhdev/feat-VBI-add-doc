@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { VBIBuilder, VBIWhereGroup, WhereFilterBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder, VBIWhereGroup, WhereFilterBuilder } from '@visactor/vbi'
 
 import { useBuilderObserver } from '../internal'
 
@@ -12,7 +12,7 @@ export interface UseWhereFilterReturn {
   whereFilter: VBIWhereGroup
 }
 
-export function useWhereFilter(builder: VBIBuilder): UseWhereFilterReturn {
+export function useWhereFilter(builder: VBIChartBuilder): UseWhereFilterReturn {
   const serializedWhereFilter = useBuilderObserver(
     (callback) => builder.whereFilter.observe(() => callback()),
     () => JSON.stringify(builder.whereFilter.toJSON()),

@@ -19,7 +19,7 @@
 2. 非法 `order` 值被 reject
 3. `zVBIDimensionSchema` 正确接受带 `sort` 的 dimension
 4. `zVBIMeasure` 正确接受带 `sort` 的 measure
-5. `zVBIDSL` 正确接受包含排序节点的完整 DSL
+5. `zVBIChartDSL` 正确接受包含排序节点的完整 DSL
 
 ### 1.2 实现共享排序类型
 

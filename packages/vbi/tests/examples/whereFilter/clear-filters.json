@@ -57,5 +57,5 @@
       ]
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter.update('f-province', node => {\n    node.setValue('广东');\n  });\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter.update('f-province', node => {\n    node.setValue('广东');\n  });\n}"
 }

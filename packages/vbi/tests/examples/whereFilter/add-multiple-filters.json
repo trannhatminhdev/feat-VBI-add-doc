@@ -44,5 +44,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter\n    .add('product_type', node => node.setOperator('eq').setValue('技术'))\n    .add('discount', node => node.setOperator('>').setValue(0.5));\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter\n    .add('product_type', node => node.setOperator('eq').setValue('技术'))\n    .add('discount', node => node.setOperator('>').setValue(0.5));\n}"
 }

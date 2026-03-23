@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { VBIBuilder, VBIDSL } from '@visactor/vbi';
+import { VBIChartBuilder, VBIChartDSL } from '@visactor/vbi';
 import {
   DEMO_DEFAULT_LIMIT,
   DEMO_DEFAULT_LOCALE,
@@ -23,7 +23,7 @@ const normalizeLimit = (limit: number) => {
  * VBI Builder Hook
  * 提供 VBI Builder 的全局配置管理，包括 locale、theme、limit
  */
-export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
+export const useVBIBuilder = (builder: VBIChartBuilder | undefined) => {
   const [state, setState] = useState<VBIBuilderState>({
     locale: DEMO_DEFAULT_LOCALE,
     theme: DEMO_DEFAULT_THEME,
@@ -37,7 +37,7 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
       return;
     }
 
-    const dsl = builder.dsl.toJSON() as VBIDSL;
+    const dsl = builder.dsl.toJSON() as VBIChartDSL;
     setState({
       locale: (dsl.locale ?? DEMO_DEFAULT_LOCALE) as DemoLocale,
       theme: (dsl.theme ?? DEMO_DEFAULT_THEME) as DemoTheme,
@@ -47,7 +47,7 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
 
     // 监听 DSL 变化
     const updateHandler = () => {
-      const newDsl = builder.dsl.toJSON() as VBIDSL;
+      const newDsl = builder.dsl.toJSON() as VBIChartDSL;
       setState({
         locale: (newDsl.locale ?? DEMO_DEFAULT_LOCALE) as DemoLocale,
         theme: (newDsl.theme ?? DEMO_DEFAULT_THEME) as DemoTheme,

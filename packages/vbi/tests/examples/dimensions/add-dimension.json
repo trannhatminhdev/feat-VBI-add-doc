@@ -17,5 +17,5 @@
     "measures": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.dimensions.add('product_type', node => {\n    node.setAlias('商品类型')\n  })\n  const dimensionId = builder.dimensions.find(node => node.getField() === 'product_type')?.getId()\n  if (dimensionId) {\n    builder.dimensions.update(dimensionId, node => {\n      node.setAlias('产品类型')\n    })\n  }\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.dimensions.add('product_type', node => {\n    node.setAlias('商品类型')\n  })\n  const dimensionId = builder.dimensions.find(node => node.getField() === 'product_type')?.getId()\n  if (dimensionId) {\n    builder.dimensions.update(dimensionId, node => {\n      node.setAlias('产品类型')\n    })\n  }\n}"
 }

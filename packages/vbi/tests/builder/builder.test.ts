@@ -1,11 +1,11 @@
 import { createVBI, VBI } from '@visactor/vbi'
-import { VBIDSL } from 'src/types/dsl'
+import { VBIChartDSL } from 'src/types/dsl'
 import { getConnector, registerConnector } from 'src/builder/connector'
 
 describe('VBI', () => {
   test('build', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.measures.add('sales', (node) => {
       node.setAlias('Max Sales').setAggregate({ func: 'max' }).setEncoding('yAxis')
     })
@@ -39,7 +39,7 @@ describe('VBI', () => {
   })
 
   test('isEmpty', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
     expect(builder.isEmpty()).toBe(true)
 
     builder.dimensions.add('area', () => {})
@@ -81,7 +81,7 @@ describe('VBI', () => {
       },
     })
 
-    const builder = CustomVBI.from(VBI.generateEmptyDSL('custom'), {
+    const builder = CustomVBI.createChart(VBI.generateEmptyChartDSL('custom'), {
       adapters: {
         buildVQuery: ({ vbiDSL }) => ({
           source: 'instance',
@@ -123,7 +123,7 @@ describe('VBI', () => {
     expect(schema).toEqual([{ name: 'test', type: 'string' }])
   })
 
-  test('createVBI uses defaultBuilderOptions when from is called without overrides', async () => {
+  test('createVBI uses defaultBuilderOptions when createChart is called without overrides', async () => {
     type CustomQueryDSL = {
       source: 'factory' | 'instance'
       count: number
@@ -149,8 +149,8 @@ describe('VBI', () => {
       },
     })
 
-    // Call from WITHOUT second parameter - should use defaultBuilderOptions
-    const builder = CustomVBI.from(VBI.generateEmptyDSL('custom'))
+    // Call createChart WITHOUT second parameter - should use defaultBuilderOptions
+    const builder = CustomVBI.createChart(VBI.generateEmptyChartDSL('custom'))
 
     expect(builder.buildVQuery()).toEqual({
       source: 'factory',

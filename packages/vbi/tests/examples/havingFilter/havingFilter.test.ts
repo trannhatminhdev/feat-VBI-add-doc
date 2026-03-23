@@ -1,4 +1,4 @@
-import { VBI, VBIBuilder } from '@visactor/vbi'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('HavingFilter', () => {
@@ -7,7 +7,7 @@ describe('HavingFilter', () => {
   })
 
   it('add-having-filter', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -43,7 +43,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.add('sales', (node) => {
         node.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000)
       })
@@ -191,7 +191,7 @@ describe('HavingFilter', () => {
   })
 
   it('add-multiple-having-filter', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -235,7 +235,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter
         .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
         .add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(200000))
@@ -421,7 +421,7 @@ describe('HavingFilter', () => {
   })
 
   it('clear-having-filter', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -484,7 +484,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.clear()
     }
     applyBuilder(builder)
@@ -638,7 +638,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-array-value-with-in-operator', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -674,7 +674,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.add('sales', (node) => {
         node.setOperator('=').setValue([100, 200, 300])
       })
@@ -809,7 +809,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-array-value-with-not-in-operator', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -845,7 +845,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.add('sales', (node) => {
         node.setOperator('!=').setValue([100, 200])
       })
@@ -1003,7 +1003,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-clear-and-rebuild', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -1065,7 +1065,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.clear()
       builder.havingFilter.addGroup('and', (g) => {
         g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(100000))
@@ -1332,7 +1332,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-deeply-nested-groups', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -1392,7 +1392,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.addGroup('or', (root) => {
         root.addGroup('and', (g1) => {
           g1.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(500000))
@@ -1744,7 +1744,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-empty-dsl-compose-target', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'line',
       dimensions: [],
@@ -1765,7 +1765,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('table')
       builder.theme.setTheme('light')
       builder.locale.setLocale('zh-CN')
@@ -1980,7 +1980,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-field-not-in-measures-and-dimensions', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'line',
       dimensions: [],
@@ -2001,7 +2001,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('bar')
       builder.dimensions.add('area', (n) => n.setAlias('区域'))
       builder.measures.add('sales', (n) => n.setAlias('销售额').setEncoding('yAxis').setAggregate({ func: 'sum' }))
@@ -2149,7 +2149,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-find-and-update', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -2193,7 +2193,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter
         .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
         .add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(10000))
@@ -2383,7 +2383,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-group-add-to-existing', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -2451,7 +2451,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.updateGroup('group-1', (group) => {
         group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
         group.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gte').setValue(200))
@@ -2703,7 +2703,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-group-remove-condition', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -2772,7 +2772,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.updateGroup('group-1', (group) => {
         group.remove('cond-1')
       })
@@ -2947,7 +2947,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-mix-filters-and-groups', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -2999,7 +2999,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter
         .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(500000))
         .addGroup('or', (group) => {
@@ -3253,7 +3253,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-multi-dimension-aggregate', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -3301,7 +3301,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.addGroup('and', (g) => {
         g.add('discount', (n) => n.setAggregate({ func: 'avg' }).setOperator('lt').setValue(0.2))
         g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
@@ -3553,7 +3553,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-nested-groups', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -3605,7 +3605,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.addGroup('and', (outer) => {
         outer.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
         outer.addGroup('or', (inner) => {
@@ -3865,7 +3865,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-or-group', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -3909,7 +3909,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.addGroup('or', (group) => {
         group.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
         group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(200000))
@@ -4112,7 +4112,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-scatter-profit-analysis', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'scatter',
       dimensions: [
@@ -4164,7 +4164,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.addGroup('and', (g) => {
         g.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(0))
         g.add('amount', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(20))
@@ -4441,7 +4441,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-update-group-operator', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -4510,7 +4510,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.updateGroup('group-1', (group) => {
         group.setOperator('or')
       })
@@ -4712,7 +4712,7 @@ describe('HavingFilter', () => {
   })
 
   it('having-with-where-combined', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -4756,7 +4756,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.add('product_type', (n) => n.setOperator('=').setValue('办公用品'))
       builder.havingFilter.addGroup('or', (g) => {
         g.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(50000))
@@ -5002,7 +5002,7 @@ describe('HavingFilter', () => {
   })
 
   it('remove-having-filter', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -5065,7 +5065,7 @@ describe('HavingFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.remove('having-1')
     }
     applyBuilder(builder)

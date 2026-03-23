@@ -1,4 +1,4 @@
-export { VBIBuilder } from './builder'
+export { VBIChartBuilder } from './builder'
 export { VBI } from '../vbi'
 export * from './adapters'
 export {

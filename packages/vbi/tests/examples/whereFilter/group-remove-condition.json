@@ -65,5 +65,5 @@
       ]
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter.updateGroup('g-products', group => {\n    group.remove('f-furniture');\n  });\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter.updateGroup('g-products', group => {\n    group.remove('f-furniture');\n  });\n}"
 }

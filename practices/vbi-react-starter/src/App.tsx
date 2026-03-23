@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ChangeEvent } from 'react'
-import { VBI, type VBIBuilder } from '@visactor/vbi'
+import { VBI, type VBIChartBuilder } from '@visactor/vbi'
 import { useVBI } from '@visactor/vbi-react'
 import { BuilderLayout, ChartRenderer, ChartTypeSelector, FieldPanel } from '@visactor/vbi-react/components'
 import type { DatasetColumn } from '@visactor/vquery'
@@ -103,7 +103,7 @@ function rowsToDataset(headers: string[], rows: string[][], schema: DatasetColum
     .filter((row) => Object.values(row).some((value) => value !== '' && value !== null))
 }
 
-function clearBuilderSelections(builder: VBIBuilder) {
+function clearBuilderSelections(builder: VBIChartBuilder) {
   builder.doc.transact(() => {
     builder.dimensions.toJSON().forEach((dimension: { id: string }) => {
       builder.dimensions.remove(dimension.id)
@@ -143,7 +143,7 @@ export function APP() {
   ensureConnector()
 
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [builder] = useState(() => VBI.from(VBI.generateEmptyDSL(CONNECTOR_ID)))
+  const [builder] = useState(() => VBI.createChart(VBI.generateEmptyChartDSL(CONNECTOR_ID)))
   const { dsl } = useVBI(builder)
   const [availableDimensions, setAvailableDimensions] = useState<string[]>([])
   const [availableMeasures, setAvailableMeasures] = useState<string[]>([])

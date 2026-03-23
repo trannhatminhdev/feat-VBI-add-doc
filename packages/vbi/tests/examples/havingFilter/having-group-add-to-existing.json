@@ -81,5 +81,5 @@
       ]
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.updateGroup('group-1', group => { group.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(100000)); group.add('amount', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gte').setValue(200)); }); }"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => { builder.havingFilter.updateGroup('group-1', group => { group.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(100000)); group.add('amount', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gte').setValue(200)); }); }"
 }

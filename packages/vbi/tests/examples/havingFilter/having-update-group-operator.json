@@ -78,5 +78,5 @@
       ]
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.updateGroup('group-1', group => { group.setOperator('or'); }); }"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => { builder.havingFilter.updateGroup('group-1', group => { group.setOperator('or'); }); }"
 }

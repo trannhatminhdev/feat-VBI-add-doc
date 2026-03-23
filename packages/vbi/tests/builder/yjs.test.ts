@@ -1,10 +1,10 @@
 import { VBI } from '@visactor/vbi'
-import { VBIDSL } from 'src/types/dsl'
+import { VBIChartDSL } from 'src/types/dsl'
 
 describe('VBI YJS Integration', () => {
   test('sync between two builders', () => {
-    const b1 = VBI.from({} as VBIDSL)
-    const b2 = VBI.from({} as VBIDSL)
+    const b1 = VBI.createChart({} as VBIChartDSL)
+    const b2 = VBI.createChart({} as VBIChartDSL)
 
     b2.applyUpdate(b1.encodeStateAsUpdate())
     b1.applyUpdate(b2.encodeStateAsUpdate())
@@ -36,8 +36,8 @@ describe('VBI YJS Integration', () => {
 })
 
 test('encodeStateAsUpdate', () => {
-  const b1 = VBI.from({} as VBIDSL)
-  const b2 = VBI.from({} as VBIDSL)
+  const b1 = VBI.createChart({} as VBIChartDSL)
+  const b2 = VBI.createChart({} as VBIChartDSL)
 
   b1.applyUpdate(b2.encodeStateAsUpdate())
   b2.applyUpdate(b1.encodeStateAsUpdate())

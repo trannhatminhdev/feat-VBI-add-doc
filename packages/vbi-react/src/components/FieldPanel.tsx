@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { VBIBuilder, VBIMeasure } from '@visactor/vbi'
+import type { VBIChartBuilder, VBIMeasure } from '@visactor/vbi'
 
 import { useDimensions, useMeasures } from '../hooks'
 import type { BaseComponentProps, SelectOption } from './types'
@@ -56,7 +56,7 @@ const fieldCardStyle = {
 }
 
 export interface FieldPanelProps extends BaseComponentProps {
-  builder: VBIBuilder
+  builder: VBIChartBuilder
   dimensionOptions?: Array<SelectOption<string>>
   dimensionsTitle?: string
   measureAggregateOptions?: Array<SelectOption<MeasureAggregateFunction>>

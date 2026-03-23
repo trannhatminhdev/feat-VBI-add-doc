@@ -1,11 +1,11 @@
 import { VBI } from '@visactor/vbi'
-import type { VBIDSL } from 'src/types/dsl'
+import type { VBIChartDSL } from 'src/types/dsl'
 
 describe('sort builders', () => {
   test('DimensionNodeBuilder set/get/clearSort works', () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       dimensions: [{ id: 'd-1', field: 'area', alias: '区域' }],
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     builder.dimensions.update('d-1', (node) => {
       node.setSort({ order: 'asc' })
@@ -24,7 +24,7 @@ describe('sort builders', () => {
   })
 
   test('DimensionNodeBuilder setSort supports chaining', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
 
     builder.dimensions.add('area', (node) => {
       node.setAlias('区域').setSort({ order: 'desc' })
@@ -37,9 +37,9 @@ describe('sort builders', () => {
   })
 
   test('MeasureNodeBuilder set/get/clearSort works', () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       measures: [{ id: 'm-1', field: 'sales', alias: '销售额', encoding: 'column', aggregate: { func: 'sum' } }],
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     builder.measures.update('m-1', (node) => {
       node.setSort({ order: 'desc' })
@@ -58,7 +58,7 @@ describe('sort builders', () => {
   })
 
   test('MeasureNodeBuilder setSort supports chaining', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
 
     builder.measures.add('sales', (node) => {
       node.setAlias('销售额').setSort({ order: 'asc' }).setAggregate({ func: 'sum' })

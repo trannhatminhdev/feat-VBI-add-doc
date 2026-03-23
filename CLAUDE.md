@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目规范
 
-- 遵循 Single Source of Truth 原则：VBIDSL、VQueryDSL、VSeedDSL 驱动核心功能
+- 遵循 Single Source of Truth 原则：VBIChartDSL、VQueryDSL、VSeedDSL 驱动核心功能
 - 遵循第一性原理，做符合直觉的设计和实现
 - 遵循小函数, 小文件理念, 单个文件不超过 100 行, 单个函数不超过 50 行
 
@@ -13,7 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 VBI（Visual Business Intelligence）是 VisActor 生态的 Monorepo，实现从数据配置到图表渲染的完整可视化流水线。
 
 ```
-用户配置 → VBI (配置层/VBIDSL) → VQuery (查询层/QueryDSL→SQL) → VSeed (渲染层/VSeedDSL→Spec)
+用户配置 → VBI (配置层/VBIChartDSL) → VQuery (查询层/QueryDSL→SQL) → VSeed (渲染层/VSeedDSL→Spec)
 ```
 
 | 包                   | 职责                                                  |
@@ -31,7 +31,7 @@ VBI/
 │   ├── vbi_fe/                     # VBI 前端应用
 │   └── vbi_be/                     # VBI 后端应用
 ├── packages/                       # 包级实现，统一包含 src/ 与 docs/
-│   ├── vbi/                        # 配置层，负责 VBIDSL、Builder、协同编辑
+│   ├── vbi/                        # 配置层，负责 VBIChartDSL、Builder、协同编辑
 │   │   ├── src/                    # 源码
 │   │   └── docs/                   # 包级目标、ADR、计划
 │   ├── vquery/                     # 查询层，负责 QueryDSL → SQL 与数据查询
@@ -76,9 +76,9 @@ VBI/
 ### 数据流
 
 1. 用户通过 VBI 配置图表（chartType、measures、dimensions、having 等）
-2. `VBIBuilder.buildVQuery()` 将 VBIDSL → VQueryDSL
+2. `VBIChartBuilder.buildVQuery()` 将 VBIChartDSL → VQueryDSL
 3. Connector 调用 VQuery 执行 SQL，返回数据集
-4. 合并 VBIDSL + 数据集，通过 VSeed Builder → VChart/VTable Spec
+4. 合并 VBIChartDSL + 数据集，通过 VSeed Builder → VChart/VTable Spec
 5. 前端渲染
 
 ## 常用命令

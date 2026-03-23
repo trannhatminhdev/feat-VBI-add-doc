@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { VBIBuilder } from '@visactor/vbi';
+import type { VBIChartBuilder } from '@visactor/vbi';
 
 export type SchemaFieldRole = 'dimension' | 'measure';
 
@@ -12,7 +12,7 @@ export interface VBISchemaField {
 const EMPTY_SCHEMA: VBISchemaField[] = [];
 
 export const useVBISchemaFields = (
-  builder: VBIBuilder | undefined,
+  builder: VBIChartBuilder | undefined,
   refreshKey = 0,
 ) => {
   const [schemaFields, setSchemaFields] =

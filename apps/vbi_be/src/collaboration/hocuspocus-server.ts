@@ -35,7 +35,7 @@ export class HocuspocusServer {
           // Create empty document with default structure
           const newDoc = new Y.Doc();
           const connectorId = 'demo';
-          const empty = VBI.generateEmptyDSL(connectorId);
+          const empty = VBI.generateEmptyChartDSL(connectorId);
           const dsl = newDoc.getMap('dsl');
 
           newDoc.transact(() => {

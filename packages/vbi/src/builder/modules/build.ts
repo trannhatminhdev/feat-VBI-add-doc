@@ -1,6 +1,6 @@
 import * as Y from 'yjs'
-import type { VBIDSL } from 'src/types'
+import type { VBIChartDSL } from 'src/types'
 
-export const buildVBIDSL = (dsl: Y.Map<any>): VBIDSL => {
-  return dsl.toJSON() as VBIDSL
+export const buildVBIChartDSL = (dsl: Y.Map<any>): VBIChartDSL => {
+  return dsl.toJSON() as VBIChartDSL
 }

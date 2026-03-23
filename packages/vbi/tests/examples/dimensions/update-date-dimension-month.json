@@ -31,5 +31,5 @@
     ],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  const dimensionId = builder.dimensions.toJSON().find(item => item.field === 'order_date')?.id\n  if (dimensionId) {\n    const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)\n    if (dimension) {\n      dimension.setAlias('待调整的订单日期')\n    }\n    builder.dimensions.update(dimensionId, node => {\n      node.setAlias('月份').setAggregate({ func: 'toMonth' })\n    })\n  }\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  const dimensionId = builder.dimensions.toJSON().find(item => item.field === 'order_date')?.id\n  if (dimensionId) {\n    const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)\n    if (dimension) {\n      dimension.setAlias('待调整的订单日期')\n    }\n    builder.dimensions.update(dimensionId, node => {\n      node.setAlias('月份').setAggregate({ func: 'toMonth' })\n    })\n  }\n}"
 }

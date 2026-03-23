@@ -2,7 +2,7 @@ import { Flex, Spin, Card, Typography } from 'antd';
 import { VSeedRender } from 'src/components/Render';
 import { MeasuresList } from 'src/components/Fields/MeasuresList';
 import { DimensionsList } from 'src/components/Fields/DimensionsList';
-import { VBIBuilder } from '@visactor/vbi';
+import { VBIChartBuilder } from '@visactor/vbi';
 import { ChartTypeSelector } from 'src/components/ChartType';
 import { MeasureShelf } from 'src/components/Shelfs/MeasureShelf';
 import { DimensionShelf } from 'src/components/Shelfs/DimensionShelf';
@@ -13,7 +13,7 @@ import { useShallow } from 'zustand/shallow';
 const { Title } = Typography;
 
 interface APPProps {
-  builder?: VBIBuilder;
+  builder?: VBIChartBuilder;
 }
 
 export const APP = (props: APPProps) => {

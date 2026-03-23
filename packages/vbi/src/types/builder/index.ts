@@ -1,11 +1,11 @@
 export type { BuildVSeedOptions } from './build-vseed'
-export type { VBIBuilderInterface } from './VBIInterface'
+export type { VBIChartBuilderInterface } from './VBIInterface'
 export type {
-  VBIBuildVQueryContext,
-  VBIBuildVSeedContext,
-  VBIQueryBuilder,
-  VBISeedBuilder,
-  VBIBuilderAdapters,
-  VBIBuilderOptions,
+  VBIChartBuildVQueryContext,
+  VBIChartBuildVSeedContext,
+  VBIChartQueryBuilder,
+  VBIChartSeedBuilder,
+  VBIChartBuilderAdapters,
+  VBIChartBuilderOptions,
 } from './adapter'
 export type { ObserveCallback, ObserveDeepCallback } from './observe'

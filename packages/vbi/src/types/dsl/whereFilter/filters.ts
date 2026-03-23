@@ -31,9 +31,6 @@ export type VBIWhereDateFilter = {
 
 export type VBIWhereFilter = VBIWhereScalarFilter | VBIWhereDateFilter
 
-/** @deprecated Use VBIWhereFilter instead */
-export type VBIFilter = VBIWhereFilter
-
 export const zVBIWhereDateFilter = z.object({
   id: z.string(),
   field: z.string(),
@@ -49,9 +46,6 @@ export const zVBIWhereScalarFilter = z.object({
 })
 
 export const zVBIWhereFilter = z.union([zVBIWhereDateFilter, zVBIWhereScalarFilter])
-
-/** @deprecated Use zVBIWhereFilter instead */
-export const zVBIFilter = zVBIWhereFilter
 
 type VBIWhereBranch = {
   id: string

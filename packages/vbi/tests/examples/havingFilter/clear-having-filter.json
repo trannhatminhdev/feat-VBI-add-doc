@@ -72,5 +72,5 @@
       ]
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.clear(); }"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => { builder.havingFilter.clear(); }"
 }

@@ -17,5 +17,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter.add('sales', node => {\n    node.setOperator('not between').setValue({ min: 1000, max: 10000 });\n  });\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter.add('sales', node => {\n    node.setOperator('not between').setValue({ min: 1000, max: 10000 });\n  });\n}"
 }

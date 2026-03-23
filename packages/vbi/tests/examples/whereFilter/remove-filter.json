@@ -57,5 +57,5 @@
       ]
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter.remove(0);\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter.remove(0);\n}"
 }

@@ -1,5 +1,5 @@
 import type {
-  VBIFilter,
+  VBIWhereFilter,
   VBIWhereClause,
   VBIWhereGroup,
   VBIHavingClause,
@@ -7,7 +7,7 @@ import type {
   VBIHavingGroup,
 } from 'src/types/dsl'
 
-export function isVBIFilter(clause: VBIWhereClause): clause is VBIFilter {
+export function isVBIFilter(clause: VBIWhereClause): clause is VBIWhereFilter {
   return 'field' in clause
 }
 

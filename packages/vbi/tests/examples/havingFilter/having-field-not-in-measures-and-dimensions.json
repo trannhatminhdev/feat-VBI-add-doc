@@ -16,5 +16,5 @@
     }
   ],
   "dsl": {},
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.chartType.changeChartType('bar'); builder.dimensions.add('area', n => n.setAlias('区域')); builder.measures.add('sales', n => n.setAlias('销售额').setEncoding('yAxis').setAggregate({\"func\":\"sum\"})); builder.havingFilter.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(100000)); builder.limit.setLimit(20); }"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => { builder.chartType.changeChartType('bar'); builder.dimensions.add('area', n => n.setAlias('区域')); builder.measures.add('sales', n => n.setAlias('销售额').setEncoding('yAxis').setAggregate({\"func\":\"sum\"})); builder.havingFilter.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(100000)); builder.limit.setLimit(20); }"
 }

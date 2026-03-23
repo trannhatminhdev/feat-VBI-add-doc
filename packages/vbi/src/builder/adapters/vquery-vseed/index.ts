@@ -1,4 +1,4 @@
-import type { VBIBuilderAdapters } from 'src/types'
+import type { VBIChartBuilderAdapters } from 'src/types'
 import { buildVQueryDSL } from './build-vquery'
 import { buildVSeedDSL } from './build-vseed'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from './types'
@@ -7,20 +7,26 @@ export type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from './types'
 export { buildVQueryDSL } from './build-vquery'
 export { buildVSeedDSL } from './build-vseed'
 
-export const defaultVBIBuilderAdapters: VBIBuilderAdapters<DefaultVBIQueryDSL, DefaultVBISeedDSL> = {
+export const defaultVBIChartBuilderAdapters: VBIChartBuilderAdapters<DefaultVBIQueryDSL, DefaultVBISeedDSL> = {
   buildVQuery: buildVQueryDSL,
   buildVSeed: buildVSeedDSL,
 }
 
-export const resolveVBIBuilderAdapters = <TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>(
-  adapters?: Partial<VBIBuilderAdapters<TQueryDSL, TSeedDSL>>,
-): VBIBuilderAdapters<TQueryDSL, TSeedDSL> => {
+export const resolveVBIChartBuilderAdapters = <TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>(
+  adapters?: Partial<VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>>,
+): VBIChartBuilderAdapters<TQueryDSL, TSeedDSL> => {
   return {
     buildVQuery:
       adapters?.buildVQuery ??
-      (defaultVBIBuilderAdapters.buildVQuery as unknown as VBIBuilderAdapters<TQueryDSL, TSeedDSL>['buildVQuery']),
+      (defaultVBIChartBuilderAdapters.buildVQuery as unknown as VBIChartBuilderAdapters<
+        TQueryDSL,
+        TSeedDSL
+      >['buildVQuery']),
     buildVSeed:
       adapters?.buildVSeed ??
-      (defaultVBIBuilderAdapters.buildVSeed as unknown as VBIBuilderAdapters<TQueryDSL, TSeedDSL>['buildVSeed']),
+      (defaultVBIChartBuilderAdapters.buildVSeed as unknown as VBIChartBuilderAdapters<
+        TQueryDSL,
+        TSeedDSL
+      >['buildVSeed']),
   }
 }

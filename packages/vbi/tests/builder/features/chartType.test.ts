@@ -1,46 +1,46 @@
 import { VBI } from '@visactor/vbi'
-import { VBIDSL } from 'src/types/dsl'
+import { VBIChartDSL } from 'src/types/dsl'
 
 describe('ChartTypeBuilder', () => {
   test('changeChartType', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.chartType.changeChartType('bar')
 
     expect(builder.build().chartType).toBe('bar')
   })
 
   test('getChartType default', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     expect(builder.chartType.getChartType()).toBe('table')
   })
 
   test('getChartType with value', () => {
-    const dsl = { chartType: 'line' } as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = { chartType: 'line' } as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     expect(builder.chartType.getChartType()).toBe('line')
   })
 
   test('toJSON default', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     expect(builder.chartType.toJSON()).toBe('table')
   })
 
   test('toJSON with value', () => {
-    const dsl = { chartType: 'pie' } as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = { chartType: 'pie' } as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     expect(builder.chartType.toJSON()).toBe('pie')
   })
 
   test('getAvailableChartTypes', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     const types = builder.chartType.getAvailableChartTypes()
 
@@ -56,7 +56,7 @@ describe('ChartTypeBuilder', () => {
   })
 
   test('getSupportedDimensionEncodings', () => {
-    const builder = VBI.from({ chartType: 'raceLine' } as VBIDSL)
+    const builder = VBI.createChart({ chartType: 'raceLine' } as VBIChartDSL)
 
     expect(builder.chartType.getSupportedDimensionEncodings()).toEqual([
       'player',
@@ -71,40 +71,40 @@ describe('ChartTypeBuilder', () => {
   })
 
   test('getRecommendedDimensionEncodings', () => {
-    const builder = VBI.from({ chartType: 'pivotTable' } as VBIDSL)
+    const builder = VBI.createChart({ chartType: 'pivotTable' } as VBIChartDSL)
 
     expect(builder.chartType.getRecommendedDimensionEncodings(4)).toEqual(['column', 'row', 'column', 'row'])
   })
 
   test('getRecommendedDimensionEncodings uses dsl dimensions when count not provided', () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       chartType: 'line',
       dimensions: [
         { field: 'category', alias: 'category' },
         { field: 'subcategory', alias: 'subcategory' },
         { field: 'region', alias: 'region' },
       ],
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     // When no count is provided, it should use dsl.get('dimensions')?.length
     expect(builder.chartType.getRecommendedDimensionEncodings()).toEqual(['xAxis', 'color', 'color'])
   })
 
   test('getRecommendedDimensionEncodings with explicit count overrides dsl', () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       chartType: 'line',
       dimensions: [
         { field: 'category', alias: 'category' },
         { field: 'subcategory', alias: 'subcategory' },
       ],
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     // Explicit count should override dsl length
     expect(builder.chartType.getRecommendedDimensionEncodings(3)).toEqual(['xAxis', 'color', 'color'])
   })
 
   test('getSupportedMeasureEncodings', () => {
-    const builder = VBI.from({ chartType: 'histogram' } as VBIDSL)
+    const builder = VBI.createChart({ chartType: 'histogram' } as VBIChartDSL)
 
     expect(builder.chartType.getSupportedMeasureEncodings()).toEqual([
       'value',
@@ -119,7 +119,7 @@ describe('ChartTypeBuilder', () => {
   })
 
   test('getRecommendedMeasureEncodings', () => {
-    const builder = VBI.from({ chartType: 'dualAxis' } as VBIDSL)
+    const builder = VBI.createChart({ chartType: 'dualAxis' } as VBIChartDSL)
 
     expect(builder.chartType.getRecommendedMeasureEncodings(4)).toEqual([
       'primaryYAxis',
@@ -130,36 +130,36 @@ describe('ChartTypeBuilder', () => {
   })
 
   test('getRecommendedMeasureEncodings uses dsl measures when count not provided', () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       chartType: 'column',
       measures: [
         { field: 'sales', alias: 'sales' },
         { field: 'profit', alias: 'profit' },
       ],
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     // When no count is provided, it should use dsl.get('measures')?.length
     expect(builder.chartType.getRecommendedMeasureEncodings()).toEqual(['yAxis', 'yAxis'])
   })
 
   test('getRecommendedMeasureEncodings with explicit count overrides dsl', () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       chartType: 'column',
       measures: [{ field: 'sales', alias: 'sales' }],
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     // Explicit count should override dsl length
     expect(builder.chartType.getRecommendedMeasureEncodings(3)).toEqual(['yAxis', 'yAxis', 'yAxis'])
   })
 
   test('changeChartType reapplies dimension encodings', () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       chartType: 'table',
       dimensions: [
         { field: 'order_date', alias: '日期', encoding: 'column' },
         { field: 'province', alias: '省份', encoding: 'column' },
       ],
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     builder.chartType.changeChartType('line')
 
@@ -170,13 +170,13 @@ describe('ChartTypeBuilder', () => {
   })
 
   test('changeChartType reapplies measure encodings', () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       chartType: 'table',
       measures: [
         { field: 'sales', alias: '销售额', encoding: 'column', aggregate: { func: 'sum' } },
         { field: 'profit', alias: '利润', encoding: 'column', aggregate: { func: 'sum' } },
       ],
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     builder.chartType.changeChartType('dualAxis')
 
@@ -187,8 +187,8 @@ describe('ChartTypeBuilder', () => {
   })
 
   test('observe and unobserve', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     let callCount = 0
     const callback = () => {
@@ -210,8 +210,8 @@ describe('ChartTypeBuilder', () => {
   })
 
   test('observe only triggers on chartType change', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     let callCount = 0
     const callback = () => {
@@ -241,27 +241,27 @@ describe('ChartTypeBuilder', () => {
 
   test('getRecommendedDimensionEncodings for race charts', () => {
     // Test RaceBar
-    const builder1 = VBI.from({ chartType: 'raceBar' } as VBIDSL)
+    const builder1 = VBI.createChart({ chartType: 'raceBar' } as VBIChartDSL)
     expect(builder1.chartType.getRecommendedDimensionEncodings(3)).toEqual(['player', 'yAxis', 'color'])
 
     // Test RaceColumn
-    const builder2 = VBI.from({ chartType: 'raceColumn' } as VBIDSL)
+    const builder2 = VBI.createChart({ chartType: 'raceColumn' } as VBIChartDSL)
     expect(builder2.chartType.getRecommendedDimensionEncodings(3)).toEqual(['player', 'xAxis', 'color'])
 
     // Test RaceLine
-    const builder3 = VBI.from({ chartType: 'raceLine' } as VBIDSL)
+    const builder3 = VBI.createChart({ chartType: 'raceLine' } as VBIChartDSL)
     expect(builder3.chartType.getRecommendedDimensionEncodings(2)).toEqual(['player', 'color'])
 
     // Test RaceScatter
-    const builder4 = VBI.from({ chartType: 'raceScatter' } as VBIDSL)
+    const builder4 = VBI.createChart({ chartType: 'raceScatter' } as VBIChartDSL)
     expect(builder4.chartType.getRecommendedDimensionEncodings(2)).toEqual(['player', 'color'])
 
     // Test RacePie
-    const builder5 = VBI.from({ chartType: 'racePie' } as VBIDSL)
+    const builder5 = VBI.createChart({ chartType: 'racePie' } as VBIChartDSL)
     expect(builder5.chartType.getRecommendedDimensionEncodings(2)).toEqual(['player', 'color'])
 
     // Test RaceDonut
-    const builder6 = VBI.from({ chartType: 'raceDonut' } as VBIDSL)
+    const builder6 = VBI.createChart({ chartType: 'raceDonut' } as VBIChartDSL)
     expect(builder6.chartType.getRecommendedDimensionEncodings(2)).toEqual(['player', 'color'])
   })
 })

@@ -28,5 +28,5 @@
     "limit": 20,
     "whereFilter": { "id": "root", "op": "and", "conditions": [] }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter\n    .add('order_date', node => {\n      node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' });\n    })\n    .add('sales', node => node.setOperator('>').setValue(500))\n    .addGroup('or', group => {\n      group\n        .add('customer_type', n => n.setOperator('eq').setValue('消费者'))\n        .add('customer_type', n => n.setOperator('in').setValue(['公司', '小型企业']));\n    });\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter\n    .add('order_date', node => {\n      node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' });\n    })\n    .add('sales', node => node.setOperator('>').setValue(500))\n    .addGroup('or', group => {\n      group\n        .add('customer_type', n => n.setOperator('eq').setValue('消费者'))\n        .add('customer_type', n => n.setOperator('in').setValue(['公司', '小型企业']));\n    });\n}"
 }

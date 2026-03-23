@@ -48,5 +48,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter\n    .add('area', node => node.setOperator('eq').setValue('华东'))\n    .addGroup('or', group => {\n      group\n        .add('product_type', node => node.setOperator('eq').setValue('办公用品'))\n        .add('product_type', node => node.setOperator('eq').setValue('家具'));\n    });\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter\n    .add('area', node => node.setOperator('eq').setValue('华东'))\n    .addGroup('or', group => {\n      group\n        .add('product_type', node => node.setOperator('eq').setValue('办公用品'))\n        .add('product_type', node => node.setOperator('eq').setValue('家具'));\n    });\n}"
 }

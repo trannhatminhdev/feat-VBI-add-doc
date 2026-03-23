@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
-import type { VBIBuilder, VBIWhereClause } from '@visactor/vbi';
+import type { VBIChartBuilder, VBIWhereClause } from '@visactor/vbi';
 import { isVBIFilter } from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
 
-export const useVBIWhereFilter = (builder: VBIBuilder | undefined) => {
+export const useVBIWhereFilter = (builder: VBIChartBuilder | undefined) => {
   const filters = useBuilderDocState({
     builder,
     fallback: [] as VBIWhereClause[],

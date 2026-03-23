@@ -1,4 +1,4 @@
-import { VBI, VBIBuilder } from '@visactor/vbi'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('Locale', () => {
@@ -7,7 +7,7 @@ describe('Locale', () => {
   })
 
   it('en-US-locale', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -43,7 +43,7 @@ describe('Locale', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       const nextLocale = 'en-US'
       if (builder.locale.getLocale() !== nextLocale) {
         builder.locale.setLocale(nextLocale)
@@ -189,7 +189,7 @@ describe('Locale', () => {
   })
 
   it('zh-CN-locale', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -225,7 +225,7 @@ describe('Locale', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       const nextLocale = 'zh-CN'
       if (builder.locale.getLocale() !== nextLocale) {
         builder.locale.setLocale(nextLocale)

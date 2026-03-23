@@ -1,7 +1,7 @@
 import * as Y from 'yjs'
-import type { VBIDSLInput } from 'src/types'
+import type { VBIChartDSLInput } from 'src/types'
 
-export const setBaseDSLFields = (dsl: Y.Map<any>, vbi: VBIDSLInput) => {
+export const setBaseDSLFields = (dsl: Y.Map<any>, vbi: VBIChartDSLInput) => {
   if (vbi.connectorId) dsl.set('connectorId', vbi.connectorId)
   if (vbi.chartType) dsl.set('chartType', vbi.chartType)
   if (vbi.theme) dsl.set('theme', vbi.theme)

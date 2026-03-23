@@ -1,4 +1,4 @@
-import { VBI, VBIBuilder } from '@visactor/vbi'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('Dimensions', () => {
@@ -7,7 +7,7 @@ describe('Dimensions', () => {
   })
 
   it('add-date-dimension-year', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [],
@@ -38,7 +38,7 @@ describe('Dimensions', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.dimensions.add('order_date', (node) => {
         node.setAlias('订单日期')
       })
@@ -173,7 +173,7 @@ describe('Dimensions', () => {
   })
 
   it('add-dimension', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [],
@@ -195,7 +195,7 @@ describe('Dimensions', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.dimensions.add('product_type', (node) => {
         node.setAlias('商品类型')
       })
@@ -294,7 +294,7 @@ describe('Dimensions', () => {
   })
 
   it('add-multiple-dimensions', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [],
@@ -316,7 +316,7 @@ describe('Dimensions', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.dimensions.add('product_type', (n) => n.setAlias('产品类型')).add('province', (n) => n.setAlias('省份'))
     }
     applyBuilder(builder)
@@ -494,7 +494,7 @@ describe('Dimensions', () => {
   })
 
   it('mixed-date-and-normal-dimensions', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [],
@@ -525,7 +525,7 @@ describe('Dimensions', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.dimensions
         .add('area', (node) => {
           node.setAlias('区域')
@@ -758,7 +758,7 @@ describe('Dimensions', () => {
   })
 
   it('remove-dimension', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [
@@ -789,7 +789,7 @@ describe('Dimensions', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'product_type')?.id
       if (dimensionId) {
         builder.dimensions.update(dimensionId, (node) => {
@@ -935,7 +935,7 @@ describe('Dimensions', () => {
   })
 
   it('update-date-dimension-month', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [
@@ -971,7 +971,7 @@ describe('Dimensions', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'order_date')?.id
       if (dimensionId) {
         const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)
@@ -1169,7 +1169,7 @@ describe('Dimensions', () => {
   })
 
   it('update-dimension', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [
@@ -1196,7 +1196,7 @@ describe('Dimensions', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'product_type')?.id
       if (dimensionId) {
         const dimension = builder.dimensions.find((node) => node.getId() === dimensionId)

@@ -332,7 +332,7 @@ const renderMethodDoc = (method) => {
 const renderBuilderDoc = (config) => {
   const filePath = path.join(BUILDER_DIR, config.file)
   const { description, properties, methods } = parseClass(filePath)
-  const displayName = config.category === 'main' ? 'VBIBuilder' : config.label || config.name
+  const displayName = config.category === 'main' ? 'VBIChartBuilder' : config.label || config.name
 
   const parts = [
     `# ${displayName}`,

@@ -1,5 +1,9 @@
 import { useCallback } from 'react';
-import { VBIBuilder, VBIHavingAggregate, VBIHavingClause } from '@visactor/vbi';
+import {
+  VBIChartBuilder,
+  VBIHavingAggregate,
+  VBIHavingClause,
+} from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
 
 const EMPTY_HAVING_CLAUSES: VBIHavingClause[] = [];
@@ -9,7 +13,7 @@ const EMPTY_HAVING_CLAUSES: VBIHavingClause[] = [];
  * 提供结果过滤（聚合后）管理
  * 支持响应式同步和增量操作
  */
-export const useVBIHavingFilter = (builder: VBIBuilder | undefined) => {
+export const useVBIHavingFilter = (builder: VBIChartBuilder | undefined) => {
   const filters = useBuilderDocState({
     builder,
     fallback: EMPTY_HAVING_CLAUSES,

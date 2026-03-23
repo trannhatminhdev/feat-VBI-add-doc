@@ -45,6 +45,10 @@ function findJsonFilesInDir(dir) {
   return files
 }
 
+function normalizeExampleCode(code) {
+  return code.replace(/\bVBIBuilder\b/g, 'VBIChartBuilder')
+}
+
 /**
  * Generate test case for a single JSON example
  */
@@ -79,12 +83,12 @@ function generateTestCase(json, jsonPath) {
 
   // Generate applyBuilder code - use JSON code directly or empty function
   const hasCode = !!json.code
-  const applyBuilderCode = hasCode ? json.code : 'const applyBuilder = (builder: any) => {}'
+  const applyBuilderCode = hasCode ? normalizeExampleCode(json.code) : 'const applyBuilder = (builder: any) => {}'
   const applyBuilderCall = hasCode ? 'applyBuilder(builder)' : ''
 
   return `
   it('${name}', async () => {
-    const builder = VBI.from(${dslCode})
+    const builder = VBI.createChart(${dslCode})
 
     // Apply custom builder code
     ${applyBuilderCode}
@@ -129,7 +133,7 @@ function generateTestFile(dirName, testsDir) {
   // Convert directory name to label (e.g., chartType -> Chart Type)
   const label = dirName.charAt(0).toUpperCase() + dirName.slice(1).replace(/-/g, ' ')
 
-  const template = `import { VBI, VBIBuilder } from '@visactor/vbi'
+  const template = `import { VBI, VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from ${connectorImport}
 
 describe('${label}', () => {

@@ -1,4 +1,4 @@
-import type { VBIBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder } from '@visactor/vbi'
 
 import { useBuilderObserver } from '../internal'
 
@@ -8,7 +8,7 @@ export interface UseChartTypeReturn {
   setChartType: (chartType: string) => void
 }
 
-export function useChartType(builder: VBIBuilder): UseChartTypeReturn {
+export function useChartType(builder: VBIChartBuilder): UseChartTypeReturn {
   const chartType = useBuilderObserver(
     (callback) => builder.chartType.observe(() => callback()),
     () => builder.chartType.getChartType(),

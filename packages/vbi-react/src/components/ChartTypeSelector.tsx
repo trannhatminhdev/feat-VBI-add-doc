@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react'
-import type { VBIBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder } from '@visactor/vbi'
 
 import { useChartType } from '../hooks'
 import type { BaseComponentProps } from './types'
 import { joinClassNames } from './utils'
 
 export interface ChartTypeSelectorProps extends BaseComponentProps {
-  builder: VBIBuilder
+  builder: VBIChartBuilder
   getOptionLabel?: (chartType: string) => ReactNode
   label?: ReactNode
 }

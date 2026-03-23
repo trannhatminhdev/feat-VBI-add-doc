@@ -11,5 +11,5 @@
     "measures": [{ "field": "sales", "alias": "销售额", "encoding": "yAxis", "aggregate": { "func": "sum" } }],
     "limit": 10
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.chartType.changeChartType('area'); }"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => { builder.chartType.changeChartType('area'); }"
 }

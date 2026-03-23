@@ -95,6 +95,10 @@ function generateDSLConfig(dsl) {
   }
 }
 
+function normalizeExampleCode(code = '') {
+  return code.replace(/\bVBIBuilder\b/g, 'VBIChartBuilder')
+}
+
 function generateExamplePreview(json) {
   const dsl = generateDSLConfig(json.dsl || {})
 
@@ -108,7 +112,7 @@ export default () => {
 
   useEffect(() => {
     const run = async () => {
-      const builder = VBI.from({
+      const builder = VBI.createChart({
         connectorId: DEMO_CONNECTOR_ID,
         chartType: ${JSON.stringify(dsl.chartType)},
         dimensions: ${JSON.stringify(dsl.dimensions)},
@@ -120,7 +124,7 @@ export default () => {
         version: ${dsl.version}${dsl.limit !== undefined ? `,\n        limit: ${dsl.limit}` : ''}${dsl.orderBy ? `,\n        orderBy: ${JSON.stringify(dsl.orderBy)}` : ''}
       })
 
-      ${json.code}
+      ${normalizeExampleCode(json.code)}
       applyBuilder(builder)
 
       const result = await builder.buildVSeed()

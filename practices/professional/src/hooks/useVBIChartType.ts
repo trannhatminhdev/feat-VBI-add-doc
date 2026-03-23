@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import type { VBIBuilder } from '@visactor/vbi';
+import type { VBIChartBuilder } from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
 
-export const useVBIChartType = (builder: VBIBuilder | undefined) => {
+export const useVBIChartType = (builder: VBIChartBuilder | undefined) => {
   const chartType = useBuilderDocState({
     builder,
     fallback: 'table',

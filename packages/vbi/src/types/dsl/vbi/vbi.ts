@@ -6,7 +6,7 @@ import { zVBIDSLLocale } from '../locale/locale'
 import { zVBIWhereGroup } from '../whereFilter/filters'
 import { zVBIHavingGroup } from '../havingFilter/having'
 
-export const zVBIDSL = z.object({
+export const zVBIChartDSL = z.object({
   connectorId: z.string(),
   chartType: z.custom<any>(), // Use any to avoid circular dependency or simplify for now
   dimensions: zVBIDimensionTree,
@@ -27,5 +27,5 @@ export const zVBIDSL = z.object({
   version: z.number().int().min(0),
 })
 
-export type VBIDSLInput = z.input<typeof zVBIDSL>
-export type VBIDSL = z.output<typeof zVBIDSL>
+export type VBIChartDSLInput = z.input<typeof zVBIChartDSL>
+export type VBIChartDSL = z.output<typeof zVBIChartDSL>

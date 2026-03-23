@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import type {
-  VBIBuilder,
+  VBIChartBuilder,
   VBIHavingAggregate,
   VBIHavingClause,
 } from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
 
-export const useVBIHavingFilter = (builder: VBIBuilder | undefined) => {
+export const useVBIHavingFilter = (builder: VBIChartBuilder | undefined) => {
   const filters = useBuilderDocState({
     builder,
     fallback: [] as VBIHavingClause[],

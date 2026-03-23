@@ -1,10 +1,10 @@
 import type { Dimension, Measure } from '@visactor/vseed'
 import { DimensionsBuilder, MeasuresBuilder } from 'src/builder/features'
-import type { VBISeedBuilder } from 'src/types'
+import type { VBIChartSeedBuilder } from 'src/types'
 import { getConnector } from 'src/builder/connector'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from './types'
 
-export const buildVSeedDSL: VBISeedBuilder<DefaultVBIQueryDSL, DefaultVBISeedDSL> = async ({
+export const buildVSeedDSL: VBIChartSeedBuilder<DefaultVBIQueryDSL, DefaultVBISeedDSL> = async ({
   vbiDSL,
   queryDSL,
   options,

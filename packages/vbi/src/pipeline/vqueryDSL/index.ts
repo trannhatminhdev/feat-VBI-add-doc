@@ -1,6 +1,6 @@
 import { pipe } from 'remeda'
 import type { VQueryDSL } from '@visactor/vquery'
-import type { VBIBuilderInterface, VBIDSL } from '../../types'
+import type { VBIChartBuilderInterface, VBIChartDSL } from '../../types'
 import type { buildPipe } from './types'
 import { buildSelect } from './buildSelect'
 import { buildGroupBy } from './buildGroupBy'
@@ -9,7 +9,7 @@ import { buildHaving } from './buildHaving'
 import { buildOrderBy } from './buildOrderBy'
 import { buildLimit } from './buildLimit'
 
-export const buildVQuery = (vbiDSL: VBIDSL, builder: VBIBuilderInterface<any, any>) => {
+export const buildVQuery = (vbiDSL: VBIChartDSL, builder: VBIChartBuilderInterface<any, any>) => {
   const wrapper = (processor: buildPipe) => {
     return (queryDSL: VQueryDSL): VQueryDSL => processor(queryDSL, { vbiDSL, builder })
   }

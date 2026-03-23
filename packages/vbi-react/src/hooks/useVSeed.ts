@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { VBIBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder } from '@visactor/vbi'
 import type { VSeedDSL } from '@visactor/vseed'
 
 import { useBuilderObserver } from '../internal'
@@ -41,7 +41,7 @@ function useDebouncedValue<T>(value: T, delay: number): T {
   return debouncedValue
 }
 
-export function useVSeed(builder: VBIBuilder, options: UseVSeedOptions = {}): UseVSeedReturn {
+export function useVSeed(builder: VBIChartBuilder, options: UseVSeedOptions = {}): UseVSeedReturn {
   const { debounce = 300, onError } = options
   const [error, setError] = useState<Error | null>(null)
   const [loading, setLoading] = useState(false)

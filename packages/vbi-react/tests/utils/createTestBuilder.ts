@@ -1,8 +1,8 @@
 import type {
-  VBIBuilder,
+  VBIChartBuilder,
   VBIConnector,
   VBIDimension,
-  VBIFilter,
+  VBIWhereFilter,
   VBIHavingAggregate,
   VBIHavingClause,
   VBIHavingFilter,
@@ -31,7 +31,7 @@ interface TestWhereNodeBuilder {
   setField: (field: string) => TestWhereNodeBuilder
   setOperator: (operator: string) => TestWhereNodeBuilder
   setValue: (value: unknown) => TestWhereNodeBuilder
-  toJSON: () => VBIFilter
+  toJSON: () => VBIWhereFilter
 }
 
 interface TestWhereGroupBuilder {
@@ -292,7 +292,7 @@ function findHavingEntry(
   return undefined
 }
 
-function createWhereNodeBuilder(filter: VBIFilter): TestWhereNodeBuilder {
+function createWhereNodeBuilder(filter: VBIWhereFilter): TestWhereNodeBuilder {
   const api: TestWhereNodeBuilder = {
     getField: () => filter.field,
     getId: () => filter.id,
@@ -342,7 +342,7 @@ function createHavingNodeBuilder(filter: VBIHavingFilter): TestHavingNodeBuilder
 function createWhereGroupBuilder(group: VBIWhereGroup, notify: () => void): TestWhereGroupBuilder {
   const api: TestWhereGroupBuilder = {
     add: (field: string, callback: (node: TestWhereNodeBuilder) => void) => {
-      const filter: VBIFilter = {
+      const filter: VBIWhereFilter = {
         field,
         id: `where-filter-${whereFilterCount++}`,
         op: '',
@@ -476,7 +476,7 @@ function createWhereFilterFeature(state: TestBuilderState, notify: () => void) {
 
   return {
     add: (field: string, callback: (node: TestWhereNodeBuilder) => void) => {
-      const filter: VBIFilter = {
+      const filter: VBIWhereFilter = {
         field,
         id: `where-filter-${whereFilterCount++}`,
         op: '',
@@ -691,7 +691,7 @@ function createHavingFilterFeature(state: TestBuilderState, notify: () => void) 
   }
 }
 
-export function createTestBuilder(connectorOverrides: Partial<VBIConnector> = {}): VBIBuilder {
+export function createTestBuilder(connectorOverrides: Partial<VBIConnector> = {}): VBIChartBuilder {
   const connectorId = `vbi-react-test-${builderCount++}`
 
   const connector: VBIConnector = {
@@ -782,5 +782,5 @@ export function createTestBuilder(connectorOverrides: Partial<VBIConnector> = {}
   builder.whereFilter = createWhereFilterFeature(state, notify)
   builder.havingFilter = createHavingFilterFeature(state, notify)
 
-  return builder as unknown as VBIBuilder
+  return builder as unknown as VBIChartBuilder
 }

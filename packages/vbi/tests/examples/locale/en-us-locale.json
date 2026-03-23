@@ -39,5 +39,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  const nextLocale = 'en-US'\n  if (builder.locale.getLocale() !== nextLocale) {\n    builder.locale.setLocale(nextLocale)\n  }\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  const nextLocale = 'en-US'\n  if (builder.locale.getLocale() !== nextLocale) {\n    builder.locale.setLocale(nextLocale)\n  }\n}"
 }
