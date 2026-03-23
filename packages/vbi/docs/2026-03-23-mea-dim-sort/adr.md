@@ -1,9 +1,5 @@
 # ADR-004: VBI Measure / Dimension 排序 DSL 与 buildVQuery Lowering
 
-## Status
-
-Proposed
-
 ## Context
 
 `@visactor/vquery` 已支持 `orderBy?: Array<{ field: string; order?: 'asc' | 'desc' }>`，但当前 VBI 的 `buildVQuery()` 只构建了 `select`、`groupBy`、`where`、`having`、`limit`，还没有一等排序能力。
