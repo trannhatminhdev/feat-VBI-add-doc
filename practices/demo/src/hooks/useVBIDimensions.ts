@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import {
   VBIBuilder,
   type VBIDimension as CoreVBIDimension,
+  type VBISort,
 } from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
 
@@ -10,6 +11,9 @@ export type VBIDimension = CoreVBIDimension;
 type DimensionNodeLike = {
   getEncoding?: () => VBIDimension['encoding'];
   setEncoding: (encoding: NonNullable<VBIDimension['encoding']>) => unknown;
+  getSort?: () => VBISort | undefined;
+  setSort: (sort: VBISort) => unknown;
+  clearSort: () => unknown;
   setAlias: (alias: string) => unknown;
   setAggregate: (aggregate: NonNullable<VBIDimension['aggregate']>) => unknown;
   clearAggregate?: () => unknown;

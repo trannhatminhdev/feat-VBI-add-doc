@@ -23,7 +23,8 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
     getSnapshot: (activeBuilder) => {
       const dsl = activeBuilder.dsl.toJSON() as VBIDSL;
       return {
-        locale: (dsl.locale ?? PROFESSIONAL_DEFAULT_LOCALE) as ProfessionalLocale,
+        locale: (dsl.locale ??
+          PROFESSIONAL_DEFAULT_LOCALE) as ProfessionalLocale,
         theme: (dsl.theme ?? PROFESSIONAL_DEFAULT_THEME) as ProfessionalTheme,
         limit: normalizeLimit(dsl.limit ?? PROFESSIONAL_DEFAULT_LIMIT),
         connectorId: dsl.connectorId ?? '',

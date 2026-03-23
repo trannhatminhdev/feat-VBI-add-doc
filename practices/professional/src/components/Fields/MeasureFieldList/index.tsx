@@ -67,7 +67,8 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
   const isZh = locale === 'zh-CN';
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editAlias, setEditAlias] = useState('');
-  const [editAggregate, setEditAggregate] = useState<MeasureAggregateFunc>('sum');
+  const [editAggregate, setEditAggregate] =
+    useState<MeasureAggregateFunc>('sum');
   const [editQuantile, setEditQuantile] = useState(0.5);
   const [hoveredDropZone, setHoveredDropZone] = useState(false);
 
@@ -79,7 +80,10 @@ const MeasureFieldList: React.FC<MeasureFieldListProps> = ({
     // 如果这个字段来自 dimension，聚合函数只能是 count 或 countDistinct
     const isDimensionMeasure = dimensionMeasures.includes(field);
     let defaultFunc = measure?.aggregate?.func || 'sum';
-    if (isDimensionMeasure && !['count', 'countDistinct'].includes(defaultFunc)) {
+    if (
+      isDimensionMeasure &&
+      !['count', 'countDistinct'].includes(defaultFunc)
+    ) {
       defaultFunc = 'count';
     }
     setEditAggregate(defaultFunc);

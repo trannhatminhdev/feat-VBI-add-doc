@@ -15,7 +15,8 @@ export const useVBISchemaFields = (
   builder: VBIBuilder | undefined,
   refreshKey = 0,
 ) => {
-  const [schemaFields, setSchemaFields] = useState<VBISchemaField[]>(EMPTY_SCHEMA);
+  const [schemaFields, setSchemaFields] =
+    useState<VBISchemaField[]>(EMPTY_SCHEMA);
 
   useEffect(() => {
     let destroyed = false;

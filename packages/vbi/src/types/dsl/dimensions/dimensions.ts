@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { zDimensionEncoding } from '@visactor/vseed'
 import { zDimensionAggregate } from './aggregate'
+import { zVBISort } from '../sort'
 
 export const zVBIDimensionSchema = z.object({
   id: z.string(),
@@ -8,6 +9,7 @@ export const zVBIDimensionSchema = z.object({
   alias: z.string(),
   encoding: zDimensionEncoding.optional(),
   aggregate: zDimensionAggregate.optional(),
+  sort: zVBISort.optional(),
 })
 
 export const zVBIDimensionGroupSchema: z.ZodType<VBIDimensionGroup> = z.object({

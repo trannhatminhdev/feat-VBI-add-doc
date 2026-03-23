@@ -85,8 +85,14 @@ type DimensionEncoding = NonNullable<VBIDimension['encoding']>;
 type DimensionAggregate = NonNullable<VBIDimension['aggregate']>;
 
 const clearBuilderState = (builder: VBIBuilder) => {
-  const dimensionIds = builder.dimensions.toJSON().map((item) => item.id).reverse();
-  const measureIds = builder.measures.toJSON().map((item) => item.id).reverse();
+  const dimensionIds = builder.dimensions
+    .toJSON()
+    .map((item) => item.id)
+    .reverse();
+  const measureIds = builder.measures
+    .toJSON()
+    .map((item) => item.id)
+    .reverse();
 
   builder.doc.transact(() => {
     dimensionIds.forEach((id) => {
@@ -118,7 +124,12 @@ export function APP() {
     })),
   );
   const { locale, setLocale, t } = useTranslation();
-  const { theme: themeMode, setTheme, limit, setLimit } = useVBIBuilder(builder);
+  const {
+    theme: themeMode,
+    setTheme,
+    limit,
+    setLimit,
+  } = useVBIBuilder(builder);
   const { chartType, changeChartType, availableChartTypes } =
     useVBIChartType(builder);
   const { schemaFields, fieldRoleMap, fieldTypeMap } = useVBISchemaFields(
@@ -153,7 +164,9 @@ export function APP() {
     }
 
     const onMove = (event: MouseEvent) => {
-      setLeftWidth((width) => Math.max(180, Math.min(360, width + event.movementX)));
+      setLeftWidth((width) =>
+        Math.max(180, Math.min(360, width + event.movementX)),
+      );
     };
     const onUp = () => {
       setDragging(false);
@@ -248,19 +261,19 @@ export function APP() {
   }, [flatFilters]);
 
   const supportedEncodings =
-    (builder?.chartType.getSupportedMeasureEncodings() ?? []) as MeasureEncoding[];
+    (builder?.chartType.getSupportedMeasureEncodings() ??
+      []) as MeasureEncoding[];
   const supportedDimensionEncodings =
-    (builder?.chartType.getSupportedDimensionEncodings() ?? []) as DimensionEncoding[];
+    (builder?.chartType.getSupportedDimensionEncodings() ??
+      []) as DimensionEncoding[];
 
   const havingFilterItems = useMemo(() => {
-    return havingFilters
-      .filter(isVBIHavingFilter)
-      .map((item) => ({
-        field: item.field,
-        aggregate: item.aggregate,
-        operator: item.op,
-        value: item.value,
-      }));
+    return havingFilters.filter(isVBIHavingFilter).map((item) => ({
+      field: item.field,
+      aggregate: item.aggregate,
+      operator: item.op,
+      value: item.value,
+    }));
   }, [havingFilters]);
 
   const antdLocale = ANT_LOCALES[locale];
@@ -439,7 +452,9 @@ export function APP() {
           });
           return row;
         })
-        .filter((row) => Object.values(row).some((value) => value !== '' && value !== null));
+        .filter((row) =>
+          Object.values(row).some((value) => value !== '' && value !== null),
+        );
 
       setLocalDataWithSchema(data, supermarketSchema);
       clearBuilderState(builder);
@@ -455,14 +470,22 @@ export function APP() {
 
   if (!initialized) {
     return (
-      <ConfigProvider locale={antdLocale} theme={themeConfig} componentSize="small">
+      <ConfigProvider
+        locale={antdLocale}
+        theme={themeConfig}
+        componentSize="small"
+      >
         <Spin tip={t('appInitializing')} fullscreen />
       </ConfigProvider>
     );
   }
 
   return (
-    <ConfigProvider locale={antdLocale} theme={themeConfig} componentSize="small">
+    <ConfigProvider
+      locale={antdLocale}
+      theme={themeConfig}
+      componentSize="small"
+    >
       <div className={`app-root app-root-${themeMode}`}>
         <div className="builder-layout">
           {!builderCollapsed && (
@@ -652,10 +675,7 @@ export function APP() {
             {vseed ? (
               <VSeedRender vseed={vseed} themeMode={themeMode} />
             ) : (
-              <Empty
-                className="canvas-empty"
-                description={t('canvasEmpty')}
-              />
+              <Empty className="canvas-empty" description={t('canvasEmpty')} />
             )}
           </div>
         </div>

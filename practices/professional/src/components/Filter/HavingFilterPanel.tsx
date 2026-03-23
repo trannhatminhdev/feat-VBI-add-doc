@@ -97,7 +97,9 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
     | HavingAggregateFunc
     | undefined;
   const operator = Form.useWatch('operator', form) as string | undefined;
-  const selectedRole = fields.find((field) => field.name === selectedField)?.role;
+  const selectedRole = fields.find(
+    (field) => field.name === selectedField,
+  )?.role;
 
   const aggregateOptions = useMemo(() => {
     return selectedRole === 'dimension'
@@ -274,7 +276,12 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
           <Form.Item
             label={isZh ? '字段' : 'Field'}
             name="field"
-            rules={[{ required: true, message: isZh ? '请选择字段' : 'Select a field' }]}
+            rules={[
+              {
+                required: true,
+                message: isZh ? '请选择字段' : 'Select a field',
+              },
+            ]}
           >
             <Select
               options={fields.map((field) => ({
@@ -292,19 +299,34 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
           <Form.Item
             label={isZh ? '聚合方式' : 'Aggregate'}
             name="aggregate"
-            rules={[{ required: true, message: isZh ? '请选择聚合方式' : 'Select an aggregate' }]}
+            rules={[
+              {
+                required: true,
+                message: isZh ? '请选择聚合方式' : 'Select an aggregate',
+              },
+            ]}
           >
             <Select options={aggregateOptions} />
           </Form.Item>
           {selectedAggregate === 'quantile' && (
             <Form.Item label="Quantile" name="quantile">
-              <InputNumber min={0} max={1} step={0.1} style={{ width: '100%' }} />
+              <InputNumber
+                min={0}
+                max={1}
+                step={0.1}
+                style={{ width: '100%' }}
+              />
             </Form.Item>
           )}
           <Form.Item
             label={isZh ? '操作符' : 'Operator'}
             name="operator"
-            rules={[{ required: true, message: isZh ? '请选择操作符' : 'Select an operator' }]}
+            rules={[
+              {
+                required: true,
+                message: isZh ? '请选择操作符' : 'Select an operator',
+              },
+            ]}
           >
             <Select options={OPERATOR_OPTIONS} />
           </Form.Item>
@@ -337,7 +359,12 @@ export const HavingFilterPanel: React.FC<HavingFilterPanelProps> = ({
             <Form.Item
               label={isZh ? '值' : 'Value'}
               name="value"
-              rules={[{ required: true, message: isZh ? '请输入值' : 'Enter a value' }]}
+              rules={[
+                {
+                  required: true,
+                  message: isZh ? '请输入值' : 'Enter a value',
+                },
+              ]}
             >
               <InputNumber style={{ width: '100%' }} />
             </Form.Item>

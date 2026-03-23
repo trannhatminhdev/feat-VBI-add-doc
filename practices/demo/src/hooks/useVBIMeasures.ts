@@ -3,6 +3,7 @@ import {
   VBIBuilder,
   type VBIMeasure as CoreVBIMeasure,
   type VBIMeasureFormat,
+  type VBISort,
 } from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
 
@@ -14,6 +15,9 @@ export type VBIMeasure = Omit<CoreVBIMeasure, 'encoding' | 'aggregate'> & {
 type MeasureNodeLike = {
   getEncoding?: () => VBIMeasure['encoding'];
   setEncoding: (encoding: NonNullable<VBIMeasure['encoding']>) => unknown;
+  getSort?: () => VBISort | undefined;
+  setSort: (sort: VBISort) => unknown;
+  clearSort: () => unknown;
   setAlias: (alias: string) => unknown;
   setAggregate: (aggregate: NonNullable<VBIMeasure['aggregate']>) => unknown;
   setFormat: (format: VBIMeasureFormat) => unknown;

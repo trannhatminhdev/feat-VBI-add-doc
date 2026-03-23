@@ -42,9 +42,8 @@ const EncodingPanel: React.FC<EncodingPanelProps> = ({
   dropText = 'Drop measure here',
   style,
 }) => {
-  const [hoveredEncoding, setHoveredEncoding] = useState<MeasureEncoding | null>(
-    null,
-  );
+  const [hoveredEncoding, setHoveredEncoding] =
+    useState<MeasureEncoding | null>(null);
 
   const encodingState = useMemo(() => {
     // Create a map of configured encodings
@@ -112,102 +111,101 @@ const EncodingPanel: React.FC<EncodingPanelProps> = ({
             [MeasureEncoding, { configured: boolean; measures: string[] }]
           >
         ).map(([encoding, { configured, measures }]) => (
-            <div
-              key={encoding}
-              onDragOver={(e) => {
-                if (!onDropMeasureToEncoding) {
-                  return;
-                }
-                e.preventDefault();
-                e.dataTransfer.dropEffect = 'move';
-                setHoveredEncoding(encoding);
-              }}
-              onDragLeave={() => {
-                setHoveredEncoding((prev) => (prev === encoding ? null : prev));
-              }}
-              onDrop={(e) => {
-                if (!onDropMeasureToEncoding && !onDropDimensionToEncoding) {
-                  return;
-                }
-                e.preventDefault();
-                // Try to get measure field first
-                let field = e.dataTransfer.getData(
-                  'application/x-vbi-measure-field',
+          <div
+            key={encoding}
+            onDragOver={(e) => {
+              if (!onDropMeasureToEncoding) {
+                return;
+              }
+              e.preventDefault();
+              e.dataTransfer.dropEffect = 'move';
+              setHoveredEncoding(encoding);
+            }}
+            onDragLeave={() => {
+              setHoveredEncoding((prev) => (prev === encoding ? null : prev));
+            }}
+            onDrop={(e) => {
+              if (!onDropMeasureToEncoding && !onDropDimensionToEncoding) {
+                return;
+              }
+              e.preventDefault();
+              // Try to get measure field first
+              let field = e.dataTransfer.getData(
+                'application/x-vbi-measure-field',
+              );
+              let isMeasure = !!field;
+
+              // If no measure, try dimension field
+              if (!field) {
+                field = e.dataTransfer.getData(
+                  'application/x-vbi-dimension-field',
                 );
-                let isMeasure = !!field;
+                isMeasure = false;
+              }
 
-                // If no measure, try dimension field
-                if (!field) {
-                  field = e.dataTransfer.getData(
-                    'application/x-vbi-dimension-field',
-                  );
-                  isMeasure = false;
-                }
+              // Fallback to plain text
+              if (!field) {
+                field = e.dataTransfer.getData('text/plain');
+              }
 
-                // Fallback to plain text
-                if (!field) {
-                  field = e.dataTransfer.getData('text/plain');
+              if (field) {
+                if (isMeasure && onDropMeasureToEncoding) {
+                  onDropMeasureToEncoding(field, encoding);
+                } else if (!isMeasure && onDropDimensionToEncoding) {
+                  onDropDimensionToEncoding(field, encoding);
                 }
-
-                if (field) {
-                  if (isMeasure && onDropMeasureToEncoding) {
-                    onDropMeasureToEncoding(field, encoding);
-                  } else if (!isMeasure && onDropDimensionToEncoding) {
-                    onDropDimensionToEncoding(field, encoding);
-                  }
-                }
-                setHoveredEncoding(null);
-              }}
+              }
+              setHoveredEncoding(null);
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 12px',
+              backgroundColor:
+                hoveredEncoding === encoding
+                  ? '#e6f4ff'
+                  : configured
+                    ? '#fafafa'
+                    : '#f5f5f5',
+              opacity: configured ? 1 : 0.7,
+              borderRadius: '2px',
+              fontSize: '12px',
+              border:
+                hoveredEncoding === encoding
+                  ? '1px dashed #1677ff'
+                  : '1px solid transparent',
+              transition: 'all 0.12s ease',
+            }}
+          >
+            <span
+              style={{ fontWeight: 'bold', minWidth: '60px', color: '#666' }}
+            >
+              {encoding}
+            </span>
+            <div
               style={{
+                flex: 1,
                 display: 'flex',
+                gap: '4px',
+                flexWrap: 'wrap',
                 alignItems: 'center',
-                gap: '8px',
-                padding: '6px 12px',
-                backgroundColor:
-                  hoveredEncoding === encoding
-                    ? '#e6f4ff'
-                    : configured
-                      ? '#fafafa'
-                      : '#f5f5f5',
-                opacity: configured ? 1 : 0.7,
-                borderRadius: '2px',
-                fontSize: '12px',
-                border:
-                  hoveredEncoding === encoding
-                    ? '1px dashed #1677ff'
-                    : '1px solid transparent',
-                transition: 'all 0.12s ease',
               }}
             >
-              <span
-                style={{ fontWeight: 'bold', minWidth: '60px', color: '#666' }}
-              >
-                {encoding}
-              </span>
-              <div
-                style={{
-                  flex: 1,
-                  display: 'flex',
-                  gap: '4px',
-                  flexWrap: 'wrap',
-                  alignItems: 'center',
-                }}
-              >
-                {measures.length > 0 ? (
-                  measures.map((name) => (
-                    <Tag key={name} color="blue" style={{ margin: 0 }}>
-                      {name}
-                    </Tag>
-                  ))
-                ) : (
-                  <span style={{ color: '#ccc', fontSize: '11px' }}>
-                    {dropText}
-                  </span>
-                )}
-              </div>
+              {measures.length > 0 ? (
+                measures.map((name) => (
+                  <Tag key={name} color="blue" style={{ margin: 0 }}>
+                    {name}
+                  </Tag>
+                ))
+              ) : (
+                <span style={{ color: '#ccc', fontSize: '11px' }}>
+                  {dropText}
+                </span>
+              )}
             </div>
-          ),
-        )}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -379,7 +379,12 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           <Form.Item
             label={t('filtersField')}
             name="field"
-            rules={[{ required: true, message: isZh ? '请选择字段' : 'Select a field' }]}
+            rules={[
+              {
+                required: true,
+                message: isZh ? '请选择字段' : 'Select a field',
+              },
+            ]}
           >
             <Select
               placeholder={isZh ? '选择要筛选的字段' : 'Choose a field'}
@@ -400,7 +405,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
                         isActive ? { color: '#e39700', fontWeight: 'bold' } : {}
                       }
                     >
-                      {f.name} {isActive ? (isZh ? '(推荐)' : '(Recommended)') : ''}
+                      {f.name}{' '}
+                      {isActive ? (isZh ? '(推荐)' : '(Recommended)') : ''}
                     </span>
                   </Option>
                 );
@@ -493,7 +499,12 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
             <Form.Item
               label={t('filtersValue')}
               name="value"
-              rules={[{ required: true, message: isZh ? '请输入筛选值' : 'Enter a value' }]}
+              rules={[
+                {
+                  required: true,
+                  message: isZh ? '请输入筛选值' : 'Enter a value',
+                },
+              ]}
             >
               <Input
                 placeholder={

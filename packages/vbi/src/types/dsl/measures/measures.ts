@@ -2,6 +2,7 @@ import { z } from 'zod'
 import type { NumFormat } from '@visactor/vseed'
 import { zNumFormat } from '@visactor/vseed'
 import { zAggregate } from './aggregate'
+import { zVBISort } from '../sort'
 
 const zNumFormatObject = zNumFormat.unwrap()
 
@@ -41,6 +42,7 @@ export const zVBIMeasure = z.object({
   ]),
   aggregate: zAggregate,
   format: zVBIMeasureFormat.optional(),
+  sort: zVBISort.optional(),
 })
 export const zVBIMeasureGroup: z.ZodType<VBIMeasureGroup> = z.object({
   alias: z.string(),

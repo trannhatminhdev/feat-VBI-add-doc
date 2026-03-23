@@ -27,6 +27,10 @@ import {
 } from '../utils/menuItemUtils';
 import { getMeasureMenuSelectedKeys } from '../utils/menuSelectionUtils';
 import {
+  formatSortDisplaySuffix,
+  formatSortMenuSummary,
+} from '../utils/sortUtils';
+import {
   reorderYArrayByInsertIndex,
   type YArrayLike,
 } from '../utils/reorderUtils';
@@ -166,6 +170,17 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     });
   };
 
+  const changeSort = (id: string, sort: VBIMeasure['sort'] | undefined) => {
+    updateMeasure(id, (node) => {
+      if (sort) {
+        node.setSort(sort);
+        return;
+      }
+
+      node.clearSort();
+    });
+  };
+
   const buildMeasureMenuItems = (
     measure: (typeof measures)[number],
   ): MenuProps['items'] => {
@@ -224,6 +239,32 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
       style: SHELF_MENU_ITEM_STYLE,
     } as unknown as NonNullable<MenuProps['items']>[number];
 
+    const sortMenuItem = {
+      key: 'sort',
+      label: buildShelfMenuLabel(
+        t('shelvesMenuSort'),
+        formatSortMenuSummary(measure.sort, t),
+      ),
+      popupOffset: SHELF_MENU_SUBMENU_OFFSET,
+      children: [
+        {
+          key: 'sort:asc',
+          label: t('shelvesSortAsc'),
+          style: SHELF_MENU_ITEM_STYLE,
+        },
+        {
+          key: 'sort:desc',
+          label: t('shelvesSortDesc'),
+          style: SHELF_MENU_ITEM_STYLE,
+        },
+        {
+          key: 'sort:clear',
+          label: t('shelvesSortClear'),
+          style: SHELF_MENU_ITEM_STYLE,
+        },
+      ],
+    };
+
     return [
       {
         key: 'aggregate',
@@ -252,6 +293,7 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
         }),
       },
       formatMenuItem,
+      sortMenuItem,
       {
         key: 'rename',
         label: t('shelvesMenuRename'),
@@ -299,6 +341,20 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
         VBIMeasure['encoding']
       >;
       changeEncoding(measure.id, nextEncoding);
+      return;
+    }
+
+    if (key.startsWith('sort:')) {
+      const nextSort = key.replace('sort:', '');
+
+      if (nextSort === 'clear') {
+        changeSort(measure.id, undefined);
+        return;
+      }
+
+      if (nextSort === 'asc' || nextSort === 'desc') {
+        changeSort(measure.id, { order: nextSort });
+      }
       return;
     }
 
@@ -352,10 +408,10 @@ export const MeasureShelf = ({ style }: { style?: React.CSSProperties }) => {
     );
 
     if (!aggregate) {
-      return baseLabel;
+      return `${baseLabel}${formatSortDisplaySuffix(measure.sort)}`;
     }
 
-    return `${aggregate}(${baseLabel})`;
+    return `${aggregate}(${baseLabel})${formatSortDisplaySuffix(measure.sort)}`;
   };
 
   return (

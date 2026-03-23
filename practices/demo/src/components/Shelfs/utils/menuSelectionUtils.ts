@@ -3,6 +3,7 @@ import {
   isDateDimensionField,
   normalizeDimensionDateAggregate,
 } from './dimensionDateAggregateUtils';
+import { getSortMenuSelectedKeys } from './sortUtils';
 
 const toQuantilePercent = (quantile?: number) => {
   return Math.round((quantile ?? 0.5) * 100);
@@ -11,8 +12,9 @@ const toQuantilePercent = (quantile?: number) => {
 export const getMeasureMenuSelectedKeys = (measure: {
   aggregate?: VBIMeasure['aggregate'];
   encoding?: VBIMeasure['encoding'];
+  sort?: VBIMeasure['sort'];
 }) => {
-  const keys: string[] = [];
+  const keys = getSortMenuSelectedKeys(measure.sort);
 
   if (measure.encoding) {
     keys.push(`encoding:${measure.encoding}`);
@@ -38,10 +40,11 @@ export const getDimensionMenuSelectedKeys = (
   dimension: {
     aggregate?: VBIDimension['aggregate'];
     encoding?: VBIDimension['encoding'];
+    sort?: VBIDimension['sort'];
   },
   schemaType?: string,
 ) => {
-  const keys: string[] = [];
+  const keys = getSortMenuSelectedKeys(dimension.sort);
   const isDateField = isDateDimensionField(schemaType);
 
   if (dimension.encoding) {

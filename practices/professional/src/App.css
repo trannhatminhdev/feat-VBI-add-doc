@@ -11,7 +11,12 @@
 }
 
 .app-root-dark {
-  --app-bg: radial-gradient(circle at top left, rgba(108, 140, 255, 0.14), transparent 28%),
+  --app-bg:
+    radial-gradient(
+      circle at top left,
+      rgba(108, 140, 255, 0.14),
+      transparent 28%
+    ),
     linear-gradient(180deg, #0a1020 0%, #121a28 100%);
   --panel-bg: rgba(15, 21, 34, 0.88);
   --panel-muted: rgba(255, 255, 255, 0.05);
@@ -23,7 +28,12 @@
 }
 
 .app-root-light {
-  --app-bg: radial-gradient(circle at top left, rgba(39, 93, 245, 0.1), transparent 30%),
+  --app-bg:
+    radial-gradient(
+      circle at top left,
+      rgba(39, 93, 245, 0.1),
+      transparent 30%
+    ),
     linear-gradient(180deg, #eef3fb 0%, #f8fbff 100%);
   --panel-bg: rgba(255, 255, 255, 0.9);
   --panel-muted: rgba(26, 36, 56, 0.04);
