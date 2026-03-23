@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import { VBIDimension } from '../../../types'
+import type { VBIDimension, VBISort } from '../../../types'
 
 /**
  * @description 维度节点构建器，用于配置单个维度
@@ -29,6 +29,13 @@ export class DimensionNodeBuilder {
   }
 
   /**
+   * @description 获取排序配置
+   */
+  getSort(): VBISort | undefined {
+    return this.yMap.get('sort')
+  }
+
+  /**
    * @description 设置显示名称
    * @param alias - 显示名称
    */
@@ -47,6 +54,15 @@ export class DimensionNodeBuilder {
   }
 
   /**
+   * @description 设置排序配置
+   * @param sort - 排序配置
+   */
+  setSort(sort: VBISort): this {
+    this.yMap.set('sort', sort)
+    return this
+  }
+
+  /**
    * @description 设置日期聚合函数
    * @param aggregate - 日期聚合配置
    */
@@ -60,6 +76,14 @@ export class DimensionNodeBuilder {
    */
   clearAggregate(): this {
     this.yMap.delete('aggregate')
+    return this
+  }
+
+  /**
+   * @description 清除排序配置
+   */
+  clearSort(): this {
+    this.yMap.delete('sort')
     return this
   }
 

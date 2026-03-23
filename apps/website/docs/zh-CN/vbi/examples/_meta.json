@@ -43,6 +43,12 @@
   },
   {
     "type": "file",
+    "name": "utils",
+    "label": "Utils",
+    "count": 0
+  },
+  {
+    "type": "file",
     "name": "whereFilter",
     "label": "WhereFilter",
     "count": 18

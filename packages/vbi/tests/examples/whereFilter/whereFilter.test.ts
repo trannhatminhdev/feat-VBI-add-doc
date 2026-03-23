@@ -1,22 +1,6 @@
 import { VBI, VBIBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
-async function withMockedNow<T>(iso: string, run: () => Promise<T>): Promise<T> {
-  const RealDate = globalThis.Date
-  globalThis.Date = class extends RealDate {
-    constructor(...args: any[]) {
-      if (args.length === 0) super(iso)
-      else super(...(args as [any]))
-    }
-  } as any
-
-  try {
-    return await run()
-  } finally {
-    globalThis.Date = RealDate
-  }
-}
-
 describe('WhereFilter', () => {
   beforeAll(async () => {
     registerDemoConnector()
@@ -122,6 +106,12 @@ describe('WhereFilter', () => {
           "province",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -155,84 +145,84 @@ describe('WhereFilter', () => {
         "chartType": "bar",
         "dataset": [
           {
-            "id-1": 145678.31599999996,
-            "id-2": "浙江",
-          },
-          {
-            "id-1": 114141.496,
-            "id-2": "四川",
-          },
-          {
-            "id-1": 237378.876,
-            "id-2": "江苏",
-          },
-          {
-            "id-1": 408478.70000000024,
-            "id-2": "广东",
-          },
-          {
-            "id-1": 45201.52,
-            "id-2": "江西",
-          },
-          {
-            "id-1": 490581.2800000006,
-            "id-2": "山东",
-          },
-          {
             "id-1": 197696.65999999997,
             "id-2": "上海",
           },
           {
-            "id-1": 225399.8599999999,
-            "id-2": "河北",
+            "id-1": 93548.7,
+            "id-2": "云南",
           },
           {
-            "id-1": 100060.37999999998,
-            "id-2": "福建",
-          },
-          {
-            "id-1": 192031.5600000002,
-            "id-2": "安徽",
-          },
-          {
-            "id-1": 42723.77200000001,
-            "id-2": "甘肃",
-          },
-          {
-            "id-1": 397944.37199999974,
-            "id-2": "黑龙江",
-          },
-          {
-            "id-1": 119124.93600000005,
-            "id-2": "吉林",
-          },
-          {
-            "id-1": 307603.7439999999,
-            "id-2": "辽宁",
-          },
-          {
-            "id-1": 129221.68000000004,
-            "id-2": "陕西",
-          },
-          {
-            "id-1": 220619.22400000007,
-            "id-2": "湖北",
-          },
-          {
-            "id-1": 250176.724,
-            "id-2": "湖南",
+            "id-1": 114192.17600000004,
+            "id-2": "内蒙古",
           },
           {
             "id-1": 146253.80000000002,
             "id-2": "北京",
           },
           {
-            "id-1": 79668.54000000002,
-            "id-2": "重庆",
+            "id-1": 119124.93600000005,
+            "id-2": "吉林",
           },
           {
-            "id-1": 16289.980000000001,
-            "id-2": "青海",
+            "id-1": 114141.496,
+            "id-2": "四川",
+          },
+          {
+            "id-1": 143225.31999999998,
+            "id-2": "天津",
+          },
+          {
+            "id-1": 34221.6,
+            "id-2": "宁夏",
+          },
+          {
+            "id-1": 192031.5600000002,
+            "id-2": "安徽",
+          },
+          {
+            "id-1": 490581.2800000006,
+            "id-2": "山东",
+          },
+          {
+            "id-1": 116742.35999999999,
+            "id-2": "山西",
+          },
+          {
+            "id-1": 408478.70000000024,
+            "id-2": "广东",
+          },
+          {
+            "id-1": 123174.60400000004,
+            "id-2": "广西",
+          },
+          {
+            "id-1": 45413.759999999995,
+            "id-2": "新疆",
+          },
+          {
+            "id-1": 237378.876,
+            "id-2": "江苏",
+          },
+          {
+            "id-1": 45201.52,
+            "id-2": "江西",
+          },
+          {
+            "id-1": 225399.8599999999,
+            "id-2": "河北",
+          },
+          {
+            "id-1": 228759.07600000006,
+            "id-2": "河南",
+          },
+          {
+            "id-1": 145678.31599999996,
+            "id-2": "浙江",
+          },
+          {
+            "id-1": 59184.77599999999,
+            "id-2": "海南",
           },
         ],
         "dimensions": [
@@ -360,6 +350,12 @@ describe('WhereFilter', () => {
           "area",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -530,6 +526,12 @@ describe('WhereFilter', () => {
           "area",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -573,28 +575,28 @@ describe('WhereFilter', () => {
         "chartType": "column",
         "dataset": [
           {
-            "id-1": 3008282.3119999967,
-            "id-2": "华东",
-          },
-          {
-            "id-1": 801590.7760000004,
-            "id-2": "西南",
+            "id-1": 1760869.0679999974,
+            "id-2": "东北",
           },
           {
             "id-1": 2737486.891999999,
             "id-2": "中南",
           },
           {
-            "id-1": 498827.1680000002,
-            "id-2": "西北",
-          },
-          {
-            "id-1": 1760869.0679999974,
-            "id-2": "东北",
+            "id-1": 3008282.3119999967,
+            "id-2": "华东",
           },
           {
             "id-1": 1527557.0800000005,
             "id-2": "华北",
+          },
+          {
+            "id-1": 498827.1680000002,
+            "id-2": "西北",
+          },
+          {
+            "id-1": 801590.7760000004,
+            "id-2": "西南",
           },
         ],
         "dimensions": [
@@ -719,6 +721,12 @@ describe('WhereFilter', () => {
           "product_type",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -924,6 +932,12 @@ describe('WhereFilter', () => {
           "province",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -972,36 +986,12 @@ describe('WhereFilter', () => {
         "chartType": "column",
         "dataset": [
           {
-            "id-1": 52322.312000000005,
-            "id-2": "江西",
-          },
-          {
-            "id-1": 396090.1,
-            "id-2": "山东",
-          },
-          {
-            "id-1": 40476.07199999999,
-            "id-2": "江苏",
-          },
-          {
             "id-1": 125734.168,
             "id-2": "上海",
           },
           {
-            "id-1": 17063.116,
-            "id-2": "浙江",
-          },
-          {
-            "id-1": 175924.6300000001,
-            "id-2": "河北",
-          },
-          {
-            "id-1": 142959.65600000002,
-            "id-2": "福建",
-          },
-          {
-            "id-1": 150820.95700000008,
-            "id-2": "安徽",
+            "id-1": 14150.891999999996,
+            "id-2": "内蒙古",
           },
           {
             "id-1": 91961.94000000003,
@@ -1012,12 +1002,36 @@ describe('WhereFilter', () => {
             "id-2": "天津",
           },
           {
+            "id-1": 150820.95700000008,
+            "id-2": "安徽",
+          },
+          {
+            "id-1": 396090.1,
+            "id-2": "山东",
+          },
+          {
             "id-1": 107063.39000000009,
             "id-2": "山西",
           },
           {
-            "id-1": 14150.891999999996,
-            "id-2": "内蒙古",
+            "id-1": 40476.07199999999,
+            "id-2": "江苏",
+          },
+          {
+            "id-1": 52322.312000000005,
+            "id-2": "江西",
+          },
+          {
+            "id-1": 175924.6300000001,
+            "id-2": "河北",
+          },
+          {
+            "id-1": 17063.116,
+            "id-2": "浙江",
+          },
+          {
+            "id-1": 142959.65600000002,
+            "id-2": "福建",
           },
         ],
         "dimensions": [
@@ -1158,6 +1172,12 @@ describe('WhereFilter', () => {
           "city",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -1196,36 +1216,76 @@ describe('WhereFilter', () => {
         "chartType": "bar",
         "dataset": [
           {
-            "id-1": 11219.74,
-            "id-2": "阳江",
+            "id-1": 1998.36,
+            "id-2": "云浮",
           },
           {
-            "id-1": 17325.420000000002,
-            "id-2": "湛江",
+            "id-1": 533.4,
+            "id-2": "佛山",
+          },
+          {
+            "id-1": 2372.16,
+            "id-2": "信宜",
+          },
+          {
+            "id-1": 6072.5,
+            "id-2": "化州",
+          },
+          {
+            "id-1": 2156.42,
+            "id-2": "台城",
+          },
+          {
+            "id-1": 7060.619999999999,
+            "id-2": "吴川",
+          },
+          {
+            "id-1": 5390.280000000001,
+            "id-2": "塘坪",
+          },
+          {
+            "id-1": 3861.2,
+            "id-2": "安埠",
+          },
+          {
+            "id-1": 100316.01999999997,
+            "id-2": "广州",
+          },
+          {
+            "id-1": 2360.4,
+            "id-2": "廉江",
           },
           {
             "id-1": 13270.88,
             "id-2": "廉洲",
           },
           {
-            "id-1": 2832.0600000000004,
-            "id-2": "河源",
+            "id-1": 8304.8,
+            "id-2": "恩城",
+          },
+          {
+            "id-1": 8171.94,
+            "id-2": "惠城",
+          },
+          {
+            "id-1": 1911.28,
+            "id-2": "惠州",
+          },
+          {
+            "id-1": 18667.739999999998,
+            "id-2": "揭阳",
+          },
+          {
+            "id-1": 2066.8199999999997,
+            "id-2": "梅州",
           },
           {
             "id-1": 26207.44,
             "id-2": "汕头",
           },
           {
-            "id-1": 104206.34000000001,
-            "id-2": "深圳",
-          },
-          {
-            "id-1": 1448.58,
-            "id-2": "荔城",
-          },
-          {
-            "id-1": 25275.879999999997,
-            "id-2": "洛阳",
+            "id-1": 4257.54,
+            "id-2": "汕尾",
           },
           {
             "id-1": 11398.380000000001,
@@ -1234,46 +1294,6 @@ describe('WhereFilter', () => {
           {
             "id-1": 1711.5,
             "id-2": "河坡",
-          },
-          {
-            "id-1": 10807.58,
-            "id-2": "肇庆",
-          },
-          {
-            "id-1": 4257.54,
-            "id-2": "汕尾",
-          },
-          {
-            "id-1": 9671.2,
-            "id-2": "韶关",
-          },
-          {
-            "id-1": 6747.4400000000005,
-            "id-2": "清远",
-          },
-          {
-            "id-1": 100316.01999999997,
-            "id-2": "广州",
-          },
-          {
-            "id-1": 18667.739999999998,
-            "id-2": "揭阳",
-          },
-          {
-            "id-1": 12069.400000000001,
-            "id-2": "珠海",
-          },
-          {
-            "id-1": 8171.94,
-            "id-2": "惠城",
-          },
-          {
-            "id-1": 2360.4,
-            "id-2": "廉江",
-          },
-          {
-            "id-1": 7060.619999999999,
-            "id-2": "吴川",
           },
         ],
         "dimensions": [
@@ -1417,6 +1437,12 @@ describe('WhereFilter', () => {
           "city",
         ],
         "limit": 10,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -1465,44 +1491,44 @@ describe('WhereFilter', () => {
         "chartType": "column",
         "dataset": [
           {
-            "id-1": 49029.147999999994,
-            "id-2": "杭州",
-          },
-          {
-            "id-1": 7226.352,
-            "id-2": "镇江",
-          },
-          {
-            "id-1": 55837.32000000001,
-            "id-2": "景德镇",
-          },
-          {
-            "id-1": 129432.32400000002,
-            "id-2": "青岛",
-          },
-          {
-            "id-1": 67918.70400000004,
-            "id-2": "徐州",
+            "id-1": 1458.8,
+            "id-2": "三明",
           },
           {
             "id-1": 378368.788,
             "id-2": "上海",
           },
           {
-            "id-1": 7999.319999999999,
-            "id-2": "温岭",
+            "id-1": 5443.199999999999,
+            "id-2": "上虞",
           },
           {
-            "id-1": 21162.651999999995,
-            "id-2": "宁波",
+            "id-1": 155.988,
+            "id-2": "东台",
           },
           {
-            "id-1": 96425.64400000001,
-            "id-2": "厦门",
+            "id-1": 13692.14,
+            "id-2": "东村",
           },
           {
-            "id-1": 95618.35499999998,
-            "id-2": "宿州",
+            "id-1": 7682.22,
+            "id-2": "东营",
+          },
+          {
+            "id-1": 9866.668,
+            "id-2": "丰县",
+          },
+          {
+            "id-1": 833.7,
+            "id-2": "临朐",
+          },
+          {
+            "id-1": 64974.69999999999,
+            "id-2": "临沂",
+          },
+          {
+            "id-1": 5309.556,
+            "id-2": "临海",
           },
         ],
         "dimensions": [
@@ -1678,6 +1704,12 @@ describe('WhereFilter', () => {
           "delivery_method",
         ],
         "limit": 50,
+        "orderBy": [
+          {
+            "field": "id-3",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -1770,68 +1802,67 @@ describe('WhereFilter', () => {
   })
 
   it('date-filter-relative-with-nested-conditions', async () => {
-    await withMockedNow('2026-03-19T12:00:00Z', async () => {
-      const builder = VBI.from({
-        connectorId: 'demoSupermarket',
-        chartType: 'column',
-        dimensions: [
-          {
-            field: 'province',
-            alias: '省份',
-          },
-        ],
-        measures: [
-          {
-            field: 'sales',
-            alias: '销售额',
-            encoding: 'yAxis',
-            aggregate: {
-              func: 'sum',
-            },
-          },
-          {
-            field: 'profit',
-            alias: '利润',
-            encoding: 'yAxis',
-            aggregate: {
-              func: 'sum',
-            },
-          },
-        ],
-        whereFilter: {
-          id: 'root',
-          op: 'and',
-          conditions: [],
+    const builder = VBI.from({
+      connectorId: 'demoSupermarket',
+      chartType: 'column',
+      dimensions: [
+        {
+          field: 'province',
+          alias: '省份',
         },
-        havingFilter: {
-          id: 'root',
-          op: 'and',
-          conditions: [],
+      ],
+      measures: [
+        {
+          field: 'sales',
+          alias: '销售额',
+          encoding: 'yAxis',
+          aggregate: {
+            func: 'sum',
+          },
         },
-        theme: 'light',
-        locale: 'zh-CN',
-        version: 1,
-        limit: 20,
-      })
+        {
+          field: 'profit',
+          alias: '利润',
+          encoding: 'yAxis',
+          aggregate: {
+            func: 'sum',
+          },
+        },
+      ],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+      limit: 20,
+    })
 
-      // Apply custom builder code
-      const applyBuilder = (builder: VBIBuilder) => {
-        builder.whereFilter
-          .add('order_date', (node) => {
-            node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' })
-          })
-          .add('sales', (node) => node.setOperator('>').setValue(500))
-          .addGroup('or', (group) => {
-            group
-              .add('customer_type', (n) => n.setOperator('eq').setValue('消费者'))
-              .add('customer_type', (n) => n.setOperator('in').setValue(['公司', '小型企业']))
-          })
-      }
-      applyBuilder(builder)
+    // Apply custom builder code
+    const applyBuilder = (builder: VBIBuilder) => {
+      builder.whereFilter
+        .add('order_date', (node) => {
+          node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' })
+        })
+        .add('sales', (node) => node.setOperator('>').setValue(500))
+        .addGroup('or', (group) => {
+          group
+            .add('customer_type', (n) => n.setOperator('eq').setValue('消费者'))
+            .add('customer_type', (n) => n.setOperator('in').setValue(['公司', '小型企业']))
+        })
+    }
+    applyBuilder(builder)
 
-      // Build VBI DSL
-      const vbiDSL = builder.build()
-      expect(vbiDSL).toMatchInlineSnapshot(`
+    // Build VBI DSL
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
       {
         "chartType": "column",
         "connectorId": "demoSupermarket",
@@ -1918,14 +1949,20 @@ describe('WhereFilter', () => {
       }
     `)
 
-      // Build VQuery DSL
-      const vQueryDSL = builder.buildVQuery()
-      expect(vQueryDSL).toMatchInlineSnapshot(`
+    // Build VQuery DSL
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
       {
         "groupBy": [
           "province",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-3",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -1951,12 +1988,12 @@ describe('WhereFilter', () => {
             {
               "field": "order_date",
               "op": ">=",
-              "value": "2026-02-17",
+              "value": "2026-02-21",
             },
             {
               "field": "order_date",
               "op": "<",
-              "value": "2026-03-19",
+              "value": "2026-03-23",
             },
             {
               "field": "sales",
@@ -1987,9 +2024,9 @@ describe('WhereFilter', () => {
       }
     `)
 
-      // Build VSeed DSL
-      const vSeedDSL = await builder.buildVSeed()
-      expect(vSeedDSL).toMatchInlineSnapshot(`
+    // Build VSeed DSL
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
       {
         "chartType": "column",
         "dataset": [],
@@ -2015,7 +2052,6 @@ describe('WhereFilter', () => {
         "theme": "light",
       }
     `)
-    })
   })
 
   it('deeply-nested-or-and-groups', async () => {
@@ -2176,6 +2212,12 @@ describe('WhereFilter', () => {
           "province",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -2247,84 +2289,84 @@ describe('WhereFilter', () => {
         "chartType": "column",
         "dataset": [
           {
-            "id-1": 79728.01200000002,
-            "id-2": "江苏",
+            "id-1": 27309.100000000002,
+            "id-2": "上海",
+          },
+          {
+            "id-1": 27538.980000000003,
+            "id-2": "云南",
+          },
+          {
+            "id-1": 47204.668000000005,
+            "id-2": "内蒙古",
           },
           {
             "id-1": 15967,
             "id-2": "北京",
           },
           {
-            "id-1": 17851.54,
-            "id-2": "陕西",
+            "id-1": 19834.920000000002,
+            "id-2": "吉林",
           },
           {
             "id-1": 26947.9,
             "id-2": "四川",
           },
           {
-            "id-1": 83344.485,
-            "id-2": "黑龙江",
+            "id-1": 30692.2,
+            "id-2": "天津",
+          },
+          {
+            "id-1": 26450.339999999997,
+            "id-2": "安徽",
           },
           {
             "id-1": 124768.41999999997,
             "id-2": "山东",
           },
           {
-            "id-1": 65781.12800000001,
-            "id-2": "湖南",
-          },
-          {
-            "id-1": 77988.17599999999,
-            "id-2": "辽宁",
-          },
-          {
-            "id-1": 60887.26000000002,
-            "id-2": "重庆",
-          },
-          {
-            "id-1": 3116.568,
-            "id-2": "甘肃",
-          },
-          {
-            "id-1": 51542.79199999999,
-            "id-2": "浙江",
-          },
-          {
-            "id-1": 35174.3,
-            "id-2": "江西",
-          },
-          {
-            "id-1": 93302.09000000001,
-            "id-2": "河南",
-          },
-          {
-            "id-1": 30692.2,
-            "id-2": "天津",
-          },
-          {
-            "id-1": 21173.278,
-            "id-2": "广西",
-          },
-          {
-            "id-1": 53771.28400000001,
-            "id-2": "湖北",
-          },
-          {
-            "id-1": 104612.34,
-            "id-2": "福建",
-          },
-          {
-            "id-1": 27309.100000000002,
-            "id-2": "上海",
+            "id-1": 32241.579999999998,
+            "id-2": "山西",
           },
           {
             "id-1": 167463.604,
             "id-2": "广东",
           },
           {
-            "id-1": 47204.668000000005,
-            "id-2": "内蒙古",
+            "id-1": 21173.278,
+            "id-2": "广西",
+          },
+          {
+            "id-1": 79728.01200000002,
+            "id-2": "江苏",
+          },
+          {
+            "id-1": 35174.3,
+            "id-2": "江西",
+          },
+          {
+            "id-1": 80034.57,
+            "id-2": "河北",
+          },
+          {
+            "id-1": 93302.09000000001,
+            "id-2": "河南",
+          },
+          {
+            "id-1": 51542.79199999999,
+            "id-2": "浙江",
+          },
+          {
+            "id-1": 2301.46,
+            "id-2": "海南",
+          },
+          {
+            "id-1": 53771.28400000001,
+            "id-2": "湖北",
+          },
+          {
+            "id-1": 65781.12800000001,
+            "id-2": "湖南",
           },
         ],
         "dimensions": [
@@ -2483,6 +2525,12 @@ describe('WhereFilter', () => {
           "area",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -2526,28 +2574,28 @@ describe('WhereFilter', () => {
         "chartType": "column",
         "dataset": [
           {
-            "id-1": 3008282.3119999967,
-            "id-2": "华东",
-          },
-          {
-            "id-1": 801590.7760000004,
-            "id-2": "西南",
+            "id-1": 1760869.0679999974,
+            "id-2": "东北",
           },
           {
             "id-1": 2737486.891999999,
             "id-2": "中南",
           },
           {
-            "id-1": 498827.1680000002,
-            "id-2": "西北",
-          },
-          {
-            "id-1": 1760869.0679999974,
-            "id-2": "东北",
+            "id-1": 3008282.3119999967,
+            "id-2": "华东",
           },
           {
             "id-1": 1527557.0800000005,
             "id-2": "华北",
+          },
+          {
+            "id-1": 498827.1680000002,
+            "id-2": "西北",
+          },
+          {
+            "id-1": 801590.7760000004,
+            "id-2": "西南",
           },
         ],
         "dimensions": [
@@ -2673,6 +2721,12 @@ describe('WhereFilter', () => {
           "delivery_method",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -2710,20 +2764,20 @@ describe('WhereFilter', () => {
         "chartType": "bar",
         "dataset": [
           {
-            "id-1": 5425,
-            "id-2": "二级",
-          },
-          {
-            "id-1": 14986,
-            "id-2": "标准级",
-          },
-          {
             "id-1": 4042,
             "id-2": "一级",
           },
           {
+            "id-1": 5425,
+            "id-2": "二级",
+          },
+          {
             "id-1": 1434,
             "id-2": "当日",
+          },
+          {
+            "id-1": 14986,
+            "id-2": "标准级",
           },
         ],
         "dimensions": [
@@ -2848,6 +2902,12 @@ describe('WhereFilter', () => {
           "product_type",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -2895,12 +2955,12 @@ describe('WhereFilter', () => {
             "id-2": "办公用品",
           },
           {
-            "id-1": 201406.26799999987,
-            "id-2": "技术",
-          },
-          {
             "id-1": 228240.27800000002,
             "id-2": "家具",
+          },
+          {
+            "id-1": 201406.26799999987,
+            "id-2": "技术",
           },
         ],
         "dimensions": [
@@ -3027,6 +3087,12 @@ describe('WhereFilter', () => {
           "product_type",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -3074,12 +3140,12 @@ describe('WhereFilter', () => {
             "id-2": "办公用品",
           },
           {
-            "id-1": 201406.26799999987,
-            "id-2": "技术",
-          },
-          {
             "id-1": 228240.27800000002,
             "id-2": "家具",
+          },
+          {
+            "id-1": 201406.26799999987,
+            "id-2": "技术",
           },
         ],
         "dimensions": [
@@ -3216,6 +3282,12 @@ describe('WhereFilter', () => {
           "province",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -3253,76 +3325,76 @@ describe('WhereFilter', () => {
         "chartType": "column",
         "dataset": [
           {
-            "id-1": 452108.2440000001,
-            "id-2": "浙江",
-          },
-          {
-            "id-1": 649967.2200000006,
-            "id-2": "江苏",
-          },
-          {
-            "id-1": 1452929.5129999993,
-            "id-2": "广东",
-          },
-          {
-            "id-1": 237328.70000000013,
-            "id-2": "江西",
-          },
-          {
-            "id-1": 1586782.9879999978,
-            "id-2": "山东",
-          },
-          {
             "id-1": 582450.5679999999,
             "id-2": "上海",
-          },
-          {
-            "id-1": 790915.405,
-            "id-2": "河北",
-          },
-          {
-            "id-1": 546903.5320000001,
-            "id-2": "福建",
-          },
-          {
-            "id-1": 628965.1899999997,
-            "id-2": "安徽",
-          },
-          {
-            "id-1": 621960.3320000009,
-            "id-2": "湖北",
-          },
-          {
-            "id-1": 853574.798999999,
-            "id-2": "河南",
-          },
-          {
-            "id-1": 723442.2090000004,
-            "id-2": "湖南",
-          },
-          {
-            "id-1": 409147.2,
-            "id-2": "北京",
-          },
-          {
-            "id-1": 377653.82899999997,
-            "id-2": "广西",
-          },
-          {
-            "id-1": 549906.6300000001,
-            "id-2": "天津",
-          },
-          {
-            "id-1": 423878.76999999967,
-            "id-2": "山西",
           },
           {
             "id-1": 273453.01199999993,
             "id-2": "内蒙古",
           },
           {
+            "id-1": 409147.2,
+            "id-2": "北京",
+          },
+          {
+            "id-1": 549906.6300000001,
+            "id-2": "天津",
+          },
+          {
+            "id-1": 628965.1899999997,
+            "id-2": "安徽",
+          },
+          {
+            "id-1": 1586782.9879999978,
+            "id-2": "山东",
+          },
+          {
+            "id-1": 423878.76999999967,
+            "id-2": "山西",
+          },
+          {
+            "id-1": 1452929.5129999993,
+            "id-2": "广东",
+          },
+          {
+            "id-1": 377653.82899999997,
+            "id-2": "广西",
+          },
+          {
+            "id-1": 649967.2200000006,
+            "id-2": "江苏",
+          },
+          {
+            "id-1": 237328.70000000013,
+            "id-2": "江西",
+          },
+          {
+            "id-1": 790915.405,
+            "id-2": "河北",
+          },
+          {
+            "id-1": 853574.798999999,
+            "id-2": "河南",
+          },
+          {
+            "id-1": 452108.2440000001,
+            "id-2": "浙江",
+          },
+          {
             "id-1": 107854.41100000001,
             "id-2": "海南",
+          },
+          {
+            "id-1": 621960.3320000009,
+            "id-2": "湖北",
+          },
+          {
+            "id-1": 723442.2090000004,
+            "id-2": "湖南",
+          },
+          {
+            "id-1": 546903.5320000001,
+            "id-2": "福建",
           },
         ],
         "dimensions": [
@@ -3475,6 +3547,12 @@ describe('WhereFilter', () => {
           "area",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -3639,6 +3717,12 @@ describe('WhereFilter', () => {
           "area",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -3805,6 +3889,12 @@ describe('WhereFilter', () => {
           "area",
         ],
         "limit": 20,
+        "orderBy": [
+          {
+            "field": "id-2",
+            "order": "asc",
+          },
+        ],
         "select": [
           {
             "aggr": {
@@ -3841,8 +3931,8 @@ describe('WhereFilter', () => {
         "chartType": "column",
         "dataset": [
           {
-            "id-1": 1303124.508000002,
-            "id-2": "西南",
+            "id-1": 2681567.469000001,
+            "id-2": "东北",
           },
           {
             "id-1": 4137415.0929999948,
@@ -3853,8 +3943,8 @@ describe('WhereFilter', () => {
             "id-2": "西北",
           },
           {
-            "id-1": 2681567.469000001,
-            "id-2": "东北",
+            "id-1": 1303124.508000002,
+            "id-2": "西南",
           },
         ],
         "dimensions": [

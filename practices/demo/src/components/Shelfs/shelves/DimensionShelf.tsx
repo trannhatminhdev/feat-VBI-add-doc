@@ -26,6 +26,10 @@ import {
 } from '../utils/menuItemUtils';
 import { getDimensionMenuSelectedKeys } from '../utils/menuSelectionUtils';
 import {
+  formatSortDisplaySuffix,
+  formatSortMenuSummary,
+} from '../utils/sortUtils';
+import {
   reorderYArrayByInsertIndex,
   type YArrayLike,
 } from '../utils/reorderUtils';
@@ -177,6 +181,17 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
     });
   };
 
+  const changeSort = (id: string, sort: VBIDimension['sort'] | undefined) => {
+    updateDimension(id, (node) => {
+      if (sort) {
+        node.setSort(sort);
+        return;
+      }
+
+      node.clearSort();
+    });
+  };
+
   const buildMenuItems = (
     dimension: (typeof dimensions)[number],
   ): MenuProps['items'] => {
@@ -232,6 +247,32 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       }),
     });
 
+    items.push({
+      key: 'sort',
+      label: buildShelfMenuLabel(
+        t('shelvesMenuSort'),
+        formatSortMenuSummary(dimension.sort, t),
+      ),
+      popupOffset: SHELF_MENU_SUBMENU_OFFSET,
+      children: [
+        {
+          key: 'sort:asc',
+          label: t('shelvesSortAsc'),
+          style: SHELF_MENU_ITEM_STYLE,
+        },
+        {
+          key: 'sort:desc',
+          label: t('shelvesSortDesc'),
+          style: SHELF_MENU_ITEM_STYLE,
+        },
+        {
+          key: 'sort:clear',
+          label: t('shelvesSortClear'),
+          style: SHELF_MENU_ITEM_STYLE,
+        },
+      ],
+    });
+
     items.push(
       {
         key: 'rename',
@@ -276,6 +317,20 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
       return;
     }
 
+    if (key.startsWith('sort:')) {
+      const nextSort = key.replace('sort:', '');
+
+      if (nextSort === 'clear') {
+        changeSort(dimension.id, undefined);
+        return;
+      }
+
+      if (nextSort === 'asc' || nextSort === 'desc') {
+        changeSort(dimension.id, { order: nextSort });
+      }
+      return;
+    }
+
     if (key.startsWith('encoding:')) {
       const nextEncoding = key.replace('encoding:', '') as NonNullable<
         VBIDimension['encoding']
@@ -314,10 +369,12 @@ export const DimensionShelf = ({ style }: { style?: React.CSSProperties }) => {
     );
 
     if (!aggregate) {
-      return baseLabel;
+      return `${baseLabel}${formatSortDisplaySuffix(dimension.sort)}`;
     }
 
-    return `${aggregate}(${baseLabel})`;
+    return `${aggregate}(${baseLabel})${formatSortDisplaySuffix(
+      dimension.sort,
+    )}`;
   };
 
   return (

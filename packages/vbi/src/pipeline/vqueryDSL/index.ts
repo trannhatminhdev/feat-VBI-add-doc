@@ -6,6 +6,7 @@ import { buildSelect } from './buildSelect'
 import { buildGroupBy } from './buildGroupBy'
 import { buildWhere } from './buildWhere'
 import { buildHaving } from './buildHaving'
+import { buildOrderBy } from './buildOrderBy'
 import { buildLimit } from './buildLimit'
 
 export const buildVQuery = (vbiDSL: VBIDSL, builder: VBIBuilderInterface<any, any>) => {
@@ -19,6 +20,7 @@ export const buildVQuery = (vbiDSL: VBIDSL, builder: VBIBuilderInterface<any, an
     wrapper(buildGroupBy),
     wrapper(buildWhere),
     wrapper(buildHaving),
+    wrapper(buildOrderBy),
     wrapper(buildLimit),
   )
 }

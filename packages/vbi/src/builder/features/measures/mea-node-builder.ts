@@ -1,5 +1,5 @@
 import * as Y from 'yjs'
-import type { VBIMeasure, VBIMeasureFormat } from '../../../types'
+import type { VBIMeasure, VBIMeasureFormat, VBISort } from '../../../types'
 
 /**
  * @description 度量节点构建器，用于配置单个度量
@@ -29,6 +29,13 @@ export class MeasureNodeBuilder {
   }
 
   /**
+   * @description 获取排序配置
+   */
+  getSort(): VBISort | undefined {
+    return this.yMap.get('sort')
+  }
+
+  /**
    * @description 设置显示名称
    * @param alias - 显示名称
    */
@@ -43,6 +50,15 @@ export class MeasureNodeBuilder {
    */
   setEncoding(encoding: NonNullable<VBIMeasure['encoding']>): this {
     this.yMap.set('encoding', encoding)
+    return this
+  }
+
+  /**
+   * @description 设置排序配置
+   * @param sort - 排序配置
+   */
+  setSort(sort: VBISort): this {
+    this.yMap.set('sort', sort)
     return this
   }
 
@@ -76,6 +92,14 @@ export class MeasureNodeBuilder {
    */
   clearFormat(): this {
     this.yMap.delete('format')
+    return this
+  }
+
+  /**
+   * @description 清除排序配置
+   */
+  clearSort(): this {
+    this.yMap.delete('sort')
     return this
   }
 
