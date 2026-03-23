@@ -1,4 +1,4 @@
-import { VBI, VBIBuilder } from '@visactor/vbi'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('UndoManager', () => {
@@ -7,7 +7,7 @@ describe('UndoManager', () => {
   })
 
   it('undo-redo', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [],
@@ -38,7 +38,7 @@ describe('UndoManager', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.measures.add('profit', (node) => {
         node.setAlias('利润').setEncoding('yAxis').setAggregate({ func: 'sum' })
       })

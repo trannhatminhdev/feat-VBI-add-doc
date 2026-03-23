@@ -5,8 +5,8 @@ import { zVBIDSLLocale } from 'src/types/dsl/locale/locale'
 import { zAggregate } from 'src/types/dsl/measures/aggregate'
 import { zVBIMeasure, zVBIMeasureGroup, zVBIMeasureTree } from 'src/types/dsl/measures/measures'
 import { zVBIDSLTheme } from 'src/types/dsl/theme/theme'
-import { zVBIDSL } from 'src/types/dsl/vbi/vbi'
-import { zVBIFilter, zVBIWhereClause, zVBIWhereGroup } from 'src/types/dsl/whereFilter/filters'
+import { zVBIChartDSL } from 'src/types/dsl/vbi/vbi'
+import { zVBIWhereFilter, zVBIWhereClause, zVBIWhereGroup } from 'src/types/dsl/whereFilter/filters'
 import {
   findTreeNodesBy,
   id,
@@ -35,7 +35,7 @@ describe('DSL schemas', () => {
   })
 
   test('parse where filter clauses and groups', () => {
-    const filter = zVBIFilter.parse({ id: 'f-1', field: 'province', op: 'eq', value: '浙江' })
+    const filter = zVBIWhereFilter.parse({ id: 'f-1', field: 'province', op: 'eq', value: '浙江' })
     const group = zVBIWhereGroup.parse({
       id: 'root',
       op: 'and',
@@ -67,11 +67,11 @@ describe('DSL schemas', () => {
     expect(group.conditions).toHaveLength(2)
   })
 
-  test('parse locale, theme and full VBI DSL', () => {
+  test('parse locale, theme and full VBI chart DSL', () => {
     expect(zVBIDSLTheme.parse('dark')).toBe('dark')
     expect(zVBIDSLLocale.parse('en-US')).toBe('en-US')
 
-    const dsl = zVBIDSL.parse({
+    const dsl = zVBIChartDSL.parse({
       connectorId: 'demo',
       chartType: 'table',
       dimensions: [],

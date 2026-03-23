@@ -16,5 +16,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter.add('area', node => {\n    node.setOperator('!=').setValue(['华东', '华北']);\n  });\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter.add('area', node => {\n    node.setOperator('!=').setValue(['华东', '华北']);\n  });\n}"
 }

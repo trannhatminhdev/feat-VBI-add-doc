@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import {
-  VBIBuilder,
+  VBIChartBuilder,
   type VBIDimension as CoreVBIDimension,
   type VBISort,
 } from '@visactor/vbi';
@@ -25,7 +25,7 @@ const EMPTY_DIMENSIONS: VBIDimension[] = [];
  * VBI Dimensions Hook
  * 提供维度管理
  */
-export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
+export const useVBIDimensions = (builder: VBIChartBuilder | undefined) => {
   const dimensions = useBuilderDocState({
     builder,
     fallback: EMPTY_DIMENSIONS,

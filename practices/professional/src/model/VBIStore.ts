@@ -1,4 +1,9 @@
-import { VBI, type VBIBuilder, VBIDSL, isVBIFilter } from '@visactor/vbi';
+import {
+  VBI,
+  type VBIChartBuilder,
+  VBIChartDSL,
+  isVBIFilter,
+} from '@visactor/vbi';
 import { VSeed } from '@visactor/vseed';
 import { createLocalConnector } from 'src/utils/localConnector';
 import { create } from 'zustand';
@@ -13,34 +18,34 @@ createLocalConnector(CONNECTOR_ID);
 interface BearState {
   loading: boolean;
   vseed: VSeed | null;
-  builder: VBIBuilder;
+  builder: VBIChartBuilder;
   initialized: boolean;
 
-  dsl: VBIDSL;
+  dsl: VBIChartDSL;
 
-  initialize: (builder?: VBIBuilder) => DestroyCallback;
+  initialize: (builder?: VBIChartBuilder) => DestroyCallback;
   bindEvent: () => DestroyCallback;
 
-  setDsl: (dsl: VBIDSL) => void;
+  setDsl: (dsl: VBIChartDSL) => void;
   setLoading: (loading: boolean) => void;
   setVSeed: (vseed: VSeed | null) => void;
 }
 
-const defaultBuilder = VBI.from(VBI.generateEmptyDSL(CONNECTOR_ID));
+const defaultBuilder = VBI.createChart(VBI.generateEmptyChartDSL(CONNECTOR_ID));
 
 export const useVBIStore = create<BearState>((set, get) => ({
   loading: false,
   vseed: null,
   initialized: false,
   builder: defaultBuilder,
-  dsl: defaultBuilder.dsl.toJSON() as VBIDSL,
+  dsl: defaultBuilder.dsl.toJSON() as VBIChartDSL,
 
   setLoading: (loading: boolean) => set({ loading }),
   setVSeed: (vseed: VSeed | null) => set({ vseed }),
-  setDsl: (dsl: VBIDSL) => set({ dsl }),
+  setDsl: (dsl: VBIChartDSL) => set({ dsl }),
 
   // 初始化
-  initialize: (builder?: ReturnType<typeof VBI.from>) => {
+  initialize: (builder?: ReturnType<typeof VBI.createChart>) => {
     if (builder) {
       set({ builder });
     }
@@ -60,7 +65,7 @@ export const useVBIStore = create<BearState>((set, get) => ({
       if (builder.isEmpty()) {
         setLoading(false);
         setVSeed(null);
-        setDsl(builder.dsl.toJSON() as VBIDSL);
+        setDsl(builder.dsl.toJSON() as VBIChartDSL);
         return;
       }
 
@@ -68,7 +73,7 @@ export const useVBIStore = create<BearState>((set, get) => ({
       try {
         const newVSeed = await builder.buildVSeed();
         setVSeed(newVSeed);
-        setDsl(builder.dsl.toJSON() as VBIDSL);
+        setDsl(builder.dsl.toJSON() as VBIChartDSL);
       } catch (e: any) {
         console.error('VSeed Build Error:', e);
         import('antd').then(({ message }) => {

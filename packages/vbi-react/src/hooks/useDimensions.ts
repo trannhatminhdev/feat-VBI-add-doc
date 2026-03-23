@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { VBIDimension, VBIBuilder } from '@visactor/vbi'
+import type { VBIDimension, VBIChartBuilder } from '@visactor/vbi'
 
 import { useBuilderObserver } from '../internal'
 
@@ -12,7 +12,7 @@ export interface UseDimensionsReturn {
   updateDimension: (id: string, config: UseDimensionsConfig) => void
 }
 
-export function useDimensions(builder: VBIBuilder): UseDimensionsReturn {
+export function useDimensions(builder: VBIChartBuilder): UseDimensionsReturn {
   const serializedDimensions = useBuilderObserver(
     (callback) => builder.dimensions.observe(() => callback()),
     () => JSON.stringify(builder.dimensions.toJSON()),

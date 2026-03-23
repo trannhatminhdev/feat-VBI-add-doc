@@ -1,5 +1,5 @@
 export { applyUpdateToDoc } from './apply-update'
 export { encodeDocStateAsUpdate } from './encode-state-as-update'
-export { buildVBIDSL } from './build'
-export { isEmptyVBIDSL } from './is-empty'
+export { buildVBIChartDSL } from './build'
+export { isEmptyVBIChartDSL } from './is-empty'
 export { getBuilderSchema } from './get-schema'

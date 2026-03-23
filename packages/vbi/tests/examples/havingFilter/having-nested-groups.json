@@ -65,5 +65,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.addGroup('and', outer => { outer.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(1000000)); outer.addGroup('or', inner => { inner.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(200000)); inner.add('amount', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gte').setValue(50)); }); }); }"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => { builder.havingFilter.addGroup('and', outer => { outer.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(1000000)); outer.addGroup('or', inner => { inner.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(200000)); inner.add('amount', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gte').setValue(50)); }); }); }"
 }

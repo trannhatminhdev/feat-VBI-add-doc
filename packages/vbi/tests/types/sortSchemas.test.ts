@@ -1,7 +1,7 @@
 import { zVBIDimensionSchema } from 'src/types/dsl/dimensions/dimensions'
 import { zVBIMeasure } from 'src/types/dsl/measures/measures'
 import { zVBISort } from 'src/types/dsl/sort'
-import { zVBIDSL } from 'src/types/dsl/vbi/vbi'
+import { zVBIChartDSL } from 'src/types/dsl/vbi/vbi'
 
 describe('sort schemas', () => {
   test('zVBISort parses asc and desc', () => {
@@ -36,7 +36,7 @@ describe('sort schemas', () => {
   })
 
   test('full dsl schema accepts sorted nodes', () => {
-    const dsl = zVBIDSL.parse({
+    const dsl = zVBIChartDSL.parse({
       connectorId: 'demo',
       chartType: 'table',
       dimensions: [{ id: 'd-1', field: 'area', alias: '区域', sort: { order: 'asc' } }],

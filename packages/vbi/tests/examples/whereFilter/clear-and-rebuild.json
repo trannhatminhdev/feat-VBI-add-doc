@@ -61,5 +61,5 @@
       ]
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter\n    .clear()\n    .add('profit', node => node.setOperator('>').setValue(0))\n    .addGroup('or', group => {\n      group\n        .add('area', n => n.setOperator('eq').setValue('华东'))\n        .add('area', n => n.setOperator('eq').setValue('华北'));\n    });\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter\n    .clear()\n    .add('profit', node => node.setOperator('>').setValue(0))\n    .addGroup('or', group => {\n      group\n        .add('area', n => n.setOperator('eq').setValue('华东'))\n        .add('area', n => n.setOperator('eq').setValue('华北'));\n    });\n}"
 }

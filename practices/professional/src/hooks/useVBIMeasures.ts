@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import {
-  type VBIBuilder,
+  type VBIChartBuilder,
   type VBIMeasure as CoreVBIMeasure,
 } from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
@@ -16,7 +16,7 @@ type MeasureNodeLike = {
   setAggregate: (aggregate: NonNullable<VBIMeasure['aggregate']>) => unknown;
 };
 
-export const useVBIMeasures = (builder: VBIBuilder | undefined) => {
+export const useVBIMeasures = (builder: VBIChartBuilder | undefined) => {
   const measures = useBuilderDocState({
     builder,
     fallback: [] as VBIMeasure[],

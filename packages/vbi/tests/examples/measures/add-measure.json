@@ -17,5 +17,5 @@
     "measures": [],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.measures.add('sales', node => {\n    node.setAlias('原销售额')\n  })\n  const measureId = builder.measures.find(node => node.getField() === 'sales')?.getId()\n  if (measureId) {\n    builder.measures.update(measureId, node => {\n      node.setAlias('销售额').setAggregate({ func: 'sum' })\n    })\n  }\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.measures.add('sales', node => {\n    node.setAlias('原销售额')\n  })\n  const measureId = builder.measures.find(node => node.getField() === 'sales')?.getId()\n  if (measureId) {\n    builder.measures.update(measureId, node => {\n      node.setAlias('销售额').setAggregate({ func: 'sum' })\n    })\n  }\n}"
 }

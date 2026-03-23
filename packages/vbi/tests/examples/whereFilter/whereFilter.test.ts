@@ -1,4 +1,4 @@
-import { VBI, VBIBuilder } from '@visactor/vbi'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('WhereFilter', () => {
@@ -7,7 +7,7 @@ describe('WhereFilter', () => {
   })
 
   it('office-supplies-sales-by-province', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -43,7 +43,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.add('product_type', (node) => {
         node.setOperator('eq').setValue('办公用品')
       })
@@ -245,7 +245,7 @@ describe('WhereFilter', () => {
   })
 
   it('high-discount-tech-profit-analysis', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -281,7 +281,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter
         .add('product_type', (node) => node.setOperator('eq').setValue('技术'))
         .add('discount', (node) => node.setOperator('>').setValue(0.5))
@@ -413,7 +413,7 @@ describe('WhereFilter', () => {
   })
 
   it('or-group-product-category-comparison', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -449,7 +449,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.addGroup('or', (group) => {
         group
           .add('product_type', (node) => node.setOperator('eq').setValue('办公用品'))
@@ -619,7 +619,7 @@ describe('WhereFilter', () => {
   })
 
   it('between-sales-range-analysis', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -655,7 +655,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.add('sales', (node) => {
         node.setOperator('between').setValue({ min: 1000, max: 10000 })
       })
@@ -797,7 +797,7 @@ describe('WhereFilter', () => {
   })
 
   it('clear-and-rebuild-filters', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -846,7 +846,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter
         .clear()
         .add('profit', (node) => node.setOperator('>').setValue(0))
@@ -1054,7 +1054,7 @@ describe('WhereFilter', () => {
   })
 
   it('update-filter-switch-province', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -1103,7 +1103,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.update('f-province', (node) => {
         node.setValue('广东')
       })
@@ -1316,7 +1316,7 @@ describe('WhereFilter', () => {
   })
 
   it('nested-group-region-product-filter', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -1352,7 +1352,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter
         .add('area', (node) => node.setOperator('eq').setValue('华东'))
         .addGroup('or', (group) => {
@@ -1551,7 +1551,7 @@ describe('WhereFilter', () => {
   })
 
   it('date-filter-period-and-range-combo', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -1599,7 +1599,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter
         .add('order_date', (node) => {
           node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 })
@@ -1802,7 +1802,7 @@ describe('WhereFilter', () => {
   })
 
   it('date-filter-relative-with-nested-conditions', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -1846,7 +1846,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter
         .add('order_date', (node) => {
           node.setDate({ type: 'relative', mode: 'last', amount: 30, unit: 'day' })
@@ -2055,7 +2055,7 @@ describe('WhereFilter', () => {
   })
 
   it('deeply-nested-or-and-groups', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -2091,7 +2091,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter
         .add('sales', (node) => node.setOperator('>').setValue(500))
         .addGroup('or', (outerGroup) => {
@@ -2389,7 +2389,7 @@ describe('WhereFilter', () => {
   })
 
   it('remove-condition-from-group', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -2450,7 +2450,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.updateGroup('g-products', (group) => {
         group.remove('f-furniture')
       })
@@ -2618,7 +2618,7 @@ describe('WhereFilter', () => {
   })
 
   it('in-operator-multi-area-delivery', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -2654,7 +2654,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.add('area', (node) => {
         node.setOperator('in').setValue(['华东', '华北', '中南'])
       })
@@ -2800,7 +2800,7 @@ describe('WhereFilter', () => {
   })
 
   it('not-between-sales-range', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -2836,7 +2836,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.add('sales', (node) => {
         node.setOperator('not between').setValue({ min: 1000, max: 10000 })
       })
@@ -2983,7 +2983,7 @@ describe('WhereFilter', () => {
   })
 
   it('not-between-with-explicit-operators', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -3019,7 +3019,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.add('sales', (node) => {
         node.setOperator('not between').setValue({ min: 1000, max: 10000, leftOp: '<', rightOp: '<' })
       })
@@ -3168,7 +3168,7 @@ describe('WhereFilter', () => {
   })
 
   it('remove-filter-by-index', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -3217,7 +3217,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.remove(0)
     }
     applyBuilder(builder)
@@ -3417,7 +3417,7 @@ describe('WhereFilter', () => {
   })
 
   it('update-group-or-to-and', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -3472,7 +3472,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.updateGroup('g-customer', (group) => {
         group.setOperator('and')
       })
@@ -3615,7 +3615,7 @@ describe('WhereFilter', () => {
   })
 
   it('where-filter-array-value-converts-to-in', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -3651,7 +3651,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.add('area', (node) => {
         node.setOperator('=').setValue(['华东', '华北'])
       })
@@ -3787,7 +3787,7 @@ describe('WhereFilter', () => {
   })
 
   it('where-filter-array-value-converts-to-not-in', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -3823,7 +3823,7 @@ describe('WhereFilter', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.add('area', (node) => {
         node.setOperator('!=').setValue(['华东', '华北'])
       })

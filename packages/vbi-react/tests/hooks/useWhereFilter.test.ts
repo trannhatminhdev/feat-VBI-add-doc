@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react'
-import type { VBIFilter, VBIWhereGroup } from '@visactor/vbi'
+import type { VBIWhereFilter, VBIWhereGroup } from '@visactor/vbi'
 
 import { useWhereFilter } from '@visactor/vbi-react'
 
@@ -27,9 +27,9 @@ describe('useWhereFilter', () => {
 
     expect(result.current.whereFilter.conditions).toHaveLength(2)
 
-    const salesFilter = result.current.whereFilter.conditions[0] as VBIFilter
+    const salesFilter = result.current.whereFilter.conditions[0] as VBIWhereFilter
     const regionGroup = result.current.whereFilter.conditions[1] as VBIWhereGroup
-    const regionFilter = regionGroup.conditions[0] as VBIFilter
+    const regionFilter = regionGroup.conditions[0] as VBIWhereFilter
 
     expect(salesFilter).toMatchObject({
       field: 'sales',
@@ -54,7 +54,7 @@ describe('useWhereFilter', () => {
       })
     })
 
-    expect((result.current.whereFilter.conditions[0] as VBIFilter).value).toBe(200)
+    expect((result.current.whereFilter.conditions[0] as VBIWhereFilter).value).toBe(200)
     expect((result.current.whereFilter.conditions[1] as VBIWhereGroup).op).toBe('and')
 
     act(() => {

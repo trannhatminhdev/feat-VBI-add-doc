@@ -19,7 +19,7 @@ This file is a living design and delivery record. It must stay aligned with the 
 | `packages/vbi-react` package scaffold                             | **Completed**   | `package.json`, `tsconfig`, `rslib`, `vitest`, `eslint`, `README` are added                                                                                                                                                                                                                                                                                                                |
 | Core hooks: `useVBI`, `useVSeed`                                  | **Completed**   | Implemented in `packages/vbi-react/src/hooks/` and verified by package tests                                                                                                                                                                                                                                                                                                               |
 | Basic field hooks: `useChartType`, `useMeasures`, `useDimensions` | **Completed**   | Implemented against current `@visactor/vbi` builder APIs; `useChartType`, `useMeasures`, and `useDimensions` are all covered by package tests                                                                                                                                                                                                                                              |
-| `buildVSeed({ signal })` support in `@visactor/vbi`               | **Completed**   | `signal` is now accepted by `VBIBuilder.buildVSeed` and forwarded to `connector.query`                                                                                                                                                                                                                                                                                                     |
+| `buildVSeed({ signal })` support in `@visactor/vbi`               | **Completed**   | `signal` is now accepted by `VBIChartBuilder.buildVSeed` and forwarded to `connector.query`                                                                                                                                                                                                                                                                                                |
 | `useWhereFilter`, `useHavingFilter`                               | **Completed**   | Implemented as reactive snapshots plus mutation callbacks around the singular `whereFilter` / `havingFilter` builder APIs and verified by package tests                                                                                                                                                                                                                                    |
 | `@visactor/vbi-react/components` submodule                        | **In Progress** | Starter submodule now exports `FieldPanel`, `ChartTypeSelector`, `ChartRenderer`, and `BuilderLayout`; all stateful components are still expected to stay hook-based, `FieldPanel` now keeps add controls fixed with compact defaults for narrow sidebars while selected lists scroll independently, and `FilterPanel`, `ThemeSelector`, and richer renderer integration are still pending |
 | `practices/professional` temporary components validation          | **Completed**   | A temporary `vbi-react Starter` preview inside `practices/professional` validated the first component slice, plus the explicit supermarket schema, quoted CSV parsing, local dataset refresh, and result-key normalization fixes needed to make that preview usable; `professional` is now being restored to its original role instead of remaining the long-term showcase                 |
@@ -29,12 +29,12 @@ This file is a living design and delivery record. It must stay aligned with the 
 
 ## 1. Current Architecture Analysis
 
-### 1.1 VBIBuilder Responsibilities
+### 1.1 VBIChartBuilder Responsibilities
 
 **File**: `packages/vbi/src/builder/builder.ts`
 
 ```
-VBIBuilder
+VBIChartBuilder
 ├── doc: Y.Doc              # Yjs document
 ├── dsl: Y.Map              # DSL storage
 ├── adapters                # buildVQuery / buildVSeed pipeline hooks
@@ -51,17 +51,17 @@ VBIBuilder
 Core Methods:
 ├── buildVSeed(options?) → Promise<TSeedDSL>  # Async build via adapters
 ├── buildVQuery() → TQueryDSL
-└── build() → VBIDSL
+└── build() → VBIChartDSL
 ```
 
 ### 1.2 Yjs in State Management
 
 ```typescript
-// VBIBuilder constructor (builder.ts)
-constructor(doc: Y.Doc, options?: VBIBuilderOptions<TQueryDSL, TSeedDSL>) {
+// VBIChartBuilder constructor (builder.ts)
+constructor(doc: Y.Doc, options?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>) {
   this.doc = doc
   this.dsl = doc.getMap('dsl') as Y.Map<any>
-  this.adapters = resolveVBIBuilderAdapters(options?.adapters)
+  this.adapters = resolveVBIChartBuilderAdapters(options?.adapters)
   // sub-builders share the same Yjs doc
   this.undoManager = new UndoManager(this.dsl)
   this.chartType = new ChartTypeBuilder(doc, this.dsl)
@@ -94,7 +94,7 @@ observe(callback: ObserveCallback): () => void {
 ```typescript
 // builder.ts + builder/adapters/vquery-vseed/build-vseed.ts
 public buildVSeed = async (options?: { signal?: AbortSignal }): Promise<TSeedDSL> => {
-  // 1. Build the normalized VBIDSL snapshot
+  // 1. Build the normalized VBIChartDSL snapshot
   const vbiDSL = this.build()
 
   // 2. Build query through the configured adapter
@@ -117,7 +117,7 @@ public buildVSeed = async (options?: { signal?: AbortSignal }): Promise<TSeedDSL
 
 **Pipeline Stages**:
 
-1. `build()` → VBIDSL (sync)
+1. `build()` → VBIChartDSL (sync)
 2. `adapters.buildVQuery()` → Query DSL (sync)
 3. `adapters.buildVSeed()` → VSeed DSL (async)
 4. Default adapter calls `connector.query({ ..., signal })` and merges dataset + field metadata
@@ -168,7 +168,7 @@ useEffect(() => {
 | **React 18 Compatible** | Uses useSyncExternalStore for render consistency                 |
 | **Type Safe**           | Complete TypeScript type inference                               |
 | **Extensible**          | Easy to add new hooks and features                               |
-| **No Global State**     | Users manage VBIBuilder instances themselves                     |
+| **No Global State**     | Users manage VBIChartBuilder instances themselves                |
 | **Dual Usage Modes**    | Hooks for deep customization, slim components for rapid setup    |
 
 ### 2.2 State Ownership
@@ -193,7 +193,7 @@ This is the core concept of headless architecture:
 │   │   @visactor/vbi     │  │ @visactor/vbi-  │         │
 │   │   (Core Logic)      │  │ react (Adapter) │         │
 │   │                     │  │                 │         │
-│   │  - VBIBuilder      │  │ - useVBI        │         │
+│   │  - VBIChartBuilder      │  │ - useVBI        │         │
 │   │  - Sub-builders   │  │ - useVSeed      │         │
 │   │  - Pipeline       │  │ - useChartType  │         │
 │   └───────────────────┘  └─────────────────┘         │
@@ -228,14 +228,14 @@ This is the core concept of headless architecture:
 
 #### What It Is NOT Responsible For
 
-| Responsibility                | Description                                                                     |
-| ----------------------------- | ------------------------------------------------------------------------------- |
-| **VBIBuilder Implementation** | Provided by @visactor/vbi                                                       |
-| **Yjs Document Creation**     | Created by caller or user code                                                  |
-| **UI Rendering**              | Completely headless                                                             |
-| **Connector Implementation**  | Provided by @visactor/vbi                                                       |
-| **VSeed Rendering**           | Handled by @visactor/vseed rendering layer                                      |
-| **Heavy All-in-One UI**       | Components should stay minimal and avoid absorbing overly specific requirements |
+| Responsibility                     | Description                                                                     |
+| ---------------------------------- | ------------------------------------------------------------------------------- |
+| **VBIChartBuilder Implementation** | Provided by @visactor/vbi                                                       |
+| **Yjs Document Creation**          | Created by caller or user code                                                  |
+| **UI Rendering**                   | Completely headless                                                             |
+| **Connector Implementation**       | Provided by @visactor/vbi                                                       |
+| **VSeed Rendering**                | Handled by @visactor/vseed rendering layer                                      |
+| **Heavy All-in-One UI**            | Components should stay minimal and avoid absorbing overly specific requirements |
 
 ---
 
@@ -243,7 +243,7 @@ This is the core concept of headless architecture:
 
 ### Design Decision: No Global Provider
 
-The library does not provide a global Provider. Users manage `VBIBuilder` instances themselves, which allows multiple independent builders in the same application.
+The library does not provide a global Provider. Users manage `VBIChartBuilder` instances themselves, which allows multiple independent builders in the same application.
 
 ### Hook Signature Pattern
 
@@ -304,7 +304,7 @@ export function useBuilderSync<T>(subscribe: (callback: () => void) => () => voi
 ### 4.3 Usage Example
 
 ```typescript
-export function useChartType(builder: VBIBuilder) {
+export function useChartType(builder: VBIChartBuilder) {
   const chartType = useSyncExternalStore(
     (callback) => builder.chartType.observe(callback),
     () => builder.chartType.getChartType(),
@@ -332,7 +332,7 @@ The hooks could also be implemented using `useEffect + setState`. However, `useS
 
 ```typescript
 // Alternative: useEffect + setState approach
-function useChartTypeAlternative(builder: VBIBuilder) {
+function useChartTypeAlternative(builder: VBIChartBuilder) {
   const [chartType, setChartType] = useState(() => builder.chartType.getChartType())
 
   useEffect(() => {
@@ -387,15 +387,15 @@ export function useBuilderObserver<T>(subscribe: (callback: () => void) => () =>
 // packages/vbi-react/src/hooks/useVBI.ts
 
 import { useSyncExternalStore } from 'react'
-import type { VBIBuilder, VBIDSL } from '@visactor/vbi'
+import type { VBIChartBuilder, VBIChartDSL } from '@visactor/vbi'
 
 export interface UseVBIReturn {
-  dsl: VBIDSL
-  builder: VBIBuilder
+  dsl: VBIChartDSL
+  builder: VBIChartBuilder
 }
 
 /**
- * Core Hook: Get VBIBuilder and DSL state
+ * Core Hook: Get VBIChartBuilder and DSL state
  * Uses useSyncExternalStore for React render consistency
  *
  * @example
@@ -404,7 +404,7 @@ export interface UseVBIReturn {
  * // Modify DSL
  * builder.chartType.changeChartType('bar')
  */
-export function useVBI(builder: VBIBuilder): UseVBIReturn {
+export function useVBI(builder: VBIChartBuilder): UseVBIReturn {
   const dsl = useSyncExternalStore(
     (callback) => {
       builder.doc.on('update', callback)
@@ -424,11 +424,11 @@ export function useVBI(builder: VBIBuilder): UseVBIReturn {
 // packages/vbi-react/src/hooks/useVSeed.ts
 
 import { useState, useEffect, useRef, useCallback, useSyncExternalStore } from 'react'
-import type { VBIBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder } from '@visactor/vbi'
 import type { VSeedDSL } from '@visactor/vseed'
 
 export interface UseVSeedOptions {
-  builder: VBIBuilder
+  builder: VBIChartBuilder
   /** Debounce delay in ms, default 300 */
   debounce?: number
   /** Custom error handler */
@@ -466,7 +466,7 @@ function useDebouncedValue<T>(value: T, delay: number): T {
  *
  * return <VChart spec={vseed?.spec} />
  */
-export function useVSeed(builder: VBIBuilder, options: UseVSeedOptions = {}): UseVSeedReturn {
+export function useVSeed(builder: VBIChartBuilder, options: UseVSeedOptions = {}): UseVSeedReturn {
   const { debounce = 300, onError } = options
 
   const [vseed, setVseed] = useState<VSeedDSL | null>(null)
@@ -544,7 +544,7 @@ export function useVSeed(builder: VBIBuilder, options: UseVSeedOptions = {}): Us
 // packages/vbi-react/src/hooks/useChartType.ts
 
 import { useSyncExternalStore } from 'react'
-import type { VBIBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder } from '@visactor/vbi'
 
 export interface UseChartTypeReturn {
   chartType: string
@@ -567,7 +567,7 @@ export interface UseChartTypeReturn {
  *   </select>
  * )
  */
-export function useChartType(builder: VBIBuilder): UseChartTypeReturn {
+export function useChartType(builder: VBIChartBuilder): UseChartTypeReturn {
   const chartType = useBuilderObserver(
     (callback) => builder.chartType.observe(() => callback()),
     () => builder.chartType.getChartType(),
@@ -586,7 +586,7 @@ export function useChartType(builder: VBIBuilder): UseChartTypeReturn {
 ```typescript
 // packages/vbi-react/src/hooks/useMeasures.ts
 
-import type { VBIBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder } from '@visactor/vbi'
 import type { VBIMeasure } from '@visactor/vbi'
 
 export type UseMeasuresConfig = Partial<Pick<VBIMeasure, 'aggregate' | 'alias' | 'encoding'>>
@@ -604,7 +604,7 @@ export interface UseMeasuresReturn {
  * @example
  * const { measures, addMeasure, removeMeasure } = useMeasures(myBuilder)
  */
-export function useMeasures(builder: VBIBuilder): UseMeasuresReturn {
+export function useMeasures(builder: VBIChartBuilder): UseMeasuresReturn {
   const measures = useBuilderObserver(
     (callback) => builder.measures.observe(() => callback()),
     () => builder.measures.toJSON(),
@@ -639,7 +639,7 @@ export function useMeasures(builder: VBIBuilder): UseMeasuresReturn {
 ```typescript
 // packages/vbi-react/src/hooks/useDimensions.ts
 
-import type { VBIBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder } from '@visactor/vbi'
 import type { VBIDimension } from '@visactor/vbi'
 
 export type UseDimensionsConfig = Partial<Pick<VBIDimension, 'alias'>>
@@ -657,7 +657,7 @@ export interface UseDimensionsReturn {
  * @example
  * const { dimensions, addDimension, removeDimension } = useDimensions(myBuilder)
  */
-export function useDimensions(builder: VBIBuilder): UseDimensionsReturn {
+export function useDimensions(builder: VBIChartBuilder): UseDimensionsReturn {
   const dimensions = useBuilderObserver(
     (callback) => builder.dimensions.observe(() => callback()),
     () => builder.dimensions.toJSON(),
@@ -694,13 +694,13 @@ VBI's data flow is a complete derived state chain:
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                      Source of Truth                        │
-│                    Y.js Doc (VBIDSL)                       │
+│                    Y.js Doc (VBIChartDSL)                       │
 └─────────────────────────────────────────────────────────────┘
                               │
                               ▼ (sync)
 ┌─────────────────────────────────────────────────────────────┐
 │                   Derived State Lv.1                       │
-│                   VBIDSL (JSON)                           │
+│                   VBIChartDSL (JSON)                           │
 │                   useVBI() returns                       │
 └─────────────────────────────────────────────────────────────┘
                               │
@@ -724,11 +724,11 @@ VBI's data flow is a complete derived state chain:
 │                   VSeedDSL                                │
 │                   useVSeed() returns                      │
 │                                                             │
-│   VSeed = f(VBIDSL, Dataset)                             │
-│   - chartType: from VBIDSL                               │
+│   VSeed = f(VBIChartDSL, Dataset)                             │
+│   - chartType: from VBIChartDSL                               │
 │   - dataset: from VQuery → Dataset                       │
-│   - theme: from VBIDSL                                   │
-│   - locale: from VBIDSL                                  │
+│   - theme: from VBIChartDSL                                   │
+│   - locale: from VBIChartDSL                                  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -736,7 +736,7 @@ VBI's data flow is a complete derived state chain:
 
 | Principle          | Description                                          |
 | ------------------ | ---------------------------------------------------- |
-| **One-way Flow**   | Yjs → VBIDSL → VQueryDSL → Dataset → VSeedDSL        |
+| **One-way Flow**   | Yjs → VBIChartDSL → VQueryDSL → Dataset → VSeedDSL   |
 | **Immutable**      | Each level produces a new object                     |
 | **Idempotent**     | Same input produces same output                      |
 | **Sync/Async Mix** | DSL transformation is sync, query execution is async |
@@ -856,7 +856,7 @@ That gives us a clean split:
 Users build their own UI using hooks:
 
 ```typescript
-function CustomChartEditor({ builder }: { builder: VBIBuilder }) {
+function CustomChartEditor({ builder }: { builder: VBIChartBuilder }) {
   const { chartType, availableChartTypes, setChartType } = useChartType(builder)
   const { measures, addMeasure, removeMeasure } = useMeasures(builder)
   const { dimensions, addDimension, removeDimension } = useDimensions(builder)
@@ -887,7 +887,7 @@ Users can directly use prebuilt UI components from the same package:
 // Simple component-based usage
 import { FieldPanel, ChartTypeSelector, ChartRenderer, BuilderLayout } from '@visactor/vbi-react/components'
 
-function SimpleBuilder({ builder }: { builder: VBIBuilder }) {
+function SimpleBuilder({ builder }: { builder: VBIChartBuilder }) {
   return (
     <BuilderLayout
       leftPanel={
@@ -951,12 +951,12 @@ Future adapters such as `vbi-vue` can still be added later, but components are n
 
 ### 9.2 Package Responsibilities
 
-| Package       | Responsibility                                                     |
-| ------------- | ------------------------------------------------------------------ |
-| **vbi**       | Framework-agnostic business logic, VBIBuilder, pipeline, DSL types |
-| **vbi-react** | React hooks plus `components` submodule built on top of hooks      |
-| **vquery**    | Query generation and execution support                             |
-| **vseed**     | Rendering DSL and downstream render integration                    |
+| Package       | Responsibility                                                          |
+| ------------- | ----------------------------------------------------------------------- |
+| **vbi**       | Framework-agnostic business logic, VBIChartBuilder, pipeline, DSL types |
+| **vbi-react** | React hooks plus `components` submodule built on top of hooks           |
+| **vquery**    | Query generation and execution support                                  |
+| **vseed**     | Rendering DSL and downstream render integration                         |
 
 ### 9.3 Build System
 
@@ -1084,9 +1084,9 @@ describe('ChartTypeSelector', () => {
 ```typescript
 // practices/demo/src/hooks/useVBI.ts
 import { useState, useEffect } from 'react'
-import { VBIBuilder } from '@visactor/vbi'
+import { VBIChartBuilder } from '@visactor/vbi'
 
-export const useVBI = (builder: VBIBuilder = defaultBuilder) => {
+export const useVBI = (builder: VBIChartBuilder = defaultBuilder) => {
   const [vseed, setVSeed] = useState(null)
   const [loading, setLoading] = useState(false)
 

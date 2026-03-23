@@ -1,4 +1,4 @@
-import { VBIBuilder, VBIDSL } from '@visactor/vbi';
+import { VBIChartBuilder, VBIChartDSL } from '@visactor/vbi';
 import { VSeed } from '@visactor/vseed';
 import { defaultBuilder } from 'src/utils/demoConnector';
 import { create } from 'zustand';
@@ -8,16 +8,16 @@ type DestroyCallback = () => void;
 export interface BearState {
   loading: boolean;
   vseed: VSeed | null;
-  builder: VBIBuilder;
+  builder: VBIChartBuilder;
   initialized: boolean;
 
-  dsl: VBIDSL;
+  dsl: VBIChartDSL;
 
-  initialize: (builder?: VBIBuilder) => DestroyCallback;
+  initialize: (builder?: VBIChartBuilder) => DestroyCallback;
   bindEvent: () => DestroyCallback;
   logState: () => Promise<void>;
 
-  setDsl: (dsl: VBIDSL) => void;
+  setDsl: (dsl: VBIChartDSL) => void;
   setLoading: (loading: boolean) => void;
   setVSeed: (vseed: VSeed | null) => void;
 }
@@ -27,11 +27,11 @@ export const useVBIStore = create<BearState>((set, get) => ({
   vseed: null,
   initialized: false,
   builder: defaultBuilder,
-  dsl: defaultBuilder.dsl.toJSON() as VBIDSL,
+  dsl: defaultBuilder.dsl.toJSON() as VBIChartDSL,
 
   setLoading: (loading: boolean) => set({ loading }),
   setVSeed: (vseed: VSeed | null) => set({ vseed }),
-  setDsl: (dsl: VBIDSL) => set({ dsl }),
+  setDsl: (dsl: VBIChartDSL) => set({ dsl }),
   logState: async () => {
     const { builder, vseed } = get();
 
@@ -46,7 +46,7 @@ export const useVBIStore = create<BearState>((set, get) => ({
   },
 
   // 初始化
-  initialize: (builder?: VBIBuilder) => {
+  initialize: (builder?: VBIChartBuilder) => {
     if (builder) {
       set({ builder });
     }
@@ -74,7 +74,7 @@ export const useVBIStore = create<BearState>((set, get) => ({
       try {
         const newVSeed = await builder.buildVSeed();
         setVSeed(newVSeed);
-        setDsl(builder.dsl.toJSON() as VBIDSL);
+        setDsl(builder.dsl.toJSON() as VBIChartDSL);
       } catch (e: any) {
         console.error('VSeed Build Error:', e);
         // 静默处理错误，不显示消息

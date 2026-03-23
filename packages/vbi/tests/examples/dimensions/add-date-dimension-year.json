@@ -26,5 +26,5 @@
     ],
     "limit": 20
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.dimensions.add('order_date', node => {\n    node.setAlias('订单日期')\n  })\n  const dimensionId = builder.dimensions.find(node => node.getField() === 'order_date')?.getId()\n  if (dimensionId) {\n    builder.dimensions.update(dimensionId, node => {\n      node.setAlias('年份').setAggregate({ func: 'toYear' })\n    })\n  }\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.dimensions.add('order_date', node => {\n    node.setAlias('订单日期')\n  })\n  const dimensionId = builder.dimensions.find(node => node.getField() === 'order_date')?.getId()\n  if (dimensionId) {\n    builder.dimensions.update(dimensionId, node => {\n      node.setAlias('年份').setAggregate({ func: 'toYear' })\n    })\n  }\n}"
 }

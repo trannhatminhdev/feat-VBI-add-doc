@@ -1,34 +1,34 @@
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/builder/adapters/vquery-vseed/types'
 import type { Map } from 'yjs'
-import type { VBIDSL } from '../dsl'
+import type { VBIChartDSL } from '../dsl'
 import type { BuildVSeedOptions } from './build-vseed'
-import type { VBIBuilderInterface } from './VBIInterface'
+import type { VBIChartBuilderInterface } from './VBIInterface'
 
-export interface VBIBuildVQueryContext<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
+export interface VBIChartBuildVQueryContext<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
   dsl: Map<any>
-  vbiDSL: VBIDSL
-  builder: VBIBuilderInterface<TQueryDSL, TSeedDSL>
+  vbiDSL: VBIChartDSL
+  builder: VBIChartBuilderInterface<TQueryDSL, TSeedDSL>
 }
 
-export interface VBIBuildVSeedContext<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>
-  extends VBIBuildVQueryContext<TQueryDSL, TSeedDSL> {
+export interface VBIChartBuildVSeedContext<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>
+  extends VBIChartBuildVQueryContext<TQueryDSL, TSeedDSL> {
   options: BuildVSeedOptions
   queryDSL: TQueryDSL
 }
 
-export type VBIQueryBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> = (
-  context: VBIBuildVQueryContext<TQueryDSL, TSeedDSL>,
+export type VBIChartQueryBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> = (
+  context: VBIChartBuildVQueryContext<TQueryDSL, TSeedDSL>,
 ) => TQueryDSL
 
-export type VBISeedBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> = (
-  context: VBIBuildVSeedContext<TQueryDSL, TSeedDSL>,
+export type VBIChartSeedBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> = (
+  context: VBIChartBuildVSeedContext<TQueryDSL, TSeedDSL>,
 ) => Promise<TSeedDSL> | TSeedDSL
 
-export interface VBIBuilderAdapters<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
-  buildVQuery: VBIQueryBuilder<TQueryDSL, TSeedDSL>
-  buildVSeed: VBISeedBuilder<TQueryDSL, TSeedDSL>
+export interface VBIChartBuilderAdapters<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
+  buildVQuery: VBIChartQueryBuilder<TQueryDSL, TSeedDSL>
+  buildVSeed: VBIChartSeedBuilder<TQueryDSL, TSeedDSL>
 }
 
-export interface VBIBuilderOptions<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
-  adapters?: Partial<VBIBuilderAdapters<TQueryDSL, TSeedDSL>>
+export interface VBIChartBuilderOptions<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
+  adapters?: Partial<VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>>
 }

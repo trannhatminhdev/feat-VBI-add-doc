@@ -1,5 +1,5 @@
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/builder/adapters/vquery-vseed/types'
-import type { VBIDSL } from '../dsl'
+import type { VBIChartDSL } from '../dsl'
 import type { BuildVSeedOptions } from './build-vseed'
 import type {
   MeasuresBuilder,
@@ -14,7 +14,7 @@ import type {
 } from 'src/builder/features'
 import type { Map, Doc } from 'yjs'
 
-export interface VBIBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
+export interface VBIChartBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
   doc: Doc
   dsl: Map<any>
   undoManager: UndoManager
@@ -33,6 +33,6 @@ export interface VBIBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = 
 
   buildVSeed: (options?: BuildVSeedOptions) => Promise<TSeedDSL>
   buildVQuery: () => TQueryDSL
-  build: () => VBIDSL
+  build: () => VBIChartDSL
   isEmpty: () => boolean
 }

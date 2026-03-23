@@ -7,7 +7,7 @@ describe('select', () => {
     registerDemoConnector()
     const connectorId = getDemoConnectorId()
 
-    const builder = VBI.from(VBI.generateEmptyDSL(connectorId))
+    const builder = VBI.createChart(VBI.generateEmptyChartDSL(connectorId))
 
     builder.measures
       .add('sales', (node) => {
@@ -51,7 +51,7 @@ describe('select', () => {
     registerDemoConnector()
     const connectorId = getDemoConnectorId()
 
-    const builder = VBI.from(VBI.generateEmptyDSL(connectorId))
+    const builder = VBI.createChart(VBI.generateEmptyChartDSL(connectorId))
 
     builder.measures.add('sales', (node) => {
       node.setAlias('销售额').setAggregate({ func: 'sum' })
@@ -93,7 +93,7 @@ describe('select', () => {
     registerDemoConnector()
     const connectorId = getDemoConnectorId()
 
-    const builder = VBI.from(VBI.generateEmptyDSL(connectorId))
+    const builder = VBI.createChart(VBI.generateEmptyChartDSL(connectorId))
 
     builder.measures
       .add('sales', (node) => {

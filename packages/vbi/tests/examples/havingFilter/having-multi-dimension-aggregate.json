@@ -61,5 +61,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.addGroup('and', g => { g.add('discount', n => n.setAggregate({\"func\":\"avg\"}).setOperator('lt').setValue(0.2)); g.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(100000)); }); }"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => { builder.havingFilter.addGroup('and', g => { g.add('discount', n => n.setAggregate({\"func\":\"avg\"}).setOperator('lt').setValue(0.2)); g.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(100000)); }); }"
 }

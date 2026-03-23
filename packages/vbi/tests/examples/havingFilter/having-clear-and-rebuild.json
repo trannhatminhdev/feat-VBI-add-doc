@@ -75,5 +75,5 @@
       ]
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.clear(); builder.havingFilter.addGroup('and', g => { g.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gte').setValue(100000)); g.addGroup('or', sub => { sub.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(20000)); sub.add('amount', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gte').setValue(50)); }); }); }"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => { builder.havingFilter.clear(); builder.havingFilter.addGroup('and', g => { g.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gte').setValue(100000)); g.addGroup('or', sub => { sub.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(20000)); sub.add('amount', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gte').setValue(50)); }); }); }"
 }

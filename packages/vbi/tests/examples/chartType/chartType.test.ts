@@ -1,4 +1,4 @@
-import { VBI, VBIBuilder } from '@visactor/vbi'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('ChartType', () => {
@@ -7,7 +7,7 @@ describe('ChartType', () => {
   })
 
   it('area-by-order-date', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'area',
       dimensions: [
@@ -43,7 +43,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('line')
     }
     applyBuilder(builder)
@@ -188,7 +188,7 @@ describe('ChartType', () => {
   })
 
   it('bar-by-product-type', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'bar',
       dimensions: [
@@ -224,7 +224,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('column')
     }
     applyBuilder(builder)
@@ -341,7 +341,7 @@ describe('ChartType', () => {
   })
 
   it('chart-type-switching', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'line',
       dimensions: [
@@ -377,7 +377,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('columnParallel')
     }
     applyBuilder(builder)
@@ -522,7 +522,7 @@ describe('ChartType', () => {
   })
 
   it('column-by-area', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'column',
       dimensions: [
@@ -558,7 +558,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('bar')
     }
     applyBuilder(builder)
@@ -687,7 +687,7 @@ describe('ChartType', () => {
   })
 
   it('donut-by-customer-type', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'donut',
       dimensions: [
@@ -723,7 +723,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('pie')
     }
     applyBuilder(builder)
@@ -840,7 +840,7 @@ describe('ChartType', () => {
   })
 
   it('line-by-province', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'line',
       dimensions: [
@@ -876,7 +876,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('area')
     }
     applyBuilder(builder)
@@ -1021,7 +1021,7 @@ describe('ChartType', () => {
   })
 
   it('line-chart', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'line',
       dimensions: [
@@ -1057,7 +1057,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('area')
     }
     applyBuilder(builder)
@@ -1202,7 +1202,7 @@ describe('ChartType', () => {
   })
 
   it('pie-by-area', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'pie',
       dimensions: [
@@ -1238,7 +1238,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('donut')
     }
     applyBuilder(builder)
@@ -1367,7 +1367,7 @@ describe('ChartType', () => {
   })
 
   it('pie-chart-measure-encoding', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'pie',
       dimensions: [
@@ -1403,7 +1403,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('pie')
     }
     applyBuilder(builder)
@@ -1520,7 +1520,7 @@ describe('ChartType', () => {
   })
 
   it('rose-by-city', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'rose',
       dimensions: [
@@ -1556,7 +1556,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('pie')
     }
     applyBuilder(builder)
@@ -1701,7 +1701,7 @@ describe('ChartType', () => {
   })
 
   it('scatter-chart-measure-encoding', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'scatter',
       dimensions: [],
@@ -1734,7 +1734,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('scatter')
     }
     applyBuilder(builder)
@@ -1865,7 +1865,7 @@ describe('ChartType', () => {
   })
 
   it('scatter-sales-profit', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'scatter',
       dimensions: [],
@@ -1904,7 +1904,7 @@ describe('ChartType', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('bar')
     }
     applyBuilder(builder)

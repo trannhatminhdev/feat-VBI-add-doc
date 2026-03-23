@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import type { VBIBuilder, VBIDSL } from '@visactor/vbi';
+import type { VBIChartBuilder, VBIChartDSL } from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
 import {
   PROFESSIONAL_DEFAULT_LIMIT,
@@ -11,7 +11,7 @@ import {
 
 const normalizeLimit = (limit: number) => Math.max(1, Math.round(limit));
 
-export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
+export const useVBIBuilder = (builder: VBIChartBuilder | undefined) => {
   const state = useBuilderDocState({
     builder,
     fallback: {
@@ -21,7 +21,7 @@ export const useVBIBuilder = (builder: VBIBuilder | undefined) => {
       connectorId: '',
     },
     getSnapshot: (activeBuilder) => {
-      const dsl = activeBuilder.dsl.toJSON() as VBIDSL;
+      const dsl = activeBuilder.dsl.toJSON() as VBIChartDSL;
       return {
         locale: (dsl.locale ??
           PROFESSIONAL_DEFAULT_LOCALE) as ProfessionalLocale,

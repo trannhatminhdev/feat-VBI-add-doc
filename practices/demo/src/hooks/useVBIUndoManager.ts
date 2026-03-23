@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { VBIBuilder } from '@visactor/vbi';
+import { VBIChartBuilder } from '@visactor/vbi';
 
 const isEditableTarget = (target: EventTarget | null) => {
   if (!(target instanceof HTMLElement)) {
@@ -17,7 +17,7 @@ const isEditableTarget = (target: EventTarget | null) => {
  * VBI Undo Manager Hook
  * 提供撤销/重做管理
  */
-export const useVBIUndoManager = (builder: VBIBuilder | undefined) => {
+export const useVBIUndoManager = (builder: VBIChartBuilder | undefined) => {
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
 

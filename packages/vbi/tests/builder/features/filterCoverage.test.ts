@@ -12,7 +12,7 @@ import {
   findEntry as findWhereEntry,
   isWhereGroup,
 } from 'src/builder/features/whereFilter/where-utils'
-import type { VBIDSL } from 'src/types/dsl'
+import type { VBIChartDSL } from 'src/types/dsl'
 
 describe('Where filter internals', () => {
   test('constructor initializes a missing whereFilter root on plain Y DSL', () => {
@@ -37,7 +37,7 @@ describe('Where filter internals', () => {
   })
 
   test('update throws when the target id belongs to a group', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
     builder.whereFilter.addGroup('or', () => {})
 
     expect(() => {
@@ -48,7 +48,7 @@ describe('Where filter internals', () => {
   })
 
   test('group remove supports id deletion, out-of-range indexes and JSON export', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
     builder.whereFilter.addGroup('and', (group) => {
       group.add('province', (node) => node.setOperator('eq').setValue('浙江'))
       group.add('city', (node) => node.setOperator('eq').setValue('杭州'))
@@ -66,7 +66,7 @@ describe('Where filter internals', () => {
   })
 
   test('node setField updates the serialized where filter', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
     builder.whereFilter.add('province', (node) => {
       node.setField('city').setOperator('eq').setValue('杭州')
     })
@@ -115,7 +115,7 @@ describe('Having filter internals', () => {
   })
 
   test('update throws when the target id belongs to a group', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
     builder.havingFilter.addGroup('or', () => {})
 
     expect(() => {
@@ -126,7 +126,7 @@ describe('Having filter internals', () => {
   })
 
   test('group remove supports id deletion, out-of-range indexes and JSON export', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
     builder.havingFilter.addGroup('and', (group) => {
       group.add('销售额', (node) => node.setOperator('gt').setValue(1000))
       group.add('利润', (node) => node.setOperator('gt').setValue(200))
@@ -144,7 +144,7 @@ describe('Having filter internals', () => {
   })
 
   test('node JSON export covers the final serialized having filter', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
     builder.havingFilter.add('销售额', (node) => {
       node.setOperator('gte').setValue(1000)
     })

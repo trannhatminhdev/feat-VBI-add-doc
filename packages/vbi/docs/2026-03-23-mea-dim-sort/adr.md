@@ -95,7 +95,7 @@ VBI 输出到 VQuery 的排序字段统一使用节点 `id`，而不是源字段
 
 ### 5. 默认排序只体现在 `buildVQuery()`，不回写 DSL
 
-“默认按第一个 dimension 升序”只是 query lowering 期的回退规则，不写回 `VBIDSL`，也不在 builder 的 JSON 输出里补默认 `sort`。
+“默认按第一个 dimension 升序”只是 query lowering 期的回退规则，不写回 `VBIChartDSL`，也不在 builder 的 JSON 输出里补默认 `sort`。
 
 这意味着：
 

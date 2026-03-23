@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import {
-  VBIBuilder,
+  VBIChartBuilder,
   type VBIMeasure as CoreVBIMeasure,
   type VBIMeasureFormat,
   type VBISort,
@@ -32,7 +32,7 @@ const EMPTY_MEASURES: VBIMeasure[] = [];
  * VBI Measures Hook
  * 提供度量管理
  */
-export const useVBIMeasures = (builder: VBIBuilder | undefined) => {
+export const useVBIMeasures = (builder: VBIChartBuilder | undefined) => {
   const measures = useBuilderDocState({
     builder,
     fallback: EMPTY_MEASURES,

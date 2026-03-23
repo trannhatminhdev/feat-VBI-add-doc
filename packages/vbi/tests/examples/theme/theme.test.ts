@@ -1,4 +1,4 @@
-import { VBI, VBIBuilder } from '@visactor/vbi'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('Theme', () => {
@@ -7,7 +7,7 @@ describe('Theme', () => {
   })
 
   it('dark-theme', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [
@@ -43,7 +43,7 @@ describe('Theme', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       const nextTheme = 'dark'
       if (builder.theme.getTheme() !== nextTheme) {
         builder.theme.setTheme(nextTheme)
@@ -189,7 +189,7 @@ describe('Theme', () => {
   })
 
   it('light-theme', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [
@@ -225,7 +225,7 @@ describe('Theme', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       const nextTheme = 'light'
       if (builder.theme.getTheme() !== nextTheme) {
         builder.theme.setTheme(nextTheme)

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { VBIBuilder } from '@visactor/vbi';
+import { VBIChartBuilder } from '@visactor/vbi';
 import { VSeed } from '@visactor/vseed';
 import { defaultBuilder } from 'src/utils/demoConnector';
 
-export const useVBI = (builder: VBIBuilder = defaultBuilder) => {
+export const useVBI = (builder: VBIChartBuilder = defaultBuilder) => {
   const [vseed, setVSeed] = useState<VSeed>();
   const [loading, setLoading] = useState(false);
 

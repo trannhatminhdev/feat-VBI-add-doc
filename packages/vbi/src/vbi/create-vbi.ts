@@ -1,22 +1,24 @@
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/builder/adapters/vquery-vseed/types'
 import { connectorMap, getConnector, registerConnector } from 'src/builder/connector'
-import type { VBIBuilder } from 'src/builder/builder'
-import type { VBIDSLInput, VBIBuilderOptions } from 'src/types'
-import { fromVBIDSLInput } from './from/from-vbi-dsl-input'
-import { generateEmptyDSL } from './generate-empty-dsl'
+import type { VBIChartBuilder } from 'src/builder/builder'
+import type { VBIChartDSLInput, VBIChartBuilderOptions } from 'src/types'
+import { createChartBuilderFromVBIChartDSLInput } from './from/from-vbi-dsl-input'
+import { generateEmptyChartDSL } from './generate-empty-dsl'
 
 export interface VBIInstance<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
   connectorMap: typeof connectorMap
   registerConnector: typeof registerConnector
   getConnector: typeof getConnector
-  generateEmptyDSL: typeof generateEmptyDSL
-  from: (vbi: VBIDSLInput, builderOptions?: VBIBuilderOptions<TQueryDSL, TSeedDSL>) => VBIBuilder<TQueryDSL, TSeedDSL>
-  create: (vbi: VBIDSLInput, builderOptions?: VBIBuilderOptions<TQueryDSL, TSeedDSL>) => VBIBuilder<TQueryDSL, TSeedDSL>
+  generateEmptyChartDSL: typeof generateEmptyChartDSL
+  createChart: (
+    vbi: VBIChartDSLInput,
+    builderOptions?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>,
+  ) => VBIChartBuilder<TQueryDSL, TSeedDSL>
 }
 
 const mergeBuilderOptions = <TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>(
-  base?: VBIBuilderOptions<TQueryDSL, TSeedDSL>,
-  overrides?: VBIBuilderOptions<TQueryDSL, TSeedDSL>,
+  base?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>,
+  overrides?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>,
 ) => {
   if (!base) {
     return overrides
@@ -38,21 +40,20 @@ const mergeBuilderOptions = <TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultV
 
 export function createVBI(): VBIInstance<DefaultVBIQueryDSL, DefaultVBISeedDSL>
 export function createVBI<TQueryDSL, TSeedDSL>(
-  defaultBuilderOptions: VBIBuilderOptions<TQueryDSL, TSeedDSL>,
+  defaultBuilderOptions: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>,
 ): VBIInstance<TQueryDSL, TSeedDSL>
 export function createVBI<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>(
-  defaultBuilderOptions?: VBIBuilderOptions<TQueryDSL, TSeedDSL>,
+  defaultBuilderOptions?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>,
 ) {
-  const from = (vbi: VBIDSLInput, builderOptions?: VBIBuilderOptions<TQueryDSL, TSeedDSL>) => {
-    return fromVBIDSLInput(vbi, mergeBuilderOptions(defaultBuilderOptions, builderOptions))
+  const createChart = (vbi: VBIChartDSLInput, builderOptions?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>) => {
+    return createChartBuilderFromVBIChartDSLInput(vbi, mergeBuilderOptions(defaultBuilderOptions, builderOptions))
   }
 
   return {
     connectorMap,
     registerConnector,
     getConnector,
-    generateEmptyDSL,
-    from,
-    create: from,
+    generateEmptyChartDSL,
+    createChart,
   }
 }

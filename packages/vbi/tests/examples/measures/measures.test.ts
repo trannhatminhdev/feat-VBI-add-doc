@@ -1,4 +1,4 @@
-import { VBI, VBIBuilder } from '@visactor/vbi'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('Measures', () => {
@@ -7,7 +7,7 @@ describe('Measures', () => {
   })
 
   it('add-measure-encoding', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [],
@@ -29,7 +29,7 @@ describe('Measures', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.measures.add('sales', (n) => n.setAlias('销售额'))
       const measureId = builder.measures.find((node) => node.getField() === 'sales')?.getId()
       if (measureId) {
@@ -116,7 +116,7 @@ describe('Measures', () => {
   })
 
   it('add-measure', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [],
@@ -138,7 +138,7 @@ describe('Measures', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.measures.add('sales', (node) => {
         node.setAlias('原销售额')
       })
@@ -229,7 +229,7 @@ describe('Measures', () => {
   })
 
   it('measure-with-custom-and-auto-format', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [
@@ -256,7 +256,7 @@ describe('Measures', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       builder.measures
         .add('sales', (node) => {
           node.setAlias('销售额（万元）').setAggregate({ func: 'sum' }).setEncoding('column').setFormat({
@@ -465,7 +465,7 @@ describe('Measures', () => {
   })
 
   it('remove-measure', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [],
@@ -504,7 +504,7 @@ describe('Measures', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       const measureId = builder.measures.toJSON().find((item) => item.field === 'sales')?.id
       if (measureId) {
         builder.measures.update(measureId, (n) => n.setAlias('待移除的销售额'))
@@ -591,7 +591,7 @@ describe('Measures', () => {
   })
 
   it('update-measure', async () => {
-    const builder = VBI.from({
+    const builder = VBI.createChart({
       connectorId: 'demoSupermarket',
       chartType: 'table',
       dimensions: [],
@@ -622,7 +622,7 @@ describe('Measures', () => {
     })
 
     // Apply custom builder code
-    const applyBuilder = (builder: VBIBuilder) => {
+    const applyBuilder = (builder: VBIChartBuilder) => {
       const measureId = builder.measures.toJSON().find((item) => item.field === 'sales')?.id
       if (measureId) {
         const measure = builder.measures.find((node) => node.getId() === measureId)

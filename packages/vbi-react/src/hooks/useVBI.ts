@@ -1,14 +1,14 @@
 import { useMemo } from 'react'
-import type { VBIDSL, VBIBuilder } from '@visactor/vbi'
+import type { VBIChartDSL, VBIChartBuilder } from '@visactor/vbi'
 
 import { useBuilderObserver } from '../internal'
 
 export interface UseVBIReturn {
-  builder: VBIBuilder
-  dsl: VBIDSL
+  builder: VBIChartBuilder
+  dsl: VBIChartDSL
 }
 
-export function useVBI(builder: VBIBuilder): UseVBIReturn {
+export function useVBI(builder: VBIChartBuilder): UseVBIReturn {
   const serializedDsl = useBuilderObserver(
     (callback) => {
       const handleUpdate = () => {
@@ -23,7 +23,7 @@ export function useVBI(builder: VBIBuilder): UseVBIReturn {
     },
     () => JSON.stringify(builder.build()),
   )
-  const dsl = useMemo(() => JSON.parse(serializedDsl) as VBIDSL, [serializedDsl])
+  const dsl = useMemo(() => JSON.parse(serializedDsl) as VBIChartDSL, [serializedDsl])
 
   return { builder, dsl }
 }

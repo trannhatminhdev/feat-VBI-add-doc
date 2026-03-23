@@ -2,7 +2,7 @@ import { Flex, Spin, Card } from 'antd';
 import { VSeedRender } from 'src/components/Render';
 import { MeasuresList } from 'src/components/Fields/MeasuresList';
 import { DimensionsList } from 'src/components/Fields/DimensionsList';
-import { VBIBuilder } from '@visactor/vbi';
+import { VBIChartBuilder } from '@visactor/vbi';
 import { ChartTypeSelector } from 'src/components/ChartType';
 
 import { MeasureShelf } from 'src/components/Shelfs/MeasureShelf';
@@ -16,7 +16,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 interface APPProps {
-  builder?: VBIBuilder;
+  builder?: VBIChartBuilder;
 }
 
 export const APP = (props: APPProps) => {

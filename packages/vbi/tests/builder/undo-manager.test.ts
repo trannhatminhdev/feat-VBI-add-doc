@@ -1,9 +1,9 @@
 import { VBI } from '@visactor/vbi'
-import { VBIDSL } from 'src/types/dsl'
+import { VBIChartDSL } from 'src/types/dsl'
 
 describe('UndoManager', () => {
   test('basic undo/redo', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
 
     // 初始状态
     expect(builder.undoManager.canUndo()).toBe(false)
@@ -32,7 +32,7 @@ describe('UndoManager', () => {
   })
 
   test('clear', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
 
     builder.measures.add('sales', (node) => {
       node.setAlias('Sales')
@@ -47,14 +47,14 @@ describe('UndoManager', () => {
   })
 
   test('undo returns false when nothing to undo', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
 
     const result = builder.undoManager.undo()
     expect(result).toBe(false)
   })
 
   test('redo returns false when nothing to redo', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
 
     const result = builder.undoManager.redo()
     expect(result).toBe(false)

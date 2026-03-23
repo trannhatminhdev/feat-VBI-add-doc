@@ -12,7 +12,7 @@ const getCollectionLength = (value: unknown): number => {
   return 0
 }
 
-export const isEmptyVBIDSL = (dsl: Y.Map<any>): boolean => {
+export const isEmptyVBIChartDSL = (dsl: Y.Map<any>): boolean => {
   const dimensionsLength = getCollectionLength(dsl.get('dimensions'))
   const measuresLength = getCollectionLength(dsl.get('measures'))
   return dimensionsLength === 0 && measuresLength === 0

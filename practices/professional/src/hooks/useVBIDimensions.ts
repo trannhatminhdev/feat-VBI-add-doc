@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import {
-  type VBIBuilder,
+  type VBIChartBuilder,
   type VBIDimension as CoreVBIDimension,
 } from '@visactor/vbi';
 import { useBuilderDocState } from './useBuilderDocState';
@@ -14,7 +14,7 @@ type DimensionNodeLike = {
   clearAggregate: () => unknown;
 };
 
-export const useVBIDimensions = (builder: VBIBuilder | undefined) => {
+export const useVBIDimensions = (builder: VBIChartBuilder | undefined) => {
   const dimensions = useBuilderDocState({
     builder,
     fallback: [] as VBIDimension[],

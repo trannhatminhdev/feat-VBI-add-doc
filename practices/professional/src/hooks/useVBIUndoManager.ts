@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { VBIBuilder } from '@visactor/vbi';
+import type { VBIChartBuilder } from '@visactor/vbi';
 
 const isEditableTarget = (target: EventTarget | null) => {
   if (!(target instanceof HTMLElement)) {
@@ -13,7 +13,7 @@ const isEditableTarget = (target: EventTarget | null) => {
   return ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
 };
 
-export const useVBIUndoManager = (builder: VBIBuilder | undefined) => {
+export const useVBIUndoManager = (builder: VBIChartBuilder | undefined) => {
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
 

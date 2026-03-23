@@ -53,5 +53,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(100000)).add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(10000)); const json = builder.havingFilter.toJSON().conditions; const salesId = json[0].id; const profitId = json[1].id; builder.havingFilter.update(salesId, n => { n.setOperator('gte').setValue(500000); }); builder.havingFilter.update(profitId, n => { n.setOperator('gte').setValue(50000); }); }"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => { builder.havingFilter.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(100000)).add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(10000)); const json = builder.havingFilter.toJSON().conditions; const salesId = json[0].id; const profitId = json[1].id; builder.havingFilter.update(salesId, n => { n.setOperator('gte').setValue(500000); }); builder.havingFilter.update(profitId, n => { n.setOperator('gte').setValue(50000); }); }"
 }

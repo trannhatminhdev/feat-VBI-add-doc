@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import {
-  VBIBuilder,
+  VBIChartBuilder,
   VBIWhereClause,
-  VBIFilter,
+  VBIWhereFilter,
   isVBIFilter,
   isVBIWhereGroup,
 } from '@visactor/vbi';
@@ -22,8 +22,8 @@ type WhereGroupMutator = (group: {
   remove: (idOrIndex: string | number) => unknown;
 }) => void;
 
-const flattenWhereClauses = (items: VBIWhereClause[]): VBIFilter[] => {
-  const result: VBIFilter[] = [];
+const flattenWhereClauses = (items: VBIWhereClause[]): VBIWhereFilter[] => {
+  const result: VBIWhereFilter[] = [];
 
   const traverse = (clauses: VBIWhereClause[]) => {
     clauses.forEach((item) => {
@@ -47,7 +47,7 @@ const flattenWhereClauses = (items: VBIWhereClause[]): VBIFilter[] => {
  * 提供明细过滤（聚合前）管理
  * 支持响应式同步和增量操作
  */
-export const useVBIWhereFilter = (builder: VBIBuilder | undefined) => {
+export const useVBIWhereFilter = (builder: VBIChartBuilder | undefined) => {
   const filters = useBuilderDocState({
     builder,
     fallback: EMPTY_WHERE_CLAUSES,
@@ -139,7 +139,7 @@ export const useVBIWhereFilter = (builder: VBIBuilder | undefined) => {
     [builder],
   );
 
-  const flattenFilters = useCallback((): VBIFilter[] => {
+  const flattenFilters = useCallback((): VBIWhereFilter[] => {
     return flattenWhereClauses(filters);
   }, [filters]);
 

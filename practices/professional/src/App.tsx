@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import type {
-  VBIBuilder,
+  VBIChartBuilder,
   VBIDimension,
   VBIHavingAggregate,
   VBIMeasure,
@@ -84,7 +84,7 @@ type MeasureAggregate = NonNullable<VBIMeasure['aggregate']>;
 type DimensionEncoding = NonNullable<VBIDimension['encoding']>;
 type DimensionAggregate = NonNullable<VBIDimension['aggregate']>;
 
-const clearBuilderState = (builder: VBIBuilder) => {
+const clearBuilderState = (builder: VBIChartBuilder) => {
   const dimensionIds = builder.dimensions
     .toJSON()
     .map((item) => item.id)

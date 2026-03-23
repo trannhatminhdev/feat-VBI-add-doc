@@ -63,5 +63,5 @@
       ]
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter.updateGroup('g-customer', group => {\n    group.setOperator('and');\n  });\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter.updateGroup('g-customer', group => {\n    group.setOperator('and');\n  });\n}"
 }

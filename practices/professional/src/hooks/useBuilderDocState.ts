@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import type { VBIBuilder } from '@visactor/vbi';
+import type { VBIChartBuilder } from '@visactor/vbi';
 
 export const useBuilderDocState = <T>(params: {
-  builder: VBIBuilder | undefined;
+  builder: VBIChartBuilder | undefined;
   fallback: T;
-  getSnapshot: (builder: VBIBuilder) => T;
+  getSnapshot: (builder: VBIChartBuilder) => T;
 }) => {
   const { builder, fallback, getSnapshot } = params;
   const [state, setState] = useState<T>(fallback);

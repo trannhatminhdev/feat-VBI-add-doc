@@ -77,5 +77,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => { builder.havingFilter.addGroup('or', root => { root.addGroup('and', g1 => { g1.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(500000)); g1.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(50000)); }); root.addGroup('and', g2 => { g2.add('amount', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(100)); g2.add('discount', n => n.setAggregate({\"func\":\"avg\"}).setOperator('lt').setValue(0.3)); }); }); }"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => { builder.havingFilter.addGroup('or', root => { root.addGroup('and', g1 => { g1.add('sales', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(500000)); g1.add('profit', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(50000)); }); root.addGroup('and', g2 => { g2.add('amount', n => n.setAggregate({\"func\":\"sum\"}).setOperator('gt').setValue(100)); g2.add('discount', n => n.setAggregate({\"func\":\"avg\"}).setOperator('lt').setValue(0.3)); }); }); }"
 }

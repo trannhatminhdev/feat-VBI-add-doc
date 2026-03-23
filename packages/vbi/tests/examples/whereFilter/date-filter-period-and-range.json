@@ -31,5 +31,5 @@
     "limit": 50,
     "whereFilter": { "id": "root", "op": "and", "conditions": [] }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter\n    .add('order_date', node => {\n      node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 });\n    })\n    .add('profit', node => {\n      node.setOperator('between').setValue({ min: 0, max: 5000, leftOp: '<=', rightOp: '<' });\n    })\n    .add('sales', node => node.setOperator('>=').setValue(100));\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter\n    .add('order_date', node => {\n      node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 });\n    })\n    .add('profit', node => {\n      node.setOperator('between').setValue({ min: 0, max: 5000, leftOp: '<=', rightOp: '<' });\n    })\n    .add('sales', node => node.setOperator('>=').setValue(100));\n}"
 }

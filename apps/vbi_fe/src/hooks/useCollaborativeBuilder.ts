@@ -1,7 +1,7 @@
 import { useState, useEffect, useEffectEvent } from 'react';
 import * as Y from 'yjs';
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { VBIBuilder } from '@visactor/vbi';
+import { VBIChartBuilder } from '@visactor/vbi';
 import { isValidDoc } from 'src/utils';
 
 const getRandomColor = () => {
@@ -18,7 +18,7 @@ const getRandomColor = () => {
 };
 
 export const useCollaborativeBuilder = (roomName: string, userName: string) => {
-  const [builder, setBuilder] = useState<VBIBuilder | null>(null);
+  const [builder, setBuilder] = useState<VBIChartBuilder | null>(null);
   const [provider, setProvider] = useState<HocuspocusProvider | null>(null);
   const [isConnected, setIsConnected] = useState(false);
 
@@ -26,7 +26,7 @@ export const useCollaborativeBuilder = (roomName: string, userName: string) => {
     if (!isValidDoc(doc)) {
       return;
     }
-    setBuilder(() => new VBIBuilder(doc));
+    setBuilder(() => new VBIChartBuilder(doc));
   });
 
   const destroyBuilder = useEffectEvent(() => {

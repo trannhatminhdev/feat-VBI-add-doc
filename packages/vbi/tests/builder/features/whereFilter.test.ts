@@ -1,11 +1,11 @@
 import * as Y from 'yjs'
 import { VBI } from '@visactor/vbi'
-import type { VBIDSL, VBIFilter } from 'src/types/dsl'
+import type { VBIChartDSL, VBIWhereFilter } from 'src/types/dsl'
 
 describe('WhereFilterBuilder', () => {
   test('addWhereFilter', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter.add('category', (node) => {
       node.setOperator('eq').setValue('Electronics')
     })
@@ -30,8 +30,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('addWhereFilter callback', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter
       .add('region', (node) => {
         node.setOperator('eq').setValue('Beijing')
@@ -66,8 +66,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('getConditions and toJSON expose the root state', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.add('category', (node) => {
       node.setOperator('eq').setValue('Electronics')
@@ -82,8 +82,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('remove by id', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter
       .add('category', (node) => node.setOperator('eq').setValue('Electronics'))
       .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
@@ -96,8 +96,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('remove not found returns this', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
     const result = builder.whereFilter.remove('not-exist')
@@ -109,8 +109,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('remove by index', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter
       .add('category', (node) => node.setOperator('eq').setValue('Electronics'))
       .addGroup('or', (group) => {
@@ -125,8 +125,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('remove by index out of range returns this', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
     const result = builder.whereFilter.remove(5)
@@ -135,8 +135,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('update by id', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
     builder.whereFilter.update('id-1', (node) => {
@@ -149,8 +149,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('update nested filter by id', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', (group) => {
       group.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
@@ -170,8 +170,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('update throws error if not found', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     expect(() => {
       builder.whereFilter.update('not-exist', (node) => {
@@ -181,8 +181,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('find by id', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter
       .add('category', (node) => node.setOperator('eq').setValue('Electronics'))
       .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
@@ -200,8 +200,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('find nested filter by id', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', (group) => {
       group.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
@@ -220,8 +220,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('find returns undefined if not found', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     const node = builder.whereFilter.find((entry) => entry.getId() === 'not-exist')
 
@@ -229,8 +229,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('clearWhereFilter', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter
       .add('category', (node) => node.setOperator('eq').setValue('Electronics'))
       .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
@@ -241,8 +241,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('toJson', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter
       .add('category', (node) => node.setOperator('eq').setValue('Electronics'))
       .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
@@ -256,14 +256,14 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('toJson returns empty array when no filters', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     expect(builder.whereFilter.toJSON().conditions).toEqual([])
   })
 
   test('observe and unobserve', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     let callCount = 0
     const unobserve = builder.whereFilter.observe(() => {
@@ -284,8 +284,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('observe reacts to nested filter updates', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', (group) => {
       group.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
@@ -314,8 +314,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('WhereFilterNodeBuilder getId', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
     const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
@@ -323,8 +323,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('WhereFilterNodeBuilder getField', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
     const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
@@ -332,8 +332,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('WhereFilterNodeBuilder getOperator', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
     const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
@@ -341,30 +341,30 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('WhereFilterNodeBuilder setOperator', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
     const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
     ;(node as any).setOperator('in')
 
-    expect((builder.whereFilter.toJSON().conditions[0] as VBIFilter).op).toBe('in')
+    expect((builder.whereFilter.toJSON().conditions[0] as VBIWhereFilter).op).toBe('in')
   })
 
   test('WhereFilterNodeBuilder setValue', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
     const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
     ;(node as any).setValue(['Electronics', 'Books'])
 
-    expect((builder.whereFilter.toJSON().conditions[0] as VBIFilter).value).toEqual(['Electronics', 'Books'])
+    expect((builder.whereFilter.toJSON().conditions[0] as VBIWhereFilter).value).toEqual(['Electronics', 'Books'])
   })
 
   test('WhereFilterNodeBuilder toJSON', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
     const node = builder.whereFilter.find((entry) => entry.getId() === 'id-1')
@@ -377,14 +377,14 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('chained add operations', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter
       .add('category', (node) => node.setOperator('eq').setValue('Electronics'))
       .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
       .add('sales', (node) => node.setOperator('gt').setValue(1000))
 
-    const json = builder.whereFilter.toJSON().conditions as VBIFilter[]
+    const json = builder.whereFilter.toJSON().conditions as VBIWhereFilter[]
 
     expect(json.length).toBe(3)
     expect(json[0].field).toBe('category')
@@ -393,8 +393,8 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('various operators', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
     builder.whereFilter
       .add('field1', (node) => node.setOperator('eq').setValue('test'))
       .add('field2', (node) => node.setOperator('ne').setValue('test'))
@@ -405,7 +405,7 @@ describe('WhereFilterBuilder', () => {
       .add('field7', (node) => node.setOperator('in').setValue([1, 2, 3]))
       .add('field8', (node) => node.setOperator('like').setValue('%test%'))
 
-    const json = builder.whereFilter.toJSON().conditions as VBIFilter[]
+    const json = builder.whereFilter.toJSON().conditions as VBIWhereFilter[]
 
     expect(json.length).toBe(8)
     expect(json[0].op).toBe('eq')
@@ -419,15 +419,15 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('buildVQuery handles not between with only min boundary', () => {
-    const builder = VBI.from({
-      ...VBI.generateEmptyDSL('demo'),
+    const builder = VBI.createChart({
+      ...VBI.generateEmptyChartDSL('demo'),
       chartType: 'column',
       dimensions: [{ id: 'id-1', field: 'category', alias: 'category' }],
       measures: [{ id: 'id-2', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
       whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: { id: 'root', op: 'and', conditions: [] },
       version: 1,
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     builder.whereFilter.add('sales', (node) => {
       node.setOperator('not between').setValue({ min: 100, max: undefined })
@@ -446,15 +446,15 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('buildVQuery handles not between with only max boundary', () => {
-    const builder = VBI.from({
-      ...VBI.generateEmptyDSL('demo'),
+    const builder = VBI.createChart({
+      ...VBI.generateEmptyChartDSL('demo'),
       chartType: 'column',
       dimensions: [{ id: 'id-1', field: 'category', alias: 'category' }],
       measures: [{ id: 'id-2', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
       whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: { id: 'root', op: 'and', conditions: [] },
       version: 1,
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     builder.whereFilter.add('sales', (node) => {
       node.setOperator('not between').setValue({ min: undefined, max: 200 })
@@ -473,15 +473,15 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('buildVQuery handles between with array value', () => {
-    const builder = VBI.from({
-      ...VBI.generateEmptyDSL('demo'),
+    const builder = VBI.createChart({
+      ...VBI.generateEmptyChartDSL('demo'),
       chartType: 'column',
       dimensions: [{ id: 'id-1', field: 'category', alias: 'category' }],
       measures: [{ id: 'id-2', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
       whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: { id: 'root', op: 'and', conditions: [] },
       version: 1,
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     builder.whereFilter.add('sales', (node) => {
       node.setOperator('between').setValue([100, 200])
@@ -505,15 +505,15 @@ describe('WhereFilterBuilder', () => {
   })
 
   test('buildVQuery handles where filter with non-object value', () => {
-    const builder = VBI.from({
-      ...VBI.generateEmptyDSL('demo'),
+    const builder = VBI.createChart({
+      ...VBI.generateEmptyChartDSL('demo'),
       chartType: 'column',
       dimensions: [{ id: 'id-1', field: 'category', alias: 'category' }],
       measures: [{ id: 'id-2', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
       whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: { id: 'root', op: 'and', conditions: [] },
       version: 1,
-    } as VBIDSL)
+    } as VBIChartDSL)
 
     builder.whereFilter.add('sales', (node) => {
       node.setOperator('between').setValue(100)
@@ -528,8 +528,8 @@ describe('WhereFilterBuilder', () => {
 
 describe('WhereGroupBuilder', () => {
   test('addGroup with OR conditions', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', (group) => {
       group
@@ -550,8 +550,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('chained add and addGroup', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter
       .add('category', (node) => node.setOperator('eq').setValue('Electronics'))
@@ -575,8 +575,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('nested groups', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('and', (group) => {
       group
@@ -608,8 +608,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('find returns WhereGroupBuilder for group', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', () => {})
 
@@ -619,8 +619,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('WhereGroupBuilder getId', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', () => {})
 
@@ -630,8 +630,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('WhereGroupBuilder setOperator', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', () => {})
 
@@ -644,8 +644,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('WhereGroupBuilder remove by id', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', (group) => {
       group
@@ -667,8 +667,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('remove nested filter by id from root builder', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', (group) => {
       group
@@ -688,8 +688,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('WhereGroupBuilder remove by index', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', (group) => {
       group
@@ -711,8 +711,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('WhereGroupBuilder remove missing id is no-op', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', (group) => {
       group.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
@@ -732,8 +732,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('WhereGroupBuilder clear', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', (group) => {
       group
@@ -749,8 +749,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('updateGroup by id', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', (group) => {
       group.add('region', (node) => node.setOperator('eq').setValue('Beijing'))
@@ -773,8 +773,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('update nested group by id', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.addGroup('or', (group) => {
       group.addGroup('and', (subGroup) => {
@@ -805,8 +805,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('updateGroup throws error if not found', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     expect(() => {
       builder.whereFilter.updateGroup('not-exist', () => {})
@@ -814,8 +814,8 @@ describe('WhereGroupBuilder', () => {
   })
 
   test('updateGroup throws error if item is not a group', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.add('category', (node) => node.setOperator('eq').setValue('Electronics'))
 
@@ -840,18 +840,18 @@ describe('WhereGroupBuilder', () => {
           },
         ],
       },
-    } as VBIDSL
-    const builder = VBI.from(dsl)
+    } as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     const json = builder.whereFilter.toJSON().conditions
-    expect((json[0] as VBIFilter).field).toBe('category')
+    expect((json[0] as VBIWhereFilter).field).toBe('category')
     expect(json[0].id).toBe('id-1')
     expect(json[1].id).toBe('id-2')
   })
 
   test('clear removes both filters and groups', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter
       .add('category', (node) => node.setOperator('eq').setValue('Electronics'))
@@ -867,8 +867,8 @@ describe('WhereGroupBuilder', () => {
 
 describe('WhereFilterNodeBuilder date support', () => {
   test('setDate with range predicate', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'range', start: '2024-01-01', end: '2024-02-01', bounds: '[)' })
@@ -886,8 +886,8 @@ describe('WhereFilterNodeBuilder date support', () => {
   })
 
   test('setDate with relative predicate', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'relative', mode: 'last', amount: 7, unit: 'day' })
@@ -902,8 +902,8 @@ describe('WhereFilterNodeBuilder date support', () => {
   })
 
   test('setDate with current predicate', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'current', unit: 'month' })
@@ -918,8 +918,8 @@ describe('WhereFilterNodeBuilder date support', () => {
   })
 
   test('setDate with current predicate and offset', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'current', unit: 'month', offset: -1 })
@@ -933,8 +933,8 @@ describe('WhereFilterNodeBuilder date support', () => {
   })
 
   test('setDate with period year predicate', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'period', unit: 'year', year: 2024 })
@@ -948,8 +948,8 @@ describe('WhereFilterNodeBuilder date support', () => {
   })
 
   test('setDate with period quarter predicate', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 })
@@ -963,8 +963,8 @@ describe('WhereFilterNodeBuilder date support', () => {
   })
 
   test('getDate returns predicate when set', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'current', unit: 'month' })
@@ -975,8 +975,8 @@ describe('WhereFilterNodeBuilder date support', () => {
   })
 
   test('getDate returns undefined for scalar filter', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.add('region', (node) => {
       node.setOperator('eq').setValue('Beijing')
@@ -987,22 +987,22 @@ describe('WhereFilterNodeBuilder date support', () => {
   })
 
   test('setDate chains with other builder methods', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter
       .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
       .add('order_date', (node) => node.setDate({ type: 'current', unit: 'month' }))
 
-    const conditions = builder.whereFilter.toJSON().conditions as VBIFilter[]
+    const conditions = builder.whereFilter.toJSON().conditions as VBIWhereFilter[]
     expect(conditions).toHaveLength(2)
     expect(conditions[0].op).toBe('eq')
     expect(conditions[1].op).toBe('date')
   })
 
   test('update date filter via update method', () => {
-    const dsl = {} as VBIDSL
-    const builder = VBI.from(dsl)
+    const dsl = {} as VBIChartDSL
+    const builder = VBI.createChart(dsl)
 
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'current', unit: 'month' })
@@ -1022,15 +1022,15 @@ describe('WhereFilterNodeBuilder date support', () => {
 
 describe('buildVQuery date filter lowering', () => {
   const baseDSL = {
-    ...VBI.generateEmptyDSL('demo'),
+    ...VBI.generateEmptyChartDSL('demo'),
     chartType: 'column',
     dimensions: [{ id: 'id-d1', field: 'category', alias: 'category' }],
     measures: [{ id: 'id-m1', field: 'sales', alias: 'sales', encoding: 'yAxis', aggregate: { func: 'sum' } }],
     version: 1,
-  } as VBIDSL
+  } as VBIChartDSL
 
   test('range with default bounds [) lowers to >= and <', () => {
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'range', start: '2024-01-01', end: '2024-02-01' })
     })
@@ -1045,7 +1045,7 @@ describe('buildVQuery date filter lowering', () => {
   })
 
   test('range with bounds [] lowers to >= and <=', () => {
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'range', start: '2024-01-01', end: '2024-12-31', bounds: '[]' })
     })
@@ -1060,7 +1060,7 @@ describe('buildVQuery date filter lowering', () => {
   })
 
   test('period year lowers to >= year-start and < next-year-start', () => {
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'period', unit: 'year', year: 2024 })
     })
@@ -1075,7 +1075,7 @@ describe('buildVQuery date filter lowering', () => {
   })
 
   test('period quarter lowers to >= quarter-start and < next-quarter-start', () => {
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 1 })
     })
@@ -1090,7 +1090,7 @@ describe('buildVQuery date filter lowering', () => {
   })
 
   test('period quarter Q4 lowers correctly across year boundary', () => {
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'period', unit: 'quarter', year: 2024, quarter: 4 })
     })
@@ -1105,7 +1105,7 @@ describe('buildVQuery date filter lowering', () => {
   })
 
   test('period month lowers to >= month-start and < next-month-start', () => {
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'period', unit: 'month', year: 2024, month: 3 })
     })
@@ -1120,7 +1120,7 @@ describe('buildVQuery date filter lowering', () => {
   })
 
   test('period month December crosses year boundary', () => {
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'period', unit: 'month', year: 2024, month: 12 })
     })
@@ -1135,7 +1135,7 @@ describe('buildVQuery date filter lowering', () => {
   })
 
   test('period day lowers to >= day and < next day', () => {
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'period', unit: 'day', date: '2024-03-15' })
     })
@@ -1150,7 +1150,7 @@ describe('buildVQuery date filter lowering', () => {
   })
 
   test('period week lowers to >= week-start(Monday) and < next-week-start', () => {
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'period', unit: 'week', year: 2024, week: 1 })
     })
@@ -1173,7 +1173,7 @@ describe('buildVQuery date filter lowering', () => {
         else super(...(args as [any]))
       }
     } as any
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'relative', mode: 'last', amount: 7, unit: 'day' })
     })
@@ -1197,7 +1197,7 @@ describe('buildVQuery date filter lowering', () => {
         else super(...(args as [any]))
       }
     } as any
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'relative', mode: 'next', amount: 3, unit: 'month' })
     })
@@ -1221,7 +1221,7 @@ describe('buildVQuery date filter lowering', () => {
         else super(...(args as [any]))
       }
     } as any
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'current', unit: 'month' })
     })
@@ -1245,7 +1245,7 @@ describe('buildVQuery date filter lowering', () => {
         else super(...(args as [any]))
       }
     } as any
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'current', unit: 'month', offset: -1 })
     })
@@ -1269,7 +1269,7 @@ describe('buildVQuery date filter lowering', () => {
         else super(...(args as [any]))
       }
     } as any
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter.add('order_date', (node) => {
       node.setDate({ type: 'current', unit: 'year' })
     })
@@ -1286,7 +1286,7 @@ describe('buildVQuery date filter lowering', () => {
   })
 
   test('date filter mixed with scalar filter', () => {
-    const builder = VBI.from({ ...baseDSL })
+    const builder = VBI.createChart({ ...baseDSL })
     builder.whereFilter
       .add('region', (node) => node.setOperator('eq').setValue('Beijing'))
       .add('order_date', (node) => {

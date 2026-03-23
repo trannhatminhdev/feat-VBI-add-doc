@@ -1,6 +1,6 @@
 import * as Y from 'yjs'
 
-import { resolveVBIBuilderAdapters } from 'src/builder/adapters/vquery-vseed'
+import { resolveVBIChartBuilderAdapters } from 'src/builder/adapters/vquery-vseed'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/builder/adapters/vquery-vseed'
 import {
   DimensionsBuilder,
@@ -14,15 +14,27 @@ import {
   UndoManager,
 } from './features'
 
-import type { BuildVSeedOptions, VBIDSL, VBIBuilderAdapters, VBIBuilderInterface, VBIBuilderOptions } from 'src/types'
-import { applyUpdateToDoc, encodeDocStateAsUpdate, buildVBIDSL, isEmptyVBIDSL, getBuilderSchema } from './modules'
+import type {
+  BuildVSeedOptions,
+  VBIChartDSL,
+  VBIChartBuilderAdapters,
+  VBIChartBuilderInterface,
+  VBIChartBuilderOptions,
+} from 'src/types'
+import {
+  applyUpdateToDoc,
+  encodeDocStateAsUpdate,
+  buildVBIChartDSL,
+  isEmptyVBIChartDSL,
+  getBuilderSchema,
+} from './modules'
 
-export class VBIBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>
-  implements VBIBuilderInterface<TQueryDSL, TSeedDSL>
+export class VBIChartBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>
+  implements VBIChartBuilderInterface<TQueryDSL, TSeedDSL>
 {
   public doc: Y.Doc
   public dsl: Y.Map<any>
-  public adapters: VBIBuilderAdapters<TQueryDSL, TSeedDSL>
+  public adapters: VBIChartBuilderAdapters<TQueryDSL, TSeedDSL>
 
   public chartType: ChartTypeBuilder
   public measures: MeasuresBuilder
@@ -34,10 +46,10 @@ export class VBIBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISee
   public limit: LimitBuilder
   public undoManager: UndoManager
 
-  constructor(doc: Y.Doc, options?: VBIBuilderOptions<TQueryDSL, TSeedDSL>) {
+  constructor(doc: Y.Doc, options?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>) {
     this.doc = doc
     this.dsl = doc.getMap('dsl') as Y.Map<any>
-    this.adapters = resolveVBIBuilderAdapters(options?.adapters)
+    this.adapters = resolveVBIChartBuilderAdapters(options?.adapters)
 
     this.undoManager = new UndoManager(this.dsl)
     this.chartType = new ChartTypeBuilder(doc, this.dsl)
@@ -83,9 +95,9 @@ export class VBIBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISee
     })
   }
 
-  public build = (): VBIDSL => buildVBIDSL(this.dsl)
+  public build = (): VBIChartDSL => buildVBIChartDSL(this.dsl)
 
-  public isEmpty = (): boolean => isEmptyVBIDSL(this.dsl)
+  public isEmpty = (): boolean => isEmptyVBIChartDSL(this.dsl)
 
   public getSchema = async () => getBuilderSchema(this.dsl)
 }

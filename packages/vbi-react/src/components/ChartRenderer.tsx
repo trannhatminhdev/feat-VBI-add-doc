@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { VBIBuilder } from '@visactor/vbi'
+import type { VBIChartBuilder } from '@visactor/vbi'
 import type { VSeedDSL } from '@visactor/vseed'
 
 import { useVSeed } from '../hooks'
@@ -7,7 +7,7 @@ import type { BaseComponentProps } from './types'
 import { joinClassNames } from './utils'
 
 export interface ChartRendererProps extends BaseComponentProps {
-  builder: VBIBuilder
+  builder: VBIChartBuilder
   debounce?: number
   emptyFallback?: ReactNode
   loadingFallback?: ReactNode

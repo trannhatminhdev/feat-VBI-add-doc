@@ -8,7 +8,6 @@ export type {
   VBIWhereDateBounds,
   VBIWhereDatePeriod,
   VBIWhereDatePredicate,
-  VBIFilter,
   VBIWhereFilter,
   VBIWhereScalarFilter,
   VBIWhereDateFilter,
@@ -18,4 +17,4 @@ export type {
 export type { VBIHavingFilter, VBIHavingGroup, VBIHavingClause, VBIHavingAggregate } from './havingFilter/having'
 export type { VBIDSLTheme } from './theme/theme'
 export type { VBIDSLLocale } from './locale/locale'
-export type { VBIDSL, VBIDSLInput } from './vbi/vbi'
+export type { VBIChartDSL, VBIChartDSLInput } from './vbi/vbi'

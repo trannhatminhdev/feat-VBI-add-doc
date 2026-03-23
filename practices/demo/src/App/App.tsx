@@ -1,7 +1,7 @@
 import { Card, ConfigProvider, Flex, Spin, theme as antdTheme } from 'antd';
 import enUS from 'antd/locale/en_US';
 import zhCN from 'antd/locale/zh_CN';
-import { VBIBuilder } from '@visactor/vbi';
+import { VBIChartBuilder } from '@visactor/vbi';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ShelfDndProvider } from 'src/components/Shelfs/dnd';
 import { Toolbar } from 'src/components/Toolbar';
@@ -14,7 +14,7 @@ import { ChartPanel, FieldsPanel, ShelfPanel } from './components';
 import './app.css';
 
 interface APPProps {
-  builder?: VBIBuilder;
+  builder?: VBIChartBuilder;
 }
 
 const DEMO_ANTD_LOCALES = {

@@ -9,7 +9,7 @@ import { MeasuresBuilder } from 'src/builder/features/measures'
 import { ThemeBuilder } from 'src/builder/features/theme'
 import { UndoManager } from 'src/builder/features/undo-manager'
 import { WhereFilterBuilder } from 'src/builder/features/whereFilter'
-import type { VBIDSL } from 'src/types/dsl'
+import type { VBIChartDSL } from 'src/types/dsl'
 
 describe('feature barrels', () => {
   test('export all feature builders from the root barrel', () => {
@@ -27,7 +27,7 @@ describe('feature barrels', () => {
 
 describe('ThemeBuilder', () => {
   test('supports default value, updates, JSON export and observe lifecycle', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
 
     expect(builder.theme.getTheme()).toBe('light')
     expect(builder.theme.toJSON()).toBe('light')
@@ -53,7 +53,7 @@ describe('ThemeBuilder', () => {
 
 describe('LocaleBuilder', () => {
   test('supports default value, updates, JSON export and observe lifecycle', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
 
     expect(builder.locale.getLocale()).toBe('zh-CN')
     expect(builder.locale.toJSON()).toBe('zh-CN')
@@ -79,7 +79,7 @@ describe('LocaleBuilder', () => {
 
 describe('LimitBuilder', () => {
   test('supports undefined default, updates, JSON export and observe lifecycle', () => {
-    const builder = VBI.from({} as VBIDSL)
+    const builder = VBI.createChart({} as VBIChartDSL)
 
     expect(builder.limit.getLimit()).toBeUndefined()
     expect(builder.limit.toJSON()).toBeUndefined()

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { HavingFilterBuilder, VBIBuilder, VBIHavingGroup } from '@visactor/vbi'
+import type { HavingFilterBuilder, VBIChartBuilder, VBIHavingGroup } from '@visactor/vbi'
 
 import { useBuilderObserver } from '../internal'
 
@@ -12,7 +12,7 @@ export interface UseHavingFilterReturn {
   removeHavingEntry: (idOrIndex: string | number) => void
 }
 
-export function useHavingFilter(builder: VBIBuilder): UseHavingFilterReturn {
+export function useHavingFilter(builder: VBIChartBuilder): UseHavingFilterReturn {
   const serializedHavingFilter = useBuilderObserver(
     (callback) => builder.havingFilter.observe(() => callback()),
     () => JSON.stringify(builder.havingFilter.toJSON()),

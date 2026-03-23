@@ -44,5 +44,5 @@
       "conditions": []
     }
   },
-  "code": "const applyBuilder = (builder: VBIBuilder) => {\n  builder.whereFilter\n    .add('sales', node => node.setOperator('>').setValue(500))\n    .addGroup('or', outerGroup => {\n      outerGroup\n        .addGroup('and', g1 => {\n          g1.add('customer_type', n => n.setOperator('eq').setValue('消费者'))\n            .add('delivery_method', n => n.setOperator('eq').setValue('当日'));\n        })\n        .addGroup('and', g2 => {\n          g2.add('customer_type', n => n.setOperator('in').setValue(['公司', '小型企业']))\n            .add('delivery_method', n => n.setOperator('eq').setValue('一级'));\n        });\n    });\n}"
+  "code": "const applyBuilder = (builder: VBIChartBuilder) => {\n  builder.whereFilter\n    .add('sales', node => node.setOperator('>').setValue(500))\n    .addGroup('or', outerGroup => {\n      outerGroup\n        .addGroup('and', g1 => {\n          g1.add('customer_type', n => n.setOperator('eq').setValue('消费者'))\n            .add('delivery_method', n => n.setOperator('eq').setValue('当日'));\n        })\n        .addGroup('and', g2 => {\n          g2.add('customer_type', n => n.setOperator('in').setValue(['公司', '小型企业']))\n            .add('delivery_method', n => n.setOperator('eq').setValue('一级'));\n        });\n    });\n}"
 }
