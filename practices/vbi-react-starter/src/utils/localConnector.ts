@@ -1,176 +1,163 @@
-import { VBI } from '@visactor/vbi';
-import {
-  VQuery,
-  type DatasetColumn,
-  type RawDatasetSource,
-  type VQueryDSL,
-} from '@visactor/vquery';
+import { VBI } from '@visactor/vbi'
+import { VQuery, type DatasetColumn, type RawDatasetSource, type VQueryDSL } from '@visactor/vquery'
 
-type QueryValue = string | number;
+type QueryValue = string | number
 
-export type LocalValue = string | number | boolean | null | undefined;
-export type LocalRow = Record<string, LocalValue>;
+export type LocalValue = string | number | boolean | null | undefined
+export type LocalRow = Record<string, LocalValue>
 type FieldSelection = {
-  alias: string;
-  field: string;
-};
+  alias: string
+  field: string
+}
 
-let localData: LocalRow[] = [];
-let localSchema: DatasetColumn[] | null = null;
-let datasetNeedsRefresh = true;
+let localData: LocalRow[] = []
+let localSchema: DatasetColumn[] | null = null
+let datasetNeedsRefresh = true
 
 function inferSchema(data: LocalRow[]): DatasetColumn[] {
-  const firstRow = data[0];
+  const firstRow = data[0]
   if (!firstRow) {
-    return [];
+    return []
   }
 
   return Object.entries(firstRow).map(([name, value]) => ({
     name,
     type: typeof value === 'number' ? 'number' : 'string',
-  }));
+  }))
 }
 
-function getFieldSelections(
-  queryDSL: VQueryDSL<Record<string, QueryValue>>,
-): {
-  dimensionFields: FieldSelection[];
-  measureFields: FieldSelection[];
+function getFieldSelections(queryDSL: VQueryDSL<Record<string, QueryValue>>): {
+  dimensionFields: FieldSelection[]
+  measureFields: FieldSelection[]
 } {
-  const dimensionFields: FieldSelection[] = [];
-  const measureFields: FieldSelection[] = [];
+  const dimensionFields: FieldSelection[] = []
+  const measureFields: FieldSelection[] = []
 
   for (const item of queryDSL.select ?? []) {
     if (typeof item === 'string') {
-      dimensionFields.push({ alias: item, field: item });
-      continue;
+      dimensionFields.push({ alias: item, field: item })
+      continue
     }
 
     if (!item || typeof item !== 'object') {
-      continue;
+      continue
     }
 
-    const field = item.field;
-    const alias = item.alias ?? field;
+    const field = item.field
+    const alias = item.alias ?? field
 
     if (!field || !alias) {
-      continue;
+      continue
     }
 
     if (item.aggr?.func) {
-      measureFields.push({ alias, field });
-      continue;
+      measureFields.push({ alias, field })
+      continue
     }
 
-    dimensionFields.push({ alias, field });
+    dimensionFields.push({ alias, field })
   }
 
-  return { dimensionFields, measureFields };
+  return { dimensionFields, measureFields }
 }
 
 function normalizeMeasureValue(value: unknown): number | null {
   if (typeof value === 'number') {
-    return value;
+    return value
   }
 
   if (typeof value === 'bigint') {
-    return Number(value);
+    return Number(value)
   }
 
   if (typeof value === 'string') {
-    const nextValue = Number(value);
-    return Number.isNaN(nextValue) ? null : nextValue;
+    const nextValue = Number(value)
+    return Number.isNaN(nextValue) ? null : nextValue
   }
 
-  return null;
+  return null
 }
 
-function normalizeDataset(
-  queryDSL: VQueryDSL<Record<string, QueryValue>>,
-  dataset: LocalRow[],
-): LocalRow[] {
-  const { dimensionFields, measureFields } = getFieldSelections(queryDSL);
+function normalizeDataset(queryDSL: VQueryDSL<Record<string, QueryValue>>, dataset: LocalRow[]): LocalRow[] {
+  const { dimensionFields, measureFields } = getFieldSelections(queryDSL)
 
   if (dimensionFields.length === 0 && measureFields.length === 0) {
-    return dataset;
+    return dataset
   }
 
   return dataset.map((row) => {
-    const normalizedRow: LocalRow = {};
+    const normalizedRow: LocalRow = {}
 
     for (const { alias, field } of measureFields) {
-      const sourceKey = alias || field;
-      const nextValue = normalizeMeasureValue(row[sourceKey]);
+      const sourceKey = alias || field
+      const nextValue = normalizeMeasureValue(row[sourceKey])
       if (nextValue !== null) {
-        normalizedRow[sourceKey] = nextValue;
+        normalizedRow[sourceKey] = nextValue
       }
     }
 
     for (const { alias, field } of dimensionFields) {
-      const sourceKey = alias || field;
+      const sourceKey = alias || field
       if (sourceKey in row) {
-        normalizedRow[sourceKey] = row[sourceKey];
+        normalizedRow[sourceKey] = row[sourceKey]
       }
     }
 
-    return normalizedRow;
-  });
+    return normalizedRow
+  })
 }
 
 export function createLocalConnector(connectorId: string) {
-  const vquery = new VQuery();
+  const vquery = new VQuery()
 
   VBI.registerConnector(connectorId, async () => ({
     discoverSchema: async () => {
       if (localSchema) {
-        return localSchema;
+        return localSchema
       }
 
       if (localData.length === 0) {
-        return [];
+        return []
       }
 
-      return inferSchema(localData);
+      return inferSchema(localData)
     },
 
     query: async ({ queryDSL, schema }) => {
-      const hasDataset = await vquery.hasDataset(connectorId);
+      const hasDataset = await vquery.hasDataset(connectorId)
 
       if (hasDataset && datasetNeedsRefresh) {
-        await vquery.dropDataset(connectorId);
+        await vquery.dropDataset(connectorId)
       }
 
       if (!(await vquery.hasDataset(connectorId))) {
         if (localData.length === 0) {
-          return { dataset: [] };
+          return { dataset: [] }
         }
 
         await vquery.createDataset(
           connectorId,
           schema as DatasetColumn[],
           { rawDataset: localData, type: 'json' } as RawDatasetSource,
-        );
-        datasetNeedsRefresh = false;
+        )
+        datasetNeedsRefresh = false
       }
 
-      const dataset = await vquery.connectDataset(connectorId);
-      const typedQueryDSL = queryDSL as VQueryDSL<Record<string, QueryValue>>;
-      const queryResult = await dataset.query(typedQueryDSL);
+      const dataset = await vquery.connectDataset(connectorId)
+      const typedQueryDSL = queryDSL as VQueryDSL<Record<string, QueryValue>>
+      const queryResult = await dataset.query(typedQueryDSL)
 
       return {
         dataset: normalizeDataset(typedQueryDSL, queryResult.dataset as LocalRow[]),
-      };
+      }
     },
-  }));
+  }))
 
-  return connectorId;
+  return connectorId
 }
 
-export function setLocalDataWithSchema(
-  data: LocalRow[],
-  schema: DatasetColumn[] | null,
-) {
-  localData = data;
-  localSchema = schema;
-  datasetNeedsRefresh = true;
+export function setLocalDataWithSchema(data: LocalRow[], schema: DatasetColumn[] | null) {
+  localData = data
+  localSchema = schema
+  datasetNeedsRefresh = true
 }
