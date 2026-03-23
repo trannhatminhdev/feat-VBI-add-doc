@@ -1,4 +1,4 @@
-import type { DatasetColumn } from '@visactor/vquery';
+import type { DatasetColumn } from '@visactor/vquery'
 
 export const supermarketSchema: DatasetColumn[] = [
   { name: 'id', type: 'string' },
@@ -21,12 +21,12 @@ export const supermarketSchema: DatasetColumn[] = [
   { name: 'amount', type: 'number' },
   { name: 'discount', type: 'number' },
   { name: 'profit', type: 'number' },
-];
+]
 
 export const supermarketDimensions = supermarketSchema
   .filter((field) => field.type !== 'number')
-  .map((field) => field.name);
+  .map((field) => field.name)
 
 export const supermarketMeasures = supermarketSchema
   .filter((field) => field.type === 'number')
-  .map((field) => field.name);
+  .map((field) => field.name)

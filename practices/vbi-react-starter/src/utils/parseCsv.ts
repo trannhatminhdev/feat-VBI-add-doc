@@ -1,56 +1,56 @@
 export function parseCsv(text: string): string[][] {
-  const rows: string[][] = [];
-  let currentRow: string[] = [];
-  let currentCell = '';
-  let inQuotes = false;
+  const rows: string[][] = []
+  let currentRow: string[] = []
+  let currentCell = ''
+  let inQuotes = false
 
   for (let index = 0; index < text.length; index += 1) {
-    const char = text[index];
-    const nextChar = text[index + 1];
+    const char = text[index]
+    const nextChar = text[index + 1]
 
     if (char === '"') {
       if (inQuotes && nextChar === '"') {
-        currentCell += '"';
-        index += 1;
+        currentCell += '"'
+        index += 1
       } else {
-        inQuotes = !inQuotes;
+        inQuotes = !inQuotes
       }
-      continue;
+      continue
     }
 
     if (char === ',' && !inQuotes) {
-      currentRow.push(currentCell);
-      currentCell = '';
-      continue;
+      currentRow.push(currentCell)
+      currentCell = ''
+      continue
     }
 
     if ((char === '\n' || char === '\r') && !inQuotes) {
       if (char === '\r' && nextChar === '\n') {
-        index += 1;
+        index += 1
       }
 
-      currentRow.push(currentCell);
-      currentCell = '';
+      currentRow.push(currentCell)
+      currentCell = ''
 
       if (currentRow.some((cell) => cell.length > 0)) {
-        rows.push(currentRow);
+        rows.push(currentRow)
       }
 
-      currentRow = [];
-      continue;
+      currentRow = []
+      continue
     }
 
-    currentCell += char;
+    currentCell += char
   }
 
-  currentRow.push(currentCell);
+  currentRow.push(currentCell)
   if (currentRow.some((cell) => cell.length > 0)) {
-    rows.push(currentRow);
+    rows.push(currentRow)
   }
 
   if (rows.length > 0 && rows[0][0]) {
-    rows[0][0] = rows[0][0].replace(/^\uFEFF/, '');
+    rows[0][0] = rows[0][0].replace(/^\uFEFF/, '')
   }
 
-  return rows;
+  return rows
 }

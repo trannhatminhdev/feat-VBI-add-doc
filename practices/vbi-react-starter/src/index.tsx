@@ -1,2 +1,2 @@
-export { VSeedRender } from './components/Render';
-export { APP } from './App';
+export { VSeedRender } from './components/Render'
+export { APP } from './App'

@@ -8,9 +8,7 @@ export default [
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
-        projectService: {
-          allowDefaultProject: ['tests/*.ts', 'tests/*.tsx', 'tests/*/*.ts', 'tests/*/*.tsx'],
-        },
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },

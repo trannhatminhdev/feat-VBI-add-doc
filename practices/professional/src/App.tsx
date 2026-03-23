@@ -443,9 +443,12 @@ export function APP() {
       }
 
       doc.transact(() => {
-        measures.update(measureId, (node: { setAlias: (alias: string) => void }) => {
-          node.setAlias(newAlias);
-        });
+        measures.update(
+          measureId,
+          (node: { setAlias: (alias: string) => void }) => {
+            node.setAlias(newAlias);
+          },
+        );
       });
       // measureFields 存的是 field，不需要改
       syncMeasuresDetail();
@@ -470,7 +473,10 @@ export function APP() {
         measures.update(
           measureId,
           (node: {
-            setAggregate: (aggregate: { func: string; quantile?: number }) => void;
+            setAggregate: (aggregate: {
+              func: string;
+              quantile?: number;
+            }) => void;
           }) => {
             node.setAggregate(
               quantile === undefined ? { func } : { func, quantile },

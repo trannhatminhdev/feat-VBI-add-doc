@@ -1,5 +1,5 @@
-import { useEffect, useRef, type CSSProperties } from 'react';
-import VChart, { type ISpec } from '@visactor/vchart';
+import { useEffect, useRef, type CSSProperties } from 'react'
+import VChart, { type ISpec } from '@visactor/vchart'
 import {
   ListTable,
   PivotChart,
@@ -8,7 +8,7 @@ import {
   type ListTableConstructorOptions,
   type PivotChartConstructorOptions,
   type PivotTableConstructorOptions,
-} from '@visactor/vtable';
+} from '@visactor/vtable'
 import {
   Builder as VSeedBuilder,
   ColorIdEncoding,
@@ -18,89 +18,71 @@ import {
   isVChart,
   registerAll,
   type VSeed,
-} from '@visactor/vseed';
+} from '@visactor/vseed'
 
-registerAll();
-register.chartModule('vchart', VChart);
+registerAll()
+register.chartModule('vchart', VChart)
 
-export function VSeedRender(props: {
-  style?: CSSProperties;
-  vseed: VSeed;
-}) {
-  const { style, vseed } = props;
-  const ref = useRef<HTMLDivElement>(null);
+export function VSeedRender(props: { style?: CSSProperties; vseed: VSeed }) {
+  const { style, vseed } = props
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!ref.current) {
-      return;
+      return
     }
 
     try {
-      const builder = VSeedBuilder.from({ ...vseed, theme: 'light' });
-      const spec = builder.build();
+      const builder = VSeedBuilder.from({ ...vseed, theme: 'light' })
+      const spec = builder.build()
 
       if (isPivotChart(vseed)) {
-        const tableInstance = new PivotChart(
-          ref.current,
-          spec as PivotChartConstructorOptions,
-        );
+        const tableInstance = new PivotChart(ref.current, spec as PivotChartConstructorOptions)
 
-        tableInstance.on(
-          'legend_item_click',
-          (args: { value: string[] | number[] }) => {
+        tableInstance.on('legend_item_click', (args: { value: string[] | number[] }) => {
           tableInstance.updateFilterRules([
             {
               filterKey: ColorIdEncoding,
               filteredValues: args.value,
             },
-          ]);
-          },
-        );
+          ])
+        })
 
-        tableInstance.on(
-          'legend_change',
-          (args: { value: [number, number] }) => {
-          const maxValue = args.value[1];
-          const minValue = args.value[0];
+        tableInstance.on('legend_change', (args: { value: [number, number] }) => {
+          const maxValue = args.value[1]
+          const minValue = args.value[0]
           tableInstance.updateFilterRules([
             {
               filterFunc: (record: Record<string, number>) => {
-                const value = record[record[ColorIdEncoding]];
-                return value >= minValue && value <= maxValue;
+                const value = record[record[ColorIdEncoding]]
+                return value >= minValue && value <= maxValue
               },
             },
-          ]);
-          },
-        );
+          ])
+        })
 
-        return () => tableInstance.release();
+        return () => tableInstance.release()
       }
 
       if (isVChart(vseed)) {
-        const vchart = new VChart(spec as ISpec, { dom: ref.current });
-        vchart.renderSync();
-        return () => vchart.release();
+        const vchart = new VChart(spec as ISpec, { dom: ref.current })
+        vchart.renderSync()
+        return () => vchart.release()
       }
 
       if (isTable(vseed)) {
-        const tableInstance = new ListTable(
-          ref.current,
-          spec as ListTableConstructorOptions,
-        );
-        return () => tableInstance.release();
+        const tableInstance = new ListTable(ref.current, spec as ListTableConstructorOptions)
+        return () => tableInstance.release()
       }
 
       if (isPivotTable(vseed)) {
-        const tableInstance = new PivotTable(
-          ref.current,
-          spec as PivotTableConstructorOptions,
-        );
-        return () => tableInstance.release();
+        const tableInstance = new PivotTable(ref.current, spec as PivotTableConstructorOptions)
+        return () => tableInstance.release()
       }
     } catch (error) {
-      console.error('Failed to render VSeed in vbi-react starter demo:', error);
+      console.error('Failed to render VSeed in vbi-react starter demo:', error)
     }
-  }, [vseed]);
+  }, [vseed])
 
   return (
     <div
@@ -115,5 +97,5 @@ export function VSeedRender(props: {
         ...style,
       }}
     />
-  );
+  )
 }

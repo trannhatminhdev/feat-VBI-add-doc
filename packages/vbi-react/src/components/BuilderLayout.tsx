@@ -38,9 +38,7 @@ export function BuilderLayout(props: BuilderLayoutProps) {
     .filter(Boolean)
     .join(' ')
 
-  const rows = [topBar ? 'auto' : undefined, 'minmax(0, 1fr)', footer ? 'auto' : undefined]
-    .filter(Boolean)
-    .join(' ')
+  const rows = [topBar ? 'auto' : undefined, 'minmax(0, 1fr)', footer ? 'auto' : undefined].filter(Boolean).join(' ')
 
   return (
     <section

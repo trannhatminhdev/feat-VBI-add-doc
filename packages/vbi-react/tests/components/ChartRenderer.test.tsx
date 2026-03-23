@@ -13,11 +13,7 @@ describe('ChartRenderer', () => {
     })
 
     const view = render(
-      <ChartRenderer
-        builder={builder}
-        debounce={0}
-        renderVSeed={(vseed) => <div>Rows: {vseed.dataset.length}</div>}
-      />,
+      <ChartRenderer builder={builder} debounce={0} renderVSeed={(vseed) => <div>Rows: {vseed.dataset.length}</div>} />,
     )
 
     expect(view.getByText(/Loading chart/)).toBeTruthy()

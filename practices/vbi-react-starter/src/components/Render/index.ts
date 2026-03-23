@@ -1,1 +1,1 @@
-export { VSeedRender } from './VSeedRender';
+export { VSeedRender } from './VSeedRender'

@@ -166,7 +166,16 @@ export function FieldPanel(props: FieldPanelProps) {
           <div style={{ border: '1px solid #d9d9d9', borderRadius: 8, minHeight: 0, overflow: 'hidden' }}>
             <ul
               aria-label="Selected dimensions"
-              style={{ alignContent: 'start', display: 'grid', gap: 6, listStyle: 'none', margin: 0, minHeight: 0, overflowY: 'auto', padding: 8 }}
+              style={{
+                alignContent: 'start',
+                display: 'grid',
+                gap: 6,
+                listStyle: 'none',
+                margin: 0,
+                minHeight: 0,
+                overflowY: 'auto',
+                padding: 8,
+              }}
             >
               {dimensions.map((dimension) => (
                 <li key={dimension.id} style={fieldCardStyle}>
@@ -243,7 +252,16 @@ export function FieldPanel(props: FieldPanelProps) {
           <div style={{ border: '1px solid #d9d9d9', borderRadius: 8, minHeight: 0, overflow: 'hidden' }}>
             <ul
               aria-label="Selected measures"
-              style={{ alignContent: 'start', display: 'grid', gap: 6, listStyle: 'none', margin: 0, minHeight: 0, overflowY: 'auto', padding: 8 }}
+              style={{
+                alignContent: 'start',
+                display: 'grid',
+                gap: 6,
+                listStyle: 'none',
+                margin: 0,
+                minHeight: 0,
+                overflowY: 'auto',
+                padding: 8,
+              }}
             >
               {measures.map((measure) => (
                 <li key={measure.id} style={fieldCardStyle}>
