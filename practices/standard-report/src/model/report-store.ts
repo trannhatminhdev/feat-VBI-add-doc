@@ -9,6 +9,14 @@ import {
 
 type DestroyCallback = () => void;
 
+export interface EditorSourceRect {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+  borderRadius: number;
+}
+
 export interface ReportStoreState {
   reportBuilder: VBIReportBuilder;
   report: VBIReportDSL;
@@ -16,6 +24,7 @@ export interface ReportStoreState {
   revision: number;
   activePageId: string;
   editorOpen: boolean;
+  editorSourceRect: EditorSourceRect | null;
   initialize: (builder?: VBIReportBuilder) => DestroyCallback;
   bindEvents: () => DestroyCallback;
   syncReport: () => void;
@@ -23,7 +32,7 @@ export interface ReportStoreState {
   removePage: (pageId: string) => void;
   updatePageTitle: (pageId: string, title: string) => void;
   setActivePageId: (pageId: string) => void;
-  openEditor: (pageId?: string) => void;
+  openEditor: (pageId?: string, sourceRect?: EditorSourceRect | null) => void;
   closeEditor: () => void;
 }
 
@@ -45,14 +54,16 @@ export const useReportStore = create<ReportStoreState>((set, get) => ({
   revision: 0,
   activePageId: initialReport.pages[0]?.id ?? '',
   editorOpen: false,
+  editorSourceRect: null,
 
   setActivePageId: (activePageId) => set({ activePageId }),
-  openEditor: (pageId) =>
+  openEditor: (pageId, sourceRect) =>
     set((state) => ({
       editorOpen: true,
+      editorSourceRect: sourceRect ?? null,
       activePageId: pageId ?? state.activePageId,
     })),
-  closeEditor: () => set({ editorOpen: false }),
+  closeEditor: () => set({ editorOpen: false, editorSourceRect: null }),
 
   updatePageTitle: (pageId, title) => {
     const nextTitle = title.trim();
@@ -80,7 +91,7 @@ export const useReportStore = create<ReportStoreState>((set, get) => ({
     get().syncReport();
     return () => {
       dispose();
-      set({ editorOpen: false, initialized: false });
+      set({ editorOpen: false, editorSourceRect: null, initialized: false });
     };
   },
 

@@ -1,9 +1,32 @@
+.standard-report-editor-root {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.standard-report-editor-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.22);
+}
+
 .standard-report-editor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.standard-report-editor-frame {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
+  box-shadow: 0 32px 88px rgba(15, 23, 42, 0.24);
   background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
+  pointer-events: auto;
+  transform-origin: top left;
+  will-change: transform, border-radius;
 }
 
 .standard-report-editor-header {
@@ -56,4 +79,12 @@
 .standard-report-editor-body > * {
   flex: 1;
   min-height: 0;
+}
+
+.standard-report-editor-placeholder {
+  flex: 1;
+  min-height: 0;
+  background:
+    radial-gradient(circle at top left, rgba(22, 119, 255, 0.12), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(241, 245, 249, 0.88));
 }

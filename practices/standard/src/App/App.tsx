@@ -2,19 +2,22 @@ import { Card, ConfigProvider, Flex, Spin, theme as antdTheme } from 'antd';
 import enUS from 'antd/locale/en_US';
 import zhCN from 'antd/locale/zh_CN';
 import { VBIChartBuilder } from '@visactor/vbi';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ShelfDndProvider } from 'src/components/Shelfs/dnd';
 import { Toolbar } from 'src/components/Toolbar';
 import { useVBIBuilder } from 'src/hooks';
 import type { DemoTheme } from 'src/constants/builder';
 import { useTranslation } from 'src/i18n';
-import { useVBIStore } from 'src/model';
+import { useVBIStore, VBIStoreProvider } from 'src/model';
 import { useShallow } from 'zustand/shallow';
-import { ChartPanel, FieldsPanel, ShelfPanel } from './components';
+import { ChartPanel, FieldsPanel, ShelfPanel, ViewPanel } from './components';
 import './app.css';
+
+type AppMode = 'view' | 'edit';
 
 interface APPProps {
   builder?: VBIChartBuilder;
+  mode?: AppMode;
 }
 
 const DEMO_ANTD_LOCALES = {
@@ -42,6 +45,23 @@ const createThemeConfig = (themeMode: DemoTheme) => {
     },
   };
 };
+
+const DemoWorkbenchPanels = memo(() => {
+  return (
+    <Flex
+      vertical={false}
+      gap={8}
+      style={{ flex: 1, minHeight: 0, minWidth: 0 }}
+    >
+      <FieldsPanel />
+
+      <Flex vertical gap={8} style={{ flex: '1 1 0', minWidth: 0 }}>
+        <ShelfPanel />
+        <ChartPanel />
+      </Flex>
+    </Flex>
+  );
+});
 
 const DemoWorkbench = ({
   themeMode,
@@ -92,19 +112,7 @@ const DemoWorkbench = ({
             onToggleFullscreen={onToggleFullscreen}
           />
         </Card>
-
-        <Flex
-          vertical={false}
-          gap={8}
-          style={{ flex: 1, minHeight: 0, minWidth: 0 }}
-        >
-          <FieldsPanel />
-
-          <Flex vertical gap={8} style={{ flex: '1 1 0', minWidth: 0 }}>
-            <ShelfPanel />
-            <ChartPanel />
-          </Flex>
-        </Flex>
+        <DemoWorkbenchPanels />
       </Flex>
     </ShelfDndProvider>
   );
@@ -112,9 +120,11 @@ const DemoWorkbench = ({
 
 const AppContent = ({
   initialized,
+  mode,
   themeMode,
 }: {
   initialized: boolean;
+  mode: AppMode;
   themeMode: DemoTheme;
 }) => {
   const logState = useVBIStore((state) => state.logState);
@@ -128,6 +138,10 @@ const AppContent = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
+    if (mode !== 'edit') {
+      return;
+    }
+
     const handleFullscreenChange = () => {
       setIsFullscreen(document.fullscreenElement === appRootRef.current);
     };
@@ -137,9 +151,13 @@ const AppContent = ({
     return () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
     };
-  }, []);
+  }, [mode]);
 
   const toggleFullscreen = useCallback(async () => {
+    if (mode !== 'edit') {
+      return;
+    }
+
     const target = appRootRef.current;
     if (!target) {
       return;
@@ -159,7 +177,7 @@ const AppContent = ({
     } catch (error) {
       console.error('Failed to toggle fullscreen:', error);
     }
-  }, []);
+  }, [mode]);
 
   return (
     <ConfigProvider
@@ -169,26 +187,46 @@ const AppContent = ({
     >
       <div
         ref={appRootRef}
-        className="demo-app-root"
-        onClick={() => {
-          void logState();
-        }}
+        className={`demo-app-root demo-app-root--${mode}`}
+        onClick={
+          mode === 'edit'
+            ? () => {
+                void logState();
+              }
+            : undefined
+        }
       >
         {!initialized ? (
-          <Spin tip={t('appInitializing')} fullscreen />
-        ) : (
+          mode === 'edit' ? (
+            <Spin tip={t('appInitializing')} fullscreen />
+          ) : (
+            <div className="demo-app-view-loading">
+              <Spin spinning tip={t('appInitializing')}>
+                <div className="demo-app-view-loading-target" />
+              </Spin>
+            </div>
+          )
+        ) : mode === 'edit' ? (
           <DemoWorkbench
             themeMode={themeMode}
             isFullscreen={isFullscreen}
             onToggleFullscreen={toggleFullscreen}
           />
+        ) : (
+          <ViewPanel />
         )}
       </div>
     </ConfigProvider>
   );
 };
 
-export const APP = ({ builder }: APPProps) => {
+const AppShell = ({
+  builder,
+  mode,
+}: {
+  builder?: VBIChartBuilder;
+  mode: AppMode;
+}) => {
   const { initialize, initialized, storeBuilder } = useVBIStore(
     useShallow((state) => ({
       initialize: state.initialize,
@@ -202,5 +240,13 @@ export const APP = ({ builder }: APPProps) => {
     return initialize(builder);
   }, [builder, initialize]);
 
-  return <AppContent initialized={initialized} themeMode={theme} />;
+  return <AppContent initialized={initialized} mode={mode} themeMode={theme} />;
+};
+
+export const APP = ({ builder, mode = 'edit' }: APPProps) => {
+  return (
+    <VBIStoreProvider builder={builder}>
+      <AppShell builder={builder} mode={mode} />
+    </VBIStoreProvider>
+  );
 };

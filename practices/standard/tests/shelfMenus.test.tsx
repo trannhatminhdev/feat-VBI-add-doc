@@ -1,10 +1,12 @@
 import { expect, test } from '@rstest/core';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { MeasureFormatPanel } from '../src/components/Shelfs/common/MeasureFormatPanel';
+import { VBIStoreProvider } from '../src/model';
 import {
   getDimensionMenuSelectedKeys,
   getMeasureMenuSelectedKeys,
 } from '../src/components/Shelfs/utils/menuSelectionUtils';
+import { createDefaultBuilder } from '../src/utils/demoConnector';
 
 test('getMeasureMenuSelectedKeys marks encoding and aggregate', () => {
   expect(
@@ -38,10 +40,12 @@ test('MeasureFormatPanel switches to custom mode in submenu panel', () => {
   const changes: unknown[] = [];
 
   render(
-    <MeasureFormatPanel
-      format={{ autoFormat: true }}
-      onFormatChange={(value) => changes.push(value)}
-    />,
+    <VBIStoreProvider builder={createDefaultBuilder()}>
+      <MeasureFormatPanel
+        format={{ autoFormat: true }}
+        onFormatChange={(value) => changes.push(value)}
+      />
+    </VBIStoreProvider>,
   );
 
   fireEvent.click(screen.getByText('自定义'));

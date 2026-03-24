@@ -1,7 +1,7 @@
 import type { VBIReportPageDSL } from '@visactor/vbi';
 import type { CarouselRef } from 'antd/es/carousel';
 import type { RefObject } from 'react';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export const useCarouselDisplayIndex = (
   pages: VBIReportPageDSL[],
@@ -17,10 +17,13 @@ export const useCarouselDisplayIndex = (
     if (pages[activeIndex]) carouselRef.current?.goTo(activeIndex);
   }, [activeIndex, carouselRef, pages]);
 
-  const goTo = (nextIndex: number) => {
-    if (!pages[nextIndex]) return;
-    carouselRef.current?.goTo(nextIndex);
-  };
+  const goTo = useCallback(
+    (nextIndex: number) => {
+      if (!pages[nextIndex]) return;
+      carouselRef.current?.goTo(nextIndex);
+    },
+    [carouselRef, pages],
+  );
 
   return { goTo };
 };

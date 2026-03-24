@@ -1,10 +1,10 @@
 import { useVBIStore } from 'src/model';
-import type { BearState } from 'src/model/VBIStore';
+import type { VBIStoreState } from 'src/model/VBIStore';
 
 /**
  * VBI Store Hook
  * 提供全局状态管理
  */
-export const useVBIStoreHook = (): BearState => {
-  return useVBIStore() as BearState;
+export const useVBIStoreHook = (): VBIStoreState => {
+  return useVBIStore((state) => state);
 };

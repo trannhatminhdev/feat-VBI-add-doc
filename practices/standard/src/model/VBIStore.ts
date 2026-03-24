@@ -1,11 +1,11 @@
 import { VBIChartBuilder, VBIChartDSL } from '@visactor/vbi';
 import { VSeed } from '@visactor/vseed';
-import { defaultBuilder } from 'src/utils/demoConnector';
-import { create } from 'zustand';
+import { createStore, type StoreApi } from 'zustand/vanilla';
+import { createDefaultBuilder } from 'src/utils/demoConnector';
 
 type DestroyCallback = () => void;
 
-export interface BearState {
+export interface VBIStoreState {
   loading: boolean;
   vseed: VSeed | null;
   builder: VBIChartBuilder;
@@ -22,70 +22,153 @@ export interface BearState {
   setVSeed: (vseed: VSeed | null) => void;
 }
 
-export const useVBIStore = create<BearState>((set, get) => ({
-  loading: false,
-  vseed: null,
-  initialized: false,
-  builder: defaultBuilder,
-  dsl: defaultBuilder.dsl.toJSON() as VBIChartDSL,
+export type VBIStoreApi = StoreApi<VBIStoreState>;
 
-  setLoading: (loading: boolean) => set({ loading }),
-  setVSeed: (vseed: VSeed | null) => set({ vseed }),
-  setDsl: (dsl: VBIChartDSL) => set({ dsl }),
-  logState: async () => {
-    const { builder, vseed } = get();
+type VSeedCacheEntry = {
+  dslSnapshot: string;
+  vseed: VSeed | null;
+  pending?: Promise<VSeed | null>;
+};
 
-    console.group('selected builder');
+const vseedCache = new WeakMap<VBIChartBuilder, VSeedCacheEntry>();
 
-    console.info('builder', builder);
-    console.info('vbi', builder.build());
-    console.info('vquery', builder.buildVQuery());
-    console.info('vseed', vseed);
+const getInitialBuilder = (builder?: VBIChartBuilder) => {
+  return builder ?? createDefaultBuilder();
+};
 
-    console.groupEnd();
-  },
+const getDslState = (builder: VBIChartBuilder) => {
+  const dsl = builder.dsl.toJSON() as VBIChartDSL;
+  return {
+    dsl,
+    snapshot: JSON.stringify(dsl),
+  };
+};
 
-  // 初始化
-  initialize: (builder?: VBIChartBuilder) => {
-    if (builder) {
-      set({ builder });
+const loadVSeed = async (
+  builder: VBIChartBuilder,
+  dslSnapshot: string,
+): Promise<VSeed | null> => {
+  const cached = vseedCache.get(builder);
+
+  if (cached?.dslSnapshot === dslSnapshot) {
+    if (cached.pending) {
+      return cached.pending;
     }
-    set({ initialized: true });
 
-    const callback = get().bindEvent();
+    return cached.vseed;
+  }
 
-    return () => {
-      callback();
-      set({ loading: false, vseed: null, initialized: false });
-    };
-  },
+  const pending = builder
+    .buildVSeed()
+    .then((vseed) => {
+      vseedCache.set(builder, { dslSnapshot, vseed });
+      return vseed;
+    })
+    .catch((error) => {
+      vseedCache.delete(builder);
+      throw error;
+    });
 
-  bindEvent: () => {
-    const { builder, setLoading, setVSeed, setDsl } = get();
+  vseedCache.set(builder, {
+    dslSnapshot,
+    vseed: cached?.vseed ?? null,
+    pending,
+  });
 
-    const updateAll = async () => {
-      if (builder.isEmpty()) {
-        setLoading(false);
-        setVSeed(null);
-        return;
-      }
+  return pending;
+};
 
-      setLoading(true);
-      try {
-        const newVSeed = await builder.buildVSeed();
-        setVSeed(newVSeed);
-        setDsl(builder.dsl.toJSON() as VBIChartDSL);
-      } catch (e: any) {
-        console.error('VSeed Build Error:', e);
-        // 静默处理错误，不显示消息
-      } finally {
-        setLoading(false);
-      }
-    };
+export const createVBIStore = (builder?: VBIChartBuilder): VBIStoreApi => {
+  const initialBuilder = getInitialBuilder(builder);
 
-    builder.doc.on('update', updateAll);
-    return () => {
-      builder.doc.off('update', updateAll);
-    };
-  },
-}));
+  return createStore<VBIStoreState>((set, get) => ({
+    loading: false,
+    vseed: null,
+    initialized: false,
+    builder: initialBuilder,
+    dsl: initialBuilder.dsl.toJSON() as VBIChartDSL,
+
+    setLoading: (loading) => set({ loading }),
+    setVSeed: (vseed) => set({ vseed }),
+    setDsl: (dsl) => set({ dsl }),
+    logState: async () => {
+      const { builder, vseed } = get();
+
+      console.group('selected builder');
+
+      console.info('builder', builder);
+      console.info('vbi', builder.build());
+      console.info('vquery', builder.buildVQuery());
+      console.info('vseed', vseed);
+
+      console.groupEnd();
+    },
+
+    initialize: (nextBuilder) => {
+      const builder = nextBuilder ?? get().builder;
+      set({
+        builder,
+        dsl: builder.dsl.toJSON() as VBIChartDSL,
+        loading: false,
+        vseed: null,
+        initialized: true,
+      });
+
+      const dispose = get().bindEvent();
+
+      return () => {
+        dispose();
+        set({ loading: false, vseed: null, initialized: false });
+      };
+    },
+
+    bindEvent: () => {
+      const builder = get().builder;
+
+      const updateAll = async () => {
+        if (get().builder !== builder) {
+          return;
+        }
+
+        const { dsl, snapshot } = getDslState(builder);
+        if (builder.isEmpty()) {
+          vseedCache.set(builder, { dslSnapshot: snapshot, vseed: null });
+          set({ dsl, loading: false, vseed: null });
+          return;
+        }
+
+        const cached = vseedCache.get(builder);
+        if (cached?.dslSnapshot === snapshot && !cached.pending) {
+          set({ dsl, loading: false, vseed: cached.vseed });
+          return;
+        }
+
+        set({ dsl, loading: true });
+
+        try {
+          const newVSeed = await loadVSeed(builder, snapshot);
+          const currentState = getDslState(builder);
+
+          if (get().builder !== builder || currentState.snapshot !== snapshot) {
+            return;
+          }
+
+          set({ dsl: currentState.dsl, vseed: newVSeed });
+        } catch (error) {
+          console.error('VSeed Build Error:', error);
+        } finally {
+          if (get().builder === builder) {
+            set({ loading: false });
+          }
+        }
+      };
+
+      builder.doc.on('update', updateAll);
+      void updateAll();
+
+      return () => {
+        builder.doc.off('update', updateAll);
+      };
+    },
+  }));
+};

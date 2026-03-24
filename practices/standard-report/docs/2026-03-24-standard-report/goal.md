@@ -1,9 +1,3 @@
-------
-status: in-progress
----
-
----
-
 生成 architecture-decisions 文档, 命名为 ./adr.md
 
 这里是 practices/standard 计划要完成的开发任务:

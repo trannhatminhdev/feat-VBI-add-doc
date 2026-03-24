@@ -3,3 +3,4 @@ export { FieldsPanel } from './FieldsPanel';
 export { FilterRootOperatorToggle } from './FilterRootOperatorToggle';
 export { ShelfPanel } from './ShelfPanel';
 export { ShelfRow } from './ShelfRow';
+export { ViewPanel } from './ViewPanel';

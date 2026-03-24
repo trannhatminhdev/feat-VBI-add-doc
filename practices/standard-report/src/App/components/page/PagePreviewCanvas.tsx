@@ -1,44 +1,54 @@
-import { PlusCircleFilled } from '@ant-design/icons';
-import type { VSeed } from '@visactor/vseed';
-import { VSeedRender } from 'standard';
+import type { RefObject } from 'react';
+import type { VBIChartBuilder } from '@visactor/vbi';
+import { APP as StandardAPP } from 'standard';
 import { PageInsight } from './PageInsight';
 
 type PagePreviewCanvasProps = {
+  builder?: VBIChartBuilder;
+  pageId: string;
+  previewRef: RefObject<HTMLDivElement | null>;
   showPlaceholder: boolean;
-  vseed: VSeed | null;
   onEdit: () => void;
 };
 
 export const PagePreviewCanvas = ({
+  builder,
+  pageId,
+  previewRef,
   showPlaceholder,
-  vseed,
   onEdit,
 }: PagePreviewCanvasProps) => {
+  const preview = builder ? (
+    <StandardAPP builder={builder} mode="view" />
+  ) : null;
+
   if (showPlaceholder) {
     return (
-      <button
-        type="button"
-        className="standard-report-page-shell standard-report-placeholder"
-        onClick={onEdit}
+      <div
+        ref={previewRef}
+        data-report-preview-page-id={pageId}
+        className="standard-report-page-shell"
       >
-        <div className="standard-report-placeholder-body">
-          <PlusCircleFilled className="standard-report-placeholder-icon" />
-          <span className="standard-report-placeholder-title">
-            点击添加图表
-          </span>
-          <span className="standard-report-placeholder-copy">
-            图表铺满宽度，洞察文档紧跟在下方
-          </span>
-        </div>
+        <button
+          type="button"
+          className="standard-report-preview-entry is-empty"
+          onClick={onEdit}
+        >
+          <div className="standard-report-renderer">{preview}</div>
+        </button>
         <PageInsight />
-      </button>
+      </div>
     );
   }
 
   return (
-    <div className="standard-report-page-shell">
-      <div className="standard-report-renderer">
-        {vseed ? <VSeedRender vseed={vseed} /> : null}
+    <div
+      ref={previewRef}
+      data-report-preview-page-id={pageId}
+      className="standard-report-page-shell"
+    >
+      <div className="standard-report-preview-entry">
+        <div className="standard-report-renderer">{preview}</div>
       </div>
       <PageInsight />
     </div>

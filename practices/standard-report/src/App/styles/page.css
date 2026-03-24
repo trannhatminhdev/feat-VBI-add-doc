@@ -4,13 +4,6 @@
   min-height: 0;
 }
 
-.standard-report-page-spinner,
-.standard-report-page-spinner .ant-spin-container {
-  display: block;
-  width: 100%;
-  min-height: 0;
-}
-
 .standard-report-page-shell {
   position: relative;
   display: flex;
@@ -24,8 +17,21 @@
   overflow: hidden;
 }
 
-.standard-report-renderer,
-.standard-report-placeholder-body {
+.standard-report-preview-entry {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: inherit;
+}
+
+.standard-report-preview-entry.is-empty {
+  cursor: pointer;
+}
+
+.standard-report-renderer {
   width: 100%;
   height: clamp(280px, 34vw, 420px);
   min-height: 260px;
@@ -37,14 +43,28 @@
   min-height: 0;
 }
 
-.standard-report-renderer > * {
+.standard-report-renderer > *,
+.standard-report-renderer .demo-app-root,
+.standard-report-renderer .demo-app-view-shell,
+.standard-report-renderer .demo-app-view-spinner,
+.standard-report-renderer .demo-app-view-spinner .ant-spin-container,
+.standard-report-renderer .demo-app-view-frame,
+.standard-report-renderer .demo-app-view-renderer {
   width: 100%;
   height: 100%;
 }
 
+.standard-report-renderer .demo-app-view-shell {
+  display: block;
+}
+
+.standard-report-renderer .demo-app-view-frame {
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
 @media (max-width: 768px) {
-  .standard-report-renderer,
-  .standard-report-placeholder-body {
+  .standard-report-renderer {
     height: clamp(220px, 58vw, 300px);
     min-height: 220px;
     padding: 10px 10px 8px;
