@@ -6,7 +6,11 @@
   box-sizing: border-box;
   background:
     radial-gradient(circle at top, rgba(56, 112, 255, 0.16), transparent 34%),
-    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.12), transparent 28%),
+    radial-gradient(
+      circle at bottom right,
+      rgba(14, 165, 233, 0.12),
+      transparent 28%
+    ),
     linear-gradient(180deg, #f4f6fb 0%, #edf1f7 100%);
 }
 

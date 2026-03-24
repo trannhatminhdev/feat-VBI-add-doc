@@ -16,7 +16,11 @@
   gap: 12px;
   background:
     radial-gradient(circle at top, rgba(22, 119, 255, 0.12), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(241, 245, 249, 0.96));
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(241, 245, 249, 0.96)
+    );
 }
 
 .standard-report-placeholder-icon {
