@@ -29,7 +29,10 @@
       "path": "../../packages/vbi"
     },
     {
-      "path": "../../practices/demo"
+      "path": "../../practices/standard"
+    },
+    {
+      "path": "../../practices/standard-report"
     },
     {
       "path": "../../practices/minimalist"

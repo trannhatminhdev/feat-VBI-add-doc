@@ -1,0 +1,52 @@
+.standard-report-carousel,
+.standard-report-carousel .slick-slider,
+.standard-report-carousel .slick-list,
+.standard-report-carousel .slick-track,
+.standard-report-carousel .slick-slide,
+.standard-report-carousel .slick-slide > div {
+  height: auto;
+}
+
+.standard-report-carousel .slick-track {
+  display: flex;
+  align-items: stretch;
+}
+
+.standard-report-slide {
+  display: flex !important;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.standard-report-stage-nav.ant-btn {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  border-color: rgba(148, 163, 184, 0.16);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--report-shadow-soft);
+  backdrop-filter: blur(16px);
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.standard-report-stage-nav.ant-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14);
+}
+
+.standard-report-stage-nav.ant-btn:disabled {
+  opacity: 0.36;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .standard-report-stage-nav.ant-btn {
+    width: 38px;
+    height: 38px;
+  }
+}

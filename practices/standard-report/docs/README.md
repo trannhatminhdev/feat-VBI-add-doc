@@ -1,6 +1,6 @@
-# practices/demo/docs
+# practices/standard-report/docs
 
-本目录存放 `practices/demo` 的目标、ADR 与执行计划。
+本目录存放 `practices/standard-report` 的目标、ADR 与执行计划。
 
 - 一个主题一个目录：`YYYY-MM-DD-topic/`
 - 文件按需创建：`goal.md`、`adr.md`、`plan.md`

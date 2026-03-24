@@ -1,4 +1,4 @@
-# ADR-001: practices/demo Shelves 命名与二级交互收敛
+# ADR-001: practices/standard Shelves 命名与二级交互收敛
 
 ## Status
 
@@ -6,7 +6,7 @@ Proposed
 
 ## Context
 
-`practices/demo` 当前的 shelf 相关实现已经有一套稳定骨架，但仍有 4 个明显不一致点需要收敛：
+`practices/standard` 当前的 shelf 相关实现已经有一套稳定骨架，但仍有 4 个明显不一致点需要收敛：
 
 1. 代码目录和 import 仍在使用错误复数 `Shelfs`，而 UI 文案和目标语义使用的是 `shelves`。
 2. measure 和 dimension 的二级菜单依赖 `children + popupOffset` 展开，当前偏移量是负值，二级菜单会向左回拉，与一级菜单发生重叠。
@@ -15,13 +15,13 @@ Proposed
 
 当前相关代码位置：
 
-- `practices/demo/src/components/Shelfs/common/FieldShelf.tsx`
-- `practices/demo/src/components/Shelfs/shelves/MeasureShelf.tsx`
-- `practices/demo/src/components/Shelfs/shelves/DimensionShelf.tsx`
-- `practices/demo/src/components/Shelfs/utils/menuItemUtils.tsx`
-- `practices/demo/src/components/Shelfs/common/FilterShelf.tsx`
-- `practices/demo/src/components/Filter/FilterPanel.tsx`
-- `practices/demo/src/components/Filter/DateFilterEditor.tsx`
+- `practices/standard/src/components/Shelfs/common/FieldShelf.tsx`
+- `practices/standard/src/components/Shelfs/shelves/MeasureShelf.tsx`
+- `practices/standard/src/components/Shelfs/shelves/DimensionShelf.tsx`
+- `practices/standard/src/components/Shelfs/utils/menuItemUtils.tsx`
+- `practices/standard/src/components/Shelfs/common/FilterShelf.tsx`
+- `practices/standard/src/components/Filter/FilterPanel.tsx`
+- `practices/standard/src/components/Filter/DateFilterEditor.tsx`
 
 这次改动的重点是 demo 交互与命名收敛，不是 DSL 重设计。`@visactor/vbi` 已经提供了 measure format、dimension aggregate、where date predicate 所需的核心表达能力，本 ADR 只决定 demo 侧如何组织它们。
 
@@ -29,11 +29,11 @@ Proposed
 
 ### 1. demo 代码中的复数命名统一为 `Shelves`
 
-`practices/demo` 内所有错误命名 `Shelfs` / `shelfs` 统一改为 `Shelves` / `shelves`。
+`practices/standard` 内所有错误命名 `Shelfs` / `shelfs` 统一改为 `Shelves` / `shelves`。
 
 具体约束：
 
-1. 目录 `practices/demo/src/components/Shelfs` 重命名为 `practices/demo/src/components/Shelves`
+1. 目录 `practices/standard/src/components/Shelfs` 重命名为 `practices/standard/src/components/Shelves`
 2. 所有 import / export / test path 一次性切到 `Shelves`
 3. 保留单数 `Shelf` 相关命名，例如 `FieldShelf`、`FilterShelf`、`ShelfTrack`
 4. 已经正确的 i18n key `shelves*` 不做重命名
@@ -122,7 +122,7 @@ UI 规则：
 
 需要覆盖以下验证：
 
-1. `practices/demo` 下不再出现 `Shelfs` / `shelfs` 路径引用
+1. `practices/standard` 下不再出现 `Shelfs` / `shelfs` 路径引用
 2. measure / dimension 二级菜单和 format panel 都从一级菜单右侧展开
 3. 二级菜单不再与一级菜单重叠
 4. hover `求和` 等菜单项时，背景能贴齐二级菜单左右边界
@@ -132,13 +132,13 @@ UI 规则：
 
 ## Reference
 
-- `practices/demo/src/components/Shelfs/common/FieldShelf.tsx`
-- `practices/demo/src/components/Shelfs/shelves/MeasureShelf.tsx`
-- `practices/demo/src/components/Shelfs/shelves/DimensionShelf.tsx`
-- `practices/demo/src/components/Shelfs/utils/menuItemUtils.tsx`
-- `practices/demo/src/components/Shelfs/common/FilterShelf.tsx`
-- `practices/demo/src/components/Filter/FilterPanel.tsx`
-- `practices/demo/src/components/Filter/DateFilterEditor.tsx`
+- `practices/standard/src/components/Shelfs/common/FieldShelf.tsx`
+- `practices/standard/src/components/Shelfs/shelves/MeasureShelf.tsx`
+- `practices/standard/src/components/Shelfs/shelves/DimensionShelf.tsx`
+- `practices/standard/src/components/Shelfs/utils/menuItemUtils.tsx`
+- `practices/standard/src/components/Shelfs/common/FilterShelf.tsx`
+- `practices/standard/src/components/Filter/FilterPanel.tsx`
+- `practices/standard/src/components/Filter/DateFilterEditor.tsx`
 - Ant Design Dropdown / Popover / Tabs: https://ant.design/llms-full.txt
 
 ## 淘汰内容概述

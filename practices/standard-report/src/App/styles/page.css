@@ -1,0 +1,52 @@
+.standard-report-page {
+  position: relative;
+  width: 100%;
+  min-height: 0;
+}
+
+.standard-report-page-spinner,
+.standard-report-page-spinner .ant-spin-container {
+  display: block;
+  width: 100%;
+  min-height: 0;
+}
+
+.standard-report-page-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  border: 1px solid var(--report-border-color, rgba(148, 163, 184, 0.18));
+  border-radius: var(--report-radius-page, 28px);
+  background: var(--report-bg-container, rgba(255, 255, 255, 0.96));
+  box-shadow: var(--report-shadow-soft);
+  overflow: hidden;
+}
+
+.standard-report-renderer,
+.standard-report-placeholder-body {
+  width: 100%;
+  height: clamp(280px, 34vw, 420px);
+  min-height: 260px;
+  padding: 14px 16px 10px;
+  box-sizing: border-box;
+}
+
+.standard-report-renderer {
+  min-height: 0;
+}
+
+.standard-report-renderer > * {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .standard-report-renderer,
+  .standard-report-placeholder-body {
+    height: clamp(220px, 58vw, 300px);
+    min-height: 220px;
+    padding: 10px 10px 8px;
+  }
+}

@@ -12,10 +12,10 @@ Proposed
 2. 无法稳定表达“2024 年”“2024-Q1”“2024-03”这类自然周期筛选。
 3. 旧草案中的 `dateOp`、`dateValue`、`granularity` 是平铺字段，容易产生非法组合，也会把日期语义拆散。
 
-同时，`practices/demo` 当前的 `where` UI 仍然是纯标量表单：
+同时，`practices/standard` 当前的 `where` UI 仍然是纯标量表单：
 
-1. [`FilterPanel.tsx`](../../practices/demo/src/components/Filter/FilterPanel.tsx) 只支持通用比较表单、`range`、`tags` 这类输入策略。
-2. [`WhereShelf.tsx`](../../practices/demo/src/components/Shelfs/shelves/WhereShelf.tsx) 和 [`useVBIWhereFilter.ts`](../../practices/demo/src/hooks/useVBIWhereFilter.ts) 只知道 `setOperator(...)` / `setValue(...)`。
+1. [`FilterPanel.tsx`](../../practices/standard/src/components/Filter/FilterPanel.tsx) 只支持通用比较表单、`range`、`tags` 这类输入策略。
+2. [`WhereShelf.tsx`](../../practices/standard/src/components/Shelfs/shelves/WhereShelf.tsx) 和 [`useVBIWhereFilter.ts`](../../practices/standard/src/hooks/useVBIWhereFilter.ts) 只知道 `setOperator(...)` / `setValue(...)`。
 3. 日期维度虽然已有 `isDate` 标记，但还没有独立的日期筛选编辑器。
 
 底层 `vquery` 已经补齐了当前阶段需要依赖的基础验证：
@@ -296,7 +296,7 @@ const zVBIWhereScalarFilter = z.object({
 export const zVBIWhereFilter = z.union([zVBIWhereDateFilter, zVBIWhereScalarFilter])
 ```
 
-### 8. `practices/demo` UI 采用“同一入口、日期分流”的编辑方案
+### 8. `practices/standard` UI 采用“同一入口、日期分流”的编辑方案
 
 UI 目标不是在现有标量表单里硬塞更多字段，而是在同一个 `where` 编辑入口里，对日期字段切换到独立的日期编辑模式。
 
@@ -309,7 +309,7 @@ UI 目标不是在现有标量表单里硬塞更多字段，而是在同一个 `
 
 #### 建议的表单模型
 
-`practices/demo` 内部可以继续复用现有 `FilterItem` 外形，但在类型上要把日期分支单独表达出来：
+`practices/standard` 内部可以继续复用现有 `FilterItem` 外形，但在类型上要把日期分支单独表达出来：
 
 ```typescript
 type DemoWhereScalarFilterItem = {
@@ -353,21 +353,21 @@ type DemoWhereFilterItem = DemoWhereScalarFilterItem | DemoWhereDateFilterItem
 
 #### 组件改造点
 
-- [`practices/demo/src/components/Filter/FilterPanel.tsx`](../../practices/demo/src/components/Filter/FilterPanel.tsx)
+- [`practices/standard/src/components/Filter/FilterPanel.tsx`](../../practices/standard/src/components/Filter/FilterPanel.tsx)
   - 根据 `field.isDate` 分流为标量编辑器或日期编辑器。
   - 日期编辑器使用 `type` 选择器驱动动态子表单。
   - 提交时，如果是日期模式，输出 `{ op: 'date', value: DatePredicate }`。
 
-- [`practices/demo/src/components/Filter/whereFilterUtils.ts`](../../practices/demo/src/components/Filter/whereFilterUtils.ts)
+- [`practices/standard/src/components/Filter/whereFilterUtils.ts`](../../practices/standard/src/components/Filter/whereFilterUtils.ts)
   - 保留现有标量 operator/input strategy 工具函数。
   - 新增日期表单的默认值、序列化、反序列化、展示文案生成工具。
   - `getWhereDisplayText(...)` 需要支持 `op === 'date'` 的可读展示。
 
-- [`practices/demo/src/components/Shelfs/shelves/WhereShelf.tsx`](../../practices/demo/src/components/Shelfs/shelves/WhereShelf.tsx)
+- [`practices/standard/src/components/Shelfs/shelves/WhereShelf.tsx`](../../practices/standard/src/components/Shelfs/shelves/WhereShelf.tsx)
   - 新增 `item.op === 'date'` 分支。
   - add/update 时，日期节点改用 `node.setDate(...)`，非日期节点继续用 `setOperator(...)` / `setValue(...)`。
 
-- [`practices/demo/src/hooks/useVBIWhereFilter.ts`](../../practices/demo/src/hooks/useVBIWhereFilter.ts)
+- [`practices/standard/src/hooks/useVBIWhereFilter.ts`](../../practices/standard/src/hooks/useVBIWhereFilter.ts)
   - mutator typing 增加 `setDate(...)`。
   - `VBIWhereFilter` 命名同步替代旧的 `VBIFilter`。
 
@@ -383,7 +383,7 @@ type DemoWhereFilterItem = DemoWhereScalarFilterItem | DemoWhereDateFilterItem
 
 #### UI 测试要求
 
-`practices/demo` 至少需要补：
+`practices/standard` 至少需要补：
 
 1. 日期 filter 从 builder 值回填到表单的测试。
 2. 日期表单序列化为 `{ op: 'date', value: DatePredicate }` 的测试。
@@ -412,7 +412,7 @@ type DemoWhereFilterItem = DemoWhereScalarFilterItem | DemoWhereDateFilterItem
 
 #### Demo 必补测试
 
-在 `practices/demo` UI 合入前，必须新增并通过：
+在 `practices/standard` UI 合入前，必须新增并通过：
 
 1. `whereFilterUtils` 的日期序列化与展示文案测试。
 2. `FilterPanel` 的日期编辑模式测试。
@@ -425,13 +425,13 @@ type DemoWhereFilterItem = DemoWhereScalarFilterItem | DemoWhereDateFilterItem
 1. `whereFilter` 的类型命名与模块风格统一。
 2. 日期筛选 DSL 收敛为一个稳定入口，不再有平铺字段拼装。
 3. builder API 保持克制，复杂度集中在 `DatePredicate`。
-4. `practices/demo` 能在不复制 DSL 的前提下，支持四类日期筛选器。
+4. `practices/standard` 能在不复制 DSL 的前提下，支持四类日期筛选器。
 5. lowering 目标完全依赖已验证的 `vquery` 基础能力。
 
 ### Negative
 
 1. VBI 需要承担日期语义解析和时间上下文管理职责。
-2. `practices/demo` 的表单状态会从单一路径变成标量模式和日期模式两条路径。
+2. `practices/standard` 的表单状态会从单一路径变成标量模式和日期模式两条路径。
 3. 日期边界行为如果没有测试锁定，风险会直接体现在 query 结果上。
 
 ## Implementation Impact
@@ -442,23 +442,23 @@ type DemoWhereFilterItem = DemoWhereScalarFilterItem | DemoWhereDateFilterItem
 - `packages/vbi/src/builder/features/whereFilter/where-node-builder.ts`
 - `packages/vbi/src/pipeline/vqueryDSL/buildWhere.ts`
 - `packages/vbi/tests/builder/features/whereFilter.test.ts`
-- `practices/demo/src/components/Filter/FilterPanel.tsx`
-- `practices/demo/src/components/Filter/whereFilterUtils.ts`
-- `practices/demo/src/components/Shelfs/shelves/WhereShelf.tsx`
-- `practices/demo/src/hooks/useVBIWhereFilter.ts`
-- `practices/demo/src/i18n/locales/zh-CN.json`
-- `practices/demo/src/i18n/locales/en-US.json`
-- `practices/demo/tests/whereFilterUtils.test.ts`
+- `practices/standard/src/components/Filter/FilterPanel.tsx`
+- `practices/standard/src/components/Filter/whereFilterUtils.ts`
+- `practices/standard/src/components/Shelfs/shelves/WhereShelf.tsx`
+- `practices/standard/src/hooks/useVBIWhereFilter.ts`
+- `practices/standard/src/i18n/locales/zh-CN.json`
+- `practices/standard/src/i18n/locales/en-US.json`
+- `practices/standard/tests/whereFilterUtils.test.ts`
 
 ## Reference
 
 - VBI WhereFilter Types: `packages/vbi/src/types/dsl/whereFilter/filters.ts`
 - VBI WhereFilter Node Builder: `packages/vbi/src/builder/features/whereFilter/where-node-builder.ts`
 - VBI buildWhere: `packages/vbi/src/pipeline/vqueryDSL/buildWhere.ts`
-- Demo Filter Panel: `practices/demo/src/components/Filter/FilterPanel.tsx`
-- Demo Where Utils: `practices/demo/src/components/Filter/whereFilterUtils.ts`
-- Demo Where Shelf: `practices/demo/src/components/Shelfs/shelves/WhereShelf.tsx`
-- Demo Where Hook: `practices/demo/src/hooks/useVBIWhereFilter.ts`
+- Demo Filter Panel: `practices/standard/src/components/Filter/FilterPanel.tsx`
+- Demo Where Utils: `practices/standard/src/components/Filter/whereFilterUtils.ts`
+- Demo Where Shelf: `practices/standard/src/components/Shelfs/shelves/WhereShelf.tsx`
+- Demo Where Hook: `practices/standard/src/hooks/useVBIWhereFilter.ts`
 - VQuery Where Tests: `packages/vquery/tests/unit/sql-builder/builders/where.test.ts`
 
 ## 淘汰内容简述
