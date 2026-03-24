@@ -1,5 +1,5 @@
-import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/builder/adapters/vquery-vseed/types'
-import type { VBIChartDSL } from '../dsl'
+import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed/types'
+import type { VBIChartDSL } from '../chartDSL'
 import type { BuildVSeedOptions } from './build-vseed'
 import type {
   MeasuresBuilder,
@@ -11,7 +11,7 @@ import type {
   LocaleBuilder,
   LimitBuilder,
   UndoManager,
-} from 'src/builder/features'
+} from 'src/chart-builder/features'
 import type { Map, Doc } from 'yjs'
 
 export interface VBIChartBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {

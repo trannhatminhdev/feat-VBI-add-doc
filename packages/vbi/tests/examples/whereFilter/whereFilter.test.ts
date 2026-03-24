@@ -1988,12 +1988,12 @@ describe('WhereFilter', () => {
             {
               "field": "order_date",
               "op": ">=",
-              "value": "2026-02-21",
+              "value": "2026-02-22",
             },
             {
               "field": "order_date",
               "op": "<",
-              "value": "2026-03-23",
+              "value": "2026-03-24",
             },
             {
               "field": "sales",

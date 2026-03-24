@@ -1,9 +1,9 @@
 import * as Y from 'yjs'
 import { VBI } from '@visactor/vbi'
-import { VBIChartDSL } from 'src/types/dsl'
-import { HavingFilterNodeBuilder } from 'src/builder/features/havingFilter/having-node-builder'
-import { HavingGroupBuilder } from 'src/builder/features/havingFilter/having-group-builder'
-import { HavingFilterBuilder } from 'src/builder/features/havingFilter/having-builder'
+import { VBIChartDSL } from 'src/types/chartDSL'
+import { HavingFilterNodeBuilder } from 'src/chart-builder/features/havingFilter/having-node-builder'
+import { HavingGroupBuilder } from 'src/chart-builder/features/havingFilter/having-group-builder'
+import { HavingFilterBuilder } from 'src/chart-builder/features/havingFilter/having-builder'
 
 describe('HavingFilterBuilder', () => {
   test('add having filter', () => {

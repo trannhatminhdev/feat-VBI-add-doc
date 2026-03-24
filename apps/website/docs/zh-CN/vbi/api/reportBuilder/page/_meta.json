@@ -1,0 +1,12 @@
+[
+  {
+    "type": "file",
+    "name": "reportPage",
+    "label": "reportPage"
+  },
+  {
+    "type": "file",
+    "name": "reportText",
+    "label": "reportText"
+  }
+]

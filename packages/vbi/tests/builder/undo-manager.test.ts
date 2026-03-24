@@ -1,5 +1,5 @@
 import { VBI } from '@visactor/vbi'
-import { VBIChartDSL } from 'src/types/dsl'
+import { VBIChartDSL } from 'src/types/chartDSL'
 
 describe('UndoManager', () => {
   test('basic undo/redo', () => {

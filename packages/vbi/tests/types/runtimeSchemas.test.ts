@@ -1,12 +1,12 @@
-import { zDimensionAggregate } from 'src/types/dsl/dimensions/aggregate'
-import { zVBIDimensionGroupSchema, zVBIDimensionTree } from 'src/types/dsl/dimensions/dimensions'
-import { zVBIHavingClause, zVBIHavingFilter, zVBIHavingGroup } from 'src/types/dsl/havingFilter/having'
-import { zVBIDSLLocale } from 'src/types/dsl/locale/locale'
-import { zAggregate } from 'src/types/dsl/measures/aggregate'
-import { zVBIMeasure, zVBIMeasureGroup, zVBIMeasureTree } from 'src/types/dsl/measures/measures'
-import { zVBIDSLTheme } from 'src/types/dsl/theme/theme'
-import { zVBIChartDSL } from 'src/types/dsl/vbi/vbi'
-import { zVBIWhereFilter, zVBIWhereClause, zVBIWhereGroup } from 'src/types/dsl/whereFilter/filters'
+import { zDimensionAggregate } from 'src/types/chartDSL/dimensions/aggregate'
+import { zVBIDimensionGroupSchema, zVBIDimensionTree } from 'src/types/chartDSL/dimensions/dimensions'
+import { zVBIHavingClause, zVBIHavingFilter, zVBIHavingGroup } from 'src/types/chartDSL/havingFilter/having'
+import { zVBIDSLLocale } from 'src/types/chartDSL/locale/locale'
+import { zAggregate } from 'src/types/chartDSL/measures/aggregate'
+import { zVBIMeasure, zVBIMeasureGroup, zVBIMeasureTree } from 'src/types/chartDSL/measures/measures'
+import { zVBIDSLTheme } from 'src/types/chartDSL/theme/theme'
+import { zVBIChartDSL } from 'src/types/chartDSL/vbi/vbi'
+import { zVBIWhereFilter, zVBIWhereClause, zVBIWhereGroup } from 'src/types/chartDSL/whereFilter/filters'
 import {
   findTreeNodesBy,
   id,

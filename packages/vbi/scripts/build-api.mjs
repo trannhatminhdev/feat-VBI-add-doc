@@ -14,102 +14,166 @@ import { Project, SyntaxKind } from 'ts-morph'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const BUILDER_DIR = path.resolve(__dirname, '../src/builder')
+const BUILDER_ROOTS = {
+  chart: path.resolve(__dirname, '../src/chart-builder'),
+  report: path.resolve(__dirname, '../src/report-builder'),
+}
 const OUTPUT_DIR = path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vbi/api')
 
 // ============================================================================
 // 配置
 // ============================================================================
 
-const BUILDER_CONFIG = [
-  { name: 'Builder', file: 'builder.ts', category: 'main' },
+const API_SECTIONS = [
   {
-    name: 'chartType',
-    label: 'chartType',
-    file: 'features/chart-type/chart-type-builder.ts',
-    category: 'features',
+    name: 'chartBuilder',
+    label: 'chartBuilder',
+    root: 'chart',
+    index: {
+      file: 'builder.ts',
+      displayName: 'VBIChartBuilder',
+    },
+    items: [
+      {
+        type: 'file',
+        name: 'chartType',
+        label: 'chartBuilder.chartType',
+        file: 'features/chart-type/chart-type-builder.ts',
+        displayName: 'ChartTypeBuilder',
+      },
+      {
+        type: 'dir',
+        name: 'measures',
+        label: 'chartBuilder.measures',
+        file: 'features/measures/mea-builder.ts',
+        displayName: 'MeasuresBuilder',
+        children: [
+          {
+            name: 'measureNode',
+            label: 'measureNode',
+            file: 'features/measures/mea-node-builder.ts',
+            displayName: 'MeasureNodeBuilder',
+          },
+        ],
+      },
+      {
+        type: 'dir',
+        name: 'dimensions',
+        label: 'chartBuilder.dimensions',
+        file: 'features/dimensions/dim-builder.ts',
+        displayName: 'DimensionsBuilder',
+        children: [
+          {
+            name: 'dimensionNode',
+            label: 'dimensionNode',
+            file: 'features/dimensions/dim-node-builder.ts',
+            displayName: 'DimensionNodeBuilder',
+          },
+        ],
+      },
+      {
+        type: 'dir',
+        name: 'whereFilter',
+        label: 'chartBuilder.whereFilter',
+        file: 'features/whereFilter/where-builder.ts',
+        displayName: 'WhereFilterBuilder',
+        children: [
+          {
+            name: 'whereNode',
+            label: 'whereNode',
+            file: 'features/whereFilter/where-node-builder.ts',
+            displayName: 'WhereFilterNodeBuilder',
+          },
+          {
+            name: 'whereGroup',
+            label: 'whereGroup',
+            file: 'features/whereFilter/where-group-builder.ts',
+            displayName: 'WhereGroupBuilder',
+          },
+        ],
+      },
+      {
+        type: 'dir',
+        name: 'havingFilter',
+        label: 'chartBuilder.havingFilter',
+        file: 'features/havingFilter/having-builder.ts',
+        displayName: 'HavingFilterBuilder',
+        children: [
+          {
+            name: 'havingNode',
+            label: 'havingNode',
+            file: 'features/havingFilter/having-node-builder.ts',
+            displayName: 'HavingFilterNodeBuilder',
+          },
+          {
+            name: 'havingGroup',
+            label: 'havingGroup',
+            file: 'features/havingFilter/having-group-builder.ts',
+            displayName: 'HavingGroupBuilder',
+          },
+        ],
+      },
+      {
+        type: 'file',
+        name: 'theme',
+        label: 'chartBuilder.theme',
+        file: 'features/theme/theme-builder.ts',
+        displayName: 'ThemeBuilder',
+      },
+      {
+        type: 'file',
+        name: 'locale',
+        label: 'chartBuilder.locale',
+        file: 'features/locale/locale-builder.ts',
+        displayName: 'LocaleBuilder',
+      },
+      {
+        type: 'file',
+        name: 'limit',
+        label: 'chartBuilder.limit',
+        file: 'features/limit/limit-builder.ts',
+        displayName: 'LimitBuilder',
+      },
+      {
+        type: 'file',
+        name: 'undoManager',
+        label: 'chartBuilder.undoManager',
+        file: 'features/undo-manager/undo-manager.ts',
+        displayName: 'UndoManager',
+      },
+    ],
   },
-  { name: 'measures', label: 'measures', file: 'features/measures/mea-builder.ts', category: 'features' },
   {
-    name: 'dimensions',
-    label: 'dimensions',
-    file: 'features/dimensions/dim-builder.ts',
-    category: 'features',
-  },
-  {
-    name: 'whereFilter',
-    label: 'whereFilter',
-    file: 'features/whereFilter/where-builder.ts',
-    category: 'features',
-  },
-  {
-    name: 'havingFilter',
-    label: 'havingFilter',
-    file: 'features/havingFilter/having-builder.ts',
-    category: 'features',
-  },
-  {
-    name: 'theme',
-    label: 'theme',
-    file: 'features/theme/theme-builder.ts',
-    category: 'features',
-  },
-  {
-    name: 'locale',
-    label: 'locale',
-    file: 'features/locale/locale-builder.ts',
-    category: 'features',
-  },
-  {
-    name: 'limit',
-    label: 'limit',
-    file: 'features/limit/limit-builder.ts',
-    category: 'features',
-  },
-  {
-    name: 'undoManager',
-    label: 'undoManager',
-    file: 'features/undo-manager/undo-manager.ts',
-    category: 'features',
-  },
-]
-
-const NODE_BUILDER_CONFIG = [
-  {
-    parent: 'measures',
-    name: 'MeasureNodeBuilder',
-    label: 'measure-node',
-    file: 'features/measures/mea-node-builder.ts',
-  },
-  {
-    parent: 'dimensions',
-    name: 'DimensionNodeBuilder',
-    label: 'dimension-node',
-    file: 'features/dimensions/dim-node-builder.ts',
-  },
-  {
-    parent: 'whereFilter',
-    name: 'WhereNodeBuilder',
-    label: 'where-node',
-    file: 'features/whereFilter/where-node-builder.ts',
-  },
-  {
-    parent: 'whereFilter',
-    name: 'WhereGroupBuilder',
-    label: 'where-group',
-    file: 'features/whereFilter/where-group-builder.ts',
-  },
-  {
-    parent: 'havingFilter',
-    name: 'HavingFilterNodeBuilder',
-    label: 'having-node',
-    file: 'features/havingFilter/having-node-builder.ts',
-  },
-  {
-    parent: 'havingFilter',
-    name: 'HavingGroupBuilder',
-    label: 'having-group',
-    file: 'features/havingFilter/having-group-builder.ts',
+    name: 'reportBuilder',
+    label: 'reportBuilder',
+    root: 'report',
+    index: {
+      file: 'builder.ts',
+      displayName: 'VBIReportBuilder',
+    },
+    items: [
+      {
+        type: 'dir',
+        name: 'page',
+        label: 'reportBuilder.page',
+        file: 'features/page/page-collection-builder.ts',
+        displayName: 'ReportPageCollectionBuilder',
+        children: [
+          {
+            name: 'reportPage',
+            label: 'reportPage',
+            file: 'features/page/page-builder.ts',
+            displayName: 'ReportPageBuilder',
+          },
+          {
+            name: 'reportText',
+            label: 'reportText',
+            file: 'features/page/text-builder.ts',
+            displayName: 'ReportTextBuilder',
+          },
+        ],
+      },
+    ],
   },
 ]
 
@@ -117,10 +181,13 @@ const NODE_BUILDER_CONFIG = [
 // 工具函数
 // ============================================================================
 
-const kebabCase = (str) => str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
-
 const ensureDir = (dirPath) => {
   if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true })
+}
+
+const resetDir = (dirPath) => {
+  fs.rmSync(dirPath, { recursive: true, force: true })
+  fs.mkdirSync(dirPath, { recursive: true })
 }
 
 const writeFile = (filePath, content) => fs.writeFileSync(filePath, content, 'utf-8')
@@ -129,6 +196,14 @@ const writeJson = (filePath, data) => writeFile(filePath, JSON.stringify(data, n
 
 /** 转义 markdown table 中的 | 字符 */
 const escapeTableCell = (str) => str.replace(/\|/g, '\\|')
+
+const resolveBuilderPath = (config) => {
+  const root = BUILDER_ROOTS[config.root]
+  if (!root) {
+    throw new Error(`Unknown builder root "${config.root}"`)
+  }
+  return path.join(root, config.file)
+}
 
 // ============================================================================
 // 类型解析
@@ -250,6 +325,7 @@ const parseClass = (filePath) => {
 
   // 普通方法
   for (const method of classDecl.getMethods()) {
+    if (method.hasModifier(SyntaxKind.PrivateKeyword)) continue
     methods.push({
       name: method.getName(),
       params: parseParams(method),
@@ -330,9 +406,9 @@ const renderMethodDoc = (method) => {
 }
 
 const renderBuilderDoc = (config) => {
-  const filePath = path.join(BUILDER_DIR, config.file)
+  const filePath = resolveBuilderPath(config)
   const { description, properties, methods } = parseClass(filePath)
-  const displayName = config.category === 'main' ? 'VBIChartBuilder' : config.label || config.name
+  const displayName = config.displayName || config.label || config.name
 
   const parts = [
     `# ${displayName}`,
@@ -346,13 +422,55 @@ const renderBuilderDoc = (config) => {
   return parts.filter(Boolean).join('\n\n')
 }
 
-const renderNodeBuilderDoc = (config) => {
-  const filePath = path.join(BUILDER_DIR, config.file)
-  const { description, methods } = parseClass(filePath)
+const writeDoc = (filePath, content) => writeFile(filePath, content)
 
-  const parts = [`# ${config.name}`, description || '', '## 方法', methods.map(renderMethodDoc).join('\n\n')]
+const toDocConfig = (root, config) => ({ ...config, root })
 
-  return parts.filter(Boolean).join('\n\n')
+const createMetaFileEntry = (name, label) => ({ type: 'file', name, label })
+
+const createMetaDirEntry = (name, label, collapsed = true) => ({
+  type: 'dir',
+  name,
+  label,
+  collapsible: true,
+  collapsed,
+})
+
+const generateSection = (section) => {
+  const sectionDir = path.join(OUTPUT_DIR, section.name)
+  ensureDir(sectionDir)
+
+  writeDoc(path.join(sectionDir, 'index.md'), renderBuilderDoc(toDocConfig(section.root, section.index)))
+  console.log(`Generated: ${section.name}/index.md`)
+
+  const sectionMeta = []
+  for (const item of section.items) {
+    if (item.type === 'file') {
+      writeDoc(path.join(sectionDir, `${item.name}.md`), renderBuilderDoc(toDocConfig(section.root, item)))
+      console.log(`Generated: ${section.name}/${item.name}.md`)
+      sectionMeta.push(createMetaFileEntry(item.name, item.label))
+      continue
+    }
+
+    const itemDir = path.join(sectionDir, item.name)
+    ensureDir(itemDir)
+    writeDoc(path.join(itemDir, 'index.md'), renderBuilderDoc(toDocConfig(section.root, item)))
+    console.log(`Generated: ${section.name}/${item.name}/index.md`)
+
+    const childMeta = []
+    for (const child of item.children || []) {
+      writeDoc(path.join(itemDir, `${child.name}.md`), renderBuilderDoc(toDocConfig(section.root, child)))
+      console.log(`Generated: ${section.name}/${item.name}/${child.name}.md`)
+      childMeta.push(createMetaFileEntry(child.name, child.label))
+    }
+
+    writeJson(path.join(itemDir, '_meta.json'), childMeta)
+    console.log(`Generated: ${section.name}/${item.name}/_meta.json`)
+    sectionMeta.push(createMetaDirEntry(item.name, item.label))
+  }
+
+  writeJson(path.join(sectionDir, '_meta.json'), sectionMeta)
+  console.log(`Generated: ${section.name}/_meta.json`)
 }
 
 // ============================================================================
@@ -362,63 +480,19 @@ const renderNodeBuilderDoc = (config) => {
 function generateDocs() {
   console.log('Building API docs from builder classes...\n')
 
-  ensureDir(OUTPUT_DIR)
+  resetDir(OUTPUT_DIR)
 
-  // 收集哪些 parent 拥有子文档
-  const parentsWithChildren = new Set(NODE_BUILDER_CONFIG.map((n) => kebabCase(n.parent)))
-
-  // 1. 生成 Builder 文档（主 builder + 子 builder 均输出到 OUTPUT_DIR）
-  const apiMeta = []
-  for (const builder of BUILDER_CONFIG) {
-    const fileName = kebabCase(builder.name)
-    const md = renderBuilderDoc(builder)
-
-    if (builder.category === 'main') {
-      writeFile(path.join(OUTPUT_DIR, 'builder.md'), md)
-      console.log(`Generated: builder.md`)
-      apiMeta.push({ type: 'file', name: 'builder', label: 'builder' })
-    } else {
-      writeFile(path.join(OUTPUT_DIR, `${fileName}.md`), md)
-      console.log(`Generated: ${fileName}.md`)
-
-      apiMeta.push({
-        type: parentsWithChildren.has(fileName) ? 'dir' : 'file',
-        name: fileName,
-        label: `builder.${builder.label || builder.name}`,
-        collapsed: true,
-      })
-    }
+  for (const section of API_SECTIONS) {
+    generateSection(section)
   }
 
-  // 2. 生成 NodeBuilder 文档 + _meta.json（按 parent 分组，输出到 OUTPUT_DIR/<parent>）
-  const nodeMetaByParent = {}
-  for (const nodeBuilder of NODE_BUILDER_CONFIG) {
-    const parentName = kebabCase(nodeBuilder.parent)
-    ensureDir(path.join(OUTPUT_DIR, parentName))
-
-    const md = renderNodeBuilderDoc(nodeBuilder)
-    writeFile(path.join(OUTPUT_DIR, parentName, `${nodeBuilder.label}.md`), md)
-    console.log(`Generated: ${parentName}/${nodeBuilder.label}.md`)
-
-    if (!nodeMetaByParent[parentName]) nodeMetaByParent[parentName] = []
-    nodeMetaByParent[parentName].push({
-      type: 'file',
-      name: nodeBuilder.label,
-      label: nodeBuilder.label,
-      collapsed: true,
-    })
-  }
-
-  // 3. 生成 _meta.json 文件
-  for (const [parentName, items] of Object.entries(nodeMetaByParent)) {
-    writeJson(path.join(OUTPUT_DIR, parentName, '_meta.json'), items)
-    console.log(`Generated: api/${parentName}/_meta.json`)
-  }
-
-  writeJson(path.join(OUTPUT_DIR, '_meta.json'), apiMeta)
+  writeJson(path.join(OUTPUT_DIR, '_meta.json'), [
+    createMetaFileEntry('index', 'API'),
+    ...API_SECTIONS.map((section) => createMetaDirEntry(section.name, section.label, false)),
+  ])
   console.log('Generated: api/_meta.json')
 
-  writeFile(path.join(OUTPUT_DIR, 'index.md'), '---\noverview: true\n---\n')
+  writeFile(path.join(OUTPUT_DIR, 'index.md'), '---\noverview: true\ntitle: API\n---\n')
   console.log('Generated: index.md')
 
   // 4. 确保父级 _meta.json 包含 api 条目
@@ -430,9 +504,7 @@ function generateDocs() {
     console.log('Updated: _meta.json')
   }
 
-  console.log(
-    `\n✅ Generated API docs for ${BUILDER_CONFIG.length} builders and ${NODE_BUILDER_CONFIG.length} node-builders`,
-  )
+  console.log(`\n✅ Generated API docs for ${API_SECTIONS.length} builder sections`)
 }
 
 generateDocs()

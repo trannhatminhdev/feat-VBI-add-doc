@@ -1,5 +1,5 @@
 import { VBI } from '@visactor/vbi'
-import { VBIChartDSL } from 'src/types/dsl'
+import { VBIChartDSL } from 'src/types/chartDSL'
 
 describe('VBI YJS Integration', () => {
   test('sync between two builders', () => {

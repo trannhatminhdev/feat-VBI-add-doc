@@ -1,7 +1,7 @@
-import { zVBIDimensionSchema } from 'src/types/dsl/dimensions/dimensions'
-import { zVBIMeasure } from 'src/types/dsl/measures/measures'
-import { zVBISort } from 'src/types/dsl/sort'
-import { zVBIChartDSL } from 'src/types/dsl/vbi/vbi'
+import { zVBIDimensionSchema } from 'src/types/chartDSL/dimensions/dimensions'
+import { zVBIMeasure } from 'src/types/chartDSL/measures/measures'
+import { zVBISort } from 'src/types/chartDSL/sort'
+import { zVBIChartDSL } from 'src/types/chartDSL/vbi/vbi'
 
 describe('sort schemas', () => {
   test('zVBISort parses asc and desc', () => {

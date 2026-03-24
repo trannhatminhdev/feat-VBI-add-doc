@@ -1,9 +1,8 @@
 export { VBI } from './vbi'
 export { createVBI } from './vbi/create-vbi'
 export type { VBIInstance } from './vbi/create-vbi'
-export { VBIChartBuilder } from './builder'
-export { defaultVBIChartBuilderAdapters, resolveVBIChartBuilderAdapters } from './builder/adapters'
 export {
+  VBIChartBuilder,
   MeasuresBuilder,
   DimensionsBuilder,
   ChartTypeBuilder,
@@ -13,7 +12,9 @@ export {
   LocaleBuilder,
   LimitBuilder,
   UndoManager,
-} from './builder'
+} from './chart-builder'
+export { VBIReportBuilder, ReportPageBuilder, ReportPageCollectionBuilder, ReportTextBuilder } from './report-builder'
+export { defaultVBIChartBuilderAdapters, resolveVBIChartBuilderAdapters } from './chart-builder/adapters'
 export * from './types'
 export {
   id,
@@ -24,4 +25,4 @@ export {
   preorderTraverse,
   findTreeNodesBy,
 } from './utils'
-export { buildVQuery } from './pipeline'
+export { buildVQuery } from './chart-builder/pipeline'

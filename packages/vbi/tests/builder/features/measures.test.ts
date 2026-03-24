@@ -1,6 +1,6 @@
 import { VBI } from '@visactor/vbi'
-import { VBIChartDSL } from 'src/types/dsl'
-import { MeasuresBuilder } from 'src/builder/features/measures/mea-builder'
+import { VBIChartDSL } from 'src/types/chartDSL'
+import { MeasuresBuilder } from 'src/chart-builder/features/measures/mea-builder'
 import { registerDemoConnector } from '../../demoConnector'
 
 describe('MeasuresBuilder', () => {
