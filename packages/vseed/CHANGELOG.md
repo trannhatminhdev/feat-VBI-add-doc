@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.20
+
+### Patch Changes
+
+- dbaada2: fix: textAlign in table and pivotTable
+
 ## 0.4.19
 
 ## 0.4.18
