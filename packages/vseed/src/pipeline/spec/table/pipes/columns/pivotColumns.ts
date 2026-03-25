@@ -17,7 +17,7 @@ export const pivotColumns: PivotTableSpecPipe = (spec, context) => {
         title: item.alias || item.id,
         width: 'auto',
         headerStyle: {
-          textAlign: 'right',
+          textAlign: 'center',
         },
         headerFormat: (value: string | number) => formatter(value),
       }
