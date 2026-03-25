@@ -1,9 +1,18 @@
+import { rs } from '@rstest/core'
 import { VBI, VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
+const MOCK_SYSTEM_TIME = new Date('2026-03-23T00:00:00.000Z')
+
 describe('Locale', () => {
   beforeAll(async () => {
+    rs.useFakeTimers({ toFake: ['Date'] })
+    rs.setSystemTime(MOCK_SYSTEM_TIME)
     registerDemoConnector()
+  })
+
+  afterAll(() => {
+    rs.useRealTimers()
   })
 
   it('en-US-locale', async () => {
