@@ -1,4 +1,4 @@
-import { VBIChartDSL } from '../dsl'
+import { VBIChartDSL } from '../chartDSL'
 
 export interface BuilderContext {
   getVBIChartDSL(): VBIChartDSL

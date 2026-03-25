@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Layout, Spin, Typography, Space } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { APP } from 'demo';
+import { APP } from 'standard';
 import { useCollaborativeBuilder } from '../hooks/useCollaborativeBuilder';
 import { Collaborators } from '../components/Collaborators';
 

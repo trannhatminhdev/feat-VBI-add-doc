@@ -1,5 +1,5 @@
 import { VBI } from '@visactor/vbi'
-import type { VBIChartDSL } from 'src/types/dsl'
+import type { VBIChartDSL } from 'src/types/chartDSL'
 
 describe('orderBy', () => {
   test('defaults to the first dimension when no explicit sort exists', () => {

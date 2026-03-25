@@ -8,4 +8,5 @@ export type {
   VBIChartBuilderAdapters,
   VBIChartBuilderOptions,
 } from './adapter'
+export type { VBIReportBuilderInterface, VBIReportBuilderOptions } from './report'
 export type { ObserveCallback, ObserveDeepCallback } from './observe'

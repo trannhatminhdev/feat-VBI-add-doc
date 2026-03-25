@@ -1,6 +1,6 @@
 import { createVBI, VBI } from '@visactor/vbi'
-import { VBIChartDSL } from 'src/types/dsl'
-import { getConnector, registerConnector } from 'src/builder/connector'
+import { VBIChartDSL } from 'src/types/chartDSL'
+import { getConnector, registerConnector } from 'src/chart-builder/connector'
 
 describe('VBI', () => {
   test('build', () => {

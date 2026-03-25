@@ -1,18 +1,18 @@
 import * as Y from 'yjs'
 import { VBI } from '@visactor/vbi'
-import { HavingFilterBuilder } from 'src/builder/features/havingFilter/having-builder'
+import { HavingFilterBuilder } from 'src/chart-builder/features/havingFilter/having-builder'
 import {
   createHavingGroup,
   findEntry as findHavingEntry,
   isHavingGroup,
-} from 'src/builder/features/havingFilter/having-utils'
-import { WhereFilterBuilder } from 'src/builder/features/whereFilter/where-builder'
+} from 'src/chart-builder/features/havingFilter/having-utils'
+import { WhereFilterBuilder } from 'src/chart-builder/features/whereFilter/where-builder'
 import {
   createWhereGroup,
   findEntry as findWhereEntry,
   isWhereGroup,
-} from 'src/builder/features/whereFilter/where-utils'
-import type { VBIChartDSL } from 'src/types/dsl'
+} from 'src/chart-builder/features/whereFilter/where-utils'
+import type { VBIChartDSL } from 'src/types/chartDSL'
 
 describe('Where filter internals', () => {
   test('constructor initializes a missing whereFilter root on plain Y DSL', () => {

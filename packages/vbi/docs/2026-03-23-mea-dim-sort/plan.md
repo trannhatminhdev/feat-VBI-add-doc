@@ -5,7 +5,7 @@
 
 ## 范围
 
-本计划聚焦 VBI 核心包（`packages/vbi`），只处理排序 DSL、builder、`buildVQuery().orderBy` lowering，以及由默认排序引起的生成物和快照更新；不包含 `practices/demo` UI 改造。
+本计划聚焦 VBI 核心包（`packages/vbi`），只处理排序 DSL、builder、`buildVQuery().orderBy` lowering，以及由默认排序引起的生成物和快照更新；不包含 `practices/standard` UI 改造。
 
 ## Phase 1: 排序类型与 Schema
 

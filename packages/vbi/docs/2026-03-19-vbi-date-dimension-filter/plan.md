@@ -5,7 +5,7 @@
 
 ## 范围
 
-本计划聚焦 VBI 核心包（`packages/vbi`），不含 `practices/demo` UI 改造。
+本计划聚焦 VBI 核心包（`packages/vbi`），不含 `practices/standard` UI 改造。
 
 ## Phase 1: 类型定义与 Schema
 

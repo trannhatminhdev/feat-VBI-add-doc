@@ -11,7 +11,7 @@ VSeed 的 `Measure` 已支持数值格式相关配置：
 - `autoFormat?: boolean`
 - `numFormat?: NumFormat`
 
-当前 VBI 还没有把这组能力完整接通到自己的 DSL、builder 和 `buildVSeed` 适配层；`practices/demo` 的 measure shelf 也还不能在 UI 上编辑格式配置。
+当前 VBI 还没有把这组能力完整接通到自己的 DSL、builder 和 `buildVSeed` 适配层；`practices/standard` 的 measure shelf 也还不能在 UI 上编辑格式配置。
 
 本 ADR 的目标是将 measure format 能力以单一接口接入 VBI，并补齐到 Demo UI。
 
@@ -108,13 +108,13 @@ VBI 不向 VSeed 透传 `format` 字段本身。
 
 VBI 的职责是表达统一配置，并在适配阶段映射为 VSeed 所需字段；VBI 不实现 formatter 创建逻辑，也不复制 VSeed 的格式化规则。
 
-### 5. `practices/demo` 需要补齐格式设置 UI
+### 5. `practices/standard` 需要补齐格式设置 UI
 
 Demo 需要把这组能力暴露到 measure shelf 的交互中。
 
 接入方式：
 
-1. 在 `practices/demo/src/components/Shelfs/shelves/MeasureShelf.tsx` 的 measure 菜单中新增 `Format` 入口
+1. 在 `practices/standard/src/components/Shelfs/shelves/MeasureShelf.tsx` 的 measure 菜单中新增 `Format` 入口
 2. `Format` 不做多级 submenu，改为打开独立弹窗
 3. 弹窗沿用当前 shelf 交互模式，建议新增一个与 `openShelfRenameModal` 同级的 `openMeasureFormatModal`
 
@@ -134,8 +134,8 @@ UI 结构：
 
 对应配套改动：
 
-1. `practices/demo/src/hooks/useVBIMeasures.ts` 中的 `MeasureNodeLike` 需要补上 `setFormat` / `getFormat` / `clearFormat`
-2. `practices/demo/src/i18n/locales/zh-CN.json` 和 `practices/demo/src/i18n/locales/en-US.json` 需要新增 format 相关文案
+1. `practices/standard/src/hooks/useVBIMeasures.ts` 中的 `MeasureNodeLike` 需要补上 `setFormat` / `getFormat` / `clearFormat`
+2. `practices/standard/src/i18n/locales/zh-CN.json` 和 `practices/standard/src/i18n/locales/en-US.json` 需要新增 format 相关文案
 3. 如需在列表中提示当前状态，可在 measure 标签上补一个轻量摘要，例如“自动”或“自定义”，但这不是首批必需项
 
 ### 6. 测试范围
@@ -174,8 +174,8 @@ Demo 测试覆盖以下内容：
 - VBI `MeasureNodeBuilder`: `packages/vbi/src/builder/features/measures/mea-node-builder.ts`
 - VBI `MeasuresBuilder`: `packages/vbi/src/builder/features/measures/mea-builder.ts`
 - VBI `buildVSeed`: `packages/vbi/src/builder/adapters/vquery-vseed/build-vseed.ts`
-- Demo measure shelf: `practices/demo/src/components/Shelfs/shelves/MeasureShelf.tsx`
-- Demo measures hook: `practices/demo/src/hooks/useVBIMeasures.ts`
+- Demo measure shelf: `practices/standard/src/components/Shelfs/shelves/MeasureShelf.tsx`
+- Demo measures hook: `practices/standard/src/hooks/useVBIMeasures.ts`
 
 ## 淘汰内容概述
 

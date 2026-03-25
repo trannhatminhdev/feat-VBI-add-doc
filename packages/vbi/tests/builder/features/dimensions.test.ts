@@ -1,6 +1,6 @@
 import { VBI } from '@visactor/vbi'
-import { VBIChartDSL } from 'src/types/dsl'
-import { DimensionsBuilder } from 'src/builder/features/dimensions/dim-builder'
+import { VBIChartDSL } from 'src/types/chartDSL'
+import { DimensionsBuilder } from 'src/chart-builder/features/dimensions/dim-builder'
 
 describe('DimensionsBuilder', () => {
   test('addDimension', () => {

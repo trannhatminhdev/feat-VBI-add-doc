@@ -1,6 +1,6 @@
 import * as Y from 'yjs'
 import { VBI } from '@visactor/vbi'
-import type { VBIChartDSL, VBIWhereFilter } from 'src/types/dsl'
+import type { VBIChartDSL, VBIWhereFilter } from 'src/types/chartDSL'
 
 describe('WhereFilterBuilder', () => {
   test('addWhereFilter', () => {

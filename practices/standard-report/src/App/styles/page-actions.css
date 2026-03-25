@@ -1,0 +1,111 @@
+.standard-report-page-nav,
+.standard-report-page-actions {
+  position: absolute;
+  z-index: 4;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.standard-report-page-nav {
+  top: 50%;
+}
+
+.standard-report-page-nav.is-left {
+  left: var(--report-control-offset, 16px);
+  transform: translate(-10px, -50%);
+}
+
+.standard-report-page-nav.is-right {
+  right: var(--report-control-offset, 16px);
+  transform: translate(10px, -50%);
+}
+
+.standard-report-page-actions {
+  top: var(--report-control-offset, 16px);
+  right: var(--report-control-offset, 16px);
+  transform: translateY(-8px);
+}
+
+.standard-report-page:hover .standard-report-page-nav,
+.standard-report-page:hover .standard-report-page-actions,
+.standard-report-page:focus-within .standard-report-page-nav,
+.standard-report-page:focus-within .standard-report-page-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.standard-report-page:hover .standard-report-page-nav.is-left,
+.standard-report-page:focus-within .standard-report-page-nav.is-left {
+  transform: translate(0, -50%);
+}
+
+.standard-report-page:hover .standard-report-page-nav.is-right,
+.standard-report-page:focus-within .standard-report-page-nav.is-right {
+  transform: translate(0, -50%);
+}
+
+.standard-report-page:hover .standard-report-page-actions,
+.standard-report-page:focus-within .standard-report-page-actions {
+  transform: translateY(0);
+}
+
+.standard-report-page-toolset {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--report-shadow-soft);
+  backdrop-filter: blur(14px);
+}
+
+.standard-report-icon-button.ant-btn {
+  width: 36px;
+  height: 36px;
+  box-shadow: none;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.standard-report-icon-button.ant-btn:hover {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .standard-report-page-nav,
+  .standard-report-page-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .standard-report-page-nav.is-left {
+    left: 12px;
+    transform: translate(0, -50%);
+  }
+
+  .standard-report-page-nav.is-right {
+    right: 12px;
+    transform: translate(0, -50%);
+  }
+
+  .standard-report-page-actions {
+    top: 12px;
+    right: 12px;
+    transform: translateY(0);
+  }
+
+  .standard-report-page-toolset {
+    padding: 6px 8px;
+  }
+
+  .standard-report-icon-button.ant-btn {
+    width: 32px;
+    height: 32px;
+  }
+}

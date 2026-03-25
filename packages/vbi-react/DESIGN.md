@@ -122,9 +122,9 @@ public buildVSeed = async (options?: { signal?: AbortSignal }): Promise<TSeedDSL
 3. `adapters.buildVSeed()` → VSeed DSL (async)
 4. Default adapter calls `connector.query({ ..., signal })` and merges dataset + field metadata
 
-### 1.4 practices/demo Hooks Implementation Analysis
+### 1.4 practices/standard Hooks Implementation Analysis
 
-**File**: `practices/demo/src/hooks/useVBI.ts`
+**File**: `practices/standard/src/hooks/useVBI.ts`
 
 ```typescript
 // ⚠️ Issue 1: Two useEffects listening to the same event
@@ -819,7 +819,7 @@ const { vseed, loading, error, refetch } = useVSeed(builder, {
     // Custom error handling
     console.error('VSeed build failed:', err)
 
-    // Auto-fix (e.g., filter error handling from practices/demo)
+    // Auto-fix (e.g., filter error handling from practices/standard)
     if (err.message.includes('filter')) {
       builder.whereFilter.remove(...)
     }
@@ -1077,12 +1077,12 @@ describe('ChartTypeSelector', () => {
 
 ## 11. Migration Strategy
 
-### 11.1 From practices/demo
+### 11.1 From practices/standard
 
 **Existing Code**:
 
 ```typescript
-// practices/demo/src/hooks/useVBI.ts
+// practices/standard/src/hooks/useVBI.ts
 import { useState, useEffect } from 'react'
 import { VBIChartBuilder } from '@visactor/vbi'
 
@@ -1142,7 +1142,7 @@ const { dsl, builder } = useVBI(builder)
 3. **Phase 3: Extract a standalone validation demo**
    - Extract the current starter preview into `practices/vbi-react-starter`
    - Restore `practices/professional` to its original role instead of keeping it as the long-term `vbi-react` showcase
-   - Keep `practices/demo`, `practices/minimalist`, and `practices/streamlined` unchanged during this rollout
+   - Keep `practices/standard`, `practices/minimalist`, and `practices/streamlined` unchanged during this rollout
 
 4. **Phase 4: Documentation and release**
    - Reuse the completed components as website examples
@@ -1158,7 +1158,7 @@ Rules for that stage:
 - `practices/vbi-react-starter` is the designated demo for validating the components layer end to end
 - `practices/professional` may still be used later for regression spot-checks, but it should not remain the primary `vbi-react` showcase
 - Current rollout status: `practices/vbi-react-starter` now exists as the standalone validation demo, and `practices/professional` is no longer the long-term host for the component showcase
-- Do **not** modify `practices/demo`, `practices/minimalist`, or `practices/streamlined` as part of the components rollout unless a later explicit decision changes this scope
+- Do **not** modify `practices/standard`, `practices/minimalist`, or `practices/streamlined` as part of the components rollout unless a later explicit decision changes this scope
 - Restoring `practices/professional` back toward its original pre-`vbi-react` role is allowed during this extraction
 - This scope supersedes the earlier plan that used `practices/professional` as the permanent first-line integration target
 
@@ -1179,7 +1179,7 @@ This design will be integrated into the VBI documentation website under the **VB
 | **Hooks API**       | Detailed hook documentation with examples |
 | **Components**      | Prebuilt component reference              |
 | **Examples**        | Common usage patterns                     |
-| **Migration Guide** | Upgrading from practices/demo             |
+| **Migration Guide** | Upgrading from practices/standard         |
 
 ### 12.3 Design Document Integration
 
@@ -1241,15 +1241,15 @@ This design document will become part of the architecture documentation, providi
 
 ### Phase 4: Integration and Documentation (1 week)
 
-| Week | Task                                                                                                                     | Deliverable          | Status          |
-| ---- | ------------------------------------------------------------------------------------------------------------------------ | -------------------- | --------------- |
-| 7    | Restore `practices/professional` to its original role                                                                    | legacy professional  | **Completed**   |
-| 7    | Extract `practices/vbi-react-starter` for components validation                                                          | standalone demo      | **Completed**   |
-| 7    | Keep `practices/demo`, `practices/minimalist`, and `practices/streamlined` unchanged during the first components rollout | scope guard          | **In Progress** |
-| 7    | Write README documentation                                                                                               | Documentation        | **Pending**     |
-| 7    | Integrate docs under VBI website section                                                                                 | documentation pages  | **In Progress** |
-| 7    | Keep `DESIGN.md` synchronized with implementation status                                                                 | living design record | **In Progress** |
-| 7    | Publish Beta version                                                                                                     | npm package          | **Pending**     |
+| Week | Task                                                                                                                         | Deliverable          | Status          |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------- | --------------- |
+| 7    | Restore `practices/professional` to its original role                                                                        | legacy professional  | **Completed**   |
+| 7    | Extract `practices/vbi-react-starter` for components validation                                                              | standalone demo      | **Completed**   |
+| 7    | Keep `practices/standard`, `practices/minimalist`, and `practices/streamlined` unchanged during the first components rollout | scope guard          | **In Progress** |
+| 7    | Write README documentation                                                                                                   | Documentation        | **Pending**     |
+| 7    | Integrate docs under VBI website section                                                                                     | documentation pages  | **In Progress** |
+| 7    | Keep `DESIGN.md` synchronized with implementation status                                                                     | living design record | **In Progress** |
+| 7    | Publish Beta version                                                                                                         | npm package          | **Pending**     |
 
 ---
 
@@ -1266,7 +1266,7 @@ This design document will become part of the architecture documentation, providi
 | **Testing**                  | Hook unit tests and starter component interaction tests are active today; richer snapshot coverage can be added later |
 | **Key Challenges**           | Yjs lifecycle management, useSyncExternalStore adaptation                                                             |
 | **Estimated Timeline**       | 7 weeks for MVP                                                                                                       |
-| **Backward Compatibility**   | Smooth migration from practices/demo                                                                                  |
+| **Backward Compatibility**   | Smooth migration from practices/standard                                                                              |
 | **Documentation Discipline** | DESIGN.md tracks completed vs pending work continuously                                                               |
 
 ---

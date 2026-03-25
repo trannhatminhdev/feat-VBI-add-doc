@@ -5,7 +5,7 @@ import type {
   VBIHavingClause,
   VBIHavingFilter,
   VBIHavingGroup,
-} from 'src/types/dsl'
+} from 'src/types/chartDSL'
 
 export function isVBIFilter(clause: VBIWhereClause): clause is VBIWhereFilter {
   return 'field' in clause

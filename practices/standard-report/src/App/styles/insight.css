@@ -1,0 +1,41 @@
+.standard-report-insight {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 18px 18px;
+  border-top: 1px solid rgba(148, 163, 184, 0.14);
+  background: linear-gradient(
+    180deg,
+    rgba(248, 250, 252, 0.92),
+    rgba(255, 255, 255, 0.98)
+  );
+  pointer-events: none;
+}
+
+.standard-report-insight-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(71, 85, 105, 0.72);
+}
+
+.standard-report-insight-line {
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.14);
+}
+
+.standard-report-insight-line.is-long {
+  width: 72%;
+}
+
+.standard-report-insight-line.is-short {
+  width: 42%;
+}
+
+@media (max-width: 768px) {
+  .standard-report-insight {
+    padding: 12px 14px 14px;
+  }
+}

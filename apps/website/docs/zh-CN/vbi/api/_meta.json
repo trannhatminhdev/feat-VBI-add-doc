@@ -1,61 +1,21 @@
 [
   {
     "type": "file",
-    "name": "builder",
-    "label": "builder"
-  },
-  {
-    "type": "file",
-    "name": "chart-type",
-    "label": "builder.chartType",
-    "collapsed": true
+    "name": "index",
+    "label": "API"
   },
   {
     "type": "dir",
-    "name": "measures",
-    "label": "builder.measures",
-    "collapsed": true
+    "name": "chartBuilder",
+    "label": "chartBuilder",
+    "collapsible": true,
+    "collapsed": false
   },
   {
     "type": "dir",
-    "name": "dimensions",
-    "label": "builder.dimensions",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "where-filter",
-    "label": "builder.whereFilter",
-    "collapsed": true
-  },
-  {
-    "type": "dir",
-    "name": "having-filter",
-    "label": "builder.havingFilter",
-    "collapsed": true
-  },
-  {
-    "type": "file",
-    "name": "theme",
-    "label": "builder.theme",
-    "collapsed": true
-  },
-  {
-    "type": "file",
-    "name": "locale",
-    "label": "builder.locale",
-    "collapsed": true
-  },
-  {
-    "type": "file",
-    "name": "limit",
-    "label": "builder.limit",
-    "collapsed": true
-  },
-  {
-    "type": "file",
-    "name": "undo-manager",
-    "label": "builder.undoManager",
-    "collapsed": true
+    "name": "reportBuilder",
+    "label": "reportBuilder",
+    "collapsible": true,
+    "collapsed": false
   }
 ]

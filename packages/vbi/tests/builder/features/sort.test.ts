@@ -1,5 +1,5 @@
 import { VBI } from '@visactor/vbi'
-import type { VBIChartDSL } from 'src/types/dsl'
+import type { VBIChartDSL } from 'src/types/chartDSL'
 
 describe('sort builders', () => {
   test('DimensionNodeBuilder set/get/clearSort works', () => {

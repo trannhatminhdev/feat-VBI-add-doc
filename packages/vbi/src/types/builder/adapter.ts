@@ -1,6 +1,6 @@
-import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/builder/adapters/vquery-vseed/types'
+import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed/types'
 import type { Map } from 'yjs'
-import type { VBIChartDSL } from '../dsl'
+import type { VBIChartDSL } from '../chartDSL'
 import type { BuildVSeedOptions } from './build-vseed'
 import type { VBIChartBuilderInterface } from './VBIInterface'
 

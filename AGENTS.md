@@ -44,7 +44,7 @@ VBI/
 │       ├── src/
 │       └── docs/
 ├── practices/                      # 不同复杂度的实践示例
-│   ├── demo/                       # 标准版示例
+│   ├── standard/                   # 标准版示例
 │   │   ├── src/
 │   │   └── docs/
 │   ├── minimalist/                 # 极简实现示例

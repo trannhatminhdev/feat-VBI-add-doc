@@ -3,7 +3,7 @@ import {
   zVBIWhereFilter,
   zVBIWhereDateFilter,
   zVBIWhereScalarFilter,
-} from 'src/types/dsl/whereFilter/filters'
+} from 'src/types/chartDSL/whereFilter/filters'
 
 describe('VBIWhereDatePredicate schema', () => {
   test('parse range predicate', () => {
