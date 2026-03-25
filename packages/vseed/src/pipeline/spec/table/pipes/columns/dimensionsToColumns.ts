@@ -1,5 +1,5 @@
 import type { ListTableConstructorOptions } from '@visactor/vtable'
-import { createFormatterByDimension, isMeasure } from 'src/pipeline/utils'
+import { createFormatterByDimension, isDimensionGroup } from 'src/pipeline/utils'
 import type { Datum, Dimension, DimensionGroup, DimensionTree, ListTableSpecPipe } from 'src/types'
 import { treeTreeToColumns } from './utils'
 
@@ -8,23 +8,34 @@ export const dimensionTreeToColumns: ListTableSpecPipe = (spec, context) => {
   const dimensionTree = (advancedVSeed as unknown as { dimensionTree: DimensionTree }).dimensionTree
   const result = { ...spec } as ListTableConstructorOptions
   const eachNode = (node: Dimension | DimensionGroup) => {
-    if (isMeasure(node)) {
+    const field = node.id
+    const title = node.alias ?? node.id
+
+    if (isDimensionGroup(node)) {
       return {
-        width: 'auto',
-        style: {
-          textAlign: 'left',
-        },
+        field,
+        title,
         headerStyle: {
           textAlign: 'left',
-        },
-        fieldFormat: (datum: Datum) => {
-          const formatter = createFormatterByDimension(node as Dimension, advancedVSeed.locale)
-          return formatter(datum[node.id] as string | number)
         },
       }
     }
 
-    return {}
+    return {
+      field,
+      title,
+      width: 'auto',
+      style: {
+        textAlign: 'left',
+      },
+      headerStyle: {
+        textAlign: 'left',
+      },
+      fieldFormat: (datum: Datum) => {
+        const formatter = createFormatterByDimension(node, advancedVSeed.locale)
+        return formatter(datum[node.id] as string | number)
+      },
+    }
   }
   const columns = treeTreeToColumns<Dimension, DimensionGroup>(dimensionTree, eachNode)
 

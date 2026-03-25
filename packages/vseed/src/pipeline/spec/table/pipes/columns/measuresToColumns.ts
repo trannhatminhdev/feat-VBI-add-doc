@@ -1,5 +1,5 @@
 import type { ListTableConstructorOptions } from '@visactor/vtable'
-import { createFormatterByMeasure, isMeasure } from 'src/pipeline/utils'
+import { createFormatterByMeasure, isMeasureGroup } from 'src/pipeline/utils'
 import type { MeasureGroup, Measure, MeasureTree, ListTableSpecPipe, Datum } from 'src/types'
 import { treeTreeToColumns } from './utils'
 import { isNullish } from 'remeda'
@@ -11,20 +11,31 @@ export const measureTreeToColumns: ListTableSpecPipe = (spec, context) => {
   const result = { ...spec } as ListTableConstructorOptions
 
   const eachNode = (node: Measure | MeasureGroup) => {
-    if (isMeasure(node)) {
+    const field = node.id
+    const title = node.alias ?? node.id
+
+    if (isMeasureGroup(node)) {
       return {
-        width: 'auto',
-        style: {
-          textAlign: 'right',
-        },
+        field,
+        title,
         headerStyle: {
           textAlign: 'right',
         },
-        fieldFormat: fieldFormat(node),
       }
     }
 
-    return {}
+    return {
+      field,
+      title,
+      width: 'auto',
+      style: {
+        textAlign: 'right',
+      },
+      headerStyle: {
+        textAlign: 'right',
+      },
+      fieldFormat: fieldFormat(node),
+    }
   }
   const columns = treeTreeToColumns<Measure, MeasureGroup>(measureTree, eachNode)
   return {
