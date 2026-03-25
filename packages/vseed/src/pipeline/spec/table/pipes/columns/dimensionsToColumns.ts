@@ -11,6 +11,12 @@ export const dimensionTreeToColumns: ListTableSpecPipe = (spec, context) => {
     if (isMeasure(node)) {
       return {
         width: 'auto',
+        style: {
+          textAlign: 'left',
+        },
+        headerStyle: {
+          textAlign: 'left',
+        },
         fieldFormat: (datum: Datum) => {
           const formatter = createFormatterByDimension(node as Dimension, advancedVSeed.locale)
           return formatter(datum[node.id] as string | number)

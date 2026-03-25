@@ -14,6 +14,12 @@ export const measureTreeToColumns: ListTableSpecPipe = (spec, context) => {
     if (isMeasure(node)) {
       return {
         width: 'auto',
+        style: {
+          textAlign: 'right',
+        },
+        headerStyle: {
+          textAlign: 'right',
+        },
         fieldFormat: fieldFormat(node),
       }
     }
