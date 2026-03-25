@@ -11,6 +11,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const EXAMPLES_DIR = path.resolve(__dirname, '../tests/examples')
+const MOCK_SYSTEM_TIME = '2026-03-23T00:00:00.000Z'
 
 /**
  * Find all subdirectories in examples
@@ -133,12 +134,21 @@ function generateTestFile(dirName, testsDir) {
   // Convert directory name to label (e.g., chartType -> Chart Type)
   const label = dirName.charAt(0).toUpperCase() + dirName.slice(1).replace(/-/g, ' ')
 
-  const template = `import { VBI, VBIChartBuilder } from '@visactor/vbi'
+  const template = `import { rs } from '@rstest/core'
+import { VBI, VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from ${connectorImport}
+
+const MOCK_SYSTEM_TIME = new Date('${MOCK_SYSTEM_TIME}')
 
 describe('${label}', () => {
   beforeAll(async () => {
+    rs.useFakeTimers({ toFake: ['Date'] })
+    rs.setSystemTime(MOCK_SYSTEM_TIME)
     registerDemoConnector()
+  })
+
+  afterAll(() => {
+    rs.useRealTimers()
   })
 ${testCases}
 })
