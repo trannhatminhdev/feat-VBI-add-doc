@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.21
+
+### Patch Changes
+
+- fix: optimize the pivot table text align in column header
+
 ## 0.4.20
 
 ### Patch Changes
