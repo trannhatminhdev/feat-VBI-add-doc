@@ -109,7 +109,24 @@ describe('WhereFilter', () => {
 
     // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
-    expect(vQueryDSL).toMatchInlineSnapshot(`
+    const normalizedVQueryDSL = JSON.parse(JSON.stringify(vQueryDSL))
+    normalizedVQueryDSL.where.conditions = normalizedVQueryDSL.where.conditions.map((condition: any) => {
+      if (condition.field !== 'order_date') {
+        return condition
+      }
+
+      if (condition.op === '>=') {
+        return { ...condition, value: '__RELATIVE_START__' }
+      }
+
+      if (condition.op === '<') {
+        return { ...condition, value: '__RELATIVE_END__' }
+      }
+
+      return condition
+    })
+
+    expect(normalizedVQueryDSL).toMatchInlineSnapshot(`
       {
         "groupBy": [
           "province",
@@ -353,7 +370,24 @@ describe('WhereFilter', () => {
 
     // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
-    expect(vQueryDSL).toMatchInlineSnapshot(`
+    const normalizedVQueryDSL = JSON.parse(JSON.stringify(vQueryDSL))
+    normalizedVQueryDSL.where.conditions = normalizedVQueryDSL.where.conditions.map((condition: any) => {
+      if (condition.field !== 'order_date') {
+        return condition
+      }
+
+      if (condition.op === '>=') {
+        return { ...condition, value: '__RELATIVE_START__' }
+      }
+
+      if (condition.op === '<') {
+        return { ...condition, value: '__RELATIVE_END__' }
+      }
+
+      return condition
+    })
+
+    expect(normalizedVQueryDSL).toMatchInlineSnapshot(`
       {
         "groupBy": [
           "area",
@@ -935,7 +969,24 @@ describe('WhereFilter', () => {
 
     // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
-    expect(vQueryDSL).toMatchInlineSnapshot(`
+    const normalizedVQueryDSL = JSON.parse(JSON.stringify(vQueryDSL))
+    normalizedVQueryDSL.where.conditions = normalizedVQueryDSL.where.conditions.map((condition: any) => {
+      if (condition.field !== 'order_date') {
+        return condition
+      }
+
+      if (condition.op === '>=') {
+        return { ...condition, value: '__RELATIVE_START__' }
+      }
+
+      if (condition.op === '<') {
+        return { ...condition, value: '__RELATIVE_END__' }
+      }
+
+      return condition
+    })
+
+    expect(normalizedVQueryDSL).toMatchInlineSnapshot(`
       {
         "groupBy": [
           "province",
@@ -1960,7 +2011,24 @@ describe('WhereFilter', () => {
 
     // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
-    expect(vQueryDSL).toMatchInlineSnapshot(`
+    const normalizedVQueryDSL = JSON.parse(JSON.stringify(vQueryDSL))
+    normalizedVQueryDSL.where.conditions = normalizedVQueryDSL.where.conditions.map((condition: any) => {
+      if (condition.field !== 'order_date') {
+        return condition
+      }
+
+      if (condition.op === '>=') {
+        return { ...condition, value: '__RELATIVE_START__' }
+      }
+
+      if (condition.op === '<') {
+        return { ...condition, value: '__RELATIVE_END__' }
+      }
+
+      return condition
+    })
+
+    expect(normalizedVQueryDSL).toMatchInlineSnapshot(`
       {
         "groupBy": [
           "province",
@@ -1997,12 +2065,12 @@ describe('WhereFilter', () => {
             {
               "field": "order_date",
               "op": ">=",
-              "value": "2026-02-22",
+              "value": "__RELATIVE_START__",
             },
             {
               "field": "order_date",
               "op": "<",
-              "value": "2026-03-24",
+              "value": "__RELATIVE_END__",
             },
             {
               "field": "sales",

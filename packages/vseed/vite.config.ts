@@ -4,6 +4,8 @@ export default defineConfig({
   cacheDir: 'node_modules/.vitest',
   test: {
     root: '.',
+    // CI cold starts can make setup hooks slower than Vitest's 10s default.
+    hookTimeout: 120_000,
     pool: 'forks',
     poolOptions: {
       forks: {

@@ -2,11 +2,6 @@ import { beforeAll, vi } from 'vitest'
 import 'vi-canvas-mock'
 import { WorkerMock } from './tests/__mocks__/worker.mock'
 
-beforeAll(async () => {
-  await import('@visactor/vchart')
-  await import('@visactor/vtable')
-})
-
 // Mock Web Worker
 beforeAll(() => {
   // @ts-ignore
