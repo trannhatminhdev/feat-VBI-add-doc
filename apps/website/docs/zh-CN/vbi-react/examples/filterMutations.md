@@ -2,6 +2,11 @@
 
 该示例展示 `useWhereFilter` 与 `useHavingFilter` 的 mutation 入口。
 
+## 依赖说明
+
+- 包依赖：`@visactor/vbi-react`、`@visactor/vbi`、`react`
+- 入参约束：`builder` 至少包含 `region` 和 `sales` 字段，便于演示 Where/Having 变更
+
 ## 代码片段
 
 ```tsx

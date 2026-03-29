@@ -2,6 +2,11 @@
 
 该示例展示 `useVBI` 与 `useVSeed` 的组合使用。
 
+## 依赖说明
+
+- 包依赖：`@visactor/vbi-react`、`@visactor/vbi`、`@visactor/vseed`、`react`
+- 入参约束：需要一个已初始化的 `VBIChartBuilder`（已绑定可用 connector）
+
 ## 代码片段
 
 ```tsx

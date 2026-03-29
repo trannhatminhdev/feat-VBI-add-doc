@@ -2,6 +2,11 @@
 
 该示例展示 `BuilderLayout` + `FieldPanel` + `ChartRenderer` + `ChartTypeSelector`。
 
+## 依赖说明
+
+- 包依赖：`@visactor/vbi-react/components`、`@visactor/vbi`、`react`
+- 入参约束：`builder` 中应存在可选维度/度量字段，便于 `FieldPanel` 演示增删操作
+
 ## 代码片段
 
 ```tsx

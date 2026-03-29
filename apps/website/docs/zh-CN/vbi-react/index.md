@@ -15,7 +15,13 @@
 
 ## 安装
 
-当前仓库内以 workspace 包使用：
+常规项目安装：
+
+```bash
+pnpm add @visactor/vbi-react @visactor/vbi @visactor/vseed react react-dom
+```
+
+在本仓库内联调时，可使用 workspace 依赖：
 
 ```bash
 pnpm --filter=<your-app> add @visactor/vbi-react@workspace:* @visactor/vbi@workspace:* @visactor/vseed@workspace:* react react-dom
