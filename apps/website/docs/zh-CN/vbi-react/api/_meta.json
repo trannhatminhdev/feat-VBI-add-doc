@@ -6,16 +6,6 @@
   },
   {
     "type": "file",
-    "name": "useVBI",
-    "label": "useVBI"
-  },
-  {
-    "type": "file",
-    "name": "useVSeed",
-    "label": "useVSeed"
-  },
-  {
-    "type": "file",
     "name": "useChartType",
     "label": "useChartType"
   },
@@ -26,18 +16,28 @@
   },
   {
     "type": "file",
+    "name": "useHavingFilter",
+    "label": "useHavingFilter"
+  },
+  {
+    "type": "file",
     "name": "useMeasures",
     "label": "useMeasures"
   },
   {
     "type": "file",
-    "name": "useWhereFilter",
-    "label": "useWhereFilter"
+    "name": "useVBI",
+    "label": "useVBI"
   },
   {
     "type": "file",
-    "name": "useHavingFilter",
-    "label": "useHavingFilter"
+    "name": "useVSeed",
+    "label": "useVSeed"
+  },
+  {
+    "type": "file",
+    "name": "useWhereFilter",
+    "label": "useWhereFilter"
   },
   {
     "type": "file",

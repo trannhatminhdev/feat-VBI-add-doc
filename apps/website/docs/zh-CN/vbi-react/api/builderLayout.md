@@ -1,35 +1,27 @@
 # BuilderLayout
 
-导入路径：`@visactor/vbi-react/components`
-
-## Props
+## 导入
 
 ```ts
-interface BuilderLayoutProps extends BaseComponentProps {
-  footer?: ReactNode
-  leftPanel?: ReactNode
-  leftPanelWidth?: number | string
-  main?: ReactNode
-  rightPanel?: ReactNode
-  rightPanelWidth?: number | string
-  topBar?: ReactNode
-}
+import { BuilderLayout } from '@visactor/vbi-react/components'
 ```
 
-## 示例
+## 签名
+
+```ts
+BuilderLayout(props: BuilderLayoutProps)
+```
+
+## 说明
+
+提供标准化三栏/双栏构建器布局容器。
+
+## 最小示例
 
 ```tsx
 import { BuilderLayout } from '@visactor/vbi-react/components'
 
-export function LayoutDemo() {
-  return (
-    <BuilderLayout
-      topBar={<div>Top</div>}
-      leftPanel={<div>Left</div>}
-      main={<div>Main</div>}
-      rightPanel={<div>Right</div>}
-      footer={<div>Footer</div>}
-    />
-  )
+export function Demo() {
+  return <BuilderLayout main={<div>Main Content</div>} />
 }
 ```

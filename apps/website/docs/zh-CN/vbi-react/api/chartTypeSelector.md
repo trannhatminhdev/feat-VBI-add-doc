@@ -1,24 +1,28 @@
 # ChartTypeSelector
 
-导入路径：`@visactor/vbi-react/components`
-
-## Props
+## 导入
 
 ```ts
-interface ChartTypeSelectorProps extends BaseComponentProps {
-  builder: VBIChartBuilder
-  getOptionLabel?: (chartType: string) => ReactNode
-  label?: ReactNode
-}
+import { ChartTypeSelector } from '@visactor/vbi-react/components'
 ```
 
-## 示例
+## 签名
+
+```ts
+ChartTypeSelector(props: ChartTypeSelectorProps)
+```
+
+## 说明
+
+提供图表类型下拉选择器。
+
+## 最小示例
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'
 import { ChartTypeSelector } from '@visactor/vbi-react/components'
 
-export function TypeSelector({ builder }: { builder: VBIChartBuilder }) {
-  return <ChartTypeSelector builder={builder} label="图表类型" />
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  return <ChartTypeSelector builder={builder} />
 }
 ```

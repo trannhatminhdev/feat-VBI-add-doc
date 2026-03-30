@@ -1,45 +1,29 @@
 # useWhereFilter
 
+## 导入
+
+```ts
+import { useWhereFilter } from '@visactor/vbi-react'
+```
+
 ## 签名
 
 ```ts
 useWhereFilter(builder: VBIChartBuilder): UseWhereFilterReturn
 ```
 
-```ts
-type UseWhereFilterMutation = (whereFilter: WhereFilterBuilder) => void
+## 说明
 
-interface UseWhereFilterReturn {
-  clearWhereFilter: () => void
-  mutateWhereFilter: (mutation: UseWhereFilterMutation) => void
-  removeWhereEntry: (idOrIndex: string | number) => void
-  whereFilter: VBIWhereGroup
-}
-```
+管理 Where 过滤树，并提供 mutation 入口。
 
-## 示例
+## 最小示例
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'
 import { useWhereFilter } from '@visactor/vbi-react'
 
-export function WhereActions({ builder }: { builder: VBIChartBuilder }) {
-  const { whereFilter, mutateWhereFilter, clearWhereFilter } = useWhereFilter(builder)
-
-  return (
-    <div>
-      <button
-        onClick={() =>
-          mutateWhereFilter((where) => {
-            where.add('sales', (node) => node.setOperator('gt').setValue(100))
-          })
-        }
-      >
-        增加条件
-      </button>
-      <button onClick={clearWhereFilter}>清空</button>
-      <pre>{JSON.stringify(whereFilter, null, 2)}</pre>
-    </div>
-  )
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const result = useWhereFilter(builder)
+  return <pre>{JSON.stringify(result, null, 2)}</pre>
 }
 ```

@@ -1,42 +1,29 @@
 # useDimensions
 
+## 导入
+
+```ts
+import { useDimensions } from '@visactor/vbi-react'
+```
+
 ## 签名
 
 ```ts
 useDimensions(builder: VBIChartBuilder): UseDimensionsReturn
 ```
 
-```ts
-type UseDimensionsConfig = Partial<Pick<VBIDimension, 'alias'>>
+## 说明
 
-interface UseDimensionsReturn {
-  addDimension: (field: string, config?: UseDimensionsConfig) => void
-  dimensions: VBIDimension[]
-  removeDimension: (id: string) => void
-  updateDimension: (id: string, config: UseDimensionsConfig) => void
-}
-```
+读取并更新维度配置，提供维度增删改能力。
 
-## 示例
+## 最小示例
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'
 import { useDimensions } from '@visactor/vbi-react'
 
-export function DimensionsEditor({ builder }: { builder: VBIChartBuilder }) {
-  const { dimensions, addDimension, updateDimension, removeDimension } = useDimensions(builder)
-
-  return (
-    <div>
-      <button onClick={() => addDimension('region', { alias: '区域' })}>添加维度</button>
-      {dimensions.map((item) => (
-        <div key={item.id}>
-          <span>{item.alias ?? item.field}</span>
-          <button onClick={() => updateDimension(item.id, { alias: '地区' })}>改名</button>
-          <button onClick={() => removeDimension(item.id)}>删除</button>
-        </div>
-      ))}
-    </div>
-  )
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const result = useDimensions(builder)
+  return <pre>{JSON.stringify(result, null, 2)}</pre>
 }
 ```

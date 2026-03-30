@@ -1,33 +1,29 @@
 # useVBI
 
+## 导入
+
+```ts
+import { useVBI } from '@visactor/vbi-react'
+```
+
 ## 签名
 
 ```ts
 useVBI(builder: VBIChartBuilder): UseVBIReturn
 ```
 
-`UseVBIReturn`:
-
-```ts
-interface UseVBIReturn {
-  builder: VBIChartBuilder
-  dsl: VBIChartDSL
-}
-```
-
 ## 说明
 
-- 监听 `builder.doc` 的 update 事件。
-- 返回最新 `dsl` 快照和原始 `builder` 实例。
+订阅 builder 的 DSL 快照变化，返回最新 `dsl` 与原始 `builder`。
 
-## 示例
+## 最小示例
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'
 import { useVBI } from '@visactor/vbi-react'
 
-export function DSLPanel({ builder }: { builder: VBIChartBuilder }) {
-  const { dsl } = useVBI(builder)
-  return <pre>{JSON.stringify(dsl, null, 2)}</pre>
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const result = useVBI(builder)
+  return <pre>{JSON.stringify(result, null, 2)}</pre>
 }
 ```

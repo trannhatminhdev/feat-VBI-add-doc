@@ -1,47 +1,29 @@
 # useHavingFilter
 
+## 导入
+
+```ts
+import { useHavingFilter } from '@visactor/vbi-react'
+```
+
 ## 签名
 
 ```ts
 useHavingFilter(builder: VBIChartBuilder): UseHavingFilterReturn
 ```
 
-```ts
-type UseHavingFilterMutation = (havingFilter: HavingFilterBuilder) => void
+## 说明
 
-interface UseHavingFilterReturn {
-  clearHavingFilter: () => void
-  havingFilter: VBIHavingGroup
-  mutateHavingFilter: (mutation: UseHavingFilterMutation) => void
-  removeHavingEntry: (idOrIndex: string | number) => void
-}
-```
+管理 Having 过滤树，并提供 mutation 入口。
 
-## 示例
+## 最小示例
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'
 import { useHavingFilter } from '@visactor/vbi-react'
 
-export function HavingActions({ builder }: { builder: VBIChartBuilder }) {
-  const { havingFilter, mutateHavingFilter, clearHavingFilter } = useHavingFilter(builder)
-
-  return (
-    <div style={{ display: 'grid', gap: 8 }}>
-      <button
-        onClick={() =>
-          mutateHavingFilter((having) => {
-            having.add('sales', (node) => {
-              node.setAggregate({ func: 'avg' }).setOperator('gt').setValue(1000)
-            })
-          })
-        }
-      >
-        添加 Having 条件
-      </button>
-      <button onClick={clearHavingFilter}>清空 Having</button>
-      <pre>{JSON.stringify(havingFilter, null, 2)}</pre>
-    </div>
-  )
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const result = useHavingFilter(builder)
+  return <pre>{JSON.stringify(result, null, 2)}</pre>
 }
 ```

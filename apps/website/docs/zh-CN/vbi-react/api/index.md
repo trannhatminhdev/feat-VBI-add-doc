@@ -4,7 +4,7 @@
 
 | 模块 | 导入路径 | 内容 |
 | --- | --- | --- |
-| Hooks | `@visactor/vbi-react` | `useVBI`、`useVSeed`、`useChartType`、`useDimensions`、`useMeasures`、`useWhereFilter`、`useHavingFilter` |
+| Hooks | `@visactor/vbi-react` | `useChartType`、`useDimensions`、`useHavingFilter`、`useMeasures`、`useVBI`、`useVSeed`、`useWhereFilter` |
 | Components | `@visactor/vbi-react/components` | `BuilderLayout`、`ChartRenderer`、`ChartTypeSelector`、`FieldPanel` |
 
 所有 hooks/components 都围绕 `VBIChartBuilder` 工作，不额外维护业务状态源。

@@ -1,35 +1,28 @@
 # FieldPanel
 
-导入路径：`@visactor/vbi-react/components`
-
-## Props
+## 导入
 
 ```ts
-interface FieldPanelProps extends BaseComponentProps {
-  builder: VBIChartBuilder
-  dimensionOptions?: Array<SelectOption<string>>
-  dimensionsTitle?: string
-  measureAggregateOptions?: Array<SelectOption<NonNullable<NonNullable<VBIMeasure['aggregate']>['func']>>>
-  measureEncodingOptions?: Array<SelectOption<NonNullable<VBIMeasure['encoding']>>>
-  measureOptions?: Array<SelectOption<string>>
-  measuresTitle?: string
-  title?: string
-}
+import { FieldPanel } from '@visactor/vbi-react/components'
 ```
 
-## 示例
+## 签名
+
+```ts
+FieldPanel(props: FieldPanelProps)
+```
+
+## 说明
+
+提供维度/度量字段面板与基础编辑交互。
+
+## 最小示例
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'
 import { FieldPanel } from '@visactor/vbi-react/components'
 
-export function Panel({ builder }: { builder: VBIChartBuilder }) {
-  return (
-    <FieldPanel
-      builder={builder}
-      dimensionOptions={[{ label: '区域', value: 'region' }]}
-      measureOptions={[{ label: '销售额', value: 'sales' }]}
-    />
-  )
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  return <FieldPanel builder={builder} />
 }
 ```

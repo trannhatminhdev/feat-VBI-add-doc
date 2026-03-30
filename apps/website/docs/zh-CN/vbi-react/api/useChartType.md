@@ -1,36 +1,29 @@
 # useChartType
 
+## 导入
+
+```ts
+import { useChartType } from '@visactor/vbi-react'
+```
+
 ## 签名
 
 ```ts
 useChartType(builder: VBIChartBuilder): UseChartTypeReturn
 ```
 
-```ts
-interface UseChartTypeReturn {
-  availableChartTypes: string[]
-  chartType: string
-  setChartType: (chartType: string) => void
-}
-```
+## 说明
 
-## 示例
+读取并更新当前图表类型，同时暴露可选图表类型列表。
+
+## 最小示例
 
 ```tsx
 import type { VBIChartBuilder } from '@visactor/vbi'
 import { useChartType } from '@visactor/vbi-react'
 
-export function ChartTypeSwitcher({ builder }: { builder: VBIChartBuilder }) {
-  const { chartType, availableChartTypes, setChartType } = useChartType(builder)
-
-  return (
-    <select value={chartType} onChange={(event) => setChartType(event.target.value)}>
-      {availableChartTypes.map((type) => (
-        <option key={type} value={type}>
-          {type}
-        </option>
-      ))}
-    </select>
-  )
+export function Demo({ builder }: { builder: VBIChartBuilder }) {
+  const result = useChartType(builder)
+  return <pre>{JSON.stringify(result, null, 2)}</pre>
 }
 ```
