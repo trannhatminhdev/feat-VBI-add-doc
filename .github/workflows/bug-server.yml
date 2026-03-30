@@ -19,8 +19,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      BUG_SERVER_TOKEN: ${{ secrets.BUG_SERVER_TOKEN }}
 
     steps:
       - name: Checkout
@@ -51,10 +49,7 @@ jobs:
         run: pnpm --filter '!website' build
 
       - name: Run CI
-        if: ${{ env.BUG_SERVER_TOKEN != '' }}
         working-directory: ./tools/bugserver-trigger
+        env:
+          BUG_SERVER_TOKEN: ${{ secrets.BUG_SERVER_TOKEN }}
         run: pnpm run ci
-
-      - name: Skip Bug Server CI
-        if: ${{ env.BUG_SERVER_TOKEN == '' }}
-        run: echo "BUG_SERVER_TOKEN is empty. Skip bug server trigger."
