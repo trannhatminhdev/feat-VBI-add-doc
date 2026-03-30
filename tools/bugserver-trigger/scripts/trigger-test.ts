@@ -11,6 +11,7 @@ const CHECK_PHOTO_TEST_INTERVAL_MS = 10 * 1000
 const CHECK_PHOTO_TEST_MAX_COUNT = 100
 const API_END_POINT = '/api/ci/trigger'
 const API_URL = `${BUG_SERVER_HOST}${API_END_POINT}`
+const BUG_SERVER_TOKEN = process.env.BUG_SERVER_TOKEN?.trim() ?? ''
 
 let checkPhotoTestMaxCount = CHECK_PHOTO_TEST_MAX_COUNT
 
@@ -112,7 +113,7 @@ const getFormData = (data: Record<string, string | ReadStream>) => {
   const formData = new NodeFormData({ readable: true })
 
   formData.append('product', PRODUCT)
-  formData.append('token', process.env.BUG_SERVER_TOKEN)
+  formData.append('token', BUG_SERVER_TOKEN)
 
   Object.entries(data).forEach(([key, value]) => {
     if (key) {
@@ -245,6 +246,11 @@ async function waitUntilPhotoTestOK({
 }
 
 async function trigger() {
+  if (!BUG_SERVER_TOKEN) {
+    console.warn('[trigger] BUG_SERVER_TOKEN is empty, skip bug server trigger in current CI context')
+    return
+  }
+
   const {
     data: { fileUrl },
   } = await uploadFile()
