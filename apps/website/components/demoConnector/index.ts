@@ -39,6 +39,10 @@ VBI.registerConnector(DEMO_CONNECTOR_ID, async () => {
         type: 'csv',
         rawDataset: url,
       }
+      const hasDataset = await vquery.hasDataset(DEMO_CONNECTOR_ID)
+      if (!hasDataset) {
+        await vquery.createDataset(DEMO_CONNECTOR_ID, SUPERMARKET_SCHEMA as DatasetColumn[], datasetSource)
+      }
       const dataset = await vquery.connectDataset(
         DEMO_CONNECTOR_ID,
         SUPERMARKET_SCHEMA as DatasetColumn[],
