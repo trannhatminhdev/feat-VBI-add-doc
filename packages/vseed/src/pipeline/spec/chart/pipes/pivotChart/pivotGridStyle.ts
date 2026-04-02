@@ -6,7 +6,9 @@ import { isNullish } from 'remeda'
 export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
   const { vseed, advancedVSeed } = context
   const { config, chartType } = advancedVSeed
-  const themConfig = (config?.[chartType] as Config['line'])?.pivotGrid ?? {}
+  const chartConfig = (config?.[chartType] as (Config['line'] & { fontFamily?: string }) | undefined) ?? {}
+  const themConfig = chartConfig?.pivotGrid ?? {}
+  const fontFamily = chartConfig?.fontFamily
 
   const onlyCombination = !isPivot(vseed) && isCombination(vseed)
 
@@ -41,6 +43,7 @@ export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
       bodyStyle: {
         borderColor,
         color: bodyFontColor,
+        fontFamily,
         borderLineWidth: (arg: { row: number; col: number; table: any }) => {
           const noYAxis =
             chartType === 'pie' ||
@@ -66,6 +69,7 @@ export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
       headerStyle: {
         borderColor,
         fontSize: 12,
+        fontFamily,
         // borderLineWidth: [outlineBorderLineWidth, outlineBorderLineWidth, 1, 1],
         borderLineWidth: (arg: { row: number; col: number }) => {
           return [outlineBorderLineWidth, outlineBorderLineWidth, 1, arg.col === 0 ? outlineBorderLineWidth : 1]
@@ -82,6 +86,7 @@ export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
       rowHeaderStyle: {
         borderColor,
         fontSize: 12,
+        fontFamily,
         color: headerFontColor,
         padding: [0, 12, 0, 4],
         borderLineWidth: (arg: { row: number }) => {
@@ -98,6 +103,7 @@ export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
         borderColor,
         textAlign: 'center',
         fontSize: 12,
+        fontFamily,
         color: headerFontColor,
         padding: [0, 12, 0, 4],
         fontWeight: 'bold',

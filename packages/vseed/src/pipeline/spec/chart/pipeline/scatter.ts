@@ -41,9 +41,11 @@ import {
   pivotTitle,
   dimensionLinkage,
   brush,
+  fontFamilyTheme,
 } from '../pipes'
 
 const scatter: VChartSpecPipeline = [
+  fontFamilyTheme,
   initScatter,
   colorAdapter(color, linearColor),
   backgroundColor,
@@ -76,6 +78,7 @@ const pivotScatter: PivotChartSpecPipeline = [
   pivotIndicatorsAsRow,
   datasetPivot,
   pivotIndicators([
+    fontFamilyTheme,
     initScatter,
     colorAdapter(color, linearColor),
     backgroundColor,

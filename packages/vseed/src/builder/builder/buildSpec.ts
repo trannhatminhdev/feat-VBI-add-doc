@@ -1,8 +1,7 @@
-import type { AdvancedVSeed, Spec, SpecPipelineContext, VChartSpecPipeline } from 'src/types'
+import type { AdvancedVSeed, Pipe, Spec, SpecPipelineContext } from 'src/types'
 import { Builder } from './builder'
 import { execPipeline } from '../../pipeline'
 import { intl } from 'src/i18n'
-import type { ISpec } from '@visactor/vchart'
 
 export const buildSpec = (builder: Builder, advancedVSeed: AdvancedVSeed): Spec => {
   const start = typeof performance !== 'undefined' ? performance.now() : Date.now()
@@ -25,9 +24,9 @@ export const buildSpec = (builder: Builder, advancedVSeed: AdvancedVSeed): Spec 
   }
 
   try {
-    const spec = execPipeline<ISpec, SpecPipelineContext>(pipeline as VChartSpecPipeline, context)
-    builder.spec = spec
-    return spec
+    const spec = execPipeline<Spec, SpecPipelineContext>(pipeline as Array<Pipe<Spec, SpecPipelineContext>>, context)
+    builder.spec = spec as Spec
+    return spec as Spec
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(e)

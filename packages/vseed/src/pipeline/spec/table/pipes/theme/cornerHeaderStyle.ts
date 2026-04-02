@@ -14,6 +14,7 @@ export const cornerHeaderStyle: PivotTableSpecPipe = (spec, context) => {
   const backgroundColor = themConfig.headerBackgroundColor || '#EEF1F5'
   const fontColor = themConfig.headerFontColor || '#1B1F23'
   const fontSize = themConfig.headerFontSize || 12
+  const fontFamily = themConfig.headerFontFamily
   // Interaction
   const hoverInlineColor = themConfig.hoverHeaderInlineBackgroundColor
   const hoverCellColor = themConfig.hoverHeaderBackgroundColor
@@ -33,6 +34,7 @@ export const cornerHeaderStyle: PivotTableSpecPipe = (spec, context) => {
       borderLineWidth: [0, 1, 1, 0],
     },
     fontSize: fontSize,
+    fontFamily: fontFamily,
     fontVariant: 'normal',
     fontStyle: 'normal',
     fontWeight: 'bold',

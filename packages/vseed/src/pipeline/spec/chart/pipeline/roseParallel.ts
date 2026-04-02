@@ -34,9 +34,11 @@ import {
   pivotTitle,
   addRegionPadding,
   dimensionLinkage,
+  fontFamilyTheme,
 } from '../pipes'
 
 const roseParallel: VChartSpecPipeline = [
+  fontFamilyTheme,
   initRoseParallel,
   stackCornerRadius,
   colorAdapter(color, linearColor),
@@ -62,6 +64,7 @@ const pivotRoseParallel: PivotChartSpecPipeline = [
   pivotHideIndicatorName,
   datasetPivot,
   pivotIndicators([
+    fontFamilyTheme,
     initRoseParallel,
     addRegionPadding,
     stackCornerRadius,

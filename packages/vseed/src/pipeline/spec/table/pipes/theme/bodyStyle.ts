@@ -14,6 +14,7 @@ export const bodyStyle: PivotTableSpecPipe = (spec, context) => {
   const backgroundColor = themeConfig.bodyBackgroundColor || '#fff'
   const fontColor = themeConfig.bodyFontColor || '#1B1F23'
   const fontSize = themeConfig.bodyFontSize || 12
+  const fontFamily = themeConfig.bodyFontFamily
   // Interaction
   const hoverCellBgColor = themeConfig.hoverBodyBackgroundColor || '#bedaff'
   const hoverInlineColor = themeConfig.hoverBodyInlineBackgroundColor || '#bedaff'
@@ -31,6 +32,7 @@ export const bodyStyle: PivotTableSpecPipe = (spec, context) => {
     },
     color: fontColor,
     fontSize: fontSize,
+    fontFamily: fontFamily,
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontVariant: 'normal',

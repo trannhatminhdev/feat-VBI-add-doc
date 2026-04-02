@@ -29,10 +29,12 @@ import {
   pivotColorLegend,
   heatmapColorDomain,
   brush,
+  fontFamilyTheme,
 } from '../pipes'
 import { initHeatmap } from '../pipes/init/heatmap'
 
 const heatmap: VChartSpecPipeline = [
+  fontFamilyTheme,
   initHeatmap,
   backgroundColor,
   datasetXY,
@@ -55,6 +57,7 @@ const pivotHeatmap: PivotChartSpecPipeline = [
   pivotIndicatorsAsRow,
   datasetPivot,
   pivotIndicators([
+    fontFamilyTheme,
     initHeatmap,
     backgroundColor,
     datasetXY,

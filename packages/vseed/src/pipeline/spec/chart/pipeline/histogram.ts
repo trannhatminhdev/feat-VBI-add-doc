@@ -35,9 +35,11 @@ import {
   dimensionLinkage,
   histogramXLinear,
   brush,
+  fontFamilyTheme,
 } from '../pipes'
 
 const histogram: VChartSpecPipeline = [
+  fontFamilyTheme,
   initHistogram,
   colorAdapter(color, linearColor),
   backgroundColor,
@@ -64,6 +66,7 @@ const pivotHistogram: PivotChartSpecPipeline = [
   pivotGridStyle,
   datasetPivot,
   pivotIndicators([
+    fontFamilyTheme,
     initHistogram,
     colorAdapter(color, linearColor),
     backgroundColor,

@@ -20,9 +20,11 @@ import {
   annotationArea,
   datasetXY,
   isPlayer,
+  fontFamilyTheme,
 } from '../pipes'
 
 const racePie: VChartSpecPipeline = [
+  fontFamilyTheme,
   initPie,
   colorAdapter(color, linearColor),
   backgroundColor,

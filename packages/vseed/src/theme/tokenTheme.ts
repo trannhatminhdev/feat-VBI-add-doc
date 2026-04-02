@@ -9,6 +9,7 @@ export type TokenThemeBase = 'light' | 'dark'
 
 export type TokenThemeDefinition = {
   baseTheme: TokenThemeBase
+  fontFamily?: string
   colorScheme: [string, string, ...string[]]
   linearColorScheme: [string, string]
   textPrimary: string
@@ -138,6 +139,7 @@ const getPlayerPatch = (tokens: TokenThemeDefinition) => {
   const accentColor = getAccentColor(tokens)
 
   return {
+    fontFamily: tokens.fontFamily,
     railColor: tokens.playerRailColor || tokens.borderColor,
     trackColor: accentColor,
     sliderHandleColor: tokens.playerSliderHandleColor || tokens.surfaceColor || '#ffffff',
@@ -154,7 +156,9 @@ const getTablePatch = (tokens: TokenThemeDefinition) => {
 
   return {
     borderColor: tokens.tableBorderColor || tokens.borderColor,
+    bodyFontFamily: tokens.fontFamily,
     bodyFontColor: tokens.tableBodyFontColor || tokens.textPrimary,
+    headerFontFamily: tokens.fontFamily,
     headerFontColor: tokens.tableHeaderFontColor || tokens.textPrimary,
     headerBackgroundColor: tokens.tableHeaderBackgroundColor || tokens.surfaceColor || 'transparent',
     hoverBodyBackgroundColor: tokens.tableHoverBodyBackgroundColor || withAlpha(accentColor, 0.18),
@@ -174,6 +178,7 @@ const getTablePatch = (tokens: TokenThemeDefinition) => {
 
 const getChartPatch = (tokens: TokenThemeDefinition) => ({
   backgroundColor: 'transparent',
+  fontFamily: tokens.fontFamily,
   color: {
     colorScheme: [...tokens.colorScheme],
     linearColorScheme: [...tokens.linearColorScheme],

@@ -36,9 +36,11 @@ import {
   colorBoxPlotStyleFill,
   outlierStyle,
   discreteLegend,
+  fontFamilyTheme,
 } from '../pipes'
 
 const boxplot: VChartSpecPipeline = [
+  fontFamilyTheme,
   initBoxplot,
   stackCornerRadius,
   boxMaxWidth,
@@ -66,6 +68,7 @@ const pivotBoxplot: PivotChartSpecPipeline = [
   pivotGridStyle,
   datasetPivot,
   pivotIndicators([
+    fontFamilyTheme,
     initBoxplot,
     stackCornerRadius,
     boxMaxWidth,

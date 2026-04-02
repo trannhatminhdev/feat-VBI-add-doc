@@ -7,13 +7,14 @@ export const playerBar: VChartSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
   const { dimensions = [], datasetReshapeInfo, chartType, encoding } = advancedVSeed
 
-  const baseConfig = advancedVSeed.config[chartType] as { player: Player }
+  const baseConfig = advancedVSeed.config[chartType] as { fontFamily?: string; player: Player }
   const result = datasetYX(spec, context)
 
   if (!baseConfig || !baseConfig.player) {
     return result
   }
   const { player } = baseConfig
+  const fontFamily = player.fontFamily || baseConfig.fontFamily
   const id = datasetReshapeInfo[0].id
   const { unfoldInfo, foldInfo } = datasetReshapeInfo[0]
   const { encodingPlayer, encodingY } = unfoldInfo
@@ -128,7 +129,7 @@ export const playerBar: VChartSpecPipe = (spec, context) => {
           textBaseline: 'bottom',
           fontSize: textSize,
           textAlign: 'right',
-          fontFamily: 'PingFang SC',
+          fontFamily,
           fontWeight: 600,
           text: (datum: any) => datum[encodingPlayer],
           x: (_datum: any, ctx: any) => {

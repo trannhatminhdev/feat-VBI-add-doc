@@ -8,6 +8,7 @@ export const zPlayer = z.object({
   position: z.enum(['top', 'bottom', 'left', 'right']).optional(),
 
   railColor: z.string().optional(),
+  fontFamily: z.string().optional(),
   trackColor: z.string().optional(),
   sliderHandleColor: z.string().optional(),
 

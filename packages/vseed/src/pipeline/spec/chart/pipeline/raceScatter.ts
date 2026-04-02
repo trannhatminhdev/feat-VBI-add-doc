@@ -30,8 +30,10 @@ import {
   logisticRegressionLine,
   datasetScatter,
   isPlayer,
+  fontFamilyTheme,
 } from '../pipes'
 const raceScatter: VChartSpecPipeline = [
+  fontFamilyTheme,
   initScatter,
   colorAdapter(color, linearColor),
   backgroundColor,

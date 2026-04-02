@@ -54,9 +54,11 @@ import {
   labelDualAxis,
   tooltipOfDualAxisSeries,
   adjustXField,
+  fontFamilyTheme,
 } from '../pipes'
 
 const dualAxis: VChartSpecPipeline = [
+  fontFamilyTheme,
   seriesDualAxis(
     [initDualAxis, dualChartType, datasetDualAxis, labelDualAxis, tooltipOfDualAxisSeries],
 
@@ -99,6 +101,7 @@ const pivotDualAxis: PivotChartSpecPipeline = [
   pivotIndicatorsAsRow,
   datasetPivot,
   pivotIndicators([
+    fontFamilyTheme,
     series(
       [initDualAxis, dualChartType, datasetDualAxis, labelDualAxis, tooltipOfDualAxisSeries],
 

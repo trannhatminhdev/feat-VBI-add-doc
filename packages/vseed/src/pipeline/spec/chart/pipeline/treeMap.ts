@@ -23,10 +23,12 @@ import {
   pivotIndicatorsAsCol,
   pivotHideIndicatorName,
   drill,
+  fontFamilyTheme,
 } from '../pipes'
 import { tooltipTreeMap } from '../pipes/tooltip/tooltipTreeMap'
 
 const treeMap: VChartSpecPipeline = [
+  fontFamilyTheme,
   initTreeMap,
   drill,
   datasetHierarchy,
@@ -45,6 +47,7 @@ const pivotTreeMap: PivotChartSpecPipeline = [
   pivotHideIndicatorName,
   datasetPivotHierarchy,
   pivotIndicators([
+    fontFamilyTheme,
     initTreeMap,
     datasetHierarchy,
     colorAdapter(color, linearColor),
