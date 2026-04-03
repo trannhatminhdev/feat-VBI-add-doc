@@ -15,6 +15,11 @@
     "activeMatch": "/vbi"
   },
   {
+    "text": "VBI React",
+    "link": "/vbi-react/",
+    "activeMatch": "/vbi-react"
+  },
+  {
     "text": "Playground",
     "link": "/playground/vseed",
     "activeMatch": "/VBI/playground"
