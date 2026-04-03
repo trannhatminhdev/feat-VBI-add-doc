@@ -41,7 +41,7 @@ export const labelTreeMapGroup: VChartSpecPipe = (spec, context) => {
       text: (data: any) => {
         return formatHierarchyName(String(data.name ?? ''), data.depth)
       },
-      fontSize: 12,
+      fontSize: label?.labelFontSize ?? 12,
       fill: '#000',
     },
   }

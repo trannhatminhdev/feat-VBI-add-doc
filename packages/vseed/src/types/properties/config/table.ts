@@ -9,6 +9,7 @@ export const zTableConfig = z.object({
 
   // Body
   bodyFontSize: z.number().nullish(),
+  bodyFontFamily: z.string().nullish(),
   bodyFontColor: z.string().nullish(),
   bodyBackgroundColor: z.string().nullish(),
   // Body interaction
@@ -17,6 +18,7 @@ export const zTableConfig = z.object({
 
   // Header
   headerFontSize: z.number().nullish(),
+  headerFontFamily: z.string().nullish(),
   headerFontColor: z.string().nullish(),
   headerBackgroundColor: z.string().nullish(),
   // Header interaction

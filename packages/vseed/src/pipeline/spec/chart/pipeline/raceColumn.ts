@@ -25,9 +25,11 @@ import {
   yLinear,
   datasetXY,
   isPlayer,
+  fontFamilyTheme,
 } from '../pipes'
 
 const raceColumn: VChartSpecPipeline = [
+  fontFamilyTheme,
   initColumn,
   stackCornerRadius,
   barMaxWidth,

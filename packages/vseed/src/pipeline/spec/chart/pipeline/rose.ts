@@ -31,9 +31,11 @@ import {
   pivotTitle,
   addRegionPadding,
   dimensionLinkage,
+  fontFamilyTheme,
 } from '../pipes'
 
 const rose: VChartSpecPipeline = [
+  fontFamilyTheme,
   initRose,
   stackCornerRadius,
   stackInverse,
@@ -56,6 +58,7 @@ const pivotRose: PivotChartSpecPipeline = [
   pivotHideIndicatorName,
   datasetPivot,
   pivotIndicators([
+    fontFamilyTheme,
     initRose,
     addRegionPadding,
     stackCornerRadius,

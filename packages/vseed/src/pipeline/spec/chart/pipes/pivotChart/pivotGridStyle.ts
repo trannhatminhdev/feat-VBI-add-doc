@@ -6,7 +6,9 @@ import { isNullish } from 'remeda'
 export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
   const { vseed, advancedVSeed } = context
   const { config, chartType } = advancedVSeed
-  const themConfig = (config?.[chartType] as Config['line'])?.pivotGrid ?? {}
+  const chartConfig = (config?.[chartType] as (Config['line'] & { fontFamily?: string }) | undefined) ?? {}
+  const themConfig = chartConfig?.pivotGrid ?? {}
+  const fontFamily = chartConfig?.fontFamily
 
   const onlyCombination = !isPivot(vseed) && isCombination(vseed)
 
@@ -14,7 +16,9 @@ export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
   const transparent = 'rgba(0,0,0,0)'
 
   const borderColor = themConfig.borderColor ?? '#e3e5eb'
+  const bodyFontSize = themConfig.bodyFontSize ?? 12
   const bodyFontColor = themConfig.bodyFontColor ?? '#141414'
+  const headerFontSize = themConfig.headerFontSize ?? 12
   const headerFontColor = themConfig.headerFontColor ?? '#21252c'
   const headerBackgroundColor = themConfig.headerBackgroundColor ?? 'rgba(0,0,0,0)'
   const hoverHeaderBackgroundColor = onlyCombination
@@ -41,6 +45,8 @@ export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
       bodyStyle: {
         borderColor,
         color: bodyFontColor,
+        fontSize: bodyFontSize,
+        fontFamily,
         borderLineWidth: (arg: { row: number; col: number; table: any }) => {
           const noYAxis =
             chartType === 'pie' ||
@@ -65,7 +71,8 @@ export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
       },
       headerStyle: {
         borderColor,
-        fontSize: 12,
+        fontSize: headerFontSize,
+        fontFamily,
         // borderLineWidth: [outlineBorderLineWidth, outlineBorderLineWidth, 1, 1],
         borderLineWidth: (arg: { row: number; col: number }) => {
           return [outlineBorderLineWidth, outlineBorderLineWidth, 1, arg.col === 0 ? outlineBorderLineWidth : 1]
@@ -81,7 +88,8 @@ export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
       },
       rowHeaderStyle: {
         borderColor,
-        fontSize: 12,
+        fontSize: headerFontSize,
+        fontFamily,
         color: headerFontColor,
         padding: [0, 12, 0, 4],
         borderLineWidth: (arg: { row: number }) => {
@@ -97,7 +105,8 @@ export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
       cornerHeaderStyle: {
         borderColor,
         textAlign: 'center',
-        fontSize: 12,
+        fontSize: headerFontSize,
+        fontFamily,
         color: headerFontColor,
         padding: [0, 12, 0, 4],
         fontWeight: 'bold',
@@ -165,6 +174,9 @@ export const pivotGridStyle: PivotChartSpecPipe = (spec, context) => {
 
       bottomFrozenStyle: {
         borderColor,
+        fontSize: headerFontSize,
+        color: headerFontColor,
+        fontFamily,
         borderLineWidth: [1, outlineBorderLineWidth, outlineBorderLineWidth, 1],
         bgColor: headerBackgroundColor,
         hover: {

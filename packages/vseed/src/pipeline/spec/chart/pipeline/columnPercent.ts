@@ -38,9 +38,11 @@ import {
   pivotTitle,
   dimensionLinkage,
   brush,
+  fontFamilyTheme,
 } from '../pipes'
 
 const columnPercent: VChartSpecPipeline = [
+  fontFamilyTheme,
   initColumn,
   stackCornerRadius,
   stackInverse,
@@ -70,6 +72,7 @@ const pivotColumnPercent: PivotChartSpecPipeline = [
   pivotIndicatorsAsRow,
   datasetPivot,
   pivotIndicators([
+    fontFamilyTheme,
     initColumn,
     stackCornerRadius,
     stackInverse,

@@ -25,9 +25,11 @@ import {
   yBand,
   datasetYX,
   isPlayer,
+  fontFamilyTheme,
 } from '../pipes'
 
 const raceBar: VChartSpecPipeline = [
+  fontFamilyTheme,
   initBar,
   stackCornerRadius,
   barMaxWidth,

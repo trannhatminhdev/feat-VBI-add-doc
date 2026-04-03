@@ -37,9 +37,11 @@ import {
   pivotTitle,
   dimensionLinkage,
   brush,
+  fontFamilyTheme,
 } from '../pipes'
 
 const barParallel: VChartSpecPipeline = [
+  fontFamilyTheme,
   initBarParallel,
   stackCornerRadius,
   barMaxWidth,
@@ -68,6 +70,7 @@ const pivotBarParallel: PivotChartSpecPipeline = [
   pivotIndicatorsAsCol,
   datasetPivot,
   pivotIndicators([
+    fontFamilyTheme,
     initBarParallel,
     stackCornerRadius,
     barMaxWidth,

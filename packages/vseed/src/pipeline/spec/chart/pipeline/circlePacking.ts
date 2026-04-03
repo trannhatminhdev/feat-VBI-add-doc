@@ -23,9 +23,11 @@ import {
   pivotHideIndicatorName,
   datasetPivotHierarchy,
   drill,
+  fontFamilyTheme,
 } from '../pipes'
 
 const circlePacking: VChartSpecPipeline = [
+  fontFamilyTheme,
   initCirclePacking,
   drill,
   datasetHierarchy,
@@ -43,6 +45,7 @@ const pivotCirclePacking: PivotChartSpecPipeline = [
   pivotHideIndicatorName,
   datasetPivotHierarchy,
   pivotIndicators([
+    fontFamilyTheme,
     initCirclePacking,
     datasetHierarchy,
     colorAdapter(color, linearColor),

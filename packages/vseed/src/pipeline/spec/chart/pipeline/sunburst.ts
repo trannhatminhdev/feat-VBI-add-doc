@@ -23,9 +23,11 @@ import {
   pivotHideIndicatorName,
   datasetPivotHierarchy,
   drill,
+  fontFamilyTheme,
 } from '../pipes'
 
 const sunburst: VChartSpecPipeline = [
+  fontFamilyTheme,
   initSunburst,
   drill,
   datasetHierarchy,
@@ -43,6 +45,7 @@ const pivotSunburst: PivotChartSpecPipeline = [
   pivotHideIndicatorName,
   datasetPivotHierarchy,
   pivotIndicators([
+    fontFamilyTheme,
     initSunburst,
     datasetHierarchy,
     colorAdapter(color, linearColor),

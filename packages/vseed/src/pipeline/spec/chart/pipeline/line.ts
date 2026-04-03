@@ -38,9 +38,11 @@ import {
   splitLine,
   dimensionLinkage,
   brush,
+  fontFamilyTheme,
 } from '../pipes'
 
 const line: VChartSpecPipeline = [
+  fontFamilyTheme,
   initLine,
   colorAdapter(color, linearColor),
   backgroundColor,
@@ -69,6 +71,7 @@ const pivotLine: PivotChartSpecPipeline = [
   pivotIndicatorsAsRow,
   datasetPivot,
   pivotIndicators([
+    fontFamilyTheme,
     initLine,
     colorAdapter(color, linearColor),
     backgroundColor,

@@ -34,9 +34,11 @@ import {
   pivotHideIndicatorName,
   pivotTitle,
   addRegionPadding,
+  fontFamilyTheme,
 } from '../pipes'
 
 const radar: VChartSpecPipeline = [
+  fontFamilyTheme,
   initRadar,
   colorAdapter(color, linearColor),
   backgroundColor,
@@ -65,6 +67,7 @@ const pivotRadar: PivotChartSpecPipeline = [
   pivotHideIndicatorName,
   datasetPivot,
   pivotIndicators([
+    fontFamilyTheme,
     initRadar,
     addRegionPadding,
     colorAdapter(color, linearColor),

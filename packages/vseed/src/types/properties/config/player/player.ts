@@ -28,6 +28,14 @@ export type Player = {
    */
   railColor?: string
   /**
+   * @description 播放器文本字体
+   */
+  fontFamily?: string
+  /**
+   * @description 播放器文本字号
+   */
+  fontSize?: number
+  /**
    * @description 播放器进度条进度颜色
    */
   trackColor?: string

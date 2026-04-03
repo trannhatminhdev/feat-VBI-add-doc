@@ -6,13 +6,15 @@ import { datasetScatter } from '../dataset'
 export const playerScatter: VChartSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
   const { datasetReshapeInfo, dimensions = [], chartType, encoding } = advancedVSeed
-  const baseConfig = advancedVSeed.config[chartType] as { player: Player }
+  const baseConfig = advancedVSeed.config[chartType] as { fontFamily?: string; player: Player }
   const result = datasetScatter(spec, context)
 
   if (!baseConfig || !baseConfig.player) {
     return result
   }
   const { player } = baseConfig
+  const fontFamily = player.fontFamily || baseConfig.fontFamily
+  const textSize = player.fontSize ?? 36
 
   const id = datasetReshapeInfo[0].id
   const { unfoldInfo } = datasetReshapeInfo[0]
@@ -49,7 +51,6 @@ export const playerScatter: VChartSpecPipe = (spec, context) => {
   const exchangeDuration = interval * 0.6
   const dataKey = dimensions.filter((d) => !encoding.player?.includes(d.id)).map((d) => d.id)
   const padding = 12
-  const textSize = 36
   return {
     ...result,
     dataKey,
@@ -116,7 +117,7 @@ export const playerScatter: VChartSpecPipe = (spec, context) => {
           textBaseline: 'bottom',
           fontSize: textSize,
           textAlign: 'right',
-          fontFamily: 'PingFang SC',
+          fontFamily,
           fontWeight: 600,
           text: (datum: any) => datum[encodingPlayer],
           x: (datum: any, ctx: any) => {

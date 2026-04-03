@@ -6,13 +6,15 @@ import { datasetXY } from '../dataset'
 export const playerColumn: VChartSpecPipe = (spec, context) => {
   const { advancedVSeed } = context
   const { dimensions = [], datasetReshapeInfo, chartType, encoding } = advancedVSeed
-  const baseConfig = advancedVSeed.config[chartType] as { player: Player }
+  const baseConfig = advancedVSeed.config[chartType] as { fontFamily?: string; player: Player }
   const result = datasetXY(spec, context)
 
   if (!baseConfig || !baseConfig.player) {
     return result
   }
   const { player } = baseConfig
+  const fontFamily = player.fontFamily || baseConfig.fontFamily
+  const textSize = player.fontSize ?? 36
 
   const id = datasetReshapeInfo[0].id
   const { unfoldInfo, foldInfo } = datasetReshapeInfo[0]
@@ -63,7 +65,6 @@ export const playerColumn: VChartSpecPipe = (spec, context) => {
 
   const dataKey = dimensions.filter((d) => !encoding.player?.includes(d.id)).map((d) => d.id)
 
-  const textSize = 36
   const padding = 12
   return {
     ...result,
@@ -147,6 +148,7 @@ export const playerColumn: VChartSpecPipe = (spec, context) => {
           textBaseline: 'bottom',
           fontSize: textSize,
           textAlign: 'right',
+          fontFamily,
           text: (datum: any) => datum[encodingPlayer],
           x: (_datum: any, ctx: any) => {
             return ctx.vchart.getChart().getCanvasRect()?.width - padding
