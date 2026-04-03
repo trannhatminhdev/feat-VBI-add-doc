@@ -2065,12 +2065,12 @@ describe('WhereFilter', () => {
             {
               "field": "order_date",
               "op": ">=",
-              "value": "__RELATIVE_START__",
+              "value": "2026-02-21",
             },
             {
               "field": "order_date",
               "op": "<",
-              "value": "__RELATIVE_END__",
+              "value": "2026-03-23",
             },
             {
               "field": "sales",
