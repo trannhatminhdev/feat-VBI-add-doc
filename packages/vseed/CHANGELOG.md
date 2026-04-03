@@ -1,5 +1,11 @@
 # @visactor/vseed
 
+## 0.4.22
+
+### Patch Changes
+
+- 238fd91: Add token theme feature
+
 ## 0.4.21
 
 ### Patch Changes
