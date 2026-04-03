@@ -188,7 +188,7 @@ describe('Enhanced Secure Code Executor', () => {
       expect(result.success).toBe(true)
       expect(result.data[0].sales).toBe(2500)
       expect(result.data[result.data.length - 1].sales).toBe(600)
-    }, 30_000)
+    })
 
     test('应该能执行 Top N', async () => {
       const code = `
