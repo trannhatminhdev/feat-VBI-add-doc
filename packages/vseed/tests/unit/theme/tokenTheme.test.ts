@@ -145,6 +145,16 @@ beforeAll(() => {
 })
 
 describe('tokenTheme', () => {
+  test('should preserve undefined default fontSize in base theme config', () => {
+    const lightTheme = Builder.getTheme('light')
+
+    expect(lightTheme?.config?.line?.label?.labelFontSize).toBeUndefined()
+    expect(lightTheme?.config?.raceBar?.player?.fontSize).toBeUndefined()
+    expect((lightTheme?.config?.line as any)?.pivotGrid?.bodyFontSize).toBeUndefined()
+    expect((lightTheme?.config?.line as any)?.pivotGrid?.headerFontSize).toBeUndefined()
+    expect((lightTheme?.config?.line as any)?.pivotGrid?.axisLabelFontSize).toBeUndefined()
+  })
+
   test('should register themes from a token registry', () => {
     expect(Builder.getTheme('unit-light')).toBeDefined()
     expect(Builder.getTheme('unit-earth')).toBeDefined()

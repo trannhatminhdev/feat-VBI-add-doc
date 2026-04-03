@@ -3,7 +3,6 @@ export const getDefaultLabel = () => ({
   wrap: true,
   showValue: true,
   showValuePercent: false,
-  labelFontSize: 12,
   labelColorSmartInvert: false,
   labelOverlap: true,
 })
