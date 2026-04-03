@@ -62,7 +62,9 @@ const pickPivotChartGridConfig = (tableConfig: any) => {
     outlineBorderLineWidth: 0,
     frameCornerRadius: 0,
     borderColor: tableConfig.borderColor,
+    bodyFontSize: tableConfig.bodyFontSize,
     bodyFontColor: tableConfig.bodyFontColor,
+    headerFontSize: tableConfig.headerFontSize,
     headerFontColor: tableConfig.headerFontColor,
 
     headerBackgroundColor: 'transparent',
@@ -72,6 +74,8 @@ const pickPivotChartGridConfig = (tableConfig: any) => {
     titleFontColor: tableConfig.headerFontColor,
     titleFontSize: tableConfig.headerFontSize,
     titleFontWeight: 'bold',
+
+    axisLabelFontSize: tableConfig.bodyFontSize,
   }
 }
 

@@ -10,6 +10,7 @@ export const getDarkPlayer = (): Omit<Player, 'field'> => {
     loop: false,
     autoPlay: true,
     position: 'bottom',
+    fontSize: 36,
     railColor: '#404349',
 
     trackColor: primaryColor,
@@ -32,6 +33,7 @@ export const getLightPlayer = (): Omit<Player, 'field'> => {
     loop: false,
     autoPlay: true,
     position: 'bottom',
+    fontSize: 36,
     railColor: '#f1f3f4',
 
     trackColor: primaryColor,

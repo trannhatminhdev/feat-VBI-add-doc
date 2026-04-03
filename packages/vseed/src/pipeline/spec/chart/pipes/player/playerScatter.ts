@@ -14,6 +14,7 @@ export const playerScatter: VChartSpecPipe = (spec, context) => {
   }
   const { player } = baseConfig
   const fontFamily = player.fontFamily || baseConfig.fontFamily
+  const textSize = player.fontSize ?? 36
 
   const id = datasetReshapeInfo[0].id
   const { unfoldInfo } = datasetReshapeInfo[0]
@@ -50,7 +51,6 @@ export const playerScatter: VChartSpecPipe = (spec, context) => {
   const exchangeDuration = interval * 0.6
   const dataKey = dimensions.filter((d) => !encoding.player?.includes(d.id)).map((d) => d.id)
   const padding = 12
-  const textSize = 36
   return {
     ...result,
     dataKey,

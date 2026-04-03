@@ -9,6 +9,7 @@ export const zPlayer = z.object({
 
   railColor: z.string().optional(),
   fontFamily: z.string().optional(),
+  fontSize: z.number().optional(),
   trackColor: z.string().optional(),
   sliderHandleColor: z.string().optional(),
 

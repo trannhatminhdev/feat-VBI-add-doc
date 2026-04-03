@@ -2,7 +2,9 @@ import { z } from 'zod'
 
 export const zPivotChartGridConfig = z.object({
   borderColor: z.string().nullish(),
+  bodyFontSize: z.number().nullish(),
   bodyFontColor: z.string().nullish(),
+  headerFontSize: z.number().nullish(),
   headerFontColor: z.string().nullish(),
   headerBackgroundColor: z.string().nullish(),
   hoverHeaderBackgroundColor: z.string().nullish(),
@@ -19,6 +21,7 @@ export const zPivotChartGridConfig = z.object({
 
   chartGridColor: z.string().nullish(),
   axisLabelColor: z.string().nullish(),
+  axisLabelFontSize: z.number().nullish(),
 })
 
 export type PivotChartGridConfig = z.infer<typeof zPivotChartGridConfig>

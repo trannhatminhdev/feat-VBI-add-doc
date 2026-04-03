@@ -10,6 +10,13 @@ export type TokenThemeBase = 'light' | 'dark'
 export type TokenThemeDefinition = {
   baseTheme: TokenThemeBase
   fontFamily?: string
+  tableHeaderFontSize?: number
+  tableBodyFontSize?: number
+  labelFontSize?: number
+  tooltipFontSize?: number
+  axisFontSize?: number
+  legendFontSize?: number
+  playerFontSize?: number
   colorScheme: [string, string, ...string[]]
   linearColorScheme: [string, string]
   textPrimary: string
@@ -107,9 +114,11 @@ const getAccentColor = (tokens: TokenThemeDefinition) => tokens.accentColor || t
 const getAxisPatch = (tokens: TokenThemeDefinition) => ({
   label: {
     labelColor: tokens.axisLabelColor || tokens.textSecondary,
+    labelFontSize: tokens.axisFontSize,
   },
   title: {
     titleColor: tokens.axisTitleColor || tokens.textSecondary,
+    titleFontSize: tokens.axisFontSize,
   },
   grid: {
     gridColor: tokens.axisGridColor || tokens.borderColor,
@@ -124,15 +133,19 @@ const getAxisPatch = (tokens: TokenThemeDefinition) => ({
 
 const getPivotGridPatch = (tokens: TokenThemeDefinition) => ({
   borderColor: tokens.tableBorderColor || tokens.borderColor,
+  bodyFontSize: tokens.tableBodyFontSize,
   bodyFontColor: tokens.tableBodyFontColor || tokens.textPrimary,
+  headerFontSize: tokens.tableHeaderFontSize,
   headerFontColor: tokens.tableHeaderFontColor || tokens.textPrimary,
   headerBackgroundColor: tokens.tableHeaderBackgroundColor || tokens.surfaceColor || 'transparent',
   hoverHeaderBackgroundColor: tokens.tableHoverHeaderBackgroundColor || withAlpha(getAccentColor(tokens), 0.18),
   hoverHeaderInlineBackgroundColor:
     tokens.tableHoverHeaderInlineBackgroundColor || withAlpha(getAccentColor(tokens), 0.08),
   titleFontColor: tokens.textPrimary,
+  titleFontSize: tokens.tableHeaderFontSize,
   chartGridColor: tokens.axisGridColor || tokens.borderColor,
   axisLabelColor: tokens.axisLabelColor || tokens.textSecondary,
+  axisLabelFontSize: tokens.axisFontSize,
 })
 
 const getPlayerPatch = (tokens: TokenThemeDefinition) => {
@@ -140,6 +153,7 @@ const getPlayerPatch = (tokens: TokenThemeDefinition) => {
 
   return {
     fontFamily: tokens.fontFamily,
+    fontSize: tokens.playerFontSize,
     railColor: tokens.playerRailColor || tokens.borderColor,
     trackColor: accentColor,
     sliderHandleColor: tokens.playerSliderHandleColor || tokens.surfaceColor || '#ffffff',
@@ -156,8 +170,10 @@ const getTablePatch = (tokens: TokenThemeDefinition) => {
 
   return {
     borderColor: tokens.tableBorderColor || tokens.borderColor,
+    bodyFontSize: tokens.tableBodyFontSize,
     bodyFontFamily: tokens.fontFamily,
     bodyFontColor: tokens.tableBodyFontColor || tokens.textPrimary,
+    headerFontSize: tokens.tableHeaderFontSize,
     headerFontFamily: tokens.fontFamily,
     headerFontColor: tokens.tableHeaderFontColor || tokens.textPrimary,
     headerBackgroundColor: tokens.tableHeaderBackgroundColor || tokens.surfaceColor || 'transparent',
@@ -186,20 +202,59 @@ const getChartPatch = (tokens: TokenThemeDefinition) => ({
     negativeColor: tokens.negativeColor,
   },
   label: {
+    labelFontSize: tokens.labelFontSize,
     labelColor: tokens.labelColor || tokens.textPrimary,
     labelStroke: tokens.labelStroke,
   },
   legend: {
     labelColor: tokens.legendLabelColor || tokens.textSecondary,
+    labelFontSize: tokens.legendFontSize,
     pagerIconColor: tokens.legendPagerIconColor || tokens.textSecondary,
     pagerIconDisableColor: tokens.legendPagerIconDisableColor || tokens.borderColor,
   },
   tooltip: {
     backgroundColor: tokens.tooltipBackgroundColor,
     borderColor: tokens.tooltipBorderColor || tokens.borderColor,
+    fontSize: tokens.tooltipFontSize,
     keyColor: tokens.textSecondary,
     valueColor: tokens.textPrimary,
     titleColor: tokens.textPrimary,
+  },
+})
+
+const getAnnotationPatch = (tokens: TokenThemeDefinition) => ({
+  annotationPoint: {
+    textFontSize: tokens.labelFontSize,
+  },
+  annotationHorizontalLine: {
+    textFontSize: tokens.labelFontSize,
+  },
+  annotationVerticalLine: {
+    textFontSize: tokens.labelFontSize,
+  },
+  annotationArea: {
+    textFontSize: tokens.labelFontSize,
+  },
+})
+
+const getRegressionLinePatch = (tokens: TokenThemeDefinition) => ({
+  kdeRegressionLine: {
+    textFontSize: tokens.labelFontSize,
+  },
+  ecdfRegressionLine: {
+    textFontSize: tokens.labelFontSize,
+  },
+  linearRegressionLine: {
+    textFontSize: tokens.labelFontSize,
+  },
+  lowessRegressionLine: {
+    textFontSize: tokens.labelFontSize,
+  },
+  polynomialRegressionLine: {
+    textFontSize: tokens.labelFontSize,
+  },
+  logisticRegressionLine: {
+    textFontSize: tokens.labelFontSize,
   },
 })
 
@@ -237,6 +292,18 @@ const withAxesAndExtras = (
 
   if (Object.prototype.hasOwnProperty.call(chartRecord, 'pivotGrid')) {
     nextChartConfig = mergeThemeNode(nextChartConfig, { pivotGrid: getPivotGridPatch(tokens) } as Partial<
+      typeof nextChartConfig
+    >)
+  }
+
+  if (Object.prototype.hasOwnProperty.call(chartRecord, 'annotation')) {
+    nextChartConfig = mergeThemeNode(nextChartConfig, { annotation: getAnnotationPatch(tokens) } as Partial<
+      typeof nextChartConfig
+    >)
+  }
+
+  if (Object.prototype.hasOwnProperty.call(chartRecord, 'regressionLine')) {
+    nextChartConfig = mergeThemeNode(nextChartConfig, { regressionLine: getRegressionLinePatch(tokens) } as Partial<
       typeof nextChartConfig
     >)
   }

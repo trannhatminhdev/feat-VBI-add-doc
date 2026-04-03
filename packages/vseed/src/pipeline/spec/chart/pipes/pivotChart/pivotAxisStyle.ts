@@ -26,6 +26,10 @@ export const pivotAxisStyle = (axisStyle: VChartSpecPipe): VChartSpecPipe => {
           axis.label.style.fill = themConfig.axisLabelColor
         }
 
+        if (themConfig.axisLabelFontSize && axis.label && axis.label.visible && axis.label.style) {
+          axis.label.style.fontSize = themConfig.axisLabelFontSize
+        }
+
         if (axis.type === 'band') {
           if (axis.orient === 'left' || axis.orient === 'right') {
             axis.innerOffset = {

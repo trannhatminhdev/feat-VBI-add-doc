@@ -40,7 +40,7 @@ export const labelSunburst: VChartSpecPipe = (spec, context) => {
       },
       style: {
         ...labelSpec?.style,
-        fontSize: 12,
+        fontSize: label?.labelFontSize ?? 12,
         fillOpacity: (datum: any) => {
           if (encoding.hierarchy?.length === 1) {
             return 1
