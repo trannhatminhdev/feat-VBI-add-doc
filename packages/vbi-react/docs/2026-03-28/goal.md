@@ -1,9 +1,11 @@
 # Goal: 在网站文档中新增 VBI React 专区（2026-03-28）
 
 ## 目标陈述
+
 在 VBI 官网文档站中新增 `VBI React` 页面体系，使用户在站点内即可完成 `@visactor/vbi-react` 的学习与接入（定位、安装、API、示例）。
 
 ## 交付范围
+
 1. 顶部导航新增 `VBI React` 入口。
 2. 新建 `vbi-react` 文档分区并接入站点侧边栏。
 3. 提供 `VBI React` 首页（定位、安装、快速开始）。
@@ -11,6 +13,7 @@
 5. 提供示例文档分组（含可复制代码与预期效果说明）。
 
 ## 开工前输入（SSOT）
+
 1. 运行时导出边界以 `packages/vbi-react/package.json` 的 `exports` 为准：
    - `@visactor/vbi-react`
    - `@visactor/vbi-react/components`
@@ -18,6 +21,7 @@
 3. 文档落点固定为 `apps/website/docs/zh-CN/vbi-react/`。
 
 ## API 对齐清单（必须逐项覆盖）
+
 1. `@visactor/vbi-react`
    - `useVBI`
    - `useVSeed`
@@ -33,11 +37,13 @@
    - `FieldPanel`
 
 ## 不在本次范围
+
 - 不改动 `packages/vbi-react/src` 运行时代码。
 - 不做功能开发，不改测试逻辑。
 - 不处理 npm 发布流程。
 
 ## 验收标准（DoD）
+
 1. 导航中可见并可点击进入 `VBI React`。
 2. `apps/website/docs/zh-CN/vbi-react/` 目录结构完整（首页、API、示例、各自 `_meta.json`）。
 3. API 文档不少于 6 页，且均对应“API 对齐清单”中的真实导出能力。

@@ -1,10 +1,12 @@
+name: vbi-dev
+
 services:
   vbi_fe:
     build:
       context: ..
       dockerfile: docker/vbi_fe/Dockerfile.dev
     ports:
-      - '3000:3000'
+      - '${VBI_FE_PORT:-3000}:3000'
     volumes:
       - ../apps/vbi_fe/src:/app/apps/vbi_fe/src
       - ../apps/vbi_fe/public:/app/apps/vbi_fe/public
@@ -12,9 +14,10 @@ services:
       - ../packages:/app/packages
       - ../practices:/app/practices
     environment:
-      - NODE_ENV=development
+      NODE_ENV: development
     depends_on:
-      - vbi_be
+      vbi_be:
+        condition: service_started
     restart: unless-stopped
     networks:
       - vbi_net
@@ -25,9 +28,9 @@ services:
       dockerfile: docker/vbi_be/Dockerfile.dev
     command: pnpm --filter vbi_be start:debug
     ports:
-      - '3030:3030'
-      - '9229:9229'
-      - '1234:1234'
+      - '${VBI_BE_PORT:-3030}:3030'
+      - '${VBI_DEBUG_PORT:-9229}:9229'
+      - '${VBI_COLLAB_PORT:-1234}:1234'
     volumes:
       - ../apps/vbi_be/src:/app/apps/vbi_be/src
       - ../apps/vbi_be/test:/app/apps/vbi_be/test
@@ -35,9 +38,13 @@ services:
     env_file:
       - ../.env
     environment:
-      - NODE_ENV=development
+      NODE_ENV: development
+      DB_HOST: db
+      DB_PORT: 5432
+      DATABASE_URL: ''
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - vbi_net
@@ -48,11 +55,17 @@ services:
     env_file:
       - ../.env
     environment:
-      - PGPORT=5454
+      PGPORT: 5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - '5454:5454'
+      - '${VBI_DB_PORT:-5454}:5432'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB" -p "$$PGPORT"']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     networks:
       - vbi_net
 
