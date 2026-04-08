@@ -11,9 +11,9 @@
     "@visactor/vquery": "workspace:*"
   },
   "devDependencies": {
-    "@rslib/core": "0.16.1",
+    "@rslib/core": "0.20.3",
     "@rushstack/eslint-patch": "~1.1.4",
-    "typescript": "5.9.3",
+    "typescript": "6.0.2",
     "@types/node-fetch": "2.6.4",
     "node-fetch": "2.6.7",
     "form-data": "~4.0.0",

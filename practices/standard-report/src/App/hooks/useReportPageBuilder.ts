@@ -1,8 +1,14 @@
-import type { VBIReportBuilder } from '@visactor/vbi';
+import type { VBIChartBuilder, VBIReportBuilder } from '@visactor/vbi';
+
+type ReportPageBuilderLike = {
+  chart?: VBIChartBuilder;
+};
 
 export const useReportPageBuilder = (
   reportBuilder: VBIReportBuilder,
   pageId?: string,
-) => {
-  return pageId ? reportBuilder.page.get(pageId) : undefined;
+): ReportPageBuilderLike | undefined => {
+  return pageId
+    ? (reportBuilder.page.get(pageId) as ReportPageBuilderLike | undefined)
+    : undefined;
 };

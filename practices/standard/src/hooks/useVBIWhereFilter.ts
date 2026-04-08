@@ -14,13 +14,38 @@ type WhereNodeMutator = (node: {
   setOperator: (operator: string) => unknown;
   setValue: (value: unknown) => unknown;
   setField: (field: string) => unknown;
+  getId?: () => string;
 }) => void;
 
-type WhereGroupMutator = (group: {
+type WhereGroupLike = {
   setOperator: (operator: 'and' | 'or') => unknown;
   add: (field: string, callback: (node: unknown) => void) => unknown;
   remove: (idOrIndex: string | number) => unknown;
-}) => void;
+};
+type WhereGroupMutator = (group: WhereGroupLike) => void;
+type WhereNodeLike = Parameters<WhereNodeMutator>[0];
+type UseVBIWhereFilterResult = {
+  filters: VBIWhereClause[];
+  flattenFilters: () => VBIWhereFilter[];
+  addFilter: (field: string, operator?: string, value?: unknown) => void;
+  addGroup: (op: 'and' | 'or', callback?: WhereGroupMutator) => void;
+  removeFilter: (id: string) => void;
+  clearFilters: () => void;
+  updateFilter: (
+    id: string,
+    updates: { operator?: string; value?: unknown },
+  ) => void;
+  findFilter: (id: string) => WhereNodeLike | undefined;
+  updateGroup: (id: string, updates: { operator?: 'and' | 'or' }) => void;
+  addToGroup: (
+    groupId: string,
+    field: string,
+    operator?: string,
+    value?: unknown,
+  ) => void;
+  removeFromGroup: (groupId: string, idOrIndex: string | number) => void;
+  findGroup: (id: string) => WhereGroupLike | undefined;
+};
 
 const flattenWhereClauses = (items: VBIWhereClause[]): VBIWhereFilter[] => {
   const result: VBIWhereFilter[] = [];
@@ -47,7 +72,9 @@ const flattenWhereClauses = (items: VBIWhereClause[]): VBIWhereFilter[] => {
  * 提供明细过滤（聚合前）管理
  * 支持响应式同步和增量操作
  */
-export const useVBIWhereFilter = (builder: VBIChartBuilder | undefined) => {
+export const useVBIWhereFilter = (
+  builder: VBIChartBuilder | undefined,
+): UseVBIWhereFilterResult => {
   const filters = useBuilderDocState({
     builder,
     fallback: EMPTY_WHERE_CLAUSES,
@@ -83,7 +110,7 @@ export const useVBIWhereFilter = (builder: VBIChartBuilder | undefined) => {
 
       builder.doc.transact(() => {
         builder.whereFilter.addGroup(op, (group) => {
-          callback?.(group as unknown as Parameters<WhereGroupMutator>[0]);
+          callback?.(group as WhereGroupLike);
         });
       });
     },
@@ -132,7 +159,12 @@ export const useVBIWhereFilter = (builder: VBIChartBuilder | undefined) => {
   const findFilter = useCallback(
     (id: string) => {
       if (builder) {
-        return builder.whereFilter.find((entry) => entry.getId() === id);
+        const result = builder.whereFilter.find(
+          (entry) => entry.getId() === id,
+        );
+        if (result && 'setValue' in result && 'setField' in result) {
+          return result as WhereNodeLike;
+        }
       }
       return undefined;
     },
@@ -169,7 +201,7 @@ export const useVBIWhereFilter = (builder: VBIChartBuilder | undefined) => {
       builder.doc.transact(() => {
         builder.whereFilter.updateGroup(groupId, (group) => {
           group.add(field, (node) => {
-            const filterNode = node as Parameters<WhereNodeMutator>[0];
+            const filterNode = node as WhereNodeLike;
             if (operator) {
               filterNode.setOperator(operator);
             }
@@ -204,8 +236,8 @@ export const useVBIWhereFilter = (builder: VBIChartBuilder | undefined) => {
         const result = builder.whereFilter.find(
           (entry) => entry.getId() === id,
         );
-        if (result && 'getOperator' in result) {
-          return result;
+        if (result && 'add' in result && 'remove' in result) {
+          return result as WhereGroupLike;
         }
       }
       return undefined;
