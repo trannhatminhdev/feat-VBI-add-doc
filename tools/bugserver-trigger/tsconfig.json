@@ -9,6 +9,7 @@
     "allowJs": true,
     "strict": true,
     "skipLibCheck": true,
+    "rootDir": ".",
     "forceConsistentCasingInFileNames": true,
 
     /* Module Resolution Options */
@@ -34,7 +35,7 @@
 
     /* Path Mapping */
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*", "scripts/**/*"],
