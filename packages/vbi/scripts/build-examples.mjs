@@ -1,160 +1,71 @@
-/**
- * Build docs from JSON files
- * Generates MDX documentation for website with preview
- * Organizes examples by directory (chartType/, theme/, etc.)
- */
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
+import {
+  BUILDER_ORDER,
+  DEFAULT_LOCALE,
+  EXAMPLES_DIR,
+  findJsonFilesInDir,
+  findSubDirs,
+  formatBuilderLabel,
+  formatDirLabel,
+  getDirBuilderKind,
+  parseDescription,
+  parseTags,
+  readJsonFile,
+  renderPreview,
+} from './example-utils.mjs'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+const OUTPUT_DIR = path.resolve(EXAMPLES_DIR, '../../../../apps/website/docs/zh-CN/vbi/examples')
 
-// ============ Constants ============
-const EXAMPLES_DIR = path.resolve(__dirname, '../tests/examples')
-const OUTPUT_DIR = path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vbi/examples')
-const DEFAULT_LOCALE = 'zh-CN'
-
-const TAG_COLORS = {
-  基础: 'blue',
-  进阶: 'purple',
-  高级: 'red',
-  新增: 'green',
-  实验性: 'orange',
-  basic: 'blue',
-  advanced: 'purple',
-  pro: 'red',
-  new: 'green',
-  experimental: 'orange',
-}
-
-const DEFAULT_DSL = {
-  chartType: 'line',
-  dimensions: [],
-  measures: [],
-  whereFilter: { id: 'root', op: 'and', conditions: [] },
-  havingFilter: { id: 'root', op: 'and', conditions: [] },
-  theme: 'light',
-  locale: DEFAULT_LOCALE,
-  version: 1,
-}
-
-// ============ Utils ============
-function parseDescription(json, locale = DEFAULT_LOCALE) {
-  const desc = json.description || json.name || ''
-  const match = desc.match(new RegExp(`\\{${locale}\\}([^]*?)\\{/${locale}\\}`, 'i'))
-  return match ? match[1].trim() : desc.replace(/\{[^}]+\}/g, '').trim() || desc
-}
-
-function parseTags(json) {
-  return json.tags || []
-}
-
-function readJsonFile(filePath) {
-  return JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-}
-
-function findSubDirs(dir) {
-  return fs
-    .readdirSync(dir, { withFileTypes: true })
-    .filter((item) => item.isDirectory())
-    .map((item) => item.name)
-}
-
-function findJsonFilesInDir(dir) {
-  const files = fs
-    .readdirSync(dir, { withFileTypes: true })
-    .filter((item) => item.isFile() && item.name.endsWith('.json'))
-    .map((item) => path.join(dir, item.name))
-
-  return files.sort((a, b) => {
-    const jsonA = readJsonFile(a)
-    const jsonB = readJsonFile(b)
-    const [pa, pb] = [jsonA.priority ?? 5, jsonB.priority ?? 5]
-    return pa !== pb ? pa - pb : (jsonA.name || a).localeCompare(jsonB.name || b)
-  })
-}
-
-// ============ Code Generation ============
-function generateDSLConfig(dsl) {
-  const { whereFilter, havingFilter, ...restDSL } = dsl
-
-  return {
-    ...DEFAULT_DSL,
-    ...restDSL,
-    whereFilter: whereFilter ?? {
-      id: 'root',
-      op: 'and',
-      conditions: [],
-    },
-    havingFilter: havingFilter ?? {
-      id: 'root',
-      op: 'and',
-      conditions: [],
-    },
+const ensureDir = (dirPath) => {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true })
   }
 }
 
-function normalizeExampleCode(code = '') {
-  return code.replace(/\bVBIBuilder\b/g, 'VBIChartBuilder')
+const resetDir = (dirPath) => {
+  fs.rmSync(dirPath, { recursive: true, force: true })
+  fs.mkdirSync(dirPath, { recursive: true })
 }
 
-function generateExamplePreview(json) {
-  const dsl = generateDSLConfig(json.dsl || {})
+const toMetaFile = (name, label) => ({ type: 'file', name, label })
 
-  const code = `
-import { VBI } from '@visactor/vbi'
-import { DEMO_CONNECTOR_ID, VSeedRender } from '@components'
-import { useEffect, useState } from 'react'
+const toMetaDir = (name, label) => ({
+  type: 'dir',
+  name,
+  label,
+  collapsible: true,
+  collapsed: false,
+})
 
-export default () => {
-  const [vseed, setVSeed] = useState(null)
+const getActiveDirs = () =>
+  findSubDirs(EXAMPLES_DIR).filter((dir) => findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).length > 0)
 
-  useEffect(() => {
-    const run = async () => {
-      const builder = VBI.createChart({
-        connectorId: DEMO_CONNECTOR_ID,
-        chartType: ${JSON.stringify(dsl.chartType)},
-        dimensions: ${JSON.stringify(dsl.dimensions)},
-        measures: ${JSON.stringify(dsl.measures)},
-        whereFilter: ${JSON.stringify(dsl.whereFilter)},
-        havingFilter: ${JSON.stringify(dsl.havingFilter)},
-        theme: ${JSON.stringify(dsl.theme)},
-        locale: ${JSON.stringify(dsl.locale)},
-        version: ${dsl.version}${dsl.limit !== undefined ? `,\n        limit: ${dsl.limit}` : ''}${dsl.orderBy ? `,\n        orderBy: ${JSON.stringify(dsl.orderBy)}` : ''}
-      })
+const groupDirsByBuilder = (dirs) =>
+  BUILDER_ORDER.map((kind) => ({
+    kind,
+    dirs: dirs.filter((dir) => getDirBuilderKind(dir) === kind),
+  })).filter((group) => group.dirs.length > 0)
 
-      ${normalizeExampleCode(json.code)}
-      applyBuilder(builder)
-
-      const result = await builder.buildVSeed()
-      setVSeed(result)
-    }
-    run()
-  }, [])
-
-  if (!vseed) return <div>Loading...</div>
-
-  return <VSeedRender vseed={vseed} />
-}`
-
-  return code.trim()
-}
+const shouldRenderBuilderIndexOnly = (group) => group.dirs.length === 1 && group.dirs[0] === group.kind
 
 function generateTagsHtml(tags) {
-  if (!tags?.length) return ''
-  const badges = tags.map((tag) => `<Badge type="${TAG_COLORS[tag] || 'default'}">${tag}</Badge>`).join(' ')
-  return `\n\n<Tip>${badges}</Tip>\n`
+  if (!tags.length) {
+    return ''
+  }
+  const badges = tags.map((tag) => `\`${tag}\``).join(' ')
+  return `\n\n> 标签: ${badges}\n`
 }
 
-// ============ Page Generation ============
-function generateDirDocs(dirName, locale = DEFAULT_LOCALE) {
+function generateDirDocs(dirName, locale = DEFAULT_LOCALE, title = dirName) {
   const dirPath = path.join(EXAMPLES_DIR, dirName)
   const jsonFiles = findJsonFilesInDir(dirPath)
-  if (!jsonFiles.length) return ''
 
-  let md = `# ${dirName}\n\n`
-  // Add connector registration once at the top of each MDX file
+  if (!jsonFiles.length) {
+    return ''
+  }
+
+  let md = `# ${title}\n\n`
   md += `import { registerDemoConnector } from '@components'\n\n`
   md += `{registerDemoConnector()}\n\n`
 
@@ -164,21 +75,30 @@ function generateDirDocs(dirName, locale = DEFAULT_LOCALE) {
     md += `${parseDescription(json, locale)}\n`
     md += `${generateTagsHtml(parseTags(json))}\n\n`
     md += '```tsx preview\n'
-    md += `${generateExamplePreview(json)}\n`
+    md += `${renderPreview(json)}\n`
     md += '```\n\n'
   }
 
   return md
 }
 
-function generateIndexPage(subDirs, locale = DEFAULT_LOCALE) {
-  let md = '# VBI 示例\n\n本页面展示 VBI 的各种使用示例。\n\n'
+function resolveExampleLink(group, dirName, exampleName, fromBuilderRoot = false) {
+  const base = shouldRenderBuilderIndexOnly(group)
+    ? fromBuilderRoot
+      ? './'
+      : `./${group.kind}`
+    : fromBuilderRoot
+      ? `./${dirName}`
+      : `./${group.kind}/${dirName}`
+  return `${base}#${exampleName}`
+}
 
-  for (const dir of subDirs) {
-    const jsonFiles = findJsonFilesInDir(path.join(EXAMPLES_DIR, dir))
-    if (!jsonFiles.length) continue
+function generateBuilderIndexPage(group, locale = DEFAULT_LOCALE) {
+  let md = `# ${formatBuilderLabel(group.kind)}\n\n`
+  md += `本页面展示 ${group.kind} builder 的示例。\n\n`
 
-    const examples = jsonFiles.map((file) => {
+  for (const dir of group.dirs) {
+    const examples = findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).map((file) => {
       const json = readJsonFile(file)
       return {
         name: json.name || path.basename(file, '.json'),
@@ -187,9 +107,16 @@ function generateIndexPage(subDirs, locale = DEFAULT_LOCALE) {
       }
     })
 
-    md += `## ${dir}\n\n| 示例 | 描述 | 标签 |\n| --- | --- | --- |\n`
+    if (!examples.length) {
+      continue
+    }
+
+    md += `## ${formatDirLabel(dir)}\n\n| 示例 | 描述 | 标签 |\n| --- | --- | --- |\n`
     md += examples
-      .map((ex) => `| [${ex.name}](./${dir}#${ex.name}) | ${ex.description} | ${ex.tags.join(', ') || '-'} |`)
+      .map((example) => {
+        const href = resolveExampleLink(group, dir, example.name, true)
+        return `| [${example.name}](${href}) | ${example.description} | ${example.tags.join(', ') || '-'} |`
+      })
       .join('\n')
     md += '\n\n'
   }
@@ -197,77 +124,105 @@ function generateIndexPage(subDirs, locale = DEFAULT_LOCALE) {
   return md
 }
 
-function generateStats(subDirs) {
-  const stats = { total: 0, byCategory: {}, byTag: {} }
+function generateTopIndexPage(groups) {
+  let md = '# VBI 示例\n\n本页面展示 VBI 的各种使用示例。\n\n'
 
-  for (const dir of subDirs) {
-    const jsonFiles = findJsonFilesInDir(path.join(EXAMPLES_DIR, dir))
-    stats.byCategory[dir] = jsonFiles.length
-    stats.total += jsonFiles.length
-
-    for (const file of jsonFiles) {
-      for (const tag of parseTags(readJsonFile(file))) {
-        stats.byTag[tag] = (stats.byTag[tag] || 0) + 1
-      }
-    }
+  for (const group of groups) {
+    const total = group.dirs.reduce((sum, dir) => sum + findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).length, 0)
+    md += `## ${formatBuilderLabel(group.kind)}\n\n`
+    md += `共 ${total} 个示例。\n\n`
+    md += '| 分类 | 数量 |\n| --- | --- |\n'
+    md += group.dirs
+      .map(
+        (dir) =>
+          `| [${formatDirLabel(dir)}](./${group.kind}${shouldRenderBuilderIndexOnly(group) ? '' : `/${dir}`}) | ${findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).length} |`,
+      )
+      .join('\n')
+    md += '\n\n'
   }
-
-  return stats
-}
-
-function generateTagsPage(subDirs) {
-  const stats = generateStats(subDirs)
-  const tagEntries = Object.entries(stats.byTag).sort((a, b) => b[1] - a[1])
-
-  let md = `# 标签\n\n共 ${stats.total} 个示例，${tagEntries.length} 个标签。\n\n`
-  md += '| 标签 | 数量 |\n| --- | --- |\n'
-  md += tagEntries.map(([tag, count]) => `| ${tag} | ${count} |`).join('\n')
 
   return md
 }
 
-// ============ Main ============
-function generateDocs() {
-  console.log('Building docs from JSON files...')
+function generateTagsPage(groups) {
+  const tagStats = {}
+  let total = 0
 
-  if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true })
-  }
-
-  const subDirs = findSubDirs(EXAMPLES_DIR)
-  const stats = generateStats(subDirs)
-  console.log(`Found ${stats.total} examples in ${subDirs.length} categories`)
-
-  // _meta.json
-  const meta = subDirs.map((dir) => ({
-    type: 'file',
-    name: dir,
-    label: dir.charAt(0).toUpperCase() + dir.slice(1).replace(/-/g, ' '),
-    count: stats.byCategory[dir],
-  }))
-  fs.writeFileSync(path.join(OUTPUT_DIR, '_meta.json'), JSON.stringify(meta, null, 2))
-  console.log('Generated: _meta.json')
-
-  // index.mdx
-  fs.writeFileSync(path.join(OUTPUT_DIR, 'index.mdx'), generateIndexPage(subDirs))
-  console.log('Generated: index.mdx')
-
-  // tags.mdx
-  fs.writeFileSync(path.join(OUTPUT_DIR, 'tags.mdx'), generateTagsPage(subDirs))
-  console.log('Generated: tags.mdx')
-
-  // category pages
-  let totalExamples = 0
-  for (const dir of subDirs) {
-    const md = generateDirDocs(dir)
-    if (md) {
-      fs.writeFileSync(path.join(OUTPUT_DIR, `${dir}.mdx`), md)
-      console.log(`Generated: ${dir}.mdx`)
-      totalExamples += findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).length
+  for (const group of groups) {
+    for (const dir of group.dirs) {
+      const files = findJsonFilesInDir(path.join(EXAMPLES_DIR, dir))
+      total += files.length
+      for (const file of files) {
+        for (const tag of parseTags(readJsonFile(file))) {
+          tagStats[tag] = (tagStats[tag] || 0) + 1
+        }
+      }
     }
   }
 
-  console.log(`\n✅ Successfully generated docs for ${totalExamples} examples in ${subDirs.length} categories`)
+  const entries = Object.entries(tagStats).sort((a, b) => b[1] - a[1])
+  let md = `# 标签\n\n共 ${total} 个示例，${entries.length} 个标签。\n\n`
+  md += '| 标签 | 数量 |\n| --- | --- |\n'
+  md += entries.map(([tag, count]) => `| ${tag} | ${count} |`).join('\n')
+  return md
+}
+
+function writeBuilderDocs(group) {
+  const builderDir = path.join(OUTPUT_DIR, group.kind)
+  ensureDir(builderDir)
+
+  if (shouldRenderBuilderIndexOnly(group)) {
+    fs.writeFileSync(
+      path.join(builderDir, 'index.mdx'),
+      generateDirDocs(group.dirs[0], DEFAULT_LOCALE, formatBuilderLabel(group.kind)),
+    )
+    fs.writeFileSync(path.join(builderDir, '_meta.json'), JSON.stringify([], null, 2))
+    console.log(`Generated: ${group.kind}/index.mdx`)
+    return
+  }
+
+  fs.writeFileSync(path.join(builderDir, 'index.mdx'), generateBuilderIndexPage(group))
+  fs.writeFileSync(
+    path.join(builderDir, '_meta.json'),
+    JSON.stringify(
+      group.dirs.map((dir) => toMetaFile(dir, formatDirLabel(dir))),
+      null,
+      2,
+    ),
+  )
+  console.log(`Generated: ${group.kind}/index.mdx`)
+
+  for (const dir of group.dirs) {
+    fs.writeFileSync(path.join(builderDir, `${dir}.mdx`), generateDirDocs(dir))
+    console.log(`Generated: ${group.kind}/${dir}.mdx`)
+  }
+}
+
+function generateDocs() {
+  console.log('Building docs from JSON files...')
+
+  resetDir(OUTPUT_DIR)
+
+  const groups = groupDirsByBuilder(getActiveDirs())
+
+  fs.writeFileSync(
+    path.join(OUTPUT_DIR, '_meta.json'),
+    JSON.stringify(
+      groups.map((group) => toMetaDir(group.kind, formatBuilderLabel(group.kind))),
+      null,
+      2,
+    ),
+  )
+  fs.writeFileSync(path.join(OUTPUT_DIR, 'index.mdx'), generateTopIndexPage(groups))
+  fs.writeFileSync(path.join(OUTPUT_DIR, 'tags.mdx'), generateTagsPage(groups))
+
+  let totalExamples = 0
+  for (const group of groups) {
+    writeBuilderDocs(group)
+    totalExamples += group.dirs.reduce((sum, dir) => sum + findJsonFilesInDir(path.join(EXAMPLES_DIR, dir)).length, 0)
+  }
+
+  console.log(`\n✅ Successfully generated docs for ${totalExamples} examples in ${groups.length} builder groups`)
 }
 
 generateDocs()

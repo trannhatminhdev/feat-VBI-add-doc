@@ -1,56 +1,23 @@
 [
   {
-    "type": "file",
-    "name": "chartType",
-    "label": "ChartType",
-    "count": 12
+    "type": "dir",
+    "name": "chart",
+    "label": "chart",
+    "collapsible": true,
+    "collapsed": false
   },
   {
-    "type": "file",
-    "name": "dimensions",
-    "label": "Dimensions",
-    "count": 7
+    "type": "dir",
+    "name": "insight",
+    "label": "insight",
+    "collapsible": true,
+    "collapsed": false
   },
   {
-    "type": "file",
-    "name": "havingFilter",
-    "label": "HavingFilter",
-    "count": 20
-  },
-  {
-    "type": "file",
-    "name": "locale",
-    "label": "Locale",
-    "count": 2
-  },
-  {
-    "type": "file",
-    "name": "measures",
-    "label": "Measures",
-    "count": 5
-  },
-  {
-    "type": "file",
-    "name": "theme",
-    "label": "Theme",
-    "count": 2
-  },
-  {
-    "type": "file",
-    "name": "undoManager",
-    "label": "UndoManager",
-    "count": 1
-  },
-  {
-    "type": "file",
-    "name": "utils",
-    "label": "Utils",
-    "count": 0
-  },
-  {
-    "type": "file",
-    "name": "whereFilter",
-    "label": "WhereFilter",
-    "count": 18
+    "type": "dir",
+    "name": "report",
+    "label": "report",
+    "collapsible": true,
+    "collapsed": false
   }
 ]

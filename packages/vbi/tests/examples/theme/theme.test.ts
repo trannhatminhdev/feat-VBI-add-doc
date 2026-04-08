@@ -1,10 +1,10 @@
 import { rs } from '@rstest/core'
-import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { VBI, type VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 const MOCK_SYSTEM_TIME = new Date('2026-03-23T00:00:00.000Z')
 
-describe('Theme', () => {
+describe('chart / Theme', () => {
   beforeAll(async () => {
     rs.useFakeTimers({ toFake: ['Date'] })
     rs.setSystemTime(MOCK_SYSTEM_TIME)
@@ -51,7 +51,6 @@ describe('Theme', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       const nextTheme = 'dark'
       if (builder.theme.getTheme() !== nextTheme) {
@@ -60,7 +59,6 @@ describe('Theme', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -102,7 +100,6 @@ describe('Theme', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -132,7 +129,6 @@ describe('Theme', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -234,7 +230,6 @@ describe('Theme', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       const nextTheme = 'light'
       if (builder.theme.getTheme() !== nextTheme) {
@@ -243,7 +238,6 @@ describe('Theme', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -285,7 +279,6 @@ describe('Theme', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -315,7 +308,6 @@ describe('Theme', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {

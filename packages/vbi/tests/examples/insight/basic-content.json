@@ -1,0 +1,10 @@
+{
+  "builder": "insight",
+  "name": "basic-content",
+  "description": "通过 insight builder 设置文本内容",
+  "tags": ["basic"],
+  "dsl": {
+    "content": ""
+  },
+  "code": "const applyBuilder = (builder: VBIInsightBuilder) => {\n  builder.setContent('本周华东区域销售额持续增长，建议继续跟进重点客户。')\n}"
+}
