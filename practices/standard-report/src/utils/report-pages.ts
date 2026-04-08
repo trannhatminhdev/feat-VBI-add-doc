@@ -1,5 +1,13 @@
 import { VBI, type VBIReportBuilder, type VBIReportDSL } from '@visactor/vbi';
 
+export type ReportResourceFactory = Pick<
+  typeof VBI,
+  | 'createChart'
+  | 'createInsight'
+  | 'generateEmptyChartDSL'
+  | 'generateEmptyInsightDSL'
+>;
+
 const findPageIndex = (pages: VBIReportDSL['pages'], pageId: string) => {
   return pages.findIndex((page) => page.id === pageId);
 };
@@ -11,12 +19,13 @@ export const getNextPageTitle = (pageCount: number) => {
 export const addReportPage = (
   reportBuilder: VBIReportBuilder,
   connectorId: string,
-  title = getNextPageTitle(reportBuilder.build().pages.length),
+  options: { title?: string; vbi?: ReportResourceFactory } = {},
 ) => {
-  const chart = reportBuilder.createChart(
-    VBI.generateEmptyChartDSL(connectorId),
-  );
-  const insight = reportBuilder.createInsight(VBI.generateEmptyInsightDSL());
+  const { vbi = VBI } = options;
+  const title =
+    options.title ?? getNextPageTitle(reportBuilder.build().pages.length);
+  const chart = vbi.createChart(vbi.generateEmptyChartDSL(connectorId));
+  const insight = vbi.createInsight(vbi.generateEmptyInsightDSL());
 
   reportBuilder.page.add(title, (page) => {
     page.setChartId(chart).setInsightId(insight);
@@ -29,9 +38,13 @@ export const addReportPage = (
 export const ensureReportHasPage = (
   reportBuilder: VBIReportBuilder,
   connectorId: string,
+  vbi: ReportResourceFactory = VBI,
 ) => {
   const pages = reportBuilder.build().pages;
-  return pages[0]?.id ?? addReportPage(reportBuilder, connectorId, 'Page 1');
+  return (
+    pages[0]?.id ??
+    addReportPage(reportBuilder, connectorId, { title: 'Page 1', vbi })
+  );
 };
 
 export const getFallbackActivePageId = (

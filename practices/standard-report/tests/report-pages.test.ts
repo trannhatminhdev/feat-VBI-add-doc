@@ -1,5 +1,5 @@
 import { expect, test } from '@rstest/core';
-import { VBI } from '@visactor/vbi';
+import { createVBI, VBI } from '@visactor/vbi';
 import {
   addReportPage,
   ensureReportHasPage,
@@ -7,9 +7,12 @@ import {
   getNextPageTitle,
 } from '../src/utils/report-pages';
 
-test('ensureReportHasPage creates a first page with demo connector', () => {
-  const reportBuilder = VBI.createReport(VBI.generateEmptyReportDSL());
-  const pageId = ensureReportHasPage(reportBuilder, 'demo');
+test('ensureReportHasPage creates a first page with the provided VBI instance', () => {
+  const LocalVBI = createVBI();
+  const reportBuilder = LocalVBI.createReport(
+    LocalVBI.generateEmptyReportDSL(),
+  );
+  const pageId = ensureReportHasPage(reportBuilder, 'demo', LocalVBI);
   const page = reportBuilder.build().pages.find((item) => item.id === pageId);
   const pageBuilder = reportBuilder.page.get(pageId);
 

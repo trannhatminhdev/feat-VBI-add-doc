@@ -1,4 +1,4 @@
-import { type VBIReportBuilder, type VBIReportDSL } from '@visactor/vbi';
+import { VBI, type VBIReportBuilder, type VBIReportDSL } from '@visactor/vbi';
 import { create } from 'zustand';
 import { connectorId, defaultReportBuilder } from 'src/utils/demoConnector';
 import {
@@ -18,6 +18,7 @@ export interface EditorSourceRect {
 }
 
 export interface ReportStoreState {
+  vbi: typeof VBI;
   reportBuilder: VBIReportBuilder;
   report: VBIReportDSL;
   initialized: boolean;
@@ -25,7 +26,10 @@ export interface ReportStoreState {
   activePageId: string;
   editorOpen: boolean;
   editorSourceRect: EditorSourceRect | null;
-  initialize: (builder?: VBIReportBuilder) => DestroyCallback;
+  initialize: (
+    reportBuilder?: VBIReportBuilder,
+    vbi?: typeof VBI,
+  ) => DestroyCallback;
   bindEvents: () => DestroyCallback;
   syncReport: () => void;
   addPage: () => void;
@@ -48,6 +52,7 @@ const getSnapshot = (reportBuilder: VBIReportBuilder, activePageId: string) => {
 const initialReport = defaultReportBuilder.build();
 
 export const useReportStore = create<ReportStoreState>((set, get) => ({
+  vbi: VBI,
   reportBuilder: defaultReportBuilder,
   report: initialReport,
   initialized: false,
@@ -83,10 +88,20 @@ export const useReportStore = create<ReportStoreState>((set, get) => ({
     return () => get().reportBuilder.doc.off('update', update);
   },
 
-  initialize: (builder) => {
-    const reportBuilder = builder ?? get().reportBuilder;
-    const activePageId = ensureReportHasPage(reportBuilder, connectorId);
-    set({ reportBuilder, activePageId, initialized: true });
+  initialize: (reportBuilder, vbi) => {
+    const nextReportBuilder = reportBuilder ?? get().reportBuilder;
+    const nextVBI = vbi ?? get().vbi;
+    const activePageId = ensureReportHasPage(
+      nextReportBuilder,
+      connectorId,
+      nextVBI,
+    );
+    set({
+      reportBuilder: nextReportBuilder,
+      activePageId,
+      initialized: true,
+      vbi: nextVBI,
+    });
     const dispose = get().bindEvents();
     get().syncReport();
     return () => {
@@ -96,7 +111,9 @@ export const useReportStore = create<ReportStoreState>((set, get) => ({
   },
 
   addPage: () => {
-    const activePageId = addReportPage(get().reportBuilder, connectorId);
+    const activePageId = addReportPage(get().reportBuilder, connectorId, {
+      vbi: get().vbi,
+    });
     set({ activePageId });
     get().syncReport();
   },
@@ -111,7 +128,7 @@ export const useReportStore = create<ReportStoreState>((set, get) => ({
     get().reportBuilder.page.remove(pageId);
     const ensuredPageId =
       get().reportBuilder.build().pages[0]?.id ??
-      addReportPage(get().reportBuilder, connectorId);
+      addReportPage(get().reportBuilder, connectorId, { vbi: get().vbi });
     set({ activePageId: activePageId || ensuredPageId });
     get().syncReport();
   },
