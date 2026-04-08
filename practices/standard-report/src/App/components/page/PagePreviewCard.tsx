@@ -18,10 +18,6 @@ type PagePreviewCardProps = {
   onRemovePage: (pageId: string) => void;
 };
 
-const isChartEmpty = (page: VBIReportPageDSL) => {
-  return page.chart.dimensions.length === 0 && page.chart.measures.length === 0;
-};
-
 export const PagePreviewCard = memo(
   ({
     canRemove,
@@ -36,7 +32,7 @@ export const PagePreviewCard = memo(
   }: PagePreviewCardProps) => {
     const previewRef = useRef<HTMLDivElement | null>(null);
     const pageBuilder = useReportPageBuilder(reportBuilder, page.id);
-    const showPlaceholder = isChartEmpty(page);
+    const showPlaceholder = !pageBuilder?.chart || pageBuilder.chart.isEmpty();
     const canGoPrev = index > 0;
     const canGoNext = index < pageCount - 1;
     const openPageEditor = useCallback(() => {

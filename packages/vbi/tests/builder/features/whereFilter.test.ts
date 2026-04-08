@@ -11,6 +11,7 @@ describe('WhereFilterBuilder', () => {
     })
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [],
       whereFilter: {
         id: 'root',
@@ -41,6 +42,7 @@ describe('WhereFilterBuilder', () => {
       })
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [],
       whereFilter: {
         id: 'root',

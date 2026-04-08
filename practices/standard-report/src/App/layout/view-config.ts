@@ -1,4 +1,4 @@
-import type { VBIReportDSL } from '@visactor/vbi';
+import type { VBIReportBuilder } from '@visactor/vbi';
 import { theme as antdTheme } from 'antd';
 import type { ThemeConfig } from 'antd';
 import enUS from 'antd/locale/en_US';
@@ -29,12 +29,12 @@ export const createThemeConfig = (themeMode: ReportTheme): ThemeConfig => ({
 });
 
 export const getActiveViewConfig = (
-  report: VBIReportDSL,
+  reportBuilder: VBIReportBuilder,
   activePageId: string,
 ) => {
-  const activePage = report.pages.find((page) => page.id === activePageId);
+  const chart = reportBuilder.page.get(activePageId)?.chart?.build();
   return {
-    locale: (activePage?.chart.locale ?? REPORT_DEFAULT_LOCALE) as ReportLocale,
-    theme: (activePage?.chart.theme ?? REPORT_DEFAULT_THEME) as ReportTheme,
+    locale: (chart?.locale ?? REPORT_DEFAULT_LOCALE) as ReportLocale,
+    theme: (chart?.theme ?? REPORT_DEFAULT_THEME) as ReportTheme,
   };
 };

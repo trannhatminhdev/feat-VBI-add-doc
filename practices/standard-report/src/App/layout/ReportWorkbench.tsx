@@ -9,9 +9,9 @@ import {
 } from './view-config';
 
 export const ReportWorkbench = () => {
-  const report = useReportStore((state) => state.report);
+  const reportBuilder = useReportStore((state) => state.reportBuilder);
   const activePageId = useReportStore((state) => state.activePageId);
-  const viewConfig = getActiveViewConfig(report, activePageId);
+  const viewConfig = getActiveViewConfig(reportBuilder, activePageId);
 
   return (
     <ConfigProvider

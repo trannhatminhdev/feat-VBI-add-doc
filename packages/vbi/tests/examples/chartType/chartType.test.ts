@@ -1,10 +1,10 @@
 import { rs } from '@rstest/core'
-import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { VBI, type VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 const MOCK_SYSTEM_TIME = new Date('2026-03-23T00:00:00.000Z')
 
-describe('ChartType', () => {
+describe('chart / ChartType', () => {
   beforeAll(async () => {
     rs.useFakeTimers({ toFake: ['Date'] })
     rs.setSystemTime(MOCK_SYSTEM_TIME)
@@ -51,13 +51,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('line')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -90,6 +88,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -99,7 +98,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -129,7 +127,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -232,13 +229,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('column')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -271,6 +266,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -280,7 +276,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -310,7 +305,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -385,13 +379,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('columnParallel')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -424,6 +416,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -433,7 +426,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -463,7 +455,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -566,13 +557,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('bar')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -605,6 +594,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -614,7 +604,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -644,7 +633,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -731,13 +719,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('pie')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -770,6 +756,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -779,7 +766,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -809,7 +795,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -884,13 +869,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('area')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -923,6 +906,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -932,7 +916,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -962,7 +945,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -1065,13 +1047,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('area')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -1104,6 +1084,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1113,7 +1094,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -1143,7 +1123,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -1246,13 +1225,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('donut')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -1285,6 +1262,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1294,7 +1272,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -1324,7 +1301,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -1411,13 +1387,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('pie')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -1450,6 +1424,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1459,7 +1434,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -1489,7 +1463,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -1564,13 +1537,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('pie')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -1603,6 +1574,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1612,7 +1584,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -1642,7 +1613,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -1742,13 +1712,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('scatter')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -1777,6 +1745,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1786,7 +1755,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -1807,7 +1775,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -1912,13 +1879,11 @@ describe('ChartType', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('bar')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -1953,6 +1918,7 @@ describe('ChartType', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1962,7 +1928,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -1987,7 +1952,6 @@ describe('ChartType', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {

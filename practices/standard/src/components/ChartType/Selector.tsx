@@ -164,10 +164,12 @@ export const ChartTypeSelector = ({
         open={open}
         onOpenChange={setOpen}
         placement="bottomLeft"
-        overlayStyle={{ padding: 0 }}
-        overlayInnerStyle={{
-          padding: 14,
-          borderRadius: token.borderRadiusLG,
+        styles={{
+          root: { padding: 0 },
+          container: {
+            padding: 14,
+            borderRadius: token.borderRadiusLG,
+          },
         }}
       >
         <Button

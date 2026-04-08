@@ -1,45 +1,67 @@
 import { createVBI, VBI } from '@visactor/vbi'
 
 describe('VBIReportBuilder', () => {
-  test('page.add builds report from chart builder and text', () => {
-    const chartBuilder = VBI.createChart(VBI.generateEmptyChartDSL('demo'))
+  test('page.add builds report from chart and insight builders', () => {
+    const LocalVBI = createVBI()
+    const chartBuilder = LocalVBI.createChart(LocalVBI.generateEmptyChartDSL('demo'))
+    const insightBuilder = LocalVBI.createInsight(LocalVBI.generateEmptyInsightDSL())
+
     chartBuilder.measures.add('sales', (node) => {
       node.setAlias('Sales').setAggregate({ func: 'sum' }).setEncoding('yAxis')
     })
+    insightBuilder.setContent('hello world')
+    const chartUUID = chartBuilder.getUUID()
+    const insightUUID = insightBuilder.getUUID()
 
-    const reportBuilder = VBI.createReport(VBI.generateEmptyReportDSL())
+    const reportBuilder = LocalVBI.createReport(LocalVBI.generateEmptyReportDSL())
     const report = reportBuilder.page
-      .add('Story One', (page) => page.setChart(chartBuilder).setText('hello world'))
+      .add('Story One', (page) => page.setChartId(chartBuilder).setInsightId(insightBuilder))
       .build()
 
     expect(report).toEqual({
+      uuid: reportBuilder.getUUID(),
       pages: [
         {
-          id: 'id-2',
+          id: report.pages[0].id,
           title: 'Story One',
-          chart: {
-            connectorId: 'demo',
-            chartType: 'table',
-            measures: [
-              {
-                id: 'id-1',
-                aggregate: { func: 'sum' },
-                alias: 'Sales',
-                encoding: 'yAxis',
-                field: 'sales',
-              },
-            ],
-            dimensions: [],
-            whereFilter: { id: 'root', op: 'and', conditions: [] },
-            havingFilter: { id: 'root', op: 'and', conditions: [] },
-            theme: 'light',
-            locale: 'zh-CN',
-            version: 0,
-          },
-          text: { content: 'hello world' },
+          chartId: chartUUID,
+          insightId: insightUUID,
         },
       ],
       version: 0,
+    })
+
+    expect(reportBuilder.snapshot()).toEqual({
+      report,
+      charts: {
+        [chartUUID]: {
+          uuid: chartUUID,
+          connectorId: 'demo',
+          chartType: 'table',
+          measures: [
+            {
+              id: 'id-1',
+              aggregate: { func: 'sum' },
+              alias: 'Sales',
+              encoding: 'yAxis',
+              field: 'sales',
+            },
+          ],
+          dimensions: [],
+          whereFilter: { id: 'root', op: 'and', conditions: [] },
+          havingFilter: { id: 'root', op: 'and', conditions: [] },
+          theme: 'light',
+          locale: 'zh-CN',
+          version: 0,
+        },
+      },
+      insights: {
+        [insightUUID]: {
+          uuid: insightUUID,
+          content: 'hello world',
+          version: 0,
+        },
+      },
     })
   })
 
@@ -48,32 +70,21 @@ describe('VBIReportBuilder', () => {
     const pageId = reportBuilder.page.add('Story One').build().pages[0].id
 
     reportBuilder.page.update(pageId, (page) => {
-      page.setTitle('Story Two').setText('updated')
+      page.setTitle('Story Two').setChartId('chart-2').setInsightId('insight-2')
     })
 
     expect(reportBuilder.build().pages[0]).toMatchObject({
       id: pageId,
       title: 'Story Two',
-      text: { content: 'updated' },
+      chartId: 'chart-2',
+      insightId: 'insight-2',
     })
 
     reportBuilder.page.remove(pageId)
     expect(reportBuilder.isEmpty()).toBe(true)
   })
 
-  test('setChart copies chart DSL instead of sharing builder state', () => {
-    const chartBuilder = VBI.createChart(VBI.generateEmptyChartDSL('demo'))
-    const reportBuilder = VBI.createReport(VBI.generateEmptyReportDSL())
-    const pageId = reportBuilder.page.add('Story One', (page) => page.setChart(chartBuilder)).build().pages[0].id
-
-    chartBuilder.dimensions.add('area', (node) => {
-      node.setAlias('Area')
-    })
-
-    expect(reportBuilder.page.get(pageId)?.chart.build().dimensions).toEqual([])
-  })
-
-  test('createReport uses default chart builder options from createVBI', () => {
+  test('createVBI uses shared registry per instance for snapshot references', () => {
     type CustomQueryDSL = { source: 'factory'; count: number }
     type CustomSeedDSL = { type: 'custom-seed'; queryDSL: CustomQueryDSL }
 
@@ -85,13 +96,40 @@ describe('VBIReportBuilder', () => {
     })
 
     const chartBuilder = CustomVBI.createChart(CustomVBI.generateEmptyChartDSL('demo'))
+    const insightBuilder = CustomVBI.createInsight(CustomVBI.generateEmptyInsightDSL())
     const reportBuilder = CustomVBI.createReport(CustomVBI.generateEmptyReportDSL())
-    const pageId = reportBuilder.page.add('Story One', (page) => page.setChart(chartBuilder)).build().pages[0].id
+    const chartUUID = chartBuilder.getUUID()
+    const insightUUID = insightBuilder.getUUID()
 
-    expect(reportBuilder.page.get(pageId)?.chart.buildVQuery()).toEqual({
+    chartBuilder.measures.add('sales', () => {})
+    insightBuilder.setContent('factory insight')
+    reportBuilder.page.add('Story One', (page) => page.setChartId(chartBuilder).setInsightId(insightBuilder))
+
+    expect(chartBuilder.buildVQuery()).toEqual({
       source: 'factory',
-      count: 0,
+      count: 1,
     })
+    expect(reportBuilder.snapshot()).toMatchObject({
+      charts: {
+        [chartUUID]: {
+          uuid: chartUUID,
+          measures: [{ field: 'sales' }],
+        },
+      },
+      insights: {
+        [insightUUID]: {
+          uuid: insightUUID,
+          content: 'factory insight',
+        },
+      },
+    })
+  })
+
+  test('snapshot throws when a referenced resource is missing from registry', () => {
+    const reportBuilder = VBI.createReport(VBI.generateEmptyReportDSL())
+    reportBuilder.page.add('Story One', (page) => page.setChartId('chart-404').setInsightId('insight-404'))
+
+    expect(() => reportBuilder.snapshot()).toThrow('Missing chart resource "chart-404"')
   })
 
   test('report builders sync through YJS updates', () => {
@@ -101,9 +139,16 @@ describe('VBIReportBuilder', () => {
     b2.applyUpdate(b1.encodeStateAsUpdate())
     b1.applyUpdate(b2.encodeStateAsUpdate())
 
-    b1.page.add('Story One', (page) => page.setText('synced'))
+    b1.page.add('Story One', (page) => page.setChartId('chart-1').setInsightId('insight-1'))
     b2.applyUpdate(b1.encodeStateAsUpdate())
 
     expect(b2.build()).toEqual(b1.build())
+  })
+
+  test('report builder generates stable UUID on creation', () => {
+    const builder = VBI.createReport(VBI.generateEmptyReportDSL())
+
+    expect(builder.getUUID()).toBe(builder.getUUID())
+    expect(typeof builder.getUUID()).toBe('string')
   })
 })

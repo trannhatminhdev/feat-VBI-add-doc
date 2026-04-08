@@ -12,6 +12,7 @@ describe('MeasuresBuilder', () => {
     })
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [],
       whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: { id: 'root', op: 'and', conditions: [] },
@@ -41,6 +42,7 @@ describe('MeasuresBuilder', () => {
       })
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [],
       whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: { id: 'root', op: 'and', conditions: [] },

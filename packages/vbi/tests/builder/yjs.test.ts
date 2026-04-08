@@ -17,6 +17,7 @@ describe('VBI YJS Integration', () => {
     b2.applyUpdate(update)
 
     expect(b2.build()).toEqual({
+      uuid: b2.getUUID(),
       dimensions: [],
       whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: { id: 'root', op: 'and', conditions: [] },
@@ -53,6 +54,7 @@ test('encodeStateAsUpdate', () => {
   expect(update.length).toBeGreaterThan(0)
 
   expect(b2.build()).toEqual({
+    uuid: b2.getUUID(),
     dimensions: [],
     whereFilter: { id: 'root', op: 'and', conditions: [] },
     havingFilter: { id: 'root', op: 'and', conditions: [] },

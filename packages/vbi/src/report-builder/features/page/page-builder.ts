@@ -1,30 +1,32 @@
 import * as Y from 'yjs'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed/types'
-import type { VBIChartBuilderOptions, VBIChartDSLInput, VBIReportPageDSL } from 'src/types'
-import { VBIChartBuilder } from 'src/chart-builder/builder'
-import { fillVBIChartDSLMap } from 'src/vbi/from/fill-vbi-chart-dsl-map'
-import { getOrCreateReportChartMap, getOrCreateReportTextMap } from 'src/vbi/from/report-page-y-map'
-import { ReportTextBuilder } from './text-builder'
+import type { VBIChartBuilder } from 'src/chart-builder/builder'
+import type { VBIInsightBuilder } from 'src/insight-builder/builder'
+import type { VBIReportBuilder } from 'src/report-builder/builder'
+import type { VBIReportPageDSL } from 'src/types'
 
-const isChartBuilderLike = (value: unknown): value is { build: () => VBIChartDSLInput } => {
-  return typeof value === 'object' && value !== null && typeof (value as { build?: unknown }).build === 'function'
+type ResourceReference = string | { getUUID: () => string }
+
+const resolveResourceReference = (value: ResourceReference): string => {
+  return typeof value === 'string' ? value : value.getUUID()
 }
 
 export class ReportPageBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL> {
-  public chart: VBIChartBuilder<TQueryDSL, TSeedDSL>
-  public text: ReportTextBuilder
-
   constructor(
-    private doc: Y.Doc,
+    private parent: VBIReportBuilder<TQueryDSL, TSeedDSL>,
     private page: Y.Map<any>,
-    chartOptions?: VBIChartBuilderOptions<TQueryDSL, TSeedDSL>,
-  ) {
-    this.chart = new VBIChartBuilder<TQueryDSL, TSeedDSL>(doc, chartOptions, getOrCreateReportChartMap(page))
-    this.text = new ReportTextBuilder(getOrCreateReportTextMap(page))
-  }
+  ) {}
 
   getId(): string {
     return this.page.get('id')
+  }
+
+  get chart(): VBIChartBuilder<TQueryDSL, TSeedDSL> | undefined {
+    return this.parent.getChartBuilder(this.page.get('chartId') ?? '')
+  }
+
+  get insight(): VBIInsightBuilder | undefined {
+    return this.parent.getInsightBuilder(this.page.get('insightId') ?? '')
   }
 
   setTitle(title: string): this {
@@ -32,16 +34,13 @@ export class ReportPageBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = Defaul
     return this
   }
 
-  setChart(chartBuilder: VBIChartBuilder<TQueryDSL, TSeedDSL> | VBIChartDSLInput): this {
-    const chartDSL = isChartBuilderLike(chartBuilder) ? chartBuilder.build() : chartBuilder
-    this.doc.transact(() => {
-      fillVBIChartDSLMap(this.chart.dsl, chartDSL)
-    })
+  setChartId(chart: ResourceReference): this {
+    this.page.set('chartId', resolveResourceReference(chart))
     return this
   }
 
-  setText(content: string): this {
-    this.text.setContent(content)
+  setInsightId(insight: ResourceReference): this {
+    this.page.set('insightId', resolveResourceReference(insight))
     return this
   }
 

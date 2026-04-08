@@ -31,6 +31,7 @@ export interface VBIChartBuilderInterface<TQueryDSL = DefaultVBIQueryDSL, TSeedD
   applyUpdate: (update: Uint8Array, origin?: any) => void
   encodeStateAsUpdate: (targetStateVector?: Uint8Array) => Uint8Array
 
+  getUUID: () => string
   buildVSeed: (options?: BuildVSeedOptions) => Promise<TSeedDSL>
   buildVQuery: () => TQueryDSL
   build: () => VBIChartDSL
