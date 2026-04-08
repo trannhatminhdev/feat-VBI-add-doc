@@ -9,12 +9,14 @@
     "allowJs": true,
     "strict": true,
     "skipLibCheck": true,
+    "rootDir": ".",
     "forceConsistentCasingInFileNames": true,
 
     /* Module Resolution Options */
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "types": ["node"],
 
     /* Advanced Options */
     "declaration": true,
@@ -32,9 +34,8 @@
     "noUncheckedIndexedAccess": true,
 
     /* Path Mapping */
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src/**/*", "scripts/**/*"],

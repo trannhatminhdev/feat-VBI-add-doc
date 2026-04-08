@@ -23,6 +23,8 @@
     "exactOptionalPropertyTypes": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "types": ["node"],
+    "ignoreDeprecations": "6.0",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,

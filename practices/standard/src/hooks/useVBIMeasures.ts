@@ -27,12 +27,21 @@ type MeasureNodeLike = {
 
 type MeasureNodeMutator = (node: MeasureNodeLike) => void;
 const EMPTY_MEASURES: VBIMeasure[] = [];
+type UseVBIMeasuresResult = {
+  measures: VBIMeasure[];
+  addMeasure: (field: string, callback?: MeasureNodeMutator) => void;
+  removeMeasure: (id: string) => void;
+  updateMeasure: (id: string, callback: MeasureNodeMutator) => void;
+  findMeasure: (id: string) => MeasureNodeLike | undefined;
+};
 
 /**
  * VBI Measures Hook
  * 提供度量管理
  */
-export const useVBIMeasures = (builder: VBIChartBuilder | undefined) => {
+export const useVBIMeasures = (
+  builder: VBIChartBuilder | undefined,
+): UseVBIMeasuresResult => {
   const measures = useBuilderDocState({
     builder,
     fallback: EMPTY_MEASURES,

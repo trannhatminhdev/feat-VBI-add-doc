@@ -31,7 +31,9 @@ interface BearState {
   setVSeed: (vseed: VSeed | null) => void;
 }
 
-const defaultBuilder = VBI.createChart(VBI.generateEmptyChartDSL(CONNECTOR_ID));
+const defaultBuilder: VBIChartBuilder = VBI.createChart(
+  VBI.generateEmptyChartDSL(CONNECTOR_ID),
+);
 
 export const useVBIStore = create<BearState>((set, get) => ({
   loading: false,

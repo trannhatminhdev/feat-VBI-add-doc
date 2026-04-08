@@ -70,7 +70,6 @@ function groupByDimensions<T extends Record<string, any>>(data: T[], dimKeys: st
   }
 
   const result: any[] = []
-  // @ts-expect-error 忽略类型检查
   for (const [, { dimValues, items }] of buckets) {
     result.push({
       ...dimValues, // 平铺所有维度 key:value

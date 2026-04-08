@@ -20,12 +20,21 @@ type DimensionNodeLike = {
 };
 type DimensionNodeMutator = (node: DimensionNodeLike) => void;
 const EMPTY_DIMENSIONS: VBIDimension[] = [];
+type UseVBIDimensionsResult = {
+  dimensions: VBIDimension[];
+  addDimension: (field: string, callback?: DimensionNodeMutator) => void;
+  removeDimension: (id: string) => void;
+  updateDimension: (id: string, callback: DimensionNodeMutator) => void;
+  findDimension: (id: string) => DimensionNodeLike | undefined;
+};
 
 /**
  * VBI Dimensions Hook
  * 提供维度管理
  */
-export const useVBIDimensions = (builder: VBIChartBuilder | undefined) => {
+export const useVBIDimensions = (
+  builder: VBIChartBuilder | undefined,
+): UseVBIDimensionsResult => {
   const dimensions = useBuilderDocState({
     builder,
     fallback: EMPTY_DIMENSIONS,

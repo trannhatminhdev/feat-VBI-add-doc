@@ -1,4 +1,4 @@
-import { VBI } from '@visactor/vbi';
+import { VBI, type VBIChartBuilder } from '@visactor/vbi';
 import {
   VQuery,
   type DatasetColumn,
@@ -62,6 +62,6 @@ export const registerDemoConnector = () => {
 };
 
 registerDemoConnector();
-export const defaultBuilder = VBI.createChart(
+export const defaultBuilder: VBIChartBuilder = VBI.createChart(
   VBI.generateEmptyChartDSL(connectorId),
 );
