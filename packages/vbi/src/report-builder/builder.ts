@@ -1,9 +1,33 @@
 import * as Y from 'yjs'
+import type { VBIChartBuilder } from 'src/chart-builder/builder'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed/types'
-import type { VBIReportDSL, VBIReportBuilderInterface, VBIReportBuilderOptions } from 'src/types'
+import type { VBIInsightBuilder } from 'src/insight-builder/builder'
+import type {
+  VBIChartDSLInput,
+  VBIInsightDSLInput,
+  VBIReportDSL,
+  VBIReportBuilderInterface,
+  VBIReportBuilderOptions,
+  VBIReportSnapshotDSL,
+} from 'src/types'
 import { UndoManager, ReportPageCollectionBuilder } from './features'
-import { applyUpdateToDoc, encodeDocStateAsUpdate, buildVBIReportDSL, isEmptyVBIReportDSL } from './modules'
+import {
+  applyUpdateToDoc,
+  buildVBIReportDSL,
+  buildVBIReportSnapshotDSL,
+  encodeDocStateAsUpdate,
+  isEmptyVBIReportDSL,
+} from './modules'
 import { getOrCreateReportPages } from 'src/vbi/from/report-page-y-map'
+import { createChartBuilderFromVBIChartDSLInput } from 'src/vbi/from/from-vbi-dsl-input'
+import { createInsightBuilderFromVBIInsightDSLInput } from 'src/vbi/from/from-vbi-insight-dsl-input'
+import {
+  createVBIResourceRegistry,
+  type VBIResourceRegistry,
+  resolveChartBuilder,
+  resolveInsightBuilder,
+} from 'src/vbi/resource-registry'
+import { ensureResourceUUID, getResourceUUID } from 'src/vbi/resource-uuid'
 
 export class VBIReportBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>
   implements VBIReportBuilderInterface<TQueryDSL, TSeedDSL>
@@ -13,11 +37,16 @@ export class VBIReportBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = Default
   public undoManager: UndoManager
   public page: ReportPageCollectionBuilder<TQueryDSL, TSeedDSL>
 
-  constructor(doc: Y.Doc, options?: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>) {
+  constructor(
+    doc: Y.Doc,
+    private options?: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>,
+    private resourceRegistry?: VBIResourceRegistry,
+  ) {
     this.doc = doc
     this.dsl = doc.getMap('dsl') as Y.Map<any>
 
     doc.transact(() => {
+      ensureResourceUUID(this.dsl)
       getOrCreateReportPages(this.dsl)
       if (this.dsl.get('version') === undefined) {
         this.dsl.set('version', 0)
@@ -25,7 +54,12 @@ export class VBIReportBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = Default
     })
 
     this.undoManager = new UndoManager(this.dsl)
-    this.page = new ReportPageCollectionBuilder<TQueryDSL, TSeedDSL>(this, doc, this.dsl, options)
+    this.page = new ReportPageCollectionBuilder<TQueryDSL, TSeedDSL>(this, doc, this.dsl)
+  }
+
+  private ensureResourceRegistry = () => {
+    this.resourceRegistry ??= createVBIResourceRegistry()
+    return this.resourceRegistry
   }
 
   public applyUpdate = (update: Uint8Array, transactionOrigin?: any) => {
@@ -36,7 +70,42 @@ export class VBIReportBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = Default
     return encodeDocStateAsUpdate(this.doc, targetStateVector)
   }
 
+  public getUUID = (): string => getResourceUUID(this.dsl)
+
+  public createChart = (chart: VBIChartDSLInput): VBIChartBuilder<TQueryDSL, TSeedDSL> => {
+    const builder = createChartBuilderFromVBIChartDSLInput<TQueryDSL, TSeedDSL>(chart, this.options?.chart)
+    this.ensureResourceRegistry().charts.set(builder.getUUID(), builder)
+    return builder
+  }
+
+  public createInsight = (insight: VBIInsightDSLInput): VBIInsightBuilder => {
+    const builder = createInsightBuilderFromVBIInsightDSLInput(insight)
+    this.ensureResourceRegistry().insights.set(builder.getUUID(), builder)
+    return builder
+  }
+
+  public getChartBuilder = (chartId: string): VBIChartBuilder<TQueryDSL, TSeedDSL> | undefined => {
+    if (!this.resourceRegistry || !chartId) {
+      return undefined
+    }
+    return resolveChartBuilder(this.resourceRegistry, chartId, this.options?.chart)
+  }
+
+  public getInsightBuilder = (insightId: string): VBIInsightBuilder | undefined => {
+    if (!this.resourceRegistry || !insightId) {
+      return undefined
+    }
+    return resolveInsightBuilder(this.resourceRegistry, insightId)
+  }
+
   public build = (): VBIReportDSL => buildVBIReportDSL(this.dsl)
+
+  public snapshot = (): VBIReportSnapshotDSL => {
+    if (!this.resourceRegistry) {
+      throw new Error('Report snapshot requires a resource registry')
+    }
+    return buildVBIReportSnapshotDSL(this.build(), this.resourceRegistry)
+  }
 
   public isEmpty = (): boolean => isEmptyVBIReportDSL(this.dsl)
 }

@@ -9,6 +9,7 @@
 
 - `chart`、`report`、`insight` 成为独立资源
 - `report` 只保存 page 结构和资源引用
+- `packages/vbi` 内提供纯 DSL 层 `snapshot()`，可导出 report 的完整 chart / insight 闭包
 - 前后端协同 room 统一为 `{type}:{id}`
 - `vbi_fe` 支持 chart / report 双入口
 - `standard-report` 变成资源编排壳层
@@ -93,6 +94,8 @@
 
 - `VBIReportPageDSL` 已改为 `{ chartId, insightId }`
 - `VBIInsightDSL`、empty helper、builder 入口已存在
+- `createVBI()` 实例已内置 `ResourceRegistry`
+- `reportBuilder.build()` 与 `reportBuilder.snapshot()` 的边界已明确并有测试覆盖
 - 旧的 report page 内嵌 API 已移除或迁移
 - 相关 schema 测试和 builder 测试先失败后通过
 - `@visactor/vbi` 测试通过
@@ -189,10 +192,11 @@
 5. 删除 page 仅移除引用，不删除底层资源
 6. 两个 report 引用同一 chart / insight 时，编辑结果实时共享
 7. report 切换 active page 时，仅当前 page 子资源保持活跃连接
+8. `reportBuilder.snapshot()` 不依赖业务接口即可返回完整闭包内容
 
 完成定义：
 
-- 上述 7 个场景全部通过
+- 上述 8 个场景全部通过
 - 无跨类型 room 串写
 - 无 page 删除导致资源误删
 - 所有新增行为均有自动化回归测试
@@ -231,8 +235,9 @@ pnpm --filter=standard-report run test
 以下条件全部满足，才算本主题完成：
 
 1. report 已从内嵌内容模型切到引用模型
-2. 后端已支持资源主表、引用关系和删除校验
-3. 协同层已统一 `{type}:{id}` 协议
-4. 前端已具备 chart / report 双入口
-5. `standard-report` 已完成资源编排壳层化
-6. 关键联调场景全部通过
+2. `packages/vbi` 已支持 `snapshot()` 与实例级 `ResourceRegistry`
+3. 后端已支持资源主表、引用关系和删除校验
+4. 协同层已统一 `{type}:{id}` 协议
+5. 前端已具备 chart / report 双入口
+6. `standard-report` 已完成资源编排壳层化
+7. 关键联调场景全部通过

@@ -97,6 +97,7 @@ describe('UndoManager', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],

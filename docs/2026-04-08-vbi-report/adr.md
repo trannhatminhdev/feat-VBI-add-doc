@@ -7,6 +7,7 @@
 - 资源不能继续统一落在单一 `Document / DocumentUpdate` 存储模型里，而要拆为可复用的资源中心与引用关系，至少支持 `'chart' | 'report' | 'insight'`
 - 每个资源独立 YDoc、独立 room；room 命名统一为 `{type}:{id}`
 - report 不再内嵌 chart / text DSL，而只保存 page 结构和资源引用
+- `packages/vbi` 内部区分“结构 DSL”与“聚合快照 DSL”：`build()` 返回引用型 `VBIReportDSL`，`snapshot()` 返回完整闭包内容
 - vbi_fe 保留 chart 与 report 双入口；insight 作为可被多个 report 复用的资源，不默认暴露在顶层列表创建入口
 - standard-report 从“接收内嵌 VBIReportBuilder”调整为“接收 report builder + 资源访问器”，内部按 page 引用挂载子资源
 
@@ -19,16 +20,28 @@
 - VBIReportPageDSL 从 { chart: VBIChartDSL, text: { content } } 改为 { chartId: string, insightId: string }
 - VBIReportDSL 继续只保存 pages 顺序、title、version，不承担子资源内容
 - 新增独立 VBIInsightDSL，作为 insight 资源的协同内容模型
+- 新增 `VBIReportSnapshotDSL = { report, charts, insights }`，作为 `reportBuilder.snapshot()` 的返回值
+- `createVBI()` 实例内置 `ResourceRegistry`，保存当前 DSL 工作区已装载的 chart / report / insight builder 或 DSL
 - reportBuilder.page.add(...) 只负责 page 结构；子资源创建由应用服务层负责，不在 builder 内隐式创建数据库记录
 
 对外接口要明确调整：
 
-- VBI.createReport(...) 产出的 builder 面向“结构文档”
+- VBI.createReport(...) 产出的 builder 默认面向“结构文档”
 - VBI.createChart(...) 继续面向 chart 资源
 - 新增 VBI.createInsight(...) 或等价 builder 入口
+- `reportBuilder.build(): VBIReportDSL`
+- `reportBuilder.snapshot(): VBIReportSnapshotDSL`
+- `snapshot()` 只汇总当前 `ResourceRegistry` 中已装载资源，不触发任何业务层 IO
 - standard-report 的公共入口改为接收：
   - reportBuilder
   - resourceGateway，至少提供 openChart(chartId)、openInsight(insightId)、createChart()、createInsight()、resolveReference(ids)
+
+需要明确边界：
+
+- `VBIReportDSL` 是运行时结构事实源
+- `VBIChartDSL` / `VBIInsightDSL` 是各自资源的内容事实源
+- `VBIReportSnapshotDSL` 只是导出、复制、预加载时使用的聚合快照，不反向成为新的运行时事实源
+- `ResourceRegistry` 属于 `createVBI()` 实例上下文，不进入资源 DSL 本体
 
 ### 2. vbi_be 改为“资源主表 + 引用关系”，而不是单表承载全部资源
 
@@ -86,6 +99,7 @@ standard-report 的职责边界需要收敛为：
 - report 是结构文档
 - chart/insight 是内容文档
 - chart/insight 可以被多个 report 复用
+- report 可以在纯 DSL 层通过 `snapshot()` 导出完整闭包内容
 - standard 仍是 chart 体验唯一来源
 - standard-report 不再依赖旧的“page 内嵌 chart/text”假设
 
@@ -100,6 +114,7 @@ standard-report 的职责边界需要收敛为：
 - 同一 chart 或 insight 被两个 report 引用时，在任一 report 中编辑后，另一 report 中应看到同一资源的最新结果
 - report 页中编辑某个 chart 后，返回 report 视图能看到更新；切换 page 不影响其他 chart room
 - insight 资源编辑只影响对应 insightId，不会污染 report 结构文档
+- `reportBuilder.snapshot()` 在不调用业务接口的前提下，能返回当前 report 引用到的完整 chart / insight DSL 闭包
 - Hocuspocus 对不同 `type` 能正确初始化空文档，且 `type:id` room 能恢复快照与增量更新
 
 ## Assumptions
@@ -109,4 +124,6 @@ standard-report 的职责边界需要收敛为：
 - report 的 page 顺序、标题、active page 仍由 report 文档自身负责，子资源不反向保存 report 结构
 - chart 与 insight 必须支持跨 report 复用；删除 page 只删除引用，不删除资源本体
 - 删除资源本体前必须经过引用校验，避免破坏其他 report
+- `ResourceRegistry` 只代表当前 `createVBI()` 实例内已装载资源，不负责远端拉取、持久化或引用校验
+- 不重新引入泛化根事实模型 `VBIDSL`；聚合能力通过 `VBIReportSnapshotDSL` 表达
 - 不引入 report 根级 buildVQuery() / buildVSeed()；查询与渲染仍属于 chart 资源

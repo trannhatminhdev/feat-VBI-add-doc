@@ -1,2 +1,2 @@
 export { VBIReportBuilder } from './builder'
-export { ReportPageBuilder, ReportPageCollectionBuilder, ReportTextBuilder, UndoManager } from './features'
+export { ReportPageBuilder, ReportPageCollectionBuilder, UndoManager } from './features'

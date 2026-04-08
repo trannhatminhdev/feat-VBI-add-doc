@@ -7,6 +7,7 @@ import { zVBIWhereGroup } from '../whereFilter/filters'
 import { zVBIHavingGroup } from '../havingFilter/having'
 
 export const zVBIChartDSL = z.object({
+  uuid: z.string().optional().default(''),
   connectorId: z.string(),
   chartType: z.custom<any>(), // Use any to avoid circular dependency or simplify for now
   dimensions: zVBIDimensionTree,

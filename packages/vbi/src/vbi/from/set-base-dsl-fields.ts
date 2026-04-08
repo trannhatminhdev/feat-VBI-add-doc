@@ -2,6 +2,7 @@ import * as Y from 'yjs'
 import type { VBIChartDSLInput } from 'src/types'
 
 export const setBaseDSLFields = (dsl: Y.Map<any>, vbi: VBIChartDSLInput) => {
+  if (vbi.uuid !== undefined) dsl.set('uuid', vbi.uuid)
   if (vbi.connectorId !== undefined) dsl.set('connectorId', vbi.connectorId)
   if (vbi.chartType !== undefined) dsl.set('chartType', vbi.chartType)
   if (vbi.theme !== undefined) dsl.set('theme', vbi.theme)

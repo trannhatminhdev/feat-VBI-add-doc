@@ -13,8 +13,13 @@ export const addReportPage = (
   connectorId: string,
   title = getNextPageTitle(reportBuilder.build().pages.length),
 ) => {
+  const chart = reportBuilder.createChart(
+    VBI.generateEmptyChartDSL(connectorId),
+  );
+  const insight = reportBuilder.createInsight(VBI.generateEmptyInsightDSL());
+
   reportBuilder.page.add(title, (page) => {
-    page.setChart(VBI.generateEmptyChartDSL(connectorId));
+    page.setChartId(chart).setInsightId(insight);
   });
 
   const pages = reportBuilder.build().pages;

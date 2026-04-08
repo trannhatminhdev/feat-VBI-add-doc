@@ -92,6 +92,7 @@ describe('Theme', () => {
           },
         ],
         "theme": "dark",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -274,6 +275,7 @@ describe('Theme', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],

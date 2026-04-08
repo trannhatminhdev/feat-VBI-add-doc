@@ -96,6 +96,7 @@ describe('Dimensions', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -240,6 +241,7 @@ describe('Dimensions', () => {
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -359,6 +361,7 @@ describe('Dimensions', () => {
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -587,6 +590,7 @@ describe('Dimensions', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -831,6 +835,7 @@ describe('Dimensions', () => {
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1029,6 +1034,7 @@ describe('Dimensions', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1239,6 +1245,7 @@ describe('Dimensions', () => {
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],

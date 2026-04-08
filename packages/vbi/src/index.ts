@@ -1,6 +1,7 @@
 export { VBI } from './vbi'
 export { createVBI } from './vbi/create-vbi'
 export type { VBIInstance } from './vbi/create-vbi'
+export { VBIInsightBuilder } from './insight-builder'
 export {
   VBIChartBuilder,
   MeasuresBuilder,
@@ -13,7 +14,7 @@ export {
   LimitBuilder,
   UndoManager,
 } from './chart-builder'
-export { VBIReportBuilder, ReportPageBuilder, ReportPageCollectionBuilder, ReportTextBuilder } from './report-builder'
+export { VBIReportBuilder, ReportPageBuilder, ReportPageCollectionBuilder } from './report-builder'
 export { defaultVBIChartBuilderAdapters, resolveVBIChartBuilderAdapters } from './chart-builder/adapters'
 export * from './types'
 export {

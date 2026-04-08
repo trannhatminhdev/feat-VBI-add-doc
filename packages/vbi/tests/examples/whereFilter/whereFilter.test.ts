@@ -91,6 +91,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -329,6 +330,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -499,6 +501,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -703,6 +706,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -899,6 +903,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -1151,6 +1156,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -1404,6 +1410,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -1666,6 +1673,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -1910,6 +1918,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -2152,6 +2161,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -2498,6 +2508,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -2702,6 +2713,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -2884,6 +2896,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -3067,6 +3080,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -3263,6 +3277,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -3520,6 +3535,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -3699,6 +3715,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -3871,6 +3888,7 @@ describe('WhereFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
