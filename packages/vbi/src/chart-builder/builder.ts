@@ -28,6 +28,7 @@ import {
   isEmptyVBIChartDSL,
   getBuilderSchema,
 } from './modules'
+import { ensureResourceUUID, getResourceUUID } from 'src/vbi/resource-uuid'
 
 export class VBIChartBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultVBISeedDSL>
   implements VBIChartBuilderInterface<TQueryDSL, TSeedDSL>
@@ -51,6 +52,10 @@ export class VBIChartBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultV
     this.dsl = (dsl ?? doc.getMap('dsl')) as Y.Map<any>
     this.adapters = resolveVBIChartBuilderAdapters(options?.adapters)
 
+    doc.transact(() => {
+      ensureResourceUUID(this.dsl)
+    })
+
     this.undoManager = new UndoManager(this.dsl)
     this.chartType = new ChartTypeBuilder(doc, this.dsl)
     this.measures = new MeasuresBuilder(doc, this.dsl)
@@ -69,6 +74,8 @@ export class VBIChartBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDSL = DefaultV
   public encodeStateAsUpdate = (targetStateVector?: Uint8Array) => {
     return encodeDocStateAsUpdate(this.doc, targetStateVector)
   }
+
+  public getUUID = (): string => getResourceUUID(this.dsl)
 
   public buildVSeed = async (options: BuildVSeedOptions = {}): Promise<TSeedDSL> => {
     const vbiDSL = this.build()

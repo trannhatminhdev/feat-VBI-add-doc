@@ -3,7 +3,15 @@ import { VBIChartBuilder } from '@visactor/vbi';
 import { VSeed } from '@visactor/vseed';
 import { defaultBuilder } from 'src/utils/demoConnector';
 
-export const useVBI = (builder: VBIChartBuilder = defaultBuilder) => {
+type UseVBIResult = {
+  vseed: VSeed | undefined;
+  builder: VBIChartBuilder;
+  loading: boolean;
+};
+
+export const useVBI = (
+  builder: VBIChartBuilder = defaultBuilder,
+): UseVBIResult => {
   const [vseed, setVSeed] = useState<VSeed>();
   const [loading, setLoading] = useState(false);
 

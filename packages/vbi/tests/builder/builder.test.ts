@@ -14,6 +14,7 @@ describe('VBI', () => {
     })
 
     expect(builder.build()).toEqual({
+      uuid: 'uuid-1',
       dimensions: [
         {
           id: 'id-2',
@@ -53,6 +54,20 @@ describe('VBI', () => {
 
     builder.measures.add('sales', () => {})
     expect(builder.isEmpty()).toBe(false)
+  })
+
+  test('chart builder generates stable UUID on creation', () => {
+    const builder = VBI.createChart({} as VBIChartDSL)
+
+    expect(builder.getUUID()).toBe(builder.getUUID())
+    expect(typeof builder.getUUID()).toBe('string')
+  })
+
+  test('empty chart helper accepts custom uuid', () => {
+    expect(VBI.generateEmptyChartDSL('demo', 'chart-uuid')).toMatchObject({
+      uuid: 'chart-uuid',
+      connectorId: 'demo',
+    })
   })
 
   test('supports custom DSL adapters', async () => {

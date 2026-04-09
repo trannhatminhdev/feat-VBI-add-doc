@@ -17,6 +17,7 @@ const __dirname = path.dirname(__filename)
 const BUILDER_ROOTS = {
   chart: path.resolve(__dirname, '../src/chart-builder'),
   report: path.resolve(__dirname, '../src/report-builder'),
+  insight: path.resolve(__dirname, '../src/insight-builder'),
 }
 const OUTPUT_DIR = path.resolve(__dirname, '../../../apps/website/docs/zh-CN/vbi/api')
 
@@ -174,6 +175,16 @@ const API_SECTIONS = [
         ],
       },
     ],
+  },
+  {
+    name: 'insightBuilder',
+    label: 'insightBuilder',
+    root: 'insight',
+    index: {
+      file: 'builder.ts',
+      displayName: 'VBIInsightBuilder',
+    },
+    items: [],
   },
 ]
 
@@ -486,10 +497,10 @@ function generateDocs() {
     generateSection(section)
   }
 
-  writeJson(path.join(OUTPUT_DIR, '_meta.json'), [
-    createMetaFileEntry('index', 'API'),
-    ...API_SECTIONS.map((section) => createMetaDirEntry(section.name, section.label, false)),
-  ])
+  writeJson(
+    path.join(OUTPUT_DIR, '_meta.json'),
+    API_SECTIONS.map((section) => createMetaDirEntry(section.name, section.label, false)),
+  )
   console.log('Generated: api/_meta.json')
 
   writeFile(path.join(OUTPUT_DIR, 'index.md'), '---\noverview: true\ntitle: API\n---\n')

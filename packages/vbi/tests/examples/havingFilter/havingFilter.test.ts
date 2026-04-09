@@ -1,10 +1,10 @@
 import { rs } from '@rstest/core'
-import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { VBI, type VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 const MOCK_SYSTEM_TIME = new Date('2026-03-23T00:00:00.000Z')
 
-describe('HavingFilter', () => {
+describe('chart / HavingFilter', () => {
   beforeAll(async () => {
     rs.useFakeTimers({ toFake: ['Date'] })
     rs.setSystemTime(MOCK_SYSTEM_TIME)
@@ -51,7 +51,6 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.add('sales', (node) => {
         node.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000)
@@ -59,7 +58,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -101,6 +99,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -110,7 +109,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -153,7 +151,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -243,7 +240,6 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter
         .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
@@ -251,7 +247,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -311,6 +306,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -320,7 +316,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -378,7 +373,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -492,13 +486,11 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.clear()
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -539,6 +531,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -548,7 +541,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -585,7 +577,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -682,7 +673,6 @@ describe('HavingFilter', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.add('sales', (node) => {
         node.setOperator('=').setValue([100, 200, 300])
@@ -690,7 +680,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -736,6 +725,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -745,7 +735,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -792,7 +781,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -853,7 +841,6 @@ describe('HavingFilter', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.add('sales', (node) => {
         node.setOperator('!=').setValue([100, 200])
@@ -861,7 +848,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -906,6 +892,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -915,7 +902,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -961,7 +947,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -1073,7 +1058,6 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.clear()
       builder.havingFilter.addGroup('and', (g) => {
@@ -1086,7 +1070,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -1176,6 +1159,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1185,7 +1169,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -1268,7 +1251,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -1400,7 +1382,6 @@ describe('HavingFilter', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.addGroup('or', (root) => {
         root.addGroup('and', (g1) => {
@@ -1415,7 +1396,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -1529,6 +1509,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1538,7 +1519,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -1641,7 +1621,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -1773,7 +1752,6 @@ describe('HavingFilter', () => {
       version: 1,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('table')
       builder.theme.setTheme('light')
@@ -1802,7 +1780,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -1862,6 +1839,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -1878,7 +1856,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -1946,7 +1923,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -2009,7 +1985,6 @@ describe('HavingFilter', () => {
       version: 1,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.chartType.changeChartType('bar')
       builder.dimensions.add('area', (n) => n.setAlias('区域'))
@@ -2019,7 +1994,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -2062,6 +2036,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -2071,7 +2046,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -2114,7 +2088,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -2201,7 +2174,6 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter
         .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
@@ -2218,7 +2190,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -2278,6 +2249,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -2287,7 +2259,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -2345,7 +2316,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -2459,7 +2429,6 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.updateGroup('group-1', (group) => {
         group.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(100000))
@@ -2468,7 +2437,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -2552,6 +2520,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -2561,7 +2530,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -2639,7 +2607,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -2780,7 +2747,6 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.updateGroup('group-1', (group) => {
         group.remove('cond-1')
@@ -2788,7 +2754,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -2845,6 +2810,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -2854,7 +2820,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -2909,7 +2874,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -3007,7 +2971,6 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter
         .add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(500000))
@@ -3018,7 +2981,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -3102,6 +3064,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -3111,7 +3074,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -3189,7 +3151,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -3309,7 +3270,6 @@ describe('HavingFilter', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.addGroup('and', (g) => {
         g.add('discount', (n) => n.setAggregate({ func: 'avg' }).setOperator('lt').setValue(0.2))
@@ -3318,7 +3278,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -3389,6 +3348,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -3398,7 +3358,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -3466,7 +3425,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -3613,7 +3571,6 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.addGroup('and', (outer) => {
         outer.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
@@ -3625,7 +3582,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -3715,6 +3671,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -3724,7 +3681,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -3807,7 +3763,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -3917,7 +3872,6 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.addGroup('or', (group) => {
         group.add('sales', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(1000000))
@@ -3926,7 +3880,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -3992,6 +3945,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -4001,7 +3955,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -4064,7 +4017,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -4172,7 +4124,6 @@ describe('HavingFilter', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.addGroup('and', (g) => {
         g.add('profit', (n) => n.setAggregate({ func: 'sum' }).setOperator('gt').setValue(0))
@@ -4182,7 +4133,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -4266,6 +4216,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -4275,7 +4226,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -4353,7 +4303,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -4518,7 +4467,6 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.updateGroup('group-1', (group) => {
         group.setOperator('or')
@@ -4526,7 +4474,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -4592,6 +4539,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -4601,7 +4549,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -4664,7 +4611,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -4764,7 +4710,6 @@ describe('HavingFilter', () => {
       limit: 10,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.whereFilter.add('product_type', (n) => n.setOperator('=').setValue('办公用品'))
       builder.havingFilter.addGroup('or', (g) => {
@@ -4774,7 +4719,6 @@ describe('HavingFilter', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -4840,6 +4784,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [
@@ -4856,7 +4801,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -4929,7 +4873,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -5073,13 +5016,11 @@ describe('HavingFilter', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.havingFilter.remove('having-1')
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -5130,6 +5071,7 @@ describe('HavingFilter', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -5139,7 +5081,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -5189,7 +5130,6 @@ describe('HavingFilter', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {

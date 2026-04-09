@@ -112,7 +112,7 @@ const getFormData = (data: Record<string, string | ReadStream>) => {
   const formData = new NodeFormData({ readable: true })
 
   formData.append('product', PRODUCT)
-  formData.append('token', process.env.BUG_SERVER_TOKEN)
+  formData.append('token', process.env['BUG_SERVER_TOKEN'])
 
   Object.entries(data).forEach(([key, value]) => {
     if (key) {
@@ -153,8 +153,8 @@ async function triggerScmBuild({ fileUrl }: { fileUrl: string }) {
   const params = {
     triggerType: 'scm-build',
     fileUrl: fileUrl,
-    createUser: process.env.GITHUB_ACTOR ?? '',
-    commitBranchName: process.env.GITHUB_HEAD_REF ?? '',
+    createUser: process.env['GITHUB_ACTOR'] ?? '',
+    commitBranchName: process.env['GITHUB_HEAD_REF'] ?? '',
   }
 
   const res = await fetch<TriggerScmBuildData>(API_URL, 'POST', () => getFormData(params))
@@ -198,10 +198,10 @@ async function triggerPhotoTest({ scmVersion, scmVersionStatus }: { scmVersion: 
     triggerType: 'photo-test',
     scmVersion: scmVersion,
     scmVersionStatus: scmVersionStatus,
-    commitId: process.env.GITHUB_SHA ?? '',
-    commitUrl: process.env.GITHUB_REF ?? '',
-    commitBranchName: process.env.GITHUB_HEAD_REF ?? '',
-    commitCreateUser: process.env.GITHUB_ACTOR ?? '',
+    commitId: process.env['GITHUB_SHA'] ?? '',
+    commitUrl: process.env['GITHUB_REF'] ?? '',
+    commitBranchName: process.env['GITHUB_HEAD_REF'] ?? '',
+    commitCreateUser: process.env['GITHUB_ACTOR'] ?? '',
     commitDescription: '',
   }
 

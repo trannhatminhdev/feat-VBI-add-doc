@@ -10,6 +10,7 @@ describe('WhereFilterBuilder', () => {
     })
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [],
       whereFilter: {
         id: 'root',
@@ -58,6 +59,7 @@ describe('WhereFilterBuilder', () => {
     })
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [],
       whereFilter: {
         id: 'root',
@@ -98,6 +100,7 @@ describe('WhereFilterBuilder', () => {
     builder.whereFilter.remove('id-2')
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [],
       whereFilter: {
         id: 'root',
@@ -135,6 +138,7 @@ describe('WhereFilterBuilder', () => {
     builder.whereFilter.clear()
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [],
       whereFilter: { id: 'root', op: 'and', conditions: [] },
       havingFilter: { id: 'root', op: 'and', conditions: [] },
@@ -170,6 +174,7 @@ describe('WhereFilterBuilder', () => {
       .add('category', (node) => node.setOperator('in').setValue(['Electronics', 'Furniture']))
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [],
       whereFilter: {
         id: 'root',
@@ -193,6 +198,7 @@ describe('WhereFilterBuilder', () => {
     })
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [],
       whereFilter: {
         id: 'root',

@@ -1,0 +1,1 @@
+export { VBIInsightBuilder } from './builder'

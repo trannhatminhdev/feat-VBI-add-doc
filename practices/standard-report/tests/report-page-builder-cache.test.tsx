@@ -1,49 +1,33 @@
-import type { VBIReportBuilder } from '@visactor/vbi';
-import { expect, rs, test } from '@rstest/core';
-import { render, screen } from '@testing-library/react';
+import { expect, test } from '@rstest/core';
+import { render } from '@testing-library/react';
+import { createDefaultReportBuilder } from '../src/utils/demoConnector';
+import { addReportPage } from '../src/utils/report-pages';
 import { useReportPageBuilder } from '../src/App/hooks/useReportPageBuilder';
-
-type ReportBuilderStub = {
-  page: {
-    get: (pageId: string) => {
-      chart: {
-        id: string;
-      };
-    };
-  };
-};
 
 const Probe = ({
   pageId,
   reportBuilder,
 }: {
   pageId?: string;
-  reportBuilder: ReportBuilderStub;
+  reportBuilder: ReturnType<typeof createDefaultReportBuilder>;
 }) => {
-  const pageBuilder = useReportPageBuilder(
-    reportBuilder as unknown as VBIReportBuilder,
-    pageId,
-  );
-  return <div>{pageBuilder?.chart.id ?? 'empty'}</div>;
+  const pageResource = useReportPageBuilder(reportBuilder, pageId);
+  return <div>{pageResource?.chart?.getUUID() ?? 'empty'}</div>;
 };
 
 test('useReportPageBuilder reuses page builders across rerenders', () => {
-  const get = rs.fn((pageId: string) => ({ chart: { id: `chart-${pageId}` } }));
-  const reportBuilder = {
-    page: {
-      get,
-    },
-  };
-  const view = render(<Probe pageId="page-1" reportBuilder={reportBuilder} />);
+  const reportBuilder = createDefaultReportBuilder();
+  const firstPageId = reportBuilder.build().pages[0]?.id ?? '';
+  const secondPageId = addReportPage(reportBuilder, 'demo');
+  const view = render(
+    <Probe pageId={firstPageId} reportBuilder={reportBuilder} />,
+  );
+  const firstUUID = view.container.textContent;
+  expect(firstUUID).toBeTruthy();
 
-  expect(screen.getByText('chart-page-1')).toBeInTheDocument();
+  view.rerender(<Probe pageId={firstPageId} reportBuilder={reportBuilder} />);
+  expect(view.container.textContent).toBe(firstUUID);
 
-  view.rerender(<Probe pageId="page-1" reportBuilder={reportBuilder} />);
-
-  expect(get).toHaveBeenCalledTimes(1);
-
-  view.rerender(<Probe pageId="page-2" reportBuilder={reportBuilder} />);
-
-  expect(screen.getByText('chart-page-2')).toBeInTheDocument();
-  expect(get).toHaveBeenCalledTimes(2);
+  view.rerender(<Probe pageId={secondPageId} reportBuilder={reportBuilder} />);
+  expect(view.container.textContent).not.toBe(firstUUID);
 });

@@ -220,7 +220,7 @@ export const ReportEditorDrawer = () => {
             </div>
 
             <div className="standard-report-editor-body">
-              {showEditor && pageBuilder ? (
+              {showEditor && pageBuilder?.chart ? (
                 <StandardAPP builder={pageBuilder.chart} mode="edit" />
               ) : (
                 <div className="standard-report-editor-placeholder" />

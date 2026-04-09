@@ -69,6 +69,16 @@ encodeStateAsUpdate(targetStateVector: Uint8Array): Uint8Array<ArrayBufferLike>
 | --- | --- | --- |
 | `targetStateVector` | Uint8Array | - |
 
+### getUUID
+
+**定义**:
+
+```typescript
+getUUID(): string
+```
+
+**返回**: `string`
+
 ### buildVSeed
 
 **定义**:

@@ -428,9 +428,11 @@ export const FieldList = memo(({ style }: { style?: React.CSSProperties }) => {
           trigger="click"
           placement="bottomRight"
           content={filterContent}
-          overlayInnerStyle={{
-            padding: 14,
-            borderRadius: token.borderRadiusLG,
+          styles={{
+            container: {
+              padding: 14,
+              borderRadius: token.borderRadiusLG,
+            },
           }}
         >
           <Badge dot={hasActiveFilter}>

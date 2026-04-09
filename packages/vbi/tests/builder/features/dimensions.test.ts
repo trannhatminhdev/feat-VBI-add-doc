@@ -11,6 +11,7 @@ describe('DimensionsBuilder', () => {
     })
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [
         {
           id: 'id-1',
@@ -37,6 +38,7 @@ describe('DimensionsBuilder', () => {
       })
 
     expect(builder.build()).toEqual({
+      uuid: builder.getUUID(),
       dimensions: [
         {
           id: 'id-1',

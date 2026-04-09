@@ -775,10 +775,12 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       open={popoverOpen}
       onOpenChange={setPopoverOpen}
       placement="left"
-      overlayStyle={{ padding: 0 }}
-      overlayInnerStyle={{
-        padding: '14px 18px 12px',
-        borderRadius: token.borderRadiusLG,
+      styles={{
+        root: { padding: 0 },
+        container: {
+          padding: '14px 18px 12px',
+          borderRadius: token.borderRadiusLG,
+        },
       }}
     >
       <Badge count={filters.length} size="small" offset={[8, 0]}>

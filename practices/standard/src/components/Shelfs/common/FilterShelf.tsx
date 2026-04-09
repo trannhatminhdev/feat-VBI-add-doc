@@ -198,10 +198,12 @@ const FilterShelfTag = <TItem extends FilterShelfItem>(props: {
         open={isOpen}
         onOpenChange={setOpen}
         arrow={false}
-        overlayStyle={{ padding: 0 }}
-        overlayInnerStyle={{
-          padding: '14px 18px 12px',
-          borderRadius: token.borderRadiusLG,
+        styles={{
+          root: { padding: 0 },
+          container: {
+            padding: '14px 18px 12px',
+            borderRadius: token.borderRadiusLG,
+          },
         }}
       >
         <div

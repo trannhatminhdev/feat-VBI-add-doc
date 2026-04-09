@@ -1,6 +1,5 @@
 import * as Y from 'yjs'
 import type { DefaultVBIQueryDSL, DefaultVBISeedDSL } from 'src/chart-builder/adapters/vquery-vseed/types'
-import type { VBIReportBuilderOptions } from 'src/types'
 import type { VBIReportBuilder } from 'src/report-builder/builder'
 import { generateEmptyReportPageDSL } from 'src/vbi/generate-empty-report-page-dsl'
 import { createReportPageYMap, getOrCreateReportPages, locateReportPageIndexById } from 'src/vbi/from/report-page-y-map'
@@ -11,7 +10,6 @@ export class ReportPageCollectionBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDS
     private parent: VBIReportBuilder<TQueryDSL, TSeedDSL>,
     private doc: Y.Doc,
     private dsl: Y.Map<any>,
-    private options?: VBIReportBuilderOptions<TQueryDSL, TSeedDSL>,
   ) {
     doc.transact(() => {
       getOrCreateReportPages(this.dsl)
@@ -70,6 +68,6 @@ export class ReportPageCollectionBuilder<TQueryDSL = DefaultVBIQueryDSL, TSeedDS
   }
 
   private createPageBuilder(page: Y.Map<any>) {
-    return new ReportPageBuilder<TQueryDSL, TSeedDSL>(this.doc, page, this.options?.chart)
+    return new ReportPageBuilder(this.parent, page)
   }
 }

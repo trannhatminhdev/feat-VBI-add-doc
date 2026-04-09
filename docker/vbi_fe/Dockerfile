@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1.7
+
 FROM node:24.12.0-slim AS builder
 
 WORKDIR /app
@@ -9,6 +11,7 @@ RUN corepack enable
 
 # Copy workspace config
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY .env.example .env ./
 
 # Copy source code
 COPY packages/ packages/
@@ -19,11 +22,7 @@ COPY apps/vbi_fe/ apps/vbi_fe/
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm --filter=vbi_fe build
 
-# Serve stage
 FROM nginx:alpine
-
-# Note: The context root is the project root, but this Dockerfile is in docker/vbi_fe/
-# so we copy nginx.conf from the docker directory
 COPY docker/vbi_fe/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/apps/vbi_fe/dist /usr/share/nginx/html
 

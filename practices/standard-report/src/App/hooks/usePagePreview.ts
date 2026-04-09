@@ -12,7 +12,7 @@ const getInitialState = (
   pageId: string,
 ): PreviewState => {
   const pageBuilder = reportBuilder.page.get(pageId);
-  return pageBuilder && !pageBuilder.chart.isEmpty()
+  return pageBuilder?.chart && !pageBuilder.chart.isEmpty()
     ? { loading: true, vseed: null }
     : { loading: false, vseed: null };
 };
@@ -31,7 +31,7 @@ export const usePagePreview = (
 
     const loadPreview = async () => {
       const pageBuilder = reportBuilder.page.get(pageId);
-      if (!pageBuilder || pageBuilder.chart.isEmpty()) {
+      if (!pageBuilder?.chart || pageBuilder.chart.isEmpty()) {
         if (!cancelled) setState({ loading: false, vseed: null });
         return;
       }

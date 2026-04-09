@@ -1,4 +1,4 @@
-import { VBI } from '@visactor/vbi';
+import { VBI, type VBIReportBuilder } from '@visactor/vbi';
 import {
   VQuery,
   type DatasetColumn,
@@ -66,10 +66,11 @@ export const registerDemoConnector = () => {
 
 registerDemoConnector();
 
-export const createDefaultReportBuilder = () => {
+export const createDefaultReportBuilder = (): VBIReportBuilder => {
   const reportBuilder = VBI.createReport(VBI.generateEmptyReportDSL());
   ensureReportHasPage(reportBuilder, connectorId);
   return reportBuilder;
 };
 
-export const defaultReportBuilder = createDefaultReportBuilder();
+export const defaultReportBuilder: VBIReportBuilder =
+  createDefaultReportBuilder();

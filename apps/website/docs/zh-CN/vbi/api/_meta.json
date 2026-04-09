@@ -1,10 +1,5 @@
 [
   {
-    "type": "file",
-    "name": "index",
-    "label": "API"
-  },
-  {
     "type": "dir",
     "name": "chartBuilder",
     "label": "chartBuilder",
@@ -15,6 +10,13 @@
     "type": "dir",
     "name": "reportBuilder",
     "label": "reportBuilder",
+    "collapsible": true,
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "insightBuilder",
+    "label": "insightBuilder",
     "collapsible": true,
     "collapsed": false
   }

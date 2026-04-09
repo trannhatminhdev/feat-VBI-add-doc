@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.0",
-    "@rslib/core": "0.16.1",
+    "@rslib/core": "0.20.3",
     "@testing-library/react": "16.3.0",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
@@ -66,8 +66,8 @@
     "happy-dom": "20.4.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "typescript": "5.9.3",
-    "typescript-eslint": "8.48.0",
+    "typescript": "6.0.2",
+    "typescript-eslint": "8.58.1",
     "vitest": "3.2.4"
   },
   "sideEffects": false

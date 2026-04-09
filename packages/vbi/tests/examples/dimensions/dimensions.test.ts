@@ -1,10 +1,10 @@
 import { rs } from '@rstest/core'
-import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { VBI, type VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 const MOCK_SYSTEM_TIME = new Date('2026-03-23T00:00:00.000Z')
 
-describe('Dimensions', () => {
+describe('chart / Dimensions', () => {
   beforeAll(async () => {
     rs.useFakeTimers({ toFake: ['Date'] })
     rs.setSystemTime(MOCK_SYSTEM_TIME)
@@ -46,7 +46,6 @@ describe('Dimensions', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.dimensions.add('order_date', (node) => {
         node.setAlias('订单日期')
@@ -60,7 +59,6 @@ describe('Dimensions', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -96,6 +94,7 @@ describe('Dimensions', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -105,7 +104,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -138,7 +136,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -203,7 +200,6 @@ describe('Dimensions', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.dimensions.add('product_type', (node) => {
         node.setAlias('商品类型')
@@ -217,7 +213,6 @@ describe('Dimensions', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -240,6 +235,7 @@ describe('Dimensions', () => {
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -249,7 +245,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -272,7 +267,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -324,13 +318,11 @@ describe('Dimensions', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.dimensions.add('product_type', (n) => n.setAlias('产品类型')).add('province', (n) => n.setAlias('省份'))
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -359,6 +351,7 @@ describe('Dimensions', () => {
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -368,7 +361,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -396,7 +388,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -533,7 +524,6 @@ describe('Dimensions', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.dimensions
         .add('area', (node) => {
@@ -545,7 +535,6 @@ describe('Dimensions', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -587,6 +576,7 @@ describe('Dimensions', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -596,7 +586,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -634,7 +623,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -797,7 +785,6 @@ describe('Dimensions', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'product_type')?.id
       if (dimensionId) {
@@ -809,7 +796,6 @@ describe('Dimensions', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -831,6 +817,7 @@ describe('Dimensions', () => {
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -840,7 +827,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -863,7 +849,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -979,7 +964,6 @@ describe('Dimensions', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'order_date')?.id
       if (dimensionId) {
@@ -994,7 +978,6 @@ describe('Dimensions', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -1029,6 +1012,7 @@ describe('Dimensions', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1038,7 +1022,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -1071,7 +1054,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -1204,7 +1186,6 @@ describe('Dimensions', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       const dimensionId = builder.dimensions.toJSON().find((item) => item.field === 'product_type')?.id
       if (dimensionId) {
@@ -1217,7 +1198,6 @@ describe('Dimensions', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -1239,6 +1219,7 @@ describe('Dimensions', () => {
         "locale": "zh-CN",
         "measures": [],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -1248,7 +1229,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -1271,7 +1251,6 @@ describe('Dimensions', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {

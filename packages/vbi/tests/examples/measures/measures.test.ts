@@ -1,10 +1,10 @@
 import { rs } from '@rstest/core'
-import { VBI, VBIChartBuilder } from '@visactor/vbi'
+import { VBI, type VBIChartBuilder } from '@visactor/vbi'
 import { registerDemoConnector } from '../../demoConnector'
 
 const MOCK_SYSTEM_TIME = new Date('2026-03-23T00:00:00.000Z')
 
-describe('Measures', () => {
+describe('chart / Measures', () => {
   beforeAll(async () => {
     rs.useFakeTimers({ toFake: ['Date'] })
     rs.setSystemTime(MOCK_SYSTEM_TIME)
@@ -13,115 +13,6 @@ describe('Measures', () => {
 
   afterAll(() => {
     rs.useRealTimers()
-  })
-
-  it('add-measure-encoding', async () => {
-    const builder = VBI.createChart({
-      connectorId: 'demoSupermarket',
-      chartType: 'table',
-      dimensions: [],
-      measures: [],
-      whereFilter: {
-        id: 'root',
-        op: 'and',
-        conditions: [],
-      },
-      havingFilter: {
-        id: 'root',
-        op: 'and',
-        conditions: [],
-      },
-      theme: 'light',
-      locale: 'zh-CN',
-      version: 1,
-      limit: 20,
-    })
-
-    // Apply custom builder code
-    const applyBuilder = (builder: VBIChartBuilder) => {
-      builder.measures.add('sales', (n) => n.setAlias('销售额'))
-      const measureId = builder.measures.find((node) => node.getField() === 'sales')?.getId()
-      if (measureId) {
-        builder.measures.update(measureId, (n) => n.setEncoding('yAxis').setAggregate({ func: 'sum' }))
-      }
-    }
-    applyBuilder(builder)
-
-    // Build VBI DSL
-    const vbiDSL = builder.build()
-    expect(vbiDSL).toMatchInlineSnapshot(`
-      {
-        "chartType": "table",
-        "connectorId": "demoSupermarket",
-        "dimensions": [],
-        "havingFilter": {
-          "conditions": [],
-          "id": "root",
-          "op": "and",
-        },
-        "limit": 20,
-        "locale": "zh-CN",
-        "measures": [
-          {
-            "aggregate": {
-              "func": "sum",
-            },
-            "alias": "销售额",
-            "encoding": "yAxis",
-            "field": "sales",
-            "id": "id-1",
-          },
-        ],
-        "theme": "light",
-        "version": 1,
-        "whereFilter": {
-          "conditions": [],
-          "id": "root",
-          "op": "and",
-        },
-      }
-    `)
-
-    // Build VQuery DSL
-    const vQueryDSL = builder.buildVQuery()
-    expect(vQueryDSL).toMatchInlineSnapshot(`
-      {
-        "groupBy": [],
-        "limit": 20,
-        "select": [
-          {
-            "aggr": {
-              "func": "sum",
-            },
-            "alias": "id-1",
-            "field": "sales",
-          },
-        ],
-      }
-    `)
-
-    // Build VSeed DSL
-    const vSeedDSL = await builder.buildVSeed()
-    expect(vSeedDSL).toMatchInlineSnapshot(`
-      {
-        "chartType": "table",
-        "dataset": [
-          {
-            "id-1": 16068954.12500003,
-          },
-        ],
-        "dimensions": [],
-        "locale": "zh-CN",
-        "measures": [
-          {
-            "alias": "销售额",
-            "encoding": "yAxis",
-            "id": "id-1",
-          },
-        ],
-        "theme": "light",
-      }
-    `)
   })
 
   it('add-measure', async () => {
@@ -146,7 +37,6 @@ describe('Measures', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.measures.add('sales', (node) => {
         node.setAlias('原销售额')
@@ -160,7 +50,6 @@ describe('Measures', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -186,6 +75,7 @@ describe('Measures', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -195,7 +85,6 @@ describe('Measures', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -213,7 +102,6 @@ describe('Measures', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -229,6 +117,112 @@ describe('Measures', () => {
           {
             "alias": "销售额",
             "encoding": "column",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+      }
+    `)
+  })
+
+  it('add-measure-encoding', async () => {
+    const builder = VBI.createChart({
+      connectorId: 'demoSupermarket',
+      chartType: 'table',
+      dimensions: [],
+      measures: [],
+      whereFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      havingFilter: {
+        id: 'root',
+        op: 'and',
+        conditions: [],
+      },
+      theme: 'light',
+      locale: 'zh-CN',
+      version: 1,
+      limit: 20,
+    })
+
+    const applyBuilder = (builder: VBIChartBuilder) => {
+      builder.measures.add('sales', (n) => n.setAlias('销售额'))
+      const measureId = builder.measures.find((node) => node.getField() === 'sales')?.getId()
+      if (measureId) {
+        builder.measures.update(measureId, (n) => n.setEncoding('yAxis').setAggregate({ func: 'sum' }))
+      }
+    }
+    applyBuilder(builder)
+
+    const vbiDSL = builder.build()
+    expect(vbiDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "table",
+        "connectorId": "demoSupermarket",
+        "dimensions": [],
+        "havingFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+        "limit": 20,
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "aggregate": {
+              "func": "sum",
+            },
+            "alias": "销售额",
+            "encoding": "yAxis",
+            "field": "sales",
+            "id": "id-1",
+          },
+        ],
+        "theme": "light",
+        "uuid": "uuid-1",
+        "version": 1,
+        "whereFilter": {
+          "conditions": [],
+          "id": "root",
+          "op": "and",
+        },
+      }
+    `)
+
+    const vQueryDSL = builder.buildVQuery()
+    expect(vQueryDSL).toMatchInlineSnapshot(`
+      {
+        "groupBy": [],
+        "limit": 20,
+        "select": [
+          {
+            "aggr": {
+              "func": "sum",
+            },
+            "alias": "id-1",
+            "field": "sales",
+          },
+        ],
+      }
+    `)
+
+    const vSeedDSL = await builder.buildVSeed()
+    expect(vSeedDSL).toMatchInlineSnapshot(`
+      {
+        "chartType": "table",
+        "dataset": [
+          {
+            "id-1": 16068954.12500003,
+          },
+        ],
+        "dimensions": [],
+        "locale": "zh-CN",
+        "measures": [
+          {
+            "alias": "销售额",
+            "encoding": "yAxis",
             "id": "id-1",
           },
         ],
@@ -264,7 +258,6 @@ describe('Measures', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       builder.measures
         .add('sales', (node) => {
@@ -288,7 +281,6 @@ describe('Measures', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -352,6 +344,7 @@ describe('Measures', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -361,7 +354,6 @@ describe('Measures', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -405,7 +397,6 @@ describe('Measures', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -512,7 +503,6 @@ describe('Measures', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       const measureId = builder.measures.toJSON().find((item) => item.field === 'sales')?.id
       if (measureId) {
@@ -522,7 +512,6 @@ describe('Measures', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -548,6 +537,7 @@ describe('Measures', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -557,7 +547,6 @@ describe('Measures', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -575,7 +564,6 @@ describe('Measures', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
@@ -630,7 +618,6 @@ describe('Measures', () => {
       limit: 20,
     })
 
-    // Apply custom builder code
     const applyBuilder = (builder: VBIChartBuilder) => {
       const measureId = builder.measures.toJSON().find((item) => item.field === 'sales')?.id
       if (measureId) {
@@ -643,7 +630,6 @@ describe('Measures', () => {
     }
     applyBuilder(builder)
 
-    // Build VBI DSL
     const vbiDSL = builder.build()
     expect(vbiDSL).toMatchInlineSnapshot(`
       {
@@ -669,6 +655,7 @@ describe('Measures', () => {
           },
         ],
         "theme": "light",
+        "uuid": "uuid-1",
         "version": 1,
         "whereFilter": {
           "conditions": [],
@@ -678,7 +665,6 @@ describe('Measures', () => {
       }
     `)
 
-    // Build VQuery DSL
     const vQueryDSL = builder.buildVQuery()
     expect(vQueryDSL).toMatchInlineSnapshot(`
       {
@@ -696,7 +682,6 @@ describe('Measures', () => {
       }
     `)
 
-    // Build VSeed DSL
     const vSeedDSL = await builder.buildVSeed()
     expect(vSeedDSL).toMatchInlineSnapshot(`
       {
