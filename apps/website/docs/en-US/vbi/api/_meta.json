@@ -1,0 +1,21 @@
+[
+  {
+    "type": "file",
+    "name": "index",
+    "label": "API"
+  },
+  {
+    "type": "dir",
+    "name": "chartBuilder",
+    "label": "chartBuilder",
+    "collapsible": true,
+    "collapsed": false
+  },
+  {
+    "type": "dir",
+    "name": "reportBuilder",
+    "label": "reportBuilder",
+    "collapsible": true,
+    "collapsed": false
+  }
+]

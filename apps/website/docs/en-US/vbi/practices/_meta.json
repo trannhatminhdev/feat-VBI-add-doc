@@ -1,0 +1,8 @@
+[
+  { "type": "file", "name": "standard", "label": "Standard" },
+  { "type": "file", "name": "standard-report", "label": "Standard Report" },
+  { "type": "file", "name": "minimalist", "label": "Minimalist" },
+  { "type": "file", "name": "streamlined", "label": "Streamlined" },
+  { "type": "file", "name": "professional", "label": "Professional" },
+  { "type": "file", "name": "vbi-react-starter", "label": "vbi-react Starter" }
+]
