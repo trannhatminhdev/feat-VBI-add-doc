@@ -1,0 +1,6 @@
+[
+  "index",
+  { "type": "dir", "name": "examples", "label": "Examples", "collapsed": true },
+  { "type": "dir", "name": "development", "label": "Contributing", "collapsed": true },
+  "playground"
+]

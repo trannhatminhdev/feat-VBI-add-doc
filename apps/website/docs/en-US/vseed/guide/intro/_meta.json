@@ -1,0 +1,15 @@
+[
+  "chartTypeSwitch",
+  "dataReshape",
+  "pivotAndCombine",
+  "dataFormat",
+  "dataAnalysis",
+  "page",
+  "player",
+  "conditionalStyle",
+  "annotation",
+  "internationalization",
+  "crossPlatformRender",
+  "separateBuild",
+  "performance"
+]
