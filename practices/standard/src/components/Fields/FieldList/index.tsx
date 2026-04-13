@@ -24,8 +24,8 @@ import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import {
   createSchemaFieldDragId,
   type SchemaFieldDragData,
-} from 'src/components/Shelfs/dnd';
-import { getDefaultDimensionDateAggregate } from 'src/components/Shelfs/dimensionDateAggregateUtils';
+} from 'src/components/Shelves/dnd';
+import { getDefaultDimensionDateAggregate } from 'src/components/Shelves/dimensionDateAggregateUtils';
 import type { VBISchemaField } from 'src/hooks/useVBISchemaFields';
 import {
   useVBIDimensions,

@@ -4,7 +4,7 @@ import { NumberOutlined } from '@ant-design/icons';
 import {
   createSchemaFieldDragId,
   type SchemaFieldDragData,
-} from 'src/components/Shelfs/dnd';
+} from 'src/components/Shelves/dnd';
 import { useVBIMeasures, useVBISchemaFields } from 'src/hooks';
 import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';

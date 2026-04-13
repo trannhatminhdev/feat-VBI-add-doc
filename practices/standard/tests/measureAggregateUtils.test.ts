@@ -3,7 +3,7 @@ import {
   getDefaultAggregateByFieldRole,
   getMeasureFieldRoleBySchemaType,
   isAggregateSupportedByFieldRole,
-} from '../src/components/Shelfs/measureAggregateUtils';
+} from '../src/components/Shelves/measureAggregateUtils';
 
 test('returns correct field role by schema type', () => {
   expect(getMeasureFieldRoleBySchemaType('number')).toBe('measure');

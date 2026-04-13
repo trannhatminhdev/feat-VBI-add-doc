@@ -4,7 +4,7 @@ import {
   HavingShelf,
   MeasureShelf,
   WhereShelf,
-} from 'src/components/Shelfs';
+} from 'src/components/Shelves';
 import { useTranslation } from 'src/i18n';
 import { FilterRootOperatorToggle } from './FilterRootOperatorToggle';
 import { ShelfRow } from './ShelfRow';

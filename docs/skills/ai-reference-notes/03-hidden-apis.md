@@ -60,8 +60,8 @@ node.getFormat(): VBIFormatSpec | undefined
 切换过滤根操作符（AND/OR）的 hook 位于 standard 组件目录，未对外导出：
 
 ```ts
-// 位置：practices/standard/src/components/Shelfs/hooks/useFilterRootOperator.ts
+// 位置：practices/standard/src/components/Shelves/hooks/useFilterRootOperator.ts
 // 未在 practices/standard/src/hooks/index.ts 中导出
 // 需要直接 import 该文件使用
-import { useFilterRootOperator } from 'practices/standard/src/components/Shelfs/hooks/useFilterRootOperator'
+import { useFilterRootOperator } from 'practices/standard/src/components/Shelves/hooks/useFilterRootOperator'
 ```

@@ -3,7 +3,7 @@ import enUS from 'antd/locale/en_US';
 import zhCN from 'antd/locale/zh_CN';
 import { VBIChartBuilder } from '@visactor/vbi';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ShelfDndProvider } from 'src/components/Shelfs/dnd';
+import { ShelfDndProvider } from 'src/components/Shelves/dnd';
 import { Toolbar } from 'src/components/Toolbar';
 import { useVBIBuilder } from 'src/hooks';
 import type { DemoTheme } from 'src/constants/builder';

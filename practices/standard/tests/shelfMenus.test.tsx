@@ -1,11 +1,11 @@
 import { expect, test } from '@rstest/core';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { MeasureFormatPanel } from '../src/components/Shelfs/common/MeasureFormatPanel';
+import { MeasureFormatPanel } from '../src/components/Shelves/common/MeasureFormatPanel';
 import { VBIStoreProvider } from '../src/model';
 import {
   getDimensionMenuSelectedKeys,
   getMeasureMenuSelectedKeys,
-} from '../src/components/Shelfs/utils/menuSelectionUtils';
+} from '../src/components/Shelves/utils/menuSelectionUtils';
 import { createDefaultBuilder } from '../src/utils/demoConnector';
 
 test('getMeasureMenuSelectedKeys marks encoding and aggregate', () => {

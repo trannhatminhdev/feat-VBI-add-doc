@@ -22,7 +22,7 @@ practices/{name}/src/
 │   │   └── HavingFilterPanel.tsx # HAVING 过滤面板
 │   ├── Render/
 │   │   └── VSeedRender.tsx  # VSeed 渲染器（独立实现）
-│   └── Shelfs/
+│   └── Shelves/
 │       ├── DimensionShelf.tsx  # 维度货架
 │       ├── MeasureShelf.tsx     # 度量货架
 │       ├── WhereShelf.tsx       # WHERE 过滤货架

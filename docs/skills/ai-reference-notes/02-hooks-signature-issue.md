@@ -69,8 +69,8 @@ addDimension('category', (node) => {
 
 ## 源码位置
 
-| hook                            | 位置                                                                      |
-| ------------------------------- | ------------------------------------------------------------------------- |
-| vbi-react hooks                 | `packages/vbi-react/src/hooks/`                                           |
-| 各 practice 自有 hooks          | `practices/{name}/src/hooks/`（每个 practice 独立一套）                   |
-| useFilterRootOperator（未导出） | `practices/standard/src/components/Shelfs/hooks/useFilterRootOperator.ts` |
+| hook                            | 位置                                                                       |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| vbi-react hooks                 | `packages/vbi-react/src/hooks/`                                            |
+| 各 practice 自有 hooks          | `practices/{name}/src/hooks/`（每个 practice 独立一套）                    |
+| useFilterRootOperator（未导出） | `practices/standard/src/components/Shelves/hooks/useFilterRootOperator.ts` |

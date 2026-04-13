@@ -17,7 +17,7 @@ practices/standard/src/
 │   │   └── VSeedRender.tsx   # VSeed 渲染器（内部实现，AI 不可直接调用）
 │   ├── Fields/
 │   │   └── FieldList/index.tsx  # 左侧字段列表面板
-│   ├── Shelfs/
+│   ├── Shelves/
 │   │   ├── shelves/
 │   │   │   ├── DimensionShelf.tsx  # 维度货架（可拖拽标签）
 │   │   │   ├── MeasureShelf.tsx    # 度量货架
@@ -68,7 +68,7 @@ getFieldRoleBySchemaType('date') // → 'dimension'
 
 ```tsx
 import { useDraggable } from '@dnd-kit/core'
-import { createSchemaFieldDragId, type SchemaFieldDragData } from 'src/components/Shelfs/dnd'
+import { createSchemaFieldDragId, type SchemaFieldDragData } from 'src/components/Shelves/dnd'
 
 // 创建拖拽 ID
 const dragId = createSchemaFieldDragId({
@@ -106,14 +106,14 @@ const { schemaFields, fieldRoleMap, fieldTypeMap } = useVBISchemaFields(builder)
 ## 9.5 日期维度聚合工具
 
 ```ts
-// src/components/Shelfs/utils/dimensionDateAggregateUtils.ts
+// src/components/Shelves/utils/dimensionDateAggregateUtils.ts
 import {
   formatDimensionDateAggregate,
   getDefaultDimensionDateAggregate,
   getDimensionDateAggregateItems,
   isDateDimensionField,
   normalizeDimensionDateAggregate,
-} from 'src/components/Shelfs/utils/dimensionDateAggregateUtils'
+} from 'src/components/Shelves/utils/dimensionDateAggregateUtils'
 
 // 获取日期字段的默认聚合方式
 const defaultAgg = getDefaultDimensionDateAggregate()

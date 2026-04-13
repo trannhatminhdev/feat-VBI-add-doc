@@ -15,11 +15,11 @@ Proposed
 
 当前相关代码位置：
 
-- `practices/standard/src/components/Shelfs/common/FieldShelf.tsx`
-- `practices/standard/src/components/Shelfs/shelves/MeasureShelf.tsx`
-- `practices/standard/src/components/Shelfs/shelves/DimensionShelf.tsx`
-- `practices/standard/src/components/Shelfs/utils/menuItemUtils.tsx`
-- `practices/standard/src/components/Shelfs/common/FilterShelf.tsx`
+- `practices/standard/src/components/Shelves/common/FieldShelf.tsx`
+- `practices/standard/src/components/Shelves/shelves/MeasureShelf.tsx`
+- `practices/standard/src/components/Shelves/shelves/DimensionShelf.tsx`
+- `practices/standard/src/components/Shelves/utils/menuItemUtils.tsx`
+- `practices/standard/src/components/Shelves/common/FilterShelf.tsx`
 - `practices/standard/src/components/Filter/FilterPanel.tsx`
 - `practices/standard/src/components/Filter/DateFilterEditor.tsx`
 
@@ -132,11 +132,11 @@ UI 规则：
 
 ## Reference
 
-- `practices/standard/src/components/Shelfs/common/FieldShelf.tsx`
-- `practices/standard/src/components/Shelfs/shelves/MeasureShelf.tsx`
-- `practices/standard/src/components/Shelfs/shelves/DimensionShelf.tsx`
-- `practices/standard/src/components/Shelfs/utils/menuItemUtils.tsx`
-- `practices/standard/src/components/Shelfs/common/FilterShelf.tsx`
+- `practices/standard/src/components/Shelves/common/FieldShelf.tsx`
+- `practices/standard/src/components/Shelves/shelves/MeasureShelf.tsx`
+- `practices/standard/src/components/Shelves/shelves/DimensionShelf.tsx`
+- `practices/standard/src/components/Shelves/utils/menuItemUtils.tsx`
+- `practices/standard/src/components/Shelves/common/FilterShelf.tsx`
 - `practices/standard/src/components/Filter/FilterPanel.tsx`
 - `practices/standard/src/components/Filter/DateFilterEditor.tsx`
 - Ant Design Dropdown / Popover / Tabs: https://ant.design/llms-full.txt

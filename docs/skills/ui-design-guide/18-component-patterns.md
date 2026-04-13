@@ -14,7 +14,7 @@ src/components/
 ├── Fields/            # 字段列表
 │   └── FieldList/
 │       └── index.tsx  # 搜索 + 角色过滤 + 字段项
-├── Shelfs/            # 配置货架
+├── Shelves/            # 配置货架
 │   └── shelves/
 │       ├── DimensionShelf.tsx   # 维度货架行 + 右键菜单（aggregate/encoding/sort/delete）
 │       └── MeasureShelf.tsx      # 度量货架行 + 右键菜单（aggregate/encoding/format/sort/delete）

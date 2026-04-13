@@ -5,8 +5,8 @@ import { CalendarOutlined, FontSizeOutlined } from '@ant-design/icons';
 import {
   createSchemaFieldDragId,
   type SchemaFieldDragData,
-} from 'src/components/Shelfs/dnd';
-import { getDefaultDimensionDateAggregate } from 'src/components/Shelfs/dimensionDateAggregateUtils';
+} from 'src/components/Shelves/dnd';
+import { getDefaultDimensionDateAggregate } from 'src/components/Shelves/dimensionDateAggregateUtils';
 import { useVBIDimensions, useVBISchemaFields } from 'src/hooks';
 import { useTranslation } from 'src/i18n';
 import { useVBIStore } from 'src/model';

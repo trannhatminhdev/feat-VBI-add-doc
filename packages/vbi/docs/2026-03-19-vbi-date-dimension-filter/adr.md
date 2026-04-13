@@ -15,7 +15,7 @@ Proposed
 同时，`practices/standard` 当前的 `where` UI 仍然是纯标量表单：
 
 1. [`FilterPanel.tsx`](../../practices/standard/src/components/Filter/FilterPanel.tsx) 只支持通用比较表单、`range`、`tags` 这类输入策略。
-2. [`WhereShelf.tsx`](../../practices/standard/src/components/Shelfs/shelves/WhereShelf.tsx) 和 [`useVBIWhereFilter.ts`](../../practices/standard/src/hooks/useVBIWhereFilter.ts) 只知道 `setOperator(...)` / `setValue(...)`。
+2. [`WhereShelf.tsx`](../../practices/standard/src/components/Shelves/shelves/WhereShelf.tsx) 和 [`useVBIWhereFilter.ts`](../../practices/standard/src/hooks/useVBIWhereFilter.ts) 只知道 `setOperator(...)` / `setValue(...)`。
 3. 日期维度虽然已有 `isDate` 标记，但还没有独立的日期筛选编辑器。
 
 底层 `vquery` 已经补齐了当前阶段需要依赖的基础验证：
@@ -363,7 +363,7 @@ type DemoWhereFilterItem = DemoWhereScalarFilterItem | DemoWhereDateFilterItem
   - 新增日期表单的默认值、序列化、反序列化、展示文案生成工具。
   - `getWhereDisplayText(...)` 需要支持 `op === 'date'` 的可读展示。
 
-- [`practices/standard/src/components/Shelfs/shelves/WhereShelf.tsx`](../../practices/standard/src/components/Shelfs/shelves/WhereShelf.tsx)
+- [`practices/standard/src/components/Shelves/shelves/WhereShelf.tsx`](../../practices/standard/src/components/Shelves/shelves/WhereShelf.tsx)
   - 新增 `item.op === 'date'` 分支。
   - add/update 时，日期节点改用 `node.setDate(...)`，非日期节点继续用 `setOperator(...)` / `setValue(...)`。
 
@@ -444,7 +444,7 @@ type DemoWhereFilterItem = DemoWhereScalarFilterItem | DemoWhereDateFilterItem
 - `packages/vbi/tests/builder/features/whereFilter.test.ts`
 - `practices/standard/src/components/Filter/FilterPanel.tsx`
 - `practices/standard/src/components/Filter/whereFilterUtils.ts`
-- `practices/standard/src/components/Shelfs/shelves/WhereShelf.tsx`
+- `practices/standard/src/components/Shelves/shelves/WhereShelf.tsx`
 - `practices/standard/src/hooks/useVBIWhereFilter.ts`
 - `practices/standard/src/i18n/locales/zh-CN.json`
 - `practices/standard/src/i18n/locales/en-US.json`
@@ -457,7 +457,7 @@ type DemoWhereFilterItem = DemoWhereScalarFilterItem | DemoWhereDateFilterItem
 - VBI buildWhere: `packages/vbi/src/pipeline/vqueryDSL/buildWhere.ts`
 - Demo Filter Panel: `practices/standard/src/components/Filter/FilterPanel.tsx`
 - Demo Where Utils: `practices/standard/src/components/Filter/whereFilterUtils.ts`
-- Demo Where Shelf: `practices/standard/src/components/Shelfs/shelves/WhereShelf.tsx`
+- Demo Where Shelf: `practices/standard/src/components/Shelves/shelves/WhereShelf.tsx`
 - Demo Where Hook: `practices/standard/src/hooks/useVBIWhereFilter.ts`
 - VQuery Where Tests: `packages/vquery/tests/unit/sql-builder/builders/where.test.ts`
 

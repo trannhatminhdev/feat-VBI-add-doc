@@ -80,19 +80,19 @@
 
 以下功能已在 `practices/standard/src/hooks/` 中实现，可移到 `@visactor/vbi-react` 包中：
 
-| 功能                                                 | 当前所在位置                                                              |
-| ---------------------------------------------------- | ------------------------------------------------------------------------- |
-| `useVBISchemaFields` — 字段列表（带 role/type 分类） | `practices/standard/src/hooks/useVBISchemaFields.ts`                      |
-| `useVBIUndoManager` — Undo/Redo 状态订阅             | `practices/standard/src/hooks/useVBIUndoManager.ts`                       |
-| `useVBIStore` — Zustand store hook                   | `practices/standard/src/hooks/useVBIStore.ts`                             |
-| `useBuilderDocState` — Yjs doc 状态订阅              | `practices/standard/src/hooks/useBuilderDocState.ts`                      |
-| `useVBIBuilder` — locale/theme/limit 配置            | `practices/standard/src/hooks/useVBIBuilder.ts`                           |
-| `useVBIChartType` — 图表类型订阅                     | `practices/standard/src/hooks/useVBIChartType.ts`                         |
-| `useVBIWhereFilter` — WHERE 过滤（完整版）           | `practices/standard/src/hooks/useVBIWhereFilter.ts`                       |
-| `useVBIHavingFilter` — HAVING 过滤（完整版）         | `practices/standard/src/hooks/useVBIHavingFilter.ts`                      |
-| `useVBIDimensions` — 维度管理（回调模式）            | `practices/standard/src/hooks/useVBIDimensions.ts`                        |
-| `useVBIMeasures` — 度量管理（回调模式）              | `practices/standard/src/hooks/useVBIMeasures.ts`                          |
-| `useFilterRootOperator` — 切换过滤根操作符           | `practices/standard/src/components/Shelfs/hooks/useFilterRootOperator.ts` |
+| 功能                                                 | 当前所在位置                                                               |
+| ---------------------------------------------------- | -------------------------------------------------------------------------- |
+| `useVBISchemaFields` — 字段列表（带 role/type 分类） | `practices/standard/src/hooks/useVBISchemaFields.ts`                       |
+| `useVBIUndoManager` — Undo/Redo 状态订阅             | `practices/standard/src/hooks/useVBIUndoManager.ts`                        |
+| `useVBIStore` — Zustand store hook                   | `practices/standard/src/hooks/useVBIStore.ts`                              |
+| `useBuilderDocState` — Yjs doc 状态订阅              | `practices/standard/src/hooks/useBuilderDocState.ts`                       |
+| `useVBIBuilder` — locale/theme/limit 配置            | `practices/standard/src/hooks/useVBIBuilder.ts`                            |
+| `useVBIChartType` — 图表类型订阅                     | `practices/standard/src/hooks/useVBIChartType.ts`                          |
+| `useVBIWhereFilter` — WHERE 过滤（完整版）           | `practices/standard/src/hooks/useVBIWhereFilter.ts`                        |
+| `useVBIHavingFilter` — HAVING 过滤（完整版）         | `practices/standard/src/hooks/useVBIHavingFilter.ts`                       |
+| `useVBIDimensions` — 维度管理（回调模式）            | `practices/standard/src/hooks/useVBIDimensions.ts`                         |
+| `useVBIMeasures` — 度量管理（回调模式）              | `practices/standard/src/hooks/useVBIMeasures.ts`                           |
+| `useFilterRootOperator` — 切换过滤根操作符           | `practices/standard/src/components/Shelves/hooks/useFilterRootOperator.ts` |
 
 ---
 

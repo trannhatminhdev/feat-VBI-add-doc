@@ -1,5 +1,5 @@
 import { expect, test } from '@rstest/core';
-import { reorderYArrayByInsertIndex } from '../src/components/Shelfs/reorderUtils';
+import { reorderYArrayByInsertIndex } from '../src/components/Shelves/reorderUtils';
 
 const createMockYArray = <T>(initial: T[]) => {
   const values = [...initial];

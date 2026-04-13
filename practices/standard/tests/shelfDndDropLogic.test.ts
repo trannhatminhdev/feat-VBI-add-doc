@@ -4,7 +4,7 @@ import {
   isNoopShelfReorder,
   normalizeShelfInsertIndex,
   resolveShelfDropAction,
-} from '../src/components/Shelfs/dnd';
+} from '../src/components/Shelves/dnd';
 
 test('normalizes reorder index for forward and backward moves', () => {
   expect(getNormalizedReorderIndex(0, 2)).toBe(1);

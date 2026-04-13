@@ -8,7 +8,7 @@ import {
   type MeasureAggregate,
   type MeasureAggregateKey,
   type MeasureAggregateItem,
-} from 'src/components/Shelfs/measureAggregateUtils';
+} from 'src/components/Shelves/measureAggregateUtils';
 import type { FieldRole } from 'src/utils/fieldRole';
 import {
   getFilterOperatorDisplayLabel,

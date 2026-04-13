@@ -5,7 +5,7 @@ import {
   readShelfDragIndex,
   writeFieldDragPayload,
   writeShelfDragIndex,
-} from '../src/components/Shelfs/dragDropUtils';
+} from '../src/components/Shelves/dragDropUtils';
 
 const createMockDragEvent = () => {
   const store = new Map<string, string>();

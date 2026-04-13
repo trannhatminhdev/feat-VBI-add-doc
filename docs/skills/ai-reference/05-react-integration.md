@@ -325,7 +325,6 @@ function ChartTypeSelector() {
 
 ```tsx
 import { ChartRenderer } from '@visactor/vbi-react'
-
 ;<ChartRenderer
   builder={builder}
   debounce={300}
@@ -346,7 +345,6 @@ import { ChartRenderer } from '@visactor/vbi-react'
 
 ```tsx
 import { ChartTypeSelector } from '@visactor/vbi-react'
-
 ;<ChartTypeSelector
   builder={builder}
   label="图表类型"
@@ -371,7 +369,6 @@ import { ChartTypeSelector } from '@visactor/vbi-react'
 
 ```tsx
 import { FieldPanel } from '@visactor/vbi-react'
-
 ;<FieldPanel
   builder={builder}
   dimensionOptions={[
@@ -405,7 +402,6 @@ import { FieldPanel } from '@visactor/vbi-react'
 
 ```tsx
 import { BuilderLayout } from '@visactor/vbi-react'
-
 ;<BuilderLayout
   topBar={<TopBar />}
   leftPanel={<FieldsPanel />}
@@ -570,10 +566,10 @@ clear(true, false) // 只清空 undo 栈
 
 ### useFilterRootOperator（切换 and/or 根操作符）
 
-位置：`practices/standard/src/components/Shelfs/hooks/useFilterRootOperator.ts`（未从 `src/hooks` 导出，需单独导入）
+位置：`practices/standard/src/components/Shelves/hooks/useFilterRootOperator.ts`（未从 `src/hooks` 导出，需单独导入）
 
 ```tsx
-import { useFilterRootOperator } from 'src/components/Shelfs/hooks'
+import { useFilterRootOperator } from 'src/components/Shelves/hooks'
 
 const { operator, setOperator } = useFilterRootOperator({
   builder,

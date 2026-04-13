@@ -3,7 +3,7 @@ import {
   getDefaultDimensionDateAggregate,
   isDateDimensionField,
   normalizeDimensionDateAggregate,
-} from '../src/components/Shelfs/dimensionDateAggregateUtils';
+} from '../src/components/Shelves/dimensionDateAggregateUtils';
 
 test('detects date-like schema field types', () => {
   expect(isDateDimensionField('date')).toBe(true);

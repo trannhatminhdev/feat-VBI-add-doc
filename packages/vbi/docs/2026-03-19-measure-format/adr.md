@@ -114,7 +114,7 @@ Demo 需要把这组能力暴露到 measure shelf 的交互中。
 
 接入方式：
 
-1. 在 `practices/standard/src/components/Shelfs/shelves/MeasureShelf.tsx` 的 measure 菜单中新增 `Format` 入口
+1. 在 `practices/standard/src/components/Shelves/shelves/MeasureShelf.tsx` 的 measure 菜单中新增 `Format` 入口
 2. `Format` 不做多级 submenu，改为打开独立弹窗
 3. 弹窗沿用当前 shelf 交互模式，建议新增一个与 `openShelfRenameModal` 同级的 `openMeasureFormatModal`
 
@@ -174,7 +174,7 @@ Demo 测试覆盖以下内容：
 - VBI `MeasureNodeBuilder`: `packages/vbi/src/builder/features/measures/mea-node-builder.ts`
 - VBI `MeasuresBuilder`: `packages/vbi/src/builder/features/measures/mea-builder.ts`
 - VBI `buildVSeed`: `packages/vbi/src/builder/adapters/vquery-vseed/build-vseed.ts`
-- Demo measure shelf: `practices/standard/src/components/Shelfs/shelves/MeasureShelf.tsx`
+- Demo measure shelf: `practices/standard/src/components/Shelves/shelves/MeasureShelf.tsx`
 - Demo measures hook: `practices/standard/src/hooks/useVBIMeasures.ts`
 
 ## 淘汰内容概述
